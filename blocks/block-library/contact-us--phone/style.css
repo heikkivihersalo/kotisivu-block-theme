@@ -1,0 +1,15 @@
+:where(.contact-us--phone) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--wp--preset--spacing--30);
+}
+
+:where(.contact-us--phone img) {
+    width: 100%;
+    height: 100%;
+    max-width: 30px;
+
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}

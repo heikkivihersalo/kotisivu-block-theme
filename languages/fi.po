@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Kotisivu Block Theme\n"
+"POT-Creation-Date: 2022-11-30 09:15+0200\n"
+"PO-Revision-Date: 2022-11-30 09:19+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: blocks/src/blocks/static/address--address/edit.js:27
+#: blocks/src/blocks/static/address--email/edit.js:33
+#: blocks/src/blocks/static/address--name/edit.js:28
+#: blocks/src/blocks/static/address--phone/edit.js:34
+#: blocks/src/blocks/static/container-100/components/Inspector.js:18
+#: blocks/src/blocks/static/container-50-50/components/Inspector.js:18
+#: blocks/src/blocks/static/icon/components/Inspector.js:41
+#: blocks/src/components/inspector/lib/iconSelector.js:41
+msgid "Settings"
+msgstr "Asetukset"
+
+#: blocks/src/blocks/static/address--address/edit.js:29
+#: blocks/src/blocks/static/address--email/edit.js:35
+#: blocks/src/blocks/static/address--name/edit.js:30
+#: blocks/src/blocks/static/address--phone/edit.js:36
+msgid "Use icon"
+msgstr "Käytä ikonia"
+
+#: blocks/src/blocks/static/address--address/edit.js:37
+#: blocks/src/blocks/static/address--address/edit.js:38
+msgid "Add street address"
+msgstr "Lisää katuosoite"
+
+#: blocks/src/blocks/static/address--email/edit.js:44
+#: blocks/src/blocks/static/address--email/edit.js:45
+msgid "Add email address"
+msgstr "Lisää sähköpostiosoite"
+
+#: blocks/src/blocks/static/address--name/edit.js:38
+#: blocks/src/blocks/static/address--name/edit.js:39
+msgid "Add company or person name"
+msgstr "Lisää yrityksen tai henkilön nimi"
+
+#: blocks/src/blocks/static/address--phone/edit.js:45
+#: blocks/src/blocks/static/address--phone/edit.js:46
+msgid "Add phone number"
+msgstr "Lisää puhelinnumero"
+
+#: blocks/src/blocks/static/container-100/components/Inspector.js:22
+#: blocks/src/blocks/static/container-50-50/components/Inspector.js:22
+msgid "Select semantic element for container"
+msgstr "Valitse säilön semanttinen elementti"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:50
+#: blocks/src/components/inspector/lib/iconSelector.js:54
+msgid "Unicode"
+msgstr "Unicode"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:51
+#: blocks/src/components/inspector/lib/iconSelector.js:55
+msgid "For example fas fa-user"
+msgstr "Esimerkiksi fas fa-user"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:67
+#: blocks/src/components/inspector/lib/iconSelector.js:74
+msgid "Link Settings"
+msgstr "Linkin asetukset"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:69
+#: blocks/src/components/inspector/lib/iconSelector.js:76
+#: theme/includes/class-options-page.php:127
+msgid "URL"
+msgstr "URL"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:74
+#: blocks/src/components/inspector/lib/iconSelector.js:81
+msgid "Title"
+msgstr "Otsikko"
+
+#: blocks/src/blocks/static/icon/components/Inspector.js:79
+#: blocks/src/components/inspector/lib/iconSelector.js:86
+msgid "Set icon as link"
+msgstr "Aseta kuvake linkiksi"
+
+#: blocks/src/blocks/static/icons/components/ColumnInserterButton.js:16
+msgid "Add new icon"
+msgstr "Lisää uusi kuvake"
+
+#: blocks/src/blocks/static/image-gallery/components/Inspector.js:21
+msgid "Image Gallery Settings"
+msgstr "Kuvagallerian asetukset"
+
+#: blocks/src/blocks/static/image-gallery/components/Inspector.js:23
+msgid "Section Heading"
+msgstr "Osion otsikko"
+
+#: blocks/src/blocks/static/image-gallery/components/Inspector.js:24
+msgid ""
+"Add some descriptive information (ex. title or heading) for assistive "
+"technologies"
+msgstr ""
+"Lisää elementtiä kuvaava tieto (esim. otsikko). Käytetään avustavien "
+"teknologioiden avuksi"
+
+#: blocks/src/blocks/static/image-gallery/edit.js:38
+msgid "Selected images will be shown here"
+msgstr "Valitut kuvat näkyvät tässä"
+
+#: blocks/src/components/image/lib/common/inspector/fullWidth.js:21
+msgid "Full Width"
+msgstr "Koko näytön levyinen"
+
+#: blocks/src/components/image/lib/common/inspector/lazyLoad.js:19
+msgid "Lazy Load"
+msgstr "Laiska lataus"
+
+#: blocks/src/components/image/lib/common/inspector/preview.js:27
+msgid "Change image"
+msgstr "Vaihda kuva"
+
+#: blocks/src/components/image/lib/common/inspector/preview.js:31
+msgid "Remove image"
+msgstr "Poista kuva"
+
+#: blocks/src/components/image/lib/common/inspector/sidebar.js:34
+msgid "Custom Class"
+msgstr "Mukautettu luokka"
+
+#: blocks/src/components/image/lib/common/inspector/sidebar.js:35
+msgid "e.g. section-name__image"
+msgstr "esim. name__image"
+
+#: blocks/src/components/image/lib/imageSelectorSidebar.js:20
+msgid "Select background image"
+msgstr "Valitse taustakuva"
+
+#: blocks/src/components/image/lib/utilities/functions/getImage.js:30
+msgid "Pick a image"
+msgstr "Valitse kuva"
+
+#: blocks/src/components/inspector/lib/alignmentReverse.js:21
+msgid "Reverse Block Alignment"
+msgstr "Käännä lohkon järjestys"
+
+#: blocks/src/components/inspector/lib/backgroundColor.js:37
+msgid "Use Background Color"
+msgstr "Käytä taustaväriä"
+
+#: blocks/src/components/inspector/lib/backgroundImage.js:21
+msgid "Use Background Image"
+msgstr "Käytä taustakuvaa"
+
+#: blocks/src/components/inspector/lib/bigHeading.js:21
+msgid "Big Heading"
+msgstr "Iso otsikko"
+
+#: blocks/src/components/inspector/lib/dropShadow.js:21
+msgid "Drop Shadow"
+msgstr "Taustavarjo"
+
+#: blocks/src/components/inspector/lib/eventTracking.js:20
+msgid "Analytics"
+msgstr "Analytiikka"
+
+#: blocks/src/components/inspector/lib/eventTracking.js:22
+msgid "Track Events"
+msgstr "Seuraa tapahtumia"
+
+#: blocks/src/components/inspector/lib/eventTracking.js:27
+msgid "Identifier"
+msgstr "Identifiointitunnus"
+
+#: blocks/src/components/inspector/lib/eventTracking.js:28
+msgid "ex. name for this button"
+msgstr "esimerkiksi tämän painikkeen nimi"
+
+#: blocks/src/components/inspector/lib/linkControls.js:80
+msgid "Link"
+msgstr "Linkki"
+
+#: blocks/src/components/inspector/lib/linkControls.js:88
+msgid "Unlink"
+msgstr "Poista linkitys"
+
+#: blocks/src/components/inspector/lib/transparentBackground.js:21
+msgid "Transparent Background"
+msgstr "Läpinäkyvä tausta"
+
+#: theme/includes/class-options-page.php:69
+#: theme/includes/class-options-page.php:96
+msgid "Kotisivu Block Theme Settings"
+msgstr "Kotisivu teeman asetukset"
+
+#: theme/includes/class-options-page.php:70
+msgid "Theme Settings"
+msgstr "Teeman asetukset"
+
+#: theme/includes/class-options-page.php:97
+msgid "You can access theme options in here."
+msgstr "Voit muokata teeman asetuksia täältä."
+
+#: theme/includes/class-options-page.php:105
+msgid "Google Tag Manager"
+msgstr "Google Tag Manager"
+
+#: theme/includes/class-options-page.php:107
+msgid ""
+"Set Tag Manager settings here. Tag Manager is optimized to work with "
+"Kotisivu Theme so it is highly recommended."
+msgstr ""
+"Aseta Tag Managerin asetukset tähän. Tag Manager on optimoitu toimimaan "
+"Kotisivu-teeman kanssa, joten tämän käyttöönotto on erittäin suotavaa."
+
+#: theme/includes/class-options-page.php:113
+msgid "Activate Tag Manager"
+msgstr "Aktivoi Tag Manager"
+
+#: theme/includes/class-options-page.php:120
+msgid "ID"
+msgstr "ID"
+
+#: theme/includes/class-options-page.php:134
+msgid "Timeout"
+msgstr "Aikakatkaisu"
+
+#. Theme Name of the plugin/theme
+msgid "Kotisivu Block Theme"
+msgstr "Kotisivu Block Teema"
+
+#. Theme URI of the plugin/theme
+msgid "https://www.kotisivu.dev"
+msgstr "https://www.kotisivu.dev"
+
+#. Description of the plugin/theme
+msgid "Super lightweight block theme"
+msgstr "Erittäin kevyt lohkoteema"
+
+#. Author of the plugin/theme
+msgid "Kotisivu Dev"
+msgstr "Kotisivu Dev"

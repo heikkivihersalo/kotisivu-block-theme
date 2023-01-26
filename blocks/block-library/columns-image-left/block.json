@@ -1,0 +1,32 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/columns-image-left",
+	"title": "Columns with image on left",
+	"category": "blocks",
+	"icon": "columns",
+	"description": "Section with two columns, image on left, text on right",
+	"keywords": ["container, columns, column, 50-50, image left"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/columns-image-left.js",
+	"editorStyle": "file:../../../../build/columns-image-left.css",
+	"style": "file:../../../../build/style-columns-image-left.css",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false],
+			"default": true
+		},
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	}
+}

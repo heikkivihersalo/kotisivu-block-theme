@@ -1,0 +1,269 @@
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+0.0 WordPress Default Variables
+1.0 Header
+2.0 Footer
+3.0 Page Layouts (Privacy Policy, 404 etc.)
+  3.1 Page Not Found - 404
+  3.2 Privacy Policy
+4.0 Posts
+5.0 Gutenberg Block Overrides
+  5.1 Buttons
+6.0 Parent Theme Blocks
+7.0 Modifiers
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  0.0 WordPress Default Variables
+--------------------------------------------------------------*/
+
+/**
+ | This theme uses a combination of WordPress default variables and custom properties.
+ |
+ |   FONT
+ |   ** Sizes **
+ |   --wp--preset--font-size--colossal
+ |   --wp--preset--font-size--gigantic : H1
+ |   --wp--preset--font-size--huge : H2
+ |   --wp--preset--font-size--x-large : H3
+ |   --wp--preset--font-size--large : H4
+ |   --wp--preset--font-size--medium : H5 / P
+ |   --wp--preset--font-size--small : H6
+ |   --wp--preset--font-size--tiny
+ |
+ |   ** Families **
+ |   --wp--preset--font-family--heading
+ |   --wp--preset--font-family--body
+ |
+ |   COLOR
+ |   ** Theme Colors **
+ |   --wp--preset--color--primary-light
+ |   --wp--preset--color--primary
+ |   --wp--preset--color--primary-dark
+ |   --wp--preset--color--secondary
+ |   --wp--preset--color--background
+ |   --wp--preset--color--foreground
+ |   --wp--preset--color--grey-light
+ |   --wp--preset--color--grey
+ |   --wp--preset--color--grey-dark
+ |
+ |   ** Default Colors (DISABLED) **
+ |   --wp--preset--color--black: #000000;
+ |   --wp--preset--color--cyan-bluish-gray: #abb8c3;
+ |   --wp--preset--color--white: #ffffff;
+ |   --wp--preset--color--pale-pink: #f78da7;
+ |   --wp--preset--color--vivid-red: #cf2e2e;
+ |   --wp--preset--color--luminous-vivid-orange: #ff6900;
+ |   --wp--preset--color--luminous-vivid-amber: #fcb900;
+ |   --wp--preset--color--light-green-cyan: #7bdcb5;
+ |   --wp--preset--color--vivid-green-cyan: #00d084;
+ |   --wp--preset--color--pale-cyan-blue: #8ed1fc;
+ |   --wp--preset--color--vivid-cyan-blue: #0693e3;
+ |   --wp--preset--color--vivid-purple: #9b51e0;
+ |   
+ |   ** Dradient Colors (DISABLED) **
+ |   --wp--preset--gradient--vivid-cyan-blue-to-vivid-purple
+ |   --wp--preset--gradient--light-green-cyan-to-vivid-green-cyan
+ |   --wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange
+ |   --wp--preset--gradient--luminous-vivid-orange-to-vivid-red
+ |   --wp--preset--gradient--very-light-gray-to-cyan-bluish-gray
+ |   --wp--preset--gradient--cool-to-warm-spectrum
+ |   --wp--preset--gradient--blush-light-purple
+ |   --wp--preset--gradient--blush-bordeaux
+ |   --wp--preset--gradient--luminous-dusk
+ |   --wp--preset--gradient--pale-ocean
+ |   --wp--preset--gradient--electric-grass
+ |   --wp--preset--gradient--midnight
+ |
+ |   ** Duotone Colors (DISABLED) **
+ |   --wp--preset--duotone--dark-grayscale
+ |   --wp--preset--duotone--grayscale
+ |   --wp--preset--duotone--purple-yellow
+ |   --wp--preset--duotone--blue-red
+ |   --wp--preset--duotone--midnight
+ |   --wp--preset--duotone--magenta-yellow
+ |   --wp--preset--duotone--purple-green
+ |   --wp--preset--duotone--blue-orange
+ |
+ |   SPACING
+ |   --wp--preset--spacing--20
+ |   --wp--preset--spacing--30
+ |   --wp--preset--spacing--40
+ |   --wp--preset--spacing--50
+ |   --wp--preset--spacing--60
+ |   --wp--preset--spacing--70
+ |   --wp--preset--spacing--80
+ |   --wp--preset--spacing--90
+ |
+ |
+ |   LAYOUT
+ |   ** Width & Margins **
+ |   --wp--style--global--content-size // WordPress default
+ |   --wp--style--global--wide-size // WordPress default
+ |   --wp--custom--layout--site-margin
+ |   --wp--custom--layout--site-width
+ |   --wp--custom--layout--section--margin-top
+ |   --wp--custom--layout--section--margin-bottom
+ |   --wp--custom--layout--section--padding-top
+ |   --wp--custom--layout--section--padding-bottom
+ |   
+ |   ** Header **
+ |   --wp--custom--layout--header--text-color
+ |   --wp--custom--layout--header--background-color
+ |   --wp--custom--layout--header--logo-width
+ |   --wp--custom--layout--header--container-padding
+ |   --wp--custom--layout--header--mobile-top-margin
+ |
+ |   ** Footer **
+ |   --wp--custom--layout--footer--text-color
+ |   --wp--custom--layout--footer--background-color
+ |   --wp--custom--layout--footer--container-padding
+ |
+ |   ** Navigation **
+ |   --wp--custom--layout--navigation--gap
+ |   --wp--custom--layout--navigation--line-width
+ |
+ */
+
+/*--------------------------------------------------------------
+  1.0 Header
+--------------------------------------------------------------*/
+/**
+ | Default styles are defined in blocks
+ | You can override default styles here if needed
+ */
+/*--------------------------------------------------------------
+  2.0 Footer
+--------------------------------------------------------------*/
+/**
+ | Default styles are defined in blocks
+ | You can override default styles here if needed
+ */
+/*--------------------------------------------------------------
+  3.0 Page Sections
+--------------------------------------------------------------*/
+/**
+ * 3.1 General Layout Elements
+ */
+
+/* Set default margin and padding excluding hero */
+main > section:not(section:first-of-type) {
+  margin-top: var(--wp--custom--layout--section--margin-top);
+  padding-top: var(--wp--custom--layout--section--padding-top);
+}
+
+/* Set default margin and padding excluding last element */
+main > section:not(section:last-of-type) {
+  margin-bottom: var(--wp--custom--layout--section--margin-bottom);
+  padding-bottom: var(--wp--custom--layout--section--padding-bottom);
+}
+
+/**
+ * 3.2 Page Not Found - 404
+ */
+.page-not-found {
+  max-width: 60ch;
+  margin-top: var(--wp--custom--spacing--large);
+  margin-bottom: var(--wp--custom--spacing--large);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.page-not-found__heading {
+  font-size: var(--wp--preset--font-size--colossal);
+  margin: 0;
+}
+
+/**
+ * 3.3 Privacy Policy
+ */
+
+/*--------------------------------------------------------------
+  4.0 Posts
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  5.0 Gutenberg Block Overrides
+--------------------------------------------------------------*/
+
+/**
+ * 5.1 Buttons
+ */
+
+.wp-block-button {
+  --_border-width: 1px;
+  --_border-color: var(--wp--preset--color--secondary);
+
+  position: relative;
+  width: fit-content;
+
+  margin-inline: auto;
+}
+
+.wp-block-button__link {
+  color: var(--wp--preset--color--secondary);
+  background-color: transparent;
+  padding: 0.5em 1.5em;
+}
+
+.wp-block-button__link::after {
+  content: "";
+  width: 100%;
+  height: 1.5em;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  border-left: var(--_border-width) solid var(--_border-color);
+  border-right: var(--_border-width) solid var(--_border-color);
+  border-bottom: var(--_border-width) solid var(--_border-color);
+}
+
+/* Set hover state */
+.wp-block-button__link:hover {
+  color: var(--wp--preset--color--white);
+  background-color: var(--wp--preset--color--secondary);
+}
+
+/* Set disabled state */
+.wp-block-button__link:disabled {
+  color: grey;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/*--------------------------------------------------------------
+  6.0 Custom Block Overrides
+--------------------------------------------------------------*/
+/**
+ | Default styles are defined in blocks
+ | You can override default styles here if needed
+ */
+
+/*--------------------------------------------------------------
+  7.0 Modifiers
+--------------------------------------------------------------*/
+/* WordPress defaults */
+.has-text-align-left {
+  text-align: left;
+}
+
+.has-text-align-center {
+  text-align: center;
+}
+
+.has-text-align-right {
+  text-align: right;
+}
+
+/* Visually hidden */
+.visually-hidden:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

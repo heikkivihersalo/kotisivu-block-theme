@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/contact-us--title",
+	"title": "Title",
+	"category": "child",
+	"icon": "text",
+	"description": "Simple title field for contact information",
+	"keywords": ["name"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/contact-us"],
+	"editorScript": "file:../../../../build/contact-us--title.js",
+	"editorStyle": "file:../../../../build/contact-us--title.css",
+	"style": "file:../../../../build/style-contact-us--title.css",
+	"attributes": {
+		"title": {
+            "type": "string",
+			"default": ""
+		}
+	}
+}

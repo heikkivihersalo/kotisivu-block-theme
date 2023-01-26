@@ -1,0 +1,7 @@
+img.site-logo__image {
+    width: 100%;
+}
+
+a.site-logo {
+    pointer-events: none;
+}

@@ -1,0 +1,37 @@
+.distance-map {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--50);
+	width: var(--wp--custom--layout--site-width);
+	max-width: var(--wp--style--global--wide-size);
+	margin-inline: auto;
+}
+
+.distance-map > div {
+	position: relative;
+}
+
+.distance-map__heading {
+	color: var(--wp--preset--color--primary);
+	margin-top: 0;
+}
+
+.distance-map__image {
+	width: 100%;
+}
+
+.distance-map__table {
+	padding: 0;
+	margin: 0;
+}
+
+.distance-map__table table td {
+	border: none;
+	padding: 0;
+}
+
+@media (min-width: 800px) {
+	.distance-map {
+		grid-template-columns: 2.25fr 1fr;
+	}
+}

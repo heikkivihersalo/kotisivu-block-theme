@@ -1,0 +1,18 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-header",
+	"title": "Site Header",
+	"category": "blocks",
+	"icon": "block-default",
+	"description": "Global site header",
+	"keywords": ["header"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/site-header.js",
+	"editorStyle": "file:../../../../build/site-header.css",
+	"style": "file:../../../../build/style-site-header.css",
+	"attributes": {}
+}

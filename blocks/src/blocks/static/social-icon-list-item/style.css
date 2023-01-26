@@ -1,0 +1,3 @@
+:where(.social-icon-list-item) {
+    width: var(--wp--preset--font-size--gigantic, 4.5rem);
+}

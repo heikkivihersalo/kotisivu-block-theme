@@ -1,0 +1,31 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/address--address",
+	"title": "Address",
+	"category": "design",
+	"icon": "text",
+	"description": "Simple address field for contact information",
+	"keywords": ["address"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/address"],
+	"editorScript": "file:../../../../build/address--address.js",
+	"editorStyle": "file:../../../../build/address--address.css",
+	"style": "file:../../../../build/style-address--address.css",
+	"attributes": {
+		"content": {
+			"type": "string"
+		},
+		"unicode": {
+			"type": "string",
+			"default": "fas fa-home"
+		},
+		"hasIcon": {
+			"type": "boolean",
+			"default": false
+		}
+	}
+}
