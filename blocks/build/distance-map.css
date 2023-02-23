@@ -1,0 +1,1 @@
+.distance-map{grid-template-columns:repeat(1,minmax(0,1fr))}.distance-map>.block-editor-block-list__block{width:100%}.distance-map>.block-editor-inner-blocks>.block-editor-block-list__layout{display:grid;gap:var(--wp--preset--spacing--40);grid-template-columns:repeat(2,minmax(0,1fr));margin-inline:auto;max-width:var(--wp--custom--layout--site-width)}

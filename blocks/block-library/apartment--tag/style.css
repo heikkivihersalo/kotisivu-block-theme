@@ -1,7 +1,0 @@
-.apartment-description__tag {
-    display: block;
-    text-align: center;
-    width: fit-content;
-    background-color: var(--wp--preset--color--primary);
-    padding: 0.25em 0.5em;
-}

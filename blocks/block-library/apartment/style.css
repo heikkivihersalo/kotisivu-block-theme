@@ -1,9 +1,0 @@
-.apartment {
-    display: grid;
-    justify-items: center;
-    gap: var(--wp--preset--spacing--60);
-}
-
-.apartment__image {
-    max-width: 700px;
-}

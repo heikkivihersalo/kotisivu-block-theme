@@ -1,4 +1,0 @@
-:where(.inner-column) {
-    width: 100%;
-	max-width: calc( 100% - var(--wp--custom--spacing--medium, 2rem) * 2 );
-}
