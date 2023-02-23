@@ -1,0 +1,1 @@
+:where(.contact-us--email){align-items:center;display:flex;flex-direction:row;gap:var(--wp--preset--spacing--30)}:where(.contact-us--email img){aspect-ratio:1/1;height:100%;max-width:30px;-o-object-fit:cover;object-fit:cover;width:100%}

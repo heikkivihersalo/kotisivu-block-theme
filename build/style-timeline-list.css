@@ -1,0 +1,1 @@
+:where(.district-list){align-items:center;display:flex;flex-direction:column;flex-wrap:wrap;gap:.25em;justify-content:center;list-style:none;padding:0;row-gap:var(--wp--preset--spacing--30)}@media (min-width:800px){:where(.district-list){flex-direction:row}}
