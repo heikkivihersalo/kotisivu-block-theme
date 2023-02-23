@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, RichText } from "@wordpress/block-editor";
-import { cleanSpaces } from "@utilities/modifiers";
+import { cleanSpaces } from "@utils/modifiers";
 import StatusIcon from './components/StatusIcon';
 import DotsIcon from "./icons/dotsIcon";
 

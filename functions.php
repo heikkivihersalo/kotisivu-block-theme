@@ -13,7 +13,7 @@ defined('ABSPATH') or die();
 |
 */
 
-require_once(dirname(__FILE__) . '/theme/theme.php');
+require_once(dirname(__FILE__) . '/inc/theme.php');
 $theme = new Theme();
 $theme->init();
 
@@ -26,6 +26,6 @@ $theme->init();
 |
 */
 
-require_once(dirname(__FILE__) . '/theme/blocks.php');
+require_once(dirname(__FILE__) . '/inc/blocks.php');
 $blocks = new Blocks();
 $blocks->init();

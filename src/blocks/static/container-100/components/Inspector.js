@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
 import { PanelBody } from "@wordpress/components";
-import { AlignmentReverse, BackgroundColor, HTMLContainerControls } from "@common-components/inspector";
+import { AlignmentReverse, BackgroundColor, HTMLContainerControls } from "@features/inspector";
 
 const Inspector = (props) => {
     return (

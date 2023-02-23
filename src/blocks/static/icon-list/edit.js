@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
-import { InnerBlocksAppender } from '@common-components/inspector';
+import { InnerBlocksAppender } from '@features/inspector';
 import './editor.css';
 
 const Edit = (props) => {

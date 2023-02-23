@@ -28,6 +28,8 @@ function getEntries() {
 		out[`${entry.split('/')[4]}-view-script`] = entry;
 	});
 
+	console.log(out);
+
 	return out;
 };
 
@@ -37,8 +39,8 @@ module.exports = {
 	entry: getEntries,
 	resolve: {
 		alias: {
-			'@common-components': path.resolve('src/components'),
-			'@utilities': path.resolve('src/utilities')
+			'@features': path.resolve('src/features'),
+			'@utils': path.resolve('src/utils')
 		}
 	},
 	output: {

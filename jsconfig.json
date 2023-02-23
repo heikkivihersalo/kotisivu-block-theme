@@ -3,8 +3,8 @@
 		"target": "ES6",
 		"baseUrl": "./src",
 		"paths": {
-			"@common-components/*": ["components/*"],
-			"@utilities/*": ["utilities/*"]
+			"@features/*": ["features/*"],
+			"@utils/*": ["utils/*"]
 		}
 	},
 	"exclude": ["node_modules"]

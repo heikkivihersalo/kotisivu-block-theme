@@ -1,1 +1,0 @@
-:where(.address){display:flex;flex-direction:column}:where(.address>*){margin-inline:0;width:-moz-fit-content;width:fit-content}

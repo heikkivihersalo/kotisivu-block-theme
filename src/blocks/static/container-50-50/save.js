@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
-import { cleanSpaces } from "@utilities/modifiers";
-import { ContainerWrapper } from "@common-components/wrapper/index";
+import { cleanSpaces } from "@utils/modifiers";
+import { ContainerWrapper } from "@features/wrapper/index";
 
 const Save = (props) => {
 	const {

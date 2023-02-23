@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 
-import { ImageMarkup } from '@common-components/image';
+import { ImageMarkup } from '@features/image';
 
 const Save = (props) => {
 	return (

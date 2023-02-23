@@ -1,1 +1,0 @@
-:where(.site-logo){width:100%}:where(.site-logo__image){width:var(--wp--custom--layout--header--logo-width)}@media (min-width:800px){:where(.site-logo){position:static}}

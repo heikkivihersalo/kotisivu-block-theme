@@ -6,8 +6,8 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from "@wordpress/block-editor";
-import { ImageMarkup } from '@common-components/image';
-import { cleanSpaces } from '@utilities/modifiers';
+import { ImageMarkup } from '@features/image';
+import { cleanSpaces } from '@utils/modifiers';
 import Inspector from "./components/Inspector";
 import './editor.css';
 

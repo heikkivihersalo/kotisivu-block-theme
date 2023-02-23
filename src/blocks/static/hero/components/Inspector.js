@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
-import { ImageSelectorSidebar } from '@common-components/image';
-import { BackgroundImage } from '@common-components/inspector';
+import { ImageSelectorSidebar } from '@features/image';
+import { BackgroundImage } from '@features/inspector';
 import {
     PanelBody
 } from "@wordpress/components";

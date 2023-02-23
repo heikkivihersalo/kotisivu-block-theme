@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps } from "@wordpress/block-editor";
-import { ImageSelector } from '@common-components/image';
-import { IconSelector } from '@common-components/inspector';
+import { ImageSelector } from '@features/image';
+import { IconSelector } from '@features/inspector';
 import LinkWrapper from './linkWrapper';
 
 import './editor.css';

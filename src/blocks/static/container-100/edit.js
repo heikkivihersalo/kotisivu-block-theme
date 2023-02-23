@@ -1,8 +1,8 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps } from '@wordpress/block-editor';
-import { cleanSpaces } from "@utilities/modifiers";
-import { InnerBlocksAppender } from "@common-components/inspector";
-import { ContainerWrapper } from '@common-components/wrapper';
+import { cleanSpaces } from "@utils/modifiers";
+import { InnerBlocksAppender } from "@features/inspector";
+import { ContainerWrapper } from '@features/wrapper';
 import Inspector from './components/Inspector';
 
 import './editor.css';
