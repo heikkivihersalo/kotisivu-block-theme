@@ -1,0 +1,20 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/navigation-footer",
+	"title": "Navigation | Footer",
+	"category": "navigation",
+	"icon": "grid-view",
+	"description": "Load footer navigation",
+	"keywords": ["menu, footer"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"multiple": false
+	},
+	"editorScript": "file:../../../../build/navigation-footer.js",
+	"editorStyle": "file:../../../../build/navigation-footer.css",
+	"style": "file:../../../../build/style-navigation-footer.css",
+	"attributes": {
+	}
+}

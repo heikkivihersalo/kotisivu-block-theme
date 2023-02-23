@@ -1,0 +1,19 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-logo",
+	"title": "Site Logo",
+	"category": "navigation",
+	"icon": "grid-view",
+	"description": "Display site logo on your site",
+	"keywords": ["site, logo"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/site-logo.js",
+	"editorStyle": "file:../../../../build/site-logo.css",
+	"style": "file:../../../../build/style-site-logo.css",
+	"attributes": {
+	}
+}

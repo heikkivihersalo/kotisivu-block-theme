@@ -1,0 +1,31 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/address",
+	"title": "Address",
+	"category": "text",
+	"icon": "location",
+	"description": "Address block",
+	"keywords": ["address"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/address.js",
+	"editorStyle": "file:../../../../build/address.css",
+	"style": "file:../../../../build/style-address.css",
+	"attributes": {
+		"elementClass": {
+			"type": "string",
+			"default": "address"
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"templateLock": {
+			"type": [ "string", "boolean" ],
+			"enum": [ "all", "insert", false ]
+		}
+	}
+}

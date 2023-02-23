@@ -1,0 +1,49 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/contact-list",
+	"title": "Contact List",
+	"category": "blocks",
+	"icon": "id-alt",
+	"description": "Contact list with contact information",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/contact-list.js",
+	"editorStyle": "file:../../../../build/contact-list.css",
+	"style": "file:../../../../build/style-contact-list.css",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		},
+		"mediaId": {
+			"type": "number",
+			"default": 0
+		},
+		"mediaUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaMime": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaWidth": {
+			"type": "number"
+		},
+		"mediaHeight": {
+			"type": "number"
+		}
+	}
+}

@@ -26,6 +26,6 @@ $theme->init();
 |
 */
 
-require_once(dirname(__FILE__) . '/blocks/blocks.php');
+require_once(dirname(__FILE__) . '/theme/blocks.php');
 $blocks = new Blocks();
 $blocks->init();

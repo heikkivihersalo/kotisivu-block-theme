@@ -1,0 +1,57 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/address--email",
+	"title": "Email",
+	"category": "design",
+	"icon": "email",
+	"description": "Simple email field for contact information",
+	"keywords": ["email"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/address"],
+	"editorScript": "file:../../../../build/address--email.js",
+	"editorStyle": "file:../../../../build/address--email.css",
+	"style": "file:../../../../build/style-address--email.css",
+	"attributes": {
+		"post": {
+			"type": "object"
+		},
+		"url": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"content": {
+			"type": "string",
+			"default": ""
+		},
+		"target": {
+			"type": "string"
+		},
+		"rel": {
+			"type": "string"
+		},
+		"unicode": {
+			"type": "string",
+			"default": "fas fa-at"
+		},
+		"hasIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"hasTracking": {
+			"type": "boolean",
+			"default": false
+		},
+		"trackingIdentifier": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}

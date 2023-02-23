@@ -63,12 +63,6 @@ class Enqueue extends Theme {
             endif;
 
         endif;
-
-        /**
-         * Localize theme.js
-         */
-        $this->localize_theme_js();
-
     }
 
     /**
@@ -201,30 +195,5 @@ class Enqueue extends Theme {
     public function init(): void {
         add_action('wp_enqueue_scripts', [$this, 'add_theme_styles_and_scripts']);
         add_action('admin_enqueue_scripts', [$this, 'add_admin_styles_and_scripts']);
-    }
-
-    public function localize_theme_js() {
-        /**
-         * Ajax variables
-         */
-        $ajax = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'ajax_nonce' => wp_create_nonce('ajax-nonce')
-        );
-
-        /**
-         * Blog variables
-         */
-        $blog = array(
-            'blog_paged' => 1
-        );
-
-        /* Inline */
-        $inline_script = sprintf('const %1$s = %2$s', 
-            'PHP_VARIABLES', 
-            json_encode(array_merge($ajax,$blog))
-        );
-
-        wp_add_inline_script( 'theme.js', $inline_script, 'before' );
     }
 }

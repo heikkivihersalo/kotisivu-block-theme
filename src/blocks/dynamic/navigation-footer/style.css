@@ -1,0 +1,44 @@
+/**
+ * Default state
+ */
+:where(.footer-nav) {
+	--_color: var(--wp--custom--layout--footer--text-color);
+	--_background-color: var(--wp--custom--layout--footer--background-color);
+	--_gap: var(--wp--custom--layout--navigation--gap);
+	--_line-width: var(--wp--custom--layout--navigation--line-width);
+	width: 100%;
+	max-width: fit-content;
+}
+
+:where(.footer-nav__menu) {
+	/* Reset list styles */
+	list-style: none;
+	padding: 0;
+	margin: 0;
+
+	/* Menu styling */
+	display: flex;
+	flex-direction: column;
+}
+
+:where(.footer-nav__menu .menu-item) {
+	color: var(--_color);
+	text-align: center;
+	line-height: 1.3;
+	padding-inline: var(--_gap);
+}
+
+/**
+ * Desktop only styles
+ */
+@media (min-width: 800px) {
+	:where(.footer-nav__menu) {
+		flex-direction: row;
+	}
+
+	/* Menu item line */
+	:where(.footer-nav__menu .menu-item):not(.footer-nav__menu
+			.menu-item:last-child) {
+		border-right: var(--_line-width) solid var(--_color);
+	}
+}

@@ -1,0 +1,19 @@
+.timeline-list > .block-editor-inner-blocks {
+	width: 100%;
+}
+
+.timeline-list
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	display: flex;
+}
+
+ul.timeline-list {
+	display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+
+h3.timeline-list-item__name {
+	font-size: 20px !important;
+}

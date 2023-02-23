@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/apartment--tag",
+	"title": "Tag",
+	"category": "child",
+	"icon": "text",
+	"description": "Simple title field for contact information",
+	"keywords": ["name"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/apartment"],
+	"editorScript": "file:../../../../build/apartment--tag.js",
+	"editorStyle": "file:../../../../build/apartment--tag.css",
+	"style": "file:../../../../build/style-apartment--tag.css",
+	"attributes": {
+		"tagContent": {
+            "type": "string",
+			"default": ""
+		}
+	}
+}

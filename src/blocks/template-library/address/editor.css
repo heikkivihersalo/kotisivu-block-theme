@@ -1,0 +1,5 @@
+:where(.address__icon-wrapper--editor) {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
