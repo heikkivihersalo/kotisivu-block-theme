@@ -1,6 +1,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/react,macos,wordpress
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,macos,wordpress
 
+### VS Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
 ### macOS ###
 # General
 .DS_Store
@@ -9,7 +17,6 @@
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
