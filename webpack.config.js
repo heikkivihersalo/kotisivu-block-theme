@@ -78,7 +78,8 @@ module.exports = [
 	{
 		...defaultConfig,
 		entry: {
-			'theme': './src/assets/scripts/theme.js'
+			'theme': './src/assets/scripts/theme.js',
+			'admin': './src/assets/scripts/admin.js'
 		},
 		output: {
 			filename: '[name].js',
