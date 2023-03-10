@@ -28,202 +28,23 @@ class WP_Head extends Theme {
     /**
      * Inline sanitize CSS styles
      */
-    public function inline_sanitize_css(): void { ?>
-        <style>
-            *,
-            ::before,
-            ::after {
-                box-sizing: border-box;
-                background-repeat: no-repeat;
-            }
+    public function inline_sanitize_css(): void {
+        require_once(__DIR__ . '/inline-css/sanitize.php');
+    }
 
-            ::before,
-            ::after {
-                text-decoration: inherit;
-                vertical-align: inherit;
-            }
+    /**
+     * Inline utility CSS styles
+     */
+    public function inline_utilities_css(): void {
+        require_once(__DIR__ . '/inline-css/utilities.php');
+    }
 
-            :where(:root) {
-                cursor: default;
-                line-height: 1.5;
-                overflow-wrap: break-word;
-                -moz-tab-size: 4;
-                tab-size: 4;
-                -webkit-tap-highlight-color: transparent;
-                -webkit-text-size-adjust: 100%;
-                text-size-adjust: 100%;
-                hyphens: auto;
-            }
-
-            :where(html) {
-                scroll-behavior: smooth;
-            }
-
-            :where(body) {
-                margin: 0;
-            }
-
-            :where(h1) {
-                font-size: 2em;
-                margin: 0.67em 0;
-            }
-
-            :where(dl, ol, ul) :where(dl, ol, ul) {
-                margin: 0;
-            }
-
-            :where(hr) {
-                color: inherit;
-                height: 0;
-            }
-
-            :where(nav) :where(ol, ul) {
-                list-style-type: none;
-                padding: 0;
-            }
-
-            :where(nav li)::before {
-                content: "\200B";
-                float: left;
-            }
-
-            :where(pre) {
-                font-family: monospace, monospace;
-                font-size: 1em;
-                overflow: auto;
-            }
-
-            :where(abbr[title]) {
-                text-decoration: underline;
-                text-decoration: underline dotted;
-            }
-
-            :where(b, strong) {
-                font-weight: bolder;
-            }
-
-            :where(code, kbd, samp) {
-                font-family: monospace, monospace;
-                font-size: 1em;
-            }
-
-            :where(small) {
-                font-size: 80%;
-            }
-
-            :where(audio, canvas, iframe, img, svg, video) {
-                vertical-align: middle;
-                object-fit: cover;
-                width: 100%;
-                max-width: 100%;
-                height: auto;
-            }
-
-            :where(address) {
-                font-style: normal;
-                text-decoration: none;
-            }
-
-            :where(iframe) {
-                border-style: none;
-            }
-
-            :where(svg:not([fill])) {
-                fill: currentColor;
-            }
-
-            :where(table) {
-                border-collapse: collapse;
-                border-color: currentColor;
-                text-indent: 0;
-            }
-
-            :where(button, input, select) {
-                margin: 0;
-            }
-
-            :where(button, [type="button"i], [type="reset"i], [type="submit"i]) {
-                -webkit-appearance: button;
-            }
-
-            :where(fieldset) {
-                border: 1px solid #a0a0a0;
-            }
-
-            :where(progress) {
-                vertical-align: baseline;
-            }
-
-            :where(textarea) {
-                margin: 0;
-                resize: vertical;
-            }
-
-            :where([type="search"i]) {
-                -webkit-appearance: textfield;
-                outline-offset: -2px;
-            }
-
-            ::-webkit-inner-spin-button,
-            ::-webkit-outer-spin-button {
-                height: auto;
-            }
-
-            ::-webkit-input-placeholder {
-                color: inherit;
-                opacity: 0.54;
-            }
-
-            ::-webkit-search-decoration {
-                -webkit-appearance: none;
-            }
-
-            ::-webkit-file-upload-button {
-                -webkit-appearance: button;
-                font: inherit;
-            }
-
-            :where(dialog) {
-                background-color: white;
-                border: solid;
-                color: black;
-                height: -moz-fit-content;
-                height: fit-content;
-                left: 0;
-                margin: auto;
-                padding: 1em;
-                position: absolute;
-                right: 0;
-                width: -moz-fit-content;
-                width: fit-content;
-            }
-
-            :where(dialog:not([open])) {
-                display: none;
-            }
-
-            :where(details > summary:first-of-type) {
-                display: list-item;
-            }
-
-            :where([aria-busy="true"i]) {
-                cursor: progress;
-            }
-
-            :where([aria-disabled="true"i], [disabled]) {
-                cursor: not-allowed;
-            }
-
-            :where([aria-hidden="false"i][hidden]) {
-                display: initial;
-            }
-
-            :where([aria-hidden="false"i][hidden]:not(:focus)) {
-                clip: rect(0, 0, 0, 0);
-                position: absolute;
-            }
-        </style>
-    <?php }
+    /**
+     * Inline custom CSS styles
+     */
+    public function inline_custom_css(): void {
+        require_once(__DIR__ . '/inline-css/custom.php');
+    }
 
     /**
      * Inline dark mode scripts
@@ -311,15 +132,17 @@ class WP_Head extends Theme {
                 setTimeout(initGTM, <?php echo $this->options['gtm_timeout'] ?>)
             }), document.addEventListener("scroll", initGTMOnEvent), document.addEventListener("mousemove", initGTMOnEvent), document.addEventListener("touchstart", initGTMOnEvent)
         </script>
-    <?php }
+<?php }
 
     /**
      * Initialize class
      * @return void 
      */
     public function init(): void {
-        /* Normalize CSS defaults */
+        /* Add inline CSS */
         add_action('wp_head', [$this, 'inline_sanitize_css'], 0);
+        add_action('wp_head', [$this, 'inline_utilities_css'], 11);
+        add_action('wp_head', [$this, 'inline_custom_css'], 11);
 
         /* Enable dark mode */
         if ($this->config['settings']['dark-mode']) :
@@ -328,8 +151,8 @@ class WP_Head extends Theme {
 
         /* Enable Font Awesome */
         if ($this->config['settings']['fontawesome']['all'] || $this->config['settings']['fontawesome']['brand'] || $this->config['settings']['fontawesome']['solid'] || $this->config['settings']['fontawesome']['regular']) :
-            add_action('wp_head', [$this, 'inline_fontawesome'], 0);
-            add_action('admin_head', [$this, 'add_fontawesome_to_admin'], 1);
+            add_action('wp_head', [$this, 'inline_fontawesome'], 11);
+            add_action('admin_head', [$this, 'add_fontawesome_to_admin'], 11);
         endif;
 
         /* Enable Google Tag Manager */
