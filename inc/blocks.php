@@ -45,7 +45,7 @@ class Blocks extends Theme {
      * @return void
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/inc/blocks/*.php') as $class)
+        foreach (glob(dirname(__FILE__) . '/blocks/*.php') as $class)
             require_once $class;
     }
 
