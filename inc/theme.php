@@ -98,7 +98,7 @@ class Theme {
      * @return void 
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/inc/theme/*.php') as $class)
+        foreach (glob(dirname(__FILE__) . '/theme/*.php') as $class)
             require_once $class;
     }
 
