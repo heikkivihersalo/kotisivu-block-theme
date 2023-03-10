@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n"
-import { IconSelector } from '@features/inspector';
+import { IconSelector } from '@common-components/inspector';
 import { useBlockProps, RichText, InspectorControls } from "@wordpress/block-editor"
 import { PanelBody, ToggleControl } from "@wordpress/components";
 import EditorWrapper from "../address/components/editorWrapper";

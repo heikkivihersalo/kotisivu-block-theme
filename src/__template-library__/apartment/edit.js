@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps } from '@wordpress/block-editor';
-import { InnerBlocksAppender } from "@features/inspector";
+import { InnerBlocksAppender } from "@common-components/inspector";
 
 import './editor.css';
 

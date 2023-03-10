@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { InnerBlocks, useBlockProps, RichText } from "@wordpress/block-editor";
-import { ImageMarkup } from '@features/image';
-import { cleanSpaces } from "@utils/modifiers";
+import { ImageMarkup } from '@common-components/image';
+import { cleanSpaces } from "@utilities/modifiers";
 
 const Save = (props) => {
 	const {

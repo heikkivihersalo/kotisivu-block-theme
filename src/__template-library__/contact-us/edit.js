@@ -1,8 +1,8 @@
 import { __ } from "@wordpress/i18n";
 import { InnerBlocks, useBlockProps, RichText, InspectorControls } from "@wordpress/block-editor";
 import { PanelBody, ToggleControl } from "@wordpress/components";
-import { ImageSelector } from '@features/image';
-import { addModifiers, cleanSpaces } from '@utils/modifiers';
+import { ImageSelector } from '@common-components/image';
+import { addModifiers, cleanSpaces } from "@utilities/modifiers";
 
 import './editor.css';
 

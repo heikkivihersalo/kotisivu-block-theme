@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n"
 import { useBlockProps, RichText, InspectorControls } from "@wordpress/block-editor"
 import { useRef } from '@wordpress/element';
 import { PanelBody, ToggleControl } from "@wordpress/components";
-import { IconSelector, LinkControls } from "@features/inspector";
+import { IconSelector, LinkControls } from "@common-components/inspector";
 import EditorWrapper from "../address/components/editorWrapper";
 
 import './editor.css';

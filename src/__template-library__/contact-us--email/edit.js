@@ -1,8 +1,8 @@
 import { __ } from "@wordpress/i18n"
 import { useBlockProps, RichText} from "@wordpress/block-editor"
 import { useRef } from '@wordpress/element';
-import { LinkControls } from "@features/inspector";
-import { ImageSelector } from "@features/image/index";
+import { LinkControls } from "@common-components/inspector";
+import { ImageSelector } from "@common-components/image/index";
 
 import './editor.css';
 
