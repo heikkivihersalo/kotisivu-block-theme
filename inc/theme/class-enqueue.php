@@ -43,13 +43,13 @@ class Enqueue extends Theme {
         /**
          * Enqueue parent theme files
          */
-        $this->enqueue_assets($this->parent_path . '/assets/{scripts,styles}/*.{js,css}', GLOB_BRACE, $this->parent_uri);
+        $this->enqueue_assets($this->parent_path . '/build/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri);
 
         /**
          * Enqueue child theme files
          */
         if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/assets/{scripts,styles}/*.{js,css}', GLOB_BRACE,  $this->uri);
+            $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
 
             /**
              * Load React app CSS and JS files from Child Theme
@@ -69,10 +69,10 @@ class Enqueue extends Theme {
      * Add scripts and styles to admin
      */
     public function add_admin_styles_and_scripts(): void {
-        $this->enqueue_assets($this->parent_path . '/assets/{scripts,styles}/*.{js,css}', GLOB_BRACE, $this->parent_uri, true);
+        $this->enqueue_assets($this->parent_path . '/build/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri, true);
 
         if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/assets/{scripts,styles}/*.{js,css}', GLOB_BRACE,  $this->uri, true);
+            $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri, true);
         endif;
     }
 
