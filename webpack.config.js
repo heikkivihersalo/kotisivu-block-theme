@@ -18,48 +18,85 @@ const getLiveReloadPort = (inputPort) => {
 	return Number.isInteger(parsedPort) ? parsedPort : 35729;
 };
 
-function getEntries() {
-	const out = {};
-	glob.sync("./src/blocks/**/index.js").forEach(entry => {
-		out[entry.split('/')[4]] = entry;
+function getBlocks() {
+	const blocks = {};
+	/**
+	 * Add all blocks to the build
+	 */
+	glob.sync("./src/blocks/**/*.js").forEach(entry => {
+		switch (entry.split('/')[5]) {
+			case 'index.js':
+				blocks[`${entry.split('/')[4]}`] = entry;
+				break;
+			case 'view.js':
+				blocks[`${entry.split('/')[4]}-view-script`] = entry;
+			default:
+				break;
+		}
 	});
 
-	glob.sync("./src/blocks/**/view.js").forEach(entry => {
-		out[`${entry.split('/')[4]}-view-script`] = entry;
-	});
-
-	console.log(out);
-
-	return out;
+	return blocks;
 };
 
 
-module.exports = {
-	...defaultConfig,
-	entry: getEntries,
-	resolve: {
-		alias: {
-			'@features': path.resolve('src/features'),
-			'@utils': path.resolve('src/utils')
-		}
+module.exports = [
+	/**
+	 * WordPress blocks
+	 */
+	{
+		...defaultConfig,
+		entry: getBlocks,
+		resolve: {
+			alias: {
+				'@features': path.resolve('src/features'),
+				'@utils': path.resolve('src/utils')
+			}
+		},
+		output: {
+			filename: '[name].js',
+			path: path.resolve(process.cwd(), 'build/blocks')
+		},
+		plugins: [
+			new CleanWebpackPlugin({
+				cleanAfterEveryBuildPatterns: ['!blocks/fonts/**', '!blocks/images/**'],
+			}),
+			new MiniCssExtractPlugin({
+				filename: '[name].css'
+			}),
+			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
+			!isProduction &&
+			new LiveReloadPlugin({
+				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
+			}),
+			!process.env.WP_NO_EXTERNALS &&
+			new DependencyExtractionWebpackPlugin(),
+		].filter(Boolean)
 	},
-	output: {
-		filename: '[name].js',
-		path: path.resolve(process.cwd(), 'build')
-	},
-	plugins: [
-		new CleanWebpackPlugin({
-			cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**'],
-		}),
-		new MiniCssExtractPlugin({
-			filename: '[name].css'
-		}),
-		process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
-		!isProduction &&
-		new LiveReloadPlugin({
-			port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
-		}),
-		!process.env.WP_NO_EXTERNALS &&
-		new DependencyExtractionWebpackPlugin(),
-	].filter(Boolean)
-}
+	/**
+	 * Theme spesific files
+	 */
+	{
+		...defaultConfig,
+		entry: {
+			'theme': './src/assets/scripts/theme.js'
+		},
+		output: {
+			filename: '[name].js',
+			path: path.resolve(process.cwd(), 'build/theme')
+		},
+		plugins: [
+			new CleanWebpackPlugin({
+				cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**'],
+			}),
+			new MiniCssExtractPlugin({
+				filename: '[name].css'
+			}),
+			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
+			!isProduction &&
+			new LiveReloadPlugin({
+				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
+			}),
+			!process.env.WP_NO_EXTERNALS &&
+			new DependencyExtractionWebpackPlugin(),
+		].filter(Boolean)
+	}]
