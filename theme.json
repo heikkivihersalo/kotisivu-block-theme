@@ -14,13 +14,7 @@
       "custom": false,
       "customDuotone": false,
       "customGradient": false,
-      "duotone": [
-        {
-          "colors": [ "", "" ],
-          "slug": "dark-grayscale",
-          "name": "Dark Grayscale"
-        }
-      ],
+      "duotone": [],
       "gradients": [],
       "link": false,
       "palette": [
@@ -151,36 +145,6 @@
           "background": "var(--wp--preset--color--primary)",
           "hoverText": "var(--wp--preset--color--background)",
           "hoverBackground": "var(--wp--preset--color--primary-dark)"
-        }
-      },
-      "form": {
-        "typography": {
-          "label": {
-            "color": "var(--wp--preset--color--foreground)",
-            "fontFamily": "var(--wp--custom--font-family--body)",
-            "fontWeight": "var(--wp--custom--font-weight--body)",
-            "fontSize": "var(--wp--preset--font-size--medium)",
-            "marginBottom": "var(--wp--preset--spacing--20)"
-          },
-          "placeholder": {
-            "color": "var(--wp--preset--color--foreground)",
-            "fontFamily": "var(--wp--custom--font-family--body)",
-            "fontWeight": "var(--wp--custom--font-weight--body)",
-            "fontSize": "var(--wp--preset--font-size--medium)"
-          }
-        },
-        "layout": {
-          "gap": "1rem",
-          "maxWidth": "850px"
-        },
-        "input": {
-          "inputHeight": "3.25rem",
-          "textareaHeight": "calc(var(--wp--custom--form--input--height) * 4)",
-          "maxWidth": "30rem",
-          "padding": "var(--wp--preset--spacing--20)",
-          "borderWidth": "0px",
-          "borderColor": "var(--wp--preset--color--foreground)",
-          "borderRadius": "0"
         }
       }
     },
