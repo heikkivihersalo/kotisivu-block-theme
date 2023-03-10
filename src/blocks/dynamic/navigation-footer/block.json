@@ -12,9 +12,9 @@
 		"className": false,
 		"multiple": false
 	},
-	"editorScript": "file:../../../../build/navigation-footer.js",
-	"editorStyle": "file:../../../../build/navigation-footer.css",
-	"style": "file:../../../../build/style-navigation-footer.css",
+	"editorScript": "file:../../../../build/blocks/navigation-footer.js",
+	"editorStyle": "file:../../../../build/blocks/navigation-footer.css",
+	"style": "file:../../../../build/blocks/style-navigation-footer.css",
 	"attributes": {
 	}
 }

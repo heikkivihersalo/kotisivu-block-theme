@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/container-100.js",
-    "editorStyle": "file:../../../../build/container-100.css",
-    "style": "file:../../../../build/style-container-100.css",
+	"editorScript": "file:../../../../build/blocks/container-100.js",
+    "editorStyle": "file:../../../../build/blocks/container-100.css",
+    "style": "file:../../../../build/blocks/style-container-100.css",
 	"attributes": {
 		"sectionId": {
 			"type": "string",

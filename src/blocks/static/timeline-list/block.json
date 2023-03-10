@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/timeline-list.js",
-    "editorStyle": "file:../../../../build/timeline-list.css",
-    "style": "file:../../../../build/style-timeline-list.css",
+	"editorScript": "file:../../../../build/blocks/timeline-list.js",
+    "editorStyle": "file:../../../../build/blocks/timeline-list.css",
+    "style": "file:../../../../build/blocks/style-timeline-list.css",
 	"attributes": {
 		"template": {
 			"type": "array",

@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/contact-list.js",
-	"editorStyle": "file:../../../../build/contact-list.css",
-	"style": "file:../../../../build/style-contact-list.css",
+	"editorScript": "file:../../../../build/blocks/contact-list.js",
+	"editorStyle": "file:../../../../build/blocks/contact-list.css",
+	"style": "file:../../../../build/blocks/style-contact-list.css",
 	"attributes": {
 		"template": {
 			"type": "array",

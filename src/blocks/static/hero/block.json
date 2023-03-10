@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/hero.js",
-	"editorStyle": "file:../../../../build/hero.css",
-	"style": "file:../../../../build/style-hero.css",
+	"editorScript": "file:../../../../build/blocks/hero.js",
+	"editorStyle": "file:../../../../build/blocks/hero.css",
+	"style": "file:../../../../build/blocks/style-hero.css",
 	"attributes": {
 		"heroClass": {
 			"type": "string",

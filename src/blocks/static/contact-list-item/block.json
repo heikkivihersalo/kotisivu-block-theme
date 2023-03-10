@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/contact-list"],
-	"editorScript": "file:../../../../build/contact-list-item.js",
-	"editorStyle": "file:../../../../build/contact-list-item.css",
-	"style": "file:../../../../build/style-contact-list-item.css",
+	"editorScript": "file:../../../../build/blocks/contact-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/contact-list-item.css",
+	"style": "file:../../../../build/blocks/style-contact-list-item.css",
 	"attributes": {
 		"post": {
 			"type": "object"

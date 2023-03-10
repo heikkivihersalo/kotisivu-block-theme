@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/social-icon-list.js",
-    "editorStyle": "file:../../../../build/social-icon-list.css",
-    "style": "file:../../../../build/style-social-icon-list.css",
+	"editorScript": "file:../../../../build/blocks/social-icon-list.js",
+    "editorStyle": "file:../../../../build/blocks/social-icon-list.css",
+    "style": "file:../../../../build/blocks/style-social-icon-list.css",
 	"attributes": {
 		"template": {
 			"type": "array",

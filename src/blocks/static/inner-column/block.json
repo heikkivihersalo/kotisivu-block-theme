@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/column-container"],
-	"editorScript": "file:../../../../build/inner-column.js",
-	"editorStyle": "file:../../../../build/inner-column.css",
-	"style": "file:../../../../build/style-inner-column.css",
+	"editorScript": "file:../../../../build/blocks/inner-column.js",
+	"editorStyle": "file:../../../../build/blocks/inner-column.css",
+	"style": "file:../../../../build/blocks/style-inner-column.css",
 	"attributes": {
 		"template": {
 			"type": "array",

@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/icon-list.js",
-    "editorStyle": "file:../../../../build/icon-list.css",
-    "style": "file:../../../../build/style-icon-list.css",
+	"editorScript": "file:../../../../build/blocks/icon-list.js",
+    "editorStyle": "file:../../../../build/blocks/icon-list.css",
+    "style": "file:../../../../build/blocks/style-icon-list.css",
 	"attributes": {
 		"template": {
 			"type": "array",

@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/timeline-list"],
-	"editorScript": "file:../../../../build/timeline-list-item.js",
-	"editorStyle": "file:../../../../build/timeline-list-item.css",
-	"style": "file:../../../../build/style-timeline-list-item.css",
+	"editorScript": "file:../../../../build/blocks/timeline-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/timeline-list-item.css",
+	"style": "file:../../../../build/blocks/style-timeline-list-item.css",
 	"attributes": {
 		"timelineName": {
 			"type": "string",

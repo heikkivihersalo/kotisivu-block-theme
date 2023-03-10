@@ -11,8 +11,8 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/site-footer.js",
-	"editorStyle": "file:../../../../build/site-footer.css",
-	"style": "file:../../../../build/style-site-footer.css",
+	"editorScript": "file:../../../../build/blocks/site-footer.js",
+	"editorStyle": "file:../../../../build/blocks/site-footer.css",
+	"style": "file:../../../../build/blocks/style-site-footer.css",
 	"attributes": {}
 }

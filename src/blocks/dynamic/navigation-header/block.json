@@ -12,10 +12,10 @@
 		"className": false,
 		"multiple": false
 	},
-	"editorScript": "file:../../../../build/navigation-header.js",
-	"editorStyle": "file:../../../../build/navigation-header.css",
-	"style": "file:../../../../build/style-navigation-header.css",
-	"viewScript": "file:../../../../build/navigation-header-view-script.js",
+	"editorScript": "file:../../../../build/blocks/navigation-header.js",
+	"editorStyle": "file:../../../../build/blocks/navigation-header.css",
+	"style": "file:../../../../build/blocks/style-navigation-header.css",
+	"viewScript": "file:../../../../build/blocks/navigation-header-view-script.js",
 	"attributes": {
 	}
 }

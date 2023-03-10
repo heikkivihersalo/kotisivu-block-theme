@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/link-list.js",
-	"editorStyle": "file:../../../../build/link-list.css",
-	"style": "file:../../../../build/style-link-list.css",
+	"editorScript": "file:../../../../build/blocks/link-list.js",
+	"editorStyle": "file:../../../../build/blocks/link-list.css",
+	"style": "file:../../../../build/blocks/style-link-list.css",
 	"attributes": {
 		"template": {
 			"type": "array",

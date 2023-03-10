@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/icon-list"],
-	"editorScript": "file:../../../../build/icon-list-item.js",
-	"editorStyle": "file:../../../../build/icon-list-item.css",
-	"style": "file:../../../../build/style-icon-list-item.css",
+	"editorScript": "file:../../../../build/blocks/icon-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/icon-list-item.css",
+	"style": "file:../../../../build/blocks/style-icon-list-item.css",
 	"attributes": {
 		"textContent": {
 			"type": "string",

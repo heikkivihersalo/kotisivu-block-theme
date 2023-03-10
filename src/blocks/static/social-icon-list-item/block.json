@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/social-icon-list"],
-	"editorScript": "file:../../../../build/social-icon-list-item.js",
-	"editorStyle": "file:../../../../build/social-icon-list-item.css",
-	"style": "file:../../../../build/style-social-icon-list-item.css",
+	"editorScript": "file:../../../../build/blocks/social-icon-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/social-icon-list-item.css",
+	"style": "file:../../../../build/blocks/style-social-icon-list-item.css",
 	"attributes": {
 		"unicode": {
 			"type": "string",

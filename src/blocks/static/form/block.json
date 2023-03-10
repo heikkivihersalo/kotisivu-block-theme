@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/form.js",
-	"editorStyle": "file:../../../../build/form.css",
-	"style": "file:../../../../build/style-form.css",
+	"editorScript": "file:../../../../build/blocks/form.js",
+	"editorStyle": "file:../../../../build/blocks/form.css",
+	"style": "file:../../../../build/blocks/style-form.css",
 	"attributes": {
 	}
 }

@@ -12,9 +12,9 @@
 		"className": false
 	},
 	"parent": ["ksd/link-list"],
-	"editorScript": "file:../../../../build/link-list-item.js",
-	"editorStyle": "file:../../../../build/link-list-item.css",
-	"style": "file:../../../../build/style-link-list-item.css",
+	"editorScript": "file:../../../../build/blocks/link-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/link-list-item.css",
+	"style": "file:../../../../build/blocks/style-link-list-item.css",
 	"attributes": {
 		"post": {
 			"type": "object"

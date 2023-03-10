@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/image-optimized.js",
-    "editorStyle": "file:../../../../build/image-optimized.css",
-    "style": "file:../../../../build/style-image-optimized.css",
+	"editorScript": "file:../../../../build/blocks/image-optimized.js",
+    "editorStyle": "file:../../../../build/blocks/image-optimized.css",
+    "style": "file:../../../../build/blocks/style-image-optimized.css",
 	"attributes": {
 		"mediaId": {
 			"type": "number",
