@@ -100,4 +100,5 @@ module.exports = [
 			!process.env.WP_NO_EXTERNALS &&
 			new DependencyExtractionWebpackPlugin(),
 		].filter(Boolean)
-	}]
+	}
+]
