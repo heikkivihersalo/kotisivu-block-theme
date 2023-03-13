@@ -80,6 +80,9 @@ wp-config.php
 # Example plugin
 /wp-content/plugins/hello.php
 
+# Zipped files
+kotisivu-block-theme.zip
+
 # Uploads
 /wp-content/uploads/
 
