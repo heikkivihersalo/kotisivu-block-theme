@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "zip: create zip from theme folder",
+			"command": "zip -r kotisivu-block-theme.zip * -x 'node_modules/*' 'kotisivu-block-theme.code-workspace' '.vscode/*'",
+			"problemMatcher": []
+		}
+	]
+}
