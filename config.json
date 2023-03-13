@@ -75,7 +75,12 @@
         "attributes": {}
       }
     ],
-    "core": [],
+    "core": [
+      {
+        "slug": "core/buttons",
+        "modified_styles": true
+      }
+    ],
     "default": [
       "core/paragraph",
       "core/image",

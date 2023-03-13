@@ -98,7 +98,6 @@ class Blocks extends Theme {
             $this->config,
             $this->textdomain
         );
-
         $static_blocks->init();
 
         $dynamic_blocks = new BlockDynamic(
@@ -107,11 +106,15 @@ class Blocks extends Theme {
             $this->config,
             $this->textdomain
         );
-        
         $dynamic_blocks->init();
 
-        // $core_blocks = new CoreBlocks();
-        // $core_blocks->init();
+        $core_blocks = new BlockCore(
+            $this->path,
+            $this->parent_path,
+            $this->config,
+            $this->textdomain
+        );
+        $core_blocks->init();
 
         /**
          * Register ajax calls
