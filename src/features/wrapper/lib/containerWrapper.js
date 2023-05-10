@@ -10,8 +10,8 @@ const ContainerWrapper = (props) => {
 	const {
 		children,
 		attributes: {
-			sectionId,
-			sectionContainer
+			id,
+			container
 		},
 		classes,
 		styles
@@ -23,7 +23,7 @@ const ContainerWrapper = (props) => {
 	 */
 	const defaultCase = () => {
 		return (
-			<div id={sectionId || null}  className={classes} style={styles}>
+			<div id={id || null}  className={classes} style={styles}>
 				{children}
 			</div>
 		);
@@ -32,7 +32,7 @@ const ContainerWrapper = (props) => {
 	/** 
 	 * If wrapperName is not defined, return the default case.
 	 */
-	if (!sectionContainer) {
+	if (!container) {
 		return defaultCase;
 	}
 
@@ -40,34 +40,34 @@ const ContainerWrapper = (props) => {
 	 * Return the correct HTML wrapper for element 
 	 * @returns {JSX.Element}
 	 */
-	switch (sectionContainer) {
+	switch (container) {
 		case 'div':
 			return (
-				<div id={sectionId || null}  className={classes} style={styles}>
+				<div id={id || null}  className={classes} style={styles}>
 					{children}
 				</div>
 			);
 		case 'section':
 			return (
-				<section id={sectionId || null}  className={classes} style={styles}>
+				<section id={id || null}  className={classes} style={styles}>
 					{children}
 				</section>
 			);
 		case 'article':
 			return (
-				<article id={sectionId || null}  className={classes} style={styles}>
+				<article id={id || null}  className={classes} style={styles}>
 					{children}
 				</article>
 			);
 		case 'aside':
 			return (
-				<aside id={sectionId || null}  className={classes} style={styles}>
+				<aside id={id || null}  className={classes} style={styles}>
 					{children}
 				</aside>
 			);
 		case 'main':
 			return (
-				<main id={sectionId || null}  className={classes} style={styles}>
+				<main id={id || null}  className={classes} style={styles}>
 					{children}
 				</main>
 			);
