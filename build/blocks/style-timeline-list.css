@@ -1,1 +1,24 @@
-:where(.district-list){align-items:center;display:flex;flex-direction:column;flex-wrap:wrap;gap:.25em;justify-content:center;list-style:none;padding:0;row-gap:var(--wp--preset--spacing--30)}@media (min-width:800px){:where(.district-list){flex-direction:row}}
+/*!***********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/timeline-list/style.css ***!
+  \***********************************************************************************************************************************************************************************************/
+:where(.district-list) {
+	display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25em;
+    row-gap: var(--wp--preset--spacing--30);
+
+    padding: 0;
+	
+    list-style: none;
+}
+
+@media (min-width: 800px) {
+    :where(.district-list) {
+        flex-direction: row;
+    }
+}
+
+/*# sourceMappingURL=style-timeline-list.css.map*/

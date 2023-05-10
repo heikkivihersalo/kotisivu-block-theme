@@ -1,0 +1,1 @@
+{"version":3,"file":"./style-image-optimized.css","mappings":";;;AAAA;IACI,WAAW;IACX,YAAY;AAChB","sources":["webpack://kotisivu-block-theme/./src/blocks/static/image-optimized/style.css"],"sourcesContent":[":where(.image-optimized) {\n    width: 100%;\n    height: auto;\n}\n"],"names":[],"sourceRoot":""}

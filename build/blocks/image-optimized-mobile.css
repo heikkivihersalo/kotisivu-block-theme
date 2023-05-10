@@ -1,0 +1,71 @@
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/image-optimized-mobile/editor.css ***!
+  \*********************************************************************************************************************************************************************************************************/
+/**
+ * Initial display rules
+ */
+.is-desktop, .is-mobile {
+	display: revert;
+}
+
+.wp-block-ksd-image-optimized-mobile .wp-block-ksd-image-optimized {
+	display: none;
+	position: relative;
+}
+
+/* Set display properties based on current tab */
+.wp-block-ksd-image-optimized-mobile[data-device="desktop"]
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> div:nth-child(1) {
+	display: revert;
+}
+
+.wp-block-ksd-image-optimized-mobile[data-device="mobile"]
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> div:nth-child(2) {
+	display: revert;
+}
+
+/**
+ * Tabs
+ */
+.image-optimized-mobile__selector {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+
+	max-width: -moz-fit-content;
+
+	max-width: fit-content;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	z-index: 1;
+}
+
+.image-optimized-mobile__selector .selector-tab {
+	--_text-color: #ffffff;
+	--_tab-color: #bdbdbd;
+	--_tab-color-active: #ff1e1e;
+
+	/* Resets */
+	background: transparent;
+	border: none;
+
+	/* Custom */
+	background-color: var(--_tab-color);
+	color: var(--_text-color);
+
+	padding: 0.25em 0.75em;
+}
+
+.image-optimized-mobile__selector .active.selector-tab {
+	background-color: var(--_tab-color-active);
+	color: var(--_text-color);
+}
+
+
+/*# sourceMappingURL=image-optimized-mobile.css.map*/

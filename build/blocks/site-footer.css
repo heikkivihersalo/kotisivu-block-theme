@@ -1,1 +1,15 @@
-.wp-block-ksd-site-footer>.block-editor-inner-blocks>.block-editor-block-list__layout{align-items:center;background-color:var(--wp--preset--color--grey-dark);color:var(--wp--preset--color--background);display:flex;flex-direction:column}
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/site-footer/editor.css ***!
+  \**********************************************************************************************************************************************************************************************/
+.wp-block-ksd-site-footer
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	display: flex;
+	background-color: var(--wp--preset--color--grey-dark);
+	flex-direction: column;
+	align-items: center;
+	color: var(--wp--preset--color--background);
+}
+
+
+/*# sourceMappingURL=site-footer.css.map*/
