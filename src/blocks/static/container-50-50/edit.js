@@ -11,7 +11,7 @@ const Edit = (props) => {
 		children,
 		attributes,
 		attributes: {
-			sectionName,
+			name,
 			template,
 			templateLock,
 			modifiers,
@@ -20,7 +20,7 @@ const Edit = (props) => {
 	} = props;
 
 	const blockProps = useBlockProps({
-		className: cleanSpaces(`container-50-50 ${sectionName} ${modifiers}`).toLowerCase(),
+		className: cleanSpaces(`${name} ${modifiers}`).toLowerCase(),
 		style: {
 			backgroundColor: backgroundColor
 		}
