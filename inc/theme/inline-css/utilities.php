@@ -44,36 +44,58 @@
         grid-template-areas: "stack";
     }
 
-    .is-stacked>* {
+    :where(.is-stacked > *) {
         grid-area: stack;
     }
 
     /** 
-     * COLUMNS 
+     * GRID COLUMNS 
      */
-    :is(.is-two-columns, .is-three-columns, .is-four-columns) {
+    :where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
         display: grid;
-        gap: var(--wp--preset--spacing--30);
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 
     @media screen and (min-width: 800px) {
-        .is-two-columns {
-            grid-template-columns: repeat(2, 1fr);
+        :where(.grid-cols-1, .grid-cols-1-rv) {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
         }
 
-        .is-three-columns {
-            grid-template-columns: repeat(3, 1fr);
+        :where(.grid-cols-2, .grid-cols-2-rv) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .is-four-columns {
-            grid-template-columns: repeat(4, 1fr);
+        :where(.grid-cols-3) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+
+        :where(.grid-cols-4) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        :where(.grid-cols-5) {
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        :where(.grid-cols-6) {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+
+        :where(.grid-cols-2-rv:first-child) {
+            order: 2
+        }
+
+        :where(.grid-cols-2-rv:last-child) {
+            order: 1
         }
     }
+
 
     /**
      * VISIBILITY
      */
-    .visually-hidden:not(:focus):not(:active) {
+    :where(.is-visually-hidden:not(:focus):not(:active)) {
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
         height: 1px;
