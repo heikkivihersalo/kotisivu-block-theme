@@ -4,7 +4,7 @@
 		{
 			"type": "shell",
 			"label": "zip: create zip from theme folder",
-			"command": "zip -r kotisivu-block-theme.zip * -x 'node_modules/*' 'kotisivu-block-theme.code-workspace' '.vscode/*'",
+			"command": "zip -R ${workspaceFolderBasename}.zip * -X 'node_modules/*' '${workspaceFolderBasename}.code-workspace' '.vscode/*'.zip",
 			"problemMatcher": [],
 			"presentation": {
 				"echo": true,
