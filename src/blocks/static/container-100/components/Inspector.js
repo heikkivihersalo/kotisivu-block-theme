@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { InspectorControls } from "@wordpress/block-editor";
 import { PanelBody } from "@wordpress/components";
-import { AlignmentReverse, BackgroundColor, HTMLContainerControls } from "@features/inspector";
+import { AlignmentReverse, BackgroundColor, ContainerControls } from "@features/inspector";
 
 const Inspector = (props) => {
     return (
@@ -9,7 +9,7 @@ const Inspector = (props) => {
                 <PanelBody title={__("Settings", "kotisivu-block-theme")} initialOpen={true}>
                     <AlignmentReverse {...props} />
                     <BackgroundColor {...props} />
-                    <HTMLContainerControls {...props} />
+                    <ContainerControls {...props} />
                 </PanelBody>
         </InspectorControls>
     )

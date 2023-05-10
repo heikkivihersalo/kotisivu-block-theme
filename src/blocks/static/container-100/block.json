@@ -15,15 +15,15 @@
     "editorStyle": "file:../../../../build/blocks/container-100.css",
     "style": "file:../../../../build/blocks/style-container-100.css",
 	"attributes": {
-		"sectionId": {
+		"id": {
 			"type": "string",
 			"default": ""
 		},
-		"sectionName": {
+		"name": {
 			"type": "string",
 			"default": ""
 		},
-		"sectionContainer": {
+		"container": {
 			"type": "string",
 			"default": "div"
 		},
