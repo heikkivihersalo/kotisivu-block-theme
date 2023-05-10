@@ -86,9 +86,10 @@
     },
     "custom": {
       "site": {
-        "inlineMargin": "var(--wp--preset--spacing--40)",
-        "width": "1280px",
-        "fullWidth": "1920px"
+        "margin": "var(--wp--preset--spacing--40)",
+        "width": "1000px",
+        "fullWidth": "1920px",
+        "maxWidth": "calc(100% - calc(var(--wp--custom--site--margin)) * 2"
       },
       "typography": {
         "fontFamily": {
@@ -106,8 +107,8 @@
       }
     },
     "layout": {
-      "contentSize": "minmax(calc(100% - calc(var(--wp--custom--site--inline-margin)) * 2), var(--wp--custom--site--width))",
-      "wideSize": "var(--wp--custom--site--full-width)"
+      "contentSize": "min(var(--wp--custom--site--max-width), var(--wp--custom--site--width))",
+      "wideSize": "min(100%, var(--wp--custom--site--full-width))"
     },
     "spacing": {
       "units": ["em", "rem", "%", "vw", "vh"],
