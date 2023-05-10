@@ -35,6 +35,8 @@
     "translations": false,
     "has_modified_core_blocks": false,
     "static": [
+      "ksd/columns",
+      "ksd/column",
       "ksd/contact-list",
       "ksd/contact-list-item",
       "ksd/container-50-50",
