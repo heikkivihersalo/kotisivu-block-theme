@@ -1,0 +1,35 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/image-optimized-mobile",
+	"title": "Desktop-Mobile Selector",
+	"category": "media",
+	"icon": "format-image",
+	"description": "",
+	"keywords": [ "" ],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/image-optimized-mobile.js",
+    "editorStyle": "file:../../../../build/image-optimized-mobile.css",
+    "style": "file:../../../../build/style-image-optimized-mobile.css",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": [
+				["ksd/image-optimized"],
+				["ksd/image-optimized"]
+			]
+		},
+		"allowedBlocks": {
+			"type": "array",
+			"default": ["ksd/image-optimized"]
+		},
+		"templateLock": {
+			"type": [ "string", "boolean" ],
+			"enum": [ "all", "insert", false ],
+			"default": false
+		}
+	}
+}
