@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "ksd/columns",
+	"title": "Columns New",
+	"category": "design",
+	"description": "Display content in multiple columns, with blocks added to each column.",
+	"textdomain": "kotisivu-block-theme",
+	"editorScript": "file:../../../../build/blocks/columns.js",
+    "editorStyle": "file:../../../../build/blocks/columns.css",
+    "style": "file:../../../../build/blocks/style-columns.css",
+	"attributes": {},
+	"supports": {
+		"anchor": true
+	}
+}
