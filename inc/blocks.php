@@ -108,13 +108,13 @@ class Blocks extends Theme {
         );
         $dynamic_blocks->init();
 
-        $core_blocks = new BlockCore(
-            $this->path,
-            $this->parent_path,
-            $this->config,
-            $this->textdomain
-        );
-        $core_blocks->init();
+        // $core_blocks = new BlockCore(
+        //     $this->path,
+        //     $this->parent_path,
+        //     $this->config,
+        //     $this->textdomain
+        // );
+        // $core_blocks->init();
 
         /**
          * Register ajax calls
