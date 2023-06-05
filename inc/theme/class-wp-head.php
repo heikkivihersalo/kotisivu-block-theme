@@ -55,47 +55,27 @@ class WP_Head extends Theme {
                 classes = document.getElementsByTagName("html")[0].classList;
             cookies.some((s => s.includes("color-scheme=dark"))) ? classes.add("color-scheme--dark") : cookies.some((s => s.includes("color-scheme=light"))) && classes.add("color-scheme--light");
         </script>
-        <?php }
+    <?php }
+
 
     /**
      * Inline Font Awesome
      * @return void 
      */
     public function inline_fontawesome(): void {
-        if ($this->config['settings']['fontawesome']['all']) :
-        ?>
-            <link rel="preload" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/all.min.css' ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-            <noscript>
-                <link rel="stylesheet" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/all.min.css' ?>">
-            </noscript>
-        <?php
-        endif;
+        if (isset($this->config['settings']['fontawesome'])) :
+            $folder = $this->parent_uri . '/public/icons/fontawesome/css/';
 
-        if ($this->config['settings']['fontawesome']['brand']) :
+            foreach ($this->config['settings']['fontawesome'] as $slug) :
+                $path = $folder . $slug . '.min.css';
+                $rel = 'stylesheet';
         ?>
-            <link rel="preload" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/brands.min.css' ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-            <noscript>
-                <link rel="stylesheet" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/brand.min.css' ?>">
-            </noscript>
+                <link rel="preload" href="<?php echo $path ?>" as="style" onload="this.onload=null;this.rel='<?php echo $rel ?>'">
+                <noscript>
+                    <link rel="<?php echo $rel ?>" href="<?php echo $path ?>">
+                </noscript>
         <?php
-        endif;
-
-        if ($this->config['settings']['fontawesome']['solid']) :
-        ?>
-            <link rel="preload" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/solid.min.css' ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-            <noscript>
-                <link rel="stylesheet" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/solid.min.css' ?>">
-            </noscript>
-        <?php
-        endif;
-
-        if ($this->config['settings']['fontawesome']['regular']) :
-        ?>
-            <link rel="preload" href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/regular.min.css' ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-            <noscript>
-                <link rel='stylesheet' href="<?php echo $this->parent_uri . '/assets/icons/fontawesome/css/regular.min.css' ?>">
-            </noscript>
-        <?php
+            endforeach;
         endif;
     }
 
