@@ -34,7 +34,8 @@ class ThemeSupport extends Theme {
             'wp-block-styles',
             'align-wide',
             'custom-logo',
-            'menus'
+            'menus',
+            'editor-styles'
         ]);
 
         $this->remove([
@@ -42,7 +43,8 @@ class ThemeSupport extends Theme {
         ]);
 
         $this->editor_styles([
-            'styles.css'
+            'theme.css',
+            'admin.css'
         ]);
 
         $this->custom_image_sizes($this->config["customImages"]["defaultSizes"]);
