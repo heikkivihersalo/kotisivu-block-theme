@@ -1,195 +1,189 @@
 {
-  "settings": {
-    "react-app": false,
-    "jquery": "footer",
-    "dark-mode": false,
-    "fontawesome": {
-      "all": true,
-      "brand": false,
-      "solid": false,
-      "regular": false
-    },
-    "splide": true,
-    "disable": {
-      "embeds": true,
-      "emojis": true,
-      "feed_links": true,
-      "index_link": true,
-      "json_api": true,
-      "post_links": true,
-      "recource_hints": true,
-      "rel_canonical": true,
-      "rest_api": true,
-      "rsd": true,
-      "shortlink": true,
-      "version": true,
-      "wlwmanifest": true,
-      "duotone": true,
-      "block-library": true,
-      "block-library-theme": true,
-      "global-styles": false,
-      "woocommerce-block-style": false
-    }
-  },
-  "blocks": {
-    "translations": false,
-    "has_modified_core_blocks": false,
-    "static": [
-      "ksd/columns",
-      "ksd/column",
-      "ksd/contact-list",
-      "ksd/contact-list-item",
-      "ksd/container-50-50",
-      "ksd/container-100",
-      "ksd/form",
-      "ksd/hero",
-      "ksd/icon-list",
-      "ksd/icon-list-item",
-      "ksd/image-gallery",
-      "ksd/image-optimized",
-      "ksd/inner-column",
-      "ksd/site-footer",
-      "ksd/site-header",
-      "ksd/social-icon-list",
-      "ksd/social-icon-list-item",
-      "ksd/timeline-list",
-      "ksd/timeline-list-item"
-    ],
-    "dynamic": [
-      {
-        "slug": "ksd/blog-grid",
-        "render_callback": "render_blog_grid",
-        "attributes": {}
-      },
-      {
-        "slug": "ksd/navigation-header",
-        "render_callback": "render_navigation_header",
-        "attributes": {}
-      },
-      {
-        "slug": "ksd/navigation-footer",
-        "render_callback": "render_navigation_footer",
-        "attributes": {}
-      },
-      {
-        "slug": "ksd/site-logo",
-        "render_callback": "render_site_logo",
-        "attributes": {}
-      }
-    ],
-    "core": [
-      {
-        "slug": "core/buttons",
-        "modified_styles": true
-      }
-    ],
-    "default": [
-      "core/paragraph",
-      "core/image",
-      "core/heading",
-      "core/list",
-      "core/list-item",
-      "core/html",
-      "core/button",
-      "core/buttons",
-      "core/separator",
-      "core/shortcode",
-      "core/group"
-    ]
-  },
-  "menus": [
-    {
-      "slug": "primary-navigation",
-      "name": "Header Navigation"
-    },
-    {
-      "slug": "secondary-navigation",
-      "name": "Footer Navigation"
-    }
-  ],
-  "patterns": ["404"],
-  "customImages": {
-    "defaultSizes": [
-      {
-        "slug": "large_size",
-        "width": 1600,
-        "height": 1200
-      },
-      {
-        "slug": "medium_size",
-        "width": 1024,
-        "height": 768
-      }
-    ],
-    "customSizes": [
-      {
-        "slug": "retina",
-        "name": "Retina",
-        "width": 2880,
-        "height": 1800
-      },
-      {
-        "slug": "huge",
-        "name": "Huge",
-        "width": 1920,
-        "height": 1440
-      },
-      {
-        "slug": "medium_large",
-        "name": "Medium Large",
-        "width": 1366,
-        "height": 1025
-      },
-      {
-        "slug": "small",
-        "name": "Small",
-        "width": 768,
-        "height": 576
-      },
-      {
-        "slug": "extra_small",
-        "name": "Extra Small",
-        "width": 640,
-        "height": 480
-      }
-    ]
-  },
-  "customPostTypes": [
-    {
-      "active": false,
-      "names": {
-        "name": "CPT",
-        "singular": "CPT",
-        "plural": "CPT",
-        "slug": "cpt"
-      },
-      "options": {
-        "hierarchical": false,
-        "has_archive": false,
-        "show_in_rest": true,
-        "supports": ["title", "editor", "thumbnail"]
-      },
-      "icon": "dashicons-star-filled",
-      "metaboxes": {
-        "active": false,
-        "options": {
-          "id": "option",
-          "title": "title",
-          "screen": ["csp"]
-        },
-        "markup": [
-          {
-            "id": "text_input",
-            "label": "Text Input",
-            "type": "text"
-          },
-          {
-            "id": "url_input",
-            "label": "URL Input",
-            "type": "url"
-          }
-        ]
-      }
-    }
-  ]
+	"settings": {
+		"react-app": false,
+		"jquery": "footer",
+		"dark-mode": false,
+		"fontawesome": {
+			"all": true,
+			"brands": false,
+			"solid": false,
+			"regular": false
+		},
+		"splide": true,
+		"disable": {
+			"embeds": true,
+			"emojis": true,
+			"feed_links": true,
+			"index_link": true,
+			"json_api": true,
+			"post_links": true,
+			"recource_hints": true,
+			"rel_canonical": true,
+			"rest_api": true,
+			"rsd": true,
+			"shortlink": true,
+			"version": true,
+			"wlwmanifest": true,
+			"duotone": true,
+			"block-library": true,
+			"block-library-theme": true,
+			"global-styles": false,
+			"woocommerce-block-style": false
+		}
+	},
+	"blocks": {
+		"translations": false,
+		"has_modified_core_blocks": false,
+		"static": [
+			"ksd/columns",
+			"ksd/column",
+			"ksd/contact-list",
+			"ksd/contact-list-item",
+			"ksd/container-50-50",
+			"ksd/container-100",
+			"ksd/form",
+			"ksd/hero",
+			"ksd/icon-list",
+			"ksd/icon-list-item",
+			"ksd/image-gallery",
+			"ksd/image-optimized",
+			"ksd/inner-column",
+			"ksd/site-footer",
+			"ksd/site-header",
+			"ksd/social-icon-list",
+			"ksd/social-icon-list-item",
+			"ksd/timeline-list",
+			"ksd/timeline-list-item"
+		],
+		"dynamic": [
+			{
+				"slug": "ksd/blog-grid",
+				"render_callback": "render_blog_grid",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/navigation-header",
+				"render_callback": "render_navigation_header",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/navigation-footer",
+				"render_callback": "render_navigation_footer",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-logo",
+				"render_callback": "render_site_logo",
+				"attributes": {}
+			}
+		],
+		"default": [
+			"core/paragraph",
+			"core/image",
+			"core/heading",
+			"core/list",
+			"core/list-item",
+			"core/html",
+			"core/button",
+			"core/buttons",
+			"core/separator",
+			"core/shortcode",
+			"core/group"
+		]
+	},
+	"menus": [
+		{
+			"slug": "primary-navigation",
+			"name": "Header Navigation"
+		},
+		{
+			"slug": "secondary-navigation",
+			"name": "Footer Navigation"
+		}
+	],
+	"patterns": ["404"],
+	"customImages": {
+		"defaultSizes": [
+			{
+				"slug": "large_size",
+				"width": 1600,
+				"height": 1200
+			},
+			{
+				"slug": "medium_size",
+				"width": 1024,
+				"height": 768
+			}
+		],
+		"customSizes": [
+			{
+				"slug": "retina",
+				"name": "Retina",
+				"width": 2880,
+				"height": 1800
+			},
+			{
+				"slug": "huge",
+				"name": "Huge",
+				"width": 1920,
+				"height": 1440
+			},
+			{
+				"slug": "medium_large",
+				"name": "Medium Large",
+				"width": 1366,
+				"height": 1025
+			},
+			{
+				"slug": "small",
+				"name": "Small",
+				"width": 768,
+				"height": 576
+			},
+			{
+				"slug": "extra_small",
+				"name": "Extra Small",
+				"width": 640,
+				"height": 480
+			}
+		]
+	},
+	"customPostTypes": [
+		{
+			"active": false,
+			"names": {
+				"name": "CPT",
+				"singular": "CPT",
+				"plural": "CPT",
+				"slug": "cpt"
+			},
+			"options": {
+				"hierarchical": false,
+				"has_archive": false,
+				"show_in_rest": true,
+				"supports": ["title", "editor", "thumbnail"]
+			},
+			"icon": "dashicons-star-filled",
+			"metaboxes": {
+				"active": false,
+				"options": {
+					"id": "option",
+					"title": "title",
+					"screen": ["csp"]
+				},
+				"markup": [
+					{
+						"id": "text_input",
+						"label": "Text Input",
+						"type": "text"
+					},
+					{
+						"id": "url_input",
+						"label": "URL Input",
+						"type": "url"
+					}
+				]
+			}
+		}
+	]
 }
