@@ -92,8 +92,8 @@
       }
     },
     "layout": {
-      "contentSize": "min(var(--wp--custom--site--max-width), var(--wp--custom--site--width))",
-      "wideSize": "min(100%, var(--wp--custom--site--full-width))"
+      "contentSize": null,
+      "wideSize": null
     },
     "spacing": {
       "units": ["em", "rem", "%", "vw", "vh"],
@@ -156,14 +156,14 @@
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./assets/fonts/Unna-700.woff2"]
+              "src": ["file:./public/fonts/Unna-700.woff2"]
             },
             {
               "fontFamily": "Unna",
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./assets/fonts/Unna-400.woff2"]
+              "src": ["file:./public/fonts/Unna-400.woff2"]
             }
           ]
         },
@@ -177,14 +177,14 @@
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./assets/fonts/Sen-700.woff2"]
+              "src": ["file:./public/fonts/Sen-700.woff2"]
             },
             {
               "fontFamily": "Sen",
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./assets/fonts/Sen-400.woff2"]
+              "src": ["file:./public/fonts/Sen-400.woff2"]
             }
           ]
         }
@@ -284,29 +284,8 @@
         }
       },
       "core/button": {
-        "spacing": {
-          "margin": true
-        },
         "border": {
-          "color": false,
-          "radius": false,
-          "style": false,
-          "width": false
-        },
-        "color":{
-          "text": false,
-          "background": false,
-          "customDuotone": false,
-          "customGradient": false,
-          "defaultDuotone": false,
-          "defaultGradients": false,
-          "duotone": [],
-          "gradients": [],
-          "palette": []
-        },
-        "typography": {
-          "fontSizes": [],
-          "fontFamilies": []
+          "radius": false
         }
       }
     }
