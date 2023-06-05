@@ -130,8 +130,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const blockStyles = [
     {
-        name: 'primary-button',
-        label: 'Primary',
+        name: 'default-button',
+        label: 'Default',
         isDefault: true
     },
     {
@@ -144,8 +144,6 @@ const blockStyles = [
  * Run on DOM ready
  */
 _wordpress_dom_ready__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-    console.log(blockStyles);
-
     /**
      * Unregister default button styles
      */
