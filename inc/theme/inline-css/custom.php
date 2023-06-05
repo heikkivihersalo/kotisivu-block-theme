@@ -10,13 +10,13 @@
 
     /* Set default margin and padding excluding hero */
     main>section:not(section:first-of-type) {
-        margin-top: var(--wp--custom--layout--section--margin-top);
-        padding-top: var(--wp--custom--layout--section--padding-top);
+        margin-top: var(--wp--preset--spacing--70);
+        padding-top: var(--wp--preset--spacing--70);
     }
 
     /* Set default margin and padding excluding last element */
     main>section:not(section:last-of-type) {
-        margin-bottom: var(--wp--custom--layout--section--margin-bottom);
-        padding-bottom: var(--wp--custom--layout--section--padding-bottom);
+        margin-bottom: var(--wp--preset--spacing--70);
+        padding-bottom: var(--wp--preset--spacing--70);
     }
 </style>
