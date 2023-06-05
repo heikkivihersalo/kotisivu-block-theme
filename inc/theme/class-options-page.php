@@ -32,7 +32,7 @@ class Options extends Theme {
      * @var string
      */
     private $database_slug;
-    
+
     /**
      * Name for the settings group
      * @var string
@@ -49,17 +49,124 @@ class Options extends Theme {
         parent::__construct();
 
         $this->default_values = [
-            'gtm_active'    => '',
-            'gtm_id'        => '',
-            'gtm_url'       => 'https://www.googletagmanager.com',
-            'gtm_timeout'   => '1500',
-            'fa_all'        => '',
-            'fa_brands'     => '',
-            'fa_regular'    => '',
-            'fa_solid'      => '',
-            'jquery'        => 'normal',
-            'branding'      => '',
-            'dark_mode'     => ''
+            'tag_manager' => [
+                'is_active' => '',
+                'id' => '',
+                'url' => 'https://www.googletagmanager.com',
+                'timeout' => '1500'
+            ],
+            'contact' => [
+                [
+                    'name' => 'Phone',
+                    'slug' => 'phone',
+                    'url' => '',
+                    'icon' => 'fas fa-phone-alt'
+                ],
+                [
+                    'name' => 'Email',
+                    'slug' => 'email',
+                    'url' => '',
+                    'icon' => 'fas fa-envelope'
+                ],
+                [
+                    'name' => 'Address',
+                    'slug' => 'address',
+                    'url' => '',
+                    'icon' => 'fas fa-map-marker-alt'
+                ],
+                [
+                    'name' => 'Postal Code',
+                    'slug' => 'postal_code',
+                    'url' => '',
+                    'icon' => 'fas fa-map-marker-alt'
+                ],
+                [
+                    'name' => 'City',
+                    'slug' => 'city',
+                    'url' => '',
+                    'icon' => 'fas fa-map-marker-alt'
+                ],
+                [
+                    'name' => 'Zip Code',
+                    'slug' => 'zip_code',
+                    'url' => '',
+                    'icon' => 'fas fa-map-marker-alt'
+                ],
+                [
+                    'name' => 'Country',
+                    'slug' => 'country',
+                    'url' => '',
+                    'icon' => 'fas fa-map-marker-alt'
+                ],
+                [
+                    'name' => 'Opening Hours',
+                    'slug' => 'opening_hours',
+                    'url' => '',
+                    'icon' => 'fas fa-clock'
+                ]
+            ],
+            'social_accounts' => [
+                [
+                    'name' => 'Facebook',
+                    'slug' => 'facebook',
+                    'url' => '',
+                    'icon' => 'fab fa-facebook-f'
+                ],
+                [
+                    'name' => 'Twitter',
+                    'slug' => 'twitter',
+                    'url' => '',
+                    'icon' => 'fab fa-twitter'
+                ],
+                [
+                    'name' => 'Instagram',
+                    'slug' => 'instagram',
+                    'url' => '',
+                    'icon' => 'fab fa-instagram'
+                ],
+                [
+                    'name' => 'LinkedIn',
+                    'slug' => 'linkedin',
+                    'url' => '',
+                    'icon' => 'fab fa-linkedin-in'
+                ],
+                [
+                    'name' => 'YouTube',
+                    'slug' => 'youtube',
+                    'url' => '',
+                    'icon' => 'fab fa-youtube'
+                ],
+                [
+                    'name' => 'Pinterest',
+                    'slug' => 'pinterest',
+                    'url' => '',
+                    'icon' => 'fab fa-pinterest-p'
+                ],
+                [
+                    'name' => 'Snapchat',
+                    'slug' => 'snapchat',
+                    'url' => '',
+                    'icon' => 'fab fa-snapchat-ghost'
+                ],
+                [
+                    'name' => 'TikTok',
+                    'slug' => 'tiktok',
+                    'url' => '',
+                    'icon' => 'fab fa-tiktok'
+                ],
+                [
+                    'name' => 'Reddit',
+                    'slug' => 'reddit',
+                    'url' => '',
+                    'icon' => 'fab fa-reddit-alien'
+                ],
+                [
+                    'name' => 'WhatsApp',
+                    'slug' => 'whatsapp',
+                    'url' => '',
+                    'icon' => 'fab fa-whatsapp'
+                ]
+            ]
         ];
 
         $this->database_slug = 'theme_options_' . $this->textdomain;
@@ -108,7 +215,7 @@ class Options extends Theme {
                 <!--- GOOGLE TAG MANAGER  --->
                 <!--- ==================  --->
                 <div class="theme-settings--tag-manager theme-settings__container">
-                    <h2 class="theme-settings__heading"><?php echo __('Google Tag Manager', $this->textdomain); ?></h2>
+                    <h2 class="theme-settings__heading"><?php echo __('Analytics', $this->textdomain); ?></h2>
                     <p class="theme-settings__description">
                         <?php echo __('Set Tag Manager settings here. Tag Manager is optimized to work with Kotisivu Theme so it is highly recommended.', $this->textdomain); ?>
                     </p>
@@ -116,30 +223,30 @@ class Options extends Theme {
                         <!-- ACTIVATE TAG MANAGER --->
                         <div class="theme-settings__input-wrapper">
                             <label>
-                                <input class="theme-settings__input theme-settings__input--checkbox" type="checkbox" id="<?php echo $this->database_slug . '[gtm_active]' ?>" name="<?php echo $this->database_slug . '[gtm_active]' ?>" value="1" <?php checked(1, $this->settings_attributes['gtm_active']); ?>> <?php echo __('Activate Tag Manager', $this->textdomain); ?>
+                                <input class="theme-settings__input theme-settings__input--checkbox" type="checkbox" id="<?php echo $this->database_slug . '[tag_manager][is_active]' ?>" name="<?php echo $this->database_slug . '[tag_manager][is_active]' ?>" value="1" <?php checked(1, $this->settings_attributes['tag_manager']['is_active']); ?>> <?php echo __('Activate Tag Manager', $this->textdomain); ?>
                             </label>
                         </div>
                         <div class="theme-settings__input-group">
                             <!-- TAG MANAGER ID --->
                             <div class="theme-settings__input-wrapper">
-                                <label class="is-bold" for="<?php echo $this->database_slug . '[gtm_id]' ?>">
+                                <label class="is-bold" for="<?php echo $this->database_slug . '[tag_manager][id]' ?>">
                                     <?php echo __('ID', $this->textdomain); ?>
                                 </label>
-                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[gtm_id]' ?>" name="<?php echo $this->database_slug . '[gtm_id]' ?>" placeholder="GTM-XXXXXX" value="<?php echo esc_attr($this->settings_attributes['gtm_id']) ?>" />
+                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[tag_manager][id]' ?>" name="<?php echo $this->database_slug . '[tag_manager][id]' ?>" placeholder="GTM-XXXXXX" value="<?php echo esc_attr($this->settings_attributes['tag_manager']['id']) ?>" />
                             </div>
                             <!-- TAG MANAGER URL --->
                             <div class="theme-settings__input-wrapper">
-                                <label class="is-bold" for="<?php echo $this->database_slug . '[gtm_url]' ?>">
+                                <label class="is-bold" for="<?php echo $this->database_slug . '[tag_manager][url]' ?>">
                                     <?php echo __('URL', $this->textdomain); ?>
                                 </label>
-                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[gtm_url]' ?>" name="<?php echo $this->database_slug . '[gtm_url]' ?>" placeholder="https://www.googletagmanager.com" value="<?php echo esc_attr($this->settings_attributes['gtm_url']) ?>" />
+                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[tag_manager][url]' ?>" name="<?php echo $this->database_slug . '[tag_manager][url]' ?>" placeholder="https://www.googletagmanager.com" value="<?php echo esc_attr($this->settings_attributes['tag_manager']['url']) ?>" />
                             </div>
                             <!-- TAG MANAGER TIMEOUT --->
                             <div class="theme-settings__input-wrapper">
-                                <label class="is-bold" for="<?php echo $this->database_slug . '[gtm_timeout]' ?>">
+                                <label class="is-bold" for="<?php echo $this->database_slug . '[tag_manager][timeout]' ?>">
                                     <?php echo __('Timeout', $this->textdomain); ?>
                                 </label>
-                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[gtm_timeout]' ?>" name="<?php echo $this->database_slug . '[gtm_timeout]' ?>" value="<?php echo esc_attr($this->settings_attributes['gtm_timeout']) ?>" />
+                                <input class="theme-settings__input theme-settings__input--text" type="text" id="<?php echo $this->database_slug . '[tag_manager][timeout]' ?>" name="<?php echo $this->database_slug . '[tag_manager][timeout]' ?>" value="<?php echo esc_attr($this->settings_attributes['tag_manager']['timeout']) ?>" />
                             </div>
                         </div>
                     </div>
