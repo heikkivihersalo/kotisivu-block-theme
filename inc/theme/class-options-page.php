@@ -28,6 +28,12 @@ class Options extends Theme {
     private $default_values;
 
     /**
+     * Slug for the database
+     * @var string
+     */
+    private $database_slug;
+    
+    /**
      * Name for the settings group
      * @var string
      */
