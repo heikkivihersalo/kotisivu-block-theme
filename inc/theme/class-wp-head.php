@@ -66,7 +66,9 @@ class WP_Head extends Theme {
         if (isset($this->config['settings']['fontawesome'])) :
             $folder = $this->parent_uri . '/public/icons/fontawesome/css/';
 
-            foreach ($this->config['settings']['fontawesome'] as $slug) :
+            foreach ($this->config['settings']['fontawesome'] as $slug => $is_enabled) :
+                if (!$is_enabled) continue;
+                
                 $path = $folder . $slug . '.min.css';
                 $rel = 'stylesheet';
         ?>
