@@ -1,0 +1,55 @@
+/**
+ * Default styles
+ */
+.wp-block-button__link {
+    --_background-color: var(--wp--preset--color--primary);
+	--_text-color: var(--wp--preset--color--white);
+    
+	font-family: var(--wp--preset--font-family--primary);
+	font-size: calc(var(--wp--preset--font-size--medium) * 1.2);
+	color: var(--_text-color);
+
+	padding-block: 1em; /* Top-Bottom */
+	padding-inline: 2em; /* Left-Right */
+
+	background: var(--_background-color);
+}
+
+/* Set hover state */
+.wp-block-button__link:hover {
+	--_text-color: var(--wp--preset--color--white);
+	filter: brightness(85%);
+}
+
+/* Set disabled state */
+.wp-block-button__link:disabled {
+	color: grey;
+	pointer-events: none;
+	visibility: hidden;
+}
+
+/**
+ * Block styles 
+ */
+
+/* Default style */
+.is-style-default > a.wp-block-button__link {
+	--_background-color: var(--wp--preset--color--primary);
+	--_text-color: var(--wp--preset--color--white);
+}
+
+.is-style-default > a.wp-block-button__link:hover {
+    --_text-color: var(--wp--preset--color--white);
+	filter: brightness(85%);
+}
+
+/* Secondary style */
+.is-style-secondary > a.wp-block-button__link {
+	--_background-color: var(--wp--preset--color--primary);
+	--_text-color: var(--wp--preset--color--white);
+}
+
+.is-style-secondary > a.wp-block-button__link:hover {
+    --_text-color: var(--wp--preset--color--white);
+	filter: brightness(85%);
+}

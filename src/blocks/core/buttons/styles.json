@@ -1,0 +1,11 @@
+[
+	{
+		"name": "default",
+		"label": "Default",
+		"isDefault": true
+	},
+	{
+		"name": "secondary",
+		"label": "Secondary"
+	}
+]
