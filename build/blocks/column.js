@@ -291,6 +291,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/blocks/static/column/save.js");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/blocks/static/column/block.json");
 /**
+ * Forked from Gutenberg core/column repository. 
+ * Version: 15.3.1
+ * License: GPL-2.0-or-later
+ * @link https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/column
+ */
+
+/**
  * WordPress dependencies
  */
 
