@@ -101,7 +101,6 @@ class Filters extends Theme {
              */
             $static = $this->config["blocks"]["static"];
             $default = $this->config["blocks"]["default"];
-            $core = $this->config["blocks"]["core"];
             $dynamic = $this->config["blocks"]["dynamic"];
             $dynamic_block_slugs = [];
 
@@ -116,7 +115,6 @@ class Filters extends Theme {
             return array_merge(
                 $static,
                 $default,
-                $core,
                 $dynamic_block_slugs
             );
         endif;
