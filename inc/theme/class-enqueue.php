@@ -85,17 +85,22 @@ class Enqueue extends Theme {
      * @param string $uri 
      * @return void 
      */
-    private function enqueue_assets(string $pattern, int $flags, string $uri, bool $is_admin = false): void {
+    private function enqueue_assets(string $pattern, int $flags, string $uri, bool $is_admin_enqueue = false): void {
         foreach (glob($pattern, $flags) as $glob) :
             /* Get file information */
             $file_info = pathinfo($glob);
 
-            if ($is_admin) :
-                if ($file_info['filename'] !== 'admin')  continue;
+            /**
+             * If in admin panel, enqueue all files
+             */
+            if ($is_admin_enqueue) :
                 $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
                 $this->enqueue_file($attributes);
+                /**
+                 * if outside admin, skip admin.js file
+                 */
             else :
-                if ($file_info['filename'] === 'admin')  continue;
+                if ($file_info['filename'] === 'admin') continue;
                 $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
                 $this->enqueue_file($attributes);
             endif;
@@ -123,7 +128,7 @@ class Enqueue extends Theme {
          */
         if ($extension === 'css') :
             $attributes['type'] = 'text/css';
-            $attributes['src'] = $uri . '/assets/styles/' . basename($glob);
+            $attributes['src'] = $uri . '/build/theme/' . basename($glob);
             $attributes['deps'] = [];
             $attributes['media'] = 'all';
         endif;
@@ -131,9 +136,9 @@ class Enqueue extends Theme {
         /**
          * JS attributes
          */
-        if($extension === 'js') :
+        if ($extension === 'js') :
             $attributes['type'] = 'text/javascript';
-            $attributes['src'] = $uri . '/assets/scripts/' . basename($glob);
+            $attributes['src'] = $uri . '/build/theme/' . basename($glob);
             $attributes['in_footer'] = true;
 
             $assets_file = dirname($glob) . '/' . basename($glob, '.js') . '.asset.php';
@@ -195,5 +200,6 @@ class Enqueue extends Theme {
     public function init(): void {
         add_action('wp_enqueue_scripts', [$this, 'add_theme_styles_and_scripts']);
         add_action('admin_enqueue_scripts', [$this, 'add_admin_styles_and_scripts']);
+        add_action('enqueue_block_editor_assets', [$this, 'add_admin_styles_and_scripts']);
     }
 }
