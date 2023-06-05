@@ -13,17 +13,41 @@ const glob = require('glob');
 
 const isProduction = process.env.NODE_ENV === 'development';
 
+const blockSourcePath = './src/blocks';
+
 const getLiveReloadPort = (inputPort) => {
 	const parsedPort = parseInt(inputPort, 10);
 	return Number.isInteger(parsedPort) ? parsedPort : 35729;
 };
 
-function getBlocks() {
+/**
+ * Get all core blocks
+ */
+function getCoreBlocks() {
+	const src = glob.sync(blockSourcePath + "/core/**/*.js");
+	const blocks = [];
+
+	src.forEach(entry => {
+		switch (entry.split('/')[5]) {
+			case 'index.js':
+				blocks.push(entry);
+				break;
+			default:
+				break;
+		}
+	});
+
+	return blocks;
+};
+
+/**
+ * Get all custom blocks
+ */
+function getCustomBlocks() {
+	const src = [...glob.sync(blockSourcePath + "/static/*/*.js"), ...glob.sync(blockSourcePath + "/dynamic/*/*.js")];
 	const blocks = {};
-	/**
-	 * Add all blocks to the build
-	 */
-	glob.sync("./src/blocks/**/*.js").forEach(entry => {
+
+	src.forEach(entry => {
 		switch (entry.split('/')[5]) {
 			case 'index.js':
 				blocks[`${entry.split('/')[4]}`] = entry;
@@ -45,7 +69,7 @@ module.exports = [
 	 */
 	{
 		...defaultConfig,
-		entry: getBlocks,
+		entry: getCustomBlocks,
 		resolve: {
 			alias: {
 				'@features': path.resolve('src/features'),
@@ -78,7 +102,7 @@ module.exports = [
 	{
 		...defaultConfig,
 		entry: {
-			'theme': './src/assets/scripts/theme.js',
+			'theme': ['./src/assets/scripts/theme.js', ...getCoreBlocks()],
 			'admin': './src/assets/scripts/admin.js'
 		},
 		output: {
@@ -99,6 +123,17 @@ module.exports = [
 			}),
 			!process.env.WP_NO_EXTERNALS &&
 			new DependencyExtractionWebpackPlugin(),
-		].filter(Boolean)
+		].filter(Boolean),
+		module: {
+			rules: [
+				{
+					test: /\.css$/,
+					use: [
+						MiniCssExtractPlugin.loader,
+						'css-loader'
+					]
+				}
+			]
+		},
 	}
-]
+];
