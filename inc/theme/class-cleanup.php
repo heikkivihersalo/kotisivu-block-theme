@@ -210,6 +210,7 @@ class Cleanup extends Theme {
                 if (!$style) {
                     continue;
                 }
+
                 $styles->remove($handle);
                 $styles->add($handle, false, []);
             }
@@ -273,6 +274,12 @@ class Cleanup extends Theme {
         // if ($this->config["settings"]["disable"]["block-library-theme"]) wp_dequeue_style('wp-block-library-theme');
         if ($this->config["settings"]["disable"]["global-styles"]) wp_dequeue_style('global-styles');
         if ($this->config["settings"]["disable"]["woocommerce-block-style"]) wp_dequeue_style('wc-block-style');
+
+        if ($this->config["settings"]["disable"]["block-library"]) :
+            remove_filter('render_block', 'wp_render_layout_support_flag', 10, 2);
+            remove_filter('render_block', 'wp_render_elements_support', 10, 2);
+            remove_filter('render_block', 'gutenberg_render_elements_support', 10, 2);
+        endif;
     }
 
     /**
@@ -286,9 +293,5 @@ class Cleanup extends Theme {
         add_action('after_setup_theme', [$this, 'remove_after_theme_setup'], 10, 0);
         add_action('wp_footer', [$this, 'remove_from_wp_footer']);
         add_action('wp_enqueue_scripts', [$this, 'remove_block_theme_inline_styles'], 100);
-
-        remove_filter('render_block', 'wp_render_layout_support_flag', 10, 2);
-        remove_filter('render_block', 'wp_render_elements_support', 10, 2);
-        remove_filter('render_block', 'gutenberg_render_elements_support', 10, 2);
     }
 }
