@@ -1,6 +1,7 @@
 <?php
 
 namespace Kotisivu\BlockTheme;
+
 defined('ABSPATH') or die();
 
 /**
@@ -184,7 +185,35 @@ class Cleanup extends Theme {
      * TODO: Might be obsolete in the future. Only removes svg's. Variables are still intact.
      */
     private function remove_duotone(): void {
-        remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+        remove_action('wp_body_open', 'wp_global_styles_render_svg_filters');
+    }
+
+    /**
+     * Remove block library styles
+     * @param object $styles 
+     * @return void 
+     */
+    public function remove_block_library_styles($styles): void {
+        $handles = [];
+
+        if ($this->config["settings"]["disable"]["block-library-theme"]) {
+            $handles[] = 'wp-block-library-theme';
+        }
+
+        if ($this->config["settings"]["disable"]["block-library"]) {
+            $handles[] = 'wp-block-library';
+        }
+
+        if ($handles) {
+            foreach ($handles as $handle) {
+                $style = $styles->query($handle, 'registered');
+                if (!$style) {
+                    continue;
+                }
+                $styles->remove($handle);
+                $styles->add($handle, false, []);
+            }
+        }
     }
 
     /**
@@ -240,8 +269,8 @@ class Cleanup extends Theme {
      * Dequeue Block Theme Inline Styles
      */
     public function remove_block_theme_inline_styles(): void {
-        if ($this->config["settings"]["disable"]["block-library"]) wp_dequeue_style('wp-block-library');
-        if ($this->config["settings"]["disable"]["block-library-theme"]) wp_dequeue_style('wp-block-library-theme');
+        // if ($this->config["settings"]["disable"]["block-library"]) wp_dequeue_style('wp-block-library');
+        // if ($this->config["settings"]["disable"]["block-library-theme"]) wp_dequeue_style('wp-block-library-theme');
         if ($this->config["settings"]["disable"]["global-styles"]) wp_dequeue_style('global-styles');
         if ($this->config["settings"]["disable"]["woocommerce-block-style"]) wp_dequeue_style('wc-block-style');
     }
@@ -253,8 +282,13 @@ class Cleanup extends Theme {
     public function init(): void {
         add_action('init', [$this, 'remove_fluentforms_styles']);
         add_action('init', [$this, 'remove_from_wp_head']);
+        add_action('wp_default_styles', [$this, 'remove_block_library_styles'], PHP_INT_MAX);
         add_action('after_setup_theme', [$this, 'remove_after_theme_setup'], 10, 0);
         add_action('wp_footer', [$this, 'remove_from_wp_footer']);
         add_action('wp_enqueue_scripts', [$this, 'remove_block_theme_inline_styles'], 100);
+
+        remove_filter('render_block', 'wp_render_layout_support_flag', 10, 2);
+        remove_filter('render_block', 'wp_render_elements_support', 10, 2);
+        remove_filter('render_block', 'gutenberg_render_elements_support', 10, 2);
     }
 }
