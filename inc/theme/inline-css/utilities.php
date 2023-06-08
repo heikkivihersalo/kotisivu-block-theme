@@ -65,6 +65,26 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        :where(.grid-cols-70-30, .grid-cols-70-30-rv) {
+            display: grid;
+            grid-template-columns: 0.67fr 0.33fr;
+        }
+
+        :where(.grid-cols-30-70, .grid-cols-30-70-rv) {
+            display: grid;
+            grid-template-columns: 0.33fr 0.67fr;
+        }
+
+        :where(.grid-cols-75-25, .grid-cols-75-25-rv) {
+            display: grid;
+            grid-template-columns: 0.75fr 0.25fr;
+        }
+
+        :where(.grid-cols-25-75, .grid-cols-25-75-rv) {
+            display: grid;
+            grid-template-columns: 0.75fr 0.25fr;
+        }
+
         :where(.grid-cols-3) {
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
@@ -82,11 +102,11 @@
             grid-template-columns: repeat(6, minmax(0, 1fr));
         }
 
-        :where(.grid-cols-2-rv:first-child) {
+        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):first-child) {
             order: 2
         }
 
-        :where(.grid-cols-2-rv:last-child) {
+        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):last-child) {
             order: 1
         }
     }
