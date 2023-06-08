@@ -1,8 +1,6 @@
 <?php
 
 function render_global_social_icons($block_attributes, $content) { ?>
-    <?php wp_enqueue_script('ksd-global-social-icons-view-script') ?>
-    <?php var_dump($block_attributes); ?>
     <?php $accounts = array(
         'facebook' => array(
             'url' => $block_attributes["options"]["facebook-url"],
