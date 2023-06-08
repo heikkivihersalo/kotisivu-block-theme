@@ -98,6 +98,12 @@
 				}
 			},
 			{
+				"slug": "ksd/global-social-icons",
+				"render_callback": "render_global_social_icons",
+				"attributes": {
+				}
+			},
+			{
 				"slug": "ksd/navigation-header",
 				"render_callback": "render_navigation_header",
 				"attributes": {}
