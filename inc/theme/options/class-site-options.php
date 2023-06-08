@@ -66,6 +66,13 @@ class SiteOptions extends Theme {
                     'value'            => 'Kotikatu 1<br>00000 Helsinki',
                     'sanitize' => true
                 ),
+                'opening_hours'        => array(
+                    'id'            => 'contact-opening-hours',
+                    'title'            => __('Opening Hours', $this->textdomain),
+                    'type'            => 'wp_editor',
+                    'value'            => 'Mon-Fri 9-17<br>Sat-Sun 10-16',
+                    'sanitize' => true
+                ),
             )
         );
     }
@@ -145,12 +152,28 @@ class SiteOptions extends Theme {
                     'placeholder' => 'https://www.tiktok.com/@accountname',
                     'sanitize' => true
                 ),
+                'twitch' => array(
+                    'title' => __('Twitch', $this->textdomain),
+                    'id' => 'twitch-url',
+                    'type' => 'url',
+                    'value' => '',
+                    'placeholder' => 'https://www.twitch.tv/accountname',
+                    'sanitize' => true
+                ),
                 'reddit' => array(
                     'title' => __('Reddit', $this->textdomain),
                     'id' => 'reddit-url',
                     'type' => 'url',
                     'value' => '',
                     'placeholder' => 'https://www.reddit.com/user/accountname',
+                    'sanitize' => true
+                ),
+                'discord' => array(
+                    'title' => __('Discord', $this->textdomain),
+                    'id' => 'discord-url',
+                    'type' => 'url',
+                    'value' => '',
+                    'placeholder' => 'https://discord.gg/accountname',
                     'sanitize' => true
                 ),
                 'whatsapp' => array(
