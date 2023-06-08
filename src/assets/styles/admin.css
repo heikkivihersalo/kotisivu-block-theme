@@ -10,74 +10,39 @@
   1.0 Theme Settings
 --------------------------------------------------------------*/
 
-:where(.theme-settings__input-group) {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-:where(.theme-settings__input-wrapper) {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-
-  max-width: 25rem;
-
-  margin-top: 0.125rem;
-}
-
-:where(.theme-settings__input-wrapper--select) {
-  max-width: 15rem;
-}
-
-:where(.theme-settings__input-wrapper--checkbox) {
-  margin-top: 0.75rem;
-}
-
-:where(.theme-settings__input--text) {
-  width: 100%;
-  max-width: 20rem;
-}
-
 /*--------------------------------------------------------------
   2.0 Edtior Styles
 --------------------------------------------------------------*/
-
 button.ksd-editor-btn.ksd-editor-btn--placeholder {
-  margin: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  color: grey;
-  border: 2px solid grey;
-}
-
-:is(h1, h2, h3, h4, h5, h6, p) {
-  max-width: 80ch;
-  margin-inline: auto;
+	margin: 1rem;
+	padding: 0.5rem 1rem;
+	background-color: transparent;
+	color: grey;
+	border: 2px solid grey;
 }
 
 .components-popover.block-editor-block-popover.block-editor-block-list__block-popover {
-  z-index: 9999;
+	z-index: 9999;
 }
 
 /* Image preview buttons */
 .image-block-buttons,
 .components-panel__row {
-  position: relative;
-  z-index: 9998;
+	position: relative;
+	z-index: 9998;
 }
 
 .image-block-buttons {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .image-block-buttons__update {
-  display: flex;
+	display: flex;
 }
 
 .image-block-buttons__update {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 /*--------------------------------------------------------------
@@ -88,16 +53,16 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
  * Container 100
  */
 section.wp-block-ksd-container-100 {
-  display: grid;
-  justify-content: center;
-  justify-items: center;
+	display: grid;
+	justify-content: center;
+	justify-items: center;
 }
 
 section.wp-block-ksd-container-100.has-bg-color > *:not(div) {
-  color: white;
+	color: white;
 }
 
 section.wp-block-ksd-container-100.has-bg-color[style="background-color:var(--wp--preset--color--grey-light)"]
-  > *:not(div) {
-  color: initial;
+	> *:not(div) {
+	color: initial;
 }
