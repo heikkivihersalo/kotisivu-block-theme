@@ -62,6 +62,42 @@
 				"attributes": {}
 			},
 			{
+				"slug": "ksd/global-contact-address",
+				"render_callback": "render_global_contact_address",
+				"attributes": {
+				}
+			},
+			{
+				"slug": "ksd/global-contact-company-id",
+				"render_callback": "render_global_contact_company_id",
+				"attributes": {
+				}
+			},
+			{
+				"slug": "ksd/global-contact-company-name",
+				"render_callback": "render_global_contact_company_name",
+				"attributes": {
+				}
+			},
+			{
+				"slug": "ksd/global-contact-email",
+				"render_callback": "render_global_contact_email",
+				"attributes": {
+				}
+			},
+			{
+				"slug": "ksd/global-contact-opening-hours",
+				"render_callback": "render_global_contact_opening_hours",
+				"attributes": {
+				}
+			},
+			{
+				"slug": "ksd/global-contact-phone",
+				"render_callback": "render_global_contact_phone",
+				"attributes": {
+				}
+			},
+			{
 				"slug": "ksd/navigation-header",
 				"render_callback": "render_navigation_header",
 				"attributes": {}
