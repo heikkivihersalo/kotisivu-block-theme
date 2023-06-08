@@ -23,14 +23,19 @@ class BlockDynamic extends Blocks {
     /**
      * 
      */
+    protected $options;
+
+    /**
+     * 
+     */
     protected $textdomain;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($path, $parent_path, $config, $textdomain) {
-        parent::__construct($path, $parent_path, $config, $textdomain);
+    public function __construct($path, $parent_path, $config, $options, $textdomain) {
+        parent::__construct($path, $parent_path, $config, $options, $textdomain);
     }
 
     /**
@@ -57,6 +62,15 @@ class BlockDynamic extends Blocks {
          */
         include_once($block_path . '/render.php');
 
+        if (isset($this->options)) :
+            $attributes = array_merge($attributes, [
+                'options' => [
+                    'type' => 'object',
+                    'default' => $this->options
+                ]
+            ]);
+        endif;
+
         /**
          * Register block
          */
@@ -65,7 +79,7 @@ class BlockDynamic extends Blocks {
                 $block_path,
                 array(
                     'render_callback' => $render_callback,
-                    'attributes' => $attributes
+                    'attributes' => $attributes,
                 )
             );
         } catch (\Exception $e) {
