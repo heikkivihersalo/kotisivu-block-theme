@@ -89,8 +89,8 @@ class Theme {
         $this->uri = get_theme_file_uri();
         $this->parent_path = get_parent_theme_file_path();
         $this->parent_uri = get_parent_theme_file_uri();
-        $this->options = $this->get_options_file('site-analytics');
-        $this->analytics = $this->get_options_file('site-options');
+        $this->options = $this->get_options_file('site-options');
+        $this->analytics = $this->get_options_file('site-analytics');
         $this->config = $this->get_config_file('theme_config', 'config.json');
 
         /**
