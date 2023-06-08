@@ -44,7 +44,8 @@ class SiteOptions extends Theme {
                     'id'            => 'contact-tel',
                     'title'            => __('Phone', $this->textdomain),
                     'type'            => 'tel',
-                    'placeholder'    => '+358 12 345 6789',
+                    'text'          => __('Use format +358123456789', $this->textdomain),
+                    'placeholder'    => '+358123456789',
                     'sanitize' => true
                 ),
                 'name'        => array(
