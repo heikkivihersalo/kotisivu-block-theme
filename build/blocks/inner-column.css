@@ -1,10 +1,1 @@
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/inner-column/editor.css ***!
-  \***********************************************************************************************************************************************************************************************/
-.inner-column {
-    width: 100%;
-	max-width: calc( 100% - var(--wp--custom--spacing--medium, 2rem) * 2 );
-}
-
-
-/*# sourceMappingURL=inner-column.css.map*/
+.inner-column{max-width:calc(100% - var(--wp--custom--spacing--medium, 2rem)*2);width:100%}

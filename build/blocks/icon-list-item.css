@@ -1,18 +1,1 @@
-/*!*************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/icon-list-item/editor.css ***!
-  \*************************************************************************************************************************************************************************************************/
-.block-editor-block-list__block .icon-list__item img {
-    width: 100%;
-    height: 100%;
-    max-width: 30px;
-
-    aspect-ratio: 1 / 1;
-    -o-object-fit: cover;
-       object-fit: cover;
-}
-
-.block-editor-block-list__block .icon-list__item .components-toggle-control {
-    margin: 0;
-}
-
-/*# sourceMappingURL=icon-list-item.css.map*/
+.block-editor-block-list__block .icon-list__item img{aspect-ratio:1/1;height:100%;max-width:30px;-o-object-fit:cover;object-fit:cover;width:100%}.block-editor-block-list__block .icon-list__item .components-toggle-control{margin:0}
