@@ -7,7 +7,7 @@
  */
 function render_global_contact_email($block_attributes, $content) { ?>
     <?php $contact = array(
-        'email' => $block_attributes['contact-email'],
+        'email' => $block_attributes["options"]['contact-email'],
         'icon' => 'fas fa-envelope',
         'title' => 'Email',
         'slug' => 'email',

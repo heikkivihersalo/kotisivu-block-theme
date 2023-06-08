@@ -6,5 +6,5 @@
  * @return string|false 
  */
 function render_global_contact_company_id($block_attributes, $content) {
-    return $block_attributes['contact-company-id'];
+    return $block_attributes["options"]['contact-company-id'];
 }

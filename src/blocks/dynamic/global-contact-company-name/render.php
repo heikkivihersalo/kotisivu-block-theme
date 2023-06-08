@@ -7,7 +7,7 @@
  */
 function render_global_contact_company_name($block_attributes, $content) { ?>
     <?php $contact = array(
-        'name' => $block_attributes['contact-company-name'],
+        'name' => $block_attributes["options"]['contact-company-name'],
         'icon' => 'fa fa-home'
     ); ?>
     <?php ob_start(); ?>

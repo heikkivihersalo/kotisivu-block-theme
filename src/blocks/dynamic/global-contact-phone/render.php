@@ -22,7 +22,7 @@ function format_phone_num($num): string {
  */
 function render_global_contact_phone($block_attributes, $content) { ?>
     <?php $contact = array(
-        'phone' => $block_attributes['contact-phone'],
+        'phone' => $block_attributes["options"]['contact-phone'],
         'icon' => 'fas fa-phone',
         'title' => __('Phone', 'kotisivu-block-theme'),
         'slug' => 'phone',
