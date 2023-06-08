@@ -24,10 +24,6 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
  * @package Kotisivu\BlockTheme 
  */
 class Enqueue extends Theme {
-    public function __construct() {
-        parent::__construct();
-    }
-
     /**
      * Add scripts and styles to theme
      * @return void 

@@ -23,10 +23,6 @@ defined('ABSPATH') or die();
  * @package Kotisivu\BlockTheme 
  */
 class CustomPostType extends Theme {
-    public function __construct() {
-        parent::__construct();
-    }
-
     /**
      * Load classes from custom-post-type-folder
      * @return void 

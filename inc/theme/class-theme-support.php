@@ -21,10 +21,6 @@ defined('ABSPATH') or die();
  * @package Kotisivu\BlockTheme 
  */
 class ThemeSupport extends Theme {
-    public function __construct() {
-        parent::__construct();
-    }
-
     /**
      * 
      * @return void 

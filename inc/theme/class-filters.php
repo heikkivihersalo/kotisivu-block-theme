@@ -21,10 +21,6 @@ defined('ABSPATH') or die();
  * @package Kotisivu\BlockTheme 
  */
 class Filters extends Theme {
-    public function __construct() {
-        parent::__construct();
-    }
-
     /**
      * Add custom image options to admin interface
      * @param array $sizes 

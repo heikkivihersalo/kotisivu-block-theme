@@ -21,10 +21,6 @@ defined('ABSPATH') or die();
  * @package Kotisivu\BlockTheme 
  */
 class WP_Head extends Theme {
-    public function __construct() {
-        parent::__construct();
-    }
-
     /**
      * Inline sanitize CSS styles
      */
@@ -108,10 +104,10 @@ class WP_Head extends Theme {
                             "gtm.start": (new Date).getTime(),
                             "gtm.uniqueEventId": 0
                         })
-                    }, t.src = "<?php echo $this->options['gtm_url'] ?>/gtm.js?id=<?php echo $this->options['gtm_id'] ?>", document.head.appendChild(t)
+                    }, t.src = "<?php echo $this->analytics['tagmanager-url'] ?>/gtm.js?id=<?php echo $this->analytics['tagmanager-id'] ?>", document.head.appendChild(t)
                 };
             document.addEventListener("DOMContentLoaded", function() {
-                setTimeout(initGTM, <?php echo $this->options['gtm_timeout'] ?>)
+                setTimeout(initGTM, <?php echo $this->analytics['tagmanager-timeout'] ?>)
             }), document.addEventListener("scroll", initGTMOnEvent), document.addEventListener("mousemove", initGTMOnEvent), document.addEventListener("touchstart", initGTMOnEvent)
         </script>
 <?php }
@@ -138,7 +134,7 @@ class WP_Head extends Theme {
         endif;
 
         /* Enable Google Tag Manager */
-        if (isset($this->options['gtm_active'])) :
+        if (isset($this->analytics['tagmanager-active'])) :
             add_action('wp_head', [$this, 'inline_tag_manager'], 0);
         endif;
     }
