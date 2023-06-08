@@ -34,6 +34,12 @@ class Theme {
     protected $options;
 
     /**
+     * Theme analytics options database table
+     * @var array|false
+     */
+    protected $analytics;
+
+    /**
      * Theme config file. File is saved on cache and loaded if found. Returns array if success, false on failure.
      * @var mixed|false
      */
@@ -44,7 +50,7 @@ class Theme {
      * @var string
      */
     protected $path;
-    
+
     /**
      * Stylesheet directory URI of the current theme. Searches in the stylesheet directory before the template directory so themes which inherit from a parent theme can just override one file.
      * @var string
@@ -62,7 +68,7 @@ class Theme {
      * @var string
      */
     protected $parent_uri;
-    
+
     /**
      * Theme constructor
      * @return void 
@@ -83,7 +89,8 @@ class Theme {
         $this->uri = get_theme_file_uri();
         $this->parent_path = get_parent_theme_file_path();
         $this->parent_uri = get_parent_theme_file_uri();
-        $this->options = $this->get_options_file('theme_options', $this->textdomain);
+        $this->options = $this->get_options_file('site-analytics');
+        $this->analytics = $this->get_options_file('site-options');
         $this->config = $this->get_config_file('theme_config', 'config.json');
 
         /**
@@ -136,18 +143,17 @@ class Theme {
     /**
      * Get site options from database and store it to cache
      * @param string $slug 
-     * @param string $textdomain 
      * @return mixed
      */
-    public function get_options_file(string $slug, string $textdomain): mixed {
+    public function get_options_file(string $slug): mixed {
         /**
          * Check options for cache. If not found, load it from database
          */
-        $cache = wp_cache_get($slug);
+        $cache = wp_cache_get('kotisivu-theme_' . $slug);
 
         if ($cache === false) {
-            get_option('theme_options_' . $textdomain);
-            $cache = get_option('theme_options_' . $textdomain);
+            get_option('kotisivu-theme_' . $slug);
+            $cache = get_option('kotisivu-theme_' . $slug);
             wp_cache_set($slug, $cache);
         }
 
@@ -168,9 +174,6 @@ class Theme {
         $post_types = new CustomPostType();
         $post_types->init();
 
-        $options = new Options();
-        $options->init();
-
         $enqueue = new Enqueue();
         $enqueue->init();
 
@@ -179,5 +182,8 @@ class Theme {
 
         $cleanup = new Cleanup();
         $cleanup->init();
+
+        $options = new Options();
+        $options->init();
     }
 }
