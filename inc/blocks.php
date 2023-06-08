@@ -104,17 +104,10 @@ class Blocks extends Theme {
             $this->path,
             $this->parent_path,
             $this->config,
+            $this->options,
             $this->textdomain
         );
         $dynamic_blocks->init();
-
-        // $core_blocks = new BlockCore(
-        //     $this->path,
-        //     $this->parent_path,
-        //     $this->config,
-        //     $this->textdomain
-        // );
-        // $core_blocks->init();
 
         /**
          * Register ajax calls
