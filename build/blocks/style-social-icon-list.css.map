@@ -1,0 +1,1 @@
+{"version":3,"file":"./style-social-icon-list.css","mappings":";;;AAAA;CACC,aAAa;CACb,4CAA4C;AAC7C","sources":["webpack://kotisivu-block-theme/./src/blocks/static/social-icon-list/style.css"],"sourcesContent":[":where(.social-icon-list) {\n\tdisplay: flex;\n\tgap: var(--wp--custom--spacing--small, 2rem);\n}\n"],"names":[],"sourceRoot":""}

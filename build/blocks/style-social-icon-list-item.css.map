@@ -1,0 +1,1 @@
+{"version":3,"file":"./style-social-icon-list-item.css","mappings":";;;AAAA;IACI,qDAAqD;AACzD,C","sources":["webpack://kotisivu-block-theme/./src/blocks/static/social-icon-list-item/style.css"],"sourcesContent":[":where(.social-icon-list-item) {\n    width: var(--wp--preset--font-size--gigantic, 4.5rem);\n}"],"names":[],"sourceRoot":""}

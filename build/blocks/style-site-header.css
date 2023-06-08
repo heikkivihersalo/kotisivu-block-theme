@@ -1,1 +1,44 @@
-:where(.header){--_color:var(--wp--custom--layout--header--text-color);--_background:var(--wp--custom--layout--header--background-color);--_padding:var(--wp--custom--layout--header--container-padding);align-items:center;background-color:var(--_background);display:flex;flex-direction:row;gap:3em;justify-content:space-around;padding-bottom:var(--_padding);padding-top:var(--_padding);position:relative}@media (min-width:800px){:where(.header){justify-content:center}}:where(.header.active){flex-direction:column;height:100vh}:where(.header.active>*){display:revert}
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/site-header/style.css ***!
+  \*********************************************************************************************************************************************************************************************/
+:where(.header) {
+	--_color: var(--wp--custom--layout--header--text-color);
+	--_background: var(--wp--custom--layout--header--background-color);
+	--_padding: var(--wp--custom--layout--header--container-padding);
+
+	position: relative;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	gap: 3em;
+
+	padding-top: var(--_padding);
+	padding-bottom: var(--_padding);
+
+	background-color: var(--_background);
+}
+
+@media (min-width: 800px) {
+	:where(.header) {
+		justify-content: center;
+	}
+}
+
+/**
+ * Active state
+ */
+/* Set full height */
+:where(.header.active) {
+	height: 100vh;
+	flex-direction: column;
+}
+
+/* Reset visibility to default values */
+:where(.header.active > *) {
+	display: revert;
+}
+
+
+/*# sourceMappingURL=style-site-header.css.map*/
