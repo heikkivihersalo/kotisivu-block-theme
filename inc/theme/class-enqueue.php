@@ -30,13 +30,6 @@ class Enqueue extends Theme {
      */
     public function add_theme_styles_and_scripts(): void {
         /**
-         * If parent theme is active, enqueue default stylesheet
-         */
-        if (!is_child_theme()) :
-            wp_enqueue_style($this->textdomain . '-style', $this->uri . '/style.css', array(), filemtime($this->path . '/style.css'));
-        endif;
-
-        /**
          * Enqueue parent theme files
          */
         $this->enqueue_assets($this->parent_path . '/build/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri);
@@ -57,7 +50,6 @@ class Enqueue extends Theme {
             if ($this->config['settings']['react-app']) :
                 $this->enqueue_assets($this->path . '/app/build/*.{js,css}', GLOB_BRACE, $this->uri);
             endif;
-
         endif;
     }
 
