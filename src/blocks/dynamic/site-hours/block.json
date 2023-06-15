@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-hours",
+	"title": "Site Hours",
+	"category": "widgets",
+	"icon": "admin-site",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-hours.js",
+	"editorStyle": "file:../../../../build/blocks/site-hours.css",
+	"style": "file:../../../../build/blocks/style-site-hours.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}

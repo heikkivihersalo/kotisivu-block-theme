@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-social",
+	"title": "Site Social",
+	"category": "widgets",
+	"icon": "admin-site",
+	"description": "Add global social icons to your site.",
+	"keywords": ["social, icons, header"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-social.js",
+	"editorStyle": "file:../../../../build/blocks/site-social.css",
+	"style": "file:../../../../build/blocks/style-site-social.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}

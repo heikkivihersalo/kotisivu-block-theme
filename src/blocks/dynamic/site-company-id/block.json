@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-company-id",
+	"title": "Site Company ID (VAT)",
+	"category": "widgets",
+	"icon": "admin-site",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-company-id.js",
+	"editorStyle": "file:../../../../build/blocks/site-company-id.css",
+	"style": "file:../../../../build/blocks/style-site-company-id.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}

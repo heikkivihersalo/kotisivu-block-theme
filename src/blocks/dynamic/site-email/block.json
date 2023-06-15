@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-email",
+	"title": "Site Email",
+	"category": "widgets",
+	"icon": "admin-site",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-email.js",
+	"editorStyle": "file:../../../../build/blocks/site-email.css",
+	"style": "file:../../../../build/blocks/style-site-email.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}

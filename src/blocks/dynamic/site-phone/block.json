@@ -1,0 +1,23 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-phone",
+	"title": "Site Phone",
+	"category": "widgets",
+	"icon": "admin-site",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-phone.js",
+	"editorStyle": "file:../../../../build/blocks/site-phone.css",
+	"style": "file:../../../../build/blocks/style-site-phone.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}
