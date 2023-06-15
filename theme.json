@@ -92,8 +92,8 @@
       }
     },
     "layout": {
-      "contentSize": null,
-      "wideSize": null
+      "contentSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1500px)",
+      "wideSize": "min(100%, 1920px)"
     },
     "spacing": {
       "units": ["em", "rem", "%", "vw", "vh"],
