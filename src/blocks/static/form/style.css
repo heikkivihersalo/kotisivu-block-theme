@@ -1,92 +1,88 @@
-/* Form Container */
+/**
+ * Resets
+ */
+ .fluentform form > fieldset .ff-el-group {
+	margin-bottom: 0; /* Reset default margins */
+}
+
+/**
+ * Main Section
+ */
+.contact-us {
+	--_gap: var(--wp--preset--spacing--30);
+	--_border: 1px solid var(--wp--preset--color--foreground);
+
+	--_font-color: var(--wp--preset--color--foreground);
+	--_font-family: var(--wp--preset--font-family--tertiary);
+
+	display: grid;
+	justify-items: center;
+
+	width: var(--wp--style--global--content-size);
+
+	padding: var(--wp--preset--spacing--50) var(--wp--preset--spacing--30);
+	margin-inline: auto;
+
+	border: var(--_border);
+}
+
+.contact-us__heading {
+	font-size: var(--wp--preset--font-size--x-large);
+}
+
+.contact-us__paragraph {
+	max-width: 80ch;
+}
+
 .fluentform {
-	display: flex;
-	justify-content: center;
+	width: 100%;
 }
 
-.fluentform form {
-	display: flex;
-	flex-direction: column;
-	gap: var(--wp--custom--form--layout-gap);
-
-	width: var(--wp--custom--layout--site-width);
-	max-width: var(--wp--custom--form--layout-max-width);
+/**
+ * Form Field Containers
+ */
+.fluentform fieldset,
+.ff-t-container {
+	display: grid;
+	gap: var(--_gap);
 }
 
-/* Input Wrappers */
-.fluentform form > .ff-el-group {
-	margin-bottom: 0;
-}
-
-/* Inputs */
+/**
+ * Form Fields
+ */
 :is(input, textarea).ff-el-form-control {
-	width: 100% !important;
-	border: var(--wp--custom--form--input--border-width) solid
-		var(--wp--custom--form--input--border-color) !important;
-	border-radius: var(--wp--custom--form--input--border-radius) !important;
-	padding: var(--wp--custom--form--input--padding);
-}
+	font-family: var(--_font-family) !important;
+	color: var(--_font-color) !important;
 
-input.ff-el-form-control {
-	height: var(--wp--custom--form--input--height);
-}
+	padding: 1em 1em !important;
 
-textarea.ff-el-form-control {
-	height: var(--wp--custom--form--input--textarea-height);
-}
-
-/* Text & Labels */
-.ff-el-input--label label {
-	font-family: var(--wp--custom--form--typography--label-font-family);
-	font-weight: var(--wp--custom--form--typography--label-font-weight);
-	font-size: var(--wp--custom--form--typography--label-font-size);
-	color: var(--wp--custom--form--typography--label-color);
-	margin-bottom: var(--wp--custom--form--typography--label-margin-bottom);
+	border: var(--_border) !important;
+	border-radius: 0 !important;
 }
 
 :is(input, textarea).ff-el-form-control::placeholder {
-	font-family: var(--wp--custom--form--typography--placeholder-font-family);
-	color: var(--wp--custom--form--typography--placeholder-color);
-	font-weight: var(--wp--custom--form--typography--placeholder-font-weight);
-	font-size: var(--wp--custom--form--typography--placeholder-font-size);
+	font-family: var(--_font-family) !important;
+	color: var(--_font-color) !important;
+
+	opacity: 0.5 !important;
 }
 
-/* Buttons */
-button.ff-btn-submit {
-	font-family: var(--wp--custom--button--typography--font-family) !important;
-	font-weight: var(--wp--custom--button--typography--font-weight) !important;
-	font-size: var(--wp--custom--button--typography--font-size) !important;
-	line-height: var(--wp--custom--button--typography--line-height) !important;
-
-	padding-top: var(--wp--custom--button--padding--top);
-	padding-right: var(--wp--custom--button--padding--right);
-	padding-bottom: var(--wp--custom--button--padding--bottom);
-	padding-left: var(--wp--custom--button--padding--left);
-
-	width: 100%;
-	justify-content: space-between;
-
-	text-align: center;
-	transition: none !important;
-
-	border: none !important;
-	border-radius: var(--wp--custom--button--border--radius) !important;
-}
-
-button.ff-btn-submit::before {
-	content: "";
-}
-
-form.fluentform button.ff-bth-submit:hover {
-	opacity: 1 !important;
-	background-color: var(
-		--wp--custom--button--color--hover-background
-	) !important;
-	border-color: var(--wp--custom--button--color--hover-background) !important;
-	color: var(--wp--custom--button--color--hover-text) !important;
+/**
+ * Buttons
+ */
+.ff_submit_btn_wrapper {
+	max-width: 20rem;
+	margin-inline: auto;
+	margin-top: var(--wp--preset--spacing--50);
 }
 
 /* Modifiers */
 .ff-el-form-hide_label .ff-el-input--label {
 	display: none;
+}
+
+@media screen and (min-width: 800px) {
+	.contact-us {
+		padding: var(--wp--preset--spacing--50) var(--wp--preset--spacing--60);
+	}
 }
