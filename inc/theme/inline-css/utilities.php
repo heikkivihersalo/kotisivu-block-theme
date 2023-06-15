@@ -39,7 +39,7 @@
     /**
      * GRID
      */
-    :where.is-stacked {
+    :where(.is-stacked) {
         display: grid;
         grid-template-areas: "stack";
     }
