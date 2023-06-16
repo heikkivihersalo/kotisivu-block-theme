@@ -62,60 +62,53 @@
 				"attributes": {}
 			},
 			{
-				"slug": "ksd/global-contact-address",
-				"render_callback": "render_global_contact_address",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-contact-company-id",
-				"render_callback": "render_global_contact_company_id",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-contact-company-name",
-				"render_callback": "render_global_contact_company_name",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-contact-email",
-				"render_callback": "render_global_contact_email",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-contact-opening-hours",
-				"render_callback": "render_global_contact_opening_hours",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-contact-phone",
-				"render_callback": "render_global_contact_phone",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/global-social-icons",
-				"render_callback": "render_global_social_icons",
-				"attributes": {
-				}
-			},
-			{
-				"slug": "ksd/navigation-header",
-				"render_callback": "render_navigation_header",
-				"attributes": {}
-			},
-			{
 				"slug": "ksd/navigation-footer",
 				"render_callback": "render_navigation_footer",
 				"attributes": {}
 			},
 			{
+				"slug": "ksd/site-address",
+				"render_callback": "render_site_address",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-company-id",
+				"render_callback": "render_site_company_id",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-company-name",
+				"render_callback": "render_site_company_name",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-email",
+				"render_callback": "render_site_email",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-header",
+				"render_callback": "render_site_header",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-hours",
+				"render_callback": "render_site_hours",
+				"attributes": {}
+			},
+			{
 				"slug": "ksd/site-logo",
 				"render_callback": "render_site_logo",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-phone",
+				"render_callback": "render_site_phone",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/site-social",
+				"render_callback": "render_site_social",
 				"attributes": {}
 			}
 		],
