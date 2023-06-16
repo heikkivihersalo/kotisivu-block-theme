@@ -1,0 +1,36 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/timeline-list-item",
+	"title": "Timeline Item",
+	"category": "child",
+	"icon": "block-default",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/timeline-list"],
+	"editorScript": "file:../../../../build/blocks/timeline-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/timeline-list-item.css",
+	"style": "file:../../../../build/blocks/style-timeline-list-item.css",
+	"attributes": {
+		"timelineName": {
+			"type": "string",
+			"source": "html",
+			"selector": "h3.timeline-list-item__name",
+			"default": ""
+		},
+		"timelineStatus": {
+			"type": "string",
+			"default": "not-set"
+		},
+		"timelineStatusText": {
+			"type": "string",
+			"source": "html",
+			"selector": "span.timeline-list-item__status-text",
+			"default": ""
+		}
+	}
+}

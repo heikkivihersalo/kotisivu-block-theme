@@ -1,0 +1,63 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/contact-list-item",
+	"title": "List Item",
+	"category": "child",
+	"icon": "block-default",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/contact-list"],
+	"editorScript": "file:../../../../build/blocks/contact-list-item.js",
+	"editorStyle": "file:../../../../build/blocks/contact-list-item.css",
+	"style": "file:../../../../build/blocks/style-contact-list-item.css",
+	"attributes": {
+		"post": {
+			"type": "object"
+		},
+		"url": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"content": {
+			"type": "string",
+			"default": ""
+		},
+		"target": {
+			"type": "string"
+		},
+		"rel": {
+			"type": "string"
+		},
+		"mediaId": {
+			"type": "number",
+			"default": 0
+		},
+		"mediaUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaMime": {
+			"type": "string",
+			"default": ""
+		},
+		"mediaWidth": {
+			"type": "number"
+		},
+		"mediaHeight": {
+			"type": "number"
+		}
+	}
+}
