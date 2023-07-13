@@ -46,23 +46,87 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
 }
 
 /*--------------------------------------------------------------
-  3.0 Custom Blocks
+  3.0 Modifiers
 --------------------------------------------------------------*/
 
 /**
- * Container 100
- */
-section.wp-block-ksd-container-100 {
+* GRID
+*/
+:where(.is-stacked) {
 	display: grid;
-	justify-content: center;
-	justify-items: center;
+	grid-template-areas: "stack";
 }
 
-section.wp-block-ksd-container-100.has-bg-color > *:not(div) {
-	color: white;
+:where(.is-stacked > *) {
+	grid-area: stack;
 }
 
-section.wp-block-ksd-container-100.has-bg-color[style="background-color:var(--wp--preset--color--grey-light)"]
-	> *:not(div) {
-	color: initial;
+/** 
+* GRID COLUMNS 
+*/
+:where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+	display: grid;
+	grid-template-columns: repeat(1, minmax(0, 1fr));
+	margin-inline: auto;
+	gap: var(--wp--preset--spacing--40);
+}
+
+:is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h1,
+:is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h2,
+:is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) > div > p:first-child {
+	margin-top: 0;
+}
+
+@media screen and (min-width: 800px) {
+	:where(.grid-cols-1, .grid-cols-1-rv) {
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
+
+	:where(.grid-cols-2, .grid-cols-2-rv) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	:where(.grid-cols-70-30, .grid-cols-70-30-rv) {
+		display: grid;
+		grid-template-columns: 0.67fr 0.33fr;
+	}
+
+	:where(.grid-cols-30-70, .grid-cols-30-70-rv) {
+		display: grid;
+		grid-template-columns: 0.33fr 0.67fr;
+	}
+
+	:where(.grid-cols-75-25, .grid-cols-75-25-rv) {
+		display: grid;
+		grid-template-columns: 0.75fr 0.25fr;
+	}
+
+	:where(.grid-cols-25-75, .grid-cols-25-75-rv) {
+		display: grid;
+		grid-template-columns: 0.75fr 0.25fr;
+	}
+
+	:where(.grid-cols-3) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	:where(.grid-cols-4) {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	:where(.grid-cols-5) {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+	}
+
+	:where(.grid-cols-6) {
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+	}
+
+	:where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):first-child) {
+		order: 2;
+	}
+
+	:where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):last-child) {
+		order: 1;
+	}
 }
