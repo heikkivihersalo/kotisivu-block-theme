@@ -38,7 +38,7 @@
 			"ksd/form",
 			"ksd/hero",
 			"ksd/image-gallery",
-			"ksd/inner-column",
+			"ksd/column",
 			"ksd/section",
 			"ksd/wrapper"
 		],
