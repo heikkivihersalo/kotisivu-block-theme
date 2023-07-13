@@ -54,3 +54,15 @@ export const setLCR = (props, attributeKey = 'alignment', attributeValue, modifi
 export const setReverseAlignment = () => {
     
 }
+
+export const convertVerticalBarSyntaxToCSS = (string) => {
+    /**
+     * Guard clauses
+     */
+    if (string == "0") return undefined; // Some error in the editor attributes causes string to be 0
+
+    // if (typeof string !== 'string' || !(string instanceof String)) return console.log("Not a string");
+    
+    let val = string.split(":")[1].trim();
+    return "var(--wp--" + val.replaceAll("|", "--") + ")";
+}
