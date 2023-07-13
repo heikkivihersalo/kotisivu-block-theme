@@ -84,13 +84,6 @@
       "defaultGradients": false,
       "defaultPalette": false
     },
-    "custom": {
-      "site": {
-        "width": "1400px",
-        "fullWidth": "1920px",
-        "maxWidth": "calc(100% - calc(var(--wp--preset--spacing--40)) * 2"
-      }
-    },
     "layout": {
       "contentSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1500px)",
       "wideSize": "min(100%, 1920px)"
@@ -147,44 +140,51 @@
       "fluid": true,
       "fontFamilies": [
         {
-          "fontFamily": "\"Unna\"",
-          "name": "Unna",
+          "fontFamily": "\"Alpino\"",
+          "name": "Alpino",
           "slug": "primary",
           "fontFace": [
             {
-              "fontFamily": "Unna",
+              "fontFamily": "Alpino-Black",
+              "fontWeight": "900",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./public/fonts/Alpino-Black.woff2"]
+            },
+            {
+              "fontFamily": "Alpino-Bold",
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/Unna-700.woff2"]
-            },
-            {
-              "fontFamily": "Unna",
-              "fontWeight": "400",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./public/fonts/Unna-400.woff2"]
+              "src": ["file:./public/fonts/Alpino-Bold.woff2"]
             }
           ]
         },
         {
-          "fontFamily": "\"Sen\"",
-          "name": "Sen",
+          "fontFamily": "\"Synonym\"",
+          "name": "Synonym",
           "slug": "secondary",
           "fontFace": [
             {
-              "fontFamily": "Sen",
+              "fontFamily": "Synonym-Bold",
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/Sen-700.woff2"]
+              "src": ["file:./public/fonts/Synonym-Bold.woff2"]
             },
             {
-              "fontFamily": "Sen",
+              "fontFamily": "Synonym-Regular",
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/Sen-400.woff2"]
+              "src": ["file:./public/fonts/Synonym-Regular.woff2"]
+            },
+            {
+              "fontFamily": "Synonym-Extralight",
+              "fontWeight": "200",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./public/fonts/Synonym-Extralight.woff2"]
             }
           ]
         }
