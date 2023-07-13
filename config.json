@@ -35,6 +35,7 @@
 		"translations": false,
 		"has_modified_core_blocks": false,
 		"static": [
+			"ksd/aside",
 			"ksd/form",
 			"ksd/hero",
 			"ksd/image-gallery",
@@ -120,8 +121,7 @@
 			"core/buttons",
 			"core/separator",
 			"core/shortcode",
-			"core/block",
-			"core/group"
+			"core/block"
 		]
 	},
 	"menus": [
