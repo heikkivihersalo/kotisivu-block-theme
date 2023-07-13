@@ -3,5 +3,9 @@
 		"name": "default",
 		"label": "Default",
 		"isDefault": true
+	},
+	{
+		"name": "square",
+		"label": "Square"
 	}
 ]
