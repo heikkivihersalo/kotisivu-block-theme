@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/site-footer",
+	"title": "Site Footer",
+	"category": "theme",
+	"icon": "grid-view",
+	"description": "",
+	"keywords": ["menu, header"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"multiple": false
+	},
+	"editorScript": "file:../../../../build/blocks/site-footer.js",
+	"editorStyle": "file:../../../../build/blocks/site-footer.css",
+	"style": "file:../../../../build/blocks/style-site-footer.css",
+	"attributes": {
+		"options": {
+			"type": "object",
+			"default": ""
+		}
+	}
+}
