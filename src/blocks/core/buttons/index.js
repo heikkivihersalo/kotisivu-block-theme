@@ -18,9 +18,7 @@ domReady(function () {
      */
     unregisterBlockStyle('core/button', 'outline');
     unregisterBlockStyle('core/button', 'fill');
-
-    console.log(styles);
-
+    
     /**
      * Register custom button styles
      */
