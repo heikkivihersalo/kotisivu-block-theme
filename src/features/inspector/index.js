@@ -10,3 +10,6 @@ export * from './lib/iconSelector';
 export * from './lib/innerBlocksAppender';
 export * from './lib/linkControls';
 export * from './lib/transparentBackground';
+export * from './lib/ariaLabelControls';
+export * from './lib/backgroundColorControl';
+export * from './lib/widthControl';
