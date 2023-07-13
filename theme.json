@@ -125,51 +125,51 @@
       "fluid": true,
       "fontFamilies": [
         {
-          "fontFamily": "\"Alpino\"",
-          "name": "Alpino",
+          "fontFamily": "\"Synonym\"",
+          "name": "Synonym",
           "slug": "primary",
           "fontFace": [
             {
-              "fontFamily": "Alpino-Black",
-              "fontWeight": "900",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./public/fonts/Alpino-Black.woff2"]
-            },
-            {
-              "fontFamily": "Alpino-Bold",
+              "fontFamily": "Synonym",
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/Alpino-Bold.woff2"]
+              "src": ["file:./public/fonts/Synonym/Synonym-Bold.woff2"]
+            },
+            {
+              "fontFamily": "Synonym",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./public/fonts/Synonym/Synonym-Regular.woff2"]
+            },
+            {
+              "fontFamily": "Synonym",
+              "fontWeight": "200",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./public/fonts/Synonym/Synonym-Extralight.woff2"]
             }
           ]
         },
         {
-          "fontFamily": "\"Synonym\"",
-          "name": "Synonym",
+          "fontFamily": "\"Alpino\"",
+          "name": "Alpino",
           "slug": "secondary",
           "fontFace": [
             {
-              "fontFamily": "Synonym-Bold",
+              "fontFamily": "Alpino",
+              "fontWeight": "900",
+              "fontStyle": "normal",
+              "fontStretch": "normal",
+              "src": ["file:./public/fonts/Alpino/Alpino-Black.woff2"]
+            },
+            {
+              "fontFamily": "Alpino",
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/Synonym-Bold.woff2"]
-            },
-            {
-              "fontFamily": "Synonym-Regular",
-              "fontWeight": "400",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./public/fonts/Synonym-Regular.woff2"]
-            },
-            {
-              "fontFamily": "Synonym-Extralight",
-              "fontWeight": "200",
-              "fontStyle": "normal",
-              "fontStretch": "normal",
-              "src": ["file:./public/fonts/Synonym-Extralight.woff2"]
+              "src": ["file:./public/fonts/Alpino/Alpino-Bold.woff2"]
             }
           ]
         }
