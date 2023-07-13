@@ -48,8 +48,8 @@ class BlockCategories extends Blocks {
             array_push(
                 $block_categories,
                 array(
-                    'slug'  => 'navigation',
-                    'title' => __('Navigation', $this->textdomain),
+                    'slug'  => 'child',
+                    'title' => __('Child', $this->textdomain),
                     'icon'  => null,
                 )
             );
@@ -57,8 +57,26 @@ class BlockCategories extends Blocks {
             array_push(
                 $block_categories,
                 array(
-                    'slug'  => 'child',
-                    'title' => __('Child', $this->textdomain),
+                    'slug'  => 'sections',
+                    'title' => __('Sections', $this->textdomain),
+                    'icon'  => null,
+                )
+            );
+
+            array_push(
+                $block_categories,
+                array(
+                    'slug'  => 'containers',
+                    'title' => __('Containers & Wrappers', $this->textdomain),
+                    'icon'  => null,
+                )
+            );
+
+            array_push(
+                $block_categories,
+                array(
+                    'slug'  => 'dynamic-data',
+                    'title' => __('Dynamic Data', $this->textdomain),
                     'icon'  => null,
                 )
             );
