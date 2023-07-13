@@ -35,25 +35,12 @@
 		"translations": false,
 		"has_modified_core_blocks": false,
 		"static": [
-			"ksd/columns",
-			"ksd/column",
-			"ksd/contact-list",
-			"ksd/contact-list-item",
-			"ksd/container-50-50",
-			"ksd/container-100",
 			"ksd/form",
 			"ksd/hero",
-			"ksd/icon-list",
-			"ksd/icon-list-item",
 			"ksd/image-gallery",
-			"ksd/image-optimized",
 			"ksd/inner-column",
-			"ksd/site-footer",
-			"ksd/site-header",
-			"ksd/social-icon-list",
-			"ksd/social-icon-list-item",
-			"ksd/timeline-list",
-			"ksd/timeline-list-item"
+			"ksd/section",
+			"ksd/wrapper"
 		],
 		"dynamic": [
 			{
@@ -87,6 +74,11 @@
 				"attributes": {}
 			},
 			{
+				"slug": "ksd/site-footer",
+				"render_callback": "render_site_footer",
+				"attributes": {}
+			},
+			{
 				"slug": "ksd/site-header",
 				"render_callback": "render_site_header",
 				"attributes": {}
@@ -99,7 +91,12 @@
 			{
 				"slug": "ksd/site-logo",
 				"render_callback": "render_site_logo",
-				"attributes": {}
+				"attributes": {
+					"isLink": {
+						"type": "boolean",
+						"default": true
+					}
+				}
 			},
 			{
 				"slug": "ksd/site-phone",
