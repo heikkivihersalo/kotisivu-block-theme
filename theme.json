@@ -19,53 +19,23 @@
       "link": false,
       "palette": [
         {
-          "slug": "primary-light",
-          "color": "hsl(188, 69%, 43%)",
-          "name": "Light Primary"
-        },
-        {
           "slug": "primary",
-          "color": "hsl(188, 69%, 28%)",
+          "color": "hsl(343, 100%, 48%)",
           "name": "Primary"
         },
         {
-          "slug": "primary-dark",
-          "color": "hsl(188, 69%, 13%)",
-          "name": "Dark Primary"
-        },
-        {
           "slug": "secondary",
-          "color": "hsl(29, 54%, 61%)",
+          "color": "hsl(163, 100%, 48%)",
           "name": "Secondary"
         },
         {
-          "slug": "background-lightest",
-          "color": "hsl(213, 40%, 35%)",
-          "name": "Lightest Background"
-        },
-        {
-          "slug": "background-light",
-          "color": "hsl(213, 50%, 20%)",
-          "name": "Light Background"
-        },
-        {
           "slug": "background",
-          "color": "hsl(219, 47%, 15%)",
+          "color": "hsl(0, 0%, 100%)",
           "name": "Background"
         },
         {
-          "slug": "background-dark",
-          "color": "hsl(219, 47%, 12%)",
-          "name": "Dark Background"
-        },
-        {
-          "slug": "background-darkest",
-          "color": "hsl(219, 47%, 9%)",
-          "name": "Darkest Background"
-        },
-        {
           "slug": "foreground",
-          "color": "hsl(0, 0%, 100%)",
+          "color": "hsl(180, 5%, 8%)",
           "name": "Foreground"
         },
         {
@@ -75,8 +45,23 @@
         },
         {
           "slug": "black",
-          "color": "hsl(0, 0%, 0%)",
+          "color": "hsl(180, 5%, 8%)",
           "name": "Black"
+        },
+        {
+          "slug": "grey-light",
+          "color": "hsl(233, 4%, 22%)",
+          "name": "Light Grey"
+        },
+        {
+          "slug": "grey",
+          "color": "hsl(233, 4%, 52%)",
+          "name": "Grey"
+        },
+        {
+          "slug": "grey-dark",
+          "color": "hsl(233, 4%, 82%)",
+          "name": "Dark Grey"
         }
       ],
       "text": true,
