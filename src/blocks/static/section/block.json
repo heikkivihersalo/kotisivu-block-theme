@@ -58,7 +58,21 @@
 			"enum": ["all", "insert", false]
 		},
 		"width": {
-			"enum": ["full", "content", "none"]
+			"enum": [
+				"var(--wp--style--global--wide-size)",
+				"var(--wp--style--global--content-size)"
+			],
+			"default": "var(--wp--style--global--content-size)"
+		},
+		"alignItems": {
+			"enum": ["center", "start", "end", "stretch", "baseline"]
+		},
+		"justifyItems": {
+			"enum": ["center", "start", "end", "stretch"]
+		},
+		"isReversed": {
+			"type": "boolean",
+			"default": false
 		},
 		"showAlignmentControls": {
 			"type": "boolean",

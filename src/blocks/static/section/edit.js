@@ -11,12 +11,13 @@ import {
 	store as blocksStore,
 } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
+import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import metadata from './block.json';
-import { AriaLabelControls, BackgroundColorControl, WidthControl, InnerBlocksAppender } from '@features/inspector';
+import { AriaLabelControls, BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
 import { convertVerticalBarSyntaxToCSS } from '@utils/modifiers';
 
 /**
@@ -34,18 +35,28 @@ const Edit = (props) => {
 			templateLock,
 			style,
 			width,
+			justifyItems,
+			alignItems,
 			variationName,
-			showAlignmentControls
+			showAlignmentControls,
+			isReversed
 		},
 		setAttributes,
 		clientId
 	} = props;
 
+	const getIsReversedClass = (isReversed) => {
+		if (isReversed) {
+			return 'is-reversed';
+		}
+		return false;
+	}
+
 	/**
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: sectionClass,
+		className: classnames(sectionClass, getIsReversedClass(isReversed)),
 		style: {
 			background: style.backgroundColor ? style.backgroundColor : undefined,
 			marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,
@@ -54,7 +65,9 @@ const Edit = (props) => {
 			paddingBottom: style?.spacing?.padding?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.padding.bottom) : undefined,
 			paddingLeft: style?.spacing?.padding?.left ? convertVerticalBarSyntaxToCSS(style.spacing.padding.left) : undefined,
 			paddingRight: style?.spacing?.padding?.right ? convertVerticalBarSyntaxToCSS(style.spacing.padding.right) : undefined,
-			width: width === 'full' ? "var(--wp--style--global--wide-size)" : "var(--wp--style--global--content-size)"
+			width: width ? width : undefined,
+			justifyItems: justifyItems ? justifyItems : undefined,
+			alignItems: alignItems ? alignItems : undefined
 		},
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
@@ -105,7 +118,10 @@ const Edit = (props) => {
 				<BackgroundColorControl {...props} />
 				{showAlignmentControls &&
 					(
-						<WidthControl {...props} />
+						<>
+							<GridAlignControls {...props} />
+							<WidthControls {...props} />
+						</>
 					)
 				}
 			</InspectorControls>
