@@ -92,11 +92,11 @@
             grid-template-columns: repeat(6, minmax(0, 1fr));
         }
 
-        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):first-child) {
+        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv, .is-reversed) div:first-child) {
             order: 2
         }
 
-        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv):last-child) {
+        :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv, .is-reversed) div:last-child) {
             order: 1
         }
     }
