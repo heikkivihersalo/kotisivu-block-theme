@@ -1,1 +1,0 @@
-{"version":3,"file":"./style-inner-column.css","mappings":";;;AAAA;IACI,WAAW;CACd,sEAAsE;AACvE,C","sources":["webpack://kotisivu-block-theme/./src/blocks/static/inner-column/style.css"],"sourcesContent":[":where(.inner-column) {\n    width: 100%;\n\tmax-width: calc( 100% - var(--wp--custom--spacing--medium, 2rem) * 2 );\n}"],"names":[],"sourceRoot":""}
