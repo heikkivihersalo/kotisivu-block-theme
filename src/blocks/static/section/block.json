@@ -1,0 +1,72 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/section",
+	"title": "Section",
+	"category": "containers",
+	"icon": "layout",
+	"description": "",
+	"keywords": ["container, columns, column, wrapper"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"ariaLabel": true,
+		"align": ["full"]
+	},
+	"editorScript": "file:../../../../build/blocks/section.js",
+	"editorStyle": "file:../../../../build/blocks/section.css",
+	"style": "file:../../../../build/blocks/style-section.css",
+	"attributes": {
+		"sectionClass": {
+			"type": "string",
+			"default": ""
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		},
+		"width": {
+			"enum": ["full", "content", "none"]
+		},
+		"showAlignmentControls": {
+			"type": "boolean",
+			"default": true
+		},
+		"variationName": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}
