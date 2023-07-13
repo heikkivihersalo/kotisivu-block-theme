@@ -18,8 +18,8 @@ const variations = [
         icon: 'button',
         scope: 'block',
         innerBlocks: [
-            ['ksd/inner-column'],
-            ['ksd/inner-column']
+            ['ksd/column'],
+            ['ksd/column']
         ],
         attributes: {
             sectionClass: "grid-cols-2",
@@ -32,9 +32,9 @@ const variations = [
         icon: 'button',
         scope: 'block',
         innerBlocks: [
-            ['ksd/inner-column'],
-            ['ksd/inner-column'],
-            ['ksd/inner-column']
+            ['ksd/column'],
+            ['ksd/column'],
+            ['ksd/column']
         ],
         attributes: {
             sectionClass: "grid-cols-3",
