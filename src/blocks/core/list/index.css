@@ -1,0 +1,11 @@
+ul.is-style-centered {
+    list-style: none;
+    text-align: center;
+    width: fit-content;
+    margin-inline: auto;
+}
+
+ul.is-style-centered li::before {
+    content: "•";
+    margin-inline-end: 0.5rem;
+}
