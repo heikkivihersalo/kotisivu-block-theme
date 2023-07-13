@@ -5,6 +5,7 @@ import { convertVerticalBarSyntaxToCSS } from '@utils/modifiers';
 const Save = (props) => {
 	const {
 		attributes: {
+			sectionClass,
 			ariaLabel,
 			ariaLabelledBy,
 			style,
@@ -13,6 +14,7 @@ const Save = (props) => {
 	} = props;
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
+		className: sectionClass,
 		style: {
 			background: style.backgroundColor ? style.backgroundColor : undefined,
 			marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,

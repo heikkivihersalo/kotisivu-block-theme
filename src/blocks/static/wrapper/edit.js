@@ -1,16 +1,10 @@
-import { name as blockName } from './block.json';
-
 /**
  * WordPress dependencies
  */
-import classnames from 'classnames';
 import { __ } from "@wordpress/i18n";
 import {
-	InnerBlocks,
 	useBlockProps,
-	useInnerBlocksProps,
 	__experimentalBlockVariationPicker as BlockVariationPicker,
-	store as blockEditorStore,
 	InspectorControls
 } from "@wordpress/block-editor";
 import {
@@ -21,6 +15,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import metadata from './block.json';
 import { BackgroundColorControl, WidthControl, InnerBlocksAppender } from '@features/inspector';
 import { convertVerticalBarSyntaxToCSS } from '@utils/modifiers';
 
@@ -64,9 +59,9 @@ const Edit = (props) => {
 	const blockVariations = useSelect(
 		(select) => {
 			const { getBlockVariations } = select(blocksStore);
-			return getBlockVariations(blockName, 'block');
+			return getBlockVariations(metadata.name, 'block');
 		},
-		[blockName]
+		[metadata.name]
 	);
 
 	const innerBlocksProps = InnerBlocksAppender({
@@ -86,7 +81,7 @@ const Edit = (props) => {
 					setAttributes({
 						variationName: variation.name,
 						template: variation.innerBlocks,
-						className: variation.attributes.className,
+						wrapperClass: variation.attributes.wrapperClass,
 						showAlignmentControls: variation.attributes.showAlignmentControls
 					})
 				}
