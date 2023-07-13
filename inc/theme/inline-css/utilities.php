@@ -19,24 +19,6 @@
     }
 
     /**
-     * SPACING
-     */
-    :where(.has-top-bottom-margin-small) {
-        margin-top: var(--wp--preset--spacing--30);
-        margin-bottom: var(--wp--preset--spacing--30);
-    }
-
-    :where(.has-top-bottom-margin-medium) {
-        margin-top: var(--wp--preset--spacing--60);
-        margin-bottom: var(--wp--preset--spacing--60);
-    }
-
-    :where(.has-top-bottom-margin-large) {
-        margin-top: var(--wp--preset--spacing--80);
-        margin-bottom: var(--wp--preset--spacing--80);
-    }
-
-    /**
      * GRID
      */
     :where(.is-stacked) {
@@ -54,6 +36,14 @@
     :where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: var(--wp--preset--spacing--40);
+        margin-inline: auto;
+    }
+
+    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h1,
+    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h2,
+    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6)>div>p:first-child {
+        margin-top: 0;
     }
 
     @media screen and (min-width: 800px) {
