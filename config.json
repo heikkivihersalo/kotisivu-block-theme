@@ -123,6 +123,7 @@
 			"core/buttons",
 			"core/separator",
 			"core/shortcode",
+			"core/block",
 			"core/group"
 		]
 	},
