@@ -1,4 +1,0 @@
-.inner-column {
-    width: 100%;
-	max-width: calc( 100% - var(--wp--preset--spacing--40, 2rem) * 2 );
-}
