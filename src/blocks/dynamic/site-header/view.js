@@ -2,58 +2,89 @@ import domReady from '@wordpress/dom-ready';
 import { openMobileMenu, closeMobileMenu, getStickyHeaderPadding, getStickyHeaderWidth } from "./scripts/helpers";
 
 domReady(function () {
-    /**
-     * Get DOM elements
-     */
-    const elements = {
-        header: document.getElementsByTagName("header")[0],
-        toggle: document.getElementsByClassName("header__toggle")[0],
-        links: document.querySelectorAll(".header__menu a")
-    };
+    // ========================
+    // ====== CONSTANTS =======
+    // ========================
+
+    const NAV_CONTAINER = document.getElementsByTagName("header")[0];
+    const NAV_MOBILE_TOGGLE = document.getElementsByClassName("header__toggle")[0];
+    const NAV_LINKS = document.querySelectorAll(".wp-block-pages-list__item");
+
+    // ========================
+    // ====== FUNCTIONS =======
+    // ========================
 
     /**
-     * Init sticky header
+     * Enable sticky header
+     * @return void
      */
-    let scroll = window.scrollY <= 100 ? Math.round(window.scrollY) : 100;
+    function enableStickyHeader() {
+        if (!NAV_CONTAINER) return;
 
-    if( scroll > 3) {
-        elements.header.style.setProperty("--_inline-background-color", `hsla(206, 56%, 20%, ${scroll / 100})`);
-        elements.header.style.setProperty("--_inline-padding", `${getStickyHeaderPadding(scroll)}px`);
-        elements.header.style.setProperty("--_inline-width", `${getStickyHeaderWidth(scroll)}rem`);
+        document.addEventListener("scroll", () => {
+            /* Set opacity to 0 to animate sticky transition */
+            window.scrollY > 100
+                ? NAV_CONTAINER.classList.add("sticky-opacity")
+                : NAV_CONTAINER.classList.remove("sticky-opacity");
 
-        window.scrollY > 50 ? elements.header.classList.add("sticky") : elements.header.classList.remove("sticky");
+            /* Set position to 'sticky' for sticky header */
+            window.scrollY > 500
+                ? NAV_CONTAINER.classList.add("sticky-header")
+                : NAV_CONTAINER.classList.remove("sticky-header");
+        });
     }
 
-    /** 
-     * Set listener for opening mobile menu
+    /**
+     * Add listener for opening mobile menu
+     * @return void
      */
-    elements.toggle.addEventListener("click", () => {
-        openMobileMenu(elements);
-    });
+    function openMobileMenu() {
+        if (!NAV_CONTAINER) return;
 
-    /** 
-     * Set listener for closing mobile menu
-     */
-    elements.links.forEach((link) => {
-        link.addEventListener("click", () => {
-            closeMobileMenu(elements);
+        NAV_MOBILE_TOGGLE.addEventListener("click", () => {
+            const currentState = NAV_MOBILE_TOGGLE.getAttribute("data-state");
+
+            if (!currentState || currentState === "closed") {
+                NAV_MOBILE_TOGGLE.setAttribute("data-state", "opened");
+                NAV_MOBILE_TOGGLE.setAttribute("aria-expanded", "true");
+            } else {
+                NAV_MOBILE_TOGGLE.setAttribute("data-state", "closed");
+                NAV_MOBILE_TOGGLE.setAttribute("aria-expanded", "false");
+            }
+
+            NAV_CONTAINER.classList.toggle("active");
         });
-    });
+    }
 
     /**
-     * Set listener for sticky header
+     * Add listener for closing mobile menu
+     * @return void
      */
-    document.addEventListener("scroll", (event) => {
-        let scroll = window.scrollY <= 100 ? Math.round(window.scrollY) : 100;
+    function closeMobileMenu() {
+        if (!NAV_CONTAINER) return;
 
-        elements.header.style.setProperty("--_inline-background-color", `hsla(206, 56%, 20%, ${scroll / 100})`);
-        elements.header.style.setProperty("--_inline-padding", `${getStickyHeaderPadding(scroll)}px`);
-        elements.header.style.setProperty("--_inline-width", `${getStickyHeaderWidth(scroll)}rem`);
+        NAV_LINKS.forEach((link) => {
+            link.addEventListener("click", () => {
+                NAV_CONTAINER.classList.remove("active");
+                NAV_MOBILE_TOGGLE.classList.remove("active");
+            });
+        });
+    }
 
-        if (window.scrollY > 50) {
-            elements.header.classList.add("sticky");
-        } else {
-            elements.header.classList.remove("sticky");
+    // ========================
+    // ========= INIT =========
+    // ========================
+
+    (async () => {
+        try {
+            /**
+             * Mobile menu
+             */
+            enableStickyHeader();
+            openMobileMenu();
+            closeMobileMenu();
+        } catch (err) {
+            console.error(err);
         }
-    });
+    })();
 });

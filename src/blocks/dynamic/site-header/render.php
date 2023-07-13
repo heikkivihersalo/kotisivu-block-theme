@@ -3,13 +3,7 @@
 function render_site_header($block_attributes, $content) { ?>
     <?php wp_enqueue_script('ksd-navigation-header-view-script') ?>
     <?php ob_start(); ?>
-    <div class="header__wrapper">
-        <?php echo do_blocks('<!-- wp:ksd/site-logo {"className":"header__logo"} /-->'); ?>
-        <div class="header__contact">
-            <?php echo block_template_part('header-cta'); ?>
-            <?php echo do_blocks('<!-- wp:ksd/site-social {"className":"header__social"} /-->'); ?>
-        </div>
-    </div>
+    <?php echo do_blocks('<!-- wp:ksd/site-logo {"className":"header__logo"} /-->'); ?>
     <nav class="header__site-nav">
         <?php get_template_part('inc/template-parts/header', 'nav-toggle'); ?>
         <?php if (has_nav_menu('primary-navigation')) : ?>
@@ -20,6 +14,7 @@ function render_site_header($block_attributes, $content) { ?>
                 'menu_id' => 'primary-navigation'
             )); ?>
         <?php endif; ?>
+        <?php echo block_template_part('header-buttons'); ?>
     </nav>
     <?php return ob_get_clean(); ?>
 <?php } ?>
