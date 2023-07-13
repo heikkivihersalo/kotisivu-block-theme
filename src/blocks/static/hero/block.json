@@ -1,15 +1,27 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "ksd/hero",
 	"title": "Hero",
-	"category": "theme",
-	"icon": "cover-image",
-	"description": "Hero block",
-	"keywords": ["section, container, hero"],
+	"category": "sections",
+	"icon": "layout",
+	"description": "",
+	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",
 	"supports": {
-		"className": false
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"ariaLabel": true,
+		"align": ["full"]
 	},
 	"editorScript": "file:../../../../build/blocks/hero.js",
 	"editorStyle": "file:../../../../build/blocks/hero.css",
@@ -17,58 +29,58 @@
 	"attributes": {
 		"heroClass": {
 			"type": "string",
-			"default": "hero"
-		},
-		"modifiers": {
-			"type": "string",
 			"default": ""
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "0",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
 		},
 		"templateLock": {
-			"type": [ "string", "boolean" ],
-			"enum": [ "all", "insert", false ]
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
 		},
-		"hasBackgroundImage": {
-			"type": "boolean"
+		"width": {
+			"enum": [
+				"var(--wp--style--global--wide-size)",
+				"var(--wp--style--global--content-size)"
+			],
+			"default": "var(--wp--style--global--wide-size)"
 		},
-		"mediaId": {
-			"type": "number",
-			"default": 0
+		"alignItems": {
+			"enum": ["center", "start", "end", "stretch", "baseline"]
 		},
-		"mediaUrl": {
-			"type": "string",
-			"default": ""
+		"justifyItems": {
+			"enum": ["center", "start", "end", "stretch"]
 		},
-		"mediaAlt": {
-			"type": "string",
-			"default": ""
+		"isReversed": {
+			"type": "boolean",
+			"default": false
 		},
-		"mediaWidth": {
-			"type": "number",
-			"default": ""
-		},
-		"mediaHeight": {
-			"type": "number",
-			"default": ""
-		},
-		"mediaMime": {
-			"type": "string",
-			"default": ""
-		},
-		"mediaSrcSet": {
-			"type": "string",
-			"default": ""
-		},
-		"mediaSrcSizes": {
-			"type": "string",
-			"default": ""
-		},
-		"lazyLoad": {
+		"showAlignmentControls": {
 			"type": "boolean",
 			"default": true
 		},
-		"align": {
+		"variationName": {
 			"type": "string",
-			"default": "full"
+			"default": ""
 		}
 	}
 }

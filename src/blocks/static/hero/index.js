@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { registerBlockType } from '@wordpress/blocks';
+import variations from './variations.js';
 import edit from "./edit";
 import save from "./save";
 import metadata from './block.json';
@@ -26,6 +27,7 @@ export const settings = {
     supports: supports,
     keywords: keywords,
     textdomain: textdomain,
+    variations,
     edit,
     save,
     getEditWrapperProps() {
