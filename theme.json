@@ -98,8 +98,8 @@
     "spacing": {
       "units": ["em", "rem", "%", "vw", "vh"],
       "blockGap": null,
-      "margin": false,
-      "padding": false,
+      "margin": true,
+      "padding": true,
       "spacingSizes": [
         {
           "size": "clamp(0.618046971569839rem, calc(0.615109684219015rem + 0.0146864367541203vw), 0.63273340832396rem)",
