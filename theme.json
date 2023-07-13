@@ -188,8 +188,8 @@
           "size": "2.488rem",
           "slug": "colossal",
           "fluid": {
-            "min": "5.653rem",
-            "max": "9.375rem"
+            "min": "2.488rem",
+            "max": "4.735rem"
           }
         },
         {
@@ -198,7 +198,7 @@
           "slug": "gigantic",
           "fluid": {
             "min": "2.074rem",
-            "max": "4.625rem"
+            "max": "3.552rem"
           }
         },
         {
@@ -207,7 +207,7 @@
           "slug": "huge",
           "fluid": {
             "min": "1.728rem",
-            "max": "2.625rem"
+            "max": "2.665rem"
           }
         },
         {
@@ -216,7 +216,7 @@
           "slug": "x-large",
           "fluid": {
             "min": "1.440rem",
-            "max": "1.875rem"
+            "max": "1.999rem"
           }
         },
         {
@@ -225,7 +225,7 @@
           "slug": "large",
           "fluid": {
             "min": "1.200rem",
-            "max": "1.250rem"
+            "max": "1.500rem"
           }
         },
         {
@@ -234,25 +234,25 @@
           "slug": "medium",
           "fluid": {
             "min": "1rem",
-            "max": "1.063rem"
+            "max": "1.125rem"
           }
         },
         {
           "name": "Small",
-          "size": "0.833rem",
+          "size": "0.844rem",
           "slug": "small",
           "fluid": {
-            "min": "0.833rem",
-            "max": "0.938rem"
+            "min": "0.844rem",
+            "max": "0.844rem"
           }
         },
         {
           "name": "Tiny",
-          "size": "0.694rem",
+          "size": "0.633rem",
           "slug": "tiny",
           "fluid": {
-            "min": "0.694rem",
-            "max": "0.781rem"
+            "min": "0.633rem",
+            "max": "0.633rem"
           }
         }
       ]
