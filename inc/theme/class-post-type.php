@@ -95,6 +95,24 @@ class CustomPostType {
         $metabox->register();
     }
 
+    public function test_filter($labels) {
+        return array(
+            'name' => __($labels['name'], 'kotisivu-block-theme'),
+            'singular_name' => __($labels['singular_name'], 'kotisivu-block-theme'),
+            'menu_name' => __($labels['menu_name'], 'kotisivu-block-theme'),
+            'all_items' => __($labels['all_items'], 'kotisivu-block-theme'),
+            'add_new' => __($labels['add_new'], 'kotisivu-block-theme'),
+            'add_new_item' => __($labels['add_new_item'], 'kotisivu-block-theme'),
+            'edit_item' => __($labels['edit_item'], 'kotisivu-block-theme'),
+            'new_item' => __($labels['new_item'], 'kotisivu-block-theme'),
+            'view_item' => __($labels['view_item'], 'kotisivu-block-theme'),
+            'search_items' => __($labels['search_items'], 'kotisivu-block-theme'),
+            'not_found' => __($labels['not_found'], 'kotisivu-block-theme'),
+            'not_found_in_trash' => __($labels['not_found_in_trash'], 'kotisivu-block-theme'),
+            'parent_item_colon' => __($labels['parent_item_colon'], 'kotisivu-block-theme'),
+        );
+    }
+
     /**
      * Initialize class
      * @return void 
@@ -103,6 +121,7 @@ class CustomPostType {
         $this->post_types = $this->config["customPostTypes"] ?? [];
 
         foreach ($this->post_types as $post_type) :
+            add_filter('createLabels', [$this, 'test_filter']);
             $this->register_post_type($post_type);
         endforeach;
     }
