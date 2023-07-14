@@ -18,7 +18,7 @@ import classnames from 'classnames';
  */
 import metadata from './block.json';
 import { BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
-import { convertVerticalBarSyntaxToCSS } from '@utils/modifiers';
+import { getBlockSyles } from '@utils/modifiers';
 
 /**
  * Styles
@@ -28,7 +28,7 @@ import './editor.css';
 const Edit = (props) => {
 	const {
 		attributes: {
-			wrapperClass,
+			asideClass,
 			template,
 			templateLock,
 			style,
@@ -47,19 +47,8 @@ const Edit = (props) => {
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: classnames(wrapperClass, isReversed),
-		style: {
-			background: style.backgroundColor ? style.backgroundColor : undefined,
-			marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,
-			marginBottom: style?.spacing?.margin?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.margin.bottom) : undefined,
-			paddingTop: style?.spacing?.padding?.top ? convertVerticalBarSyntaxToCSS(style.spacing.padding.top) : undefined,
-			paddingBottom: style?.spacing?.padding?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.padding.bottom) : undefined,
-			paddingLeft: style?.spacing?.padding?.left ? convertVerticalBarSyntaxToCSS(style.spacing.padding.left) : undefined,
-			paddingRight: style?.spacing?.padding?.right ? convertVerticalBarSyntaxToCSS(style.spacing.padding.right) : undefined,
-			width: width ? width : undefined,
-			justifyItems: justifyItems ? justifyItems : undefined,
-			alignItems: alignItems ? alignItems : undefined
-		}
+		className: classnames(asideClass, isReversed),
+		style: getBlockSyles({ style, width, justifyItems, alignItems })
 	});
 
 	const blockVariations = useSelect(
@@ -87,7 +76,7 @@ const Edit = (props) => {
 					setAttributes({
 						variationName: variation.name,
 						template: variation.innerBlocks,
-						wrapperClass: variation.attributes.wrapperClass,
+						asideClass: variation.attributes.asideClass,
 						showAlignmentControls: variation.attributes.showAlignmentControls
 					})
 				}
