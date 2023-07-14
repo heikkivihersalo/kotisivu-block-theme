@@ -10,10 +10,14 @@
 	justify-items: center;
 
     background-color: var(--wp--preset--color--primary);
+
+	text-align: center;
     color: var(--wp--preset--color--white);
 
 	padding-block: var(--wp--preset--spacing--40);
-	padding-inline: var(--wp--preset--spacing--60);
+    padding-inline: var(--wp--preset--spacing--20);
+
+	max-width: var(--wp--style--global--content-size);
 
 	z-index: 1; /* Make sure container is in front */
 
@@ -28,4 +32,11 @@
 	height: var(--_height);
 	object-fit: cover;
 	object-position: center center;
+}
+
+@media screen and (min-width: 800px) {
+	.hero__container {
+		text-align: left;
+		padding-inline: var(--wp--preset--spacing--60);
+	}
 }
