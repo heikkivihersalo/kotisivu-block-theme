@@ -22,7 +22,41 @@ defined('ABSPATH') or die();
  * 
  * @package Kotisivu\BlockTheme 
  */
-class CustomPostType extends Theme {
+class CustomPostType {
+    /**
+     * Custom post types
+     * @var array
+     */
+    private $post_types;
+
+    /**
+     * Theme config file
+     * @var array
+     */
+    private $config;
+
+    /**
+     * Constructor
+     * @return void 
+     */
+    public function __construct($config) {
+        /**
+         * Require dependencies
+         */
+        foreach (glob(dirname(__DIR__) . '/lib/post-types/src/*.php') as $class)
+            require_once $class;
+
+        /**
+         * Load class files
+         */
+        $this->load_classes();
+
+        /**
+         * Set attributes
+         */
+        $this->config = $config;
+    }
+
     /**
      * Load classes from custom-post-type-folder
      * @return void 
@@ -66,12 +100,9 @@ class CustomPostType extends Theme {
      * @return void 
      */
     public function init(): void {
-        /** 
-         * Require all block classes from classes folder 
-         */
-        $this->load_classes();
+        $this->post_types = $this->config["customPostTypes"] ?? [];
 
-        foreach ($this->config["customPostTypes"] as $post_type) :
+        foreach ($this->post_types as $post_type) :
             $this->register_post_type($post_type);
         endforeach;
     }
