@@ -1,4 +1,5 @@
 <?php
+
 namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
@@ -26,7 +27,7 @@ class Options extends Theme {
      * @return void 
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/options/*.php') as $class)
+        foreach (glob(dirname(__FILE__) . '/rational-option-pages/*.php') as $class)
             require_once $class;
     }
 
