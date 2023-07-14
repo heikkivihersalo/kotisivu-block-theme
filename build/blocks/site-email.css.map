@@ -1,1 +1,0 @@
-{"version":3,"file":"site-email.css","mappings":";;;AAAA;IACI,oBAAoB;AACxB,C","sources":["webpack://kotisivu-block-theme/./src/blocks/dynamic/site-email/editor.css"],"sourcesContent":[".site-contact--email {\n    pointer-events: none;\n}"],"names":[],"sourceRoot":""}

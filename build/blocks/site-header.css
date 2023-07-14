@@ -1,17 +1,1 @@
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/dynamic/site-header/editor.css ***!
-  \***********************************************************************************************************************************************************************************************/
-ul.site-nav__menu {
-    list-style: none;
-    padding: 0;
-}
-
-.site-nav__menu .menu-item a {
-    pointer-events: none;
-}
-
-button.site-nav__toggle {
-    display: none;
-}
-
-/*# sourceMappingURL=site-header.css.map*/
+ul.site-nav__menu{list-style:none;padding:0}.site-nav__menu .menu-item a{pointer-events:none}button.site-nav__toggle{display:none}

@@ -1,1 +1,0 @@
-{"version":3,"file":"./style-site-social.css","mappings":";;;AAAA;IACI,aAAa;IACb,mBAAmB;IACnB,eAAe;IACf,QAAQ;AACZ","sources":["webpack://kotisivu-block-theme/./src/blocks/dynamic/site-social/style.css"],"sourcesContent":[".site-social {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    gap: 1em;\n}\n"],"names":[],"sourceRoot":""}
