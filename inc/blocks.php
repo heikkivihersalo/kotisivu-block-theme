@@ -86,7 +86,7 @@ class Blocks extends Theme {
         /**
          * Register categories
          */
-        $categories = new BlockCategories('kotisivu-block-theme');
+        $categories = new BlockCategories();
         $categories->init();
 
         /**
@@ -95,8 +95,7 @@ class Blocks extends Theme {
         $static_blocks = new BlockStatic(
             $this->path,
             $this->parent_path,
-            $this->config,
-            'kotisivu-block-theme'
+            $this->config
         );
         $static_blocks->init();
 
@@ -104,8 +103,7 @@ class Blocks extends Theme {
             $this->path,
             $this->parent_path,
             $this->config,
-            $this->options,
-            'kotisivu-block-theme'
+            $this->options
         );
         $dynamic_blocks->init();
 
