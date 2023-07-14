@@ -8,7 +8,7 @@
  */
 function render_site_email($block_attributes, $content) { ?>
     <?php $contact = array(
-        'email' => $block_attributes["options"]['contact-email'],
+        'email' => isset($block_attributes["options"]['contact-email']) ? $block_attributes["options"]['contact-email'] : '',
         'icon' => 'fas fa-envelope',
         'title' => 'Email',
         'slug' => 'email',

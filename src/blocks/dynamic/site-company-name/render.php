@@ -7,7 +7,7 @@
  */
 function render_site_company_name($block_attributes, $content) { ?>
     <?php $contact = array(
-        'name' => $block_attributes["options"]['contact-company-name'],
+        'name' => isset($block_attributes["options"]['contact-company-name']) ? $block_attributes["options"]['contact-company-name'] : '',
         'icon' => 'fa fa-home'
     ); ?>
     <?php ob_start(); ?>

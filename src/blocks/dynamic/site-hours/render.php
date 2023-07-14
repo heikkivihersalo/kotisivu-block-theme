@@ -15,7 +15,7 @@ function render_site_hours($block_attributes, $content) { ?>
             </svg>
         </div>
         <div class="site-contact__text">
-            <?php echo $block_attributes["options"]['contact-opening-hours']; ?>
+            <?php echo isset($block_attributes["options"]['contact-opening-hours']) ? $block_attributes["options"]['contact-opening-hours'] : ''; ?>
         </div>
     </div>
     <?php return ob_get_clean(); ?>

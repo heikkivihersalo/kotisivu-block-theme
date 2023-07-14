@@ -4,9 +4,12 @@
 
 .header {
 	--_background-color: var(--wp--preset--color--background);
+
+	--_logo-width: 250px;
+
 	--_font-color: var(--wp--preset--color--black);
 	--_font-weight: 300;
-	--_font-family: var(--wp--preset--font-family--tertiary-light);
+	--_font-family: var(--wp--preset--font-family--secondary);
 
 	--_item-border: 0px solid var(--_text-color);
 
@@ -22,15 +25,14 @@
 	align-items: center;
 	gap: 1.5rem;
 
-	height: 10rem;
-
-    padding-inline: 1em;
-    padding-block: 2em;
+	padding-inline: 1em;
+	padding-block: 1em;
 
 	background-color: var(--_background-color);
 
-    width: calc(var(--wp--style--global--wide-size) - 3rem);
-    margin-inline: auto;
+	height: var(--wp--preset--spacing--70);
+	width: var(--wp--style--global--wide-size);
+	margin-inline: auto;
 
 	z-index: 9999;
 }
@@ -39,9 +41,9 @@
 	.header {
 		justify-content: space-between;
 		flex-direction: row;
-		align-items: baseline;
+		align-items: center;
 
-		height: revert;
+		height: 100%;
 	}
 }
 
@@ -50,24 +52,22 @@
  ** ==================== */
 .header__logo img {
 	width: 100%;
-    max-width: 150px;
 	height: auto;
 }
 
 .header__logo {
-    position: absolute;
-    top: calc(var(--_toggle-margin) * 2);
-	left: calc(var(--_toggle-margin) * 2);
+	position: absolute;
+	top: calc(var(--_toggle-margin) * 4.5);
+	left: var(--_toggle-margin);
+	width: var(--_logo-width);
 }
 
 @media screen and (min-width: 800px) {
 	.header__logo {
 		position: relative;
 		top: revert;
-
-		margin-left: revert;
-		margin-right: 2rem;
-		margin-top: revert;
+		left: revert;
+		margin: revert;
 	}
 }
 
@@ -93,7 +93,7 @@
 	/* Menu styling */
 	display: none;
 	flex-direction: row;
-    gap: var(--wp--preset--spacing--50);
+	gap: var(--wp--preset--spacing--50);
 	margin-block: 2rem;
 
 	width: 100%;
@@ -115,7 +115,7 @@
 .header__toggle {
 	display: initial;
 	position: absolute;
-	top: calc(var(--_toggle-margin) * 3);
+    top: calc(var(--_toggle-margin) * 4.55);
     right: calc(var(--_toggle-margin) * 2);
 
 	background: transparent;

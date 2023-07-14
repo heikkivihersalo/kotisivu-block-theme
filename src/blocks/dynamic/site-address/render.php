@@ -15,7 +15,7 @@ function render_site_address($block_attributes, $content) { ?>
             </svg>
         </div>
         <div class="site-contact__text">
-            <?php echo $block_attributes["options"]['contact-address']; ?>
+            <?php echo isset($block_attributes["options"]['contact-address']) ? $block_attributes["options"]['contact-address'] : ''; ?>
         </div>
     </div>
     <?php return ob_get_clean(); ?>

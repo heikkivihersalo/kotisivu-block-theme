@@ -87,7 +87,7 @@ function format_phone_num($num): string {
  */
 function render_site_phone($block_attributes, $content) { ?>
     <?php $contact = array(
-        'phone' => $block_attributes['options']['contact-tel'],
+        'phone' => isset($block_attributes['options']['contact-phone']) ? $block_attributes['options']['contact-phone'] : '',
         'icon' => 'fas fa-phone',
         'title' => __('Phone', 'kotisivu-block-theme'),
         'slug' => 'phone',

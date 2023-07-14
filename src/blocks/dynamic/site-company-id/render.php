@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Render global contact company ID (VAT) callback
  * @param mixed $block_attributes 
@@ -6,5 +7,5 @@
  * @return string|false 
  */
 function render_site_company_id($block_attributes, $content) {
-    return $block_attributes["options"]['contact-company-id'];
+    return isset($block_attributes["options"]['contact-company-id']) ? $block_attributes["options"]['contact-company-id'] : '';
 }

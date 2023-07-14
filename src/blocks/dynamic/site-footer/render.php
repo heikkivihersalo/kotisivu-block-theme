@@ -2,7 +2,7 @@
 
 function render_site_footer($block_attributes, $content) { ?>
     <?php $contact = array(
-        'phone' => isset($block_attributes["options"]['contact-tel']) ? $block_attributes["options"]['contact-tel'] : '',
+        'phone' => isset($block_attributes["options"]['contact-phone']) ? $block_attributes["options"]['contact-phone'] : '',
         'email' => isset($block_attributes["options"]['contact-email']) ? $block_attributes["options"]['contact-email'] : '',
         'address' => isset($block_attributes["options"]['contact-address']) ? $block_attributes["options"]['contact-address'] : '',
         'name' => isset($block_attributes["options"]['contact-company-name']) ? $block_attributes["options"]['contact-company-name'] : '',
