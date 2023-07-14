@@ -15,8 +15,7 @@ use PostTypes\Columns;
  * @version 2.0
  * @license https://opensource.org/licenses/mit-license.html MIT License
  */
-class PostType
-{
+class PostType {
     /**
      * The names passed to the PostType
      * @var array
@@ -88,8 +87,7 @@ class PostType
      * @param mixed $names   A string for the name, or an array of names
      * @param array $options An array of options for the PostType
      */
-    public function __construct($names, $options = [], $labels = [])
-    {
+    public function __construct($names, $options = [], $labels = []) {
         // assign names to the PostType
         $this->names($names);
 
@@ -105,8 +103,7 @@ class PostType
      * @param  mixed $names A string for the name, or an array of names
      * @return $this
      */
-    public function names($names)
-    {
+    public function names($names) {
         // only the post type name is passed
         if (is_string($names)) {
             $names = ['name' => $names];
@@ -126,8 +123,7 @@ class PostType
      * @param  array $options An array of options for the PostType
      * @return $this
      */
-    public function options(array $options)
-    {
+    public function options(array $options) {
         $this->options = $options;
 
         return $this;
@@ -138,8 +134,7 @@ class PostType
      * @param  array $labels An array of labels for the PostType
      * @return $this
      */
-    public function labels(array $labels)
-    {
+    public function labels(array $labels) {
         $this->labels = $labels;
 
         return $this;
@@ -150,8 +145,7 @@ class PostType
      * @param  mixed $taxonomies The Taxonomy name(s) to add
      * @return $this
      */
-    public function taxonomy($taxonomies)
-    {
+    public function taxonomy($taxonomies) {
         $taxonomies = is_string($taxonomies) ? [$taxonomies] : $taxonomies;
 
         foreach ($taxonomies as $taxonomy) {
@@ -166,8 +160,7 @@ class PostType
      * @param  array $filters An array of Taxonomy filters
      * @return $this
      */
-    public function filters(array $filters)
-    {
+    public function filters(array $filters) {
         $this->filters = $filters;
 
         return $this;
@@ -178,8 +171,7 @@ class PostType
      * @param  string $icon A dashicon class for the menu icon
      * @return $this
      */
-    public function icon($icon)
-    {
+    public function icon($icon) {
         $this->icon = $icon;
 
         return $this;
@@ -191,8 +183,7 @@ class PostType
      * @param  boolean $hard
      * @return void
      */
-    public function flush($hard = true)
-    {
+    public function flush($hard = true) {
         flush_rewrite_rules($hard);
     }
 
@@ -200,8 +191,7 @@ class PostType
      * Get the Column Manager for the PostType
      * @return PostTypes\Columns
      */
-    public function columns()
-    {
+    public function columns() {
         if (!isset($this->columns)) {
             $this->columns = new Columns;
         }
@@ -213,8 +203,7 @@ class PostType
      * Register the PostType to WordPress
      * @return void
      */
-    public function register()
-    {
+    public function register() {
         // register the PostType
         if (!post_type_exists($this->name)) {
             add_action('init', [$this, 'registerPostType']);
@@ -236,7 +225,7 @@ class PostType
             add_filter("manage_{$this->name}_posts_custom_column", [$this, 'populateColumns'], 10, 2);
 
             // run filter to make columns sortable.
-            add_filter('manage_edit-'.$this->name.'_sortable_columns', [$this, 'setSortableColumns']);
+            add_filter('manage_edit-' . $this->name . '_sortable_columns', [$this, 'setSortableColumns']);
 
             // run action that sorts columns on request.
             add_action('pre_get_posts', [$this, 'sortSortableColumns']);
@@ -247,8 +236,7 @@ class PostType
      * Register the PostType
      * @return void
      */
-    public function registerPostType()
-    {
+    public function registerPostType() {
         // create options for the PostType
         $options = $this->createOptions();
 
@@ -264,8 +252,7 @@ class PostType
      *
      * @return array
      */
-    public function modifyPostType(array $args, string $posttype)
-    {
+    public function modifyPostType(array $args, string $posttype) {
         if ($posttype !== $this->name) {
             return $args;
         }
@@ -282,8 +269,7 @@ class PostType
      * Create the required names for the PostType
      * @return void
      */
-    public function createNames()
-    {
+    public function createNames() {
         // names required for the PostType
         $required = [
             'name',
@@ -328,8 +314,7 @@ class PostType
      * Create options for PostType
      * @return array Options to pass to register_post_type
      */
-    public function createOptions()
-    {
+    public function createOptions() {
         // default options
         $options = [
             'public' => true,
@@ -358,23 +343,22 @@ class PostType
      * Create the labels for the PostType
      * @return array
      */
-    public function createLabels()
-    {
+    public function createLabels() {
         // default labels
         $labels = [
-            'name' => $this->plural,
-            'singular_name' => $this->singular,
-            'menu_name' => $this->plural,
-            'all_items' => $this->plural,
-            'add_new' => "Add New",
-            'add_new_item' => "Add New {$this->singular}",
-            'edit_item' => "Edit {$this->singular}",
-            'new_item' => "New {$this->singular}",
-            'view_item' => "View {$this->singular}",
-            'search_items' => "Search {$this->plural}",
-            'not_found' => "No {$this->plural} found",
-            'not_found_in_trash' => "No {$this->plural} found in Trash",
-            'parent_item_colon' => "Parent {$this->singular}:",
+            'name' => __($this->plural, 'kotisivu-block-theme'),
+            'singular_name' => __($this->singular, 'kotisivu-block-theme'),
+            'menu_name' => __($this->plural, 'kotisivu-block-theme'),
+            'all_items' => __($this->plural, 'kotisivu-block-theme'),
+            'add_new' => __("Add New", 'kotisivu-block-theme'),
+            'add_new_item' => __("Add New {$this->singular}", 'kotisivu-block-theme'),
+            'edit_item' => __("Edit {$this->singular}", 'kotisivu-block-theme'),
+            'new_item' => __("New {$this->singular}", 'kotisivu-block-theme'),
+            'view_item' => __("View {$this->singular}", 'kotisivu-block-theme'),
+            'search_items' => __("Search {$this->plural}", 'kotisivu-block-theme'),
+            'not_found' => __("No {$this->plural} found", 'kotisivu-block-theme'),
+            'not_found_in_trash' => __("No {$this->plural} found in Trash", 'kotisivu-block-theme'),
+            'parent_item_colon' => __("Parent {$this->singular}:", 'kotisivu-block-theme'),
         ];
 
         return array_replace_recursive($labels, $this->labels);
@@ -384,8 +368,7 @@ class PostType
      * Register Taxonomies to the PostType
      * @return void
      */
-    public function registerTaxonomies()
-    {
+    public function registerTaxonomies() {
         if (!empty($this->taxonomies)) {
             foreach ($this->taxonomies as $taxonomy) {
                 register_taxonomy_for_object_type($taxonomy, $this->name);
@@ -398,8 +381,7 @@ class PostType
      * @param  string $posttype The current screen post type
      * @return void
      */
-    public function modifyFilters($posttype)
-    {
+    public function modifyFilters($posttype) {
         // first check we are working with the this PostType
         if ($posttype === $this->name) {
             // calculate what filters to add
@@ -451,8 +433,7 @@ class PostType
      * Calculate the filters for the PostType
      * @return array
      */
-    public function getFilters()
-    {
+    public function getFilters() {
         // default filters are empty
         $filters = [];
 
@@ -476,8 +457,7 @@ class PostType
      * @param  array  $columns  Default WordPress columns
      * @return array            The modified columns
      */
-    public function modifyColumns($columns)
-    {
+    public function modifyColumns($columns) {
         $columns = $this->columns->modifyColumns($columns);
 
         return $columns;
@@ -488,8 +468,7 @@ class PostType
      * @param  string $column   The column slug
      * @param  int    $post_id  The post ID
      */
-    public function populateColumns($column, $post_id)
-    {
+    public function populateColumns($column, $post_id) {
         if (isset($this->columns->populate[$column])) {
             call_user_func_array($this->columns()->populate[$column], [$column, $post_id]);
         }
@@ -499,8 +478,7 @@ class PostType
      * Make custom columns sortable
      * @param array  $columns  Default WordPress sortable columns
      */
-    public function setSortableColumns($columns)
-    {
+    public function setSortableColumns($columns) {
         if (!empty($this->columns()->sortable)) {
             $columns = array_merge($columns, $this->columns()->sortable);
         }
@@ -512,8 +490,7 @@ class PostType
      * Set query to sort custom columns
      * @param  WP_Query $query
      */
-    public function sortSortableColumns($query)
-    {
+    public function sortSortableColumns($query) {
         // don't modify the query if we're not in the post type admin
         if (!is_admin() || $query->get('post_type') !== $this->name) {
             return;
