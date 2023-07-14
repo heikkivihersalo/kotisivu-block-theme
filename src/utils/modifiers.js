@@ -67,15 +67,36 @@ export const convertVerticalBarSyntaxToCSS = (string) => {
     return "var(--wp--" + val.replaceAll("|", "--") + ")";
 }
 
-export const getBlockWidth = (width) => {
-    switch (width) {
-        case 'full':
-            return "var(--wp--style--global--wide-size)";
-        case 'content':
-            return "var(--wp--style--global--content-size)";
-        case 'none':
-            return undefined;
-        default:
-            return undefined;
+export function getBlockSyles(props) {
+    const {
+        style,
+        width,
+        justifyItems,
+        alignItems
+    } = props;
+
+    const convertVerticalBarSyntaxToCSS = (string) => {
+        /**
+         * Guard clauses
+         */
+        if (string == "0") return undefined; // Some error in the editor attributes causes string to be 0
+
+        // if (typeof string !== 'string' || !(string instanceof String)) return console.log("Not a string");
+
+        let val = string.split(":")[1].trim();
+        return "var(--wp--" + val.replaceAll("|", "--") + ")";
+    }
+
+    return {
+        background: style.backgroundColor ? style.backgroundColor : undefined,
+        marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,
+        marginBottom: style?.spacing?.margin?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.margin.bottom) : undefined,
+        paddingTop: style?.spacing?.padding?.top ? convertVerticalBarSyntaxToCSS(style.spacing.padding.top) : undefined,
+        paddingBottom: style?.spacing?.padding?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.padding.bottom) : undefined,
+        paddingLeft: style?.spacing?.padding?.left ? convertVerticalBarSyntaxToCSS(style.spacing.padding.left) : undefined,
+        paddingRight: style?.spacing?.padding?.right ? convertVerticalBarSyntaxToCSS(style.spacing.padding.right) : undefined,
+        width: width ? width : undefined,
+        justifyItems: justifyItems ? justifyItems : undefined,
+        alignItems: alignItems ? alignItems : undefined
     }
 }
