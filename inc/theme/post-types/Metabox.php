@@ -23,6 +23,36 @@ class Metabox {
     private $options;
 
     /**
+     * Metabox ID
+     * @var string
+     */
+    private $id;
+
+    /**
+     * Metabox title
+     * @var string
+     */
+    private $title;
+
+    /**
+     * Post type or post types in array
+     * @var string|array
+     */
+    private $screen;
+
+    /**
+     * Position (normal, side, advanced)
+     * @var string
+     */
+    private $position;
+
+    /**
+     * Priority (default, low, high, core)
+     * @var string
+     */
+    private $priority;
+
+    /**
      * User inputted markup for metabox. Required fields are: 'id'
      * @var array
      */
@@ -93,7 +123,7 @@ class Metabox {
     public function create_metabox() {
         add_meta_box(
             $this->id, // metabox ID
-            __($this->title, 'kotisivu-theme'), // title
+            __($this->title, 'kotisivu-block-theme'), // title
             [$this, 'create_html'], // callback function
             $this->screen, // post type or post types in array
             $this->position, // position (normal, side, advanced)
@@ -122,14 +152,25 @@ class Metabox {
         ob_start(); ?>
         <div class="metabox__input-wrapper">
             <label for="<?php echo $field['id']; ?>"><?php echo $field['label'] ?></label>
-            <?php if ($field['type'] == 'text' || $field['type'] == 'url') : ?>
-                <!-- Text, URL --->
+            <?php if ($field['type'] == 'text' || $field['type'] == 'url' || $field['type'] == 'number') : ?>
+                <!-- Text, URL, Number --->
                 <input type="<?php echo $field['type'] ?>" id="<?php echo $field['id'] ?>" name="<?php echo $field['id'] ?>" value="<?php echo esc_attr(get_post_meta($post->ID, $field['id'], true)) ?>">
             <?php endif ?>
 
             <?php if ($field['type'] == 'checkbox') : ?>
                 <!-- Checkbox --->
                 <input type="<?php echo $field['type'] ?>" id="<?php echo $field['id'] ?>" name="<?php echo $field['id'] ?>" value="1" <?php checked(1, esc_attr(get_post_meta($post->ID, $field['id'], true))) ?>>
+            <?php endif; ?>
+
+            <?php if ($field['type'] == 'select') : ?>
+                <?php $meta_values = get_post_meta($post->ID, $field['id'], true); ?>
+                <!-- Select --->
+                <select name="<?php echo $field['id'] ?>">
+                    <?php var_dump($field); ?>
+                    <?php foreach ($field['options'] as $option) : ?>
+                        <option value="<?php echo $option['value'] ?>" <?php selected($meta_values, $option['value']); ?>><?php echo $option['label'] ?></option>
+                    <?php endforeach; ?>
+                </select>
             <?php endif; ?>
         </div>
 
@@ -145,32 +186,36 @@ class Metabox {
      * @return array $field Formatted array for metabox
      */
     public function validate_field($data) {
-        $required = [
+        $options = [
             'id',
             'label',
-            'type'
+            'type',
+            'options'
         ];
 
         $field = [];
 
-        foreach ($required as $key) {
+        foreach ($options as $key) {
             if (isset($data[$key])) {
                 $field[$key] = $data[$key];
                 continue;
             }
 
-            if ($key === 'label') {
-                $name = ucwords(strtolower(str_replace(['-', '_'], ' ', $data['id'])));
-            }
+            // Validate label
+            $name = $key === 'label' ? ucwords(strtolower(str_replace(['-', '_'], ' ', $data['id']))) : '';
 
-            if ($key === 'type') {
-                $name = 'text';
-            }
+            // Validate type
+            $name = $key === 'type' ? 'text' : '';
 
-            if ($key === 'value') {
-                $name = $data['value'];
-            }
+            // Validate value
+            $name = $key === 'value' ? isset($data['value']) : '';
 
+            // Validate options
+            $name = $key === 'options' ? isset($data['options']) : [];
+
+            /**
+             * Set field 
+             */
             $field[$key] = $name;
         }
 
@@ -213,6 +258,14 @@ class Metabox {
             }
 
             if ($field['type'] == 'checkbox') {
+                $content = sanitize_text_field($_POST[$field['id']]);
+            }
+
+            if ($field['type'] == 'number') {
+                $content = sanitize_text_field($_POST[$field['id']]);
+            }
+
+            if ($field['type'] == 'select') {
                 $content = sanitize_text_field($_POST[$field['id']]);
             }
 
