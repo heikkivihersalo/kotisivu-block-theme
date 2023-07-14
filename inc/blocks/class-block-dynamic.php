@@ -26,16 +26,11 @@ class BlockDynamic extends Blocks {
     protected $options;
 
     /**
-     * 
-     */
-    protected $textdomain;
-
-    /**
      * Constructor
      * @return void 
      */
-    public function __construct($path, $parent_path, $config, $options, $textdomain) {
-        parent::__construct($path, $parent_path, $config, $options, $textdomain);
+    public function __construct($path, $parent_path, $config, $options) {
+        parent::__construct($path, $parent_path, $config, $options);
     }
 
     /**

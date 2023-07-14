@@ -6,17 +6,11 @@ defined('ABSPATH') or die();
 
 class BlockCategories extends Blocks {
     /**
-     * Textdomain
-     * @var string
-     */
-    protected $textdomain;
-
-    /**
      * Constructor
      * @return void
      */
-    public function __construct($textdomain) {
-        parent::__construct($textdomain);
+    public function __construct() {
+        parent::__construct();
     }
 
     /**

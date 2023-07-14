@@ -21,16 +21,11 @@ class BlockStatic extends Blocks {
     protected $config;
 
     /**
-     * 
-     */
-    protected $textdomain;
-
-    /**
      * Constructor
      * @return void 
      */
-    public function __construct($path, $parent_path, $config, $textdomain) {
-        parent::__construct($path, $parent_path, $config, $textdomain);
+    public function __construct($path, $parent_path, $config) {
+        parent::__construct($path, $parent_path, $config);
     }
 
     /**

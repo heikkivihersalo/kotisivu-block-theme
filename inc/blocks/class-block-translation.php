@@ -27,16 +27,11 @@ class BlockTranslation extends Blocks {
     protected $config;
 
     /**
-     * 
-     */
-    protected $textdomain;
-
-    /**
      * Constructor
      * @return void 
      */
-    public function __construct(string $slug, string $parent_path, string $path, array $config, string $textdomain) {
-        parent::__construct($path, $parent_path, $config, $textdomain);
+    public function __construct(string $slug, string $parent_path, string $path, array $config) {
+        parent::__construct($path, $parent_path, $config);
         $this->slug = $slug;
     }
 
@@ -58,7 +53,7 @@ class BlockTranslation extends Blocks {
      * @return void 
      */
     public static function load_textdomain(): void {
-        load_theme_textdomain(self::$textdomain, false, basename(dirname(__FILE__)) . '/languages/');
+        load_theme_textdomain('kotisivu-block-theme', false, basename(dirname(__FILE__)) . '/languages/');
     }
 
     /**
