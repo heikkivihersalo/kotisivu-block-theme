@@ -1,0 +1,632 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Kotisivu Block Theme\n"
+"POT-Creation-Date: 2023-07-14 12:08+0300\n"
+"PO-Revision-Date: 2023-07-14 12:03+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: node_modules\n"
+
+#: build/blocks/blog-grid-view-script.js:111
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:94
+#: src/blocks/dynamic/blog-grid/view.js:51
+msgid "No more posts to fetch:"
+msgstr ""
+
+#: build/blocks/blog-grid-view-script.js:113
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:96
+#: src/blocks/dynamic/blog-grid/view.js:53
+msgid "Posts fetched succesfully:"
+msgstr ""
+
+#: build/blocks/blog-grid-view-script.js:127
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:112
+#: src/blocks/dynamic/blog-grid/view.js:63
+msgid "Error while loading more posts"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:34
+msgid "Blocks"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:43
+msgid "Blog"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:52
+msgid "Child"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:61
+msgid "Sections"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:70
+msgid "Containers & Wrappers"
+msgstr ""
+
+#: inc/blocks/class-block-categories.php:79
+msgid "Dynamic Data"
+msgstr ""
+
+#: inc/lib/rational-option-pages/RationalOptionPages.php:707
+msgid "Field parameter \"title\" is required"
+msgstr ""
+
+#: inc/lib/rational-option-pages/RationalOptionPages.php:802
+msgid "Page parameter \"page_title\" is required"
+msgstr ""
+
+#: inc/lib/rational-option-pages/RationalOptionPages.php:864
+msgid "Section parameter \"title\" is required"
+msgstr ""
+
+#: inc/patterns/404.php:12
+msgctxt "Page not found."
+msgid "404"
+msgstr ""
+
+#: inc/patterns/404.php:15
+msgid "This page could not be found."
+msgstr ""
+
+#: inc/template-parts/header-nav-toggle.php:3
+msgid "Menu"
+msgstr ""
+
+#: inc/template-parts/post-card.php:31
+msgid "Read more"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:32
+msgid "Site Analytics"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:35
+msgid "Tag Manager"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:37
+msgid ""
+"Using Tag Manager is the recommended way of adding analytics (including "
+"cookie management) to your site. Kotisivu Theme uses unique script to delay "
+"the loading of analytics so it does not have any performance impact on your "
+"site."
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:41
+msgid "Enable Tag Manager"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:46
+msgid "Container ID"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:52
+msgid "Server Url"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-analytics.php:60
+msgid "Timeout (delay)"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:31
+msgid "Contact Information"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:33
+msgid "Add contact information here."
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:38
+#: src/blocks/dynamic/site-email/render.php:15
+#: src/blocks/dynamic/site-footer/render.php:36
+msgid "Email"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:45
+#: src/blocks/dynamic/site-footer/render.php:35
+#: src/blocks/dynamic/site-phone/render.php:92
+#: src/blocks/dynamic/site-phone/render.php:94
+msgid "Phone"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:47
+msgid "Use format +358123456789"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:54
+msgid "Company Name"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:60
+msgid "Company ID (VAT)"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:65
+msgid "Address"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:72
+msgid "Opening Hours"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:87
+msgid "Social Media Accounts"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:89
+msgid "Add social media URL's here."
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:93
+msgid "Facebook"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:101
+msgid "Twitter"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:109
+msgid "Instagram"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:117
+msgid "LinkedIn"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:125
+msgid "YouTube"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:133
+msgid "Pinterest"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:141
+msgid "Snapchat"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:149
+msgid "TikTok"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:157
+msgid "Twitch"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:165
+msgid "Reddit"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:173
+msgid "Discord"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:181
+msgid "WhatsApp"
+msgstr ""
+
+#: inc/theme/rational-option-pages/class-site-options.php:198
+msgid "Site Options"
+msgstr ""
+
+#: src/__template-library__/address--address/edit.js:27
+#: src/__template-library__/address--email/edit.js:33
+#: src/__template-library__/address--name/edit.js:28
+#: src/__template-library__/address--phone/edit.js:34
+#: src/__template-library__/contact-us/edit.js:41
+#: src/__template-library__/timeline-list-item/components/Inspector.js:15
+#: src/features/inspector/lib/iconSelector.js:41
+msgid "Settings"
+msgstr ""
+
+#: src/__template-library__/address--address/edit.js:29
+#: src/__template-library__/address--email/edit.js:35
+#: src/__template-library__/address--name/edit.js:30
+#: src/__template-library__/address--phone/edit.js:36
+msgid "Use icon"
+msgstr ""
+
+#: src/__template-library__/address--address/edit.js:37
+#: src/__template-library__/address--address/edit.js:38
+msgid "Add street address"
+msgstr ""
+
+#: src/__template-library__/address--email/edit.js:44
+#: src/__template-library__/address--email/edit.js:45
+#: src/__template-library__/contact-us--email/edit.js:31
+#: src/__template-library__/contact-us--email/edit.js:32
+msgid "Add email address"
+msgstr ""
+
+#: src/__template-library__/address--name/edit.js:38
+#: src/__template-library__/address--name/edit.js:39
+msgid "Add company or person name"
+msgstr ""
+
+#: src/__template-library__/address--phone/edit.js:45
+#: src/__template-library__/address--phone/edit.js:46
+msgid "Add phone number"
+msgstr ""
+
+#: src/__template-library__/apartment--tag/edit.js:19
+#: src/__template-library__/apartment--tag/edit.js:20
+msgid "Add tag text"
+msgstr ""
+
+#: src/__template-library__/contact-list-item/edit.js:31
+#: src/__template-library__/contact-list-item/edit.js:32
+#: src/__template-library__/link-list-item/edit.js:31
+#: src/__template-library__/link-list-item/edit.js:32
+msgid "Add text"
+msgstr ""
+
+#: src/__template-library__/contact-list/components/ColumnInserterButton.js:16
+#: src/__template-library__/icon-list/components/ColumnInserterButton.js:16
+#: src/__template-library__/link-list/components/ColumnInserterButton.js:16
+#: src/__template-library__/timeline-list/components/ColumnInserterButton.js:16
+msgid "Add new item"
+msgstr ""
+
+#: src/__template-library__/contact-us--name/edit.js:20
+#: src/__template-library__/contact-us--name/edit.js:21
+msgid "Add contact person name"
+msgstr ""
+
+#: src/__template-library__/contact-us--phone/edit.js:31
+#: src/__template-library__/contact-us--phone/edit.js:32
+msgid "Add phonenumber"
+msgstr ""
+
+#: src/__template-library__/contact-us--title/edit.js:20
+#: src/__template-library__/contact-us--title/edit.js:21
+msgid "Add contact person title"
+msgstr ""
+
+#: src/__template-library__/contact-us/edit.js:43
+msgid "Set as wide"
+msgstr ""
+
+#: src/__template-library__/contact-us/edit.js:50
+#: src/__template-library__/contact-us/edit.js:51
+msgid "Add section heading"
+msgstr ""
+
+#: src/__template-library__/icon-list-item/edit.js:22
+#: src/__template-library__/icon-list-item/edit.js:23
+msgid "Add item name"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/components/Inspector.js:17
+msgid "Timeline Status"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/components/Inspector.js:21
+msgid "Not Set"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/components/Inspector.js:22
+msgid "Coming"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/components/Inspector.js:23
+msgid "In Progress"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/components/Inspector.js:24
+msgid "Ready"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/edit.js:29
+#: src/__template-library__/timeline-list-item/edit.js:30
+msgid "Add timeline name"
+msgstr ""
+
+#: src/__template-library__/timeline-list-item/edit.js:39
+#: src/__template-library__/timeline-list-item/edit.js:40
+msgid "Add status text"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/render.php:53
+msgid "Show earlier posts"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/render.php:23
+msgid "VAT ID"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/render.php:34
+msgid "Sales and<br> quote proposals"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo/components/Inspector.js:19
+msgid "Site logo settings"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo/components/Inspector.js:22
+msgid "Enable home link"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:10
+msgid "Follow us on Facebook"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:17
+msgid "Follow us on Twitter"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:24
+msgid "Follow us on Instagram"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:31
+msgid "Follow us on LinkedIn"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:38
+msgid "Follow us on YouTube"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:45
+msgid "Follow us on Pinterest"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:52
+msgid "Follow us on Snapchat"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:59
+msgid "Follow us on TikTok"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:66
+msgid "Follow us on Twitch"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:73
+msgid "Follow us on Reddit"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:80
+msgid "Follow us on Discord"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/render.php:87
+msgid "Follow us on WhatsApp"
+msgstr ""
+
+#: src/blocks/static/aside/edit.js:84 src/blocks/static/hero/edit.js:88
+#: src/blocks/static/section/edit.js:95 src/blocks/static/wrapper/edit.js:84
+msgid "Choose variation"
+msgstr ""
+
+#: src/blocks/static/aside/edit.js:85 src/blocks/static/hero/edit.js:89
+#: src/blocks/static/section/edit.js:96 src/blocks/static/wrapper/edit.js:85
+msgid "Select a variation to start with."
+msgstr ""
+
+#: src/blocks/static/aside/variations.js:6
+msgid "Aside | 100"
+msgstr ""
+
+#: src/blocks/static/aside/variations.js:17
+msgid "Aside | 50-50"
+msgstr ""
+
+#: src/blocks/static/aside/variations.js:31
+msgid "Aside | 33-33-33"
+msgstr ""
+
+#: src/blocks/static/hero/variations.js:6
+msgid "Hero | Background Image"
+msgstr ""
+
+#: src/blocks/static/image-gallery/components/Inspector.js:21
+msgid "Image Gallery Settings"
+msgstr ""
+
+#: src/blocks/static/image-gallery/components/Inspector.js:23
+msgid "Section Heading"
+msgstr ""
+
+#: src/blocks/static/image-gallery/components/Inspector.js:24
+msgid ""
+"Add some descriptive information (ex. title or heading) for assistive "
+"technologies"
+msgstr ""
+
+#: src/blocks/static/image-gallery/edit.js:38
+msgid "Selected images will be shown here"
+msgstr ""
+
+#: src/blocks/static/section/variations.js:6
+msgid "Section | 100"
+msgstr ""
+
+#: src/blocks/static/section/variations.js:17
+msgid "Section | 50-50"
+msgstr ""
+
+#: src/blocks/static/section/variations.js:31
+msgid "Section | 33-33-33"
+msgstr ""
+
+#: src/blocks/static/wrapper/variations.js:6
+msgid "Wrapper | 100"
+msgstr ""
+
+#: src/blocks/static/wrapper/variations.js:17
+msgid "Wrapper | 50-50"
+msgstr ""
+
+#: src/blocks/static/wrapper/variations.js:31
+msgid "Wrapper | 33-33-33"
+msgstr ""
+
+#: src/features/image/lib/common/inspector/fullWidth.js:21
+msgid "Full Width"
+msgstr ""
+
+#: src/features/image/lib/common/inspector/lazyLoad.js:19
+msgid "Lazy Load"
+msgstr ""
+
+#: src/features/image/lib/common/inspector/preview.js:28
+msgid "Change image"
+msgstr ""
+
+#: src/features/image/lib/common/inspector/preview.js:32
+msgid "Remove image"
+msgstr ""
+
+#: src/features/image/lib/imageSelectorSidebar.js:20
+msgid "Select background image"
+msgstr ""
+
+#: src/features/image/lib/utilities/functions/getImage.js:33
+msgid "Pick a image"
+msgstr ""
+
+#: src/features/inspector/lib/alignmentReverse.js:21
+msgid "Reverse Block Alignment"
+msgstr ""
+
+#: src/features/inspector/lib/ariaLabelControls.js:19
+msgid "Accessibility"
+msgstr ""
+
+#: src/features/inspector/lib/ariaLabelControls.js:21
+msgid "Aria Labelled By"
+msgstr ""
+
+#: src/features/inspector/lib/ariaLabelControls.js:22
+msgid ""
+"Identifies the element (or elements) that labels the element it is applied "
+"to. Use the same ID as in the section heading."
+msgstr ""
+
+#: src/features/inspector/lib/ariaLabelControls.js:27
+msgid "Aria label"
+msgstr ""
+
+#: src/features/inspector/lib/ariaLabelControls.js:28
+msgid ""
+"If section heading doesn`t match correct description, you can use aria-"
+"label. IMPORTANT! Use aria-labelledby by default."
+msgstr ""
+
+#: src/features/inspector/lib/backgroundColor.js:37
+msgid "Use Background Color"
+msgstr ""
+
+#: src/features/inspector/lib/backgroundColorControl.js:27
+msgid "Color settings"
+msgstr ""
+
+#: src/features/inspector/lib/backgroundColorControl.js:33
+msgid "Background color"
+msgstr ""
+
+#: src/features/inspector/lib/backgroundImage.js:21
+msgid "Use Background Image"
+msgstr ""
+
+#: src/features/inspector/lib/dropShadow.js:21
+msgid "Drop Shadow"
+msgstr ""
+
+#: src/features/inspector/lib/eventTracking.js:20
+msgid "Analytics"
+msgstr ""
+
+#: src/features/inspector/lib/eventTracking.js:22
+msgid "Track Events"
+msgstr ""
+
+#: src/features/inspector/lib/eventTracking.js:27
+msgid "Identifier"
+msgstr ""
+
+#: src/features/inspector/lib/eventTracking.js:28
+msgid "ex. name for this button"
+msgstr ""
+
+#: src/features/inspector/lib/gridAlignControls.js:54
+msgid "Alignment Controls"
+msgstr ""
+
+#: src/features/inspector/lib/gridAlignControls.js:116
+msgid "Reverse Order"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:54
+msgid "Unicode"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:55
+msgid "For example fas fa-user"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:74
+msgid "Link Settings"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:76
+msgid "URL"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:81
+msgid "Title"
+msgstr ""
+
+#: src/features/inspector/lib/iconSelector.js:86
+msgid "Set icon as link"
+msgstr ""
+
+#: src/features/inspector/lib/linkControls.js:80
+msgid "Link"
+msgstr ""
+
+#: src/features/inspector/lib/linkControls.js:88
+msgid "Unlink"
+msgstr ""
+
+#: src/features/inspector/lib/transparentBackground.js:21
+msgid "Transparent Background"
+msgstr ""
+
+#: src/features/inspector/lib/widthControls.js:29
+msgid "Width Controls"
+msgstr ""
+
+#. Theme Name of the plugin/theme
+msgid "Kotisivu Block Theme"
+msgstr ""
+
+#. Theme URI of the plugin/theme
+msgid "https://www.kotisivu.dev"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Super lightweight block theme"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Kotisivu Dev"
+msgstr ""
