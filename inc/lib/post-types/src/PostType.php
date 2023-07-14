@@ -346,25 +346,22 @@ class PostType {
     public function createLabels() {
         // default labels
         $labels = [
-            'name' => $this->plural,
-            'singular_name' => $this->singular,
-            'menu_name' => $this->plural,
-            'all_items' => $this->plural,
-            'add_new' => "Add New",
-            'add_new_item' => "Add New {$this->singular}",
-            'edit_item' => "Edit {$this->singular}",
-            'new_item' => "New {$this->singular}",
-            'view_item' => "View {$this->singular}",
-            'search_items' => "Search {$this->plural}",
-            'not_found' => "No {$this->plural} found",
-            'not_found_in_trash' => "No {$this->plural} found in Trash",
-            'parent_item_colon' => "Parent {$this->singular}:",
+            'name' => __($this->plural, 'kotisivu-block-theme'),
+            'singular_name' => __($this->singular, 'kotisivu-block-theme'),
+            'menu_name' => __($this->plural, 'kotisivu-block-theme'),
+            'all_items' => __($this->plural, 'kotisivu-block-theme'),
+            'add_new' => __("Add New", 'kotisivu-block-theme'),
+            'add_new_item' => __("Add New {$this->singular}", 'kotisivu-block-theme'),
+            'edit_item' => __("Edit {$this->singular}", 'kotisivu-block-theme'),
+            'new_item' => __("New {$this->singular}", 'kotisivu-block-theme'),
+            'view_item' => __("View {$this->singular}", 'kotisivu-block-theme'),
+            'search_items' => __("Search {$this->plural}", 'kotisivu-block-theme'),
+            'not_found' => __("No {$this->plural} found", 'kotisivu-block-theme'),
+            'not_found_in_trash' => __("No {$this->plural} found in Trash", 'kotisivu-block-theme'),
+            'parent_item_colon' => __("Parent {$this->singular}:", 'kotisivu-block-theme'),
         ];
 
-        return apply_filters(
-            'createLabels',
-            array_replace_recursive($labels, $this->labels)
-        );
+        return array_replace_recursive($labels, $this->labels);
     }
 
     /**
