@@ -1,1 +1,12 @@
-.site-social{display:flex;flex-direction:row;flex-wrap:wrap;gap:1em}
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/dynamic/site-social/style.css ***!
+  \**********************************************************************************************************************************************************************************************/
+.site-social {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+
+/*# sourceMappingURL=style-site-social.css.map*/

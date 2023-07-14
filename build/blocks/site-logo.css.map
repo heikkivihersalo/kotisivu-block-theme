@@ -1,0 +1,1 @@
+{"version":3,"file":"site-logo.css","mappings":";;;AAAA;IACI,WAAW;AACf","sources":["webpack://kotisivu-block-theme/./src/blocks/dynamic/site-logo/editor.css"],"sourcesContent":[".site-logo img {\n    width: 100%;\n}\n"],"names":[],"sourceRoot":""}

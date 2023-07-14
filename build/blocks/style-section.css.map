@@ -1,0 +1,1 @@
+{"version":3,"file":"./style-section.css","mappings":";;;AAAA;IACI,eAAe;IACf,mBAAmB;AACvB,C","sources":["webpack://kotisivu-block-theme/./src/blocks/static/section/style.css"],"sourcesContent":["section.grid-cols-1 p {\n    max-width: 80ch;\n    margin-inline: auto;\n}"],"names":[],"sourceRoot":""}

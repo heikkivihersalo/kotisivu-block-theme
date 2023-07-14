@@ -1,0 +1,1 @@
+{"version":3,"file":"column.css","mappings":";;;AAAA;IACI,WAAW;CACd,kEAAkE;AACnE","sources":["webpack://kotisivu-block-theme/./src/blocks/static/column/editor.css"],"sourcesContent":[".column {\n    width: 100%;\n\tmax-width: calc( 100% - var(--wp--preset--spacing--40, 2rem) * 2 );\n}\n"],"names":[],"sourceRoot":""}

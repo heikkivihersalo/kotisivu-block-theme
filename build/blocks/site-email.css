@@ -1,1 +1,8 @@
-.site-contact--email{pointer-events:none}
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/dynamic/site-email/editor.css ***!
+  \**********************************************************************************************************************************************************************************************/
+.site-contact--email {
+    pointer-events: none;
+}
+
+/*# sourceMappingURL=site-email.css.map*/

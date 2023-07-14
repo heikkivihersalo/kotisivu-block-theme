@@ -1,1 +1,10 @@
-.column{max-width:calc(100% - var(--wp--preset--spacing--40, 2rem)*2);width:100%}
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./src/blocks/static/column/editor.css ***!
+  \*****************************************************************************************************************************************************************************************/
+.column {
+    width: 100%;
+	max-width: calc( 100% - var(--wp--preset--spacing--40, 2rem) * 2 );
+}
+
+
+/*# sourceMappingURL=column.css.map*/
