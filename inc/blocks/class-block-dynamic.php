@@ -90,7 +90,7 @@ class BlockDynamic extends Blocks {
          * Include translations if set
          */
         if ($this->config["blocks"]["translations"]) :
-            if (class_exists('Translation')) new Translation($block_name, $this->textdomain);
+            if (class_exists('Translation')) new Translation($block_name, 'kotisivu-block-theme');
         endif;
     }
 

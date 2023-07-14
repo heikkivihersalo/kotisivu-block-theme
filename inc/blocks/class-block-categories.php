@@ -31,7 +31,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'blocks',
-                    'title' => __('Blocks', $this->textdomain),
+                    'title' => __('Blocks', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );
@@ -40,7 +40,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'blog',
-                    'title' => __('Blog', $this->textdomain),
+                    'title' => __('Blog', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );
@@ -49,7 +49,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'child',
-                    'title' => __('Child', $this->textdomain),
+                    'title' => __('Child', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );
@@ -58,7 +58,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'sections',
-                    'title' => __('Sections', $this->textdomain),
+                    'title' => __('Sections', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );
@@ -67,7 +67,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'containers',
-                    'title' => __('Containers & Wrappers', $this->textdomain),
+                    'title' => __('Containers & Wrappers', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );
@@ -76,7 +76,7 @@ class BlockCategories extends Blocks {
                 $block_categories,
                 array(
                     'slug'  => 'dynamic-data',
-                    'title' => __('Dynamic Data', $this->textdomain),
+                    'title' => __('Dynamic Data', 'kotisivu-block-theme'),
                     'icon'  => null,
                 )
             );

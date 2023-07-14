@@ -48,7 +48,7 @@ class BlockTranslation extends Blocks {
     public function set_translation(): void {
         wp_set_script_translations(
             'ksd-' . $this->slug . '-editor-script',
-            $this->textdomain,
+            'kotisivu-block-theme',
             $this->parent_path . '/languages'
         );
     }
@@ -71,7 +71,7 @@ class BlockTranslation extends Blocks {
      * @return string 
      */
     private function fix_translation_location(string $file, string $handle, string $domain): string {
-        if (strpos($handle, 'ksd-' . $this->slug . '-editor-script') !== false && $this->textdomain === $domain) {
+        if (strpos($handle, 'ksd-' . $this->slug . '-editor-script') !== false && 'kotisivu-block-theme' === $domain) {
             $file = str_replace(WP_LANG_DIR . '/plugins', plugin_dir_path(__FILE__) . 'languages', $file);
         }
 

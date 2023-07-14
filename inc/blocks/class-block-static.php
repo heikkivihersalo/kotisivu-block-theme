@@ -46,7 +46,7 @@ class BlockStatic extends Blocks {
             }
 
             if ($this->config["blocks"]["translations"]) :
-                if (class_exists('Translation')) new Translation($block, $this->textdomain);
+                if (class_exists('Translation')) new Translation($block, 'kotisivu-block-theme');
             endif;
             
         endforeach;
