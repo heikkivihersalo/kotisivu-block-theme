@@ -39,7 +39,7 @@ class Options extends Theme {
         /**
          * Create new options page
          */
-        $analytics = new SiteAnalytics($this->textdomain);
+        $analytics = new SiteAnalytics('kotisivu-block-theme');
         new \RationalOptionPages($analytics->init());
     }
 
@@ -51,7 +51,7 @@ class Options extends Theme {
         /**
          * Create new options page
          */
-        $options = new SiteOptions($this->textdomain);
+        $options = new SiteOptions('kotisivu-block-theme');
         new \RationalOptionPages($options->init());
     }
 

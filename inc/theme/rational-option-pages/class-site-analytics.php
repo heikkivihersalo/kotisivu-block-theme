@@ -29,27 +29,27 @@ class SiteAnalytics extends Theme {
         return array(
             'kotisivu-theme_site-analytics' => array(
                 'icon_url' => 'dashicons-chart-line',
-                'page_title' => __('Site Analytics', $this->textdomain),
+                'page_title' => __('Site Analytics', 'kotisivu-block-theme'),
                 'sections' => array(
                     'section-one' => array(
-                        'title' => __('Tag Manager', $this->textdomain),
+                        'title' => __('Tag Manager', 'kotisivu-block-theme'),
                         'text'    => '<p>' .
-                            __('Using Tag Manager is the recommended way of adding analytics (including cookie management) to your site. Kotisivu Theme uses unique script to delay the loading of analytics so it does not have any performance impact on your site.', $this->textdomain)
+                            __('Using Tag Manager is the recommended way of adding analytics (including cookie management) to your site. Kotisivu Theme uses unique script to delay the loading of analytics so it does not have any performance impact on your site.', 'kotisivu-block-theme')
                             . '</p>',
                         'fields' => array(
                             'active' => array(
-                                'title' => __('Enable Tag Manager', $this->textdomain),
+                                'title' => __('Enable Tag Manager', 'kotisivu-block-theme'),
                                 'id' => 'tagmanager-active',
                                 'type' => 'checkbox',
                             ),
                             'id' => array(
-                                'title' => __('Container ID', $this->textdomain),
+                                'title' => __('Container ID', 'kotisivu-block-theme'),
                                 'id' => 'tagmanager-id',
                                 'type' => 'text',
                                 'sanitize' => true
                             ),
                             'url' => array(
-                                'title' => __('Server Url', $this->textdomain),
+                                'title' => __('Server Url', 'kotisivu-block-theme'),
                                 'id' => 'tagmanager-url',
                                 'type' => 'url',
                                 'value' => 'https://www.googletagmanager.com',
@@ -57,7 +57,7 @@ class SiteAnalytics extends Theme {
                                 'sanitize' => true
                             ),
                             'timeout' => array(
-                                'title' => __('Timeout (delay)', $this->textdomain),
+                                'title' => __('Timeout (delay)', 'kotisivu-block-theme'),
                                 'id' => 'tagmanager-timeout',
                                 'type' => 'number',
                                 'value' => 1500,

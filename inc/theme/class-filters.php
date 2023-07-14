@@ -30,7 +30,7 @@ class Filters extends Theme {
         $custom_images = [];
 
         foreach ($this->config["customImages"]["customSizes"] as $image) :
-            $custom_images[$image['slug']] = [__($image['name'],  $this->textdomain)];
+            $custom_images[$image['slug']] = [__($image['name'],  'kotisivu-block-theme')];
         endforeach;
 
         return array_merge($sizes, $custom_images);
@@ -55,7 +55,7 @@ class Filters extends Theme {
          */
         if (0 === strpos($url, 'https://api.wordpress.org/themes/update-check')) {
             $themes = json_decode($response['body']['themes']);
-            unset($themes->themes->{$this->textdomain});
+            unset($themes->themes->{'kotisivu-block-theme'});
             unset($themes->themes->{'style'});
             $response['body']['themes'] = json_encode($themes);
         }
@@ -158,7 +158,7 @@ class Filters extends Theme {
      * Load translations
      */
     public function load_translations(): void {
-        load_theme_textdomain( $this->textdomain, $this->parent_path . '/languages' );
+        load_theme_textdomain( 'kotisivu-block-theme', $this->parent_path . '/languages' );
     }
 
     /**

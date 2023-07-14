@@ -84,7 +84,7 @@ class Theme {
          */
         $this->name = $theme->get('Name');
         $this->version = $theme->get('Version');
-        $this->textdomain = $theme->get('TextDomain');
+        'kotisivu-block-theme' = $theme->get('TextDomain');
         $this->path = get_theme_file_path();
         $this->uri = get_theme_file_uri();
         $this->parent_path = get_parent_theme_file_path();

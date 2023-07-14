@@ -176,7 +176,7 @@ class Enqueue extends Theme {
              * Set translations 
              * @url https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
              */
-            wp_set_script_translations($attributes['handle'], $this->textdomain);
+            wp_set_script_translations($attributes['handle'], 'kotisivu-block-theme');
         endif;
     }
 
