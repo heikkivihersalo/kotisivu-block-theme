@@ -183,12 +183,12 @@
 	},
 	"customPostTypes": [
 		{
-			"active": false,
+			"active": true,
 			"names": {
-				"name": "CPT",
-				"singular": "CPT",
-				"plural": "CPT",
-				"slug": "cpt"
+				"name": "Example Post Type",
+				"singular": "Example",
+				"plural": "Examples",
+				"slug": "example"
 			},
 			"options": {
 				"hierarchical": false,
@@ -202,7 +202,7 @@
 				"options": {
 					"id": "option",
 					"title": "title",
-					"screen": ["csp"]
+					"screen": ["example"]
 				},
 				"markup": [
 					{
