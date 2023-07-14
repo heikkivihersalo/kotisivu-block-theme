@@ -50,7 +50,7 @@
         },
         {
           "slug": "grey-light",
-          "color": "hsl(233, 4%, 22%)",
+          "color": "hsl(233, 4%, 82%)",
           "name": "Light Grey"
         },
         {
@@ -60,7 +60,7 @@
         },
         {
           "slug": "grey-dark",
-          "color": "hsl(233, 4%, 82%)",
+          "color": "hsl(233, 4%, 22%)",
           "name": "Dark Grey"
         }
       ],
