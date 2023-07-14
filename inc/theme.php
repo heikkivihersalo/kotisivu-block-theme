@@ -121,7 +121,7 @@ class Theme {
         /**
          * Check config file for cache. If config file is not found from cache, load it from file
          */
-        $cache = wp_cache_get($slug);
+        $cache = wp_cache_get('kotisivu-block-theme_' . $slug);
 
         if ($cache === false) :
             /* Get config file */
@@ -134,7 +134,7 @@ class Theme {
 
             /* Encode and set cache */
             $cache = json_decode($config_file, true);
-            wp_cache_set($slug, $cache);
+            wp_cache_set('kotisivu-block-theme_' . $slug, $cache);
         endif;
 
         return $cache;
@@ -149,12 +149,12 @@ class Theme {
         /**
          * Check options for cache. If not found, load it from database
          */
-        $cache = wp_cache_get('kotisivu-theme_' . $slug);
+        $cache = wp_cache_get('kotisivu-block-theme_' . $slug);
 
         if ($cache === false) {
-            get_option('kotisivu-theme_' . $slug);
-            $cache = get_option('kotisivu-theme_' . $slug);
-            wp_cache_set($slug, $cache);
+            get_option('kotisivu-block-theme_' . $slug);
+            $cache = get_option('kotisivu-block-theme_' . $slug);
+            wp_cache_set('kotisivu-block-theme_' . $slug, $cache);
         }
 
         return $cache;
@@ -171,7 +171,7 @@ class Theme {
         $filters = new Filters();
         $filters->init();
 
-        $post_types = new CustomPostType();
+        $post_types = new CustomPostType($this->config);
         $post_types->init();
 
         $enqueue = new Enqueue();
