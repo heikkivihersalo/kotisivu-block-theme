@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kotisivu Block Theme\n"
-"POT-Creation-Date: 2023-07-14 12:08+0300\n"
+"POT-Creation-Date: 2023-07-14 12:54+0300\n"
 "PO-Revision-Date: 2023-07-14 12:03+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -40,28 +40,32 @@ msgstr ""
 msgid "Error while loading more posts"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:34
+#: inc/blocks/class-block-categories.php:28
 msgid "Blocks"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:43
+#: inc/blocks/class-block-categories.php:37
 msgid "Blog"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:52
+#: inc/blocks/class-block-categories.php:46
 msgid "Child"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:61
+#: inc/blocks/class-block-categories.php:55
 msgid "Sections"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:70
+#: inc/blocks/class-block-categories.php:64
 msgid "Containers & Wrappers"
 msgstr ""
 
-#: inc/blocks/class-block-categories.php:79
+#: inc/blocks/class-block-categories.php:73
 msgid "Dynamic Data"
+msgstr ""
+
+#: inc/lib/post-types/src/PostType.php:353
+msgid "Add New"
 msgstr ""
 
 #: inc/lib/rational-option-pages/RationalOptionPages.php:707
