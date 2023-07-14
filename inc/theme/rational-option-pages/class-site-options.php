@@ -40,8 +40,8 @@ class SiteOptions extends Theme {
                     'placeholder'    => 'email.address@domain.com',
                     'sanitize' => true
                 ),
-                'tel' => array(
-                    'id'            => 'contact-tel',
+                'phone' => array(
+                    'id'            => 'contact-phone',
                     'title'            => __('Phone', $this->textdomain),
                     'type'            => 'tel',
                     'text'          => __('Use format +358123456789', $this->textdomain),
