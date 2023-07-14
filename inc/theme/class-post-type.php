@@ -28,7 +28,7 @@ class CustomPostType extends Theme {
      * @return void 
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/custom-post-type/*.php') as $class)
+        foreach (glob(dirname(__FILE__) . '/post-types/*.php') as $class)
             require_once $class;
     }
 
