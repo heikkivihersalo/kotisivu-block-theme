@@ -12,7 +12,8 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import metadata from './block.json';
-import { AriaLabelControls, BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
+import { InnerBlocksAppender } from '@features/inspector';
+import Inspector from "./components/inspector";
 import { VariationPicker, getBlockVariations } from "@features/variations";
 import { getBlockSyles, getIsReversedClass } from '@utils';
 
@@ -74,14 +75,7 @@ const Edit = (props) => {
 	 */
 	return (
 		<>
-			<InspectorControls>
-				<AriaLabelControls {...props} />
-			</InspectorControls>
-			<InspectorControls group="styles">
-				<BackgroundColorControl {...props} />
-				<GridAlignControls {...props} />
-				<WidthControls {...props} />
-			</InspectorControls>
+			<Inspector {...props} />
 			<section {...innerBlocksProps} />
 		</>
 	);
