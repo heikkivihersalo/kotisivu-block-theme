@@ -2,34 +2,44 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
     {
-        name: 'hero-with-image',
-        title: __('Hero | Background Image', 'kotisivu-theme-blocks'),
+        name: 'map-full-width',
+        title: __('Map | Full Width', 'kotisivu-theme-blocks'),
+        icon: 'button',
+        scope: 'block',
+        innerBlocks: [
+            ['core/html', {
+                className: 'map__map'
+            }]
+        ],
+        attributes: {
+            blockClass: "map",
+            style: {}
+        }
+    },
+    {
+        name: 'map-with-address',
+        title: __('Map | With Address', 'kotisivu-theme-blocks'),
         icon: 'button',
         scope: 'block',
         innerBlocks: [
             ['ksd/wrapper', {
-                wrapperClass: "hero__container",
-                showAlignmentControls: true,
-                variationName: "wrapper-100",
-                width: null,
+                blockClass: "map__address-container",
+                variationName: "map-with-address",
                 template: [
-                    ['core/heading', { level: 1, placeholder: 'Hero Heading', className: 'hero__heading' }],
-                    ['core/paragraph', { placeholder: 'Hero Text', className: 'hero__text' }],
-                    ['core/buttons', { placeholder: 'Hero Buttons', className: 'hero__buttons' }]
+                    ['ksd/site-logo', { className: 'map__logo', isLink: false }],
+                    ['ksd/site-address', { className: 'map__address' }],
+                    ['ksd/site-email', { className: 'map__email' }]
                 ]
             }],
-            ['core/image', {
-                className: 'hero__image',
-                align: 'full',
-                sizeSlug: 'full',
-                url: 'https://picsum.photos/1920/1080'
+            ['core/html', {
+                className: 'map__map'
             }]
         ],
         attributes: {
-            heroClass: "hero is-stacked",
-            showAlignmentControls: true,
-            templateLock: "all",
-            width: "var(--wp--style--global--wide-size)",
+            blockClass: "map grid-cols-2",
+            style: {
+                backgroundColor: "var(--wp--preset--color--grey-light)",
+            }
         }
     }
 ];
