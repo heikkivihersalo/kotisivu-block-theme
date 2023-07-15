@@ -13,7 +13,7 @@ import classnames from 'classnames';
  */
 import metadata from './block.json';
 import { InnerBlocksAppender } from '@features/inspector';
-import Inspector from "./components/inspector";
+import Inspector from "./components/Inspector.jsx";
 import { VariationPicker, getBlockVariations } from "@features/variations";
 import { getBlockSyles, getIsReversedClass } from '@utils';
 
