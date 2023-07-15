@@ -7,21 +7,28 @@ import {
     ButtonGroup
 } from "@wordpress/components";
 
-const WidthControls = (props) => {
-    const {
-        attributes: {
-            width
-        },
-        setAttributes
-    } = props;
+const WidthControls = ({ attributes, setAttributes }) => {
+    const FULL_WIDTH = 'var(--wp--style--global--wide-size)';
+    const CONTENT_WIDTH = 'var(--wp--style--global--content-size)';
 
-    const handleWidthChange = (value) => {
-        if (value === width) {
-            setAttributes({ width: undefined });
+    const onWidthChange = (currentStyles, newWidth) => {
+        if (newWidth === currentStyles?.width) {
+            setAttributes({
+                style: {
+                    ...currentStyles,
+                    width: undefined
+                }
+            });
+
             return;
         }
 
-        setAttributes({ width: value });
+        setAttributes({
+            style: {
+                ...currentStyles,
+                width: newWidth
+            }
+        })
     }
 
     return (
@@ -32,13 +39,13 @@ const WidthControls = (props) => {
                         <ButtonGroup>
                             <Button
                                 icon="align-full-width"
-                                isPressed={width === 'var(--wp--style--global--wide-size)'}
-                                onClick={() => handleWidthChange('var(--wp--style--global--wide-size)')}
+                                isPressed={attributes.style?.width === FULL_WIDTH}
+                                onClick={() => onWidthChange(attributes.style, FULL_WIDTH)}
                             />
                             <Button
                                 icon="align-wide"
-                                isPressed={width === 'var(--wp--style--global--content-size)'}
-                                onClick={() => handleWidthChange('var(--wp--style--global--content-size)')}
+                                isPressed={attributes.style?.width === CONTENT_WIDTH}
+                                onClick={() => onWidthChange(attributes.style, CONTENT_WIDTH)}
                             />
                         </ButtonGroup>
                     </div>
