@@ -26,10 +26,10 @@ const variations = [
             }]
         ],
         attributes: {
-            heroClass: "hero is-stacked",
-            showAlignmentControls: true,
+            blockClass: "hero is-stacked",
             templateLock: "all",
             width: "var(--wp--style--global--wide-size)",
+            style: {}
         }
     }
 ];
