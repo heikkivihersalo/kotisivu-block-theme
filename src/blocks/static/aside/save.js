@@ -1,29 +1,29 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { getBlockSyles } from '@utils/modifiers';
+import { getBlockSyles, getIsReversedClass } from '@utils/modifiers';
 
 const Save = (props) => {
 	const {
 		attributes: {
-			asideClass,
+			ariaLabel,
+			ariaLabelledBy,
+			blockClass,
 			style,
-			width,
-			justifyItems,
-			alignItems,
 			isReversed
 		}
 	} = props;
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(asideClass, isReversed),
-		style: getBlockSyles({ style, width, justifyItems, alignItems })
+		className: classnames(blockClass, getIsReversedClass(isReversed)),
+		style: getBlockSyles({ style }),
+		'aria-label': ariaLabel ? ariaLabel : null,
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
 	}));
 
 	return (
 		<aside {...innerBlocksProps} />
 	)
-
 };
 
 export default Save;

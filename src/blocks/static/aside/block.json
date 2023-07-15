@@ -27,13 +27,19 @@
 	"editorStyle": "file:../../../../build/blocks/aside.css",
 	"style": "file:../../../../build/blocks/style-aside.css",
 	"attributes": {
-		"asideClass": {
+		"blockClass": {
 			"type": "string",
 			"default": ""
 		},
 		"style": {
 			"type": "object",
 			"default": {}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
 		},
 		"template": {
 			"type": "array",
@@ -46,25 +52,9 @@
 			"type": ["string", "boolean"],
 			"enum": ["all", "insert", false]
 		},
-		"width": {
-			"enum": [
-				"var(--wp--style--global--wide-size)",
-				"var(--wp--style--global--content-size)"
-			]
-		},
-		"alignItems": {
-			"enum": ["center", "start", "end", "stretch", "baseline"]
-		},
-		"justifyItems": {
-			"enum": ["center", "start", "end", "stretch"]
-		},
 		"isReversed": {
 			"type": "boolean",
 			"default": false
-		},
-		"showAlignmentControls": {
-			"type": "boolean",
-			"default": true
 		},
 		"variationName": {
 			"type": "string",

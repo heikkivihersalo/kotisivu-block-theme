@@ -27,7 +27,7 @@
 	"editorStyle": "file:../../../../build/blocks/section.css",
 	"style": "file:../../../../build/blocks/style-section.css",
 	"attributes": {
-		"sectionClass": {
+		"blockClass": {
 			"type": "string",
 			"default": ""
 		},
@@ -57,26 +57,9 @@
 			"type": ["string", "boolean"],
 			"enum": ["all", "insert", false]
 		},
-		"width": {
-			"enum": [
-				"var(--wp--style--global--wide-size)",
-				"var(--wp--style--global--content-size)"
-			],
-			"default": "var(--wp--style--global--content-size)"
-		},
-		"alignItems": {
-			"enum": ["center", "start", "end", "stretch", "baseline"]
-		},
-		"justifyItems": {
-			"enum": ["center", "start", "end", "stretch"]
-		},
 		"isReversed": {
 			"type": "boolean",
 			"default": false
-		},
-		"showAlignmentControls": {
-			"type": "boolean",
-			"default": true
 		},
 		"variationName": {
 			"type": "string",

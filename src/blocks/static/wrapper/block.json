@@ -20,14 +20,13 @@
 			"margin": ["top", "bottom"],
 			"padding": true
 		},
-		"ariaLabel": true,
 		"align": ["full"]
 	},
 	"editorScript": "file:../../../../build/blocks/wrapper.js",
 	"editorStyle": "file:../../../../build/blocks/wrapper.css",
 	"style": "file:../../../../build/blocks/style-wrapper.css",
 	"attributes": {
-		"wrapperClass": {
+		"blockClass": {
 			"type": "string",
 			"default": ""
 		},
@@ -46,25 +45,9 @@
 			"type": ["string", "boolean"],
 			"enum": ["all", "insert", false]
 		},
-		"width": {
-			"enum": [
-				"var(--wp--style--global--wide-size)",
-				"var(--wp--style--global--content-size)"
-			]
-		},
-		"alignItems": {
-			"enum": ["center", "start", "end", "stretch", "baseline"]
-		},
-		"justifyItems": {
-			"enum": ["center", "start", "end", "stretch"]
-		},
 		"isReversed": {
 			"type": "boolean",
 			"default": false
-		},
-		"showAlignmentControls": {
-			"type": "boolean",
-			"default": true
 		},
 		"variationName": {
 			"type": "string",

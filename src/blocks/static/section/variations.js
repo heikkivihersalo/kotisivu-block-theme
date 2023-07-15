@@ -30,7 +30,7 @@ const variations = [
         name: 'section-33-33-33',
         title: __('Section | 33-33-33', 'kotisivu-theme-blocks'),
         icon: 'button',
-        scope: 'block',
+        scope: '',
         innerBlocks: [
             ['ksd/column'],
             ['ksd/column'],

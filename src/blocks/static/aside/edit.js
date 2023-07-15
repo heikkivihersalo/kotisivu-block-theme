@@ -4,21 +4,17 @@
 import { __ } from "@wordpress/i18n";
 import {
 	useBlockProps,
-	__experimentalBlockVariationPicker as BlockVariationPicker,
 	InspectorControls
 } from "@wordpress/block-editor";
-import {
-	store as blocksStore,
-} from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import metadata from './block.json';
-import { BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
-import { getBlockSyles } from '@utils/modifiers';
+import { AriaLabelControls, BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
+import { VariationPicker, getBlockVariations } from "@features/variations";
+import { getBlockSyles, getIsReversedClass } from '@utils/modifiers';
 
 /**
  * Styles
@@ -28,16 +24,14 @@ import './editor.css';
 const Edit = (props) => {
 	const {
 		attributes: {
-			asideClass,
+			ariaLabel,
+			ariaLabelledBy,
+			blockClass,
 			template,
 			templateLock,
 			style,
-			width,
-			justifyItems,
-			alignItems,
 			isReversed,
-			variationName,
-			showAlignmentControls
+			variationName
 		},
 		setAttributes,
 		clientId
@@ -47,17 +41,11 @@ const Edit = (props) => {
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: classnames(asideClass, isReversed),
-		style: getBlockSyles({ style, width, justifyItems, alignItems })
+		className: classnames(blockClass, getIsReversedClass(isReversed)),
+		style: getBlockSyles({ style }),
+		'aria-label': ariaLabel ? ariaLabel : null,
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
 	});
-
-	const blockVariations = useSelect(
-		(select) => {
-			const { getBlockVariations } = select(blocksStore);
-			return getBlockVariations(metadata.name, 'block');
-		},
-		[metadata.name]
-	);
 
 	const innerBlocksProps = InnerBlocksAppender({
 		clientId: clientId,
@@ -66,22 +54,19 @@ const Edit = (props) => {
 		blockProps: blockProps
 	});
 
+	/**
+	 * Get variations
+	 */
+	const blockVariations = getBlockVariations(metadata.name);
+
 	/* If variation isn't selected, render variation select screen */
 	if (!variationName) {
 		return (
-			<BlockVariationPicker
-				label={__('Choose variation')}
-				instructions={__('Select a variation to start with.')}
-				onSelect={(variation) =>
-					setAttributes({
-						variationName: variation.name,
-						template: variation.innerBlocks,
-						asideClass: variation.attributes.asideClass,
-						showAlignmentControls: variation.attributes.showAlignmentControls
-					})
-				}
-				variations={blockVariations}
-			/>)
+			<VariationPicker
+				setAttributes={setAttributes}
+				blockVariations={blockVariations}
+			/>
+		)
 	}
 
 	/**
@@ -89,16 +74,13 @@ const Edit = (props) => {
 	 */
 	return (
 		<>
+			<InspectorControls>
+				<AriaLabelControls {...props} />
+			</InspectorControls>
 			<InspectorControls group="styles">
 				<BackgroundColorControl {...props} />
-				{showAlignmentControls &&
-					(
-						<>
-							<GridAlignControls {...props} />
-							<WidthControls {...props} />
-						</>
-					)
-				}
+				<GridAlignControls {...props} />
+				<WidthControls {...props} />
 			</InspectorControls>
 			<aside {...innerBlocksProps} />
 		</>

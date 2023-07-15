@@ -8,8 +8,7 @@ const variations = [
         scope: 'block',
         innerBlocks: [],
         attributes: {
-            asideClass: "grid-cols-1",
-            showAlignmentControls: true
+            blockClass: "grid-cols-1"
         }
     },
     {
@@ -22,8 +21,7 @@ const variations = [
             ['ksd/column']
         ],
         attributes: {
-            asideClass: "grid-cols-2",
-            showAlignmentControls: true
+            blockClass: "grid-cols-2"
         }
     },
     {
@@ -37,8 +35,7 @@ const variations = [
             ['ksd/column']
         ],
         attributes: {
-            asideClass: "grid-cols-3",
-            showAlignmentControls: true
+            blockClass: "grid-cols-3"
         }
     }
 ];

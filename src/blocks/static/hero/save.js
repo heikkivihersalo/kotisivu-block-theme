@@ -6,20 +6,16 @@ import { getBlockSyles } from '@utils/modifiers';
 const Save = (props) => {
 	const {
 		attributes: {
-			heroClass,
+			blockClass,
 			ariaLabel,
 			ariaLabelledBy,
-			style,
-			width,
-			justifyItems,
-			alignItems,
-			isReversed
+			style
 		}
 	} = props;
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(heroClass, isReversed),
-		style: getBlockSyles({ style, width, justifyItems, alignItems }),
+		className: classnames(blockClass),
+		style: getBlockSyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
 	}));
