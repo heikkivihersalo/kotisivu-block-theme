@@ -15,6 +15,9 @@
 	"editorStyle": "file:../../../../build/blocks/site-logo.css",
 	"style": "file:../../../../build/blocks/style-site-logo.css",
 	"attributes": {
+		"options": {
+			"type": "object"
+		},
 		"isLink": {
 			"type": "boolean",
 			"default": true

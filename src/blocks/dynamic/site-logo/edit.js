@@ -15,6 +15,7 @@ const Edit = (props) => {
 			<ServerSideRender
 				block="ksd/site-logo"
 				attributes={props.attributes}
+				className={props.className}
 			/>
 		</div>
 	);

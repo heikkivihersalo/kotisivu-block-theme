@@ -17,5 +17,8 @@
 	"style": "file:../../../../build/blocks/style-site-header.css",
 	"viewScript": "file:../../../../build/blocks/site-header-view-script.js",
 	"attributes": {
+		"options": {
+			"type": "object"
+		}
 	}
 }

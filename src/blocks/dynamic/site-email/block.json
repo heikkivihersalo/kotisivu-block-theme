@@ -15,9 +15,11 @@
 	"editorStyle": "file:../../../../build/blocks/site-email.css",
 	"style": "file:../../../../build/blocks/style-site-email.css",
 	"attributes": {
+		"className": {
+			"type": "string"
+		},
 		"options": {
-			"type": "object",
-			"default": ""
+			"type": "object"
 		}
 	}
 }

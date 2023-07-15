@@ -16,8 +16,7 @@
 	"style": "file:../../../../build/blocks/style-site-company-name.css",
 	"attributes": {
 		"options": {
-			"type": "object",
-			"default": ""
+			"type": "object"
 		}
 	}
 }

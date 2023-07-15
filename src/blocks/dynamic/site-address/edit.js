@@ -10,6 +10,7 @@ const Edit = (props) => {
 		<div {...blockProps}>
 			<ServerSideRender
 				block="ksd/site-address"
+				attributes={props.attributes}
 			/>
 		</div>
 	);

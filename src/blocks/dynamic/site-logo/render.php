@@ -51,6 +51,8 @@ function get_site_logo_content(mixed $logo, bool $is_link, string $company_name,
  * @param content
  */
 function render_site_logo($block_attributes, $content) {
+
+
     $logo = wp_get_attachment_image_src(get_theme_mod('custom_logo'), 'full');
     $isLink = isset($block_attributes['isLink']) ? $block_attributes['isLink'] : false;
     $className = isset($block_attributes['className']) ? $block_attributes['className'] : "";

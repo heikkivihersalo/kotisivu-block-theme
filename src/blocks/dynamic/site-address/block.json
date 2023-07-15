@@ -16,8 +16,7 @@
 	"style": "file:../../../../build/blocks/style-site-address.css",
 	"attributes": {
 		"options": {
-			"type": "object",
-			"default": ""
+			"type": "object"
 		}
 	}
 }
