@@ -1,0 +1,86 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/map",
+	"title": "Map",
+	"category": "sections",
+	"icon": "location-alt",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"ariaLabel": true,
+		"align": ["full"]
+	},
+	"editorScript": "file:../../../../build/blocks/map.js",
+	"editorStyle": "file:../../../../build/blocks/map.css",
+	"style": "file:../../../../build/blocks/style-map.css",
+	"attributes": {
+		"mapClass": {
+			"type": "string",
+			"default": ""
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "0",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		},
+		"width": {
+			"enum": [
+				"var(--wp--style--global--wide-size)",
+				"var(--wp--style--global--content-size)"
+			],
+			"default": "var(--wp--style--global--wide-size)"
+		},
+		"alignItems": {
+			"enum": ["center", "start", "end", "stretch", "baseline"]
+		},
+		"justifyItems": {
+			"enum": ["center", "start", "end", "stretch"]
+		},
+		"isReversed": {
+			"type": "boolean",
+			"default": false
+		},
+		"showAlignmentControls": {
+			"type": "boolean",
+			"default": true
+		},
+		"variationName": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}

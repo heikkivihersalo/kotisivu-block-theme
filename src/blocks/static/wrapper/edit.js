@@ -14,7 +14,7 @@ import classnames from 'classnames';
 import metadata from './block.json';
 import { BackgroundColorControl, WidthControls, InnerBlocksAppender, GridAlignControls } from '@features/inspector';
 import { VariationPicker, getBlockVariations } from "@features/variations";
-import { getBlockSyles, getIsReversedClass } from '@utils/modifiers';
+import { getBlockSyles, getIsReversedClass } from '@utils';
 
 /**
  * Styles

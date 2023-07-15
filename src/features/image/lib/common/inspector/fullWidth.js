@@ -4,7 +4,7 @@ import {
     ToggleControl
 } from "@wordpress/components";
 
-import { addModifiers } from '../../../../../utils/modifiers';
+import { addModifiers } from '../../@utils';
 
 const FullWidth = (props) => {
     const {
