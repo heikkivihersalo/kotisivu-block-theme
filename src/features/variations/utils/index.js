@@ -27,6 +27,7 @@ export const getAttributesFromProps = (variation) => {
     return {
         variationName: variation.name,
         template: variation.innerBlocks,
-        blockClass: variation.attributes.blockClass
+        blockClass: variation.attributes.blockClass,
+        style: variation.attributes.style
     }
 }
