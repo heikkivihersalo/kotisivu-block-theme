@@ -194,7 +194,7 @@ class SiteOptions extends Theme {
      */
     public function init() {
         return array(
-            'kotisivu-theme_site-options' => array(
+            'kotisivu-block-theme_site-options' => array(
                 'page_title' => __('Site Options', 'kotisivu-block-theme'),
                 'sections' => array(
                     'section-contact' => $this->get_contact_section(),

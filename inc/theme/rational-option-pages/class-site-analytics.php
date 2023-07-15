@@ -27,7 +27,7 @@ class SiteAnalytics extends Theme {
      */
     public function init() {
         return array(
-            'kotisivu-theme_site-analytics' => array(
+            'kotisivu-block-theme_site-analytics' => array(
                 'icon_url' => 'dashicons-chart-line',
                 'page_title' => __('Site Analytics', 'kotisivu-block-theme'),
                 'sections' => array(
