@@ -39,6 +39,7 @@
 			"ksd/form",
 			"ksd/hero",
 			"ksd/image-gallery",
+			"ksd/map",
 			"ksd/column",
 			"ksd/section",
 			"ksd/wrapper"
@@ -72,7 +73,11 @@
 			{
 				"slug": "ksd/site-email",
 				"render_callback": "render_site_email",
-				"attributes": {}
+				"attributes": {
+					"className": {
+						"type": "string"
+					}
+				}
 			},
 			{
 				"slug": "ksd/site-footer",
