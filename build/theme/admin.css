@@ -263,3 +263,31 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
 	margin-right: 0.5em;
 }
 
+/**
+ * IS VISUALLY HIDDEN
+ */
+.is-visually-hidden {
+	position: relative;
+	width: fit-content;
+}
+
+.is-visually-hidden::after {
+	--_color: white;
+	--_background: rgba(255, 0, 0, 0.75);
+	content: "Hidden visually";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	display: grid;
+	place-items: center;
+
+	font-size: 0.5rem;
+	background-color: var(--_background);
+	color: var(--_color);
+
+	padding: 1em 2em;
+
+	z-index: 9999;
+}
+
