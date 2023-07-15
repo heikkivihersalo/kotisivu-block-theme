@@ -24,29 +24,50 @@ import {
 const GridAlignControls = (props) => {
     const {
         attributes: {
-            alignItems,
-            justifyItems,
+            style,
             isReversed
         },
         setAttributes
     } = props;
 
-    const handleAlignItems = (value) => {
-        if (value === alignItems) {
-            setAttributes({ alignItems: undefined });
+    const onAlignItems = (currentStyles, newAligment) => {
+        if (newAligment === currentStyles?.alignItems) {
+            setAttributes({
+                style: {
+                    ...currentStyles,
+                    alignItems: undefined
+                }
+            })
+
             return;
         }
 
-        setAttributes({ alignItems: value });
+        setAttributes({
+            style: {
+                ...currentStyles,
+                alignItems: newAligment
+            }
+        })
     }
 
-    const handleJustifyItems = (value) => {
-        if (value === justifyItems) {
-            setAttributes({ justifyItems: undefined });
+    const onJustifyItems = (currentStyles, newJustify) => {
+        if (newJustify === currentStyles?.justifyItems) {
+            setAttributes({
+                style: {
+                    ...currentStyles,
+                    justifyItems: undefined
+                }
+            });
+
             return;
         }
 
-        setAttributes({ justifyItems: value });
+        setAttributes({
+            style: {
+                ...currentStyles,
+                justifyItems: newJustify
+            }
+        })
     }
 
     return (
@@ -59,28 +80,28 @@ const GridAlignControls = (props) => {
                             <ButtonGroup>
                                 <Button
                                     icon={<AlignItemsCenter />}
-                                    isPressed={alignItems === 'center'}
-                                    onClick={() => handleAlignItems('center')}
+                                    isPressed={style?.alignItems === 'center'}
+                                    onClick={() => onAlignItems(style, 'center')}
                                 />
                                 <Button
                                     icon={<AlignItemsStart />}
-                                    isPressed={alignItems === 'start'}
-                                    onClick={() => handleAlignItems('start')}
+                                    isPressed={style?.alignItems === 'start'}
+                                    onClick={() => onAlignItems(style, 'start')}
                                 />
                                 <Button
                                     icon={<AlignItemsEnd />}
-                                    isPressed={alignItems === 'end'}
-                                    onClick={() => handleAlignItems('end')}
+                                    isPressed={style?.alignItems === 'end'}
+                                    onClick={() => onAlignItems(style, 'end')}
                                 />
                                 <Button
                                     icon={<AlignItemsStretch />}
-                                    isPressed={alignItems === 'stretch'}
-                                    onClick={() => handleAlignItems('stretch')}
+                                    isPressed={style?.alignItems === 'stretch'}
+                                    onClick={() => onAlignItems(style, 'stretch')}
                                 />
                                 <Button
                                     icon={<AlignItemsBaseline />}
-                                    isPressed={alignItems === 'baseline'}
-                                    onClick={() => handleAlignItems('baseline')}
+                                    isPressed={style?.alignItems === 'baseline'}
+                                    onClick={() => onAlignItems(style, 'baseline')}
                                 />
                             </ButtonGroup>
                         </div>
@@ -89,23 +110,23 @@ const GridAlignControls = (props) => {
                             <ButtonGroup>
                                 <Button
                                     icon={<JustifyItemsCenter />}
-                                    isPressed={justifyItems === 'center'}
-                                    onClick={() => handleJustifyItems('center')}
+                                    isPressed={style?.justifyItems === 'center'}
+                                    onClick={() => onJustifyItems(style, 'center')}
                                 />
                                 <Button
                                     icon={<JustifyItemsStart />}
-                                    isPressed={justifyItems === 'start'}
-                                    onClick={() => handleJustifyItems('start')}
+                                    isPressed={style?.justifyItems === 'start'}
+                                    onClick={() => onJustifyItems(style, 'start')}
                                 />
                                 <Button
                                     icon={<JustifyItemsEnd />}
-                                    isPressed={justifyItems === 'end'}
-                                    onClick={() => handleJustifyItems('end')}
+                                    isPressed={style?.justifyItems === 'end'}
+                                    onClick={() => onJustifyItems(style, 'end')}
                                 />
                                 <Button
                                     icon={<JustifyItemsStretch />}
-                                    isPressed={justifyItems === 'stretch'}
-                                    onClick={() => handleJustifyItems('stretch')}
+                                    isPressed={style?.justifyItems === 'stretch'}
+                                    onClick={() => onJustifyItems(style, 'stretch')}
                                 />
                             </ButtonGroup>
                         </div>
