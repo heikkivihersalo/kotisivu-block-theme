@@ -24,6 +24,11 @@
           "name": "Primary"
         },
         {
+          "slug": "primary-dark",
+          "color": "hsl(343, 100%, 28%)",
+          "name": "Primary (Dark)"
+        },
+        {
           "slug": "secondary",
           "color": "hsl(163, 100%, 48%)",
           "name": "Secondary"

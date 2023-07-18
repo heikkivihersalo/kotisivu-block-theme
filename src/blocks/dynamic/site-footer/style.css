@@ -77,6 +77,11 @@
 	height: calc(var(--_size) * 0.8);
 }
 
+.footer a:hover .site-contact__icon {
+	--_icon-background: var(--wp--preset--color--primary-dark);
+	--_icon-color: var(--wp--preset--color--white);
+}
+
 @media screen and (min-width: 800px) {
 	.footer__top {
 		grid-template-columns: 1fr 1fr 1fr;
