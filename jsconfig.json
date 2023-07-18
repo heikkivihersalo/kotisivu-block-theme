@@ -4,7 +4,8 @@
 		"baseUrl": "./src",
 		"paths": {
 			"@features/*": ["features/*"],
-			"@utils/*": ["utils/*"]
+			"@utils/*": ["utils/*"],
+			"@hooks/*": ["hooks/*"]
 		}
 	},
 	"exclude": ["node_modules"]
