@@ -22,8 +22,8 @@ function get_site_logo_content(mixed $logo, bool $is_link, string $company_name,
     $tag = $is_link ? 'a' : 'div';
     $href = $is_link ? 'href="' . $site_url . '"' : '';
     $src = $logo[0];
-    $width = $logo[1];
-    $height = $logo[2];
+    $width = $logo[1] == 0 ? '350px' : $logo[1];
+    $height = $logo[2] == 0 ? '100%' : $logo[2];
     $alt = $company_name . ' Logo';
 
     $string = sprintf(
