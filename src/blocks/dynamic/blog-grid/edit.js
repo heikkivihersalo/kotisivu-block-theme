@@ -1,7 +1,19 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
 import ServerSideRender from '@wordpress/server-side-render';
+
+/**
+ * Styles
+ */
 import './editor.css';
+
+/**
+ * Internal dependencies
+ */
+import { usePosts } from '@hooks';
 
 import {
 	PanelBody,
