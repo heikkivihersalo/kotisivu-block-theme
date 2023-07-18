@@ -68,6 +68,26 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
 	fill: "white";
 }
 
+.editor-max-width-controls {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+
+.editor-max-width-controls > .components-range-control {
+	margin-bottom: 0;
+}
+
+.editor-max-width-controls
+	> .components-range-control
+	> .components-base-control__field {
+	margin-bottom: 0;
+}
+.editor-max-width-controls .components-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
 /*--------------------------------------------------------------
   3.0 Modifiers
 --------------------------------------------------------------*/
