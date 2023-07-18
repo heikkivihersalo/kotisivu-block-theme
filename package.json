@@ -21,8 +21,12 @@
 		"@wordpress/i18n": "^4.28.0"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.22.9",
+		"@wordpress/babel-preset-default": "^7.21.0",
 		"@wordpress/dependency-extraction-webpack-plugin": "^4.11.0",
 		"@wordpress/scripts": "^25.5.1",
+		"babel": "^6.23.0",
+		"babel-loader": "^9.1.3",
 		"clean-webpack-plugin": "^4.0.0",
 		"css-loader": "^6.7.3",
 		"mini-css-extract-plugin": "^2.7.3",
