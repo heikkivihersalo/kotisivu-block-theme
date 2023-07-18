@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Kotisivu Block Theme\n"
-"POT-Creation-Date: 2023-07-14 12:54+0300\n"
+"POT-Creation-Date: 2023-07-18 13:23+0300\n"
 "PO-Revision-Date: 2023-07-14 12:03+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,29 +16,11 @@ msgstr ""
 "X-Poedit-WPHeader: style.css\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: node_modules\n"
-
-#: build/blocks/blog-grid-view-script.js:111
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:94
-#: src/blocks/dynamic/blog-grid/view.js:51
-msgid "No more posts to fetch:"
-msgstr ""
-
-#: build/blocks/blog-grid-view-script.js:113
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:96
-#: src/blocks/dynamic/blog-grid/view.js:53
-msgid "Posts fetched succesfully:"
-msgstr ""
-
-#: build/blocks/blog-grid-view-script.js:127
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:112
-#: src/blocks/dynamic/blog-grid/view.js:63
-msgid "Error while loading more posts"
-msgstr ""
 
 #: inc/blocks/class-block-categories.php:28
 msgid "Blocks"
@@ -138,13 +120,11 @@ msgid "Add contact information here."
 msgstr ""
 
 #: inc/theme/rational-option-pages/class-site-options.php:38
-#: src/blocks/dynamic/site-email/render.php:15
-#: src/blocks/dynamic/site-footer/render.php:36
+#: src/blocks/dynamic/site-email/render.php:16
 msgid "Email"
 msgstr ""
 
 #: inc/theme/rational-option-pages/class-site-options.php:45
-#: src/blocks/dynamic/site-footer/render.php:35
 #: src/blocks/dynamic/site-phone/render.php:92
 #: src/blocks/dynamic/site-phone/render.php:94
 msgid "Phone"
@@ -347,16 +327,47 @@ msgstr ""
 msgid "Add status text"
 msgstr ""
 
+#: src/blocks/core/paragraph/components/Inspector.js:33
+msgid "Miscellaneous"
+msgstr ""
+
+#: src/blocks/core/paragraph/components/Inspector.js:43
+msgid "Reset"
+msgstr ""
+
 #: src/blocks/dynamic/blog-grid/render.php:53
 msgid "Show earlier posts"
 msgstr ""
 
-#: src/blocks/dynamic/site-footer/render.php:23
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:94
+#: src/blocks/dynamic/blog-grid/view.js:51
+msgid "No more posts to fetch:"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:96
+#: src/blocks/dynamic/blog-grid/view.js:53
+msgid "Posts fetched succesfully:"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/scripts/helpers.js:112
+#: src/blocks/dynamic/blog-grid/view.js:63
+msgid "Error while loading more posts"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/render.php:24
+msgid "Company"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/render.php:28
 msgid "VAT ID"
 msgstr ""
 
-#: src/blocks/dynamic/site-footer/render.php:34
-msgid "Sales and<br> quote proposals"
+#: src/blocks/dynamic/site-footer/render.php:32
+msgid "Contact Us"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/render.php:42
+msgid "©"
 msgstr ""
 
 #: src/blocks/dynamic/site-logo/components/Inspector.js:19
@@ -415,16 +426,6 @@ msgstr ""
 msgid "Follow us on WhatsApp"
 msgstr ""
 
-#: src/blocks/static/aside/edit.js:84 src/blocks/static/hero/edit.js:88
-#: src/blocks/static/section/edit.js:95 src/blocks/static/wrapper/edit.js:84
-msgid "Choose variation"
-msgstr ""
-
-#: src/blocks/static/aside/edit.js:85 src/blocks/static/hero/edit.js:89
-#: src/blocks/static/section/edit.js:96 src/blocks/static/wrapper/edit.js:85
-msgid "Select a variation to start with."
-msgstr ""
-
 #: src/blocks/static/aside/variations.js:6
 msgid "Aside | 100"
 msgstr ""
@@ -457,6 +458,14 @@ msgstr ""
 
 #: src/blocks/static/image-gallery/edit.js:38
 msgid "Selected images will be shown here"
+msgstr ""
+
+#: src/blocks/static/map/variations.js:6
+msgid "Map | Full Width"
+msgstr ""
+
+#: src/blocks/static/map/variations.js:21
+msgid "Map | With Address"
 msgstr ""
 
 #: src/blocks/static/section/variations.js:6
@@ -571,11 +580,11 @@ msgstr ""
 msgid "ex. name for this button"
 msgstr ""
 
-#: src/features/inspector/lib/gridAlignControls.js:54
+#: src/features/inspector/lib/gridAlignControls.js:75
 msgid "Alignment Controls"
 msgstr ""
 
-#: src/features/inspector/lib/gridAlignControls.js:116
+#: src/features/inspector/lib/gridAlignControls.js:137
 msgid "Reverse Order"
 msgstr ""
 
@@ -615,7 +624,7 @@ msgstr ""
 msgid "Transparent Background"
 msgstr ""
 
-#: src/features/inspector/lib/widthControls.js:29
+#: src/features/inspector/lib/widthControls.js:36
 msgid "Width Controls"
 msgstr ""
 
