@@ -123,7 +123,7 @@
         font-size: var(--wp--preset--font-size--large);
     }
 
-    :where(a.is-square-icon):hover {
+    :where(a .is-square-icon):hover {
         --_icon-background: var(--_icon-background-hover);
     }
 
