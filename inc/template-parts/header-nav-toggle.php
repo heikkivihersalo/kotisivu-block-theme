@@ -1,4 +1,9 @@
-<?php ?>
+<?php
+/**
+ * TODO: Move this to a dynamic block and use html template instead
+ * 
+ */
+?>
 <button class="header__toggle" aria-controls="primary-navigation" aria-expanded="false">
     <span class="is-visually-hidden"><?php echo __('Menu', 'kotisivu-block-theme'); ?></span>
     <svg fill="var(--_toggle-color)" viewBox="0 0 100 100" width="50" aria-hidden="true">

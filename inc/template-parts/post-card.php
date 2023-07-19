@@ -1,4 +1,9 @@
-<?php ?>
+<?php
+/**
+ * TODO: Move this to a dynamic block and use html template instead
+ * 
+ */
+?>
 
 <li class="blog-grid__item" data-url="<?php echo esc_url(get_permalink()); ?>">
     <h3 class="blog-grid__title"><?php echo get_the_title(); ?></h3>
