@@ -121,7 +121,7 @@ class Filters extends Theme {
         if (is_array($block_editor_context)) {
             return $block_editor_context;
         }
-        
+
         /* Else return an empty array */
         return array();
     }
@@ -158,7 +158,31 @@ class Filters extends Theme {
      * Load translations
      */
     public function load_translations(): void {
-        load_theme_textdomain( 'kotisivu-block-theme', $this->parent_path . '/languages' );
+        load_theme_textdomain('kotisivu-block-theme', $this->parent_path . '/languages');
+    }
+
+    /**
+     * Add featured image to posts query
+     */
+    function register_rest_images() {
+        register_rest_field('post', 'metadata', array(
+            'get_callback' => function ($data) {
+                $image_id = get_post_thumbnail_id($data['id']);
+                $image_meta = wp_get_attachment_image_src($image_id, 'medium');
+                $image = array(
+                    'id' => $image_id,
+                    'url' => $image_meta[0],
+                    'width' => $image_meta[1],
+                    'height' => $image_meta[2],
+                    'alt' => get_post_meta($image_id, '_wp_attachment_image_alt', true),
+                    'title' => get_the_title($image_id)
+                );
+
+                $meta = get_post_meta($data['id'], '', '');
+                $meta['featured_image'] = $image;
+                return $meta;
+            },
+        ));
     }
 
     /**
@@ -166,12 +190,13 @@ class Filters extends Theme {
      * @return void 
      */
     public function init(): void {
-        add_action( 'after_setup_theme', [$this, 'load_translations'] );
+        add_action('after_setup_theme', [$this, 'load_translations']);
         add_filter('image_size_names_choose', [$this, 'add_custom_sizes_to_admin']);
         add_filter('upload_mimes', [$this, 'allow_svg_uploads']);
         add_filter('excerpt_length', [$this, 'limit_excerpt_length'], 999);
         add_filter('http_request_args', [$this, 'disable_theme_update'], 10, 2);
         add_filter('allowed_block_types_all', [$this, 'allowed_block_types'], 10, 2);
         add_filter('wp_enqueue_scripts', [$this, 'remove_jquery']);
+        add_action('rest_api_init', [$this, 'register_rest_images']);
     }
 }
