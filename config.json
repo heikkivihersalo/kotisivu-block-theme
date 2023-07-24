@@ -37,6 +37,8 @@
 		"static": [
 			"ksd/aside",
 			"ksd/form",
+			"ksd/grid",
+			"ksd/grid-item",
 			"ksd/hero",
 			"ksd/image-gallery",
 			"ksd/map",
