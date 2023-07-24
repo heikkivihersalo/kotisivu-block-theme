@@ -46,33 +46,7 @@ function render_blog_grid($block_attributes, $content) { ?>
         <ul id="blog-post-list" class="blog-grid__list">
             <?php if ($query->have_posts()) : ?>
                 <?php while ($query->have_posts()) : $query->the_post(); ?>
-                    <?php
-                    /**
-                     * CARD
-                     * 
-                     */ ?>
-                    <li class="blog-grid__item" data-url="<?php echo esc_url(get_permalink()); ?>">
-                        <h3 class="blog-grid__title"><?php echo get_the_title(); ?></h3>
-                        <time class="blog-grid__date" datetime="<?php echo get_the_date('c'); ?>">
-                            <?php echo get_the_date(get_option('date_format')); ?>
-                        </time>
-
-                        <p class="blog-grid__excerpt"><?php echo get_the_excerpt(); ?></p>
-
-                        <?php $image_id = get_post_thumbnail_id(); ?>
-                        <?php if ($image_id) : ?>
-                            <?php $image_meta = wp_get_attachment_image_src($image_id, 'medium'); ?>
-                            <img class="blog-grid__image" src="<?php echo $image_meta[0]; ?>" alt="<?php echo get_post_meta($image_id, '_wp_attachment_image_alt', TRUE); ?>" title="<?php echo get_the_title($image_id); ?>" width="<?php echo $image_meta[1]; ?>" height="<?php echo $image_meta[2]; ?>">
-                        <?php else : ?>
-                            <img class="blog-grid__image" src="" />
-                        <?php endif; ?>
-
-                        <div class="blog-grid__button wp-block-button">
-                            <a class="wp-block-button__link wp-element-button" href="<?php echo esc_url(get_permalink()); ?>">
-                                <?php echo __('Read more', 'kotisivu-block-theme'); ?>
-                            </a>
-                        </div>
-                    </li>
+                    <?php get_template_part('src/blocks/dynamic/blog-grid/includes/card'); ?>
                 <?php endwhile; ?>
             <?php endif; ?>
         </ul>
@@ -83,14 +57,10 @@ function render_blog_grid($block_attributes, $content) { ?>
          * 
          */ ?>
         <?php echo $post_count->publish > 6 ? '<hr class="blog-grid__separator" />' : ''; ?>
-        <div class="wp-block-button">
+        <div class="wp-block-button is-style-primary-outline is-content-justification-center is-layout-flex">
             <button class="wp-block-button__link wp-element-button" href="#!" id="blog-load-more" <?php echo $post_count->publish < 6 ? 'disabled' : ''; ?>>
                 <?php echo __('Show earlier posts', 'kotisivu-block-theme'); ?>
-                <svg class="wp-block-button__icon" width="100%" height="100%" viewBox="0 0 815 507" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-                    <g transform="matrix(1,0,0,1,7.5,-101.081)">
-                        <path d="M0,108.581L400,600L800,108.581" style="fill:none;stroke:var(--_color);stroke-width:var(--_stroke-width);" />
-                    </g>
-                </svg>
+                <span class="blog-grid__button-arrow" aria-hidden="true">></span>
             </button>
         </div>
     </div>
