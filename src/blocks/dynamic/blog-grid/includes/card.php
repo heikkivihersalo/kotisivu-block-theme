@@ -1,9 +1,16 @@
 <?php ?>
 <li class="blog-grid__item" data-url="<?php echo esc_url(get_permalink()); ?>">
+    <?php $author_name = get_the_author_meta('display_name'); ?>
+    <?php $author_id = get_the_author_meta('ID'); ?>
+    <?php $author_profile_image = get_avatar($author_id, 96); ?>
     <h3 class="blog-grid__title"><?php echo get_the_title(); ?></h3>
-    <time class="blog-grid__date" datetime="<?php echo get_the_date('c'); ?>">
-        <?php echo get_the_date(get_option('date_format')); ?>
-    </time>
+    <div class="blog-grid__author">
+        <?php echo $author_profile_image; ?>
+        <span class="blog-grid__author-name"><?php echo $author_name; ?></span>
+        <time class="blog-grid__date" datetime="<?php echo get_the_date('c'); ?>">
+            <?php echo get_the_date(get_option('date_format')); ?>
+        </time>
+    </div>
 
     <p class="blog-grid__excerpt"><?php echo get_the_excerpt(); ?></p>
 
