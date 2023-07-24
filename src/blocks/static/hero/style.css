@@ -3,8 +3,6 @@
 	isolation: isolate;
 	align-items: center;
 	justify-items: center;
-
-	max-width: var(--wp--style--global--wide-size);
 }
 
 .hero__container {
