@@ -3,10 +3,6 @@ const addMaxWidthToFrontEnd = (props, block, attributes) => {
         return props;
     }
 
-    console.log("PROPS:", props);
-    console.log("BLOCK:", block);
-    console.log("ATTRIBUTES:", attributes);
-
     return {
         ...props,
         style: {
