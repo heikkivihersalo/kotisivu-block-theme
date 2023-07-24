@@ -1,0 +1,50 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/grid",
+	"title": "Grid",
+	"category": "design",
+	"icon": "layout",
+	"description": "",
+	"keywords": ["container, columns, column, 50, wrapper"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"html": false,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		}
+	},
+	"editorScript": "file:../../../../build/blocks/grid.js",
+	"editorStyle": "file:../../../../build/blocks/grid.css",
+	"style": "file:../../../../build/blocks/style-grid.css",
+	"attributes": {
+		"style": {
+			"type": "object"
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"childTemplate": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		},
+		"variationName": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}
