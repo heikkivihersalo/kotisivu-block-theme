@@ -28,7 +28,7 @@ export function getBlockSyles({ style }) {
     }
 
     return {
-        background: style.backgroundColor ? style.backgroundColor : undefined,
+        background: style?.backgroundColor ? style.backgroundColor : undefined,
         marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,
         marginBottom: style?.spacing?.margin?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.margin.bottom) : undefined,
         paddingTop: style?.spacing?.padding?.top ? convertVerticalBarSyntaxToCSS(style.spacing.padding.top) : undefined,
