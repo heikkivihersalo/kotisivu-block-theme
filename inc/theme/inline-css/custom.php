@@ -8,6 +8,12 @@
         grid-template-rows: auto 1fr auto;
     }
 
+    /* Set global max width for content and center it to page */
+    main > .entry-content {
+        max-width: var(--wp--style--global--wide-size);
+        margin-inline: auto;
+    }
+
     /* Set default margin and padding excluding hero */
     main > .entry-content > section:not(section:first-of-type) {
         margin-top: var(--wp--preset--spacing--60);
