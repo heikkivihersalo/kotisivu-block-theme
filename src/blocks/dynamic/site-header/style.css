@@ -115,8 +115,8 @@
 .header__toggle {
 	display: initial;
 	position: absolute;
-    top: calc(var(--_toggle-margin) * 4.55);
-    right: calc(var(--_toggle-margin) * 2);
+	top: calc(var(--_toggle-margin) * 4.55);
+	right: calc(var(--_toggle-margin) * 2);
 
 	background: transparent;
 
@@ -127,37 +127,26 @@
 .header__toggle svg {
 	width: var(--_toggle-size);
 }
-
-/* Animation */
-.header__toggle .line {
-	transition: y var(--_toggle-animation-duration) ease-in
-			var(--_toggle-animation-duration),
-		rotate var(--_toggle-animation-duration) ease-in,
-		opacity 0ms var(--_toggle-animation-duration);
-	transform-origin: center;
-}
-
+/* Toggle active state */
 .header__toggle[aria-expanded="true"] .line {
-	transition: y var(--_toggle-animation-duration) ease-in,
-		rotate var(--_toggle-animation-duration) ease-in
-			var(--_toggle-animation-duration),
-		opacity 0ms var(--_toggle-animation-duration);
-}
-
-.header__toggle[aria-expanded="true"] :is(.top, .bottom) {
+	transform-origin: center;
+	animation-duration: var(--_toggle-animation-duration);
+	animation-timing-function: ease-in;
 	y: 45;
 }
 
-.header__toggle[aria-expanded="true"] .top {
-	rotate: 45deg;
+.header__toggle[aria-expanded="true"] .line.top {
+	animation-name: rotate-plus-45;
+	transform: rotate(45deg);
 }
 
-.header__toggle[aria-expanded="true"] .middle {
+.header__toggle[aria-expanded="true"] .line.middle {
 	opacity: 0;
 }
 
-.header__toggle[aria-expanded="true"] .bottom {
-	rotate: -45deg;
+.header__toggle[aria-expanded="true"] .line.bottom {
+	animation-name: rotate-negative-45;
+	transform: rotate(-45deg);
 }
 
 @media (min-width: 800px) {
@@ -253,4 +242,28 @@
 .header.active .header__buttons .wp-block-buttons {
 	display: flex;
 	flex-direction: column;
+}
+
+/** ======================
+ **   ANIMATIONS
+ ** ==================== */
+/**
+  * Toggle animations
+  */
+@keyframes rotate-plus-45 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(45deg);
+	}
+}
+
+@keyframes rotate-negative-45 {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-45deg);
+	}
 }
