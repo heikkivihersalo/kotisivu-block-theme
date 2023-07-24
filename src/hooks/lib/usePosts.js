@@ -8,7 +8,7 @@ import { useSelect } from '@wordpress/data';
  * Original source:
  * @link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/
  */
-const usePosts = (perPage) => {
+const usePosts = (perPage = 6) => {
     /**
      * Get the posts
      */
