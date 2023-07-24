@@ -18,6 +18,10 @@
         text-align: justify;
     }
 
+    :where(.is-content-justification-center) {
+        justify-content: center;
+    }
+
     /**
      * GRID
      */
