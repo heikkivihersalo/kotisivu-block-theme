@@ -64,12 +64,10 @@ domReady(function () {
             console.error('Error:', err);
         }
     });
-});
 
-/**
- * Handle post card clicks
- */
-domReady(function () {
+    /**
+     * Handle post card clicks
+     */
     elements.cards.forEach((card) => {
         card.addEventListener("click", () => {
             window.location.assign(card.dataset.url);
