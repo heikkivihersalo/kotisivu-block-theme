@@ -1,0 +1,20 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/dark-mode-toggle",
+	"title": "Dark Mode Toggle",
+	"category": "theme",
+	"icon": "grid-view",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"multiple": false
+	},
+	"editorScript": "file:../../../../build/blocks/dark-mode-toggle.js",
+	"editorStyle": "file:../../../../build/blocks/dark-mode-toggle.css",
+	"style": "file:../../../../build/blocks/style-dark-mode-toggle.css",
+	"viewScript": "file:../../../../build/blocks/dark-mode-toggle-view-script.js",
+	"attributes": {}
+}

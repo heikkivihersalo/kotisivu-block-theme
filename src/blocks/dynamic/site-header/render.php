@@ -24,6 +24,7 @@ function render_site_header($block_attributes, $content) { ?>
                 'menu_id' => 'primary-navigation'
             )); ?>
         <?php endif; ?>
+        <?php echo do_blocks('<!-- wp:ksd/dark-mode-toggle /-->'); ?>
         <?php echo block_template_part('header-buttons'); ?>
     </nav>
     <?php return ob_get_clean(); ?>

@@ -2,7 +2,7 @@
 	"settings": {
 		"react-app": false,
 		"jquery": "footer",
-		"dark-mode": false,
+		"dark-mode": true,
 		"fontawesome": {
 			"all": true,
 			"brands": false,
@@ -50,6 +50,11 @@
 			{
 				"slug": "ksd/blog-grid",
 				"render_callback": "render_blog_grid",
+				"attributes": {}
+			},
+			{
+				"slug": "ksd/dark-mode-toggle",
+				"render_callback": "render_dark_mode_toggle",
 				"attributes": {}
 			},
 			{

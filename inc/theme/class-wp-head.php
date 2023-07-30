@@ -47,12 +47,66 @@ class WP_Head extends Theme {
      */
     public function inline_dark_mode_cookie(): void { ?>
         <script data-no-optimize="1">
-            const cookies = document.cookie.split(";"),
-                classes = document.getElementsByTagName("html")[0].classList;
-            cookies.some((s => s.includes("color-scheme=dark"))) ? classes.add("color-scheme--dark") : cookies.some((s => s.includes("color-scheme=light"))) && classes.add("color-scheme--light");
-        </script>
-    <?php }
+            const cookies = document.cookie.split(";");
+            const html = document.getElementsByTagName("html")[0];
+            const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+            const isDarkMode = cookies.some((s => s.includes("color-scheme=dark")));
+            const isLightMode = cookies.some((s => s.includes("color-scheme=light")));
+            const noSchemeCookies = !isLightMode && !isDarkMode;
 
+            /**
+             * If no color scheme cookie is set and user prefers dark mode, set cookie and reload page
+             */
+            if (noSchemeCookies && prefersDarkMode.matches) {
+                document.cookie =
+                    "color-scheme = " +
+                    "dark" +
+                    "; " +
+                    "max-age=2592000; path=/; samesite=strict; secure";
+                window.location.reload();
+            }
+
+            /**
+             * Otherwise continue as normal and set data-scheme attribute from cookie
+             */
+            if (isDarkMode) {
+                html.setAttribute("data-scheme", "dark");
+            } else {
+                html.setAttribute("data-scheme", "light");
+            }
+        </script>
+        <?php
+    }
+
+    function filter_dark_mode_color_variables($theme_json) {
+        $color_scheme = isset($_COOKIE['color-scheme']) && $_COOKIE['color-scheme'] == 'dark' ? 'dark' : 'light';
+
+        $new_data = array(
+            'version'  => 2,
+            "settings" => array(
+                'color' => array(
+                    'palette' => array(
+                        array(
+                            'slug' => 'background',
+                            'color' => 'hsl(180, 5%, 8%)',
+                            'name' => 'Background'
+                        ),
+                        array(
+                            'slug' => 'foreground',
+                            'color' => 'hsl(0, 0%, 100%)',
+                            'name' => 'Foreground'
+                        ),
+                    )
+                )
+            )
+        );
+
+        if ($color_scheme == 'dark') {
+            return $theme_json->update_with($new_data);
+        }
+
+        return $theme_json;
+    }
 
     /**
      * Inline Font Awesome
@@ -64,7 +118,7 @@ class WP_Head extends Theme {
 
             foreach ($this->config['settings']['fontawesome'] as $slug => $is_enabled) :
                 if (!$is_enabled) continue;
-                
+
                 $path = $folder . $slug . '.min.css';
                 $rel = 'stylesheet';
         ?>
@@ -125,6 +179,7 @@ class WP_Head extends Theme {
         /* Enable dark mode */
         if ($this->config['settings']['dark-mode']) :
             add_action('wp_head', [$this, 'inline_dark_mode_cookie'], 0);
+            add_filter('wp_theme_json_data_theme', [$this, 'filter_dark_mode_color_variables']);
         endif;
 
         /* Enable Font Awesome */
