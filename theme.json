@@ -75,7 +75,7 @@
       "defaultPalette": false
     },
     "layout": {
-      "contentSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1500px)",
+      "contentSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1250px)",
       "wideSize": "min(100%, 1920px)"
     },
     "spacing": {
