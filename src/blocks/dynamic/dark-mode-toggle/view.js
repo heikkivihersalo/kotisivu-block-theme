@@ -1,95 +1,99 @@
 import domReady from '@wordpress/dom-ready';
 
 /**
- * Change WordPress color variables
- * @return {void}
- */
-const changeCSSVariables = () => {
-    const body = document.getElementsByTagName("body")[0];
-    const bodyStyles = getComputedStyle(body);
-
-    const currentBackground = bodyStyles.getPropertyValue("--wp--preset--color--background");
-    const currentForeground = bodyStyles.getPropertyValue("--wp--preset--color--foreground");
-
-    body.style.setProperty("--wp--preset--color--background", currentForeground);
-    body.style.setProperty("--wp--preset--color--foreground", currentBackground);
-};
-
-/**
- * Update data attributes
- * @return {void}
- */
-const updateDataAttributes = () => {
-    const html = document.getElementsByTagName("html")[0];
-    const schemeIcon = document.querySelector(".scheme-icon");
-
-    if (html.getAttribute("data-scheme") == "dark") {
-        html.setAttribute("data-scheme", "light");
-        schemeIcon.setAttribute("data-scheme", "light");
-    } else {
-        html.setAttribute("data-scheme", "dark");
-        schemeIcon.setAttribute("data-scheme", "dark");
-    }
-};
-
-/**
  * On DOM ready
  */
 domReady(function () {
     const html = document.getElementsByTagName("html")[0];
-    const schemeToggle = document.querySelectorAll(".scheme-toggle");
+    const schemeToggleButtons = document.querySelectorAll(".scheme-toggle");
     const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
 
     /**
-     * Check current cookies and set icon according to used scheme
+     * Switch to dark mode
+     * @return {void}
      */
-    const schemeIcon = document.querySelector(".scheme-icon");
-    const cookies = document.cookie.split(";");
+    const switchToDarkMode = () => {
+        html.setAttribute("color-scheme", "dark");
+        schemeToggleButtons.forEach((btn) => {
+            btn.setAttribute("aria-label", "Switch to light mode");
+        });
+    };
 
-    /* Dark Mode */
-    if (cookies.some((c) => c.includes("color-scheme=dark"))) {
-        schemeIcon.setAttribute("data-scheme", "dark");
+    /**
+     * Switch to light mode
+     * @return {void}
+     */
+    const switchToLightMode = () => {
+        html.setAttribute("color-scheme", "light");
+        schemeToggleButtons.forEach((btn) => {
+            btn.setAttribute("aria-label", "Switch to dark mode");
+        });
+    };
 
-        /* Light Mode */
-    } else if (cookies.some((c) => c.includes("color-scheme=light"))) {
-        schemeIcon.setAttribute("data-scheme", "light");
+    /** 
+     * Add cookie to user browser according to used scheme
+     * Cookie age is set to 30 days
+     * @return {void}
+     */
+    const setSchemeCookie = () => {
+        document.cookie =
+            "color-scheme = " +
+            html.getAttribute("color-scheme") +
+            "; " +
+            "max-age=2592000; path=/; samesite=strict; secure";
+    };
+
+    /**
+     * Write to dataLayer
+     * @return {void}
+     */
+    const writeToDataLayer = () => {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: "button_click",
+            category: "site_preferences",
+            action: "switch_color_scheme",
+            value: html.getAttribute("color-scheme"),
+        });
+    };
+
+    /**
+     * Initialize scheme
+     */
+    if (prefersDarkMode.matches && html.getAttribute("color-scheme") !== "light") {
+        switchToDarkMode();
+    } else {
+        switchToLightMode();
     }
 
     /**
      * Loop through all elements including '.scheme-toggle' class
      */
-    schemeToggle.forEach((btn) => {
+    schemeToggleButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
+            const currentScheme = html.getAttribute("color-scheme");
+
             /**
-             * Check if user has preferred dark mode and no scheme has been set 
-             * -> set dark mode as default
+             * Switch to dark mode if user prefers dark mode
              */
-            if (html.getAttribute("data-scheme") == null && prefersDarkMode.matches) {
-                html.setAttribute("data-scheme", "dark");
-                schemeIcon.setAttribute("data-scheme", "dark");
+            if (prefersDarkMode.matches) {
+                currentScheme === "dark" || null ? switchToLightMode() : switchToDarkMode();
             } else {
                 /**
-                 * If no preferred scheme has been set or user has preferred light mode
-                 * -> continue schema switching as normal
+                 * Else switch to light mode
                  */
-
-                /* Change CSS variables based to current value */
-                changeCSSVariables();
-
-                /* Update data attributes based to current value */
-                updateDataAttributes();
+                currentScheme === "light" || null ? switchToDarkMode() : switchToLightMode();
             }
 
-            /** 
-             * Add cookie to user browser according to used scheme
-             * Cookie age is set to 30 days
+            /**
+             * Write event to dataLayer
              */
-            document.cookie =
-                "color-scheme = " +
-                html.getAttribute("data-scheme") +
-                "; " +
-                "max-age=2592000; path=/; samesite=strict; secure";
+            writeToDataLayer();
+
+            /**
+             * Set cookie according to used scheme
+             */
+            setSchemeCookie();
         });
     });
-
 });
