@@ -7,17 +7,17 @@
 
 	--_logo-width: 250px;
 
-	--_font-color: var(--wp--preset--color--black);
+	--_font-color: var(--wp--preset--color--foreground);
 	--_font-weight: 300;
 	--_font-family: var(--wp--preset--font-family--secondary);
 
-	--_item-border: 0px solid var(--_text-color);
+	--_item-border: 0px solid var(--_font-color);
 
 	--_toggle-margin: var(--wp--preset--spacing--30);
 	--_toggle-animation-duration: 200ms;
-	--_toggle-border: 0px solid var(--_text-color);
+	--_toggle-border: 0px solid var(--_font-color);
 	--_toggle-radius: 0px;
-	--_toggle-color: var(--wp--preset--color--black);
+	--_toggle-color: var(--_font-color);
 	--_toggle-size: calc(var(--wp--preset--font-size--medium) * 3.75);
 
 	display: flex;
