@@ -155,8 +155,11 @@
     :where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
-        gap: var(--wp--preset--spacing--40);
         margin-inline: auto;
+    }
+
+    :where(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+        gap: var(--wp--preset--spacing--40);
     }
 
     :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h1,
