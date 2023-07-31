@@ -1,5 +1,4 @@
 import domReady from '@wordpress/dom-ready';
-import { openMobileMenu, closeMobileMenu, getStickyHeaderPadding, getStickyHeaderWidth } from "./scripts/helpers";
 
 domReady(function () {
     // ========================
