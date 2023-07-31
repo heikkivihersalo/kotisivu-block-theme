@@ -1,5 +1,9 @@
+/**
+ * Global styling
+ */
 .scheme-toggle {
 	--_icon-size: 3em;
+	--_icon-scale: 0.75;
 	--_icon-color: var(--wp--preset--color--background);
 	--_icon-background-color: var(--wp--preset--color--foreground);
 
@@ -12,7 +16,7 @@
 	background-color: var(--_icon-background-color);
 	border-radius: 50%;
 
-	transform: scale(0.75);
+	transform: scale(var(--_icon-scale));
 }
 
 .scheme-toggle__icon {
@@ -20,26 +24,22 @@
 	height: var(--_icon-size);
 }
 
+@media screen and (min-width: 800px) {
+	.scheme-toggle {
+		display: inline-block;
+	}
+}
+
+/**
+ * Light mode icon (moon)
+ */
 .scheme-toggle__icon-circle {
 	fill: var(--_icon-color);
 }
 
-/* Overlap for moon icon */
 .scheme-toggle__icon-overlap {
 	fill: var(--_icon-background-color);
 	display: none;
-}
-
-/* Dark mode icon scaling */
-[color-scheme="light"] .scheme-toggle__icon {
-	transform: scale(2);
-}
-
-/* Light mode icon sun lines */
-.scheme-toggle__icon-line {
-	stroke: var(--_icon-color);
-	stroke-width: 40;
-	stroke-linecap: round;
 }
 
 [color-scheme="light"] .scheme-toggle__icon-overlap {
@@ -51,8 +51,15 @@
 	display: none;
 }
 
-@media screen and (min-width: 800px) {
-	.scheme-toggle {
-		display: inline-block;
-	}
+[color-scheme="light"] .scheme-toggle__icon {
+	transform: scale(2);
+}
+
+/**
+ * Dark mode icon (sun)
+ */
+.scheme-toggle__icon-line {
+	stroke: var(--_icon-color);
+	stroke-width: 40;
+	stroke-linecap: round;
 }
