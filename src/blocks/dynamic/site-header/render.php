@@ -6,7 +6,7 @@ function render_site_header($block_attributes, $content) { ?>
     <?php echo do_blocks('<!-- wp:ksd/site-logo {"className":"header__logo"} /-->'); ?>
     <nav class="header__site-nav">
         <button class="header__toggle" aria-controls="primary-navigation" aria-expanded="false">
-            <span class="is-visually-hidden"><?php echo __('Menu', 'kotisivu-block-theme'); ?></span>
+            <span class="is-visually-hidden"><?php _e('Menu', 'kotisivu-block-theme'); ?></span>
             <svg fill="var(--_toggle-color)" viewBox="0 0 100 100" width="50" aria-hidden="true">
                 <rect class="line top" width="80" height="10" x="10" y="25" rx="5">
                 </rect>

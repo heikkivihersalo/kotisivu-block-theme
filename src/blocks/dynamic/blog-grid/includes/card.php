@@ -24,7 +24,7 @@
 
     <div class="blog-grid__button wp-block-button is-style-primary-fill">
         <a class="wp-block-button__link wp-element-button" href="<?php echo esc_url(get_permalink()); ?>">
-            <?php echo __('Read more', 'kotisivu-block-theme'); ?>
+            <?php _e('Read more', 'kotisivu-block-theme'); ?>
         </a>
     </div>
 </li>

@@ -18,7 +18,7 @@ function render_dark_mode_toggle($block_attributes, $content) { ?>
             <line class="scheme-toggle__icon-line" x1="485.787" y1="165.787" x2="552.574" y2="99" />
             <line class="scheme-toggle__icon-line" x1="321" y1="109.451" x2="321" y2="15" />
         </svg>
-        <span class="is-visually-hidden"><?php echo __('Change color scheme', 'kotisivu-block-theme'); ?></span>
+        <span class="is-visually-hidden"><?php _e('Change color scheme', 'kotisivu-block-theme'); ?></span>
     </button>
     <?php return ob_get_clean(); ?>
 

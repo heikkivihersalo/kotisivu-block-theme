@@ -59,7 +59,7 @@ function render_blog_grid($block_attributes, $content) { ?>
         <?php echo $post_count->publish > 6 ? '<hr class="blog-grid__separator" />' : ''; ?>
         <div class="wp-block-button is-style-primary-outline is-content-justification-center is-layout-flex">
             <button class="wp-block-button__link wp-element-button" href="#!" id="blog-load-more" <?php echo $post_count->publish < 6 ? 'disabled' : ''; ?>>
-                <?php echo __('Show earlier posts', 'kotisivu-block-theme'); ?>
+                <?php _e('Show earlier posts', 'kotisivu-block-theme'); ?>
                 <span class="blog-grid__button-arrow" aria-hidden="true">></span>
             </button>
         </div>

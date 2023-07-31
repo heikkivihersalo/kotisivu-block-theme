@@ -151,7 +151,7 @@ class Metabox {
     public function create_field($post, $field) {
         ob_start(); ?>
         <div class="metabox__input-wrapper">
-            <label for="<?php echo $field['id']; ?>"><?php echo __($field['label'], 'kotisivu-block-theme'); ?></label>
+            <label for="<?php echo $field['id']; ?>"><?php _e($field['label'], 'kotisivu-block-theme'); ?></label>
             <?php if ($field['type'] == 'text' || $field['type'] == 'url' || $field['type'] == 'number') : ?>
                 <!-- Text, URL, Number --->
                 <input type="<?php echo $field['type'] ?>" id="<?php echo $field['id'] ?>" name="<?php echo $field['id'] ?>" value="<?php echo esc_attr(get_post_meta($post->ID, $field['id'], true)) ?>">
