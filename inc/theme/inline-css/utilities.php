@@ -22,9 +22,124 @@
         justify-content: center;
     }
 
+    :where(.is-content-alignment-center) {
+        align-items: center;
+    }
+
+    :where(.is-content-alignment-top) {
+        align-items: flex-start;
+    }
+
+    :where(.is-content-alignment-bottom) {
+        align-items: flex-end;
+    }
+
+    :where(.is-content-alignment-stretch) {
+        align-items: stretch;
+    }
+
+    :where(.is-content-alignment-space-between) {
+        align-items: space-between;
+    }
+
+    :where(.is-content-alignment-space-around) {
+        align-items: space-around;
+    }
+
+    :where(.is-content-justification-right) {
+        justify-content: flex-end;
+    }
+
+    :where(.is-content-justification-left) {
+        justify-content: flex-start;
+    }
+
+    :where(.is-content-justification-space-between) {
+        justify-content: space-between;
+    }
+
+    :where(.is-content-justification-space-around) {
+        justify-content: space-around;
+    }
+
+    :where(.is-content-justification-space-evenly) {
+        justify-content: space-evenly;
+    }
+
+    :where(.is-items-alignment-center) {
+        align-content: center;
+    }
+
+    :where(.is-items-alignment-top) {
+        align-content: flex-start;
+    }
+
+    :where(.is-items-alignment-bottom) {
+        align-content: flex-end;
+    }
+
+    :where(.is-items-alignment-stretch) {
+        align-content: stretch;
+    }
+
+    :where(.is-items-justification-center) {
+        justify-items: center;
+    }
+
+    :where(.is-items-justification-left) {
+        justify-items: start;
+    }
+
+    :where(.is-items-justification-right) {
+        justify-items: end;
+    }
+
+    :where(.is-items-justification-stretch) {
+        justify-items: stretch;
+    }
+
+    :where(.has-extra-small-gap) {
+        gap: var(--wp--preset--spacing--20);
+    }
+
+    :where(.has-small-gap) {
+        gap: var(--wp--preset--spacing--30);
+    }
+
+    :where(.has-medium-gap) {
+        gap: var(--wp--preset--spacing--40);
+    }
+
+    :where(.has-large-gap) {
+        gap: var(--wp--preset--spacing--50);
+    }
+
+    :where(.has-extra-large-gap) {
+        gap: var(--wp--preset--spacing--60);
+    }
+
+    :where(.has-huge-gap) {
+        gap: var(--wp--preset--spacing--70);
+    }
+
+    :where(.has-colossal-gap) {
+        gap: var(--wp--preset--spacing--80);
+    }
+
+    /**
+     * FLEX
+     */
+    :where(.is-layout-flex) {
+        display: flex;
+    }
+
     /**
      * GRID
      */
+    :where(.is-layout-grid) {
+        display: grid;
+    }
+
     :where(.is-stacked) {
         display: grid;
         grid-template-areas: "stack";
