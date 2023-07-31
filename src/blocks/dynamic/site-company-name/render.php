@@ -11,7 +11,7 @@ function render_site_company_name($block_attributes, $content) { ?>
         'icon' => 'fa fa-home'
     ); ?>
     <?php ob_start(); ?>
-    <h3 class="site-contact site-contact--company-name">
+    <h3 class="site-contact site-contact--company-name is-layout-flex is-content-alignment-center has-small-gap">
         <i class="site-contact__icon <?php echo $contact['name'] ?>" aria-hidden="true"></i>
         <?php echo $contact['name'] ?>
     </h3>
