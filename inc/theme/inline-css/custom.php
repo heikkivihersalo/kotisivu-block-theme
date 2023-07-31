@@ -1,4 +1,15 @@
 <style id="ksd-custom-inline-css">
+    :where(html) {
+        /* Font Smoothing */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    :where(section) {
+        width: var(--wp--style--global--content-size);
+        margin-inline: auto;
+    }
+
     /* Set footer to be always on site bottom */
     :where(.wp-site-blocks) {
         min-height: 100vh;
@@ -27,11 +38,6 @@
     :where(img) {
         width: 100%;
         height: auto;
-    }
-
-    :where(section) {
-        width: var(--wp--style--global--content-size);
-        margin-inline: auto;
     }
 
     @media screen and (min-width: 1600px) {
