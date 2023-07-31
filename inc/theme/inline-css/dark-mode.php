@@ -1,4 +1,7 @@
 <style id="ksd-dark-mode-inline-css">
+    /**
+     * Set color values and scheme
+     */
     :root {
         color-scheme: dark light;
     }
@@ -12,6 +15,11 @@
         --_color-grey-extra-dark: hsl(233, 4%, 12%);
     }
 
+    /**
+     * Override color values.
+     * No preference is given to DARK or LIGHT mode.
+     * !NOTE - This is the default color scheme and there probably is no need to edit these values.
+     */
     body {
         --wp--preset--color--background: var(--_color-white);
         --wp--preset--color--foreground: var(--_color-black);
@@ -29,6 +37,11 @@
         --wp--preset--color--grey-dark: var(--_color-grey-dark);
     }
 
+    /**
+     * Override color values.
+     * Preference is given to DARK mode.
+     * !NOTE - There probably is no need to edit these values.
+     */
     @media (prefers-color-scheme: dark) {
         body {
             color-scheme: dark;
@@ -49,6 +62,11 @@
         }
     }
 
+    /**
+     * Override color values.
+     * Preference is given to LIGHT mode.
+     * !NOTE - There probably is no need to edit these values.
+     */
     @media (prefers-color-scheme: light) {
         body {
             color-scheme: light;
