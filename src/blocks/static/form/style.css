@@ -1,46 +1,22 @@
 /**
  * Resets
  */
- .fluentform form > fieldset .ff-el-group {
+.fluentform form > fieldset .ff-el-group {
 	margin-bottom: 0; /* Reset default margins */
 }
 
 /**
- * Main Section
+ * Form Containers
  */
-.contact-us {
+.fluentform {
 	--_gap: var(--wp--preset--spacing--30);
 	--_border: 1px solid var(--wp--preset--color--foreground);
-
 	--_font-color: var(--wp--preset--color--foreground);
 	--_font-family: var(--wp--preset--font-family--tertiary);
 
-	display: grid;
-	justify-items: center;
-
-	width: var(--wp--style--global--content-size);
-
-	padding: var(--wp--preset--spacing--50) var(--wp--preset--spacing--30);
-	margin-inline: auto;
-
-	border: var(--_border);
-}
-
-.contact-us__heading {
-	font-size: var(--wp--preset--font-size--x-large);
-}
-
-.contact-us__paragraph {
-	max-width: 80ch;
-}
-
-.fluentform {
 	width: 100%;
 }
 
-/**
- * Form Field Containers
- */
 .fluentform fieldset,
 .ff-t-container {
 	display: grid;
@@ -79,10 +55,4 @@
 /* Modifiers */
 .ff-el-form-hide_label .ff-el-input--label {
 	display: none;
-}
-
-@media screen and (min-width: 800px) {
-	.contact-us {
-		padding: var(--wp--preset--spacing--50) var(--wp--preset--spacing--60);
-	}
 }

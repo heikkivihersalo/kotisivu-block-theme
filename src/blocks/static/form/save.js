@@ -1,16 +1,29 @@
 import { __ } from "@wordpress/i18n";
-import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import classnames from 'classnames';
+import { getBlockSyles } from '@utils';
 
 const Save = (props) => {
-	const blockProps = useBlockProps.save({
-		className: `contact-us form-container`
-	})
+	const {
+		attributes: {
+			blockClass,
+			style,
+			ariaLabel,
+			ariaLabelledBy,
+		}
+	} = props;
+
+	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
+		className: classnames(blockClass),
+		style: getBlockSyles({ style }),
+		'aria-label': ariaLabel ? ariaLabel : null,
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
+	}));
 
 	return (
-		<section {...blockProps} >
-			<InnerBlocks.Content />
-		</section>
-	);
+		<section {...innerBlocksProps} />
+	)
+
 };
 
 export default Save;

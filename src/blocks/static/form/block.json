@@ -9,11 +9,51 @@
 	"keywords": ["form, contact form"],
 	"textdomain": "kotisivu-block-theme",
 	"supports": {
-		"className": false
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		}
 	},
 	"editorScript": "file:../../../../build/blocks/form.js",
 	"editorStyle": "file:../../../../build/blocks/form.css",
 	"style": "file:../../../../build/blocks/style-form.css",
 	"attributes": {
+		"blockClass": {
+			"type": "string",
+			"default": "contact-us"
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"template": {
+			"type": "array",
+			"default": [
+				["core/heading", { "placeholder": "Otsikko", "level": 2 }],
+				["core/shortcode", { "text": "[fluentform id='3']" }]
+			]
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		}
 	}
 }

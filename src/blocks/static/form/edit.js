@@ -1,31 +1,49 @@
 import { __ } from "@wordpress/i18n";
 import {
-	InnerBlocks,
 	useBlockProps,
 } from "@wordpress/block-editor";
+import classnames from 'classnames';
+
+import { InnerBlocksAppender } from '@features/inspector';
+import Inspector from "./components/Inspector.js";
+import { getBlockSyles } from '@utils';
+
 import './editor.css';
 
 const Edit = (props) => {
-	const ALLOWED_BLOCKS = [
-		['core/shortcode'],
-		['core/paragraph'],
-		['core/heading']
-	]
+	const {
+		attributes: {
+			ariaLabel,
+			ariaLabelledBy,
+			blockClass,
+			template,
+			templateLock,
+			style,
+		},
+		clientId
+	} = props;
 
-	const TEMPLATE = [
-		['core/heading', { className: 'form__heading', placeholder: 'Otsikko', level: 2 }],
-		['core/shortcode', { className: 'form__shortcode', text: '[fluentform id="3"]' }]
-	]
-
+	/**
+	 * Set block props
+	 */
 	const blockProps = useBlockProps({
-		className: `contact-us form-container`
+		className: classnames(blockClass),
+		style: getBlockSyles({ style }),
+		'aria-label': ariaLabel ? ariaLabel : null,
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
+	});
+
+	const innerBlocksProps = InnerBlocksAppender({
+		clientId: clientId,
+		template: template,
+		templateLock: templateLock,
+		blockProps: blockProps
 	});
 
 	return (
 		<>
-			<section {...blockProps}>
-				<InnerBlocks orientation="horizontal" template={TEMPLATE} templateLock="all" allowedBlocks={ALLOWED_BLOCKS} />
-			</section>
+			<Inspector {...props} />
+			<section {...innerBlocksProps} />
 		</>
 	);
 };
