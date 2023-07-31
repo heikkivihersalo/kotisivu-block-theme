@@ -46,8 +46,15 @@
  * LOGO
  */
 .footer__logo img {
+	width: 18rem;
 	max-width: var(--wp--style--global--content-size);
 	height: auto;
+}
+
+@media screen and (min-width: 800px) {
+	.footer__logo img {
+		width: 25rem;
+	}
 }
 
 /** 
