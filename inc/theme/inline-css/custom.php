@@ -24,6 +24,16 @@
         margin-bottom: var(--wp--preset--spacing--60);
     }
 
+    :where(img) {
+        width: 100%;
+        height: auto;
+    }
+
+    :where(section) {
+        width: var(--wp--style--global--content-size);
+        margin-inline: auto;
+    }
+
     @media screen and (min-width: 1600px) {
         body {
             --wp--style--global--content-size: min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1400px);
