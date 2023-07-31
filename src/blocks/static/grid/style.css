@@ -1,5 +1,0 @@
-:where(.grid) {
-    width: var(--wp--style--global--content-size);
-    margin-block: var(--wp--preset--spacing--50);
-    margin-inline: auto;
-}

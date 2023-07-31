@@ -1,9 +1,0 @@
-:where(section) {
-    margin-inline: auto;
-    width: var(--wp--style--global--content-size);
-}
-
-:where(section.grid-cols-1 p) {
-    max-width: 80ch;
-    margin-inline: auto;
-}
