@@ -164,8 +164,32 @@ class Filters extends Theme {
     /**
      * Add featured image to posts query
      */
-    function register_rest_images() {
+    function register_rest_images_for_posts() {
         register_rest_field('post', 'metadata', array(
+            'get_callback' => function ($data) {
+                $image_id = get_post_thumbnail_id($data['id']);
+                $image_meta = wp_get_attachment_image_src($image_id, 'medium');
+                $image = array(
+                    'id' => $image_id,
+                    'url' => $image_meta[0],
+                    'width' => $image_meta[1],
+                    'height' => $image_meta[2],
+                    'alt' => get_post_meta($image_id, '_wp_attachment_image_alt', true),
+                    'title' => get_the_title($image_id)
+                );
+
+                $meta = get_post_meta($data['id'], '', '');
+                $meta['featured_image'] = $image;
+                return $meta;
+            },
+        ));
+    }
+
+    /**
+     * Add featured image to media query
+     */
+    function register_rest_images_for_media() {
+        register_rest_field('attachment', 'metadata', array(
             'get_callback' => function ($data) {
                 $image_id = get_post_thumbnail_id($data['id']);
                 $image_meta = wp_get_attachment_image_src($image_id, 'medium');
@@ -197,6 +221,7 @@ class Filters extends Theme {
         add_filter('http_request_args', [$this, 'disable_theme_update'], 10, 2);
         add_filter('allowed_block_types_all', [$this, 'allowed_block_types'], 10, 2);
         add_filter('wp_enqueue_scripts', [$this, 'remove_jquery']);
-        add_action('rest_api_init', [$this, 'register_rest_images']);
+        add_action('rest_api_init', [$this, 'register_rest_images_for_posts']);
+        add_action('rest_api_init', [$this, 'register_rest_images_for_media']);
     }
 }
