@@ -317,6 +317,7 @@ const Playlist = () => {
                                         {!meta.featuredImage.src ? <Placeholder /> : (
                                             <img
                                                 className="audio-player__list-item-image"
+                                                aria-hidden="true"
                                                 src={meta.featuredImage.src}
                                                 alt={meta.featuredImage.alt}
                                                 height={meta.featuredImage.height}
