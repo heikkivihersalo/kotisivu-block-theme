@@ -58,6 +58,11 @@
 				"attributes": {}
 			},
 			{
+				"slug": "ksd/audio-player",
+				"render_callback": "render_audio_player",
+				"attributes": {}
+			},
+			{
 				"slug": "ksd/navigation-footer",
 				"render_callback": "render_navigation_footer",
 				"attributes": {}
