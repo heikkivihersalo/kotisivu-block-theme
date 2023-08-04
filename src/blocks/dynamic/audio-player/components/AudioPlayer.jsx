@@ -123,10 +123,8 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 						<img
 							className="audio-player__cover"
 							src={trackRef.current?.featuredImage.src}
-							alt={trackRef.current?.featuredImage.alt}
 							width={trackRef.current?.featuredImage.width}
 							height={trackRef.current?.featuredImage.height}
-							title={trackRef.current?.featuredImage.title}
 						/>
 					)}
 				</div>
@@ -168,6 +166,7 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 				onPlay={() => setIsPlaying(true)}
 				onPause={() => setIsPlaying(false)}
 			/>
+			<p className="is-visually-hidden">{`${__('Now playing song', 'kotisivu-block-theme')} ${trackRef.current?.album} ${__('from artist', 'kotisivu-block-theme')} ${trackRef.current?.artist}`}</p>
 		</>
 	);
 };

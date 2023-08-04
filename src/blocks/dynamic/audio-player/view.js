@@ -273,7 +273,12 @@ const Playlist = () => {
                 {!isLoading &&
                     <>
                         <AudioPlayer playerRef={playerRef} trackRef={trackRef} />
-                        <ol className="audio-player__list" onKeyDown={(e) => handleKeyboardInput(e)}>
+                        <ol
+                            className="audio-player__list"
+                            aria-label={__('Playlist', 'kotisivu-block-theme')}
+                            role="list"
+                            onKeyDown={(e) => handleKeyboardInput(e)}
+                        >
                             {files.map((file, index) => {
                                 const meta = {
                                     id: index,
@@ -296,6 +301,7 @@ const Playlist = () => {
                                     <li
                                         key={meta.id}
                                         className="audio-player__list-item"
+                                        role="listItem"
                                         onClick={(event) => handleTrackChange(event, index, meta)}
                                         data-id={meta.id}
                                         data-src={meta.src}
@@ -303,6 +309,7 @@ const Playlist = () => {
                                         data-artist={meta.artist}
                                         data-format={meta.format}
                                         data-samplerate={meta.sampleRate}
+                                        aria-label={`${__('Play song', 'kotisivu-block-theme')} ${index + 1} ${__('of', 'kotisivu-block-theme')} ${files.length} ${__('in playlist', 'kotisivu-block-theme')}`}
                                         aria-current={trackIndexRef.current === index ? 'true' : 'false'}
                                         tabIndex="0"
                                     >
@@ -314,7 +321,6 @@ const Playlist = () => {
                                                 alt={meta.featuredImage.alt}
                                                 height={meta.featuredImage.height}
                                                 width={meta.featuredImage.width}
-                                                title={meta.featuredImage.title}
                                             />
                                         )}
                                     </li>
