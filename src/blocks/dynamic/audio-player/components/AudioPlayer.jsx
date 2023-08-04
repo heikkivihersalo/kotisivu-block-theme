@@ -125,6 +125,7 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 							src={trackRef.current?.featuredImage.src}
 							width={trackRef.current?.featuredImage.width}
 							height={trackRef.current?.featuredImage.height}
+							alt={trackRef.current?.featuredImage.alt}
 						/>
 					)}
 				</div>
