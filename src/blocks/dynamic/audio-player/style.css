@@ -32,6 +32,7 @@
 
 .audio-player__list-item-text {
 	display: flex;
+	align-items: center;
     line-height: 1.4;
 }
 
