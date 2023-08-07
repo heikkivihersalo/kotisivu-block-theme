@@ -14,6 +14,8 @@
 	padding: 1rem;
 
 	background-color: var(--_icon-background-color);
+
+    border: none;
 	border-radius: 50%;
 
 	transform: scale(var(--_icon-scale));
