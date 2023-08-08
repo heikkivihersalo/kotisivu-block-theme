@@ -2,7 +2,7 @@
 	--_logo-width: 20rem;
 	align-items: center;
 
-	width: var(--wp--style--global--content-size);
+	width: var(--wp--custom--content-size);
 	margin-inline: auto;
 }
 

@@ -28,7 +28,7 @@ const variations = [
         attributes: {
             blockClass: "hero is-stacked",
             templateLock: "all",
-            width: "var(--wp--style--global--wide-size)",
+            width: "var(--wp--custom--wide-size)",
             style: {}
         }
     }

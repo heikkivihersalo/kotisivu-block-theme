@@ -8,8 +8,8 @@ import {
 } from "@wordpress/components";
 
 const WidthControls = ({ attributes, setAttributes }) => {
-    const FULL_WIDTH = 'var(--wp--style--global--wide-size)';
-    const CONTENT_WIDTH = 'var(--wp--style--global--content-size)';
+    const FULL_WIDTH = 'var(--wp--custom--wide-size)';
+    const CONTENT_WIDTH = 'var(--wp--custom--content-size)';
 
     const onWidthChange = (currentStyles, newWidth) => {
         if (newWidth === currentStyles?.width) {

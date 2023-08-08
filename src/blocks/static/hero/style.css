@@ -17,7 +17,7 @@
 	padding-block: var(--wp--preset--spacing--40);
     padding-inline: var(--wp--preset--spacing--20);
 
-	max-width: var(--wp--style--global--content-size);
+	max-width: var(--wp--custom--content-size);
 
 	z-index: 1; /* Make sure container is in front */
 
