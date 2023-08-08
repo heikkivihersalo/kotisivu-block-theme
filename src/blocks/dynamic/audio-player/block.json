@@ -9,8 +9,7 @@
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",
 	"supports": {
-		"className": false,
-		"multiple": false
+		"className": false
 	},
 	"editorScript": "file:../../../../build/blocks/audio-player.js",
 	"editorStyle": "file:../../../../build/blocks/audio-player.css",
