@@ -31,7 +31,7 @@
 	background-color: var(--_background-color);
 
 	height: var(--wp--preset--spacing--70);
-	width: var(--wp--style--global--wide-size);
+	width: var(--wp--custom--wide-size);
 	margin-inline: auto;
 
 	z-index: 9999;

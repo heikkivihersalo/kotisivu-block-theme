@@ -24,7 +24,7 @@
 
 .footer > div {
 	max-width: calc(
-		var(--wp--style--global--wide-size) - var(--wp--preset--spacing--50)
+		var(--wp--custom--wide-size) - var(--wp--preset--spacing--50)
 	);
 	margin-inline: auto;
 }
@@ -47,7 +47,7 @@
  */
 .footer__logo img {
 	width: 18rem;
-	max-width: var(--wp--style--global--content-size);
+	max-width: var(--wp--custom--content-size);
 	height: auto;
 }
 
