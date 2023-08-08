@@ -19,11 +19,11 @@
 	text-transform: uppercase;
 	line-height: 1.2;
 	white-space: nowrap;
-	
+
 	padding-block: 1em;
 	padding-inline: 3em;
 
-	inline-size: var(--_size);
+	min-width: var(--_size);
 
 	background: var(--_background-color);
 

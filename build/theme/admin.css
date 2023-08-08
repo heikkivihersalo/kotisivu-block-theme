@@ -95,7 +95,7 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
  * SPACING
  */
 section {
-	width: var(--wp--style--global--content-size);
+	width: var(--wp--custom--content-size);
 	margin-inline: auto;
 }
 
