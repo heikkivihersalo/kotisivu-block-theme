@@ -7,10 +7,8 @@ const Edit = (props) => {
 	const blockProps = useBlockProps();
 
 	return (
-		<div {...blockProps}>
-			<ServerSideRender
-				block="ksd/audio-player"
-			/>
+		<div className="audio-player__editor-wrapper">
+			<p className="audio-player__editor-text">{__('This is an accessible audio player with playlist feature. Your audio playlist will be rendered on the front-end.', 'kotisivu-block-theme')}</p>
 		</div>
 	);
 };
