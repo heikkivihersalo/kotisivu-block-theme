@@ -1,0 +1,31 @@
+.details {
+	width: 100%;
+	max-width: var(--wp--custom--narrow-size);
+}
+
+.details__wrapper {
+	display: flex;
+}
+
+.details__wrapper > *:first-child {
+	margin-top: 0;
+}
+
+.details__heading {
+	display: flex;
+	align-items: center;
+}
+
+.details__heading::before {
+	font-size: 1.25em;
+	font-weight: bold;
+	margin-right: 0.5em;
+}
+
+.details[aria-expanded="true"] .details__heading::before {
+	content: "-";
+}
+
+.details[aria-expanded="false"] .details__heading::before {
+	content: "+";
+}
