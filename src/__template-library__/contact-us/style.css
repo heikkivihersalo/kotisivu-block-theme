@@ -2,7 +2,7 @@
 	display: grid;
 	gap: var(--wp--preset--spacing--40);
 	width: var(--wp--custom--layout--site-width);
-	max-width: var(--wp--style--global--content-size);
+	max-width: var(--wp--custom--content-size);
 	margin-inline: auto;
 }
 
@@ -47,7 +47,7 @@
 
 
 .contact-us.is-wide {
-	max-width: var(--wp--style--global--wide-size);
+	max-width: var(--wp--custom--wide-size);
 }
 
 .contact-us.is-wide .contact-us__separator {

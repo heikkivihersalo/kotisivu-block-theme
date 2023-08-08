@@ -3,7 +3,7 @@
 /* ================== */
 .audio-player {
 	width: 100%;
-	max-width: 50rem;
+	max-width: var(--wp--custom--narrow-size);
 }
 
 /* ================== */

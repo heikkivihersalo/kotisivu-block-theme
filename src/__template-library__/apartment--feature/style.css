@@ -3,7 +3,7 @@
 	grid-template-columns: 1fr;
 	gap: var(--wp--preset--spacing--40);
 	width: var(--wp--custom--layout--site-width);
-	max-width: var(--wp--style--global--wide-size);
+	max-width: var(--wp--custom--wide-size);
 	margin-inline: auto;
 }
 

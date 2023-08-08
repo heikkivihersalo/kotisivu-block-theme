@@ -3,7 +3,7 @@
 	gap: var(--wp--preset--spacing--60);
 
 	width: var(--wp--custom--layout--site-width);
-	max-width: var(--wp--style--global--wide-size);
+	max-width: var(--wp--custom--wide-size);
 	margin-inline: auto;
 }
 
