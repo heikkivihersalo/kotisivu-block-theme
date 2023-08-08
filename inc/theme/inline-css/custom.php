@@ -6,7 +6,7 @@
     }
 
     :where(section) {
-        width: var(--wp--style--global--content-size);
+        width: var(--wp--custom--content-size);
         margin-inline: auto;
     }
 
@@ -21,7 +21,7 @@
 
     /* Set global max width for content and center it to page */
     :where(main>.entry-content) {
-        max-width: var(--wp--style--global--wide-size);
+        max-width: var(--wp--custom--wide-size);
         margin-inline: auto;
     }
 
@@ -42,7 +42,7 @@
 
     @media screen and (min-width: 1600px) {
         body {
-            --wp--style--global--content-size: min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1400px);
+            --wp--custom--content-size: min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1400px);
         }
     }
 </style>
