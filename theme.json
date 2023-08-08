@@ -78,6 +78,11 @@
       "contentSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1250px)",
       "wideSize": "min(100%, 1920px)"
     },
+    "custom": {
+      "narrowSize": "min(100%, 80ch)",
+      "contentSize": "var(--wp--style--global--content-size)",
+      "wideSize": "var(--wp--style--global--wide-size)"
+    },
     "spacing": {
       "units": ["em", "rem", "%", "vw", "vh"],
       "blockGap": null,
