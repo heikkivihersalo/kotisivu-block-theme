@@ -74,12 +74,9 @@ class WP_Head extends Theme {
 
                 $path = $folder . $slug . '.min.css';
                 $rel = 'stylesheet';
-        ?>
-                <link rel="preload" href="<?php echo $path ?>" as="style" onload="this.onload=null;this.rel='<?php echo $rel ?>'">
-                <noscript>
-                    <link rel="<?php echo $rel ?>" href="<?php echo $path ?>">
-                </noscript>
-        <?php
+                ?>
+                    <link rel="preload" href="<?php echo $path ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel ?>"'><noscript><link rel="<?php echo $rel ?>" href="<?php echo $path ?>"></noscript>
+                <?php
             endforeach;
         endif;
     }
@@ -97,27 +94,8 @@ class WP_Head extends Theme {
      * @return void 
      */
     public function inline_tag_manager(): void { ?>
-        <script>
-            var initGTMOnEvent = function(t) {
-                    initGTM(), t.currentTarget.removeEventListener(t.type, initGTMOnEvent)
-                },
-                initGTM = function() {
-                    if (window.gtmDidInit) return !1;
-                    window.gtmDidInit = !0;
-                    var t = document.createElement("script");
-                    t.type = "text/javascript", t.async = !0, t.onload = function() {
-                        dataLayer.push({
-                            event: "gtm.js",
-                            "gtm.start": (new Date).getTime(),
-                            "gtm.uniqueEventId": 0
-                        })
-                    }, t.src = "<?php echo $this->analytics['tagmanager-url'] ?>/gtm.js?id=<?php echo $this->analytics['tagmanager-id'] ?>", document.head.appendChild(t)
-                };
-            document.addEventListener("DOMContentLoaded", function() {
-                setTimeout(initGTM, <?php echo $this->analytics['tagmanager-timeout'] ?>)
-            }), document.addEventListener("scroll", initGTMOnEvent), document.addEventListener("mousemove", initGTMOnEvent), document.addEventListener("touchstart", initGTMOnEvent)
-        </script>
-<?php }
+        <script>var initGTMOnEvent=function(t){initGTM(),t.currentTarget.removeEventListener(t.type,initGTMOnEvent)},initGTM=function(){if(window.gtmDidInit)return!1;window.gtmDidInit=!0;var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.onload=function(){dataLayer.push({event:"gtm.js","gtm.start":(new Date).getTime(),"gtm.uniqueEventId":0})},t.src="<?php echo $this->analytics['tagmanager-url'] ?>/gtm.js?id=<?php echo $this->analytics['tagmanager-id'] ?>",document.head.appendChild(t)};document.addEventListener("DOMContentLoaded",function(){setTimeout(initGTM, <?php echo $this->analytics['tagmanager-timeout'] ?>)}),document.addEventListener("scroll",initGTMOnEvent),document.addEventListener("mousemove",initGTMOnEvent),document.addEventListener("touchstart",initGTMOnEvent)</script>
+    <?php }
 
     /**
      * Initialize class
