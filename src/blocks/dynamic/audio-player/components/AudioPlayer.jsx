@@ -2,7 +2,9 @@ import { __ } from "@wordpress/i18n";
 import { useState, useContext } from "@wordpress/element";
 
 import { PlayButton, StopButton, Placeholder } from "../icons";
+
 import PlayerContext from "../context/PlayerContext";
+import { pushMusicEventsToDatalayer } from '@features/analytics';
 
 /**
  * Audio player component
@@ -37,7 +39,22 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 		await setIsPlaying(!isPlaying);
 
 		const audioPlayer = playerRef.current;
-		isPlaying ? audioPlayer.pause() : audioPlayer.play();
+
+		if ( isPlaying ) {
+			audioPlayer.pause();
+            pushMusicEventsToDatalayer(
+                trackRef.current,
+                audioPlayer.currentTime,
+                'pause'
+            );
+		} else {
+			audioPlayer.play();
+			pushMusicEventsToDatalayer(
+                trackRef.current,
+                audioPlayer.currentTime,
+                'play'
+            );
+		}
 	}
 
 	/**
