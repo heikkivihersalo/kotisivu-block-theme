@@ -7,7 +7,9 @@ const checkSongStatus = async (status) => {
     const STATUS_MAP = {
         PLAY: 'play',
         PAUSE: 'pause',
-        COMPLETE: 'complete'
+        COMPLETE: 'complete',
+        SEEK: 'seek',
+        STREAM: 'stream'
     };
 
     for (let key in STATUS_MAP) {
@@ -100,6 +102,7 @@ async function pushMusicEventsToDatalayer(song, currentTime, status) {
 
     /**
      * Push data to dataLayer
+     * If song status is seek or stream, don't push the event
      */
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -127,13 +130,13 @@ async function pushMusicEventsToDatalayer(song, currentTime, status) {
     });
 }
 
+
 /**
  * Push music view events to dataLayer
  * @param {Array} tracks - track list
  * @returns { void }
  */
 async function pushMusicViewEventsToDataLayer(tracks) {
-    console.log(tracks);
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         event: 'music_view_tracks',

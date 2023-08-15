@@ -1,10 +1,10 @@
 import { __ } from "@wordpress/i18n";
-import { useState, useContext } from "@wordpress/element";
+import { useState, useContext, useEffect } from "@wordpress/element";
 
 import { PlayButton, StopButton, Placeholder } from "../icons";
 
 import PlayerContext from "../context/PlayerContext";
-import { pushMusicEventsToDatalayer } from '@features/analytics';
+import { pushMusicEventsToDatalayer } from "@features/analytics";
 
 /**
  * Audio player component
@@ -15,7 +15,49 @@ import { pushMusicEventsToDatalayer } from '@features/analytics';
 const AudioPlayer = ({ playerRef, trackRef }) => {
 	const { isPlaying, setIsPlaying } = useContext(PlayerContext);
 	const [mediaTime, setMediaTime] = useState(0);
+	const [mediaPercent, setMediaPercent] = useState(0);
 	const [mediaDuration, setMediaDuration] = useState(0);
+
+	useEffect(() => {
+		const sendStreamEvent = async () => {
+			if (isPlaying) {
+				switch (mediaPercent) {
+					case 16:
+						await pushMusicEventsToDatalayer(
+							trackRef.current,
+							mediaTime,
+							"stream"
+						);
+						break;
+					case 26:
+						await pushMusicEventsToDatalayer(
+							trackRef.current,
+							mediaTime,
+							"stream"
+						);
+						break;
+					case 51:
+						await pushMusicEventsToDatalayer(
+							trackRef.current,
+							mediaTime,
+							"stream"
+						);
+						break;
+					case 76:
+						await pushMusicEventsToDatalayer(
+							trackRef.current,
+							mediaTime,
+							"stream"
+						);
+						break;
+					default:
+						break;
+				}
+			}
+		};
+
+		sendStreamEvent();
+	}, [mediaPercent]);
 
 	/**
 	 * Converts seconds to a time stamp (mm:ss)
@@ -40,20 +82,20 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 
 		const audioPlayer = playerRef.current;
 
-		if ( isPlaying ) {
+		if (isPlaying) {
 			audioPlayer.pause();
-            pushMusicEventsToDatalayer(
-                trackRef.current,
-                audioPlayer.currentTime,
-                'pause'
-            );
+			pushMusicEventsToDatalayer(
+				trackRef.current,
+				audioPlayer.currentTime,
+				"pause"
+			);
 		} else {
 			audioPlayer.play();
 			pushMusicEventsToDatalayer(
-                trackRef.current,
-                audioPlayer.currentTime,
-                'play'
-            );
+				trackRef.current,
+				audioPlayer.currentTime,
+				"play"
+			);
 		}
 	}
 
@@ -71,6 +113,7 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 	 */
 	async function onTimeUpdate() {
 		await setMediaTime(Math.round(playerRef.current.currentTime));
+		await setMediaPercent(Math.round((mediaTime / mediaDuration) * 100));
 	}
 
 	/**
@@ -83,6 +126,10 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 		const playhead = parseFloat(event.target.value);
 		await setMediaTime(playhead);
 		playerRef.current.currentTime = playhead;
+
+		if (isPlaying) {
+			pushMusicEventsToDatalayer(trackRef.current, playhead, "seek");
+		}
 	}
 
 	/**
@@ -184,7 +231,13 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 				onPlay={() => setIsPlaying(true)}
 				onPause={() => setIsPlaying(false)}
 			/>
-			<p className="is-visually-hidden">{`${__('Now playing song', 'kotisivu-block-theme')} ${trackRef.current?.album} ${__('from artist', 'kotisivu-block-theme')} ${trackRef.current?.artist}`}</p>
+			<p className="is-visually-hidden">{`${__(
+				"Now playing song",
+				"kotisivu-block-theme"
+			)} ${trackRef.current?.album} ${__(
+				"from artist",
+				"kotisivu-block-theme"
+			)} ${trackRef.current?.artist}`}</p>
 		</>
 	);
 };
