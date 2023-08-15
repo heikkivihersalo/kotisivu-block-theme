@@ -12,6 +12,11 @@ import { useEffect, useState, useRef } from '@wordpress/element';
 import PlayerContext from './context/PlayerContext.js';
 
 /**
+ * Hooks
+ */
+import { usePlaylistOnScreen } from './hooks/usePlaylistOnScreen.js';
+
+/**
  * Components
  */
 import AudioPlayer from './components/AudioPlayer.jsx';
@@ -21,6 +26,7 @@ import { Placeholder } from './icons';
  * Helpers
  */
 import { getMediaFiles, convertEntityToText } from './scripts/helpers';
+import { pushMusicEventsToDatalayer, pushMusicViewEventsToDataLayer } from '@features/analytics';
 
 const Playlist = () => {
     const [files, setFiles] = useState([]);
@@ -59,6 +65,8 @@ const Playlist = () => {
                 format: files[0].media_details?.fileformat,
                 sampleRate: files[0].media_details?.sample_rate,
                 src: files[0].source_url,
+                duration: files[0].media_details?.length,
+                durationFormatted: files[0].media_details?.length_formatted,
                 featuredImage: {
                     src: files[0].metadata?.featured_image?.url,
                     alt: files[0].metadata?.featured_image?.alt,
@@ -75,10 +83,25 @@ const Playlist = () => {
     }, []);
 
     /**
+     * Push music view events to dataLayer when the playlist is visible
+     */
+    const [playlistRef, isVisible] = usePlaylistOnScreen({
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+    });
+
+    useEffect(() => {
+        if (isVisible && files.length !== 0) pushMusicViewEventsToDataLayer(files);
+    }, [isVisible, files]);
+
+    /**
      * Set the current track
      * @return {void}
      */
     async function setCurrentTrack() {
+        const audioPlayer = playerRef.current;
+
         const newTrack = await files.find((file, index) => {
             if (index === trackIndexRef.current) {
                 return file;
@@ -93,6 +116,8 @@ const Playlist = () => {
             format: newTrack.media_details?.fileformat,
             sampleRate: newTrack.media_details?.sample_rate,
             src: newTrack.source_url,
+            duration: newTrack.media_details?.length,
+            durationFormatted: newTrack.media_details?.length_formatted,
             featuredImage: {
                 src: newTrack.metadata?.featured_image?.url,
                 alt: newTrack.metadata?.featured_image?.alt,
@@ -113,8 +138,13 @@ const Playlist = () => {
          * Play the track
          */
         if (!isPlaying) return; // If a track is not currently playing, don't play the new one
-        playerRef.current.play();
+        audioPlayer.play();
         setIsPlaying(true);
+        pushMusicEventsToDatalayer(
+            trackRef.current,
+            audioPlayer.currentTime,
+            'play'
+        );
     }
 
     /**
@@ -139,11 +169,16 @@ const Playlist = () => {
         await setForceUpdate(Date.now());
 
         /**
-         * If the track is already playing, pause it
+         * If user clicks song that is already playing, pause it
          */
         if (isPlaying && trackRef.current.id === oldTrack.id) {
             audioPlayer.pause();
             setIsPlaying(false);
+            pushMusicEventsToDatalayer(
+                trackRef.current,
+                audioPlayer.currentTime,
+                'pause'
+            );
             return;
         }
 
@@ -152,6 +187,15 @@ const Playlist = () => {
          */
         audioPlayer.play();
         setIsPlaying(true);
+
+        /**
+         * Send events to dataLayer (song, currentTime, status)
+         */
+        pushMusicEventsToDatalayer(
+            trackRef.current,
+            audioPlayer.currentTime,
+            'play'
+        );
     }
 
     /**
@@ -172,9 +216,19 @@ const Playlist = () => {
             if (isPlaying) {
                 audioPlayer.pause();
                 setIsPlaying(false);
+                pushMusicEventsToDatalayer(
+                    trackRef.current,
+                    audioPlayer.currentTime,
+                    'pause'
+                );
             } else {
                 audioPlayer.play();
                 setIsPlaying(true);
+                pushMusicEventsToDatalayer(
+                    trackRef.current,
+                    audioPlayer.currentTime,
+                    'play'
+                );
             }
         }
 
@@ -223,6 +277,8 @@ const Playlist = () => {
                         format: newTrack.media_details?.fileformat,
                         sampleRate: newTrack.media_details?.sample_rate,
                         src: newTrack.source_url,
+                        duration: newTrack.media_details?.length,
+                        durationFormatted: newTrack.media_details?.length_formatted,
                         featuredImage: {
                             src: newTrack.metadata?.featured_image?.url,
                             alt: newTrack.metadata?.featured_image?.alt,
@@ -238,6 +294,11 @@ const Playlist = () => {
                     // Play the track
                     playerRef.current.play();
                     setIsPlaying(true);
+                    pushMusicEventsToDatalayer(
+                        trackRef.current,
+                        audioPlayer.currentTime,
+                        'play'
+                    );
                 }
                 break;
             case 'ArrowDown':
@@ -274,6 +335,7 @@ const Playlist = () => {
                     <>
                         <AudioPlayer playerRef={playerRef} trackRef={trackRef} />
                         <ol
+                            ref={playlistRef}
                             className="audio-player__list"
                             aria-label={__('Playlist', 'kotisivu-block-theme')}
                             role="list"
@@ -288,6 +350,8 @@ const Playlist = () => {
                                     format: file.media_details?.fileformat,
                                     sampleRate: file.media_details?.sample_rate,
                                     src: file.source_url,
+                                    duration: file.media_details?.length,
+                                    durationFormatted: file.media_details?.length_formatted,
                                     featuredImage: {
                                         src: file.metadata?.featured_image?.url,
                                         alt: file.metadata?.featured_image?.alt,
