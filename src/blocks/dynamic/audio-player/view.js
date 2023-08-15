@@ -14,7 +14,7 @@ import PlayerContext from './context/PlayerContext.js';
 /**
  * Hooks
  */
-import { usePlaylistOnScreen } from './hooks/usePlaylistOnScreen.js';
+import { useMediaFiles, usePlaylistOnScreen } from './hooks';
 
 /**
  * Components
@@ -25,12 +25,10 @@ import { Placeholder } from './icons';
 /**
  * Helpers
  */
-import { getMediaFiles, convertEntityToText } from './scripts/helpers';
+import { convertEntityToText } from './scripts/helpers';
 import { pushMusicEventsToDatalayer, pushMusicViewEventsToDataLayer } from '@features/analytics';
 
 const Playlist = () => {
-    const [files, setFiles] = useState([]);
-
     // DOM references to the audio player, current track and current track index
     const trackRef = useRef(null);
     const trackIndexRef = useRef(0);
@@ -38,49 +36,15 @@ const Playlist = () => {
 
     // App states
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     // Used to force update the component
     // TODO: Find a better way to do this
     const [, setForceUpdate] = useState(Date.now());
 
     /**
-     * Get audio files from the API
-     * 
+     * Get media files from WordPress Library
      */
-    useEffect(() => {
-        const getFiles = async () => {
-            let files = await getMediaFiles({
-                per_page: 25,
-                media_type: 'audio',
-            });
-
-            await setFiles(files);
-
-            trackRef.current = {
-                id: 0,
-                title: files[0].title.rendered,
-                album: files[0].media_details?.album,
-                artist: files[0].media_details?.artist,
-                format: files[0].media_details?.fileformat,
-                sampleRate: files[0].media_details?.sample_rate,
-                src: files[0].source_url,
-                duration: files[0].media_details?.length,
-                durationFormatted: files[0].media_details?.length_formatted,
-                featuredImage: {
-                    src: files[0].metadata?.featured_image?.url,
-                    alt: files[0].metadata?.featured_image?.alt,
-                    height: files[0].metadata?.featured_image?.height,
-                    width: files[0].metadata?.featured_image?.width,
-                    title: files[0].metadata?.featured_image?.title
-                }
-            };
-
-            setIsLoading(false);
-        }
-
-        getFiles();
-    }, []);
+    const [files, isLoading] = useMediaFiles(trackRef);
 
     /**
      * Push music view events to dataLayer when the playlist is visible
