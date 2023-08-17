@@ -49,18 +49,23 @@
 		],
 		"dynamic": [
 			{
+				"slug": "ksd/audio-player",
+				"render_callback": "render_audio_player",
+				"attributes": {}
+			},
+			{
 				"slug": "ksd/blog-grid",
 				"render_callback": "render_blog_grid",
 				"attributes": {}
 			},
 			{
-				"slug": "ksd/dark-mode-toggle",
-				"render_callback": "render_dark_mode_toggle",
+				"slug": "ksd/blog-post",
+				"render_callback": "render_blog_post",
 				"attributes": {}
 			},
 			{
-				"slug": "ksd/audio-player",
-				"render_callback": "render_audio_player",
+				"slug": "ksd/dark-mode-toggle",
+				"render_callback": "render_dark_mode_toggle",
 				"attributes": {}
 			},
 			{
