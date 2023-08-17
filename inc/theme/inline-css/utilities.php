@@ -230,19 +230,20 @@
         --_icon-color: var(--wp--preset--color--white);
         --_icon-background: var(--wp--preset--color--primary);
         --_icon-background-hover: var(--wp--preset--color--grey);
-        --_size: var(--wp--preset--font-size--x-large);
+        --_icon-size: var(--wp--preset--font-size--large);
+        --_icon-bg-size: calc(var(--_icon-size) * 1.2);
 
         display: grid;
         place-items: center;
 
-        width: calc(var(--_size) * 1.5);
-        height: calc(var(--_size) * 1.5);
+        width: calc(var(--_icon-bg-size) * 1.5);
+        height: calc(var(--_icon-bg-size) * 1.5);
 
         border-radius: 50%;
     }
 
     :where(.is-square-icon svg) {
-        font-size: var(--wp--preset--font-size--large);
+        font-size: var(--_icon-size);
     }
 
     :where(a .is-square-icon):hover {

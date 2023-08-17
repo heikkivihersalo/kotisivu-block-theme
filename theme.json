@@ -175,7 +175,7 @@
           "slug": "accent",
           "fontFace": [
             {
-              "fontFamily": "Fira Sans",
+              "fontFamily": "Fira Code",
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
@@ -195,75 +195,38 @@
       "fontSizes": [
         {
           "name": "Colossal",
-          "size": "2.488rem",
-          "slug": "colossal",
-          "fluid": {
-            "min": "2.488rem",
-            "max": "4.735rem"
-          }
+          "size": "clamp(4.20872691292189rem, calc(3.34187854550627rem + 4.33424183707811vw), 8.54296875rem)",
+          "slug": "colossal"
         },
         {
           "name": "Gigantic",
-          "size": "2.074rem",
-          "slug": "gigantic",
-          "fluid": {
-            "min": "2.074rem",
-            "max": "3.552rem"
-          }
+          "size": "clamp(2.368593037rem, calc(2.0829366444rem + 1.428281963vw), 3.796875rem)",
+          "slug": "gigantic"
         },
         {
           "name": "Huge",
-          "size": "1.728rem",
-          "slug": "huge",
-          "fluid": {
-            "min": "1.728rem",
-            "max": "2.665rem"
-          }
-        },
-        {
-          "name": "Extra Large",
-          "size": "1.440rem",
-          "slug": "x-large",
-          "fluid": {
-            "min": "1.440rem",
-            "max": "1.999rem"
-          }
+          "size": "clamp(1.776889rem, calc(1.6260168rem + 0.754361vw), 2.53125rem)",
+          "slug": "huge"
         },
         {
           "name": "Large",
-          "size": "1.200rem",
-          "slug": "large",
-          "fluid": {
-            "min": "1.200rem",
-            "max": "1.500rem"
-          }
+          "size": "clamp(1.333rem, calc(1.2621rem + 0.3545vw), 1.6875rem)",
+          "slug": "large"
         },
         {
           "name": "Medium",
           "size": "1rem",
-          "slug": "medium",
-          "fluid": {
-            "min": "1rem",
-            "max": "1.125rem"
-          }
+          "slug": "medium"
         },
         {
           "name": "Small",
           "size": "0.844rem",
-          "slug": "small",
-          "fluid": {
-            "min": "0.844rem",
-            "max": "0.844rem"
-          }
+          "slug": "small"
         },
         {
           "name": "Tiny",
           "size": "0.633rem",
-          "slug": "tiny",
-          "fluid": {
-            "min": "0.633rem",
-            "max": "0.633rem"
-          }
+          "slug": "tiny"
         }
       ]
     },
@@ -301,7 +264,7 @@
 				"typography": {
           "fontFamily": "var(--wp--preset--font-family--heading)",
           "fontWeight": "700",
-          "lineHeight": "1.2"
+          "lineHeight": "1"
 				},
         "spacing": {
           "margin": {
@@ -312,7 +275,14 @@
 			},
       "h1": {
         "typography": {
-          "fontSize": "var(--wp--preset--font-size--colossal)"
+          "fontSize": "var(--wp--preset--font-size--colossal)",
+          "lineHeight": "0.85"
+        },
+        "spacing": {
+          "margin": {
+            "top": "0.25em",
+            "bottom": "0.25em"
+          }
         }
       },
       "h2": {
@@ -327,12 +297,12 @@
       },
       "h4": {
         "typography": {
-          "fontSize": "var(--wp--preset--font-size--x-large)"
+          "fontSize": "var(--wp--preset--font-size--large)"
         }
       },
       "h5": {
         "typography": {
-          "fontSize": "var(--wp--preset--font-size--large)"
+          "fontSize": "var(--wp--preset--font-size--medium)"
         }
       },
       "h6": {
