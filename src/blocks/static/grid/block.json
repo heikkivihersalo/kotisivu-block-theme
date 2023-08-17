@@ -10,7 +10,8 @@
 	"textdomain": "kotisivu-block-theme",
 	"supports": {
 		"className": false,
-		"html": false,
+		"html": true,
+		"anchor": true,
 		"color": {
 			"text": false,
 			"background": true
