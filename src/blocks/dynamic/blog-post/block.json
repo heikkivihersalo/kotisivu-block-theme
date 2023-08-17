@@ -1,0 +1,19 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/blog-post",
+	"title": "Blog Post",
+	"category": "blog",
+	"icon": "grid-view",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:../../../../build/blocks/blog-post.js",
+	"editorStyle": "file:../../../../build/blocks/blog-post.css",
+	"style": "file:../../../../build/blocks/style-blog-post.css",
+	"attributes": {
+	}
+}
