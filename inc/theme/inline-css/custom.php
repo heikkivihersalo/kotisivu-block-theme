@@ -27,12 +27,12 @@
 
     /* Set default margin and padding excluding hero */
     :where(main>.entry-content>section):not(section:first-of-type) {
-        margin-top: var(--wp--preset--spacing--60);
+        margin-top: var(--wp--preset--spacing--70);
     }
 
     /* Set default margin and padding excluding last element */
     :where(main>.entry-content>section):not(section:last-of-type) {
-        margin-bottom: var(--wp--preset--spacing--60);
+        margin-bottom: var(--wp--preset--spacing--70);
     }
 
     :where(img) {
