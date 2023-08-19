@@ -35,12 +35,12 @@
         },
         {
           "slug": "background",
-          "color": "hsl(0, 0%, 100%)",
+          "color": "hsl(343, 0%, 100%)",
           "name": "Background"
         },
         {
           "slug": "foreground",
-          "color": "hsl(180, 5%, 8%)",
+          "color": "hsl(343, 5%, 8%)",
           "name": "Foreground"
         },
         {
@@ -50,22 +50,22 @@
         },
         {
           "slug": "black",
-          "color": "hsl(180, 5%, 8%)",
+          "color": "hsl(343, 5%, 8%)",
           "name": "Black"
         },
         {
           "slug": "grey-light",
-          "color": "hsl(0, 0%, 95%)",
+          "color": "hsl(343, 0%, 95%)",
           "name": "Light Grey"
         },
         {
           "slug": "grey",
-          "color": "hsl(233, 4%, 52%)",
+          "color": "hsl(343, 4%, 52%)",
           "name": "Grey"
         },
         {
           "slug": "grey-dark",
-          "color": "hsl(233, 4%, 22%)",
+          "color": "hsl(343, 4%, 22%)",
           "name": "Dark Grey"
         }
       ],
@@ -194,8 +194,13 @@
       "customFontSize": false,
       "fontSizes": [
         {
+          "name": "Big Headings",
+          "size": "calc(clamp(4.20872691292189rem, calc(3.77864082984006rem + 2.15043041540916vw), 6.35915732833105rem) * 0.85)",
+          "slug": "big-headings"
+        },
+        {
           "name": "Colossal",
-          "size": "clamp(4.20872691292189rem, calc(3.34187854550627rem + 4.33424183707811vw), 8.54296875rem)",
+          "size": "clamp(4.20872691292189rem, calc(3.77864082984006rem + 2.15043041540916vw), 6.35915732833105rem)",
           "slug": "colossal"
         },
         {
@@ -234,6 +239,9 @@
       "core/paragraph": {
         "spacing": {
           "margin": true
+        },
+        "typography": {
+          "fontStyle": true
         }
       },
       "core/heading": {
