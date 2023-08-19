@@ -8,5 +8,10 @@
 		"name": "centered",
 		"label": "Centered",
 		"isDefault": false
+	},
+	{
+		"name": "custom-icon",
+		"label": "Custom Icon",
+		"isDefault": false
 	}
 ]

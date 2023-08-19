@@ -1,11 +1,31 @@
 ul.is-style-centered {
-    list-style: none;
-    text-align: center;
-    width: fit-content;
-    margin-inline: auto;
+	list-style: none;
+	text-align: center;
+	width: fit-content;
+	margin-inline: auto;
 }
 
 ul.is-style-centered li::before {
-    content: "•";
-    margin-inline-end: 0.5rem;
+	content: "•";
+	margin-inline-end: 0.5rem;
+}
+
+ul.is-style-custom-icon {
+	list-style: none;
+	padding: 0;
+}
+
+/* Add font awesome arrow */
+
+ul.is-style-custom-icon li::before {
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	content: "\f061";
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+
+    margin-right: 0.5em;
 }
