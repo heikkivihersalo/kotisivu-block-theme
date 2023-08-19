@@ -156,6 +156,7 @@
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
         margin-inline: auto;
+        height: 100%;
     }
 
     :where(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
