@@ -26,7 +26,7 @@
 	height: var(--_icon-size);
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1000px) {
 	.scheme-toggle {
 		display: inline-block;
 	}
