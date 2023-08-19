@@ -9,18 +9,30 @@
  * Form Containers
  */
 .fluentform {
+	--_width: 40rem;
 	--_gap: var(--wp--preset--spacing--30);
-	--_border: 1px solid var(--wp--preset--color--foreground);
+	--_border: 3px solid var(--wp--preset--color--grey-dark);
 	--_font-color: var(--wp--preset--color--foreground);
 	--_font-family: var(--wp--preset--font-family--accent);
 
-	width: 100%;
+    width: var(--wp--custom--content-size);
+    max-width: var(--_width);
+	margin-block: var(--wp--preset--spacing--50);
+    margin-inline: auto;
 }
 
 .fluentform fieldset,
 .ff-t-container {
 	display: grid;
 	gap: var(--_gap);
+}
+
+/**
+ * Form Labels
+ */
+.ff-el-input--label label {
+    font-family: var(--wp--preset--font-family--heading);
+    font-size: var(--wp--preset--font-size--large);
 }
 
 /**
@@ -44,6 +56,15 @@
 }
 
 /**
+ * Field States
+ */
+ /* Focus */
+:is(input, textarea).ff-el-form-control:focus {
+	color: var(--wp--preset--color--black) !important;
+	background: var(--wp--preset--color--white) !important;
+}
+
+/**
  * Buttons
  */
 .ff_submit_btn_wrapper {
@@ -55,4 +76,17 @@
 /* Modifiers */
 .ff-el-form-hide_label .ff-el-input--label {
 	display: none;
+}
+
+/**
+ * COLOR SCHEME OVERRIDES
+ */
+[color-scheme="dark"] :is(input, textarea).ff-el-form-control {
+	background: var(--wp--preset--color--grey-dark) !important;
+	color: var(--wp--preset--color--white) !important;
+}
+
+[color-scheme="light"] .ff-btn-submit {
+	--_shadow-color: var(--wp--preset--color--grey-dark);
+	border-color: var(--wp--preset--color--grey-dark) !important;
 }
