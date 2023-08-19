@@ -9,19 +9,11 @@
 		"label": "Primary (Outline)"
 	},
 	{
-		"name": "primary-arrow",
-		"label": "Primary (Arrow)"
-	},
-	{
 		"name": "secondary-fill",
 		"label": "Secondary (Fill)"
 	},
 	{
 		"name": "secondary-outline",
 		"label": "Secondary (Outline)"
-	},
-	{
-		"name": "secondary-arrow",
-		"label": "Secondary (Arrow)"
 	}
 ]
