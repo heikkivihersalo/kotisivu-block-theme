@@ -5,10 +5,11 @@
 .header {
 	--_background-color: var(--wp--preset--color--background);
 
-	--_logo-width: 250px;
+	--_logo-width: clamp(11.0890051808976rem, calc(9.30881991978825rem + 8.90092630554659vw), 19.9899314864442rem);
 
 	--_font-color: var(--wp--preset--color--foreground);
 	--_font-weight: 300;
+	--_font-size: var(--wp--preset--font-size--large);
 	--_font-family: var(--wp--preset--font-family--heading);
 
 	--_item-border: 0px solid var(--_font-color);
@@ -57,7 +58,7 @@
 
 .header__logo {
 	position: absolute;
-	top: calc(var(--_toggle-margin) * 4.5);
+	top: calc(var(--_toggle-margin) * 5.5);
 	left: var(--_toggle-margin);
 	width: var(--_logo-width);
 }
@@ -102,6 +103,7 @@
 .header__menu .menu-item a {
 	font-family: var(--_font-family);
 	font-weight: var(--_font-weight);
+	font-size: var(--_font-size);
 	text-transform: none;
 	text-align: center;
 	white-space: nowrap;

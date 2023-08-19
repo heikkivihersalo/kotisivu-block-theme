@@ -3,7 +3,7 @@
 function render_site_header($block_attributes, $content) { ?>
     <?php wp_enqueue_script('ksd-navigation-header-view-script') ?>
     <?php ob_start(); ?>
-    <?php echo do_blocks('<!-- wp:ksd/site-logo {"className":"header__logo"} /-->'); ?>
+    <?php echo do_blocks('<!-- wp:ksd/site-logo-dynamic {"className":"header__logo", "isLink":true} /-->'); ?>
     <nav class="header__site-nav">
         <button class="header__toggle" aria-controls="primary-navigation" aria-expanded="false">
             <span class="is-visually-hidden"><?php _e('Menu', 'kotisivu-block-theme'); ?></span>
