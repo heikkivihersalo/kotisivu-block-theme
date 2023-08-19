@@ -1,3 +1,19 @@
 .hero__image {
     height: auto;
 }
+
+.hero-two-column {
+    align-items: revert;
+    isolation: isolate;
+    justify-items: revert;
+    width: 100%;
+}
+
+.hero-two-column {
+    height: auto;
+}
+
+.hero-two-column .hero__content {
+    width: revert;
+    height: revert;
+}
