@@ -123,6 +123,16 @@
 				}
 			},
 			{
+				"slug": "ksd/site-logo-dynamic",
+				"render_callback": "render_site_logo_dynamic",
+				"attributes": {
+					"isLink": {
+						"type": "boolean",
+						"default": true
+					}
+				}
+			},
+			{
 				"slug": "ksd/site-phone",
 				"render_callback": "render_site_phone",
 				"attributes": {}
