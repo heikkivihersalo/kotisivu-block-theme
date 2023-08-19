@@ -1,3 +1,8 @@
+:where(.wp-block-image) {
+    max-width: 100%;
+    height: auto;
+}
+
 img.is-style-square {
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -7,7 +12,9 @@ img.is-style-square {
     height: auto;
 }
 
-:where(.wp-block-image) {
-    max-width: 100%;
-    height: auto;
+img.is-style-full {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
 }

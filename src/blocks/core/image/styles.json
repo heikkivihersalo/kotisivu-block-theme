@@ -7,5 +7,9 @@
 	{
 		"name": "square",
 		"label": "Square"
+	},
+	{
+		"name": "full",
+		"label": "Full"
 	}
 ]
