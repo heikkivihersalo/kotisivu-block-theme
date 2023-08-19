@@ -25,7 +25,7 @@ import './editor.css';
 const Edit = (props) => {
 	const {
 		attributes: {
-			heroClass,
+			blockClass,
 			ariaLabel,
 			ariaLabelledBy,
 			template,
@@ -41,7 +41,7 @@ const Edit = (props) => {
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: classnames(heroClass),
+		className: classnames(blockClass),
 		style: getBlockSyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
