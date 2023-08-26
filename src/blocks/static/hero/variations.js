@@ -8,7 +8,7 @@ const variations = [
         scope: 'block',
         innerBlocks: [
             ['ksd/wrapper', {
-                blockClass: "hero__container",
+                blockClass: "hero__content",
                 showAlignmentControls: true,
                 variationName: "wrapper-100",
                 width: null,
