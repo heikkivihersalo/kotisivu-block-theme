@@ -30,7 +30,7 @@ import {
     JustifyItemsStart,
     JustifyItemsStretch
 }
-    from "../icons.js";
+    from "@features/icons";
 
 const GridAlignControls = (props) => {
     const {
@@ -48,7 +48,7 @@ const GridAlignControls = (props) => {
      * @param newValue new aligment value based on selected key
      * @return { void } 
      */
-    const onAlignChange = (currentStyles, key, newValue) => {
+    const onStyleChange = (currentStyles, key, newValue) => {
         if (newValue === currentStyles?.[key]) {
             setAttributes({
                 style: {
@@ -86,35 +86,35 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<AlignContentCenter />}
                                     isPressed={style?.alignContent === 'center'}
-                                    onClick={() => onAlignChange(style, 'alignContent', 'center')}
+                                    onClick={() => onStyleChange(style, 'alignContent', 'center')}
                                 />
                                 <Button
                                     label="Add align-content: space-between"
                                     showTooltip="true"
                                     icon={<AlignContentSpaceBetween />}
                                     isPressed={style?.alignContent === 'space-between'}
-                                    onClick={() => onAlignChange(style, 'alignContent', 'space-between')}
+                                    onClick={() => onStyleChange(style, 'alignContent', 'space-between')}
                                 />
                                 <Button
                                     label="Add align-content: space-around"
                                     showTooltip="true"
                                     icon={<AlignContentSpaceAround />}
                                     isPressed={style?.alignContent === 'space-around'}
-                                    onClick={() => onAlignChange(style, 'alignContent', 'space-around')}
+                                    onClick={() => onStyleChange(style, 'alignContent', 'space-around')}
                                 />
                                 <Button
                                     label="Add align-content: space-evenly"
                                     showTooltip="true"
                                     icon={<AlignContentSpaceEvenly />}
                                     isPressed={style?.alignContent === 'space-evenly'}
-                                    onClick={() => onAlignChange(style, 'alignContent', 'space-evenly')}
+                                    onClick={() => onStyleChange(style, 'alignContent', 'space-evenly')}
                                 />
                                 <Button
                                     label="Add align-content: stretch"
                                     showTooltip="true"
                                     icon={<AlignContentStretch />}
                                     isPressed={style?.alignContent === 'stretch'}
-                                    onClick={() => onAlignChange(style, 'alignContent', 'stretch')}
+                                    onClick={() => onStyleChange(style, 'alignContent', 'stretch')}
                                 />
                             </ButtonGroup>
                         </div>
@@ -126,14 +126,14 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<JustifyContentCenter />}
                                     isPressed={style?.justifyContent === 'center'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'center')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'center')}
                                 />
                                 <Button
                                     label="Add justify-content: start"
                                     showTooltip="true"
                                     icon={<JustifyContentStart />}
                                     isPressed={style?.justifyContent === 'start'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'start')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'start')}
                                 />
                                 <Button
                                     label="Add justify-content: end"
@@ -147,21 +147,21 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<JustifyContentSpaceBetween />}
                                     isPressed={style?.justifyContent === 'space-between'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'space-between')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'space-between')}
                                 />
                                 <Button
                                     label="Add justify-content: space-around"
                                     showTooltip="true"
                                     icon={<JustifyContentSpaceAround />}
                                     isPressed={style?.justifyContent === 'space-around'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'space-around')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'space-around')}
                                 />
                                 <Button
                                     label="Add justify-content: space-evenly"
                                     showTooltip="true"
                                     icon={<JustifyContentSpaceEvenly />}
                                     isPressed={style?.justifyContent === 'space-evenly'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'space-evenly')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'space-evenly')}
                                 />
                             </ButtonGroup>
                         </div>
@@ -173,35 +173,35 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<AlignItemsCenter />}
                                     isPressed={style?.alignItems === 'center'}
-                                    onClick={() => onAlignChange(style, 'alignItems', 'center')}
+                                    onClick={() => onStyleChange(style, 'alignItems', 'center')}
                                 />
                                 <Button
                                     label="Add align-items: start"
                                     showTooltip="true"
                                     icon={<AlignItemsStart />}
                                     isPressed={style?.alignItems === 'start'}
-                                    onClick={() => onAlignChange(style, 'alignItems', 'start')}
+                                    onClick={() => onStyleChange(style, 'alignItems', 'start')}
                                 />
                                 <Button
                                     label="Add align-items: end"
                                     showTooltip="true"
                                     icon={<AlignItemsEnd />}
                                     isPressed={style?.alignItems === 'end'}
-                                    onClick={() => onAlignChange(style, 'alignItems', 'end')}
+                                    onClick={() => onStyleChange(style, 'alignItems', 'end')}
                                 />
                                 <Button
                                     label="Add align-items: stretch"
                                     showTooltip="true"
                                     icon={<AlignItemsStretch />}
                                     isPressed={style?.alignItems === 'stretch'}
-                                    onClick={() => onAlignChange(style, 'alignItems', 'stretch')}
+                                    onClick={() => onStyleChange(style, 'alignItems', 'stretch')}
                                 />
                                 <Button
                                     label="Add align-items: baseline"
                                     showTooltip="true"
                                     icon={<AlignItemsBaseline />}
                                     isPressed={style?.alignItems === 'baseline'}
-                                    onClick={() => onAlignChange(style, 'alignItems', 'baseline')}
+                                    onClick={() => onStyleChange(style, 'alignItems', 'baseline')}
                                 />
                             </ButtonGroup>
                         </div>
@@ -213,28 +213,28 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<JustifyItemsCenter />}
                                     isPressed={style?.justifyItems === 'center'}
-                                    onClick={() => onAlignChange(style, 'justifyItems', 'center')}
+                                    onClick={() => onStyleChange(style, 'justifyItems', 'center')}
                                 />
                                 <Button
                                     label="Add justify-items: start"
                                     showTooltip="true"
                                     icon={<JustifyItemsStart />}
                                     isPressed={style?.justifyItems === 'start'}
-                                    onClick={() => onAlignChange(style, 'justifyItems', 'start')}
+                                    onClick={() => onStyleChange(style, 'justifyItems', 'start')}
                                 />
                                 <Button
                                     label="Add justify-items: end"
                                     showTooltip="true"
                                     icon={<JustifyItemsEnd />}
                                     isPressed={style?.justifyItems === 'end'}
-                                    onClick={() => onAlignChange(style, 'justifyItems', 'end')}
+                                    onClick={() => onStyleChange(style, 'justifyItems', 'end')}
                                 />
                                 <Button
                                     label="Add justify-items: stretch"
                                     showTooltip="true"
                                     icon={<JustifyItemsStretch />}
                                     isPressed={style?.justifyItems === 'stretch'}
-                                    onClick={() => onAlignChange(style, 'justifyItems', 'stretch')}
+                                    onClick={() => onStyleChange(style, 'justifyItems', 'stretch')}
                                 />
                             </ButtonGroup>
                         </div>
