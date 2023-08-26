@@ -13,5 +13,10 @@
 		"name": "custom-icon",
 		"label": "Custom Icon",
 		"isDefault": false
+	},
+	{
+		"name": "colored-checkmark",
+		"label": "Colored Checkmark",
+		"isDefault": false
 	}
 ]
