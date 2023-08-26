@@ -43,6 +43,7 @@ export function getBlockSyles({ style }) {
         paddingLeft: style?.spacing?.padding?.left ? convertVerticalBarSyntaxToCSS(style.spacing.padding.left) : undefined,
         paddingRight: style?.spacing?.padding?.right ? convertVerticalBarSyntaxToCSS(style.spacing.padding.right) : undefined,
         width: style?.width ? style?.width : undefined,
+        height: style?.height ? style?.height : undefined,
         display: hasGrdiAlignment(style) ? 'grid' : undefined,
         justifyItems: style?.justifyItems ? style?.justifyItems : undefined,
         alignItems: style?.alignItems ? style?.alignItems : undefined,
