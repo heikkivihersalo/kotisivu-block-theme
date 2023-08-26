@@ -1,1 +1,1 @@
-.hero__image{height:auto}.hero-two-column{align-items:revert;height:auto;isolation:isolate;justify-items:revert;width:100%}.hero-two-column .hero__content{height:revert;width:revert}
+.hero__image{height:auto}.hero-two-column{align-items:revert;display:grid;height:auto!important;justify-items:center;width:100%}.hero-two-column .hero__content{height:revert!important;width:revert!important}.hero-two-column .hero__image>div,.hero-two-column .hero__image>div>img{height:100%}
