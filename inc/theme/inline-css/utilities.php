@@ -153,20 +153,14 @@
      * GRID COLUMNS 
      */
     :where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+        --_gap-desktop: var(--wp--preset--spacing--50);
+        --_gap-mobile: var(--wp--preset--spacing--40);
+
         display: grid;
         grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: var(--_gap-mobile);
+
         margin-inline: auto;
-        height: 100%;
-    }
-
-    :where(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
-        gap: var(--wp--preset--spacing--40);
-    }
-
-    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h1,
-    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) h2,
-    :is(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6)>div>p:first-child {
-        margin-top: 0;
     }
 
     @media screen and (min-width: 800px) {
@@ -179,22 +173,18 @@
         }
 
         :where(.grid-cols-70-30, .grid-cols-70-30-rv) {
-            display: grid;
             grid-template-columns: 0.67fr 0.33fr;
         }
 
         :where(.grid-cols-30-70, .grid-cols-30-70-rv) {
-            display: grid;
             grid-template-columns: 0.33fr 0.67fr;
         }
 
         :where(.grid-cols-75-25, .grid-cols-75-25-rv) {
-            display: grid;
             grid-template-columns: 0.75fr 0.25fr;
         }
 
         :where(.grid-cols-25-75, .grid-cols-25-75-rv) {
-            display: grid;
             grid-template-columns: 0.75fr 0.25fr;
         }
 
@@ -213,6 +203,10 @@
 
         :where(.grid-cols-6) {
             grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+
+        :where(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+            gap: var(--_gap-desktop);
         }
 
         :where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv, .is-reversed) div:first-child) {
