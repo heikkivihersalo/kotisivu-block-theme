@@ -1,8 +1,25 @@
 /**
- * Webpack config based on repository https://github.com/phil-sola/multi-block-plugin/blob/master/webpack.config.js
+ * Webpack configuration file for multi-block WordPress theme
+ * @author Heikki Vihersalo
+ * @link https://www.kotisivu.dev
  * 
+ * Forked from Phil Solas multi-block plugin and modified to fit theme
+ * @link https://github.com/phil-sola/multi-block-plugin/blob/master/webpack.config.js
  */
 
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 Dependencies
+2.0 Constants
+3.0 Helper functions
+4.0 Common module configurations
+5.0 Webpack configurations
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  1.0 Dependencies
+--------------------------------------------------------------*/
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
@@ -11,20 +28,32 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const glob = require('glob');
 
-const isProduction = process.env.NODE_ENV === 'development';
+/*--------------------------------------------------------------
+  2.0 Constants
+--------------------------------------------------------------*/
+const BLOCK_SOURCE_PATH = './src/blocks';
+const THEME_SOURCE_PATH = './src/assets/scripts';
+const IS_PRODUCTION = process.env.NODE_ENV === 'development';
 
-const blockSourcePath = './src/blocks';
-
+/*--------------------------------------------------------------
+  3.0 Helper functions
+--------------------------------------------------------------*/
+/**
+ * Get live reload port
+ * @param {string} inputPort
+ * @returns {number}
+ */
 const getLiveReloadPort = (inputPort) => {
 	const parsedPort = parseInt(inputPort, 10);
 	return Number.isInteger(parsedPort) ? parsedPort : 35729;
 };
 
 /**
- * Get all core blocks
+ * Get all core blocks from source folder
+ * @returns {array}
  */
 function getCoreBlocks() {
-	const src = glob.sync(blockSourcePath + "/core/**/*.js");
+	const src = glob.sync(BLOCK_SOURCE_PATH + "/core/**/*.js");
 	const blocks = [];
 
 	src.forEach(entry => {
@@ -41,10 +70,11 @@ function getCoreBlocks() {
 };
 
 /**
- * Get all custom blocks
+ * Get all custom blocks from source folder
+ * @returns {object}
  */
 function getCustomBlocks() {
-	const src = [...glob.sync(blockSourcePath + "/static/*/*.js"), ...glob.sync(blockSourcePath + "/dynamic/*/*.js")];
+	const src = [...glob.sync(BLOCK_SOURCE_PATH + "/static/*/*.js"), ...glob.sync(BLOCK_SOURCE_PATH + "/dynamic/*/*.js")];
 	const blocks = {};
 
 	src.forEach(entry => {
@@ -62,20 +92,45 @@ function getCustomBlocks() {
 	return blocks;
 };
 
+/*--------------------------------------------------------------
+  4.0 Common module configurations
+--------------------------------------------------------------*/
+const rules = [
+	{
+		test: /\.css$/i,
+		use: [
+			MiniCssExtractPlugin.loader,
+			'css-loader'
+		]
+	},
+	{
+		test: /\.js$|jsx/,
+		exclude: /node_modules/,
+		use: {
+			loader: "babel-loader",
+			options: {
+				presets: ['@wordpress/babel-preset-default']
+			}
+		}
+	}
+];
 
+const alias = {
+	'@features': path.resolve('src/features'),
+	'@utils': path.resolve('src/utils'),
+	'@hooks': path.resolve('src/hooks'),
+}
+
+/*--------------------------------------------------------------
+  4.0 Webpack configurations
+--------------------------------------------------------------*/
 module.exports = [
-	/**
-	 * WordPress blocks
-	 */
+	/* WordPress blocks */
 	{
 		...defaultConfig,
 		entry: getCustomBlocks,
 		resolve: {
-			alias: {
-				'@features': path.resolve('src/features'),
-				'@utils': path.resolve('src/utils'),
-				'@hooks': path.resolve('src/hooks'),
-			}
+			alias
 		},
 		output: {
 			filename: '[name].js',
@@ -89,22 +144,23 @@ module.exports = [
 				filename: '[name].css'
 			}),
 			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
-			!isProduction &&
+			!IS_PRODUCTION &&
 			new LiveReloadPlugin({
 				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
 			}),
 			!process.env.WP_NO_EXTERNALS &&
 			new DependencyExtractionWebpackPlugin(),
-		].filter(Boolean)
+		].filter(Boolean),
+		module: {
+			rules
+		}
 	},
-	/**
-	 * Theme spesific files
-	 */
+	/* Theme spesific files */
 	{
 		...defaultConfig,
 		entry: {
-			'theme': ['./src/assets/scripts/theme.js', ...getCoreBlocks()],
-			'admin': './src/assets/scripts/admin.js'
+			'theme': [THEME_SOURCE_PATH + '/theme.js', ...getCoreBlocks()],
+			'admin': THEME_SOURCE_PATH + '/admin.js'
 		},
 		output: {
 			filename: '[name].js',
@@ -118,7 +174,7 @@ module.exports = [
 				filename: '[name].css'
 			}),
 			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
-			!isProduction &&
+			!IS_PRODUCTION &&
 			new LiveReloadPlugin({
 				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
 			}),
@@ -126,25 +182,7 @@ module.exports = [
 			new DependencyExtractionWebpackPlugin(),
 		].filter(Boolean),
 		module: {
-			rules: [
-				{
-					test: /\.css$/,
-					use: [
-						MiniCssExtractPlugin.loader,
-						'css-loader'
-					]
-				},
-				{
-					test: /\.js$|jsx/,
-					exclude: /node_modules/,
-					use: {
-						loader: "babel-loader",
-						options: {
-							presets: ['@wordpress/babel-preset-default']
-						}
-					}
-				}
-			]
-		},
+			rules
+		}
 	}
 ];
