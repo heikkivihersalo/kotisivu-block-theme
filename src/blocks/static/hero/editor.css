@@ -2,18 +2,23 @@
     height: auto;
 }
 
-.hero-two-column {
-    align-items: revert;
-    isolation: isolate;
-    justify-items: revert;
-    width: 100%;
-}
+/** ======================
+ **   TWO-COLUMN
+ ** ==================== */
 
 .hero-two-column {
-    height: auto;
+    display: grid;
+    justify-items: center;
+    align-items: revert;
+    width: 100%;
+    height: auto !important;
 }
 
 .hero-two-column .hero__content {
-    width: revert;
-    height: revert;
+    width: revert !important;
+    height: revert !important;
+}
+.hero-two-column .hero__image > div,
+.hero-two-column .hero__image > div > img {
+    height: 100%;
 }
