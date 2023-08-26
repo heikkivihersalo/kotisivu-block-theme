@@ -1,1 +1,24 @@
-.hero__image{height:auto}.hero-two-column{align-items:revert;display:grid;height:auto!important;justify-items:center;width:100%}.hero-two-column .hero__content{height:revert!important;width:revert!important}.hero-two-column .hero__image>div,.hero-two-column .hero__image>div>img{height:100%}
+.hero__image {
+    height: auto;
+}
+
+/** ======================
+ **   TWO-COLUMN
+ ** ==================== */
+
+.hero-two-column {
+    display: grid;
+    justify-items: center;
+    align-items: revert;
+    width: 100%;
+    height: auto !important;
+}
+
+.hero-two-column .hero__content {
+    width: revert !important;
+    height: revert !important;
+}
+.hero-two-column .hero__image > div,
+.hero-two-column .hero__image > div > img {
+    height: 100%;
+}

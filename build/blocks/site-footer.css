@@ -1,1 +1,8 @@
-[data-type="ksd/site-footer"]>div{padding:.5em 1.5em}:is(.footer__top,.footer__bottom) .is-visually-hidden{display:none}
+[data-type="ksd/site-footer"] > div {
+	padding: 0.5em 1.5em;
+}
+
+:is(.footer__top, .footer__bottom) .is-visually-hidden {
+	display: none;
+}
+

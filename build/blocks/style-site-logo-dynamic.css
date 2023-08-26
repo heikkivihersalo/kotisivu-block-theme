@@ -1,1 +1,16 @@
-.dynamic-logo{--_default-color:#292828;--_dark-color:#fff;--_light-color:#292828;--_logo-color:var(--_default-color)}[color-scheme=dark] .dynamic-logo{--_logo-color:var(--_dark-color)}[color-scheme=light] .dynamic-logo{--_logo-color:var(--_default-color)}
+.dynamic-logo {
+	--_default-color: hsl(0, 1%, 16%);
+	--_dark-color: hsl(0, 0%, 100%);
+	--_light-color: hsl(0, 1%, 16%);
+
+	--_logo-color: var(--_default-color);
+}
+
+[color-scheme="dark"] .dynamic-logo {
+	--_logo-color: var(--_dark-color);
+}
+
+[color-scheme="light"] .dynamic-logo {
+	--_logo-color: var(--_default-color);
+}
+

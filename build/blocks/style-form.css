@@ -1,1 +1,92 @@
-.fluentform form>fieldset .ff-el-group{margin-bottom:0}.fluentform{--_width:40rem;--_gap:var(--wp--preset--spacing--30);--_border:3px solid var(--wp--preset--color--grey-dark);--_font-color:var(--wp--preset--color--foreground);--_font-family:var(--wp--preset--font-family--accent);margin-block:var(--wp--preset--spacing--50);margin-inline:auto;max-width:var(--_width);width:var(--wp--custom--content-size)}.ff-t-container,.fluentform fieldset{display:grid;gap:var(--_gap)}.ff-el-input--label label{font-family:var(--wp--preset--font-family--heading);font-size:var(--wp--preset--font-size--large)}:is(input,textarea).ff-el-form-control{border:var(--_border)!important;border-radius:0!important;color:var(--_font-color)!important;font-family:var(--_font-family)!important;padding:1em!important}:is(input,textarea).ff-el-form-control::-moz-placeholder{color:var(--_font-color)!important;font-family:var(--_font-family)!important;opacity:.5!important}:is(input,textarea).ff-el-form-control::placeholder{color:var(--_font-color)!important;font-family:var(--_font-family)!important;opacity:.5!important}:is(input,textarea).ff-el-form-control:focus{background:var(--wp--preset--color--white)!important;color:var(--wp--preset--color--black)!important}.ff_submit_btn_wrapper{margin-inline:auto;margin-top:var(--wp--preset--spacing--50);max-width:20rem}.ff-el-form-hide_label .ff-el-input--label{display:none}[color-scheme=dark] :is(input,textarea).ff-el-form-control{background:var(--wp--preset--color--grey-dark)!important;color:var(--wp--preset--color--white)!important}[color-scheme=light] .ff-btn-submit{--_shadow-color:var(--wp--preset--color--grey-dark);border-color:var(--wp--preset--color--grey-dark)!important}
+/**
+ * Resets
+ */
+.fluentform form > fieldset .ff-el-group {
+	margin-bottom: 0; /* Reset default margins */
+}
+
+/**
+ * Form Containers
+ */
+.fluentform {
+	--_width: 40rem;
+	--_gap: var(--wp--preset--spacing--30);
+	--_border: 3px solid var(--wp--preset--color--grey-dark);
+	--_font-color: var(--wp--preset--color--foreground);
+	--_font-family: var(--wp--preset--font-family--accent);
+
+    width: var(--wp--custom--content-size);
+    max-width: var(--_width);
+	margin-block: var(--wp--preset--spacing--50);
+    margin-inline: auto;
+}
+
+.fluentform fieldset,
+.ff-t-container {
+	display: grid;
+	gap: var(--_gap);
+}
+
+/**
+ * Form Labels
+ */
+.ff-el-input--label label {
+    font-family: var(--wp--preset--font-family--heading);
+    font-size: var(--wp--preset--font-size--large);
+}
+
+/**
+ * Form Fields
+ */
+:is(input, textarea).ff-el-form-control {
+	font-family: var(--_font-family) !important;
+	color: var(--_font-color) !important;
+
+	padding: 1em 1em !important;
+
+	border: var(--_border) !important;
+	border-radius: 0 !important;
+}
+
+:is(input, textarea).ff-el-form-control::placeholder {
+	font-family: var(--_font-family) !important;
+	color: var(--_font-color) !important;
+
+	opacity: 0.5 !important;
+}
+
+/**
+ * Field States
+ */
+ /* Focus */
+:is(input, textarea).ff-el-form-control:focus {
+	color: var(--wp--preset--color--black) !important;
+	background: var(--wp--preset--color--white) !important;
+}
+
+/**
+ * Buttons
+ */
+.ff_submit_btn_wrapper {
+	max-width: 20rem;
+	margin-inline: auto;
+	margin-top: var(--wp--preset--spacing--50);
+}
+
+/* Modifiers */
+.ff-el-form-hide_label .ff-el-input--label {
+	display: none;
+}
+
+/**
+ * COLOR SCHEME OVERRIDES
+ */
+[color-scheme="dark"] :is(input, textarea).ff-el-form-control {
+	background: var(--wp--preset--color--grey-dark) !important;
+	color: var(--wp--preset--color--white) !important;
+}
+
+[color-scheme="light"] .ff-btn-submit {
+	--_shadow-color: var(--wp--preset--color--grey-dark);
+	border-color: var(--wp--preset--color--grey-dark) !important;
+}
