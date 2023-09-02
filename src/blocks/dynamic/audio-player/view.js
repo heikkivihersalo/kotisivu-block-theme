@@ -294,8 +294,9 @@ const Playlist = () => {
     return (
         <>
             <PlayerContext.Provider value={{ isPlaying, setIsPlaying }}>
-                {isLoading && <div>{__('Loading...', 'kotisivu-block-theme')}</div>}
-                {!isLoading &&
+                {!files.length && isLoading && <div>{__('Loading...', 'kotisivu-block-theme')}</div>}
+                {(!files.length && !isLoading) && <div>{__('No audio files found', 'kotisivu-block-theme')}</div>}
+                {(!isLoading && files.length > 0) &&
                     <>
                         <AudioPlayer playerRef={playerRef} trackRef={trackRef} />
                         <ol
