@@ -2,6 +2,14 @@
 /* ===== GENERAL ==== */
 /* ================== */
 .audio-player {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--20);
+
+	margin-bottom: var(--wp--preset--spacing--30);
+
+	text-align: center;
+
 	width: 100%;
 	max-width: var(--wp--custom--narrow-size);
 }
@@ -33,7 +41,7 @@
 .audio-player__list-item-text {
 	display: flex;
 	align-items: center;
-    line-height: 1.4;
+	line-height: 1.4;
 }
 
 .audio-player__list-item-text::before {
@@ -74,14 +82,6 @@
 /* ================== */
 /* == AUDIO PLAYER == */
 /* ================== */
-.audio-player {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: var(--wp--preset--spacing--20);
-
-	margin-bottom: var(--wp--preset--spacing--30);
-}
-
 /**
  * Timeline
  */
