@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, registerBlockStyle } from '@wordpress/blocks';
+import domReady from '@wordpress/dom-ready';
 import variations from './variations.js';
 import edit from "./edit";
 import save from "./save";
@@ -18,7 +19,10 @@ const {
     supports,
 } = metadata;
 
-export const settings = {
+/**
+ * Register block
+ */
+registerBlockType(name, {
     apiVersion: apiVersion,
     title: __(title, 'kotisivu-block-theme'),
     description: __(description, 'kotisivu-block-theme'),
@@ -35,6 +39,14 @@ export const settings = {
             'data-align': 'full',
         };
     }
-}
+});
 
-registerBlockType(name, settings);
+/**
+ * Run on DOM ready
+ */
+domReady(function () {
+    registerBlockStyle(name, {
+        name: 'wrapper-shadow',
+        label: __('Shadow', 'kotisivu-block-theme'),
+    });
+});
