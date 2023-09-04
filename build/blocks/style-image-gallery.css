@@ -1,16 +1,19 @@
+/**
+ * REGULAR STYLES
+ */
 :where(.image-gallery__container) {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 }
 
-:where(.image-gallery-item) {
+:where(.image-gallery__item) {
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
 }
 
 /**
- * IMAGE GALLERY ITEM
+ * IMAGE GALLERY CLIENT
  */
 .is-style-image-gallery-client .image-gallery__container {
 	display: flex;
@@ -20,7 +23,7 @@
 	gap: var(--wp--preset--spacing--20);
 }
 
-.is-style-image-gallery-client .image-gallery-item {
+.is-style-image-gallery-client .image-gallery__item {
 	max-width: clamp(
 		4.235801032rem,
 		calc(2.8343750194524rem + 7.007130062738vw),
@@ -33,7 +36,7 @@
 	);
 }
 
-[color-scheme="dark"] .is-style-image-gallery-client .image-gallery-item {
+[color-scheme="dark"] .is-style-image-gallery-client .image-gallery__item {
 	filter: invert(1);
 }
 
