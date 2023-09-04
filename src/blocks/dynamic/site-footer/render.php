@@ -25,7 +25,7 @@ function render_site_footer($block_attributes, $content) { ?>
             <address class="footer__contact">
                 <h3><?php echo $contact['name']; ?></h3>
                 <?php echo $contact['address'] . '<br>'; ?>
-                <?php _e('VAT ID', 'kotisivu-block-theme') . ': ' . $contact['id']; ?>
+                <?php echo __('VAT ID', 'kotisivu-block-theme') . ': ' . $contact['id']; ?>
             </address>
         </div>
         <div class="footer__column">
