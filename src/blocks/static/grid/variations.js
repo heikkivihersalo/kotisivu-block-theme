@@ -2,8 +2,8 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
     {
-        name: 'grid-50-50',
-        title: __('Grid | 50-50', 'kotisivu-theme-blocks'),
+        name: 'grid-50-50-image',
+        title: __('Grid | 50-50 | Background Image', 'kotisivu-theme-blocks'),
         icon: 'button',
         scope: 'block',
         innerBlocks: [
@@ -13,7 +13,7 @@ const variations = [
             ['ksd/grid-item', { blockClass: 'grid-item is-stacked' }]
         ],
         attributes: {
-            blockClass: "grid grid-cols-2",
+            blockClass: "grid grid-cols-2 has-background-image",
             childTemplate: [
                 ['ksd/wrapper', {
                     variationName: 'wrapper-100',
@@ -30,8 +30,8 @@ const variations = [
         }
     },
     {
-        name: 'grid-33-33-33',
-        title: __('Grid | 33-33-33', 'kotisivu-theme-blocks'),
+        name: 'grid-33-33-33-image',
+        title: __('Grid | 33-33-33 | Background Image', 'kotisivu-theme-blocks'),
         icon: 'button',
         scope: 'block',
         innerBlocks: [
@@ -43,7 +43,7 @@ const variations = [
             ['ksd/grid-item']
         ],
         attributes: {
-            blockClass: "grid grid-cols-3",
+            blockClass: "grid grid-cols-3 has-background-image",
             childTemplate: [
                 ['ksd/wrapper', {
                     variationName: 'wrapper-100',
