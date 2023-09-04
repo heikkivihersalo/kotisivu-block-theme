@@ -50,6 +50,13 @@ class WP_Head extends Theme {
     }
 
     /**
+     * Inline privacy policy CSS styles
+     */
+    public function inline_privacy_policy_css(): void {
+        require_once(__DIR__ . '/inline-css/privacy-policy.php');
+    }
+
+    /**
      * Inline dark mode scripts
      */
     public function inline_dark_mode_cookie(): void { ?>
@@ -106,6 +113,7 @@ class WP_Head extends Theme {
         add_action('wp_head', [$this, 'inline_sanitize_css'], 0);
         add_action('wp_head', [$this, 'inline_utilities_css'], 11);
         add_action('wp_head', [$this, 'inline_custom_css'], 11);
+        add_action('wp_head', [$this, 'inline_privacy_policy_css'], 11);
 
         /* Enable dark mode */
         if ($this->config['settings']['dark-mode']) :
