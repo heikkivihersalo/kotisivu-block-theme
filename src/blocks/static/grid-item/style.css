@@ -1,15 +1,35 @@
 /**
- * Resets
+ * REGULAR
  */
-.grid-item .grid-item__wrapper > * {
+:where(.grid-item__wrapper) {
+	display: grid;
+	color: var(--wp--preset--color--white);
+
+	background: var(--wp--preset--color--grey-dark);
+
+	height: 100%;
+	min-height: 550px;
+
+	padding: var(--wp--preset--spacing--40) var(--wp--preset--spacing--50);
+	padding-bottom: var(--wp--preset--spacing--50);
+}
+
+:where(.grid-item__button) {
+	margin-top: var(--wp--preset--spacing--40);
+}
+
+/**
+ * BACKGROUND IMAGE
+ */
+.has-background-image .grid-item .grid-item__wrapper > * {
 	margin: 0;
 }
 
-:where(.grid-item.is-stacked) {
+:where(.has-background-image .grid-item.is-stacked) {
 	isolation: isolate;
 }
 
-:where(.grid-item.is-stacked .grid-item__wrapper) {
+:where(.has-background-image .grid-item.is-stacked .grid-item__wrapper) {
 	display: grid;
 	place-items: center;
 	align-self: end;
@@ -26,7 +46,9 @@
 	z-index: 1;
 }
 
-:where(.grid-item.is-stacked .grid-item__background-image) {
+:where(
+		.has-background-image .grid-item.is-stacked .grid-item__background-image
+	) {
 	width: 100%;
 	height: auto;
 	object-fit: cover;
