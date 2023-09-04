@@ -24,7 +24,7 @@ const Edit = (props) => {
 		<>
 			<Inspector {...props} />
 			<section {...blockProps}>
-				<h2 className="accessible-hidden">{sectionHeading}</h2>
+				<h2 className="is-visually-hidden">{sectionHeading}</h2>
 				{
 					images.length >= 1
 						? (

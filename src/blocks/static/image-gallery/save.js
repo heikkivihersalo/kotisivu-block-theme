@@ -20,7 +20,7 @@ const Save = (props) => {
 
 	return (
 		<section {...blockProps}>
-			<h2 className="accessible-hidden">{sectionHeading}</h2>
+			<h2 className="is-visually-hidden">{sectionHeading}</h2>
 			<div className="image-gallery__container">
 				{
 					images.map(image => (

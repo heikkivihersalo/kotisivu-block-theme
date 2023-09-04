@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, registerBlockStyle } from '@wordpress/blocks';
+import domReady from '@wordpress/dom-ready';
 import edit from "./edit";
 import save from "./save";
 import metadata from './block.json';
@@ -31,3 +32,13 @@ export const settings = {
 }
 
 registerBlockType(name, settings);
+
+/**
+ * Run on DOM ready
+ */
+domReady(function () {
+    registerBlockStyle(name, {
+        name: 'image-gallery-client',
+        label: __('Client', 'kotisivu-block-theme'),
+    });
+});
