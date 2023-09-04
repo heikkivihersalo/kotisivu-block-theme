@@ -39,7 +39,7 @@ function render_site_footer($block_attributes, $content) { ?>
 
     <div class="footer__bottom">
         <div class="footer__legal">
-            <span class="footer__copyright"><?php _e('©', 'kotisivu-block-theme') . ' ' . date('Y') . ' ' . $contact['name']; ?></span>
+            <span class="footer__copyright"><?php echo __('©', 'kotisivu-block-theme') . ' ' . date('Y') . ' ' . $contact['name']; ?></span>
             <span class="footer__dot">&#x2022;</span>
             <nav class="footer__site-nav">
                 <?php if (has_nav_menu('secondary-navigation')) : ?>
