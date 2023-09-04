@@ -24,7 +24,7 @@ const Save = (props) => {
 			<div className="image-gallery__container">
 				{
 					images.map(image => (
-						<Img key={image.mediaID} image={image} imageClass={"image-gallery-item"} />
+						<Img key={image.mediaID} image={image} imageClass={"image-gallery__item"} />
 					))
 				}
 			</div>
