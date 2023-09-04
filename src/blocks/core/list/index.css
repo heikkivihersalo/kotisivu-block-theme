@@ -1,4 +1,17 @@
 /**
+ * List Default Styles
+ */
+:where(.wp-site-blocks ul) {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+
+:where(.wp-site-blocks li) {
+	line-height: 1.4;
+}
+
+/**
  * List overrides
  */
 ul:is(.is-style-custom-icon, .is-style-colored-checkmark) {
