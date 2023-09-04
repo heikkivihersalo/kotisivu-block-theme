@@ -310,7 +310,7 @@ section:not(section:last-of-type) {
 	padding-block: 1em;
 	padding-inline: 3em;
 
-	min-width: var(--_size);
+	min-width: var(--_size) !important;
 
 	background: var(--_background-color);
 
