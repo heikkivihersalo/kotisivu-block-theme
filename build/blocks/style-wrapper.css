@@ -1,3 +1,6 @@
+/** ======================
+ ** SHADOW STYLE
+ ** ==================== */
 .is-style-wrapper-shadow {
 	--_border-color: var(--wp--preset--color--grey-light);
 	--_border: 0.5em solid var(--_border-color);

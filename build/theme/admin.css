@@ -52,7 +52,6 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
 /**
  * Aligment Controls
  */
-
 .editor-alignment-controls > div > p {
 	margin-bottom: 0;
 }
@@ -91,6 +90,30 @@ button.ksd-editor-btn.ksd-editor-btn--placeholder {
 	position: absolute;
 	top: 0;
 	right: 0;
+}
+
+/**
+ * Gap Controls
+ */
+.editor-gap-controls .components-range-control__root {
+	flex-direction: column;
+}
+
+.editor-gap-controls .components-base-control__label {
+	margin-bottom: 1.5em;
+}
+
+.editor-gap-controls .components-range-control__wrapper {
+	max-width: calc(100% - 2em);
+	margin-inline: auto;
+}
+
+.editor-gap-controls .components-range-control__root > span {
+	margin: 0;
+}
+
+.editor-gap-controls .components-range-control__mark-label {
+	top: 1rem;
 }
 /*--------------------------------------------------------------
   3.0 Modifiers
@@ -147,7 +170,14 @@ section:not(section:last-of-type) {
 /** 
 * GRID COLUMNS 
 */
-:where(.grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+:where(
+		.grid-cols-1,
+		.grid-cols-2,
+		.grid-cols-3,
+		.grid-cols-4,
+		.grid-cols-5,
+		.grid-cols-6
+	) {
 	display: grid;
 	grid-template-columns: repeat(1, minmax(0, 1fr));
 	margin-inline: auto;
@@ -207,13 +237,31 @@ section:not(section:last-of-type) {
 		grid-template-columns: repeat(6, minmax(0, 1fr));
 	}
 
-	:where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv, .is-reversed)
-			div:first-child) {
+	:where(
+			:is(
+					.grid-cols-2-rv,
+					.grid-cols-70-30-rv,
+					.grid-cols-75-25-rv,
+					.grid-cols-30-70-rv,
+					.grid-cols-25-75-rv,
+					.is-reversed
+				)
+				div:first-child
+		) {
 		order: 2;
 	}
 
-	:where(:is(.grid-cols-2-rv, .grid-cols-70-30-rv, .grid-cols-75-25-rv, .grid-cols-30-70-rv, .grid-cols-25-75-rv, .is-reversed)
-			div:last-child) {
+	:where(
+			:is(
+					.grid-cols-2-rv,
+					.grid-cols-70-30-rv,
+					.grid-cols-75-25-rv,
+					.grid-cols-30-70-rv,
+					.grid-cols-25-75-rv,
+					.is-reversed
+				)
+				div:last-child
+		) {
 		order: 1;
 	}
 }
