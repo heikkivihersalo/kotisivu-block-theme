@@ -47,7 +47,8 @@ export function getBlockSyles({ style }) {
         display: hasGrdiAlignment(style) ? 'grid' : undefined,
         justifyItems: style?.justifyItems ? style?.justifyItems : undefined,
         alignItems: style?.alignItems ? style?.alignItems : undefined,
-        alignContent: style?.alignContent ? style?.alignContent : undefined
+        alignContent: style?.alignContent ? style?.alignContent : undefined,
+        gap: style?.gap ? style.gap : undefined
     }
 }
 

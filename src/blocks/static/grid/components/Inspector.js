@@ -9,7 +9,8 @@ import { InspectorControls } from "@wordpress/block-editor";
  */
 import {
     BackgroundColorControl,
-    GridAlignControls
+    GridAlignControls,
+    GapControls
 } from "@features/inspector";
 
 const Inspector = (props) => {
@@ -18,6 +19,7 @@ const Inspector = (props) => {
             <InspectorControls group="styles">
                 <BackgroundColorControl {...props} />
                 <GridAlignControls {...props} />
+                <GapControls {...props} />
             </InspectorControls>
         </>
     );
