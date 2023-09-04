@@ -79,7 +79,7 @@
       "wideSize": "min(100%, 1920px)"
     },
     "custom": {
-      "narrowSize": "min(100%, 80ch)",
+      "narrowSize": "min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 80ch)",
       "contentSize": "var(--wp--style--global--content-size)",
       "wideSize": "var(--wp--style--global--wide-size)"
     },
