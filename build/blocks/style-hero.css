@@ -71,11 +71,11 @@
 }
 
 .hero-two-column .hero__image {
-	order: 2;
+	order: 1;
 }
 
 .hero-two-column .hero__content {
-	order: 1;
+	order: 2;
 
 	padding-inline: var(--wp--preset--spacing--40);
 
