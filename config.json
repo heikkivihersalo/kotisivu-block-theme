@@ -36,7 +36,6 @@
 		"has_modified_core_blocks": false,
 		"static": [
 			"ksd/aside",
-			"ksd/column",
 			"ksd/details",
 			"ksd/form",
 			"ksd/grid",
