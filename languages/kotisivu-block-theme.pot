@@ -1,26 +1,34 @@
-#, fuzzy
+# Copyright (C) 2023 Kotisivu Dev
+# This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Kotisivu Block Theme\n"
-"POT-Creation-Date: 2023-07-18 13:23+0300\n"
-"PO-Revision-Date: 2023-07-14 12:03+0300\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: Kotisivu Block Theme 1.0.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/kotisivu-block-theme\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.3.2\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: style.css\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
-"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: node_modules\n"
+"POT-Creation-Date: 2023-09-05T07:23:48+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: kotisivu-block-theme\n"
+
+#. Theme Name of the theme
+msgid "Kotisivu Block Theme"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "https://www.kotisivu.dev"
+msgstr ""
+
+#. Description of the theme
+msgid "Super lightweight block theme"
+msgstr ""
+
+#. Author of the theme
+msgid "Kotisivu Dev"
+msgstr ""
 
 #: inc/blocks/class-block-categories.php:28
 msgid "Blocks"
@@ -50,18 +58,6 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: inc/lib/rational-option-pages/RationalOptionPages.php:707
-msgid "Field parameter \"title\" is required"
-msgstr ""
-
-#: inc/lib/rational-option-pages/RationalOptionPages.php:802
-msgid "Page parameter \"page_title\" is required"
-msgstr ""
-
-#: inc/lib/rational-option-pages/RationalOptionPages.php:864
-msgid "Section parameter \"title\" is required"
-msgstr ""
-
 #: inc/patterns/404.php:12
 msgctxt "Page not found."
 msgid "404"
@@ -69,14 +65,6 @@ msgstr ""
 
 #: inc/patterns/404.php:15
 msgid "This page could not be found."
-msgstr ""
-
-#: inc/template-parts/header-nav-toggle.php:3
-msgid "Menu"
-msgstr ""
-
-#: inc/template-parts/post-card.php:31
-msgid "Read more"
 msgstr ""
 
 #: inc/theme/rational-option-pages/class-site-analytics.php:32
@@ -88,11 +76,7 @@ msgid "Tag Manager"
 msgstr ""
 
 #: inc/theme/rational-option-pages/class-site-analytics.php:37
-msgid ""
-"Using Tag Manager is the recommended way of adding analytics (including "
-"cookie management) to your site. Kotisivu Theme uses unique script to delay "
-"the loading of analytics so it does not have any performance impact on your "
-"site."
+msgid "Using Tag Manager is the recommended way of adding analytics (including cookie management) to your site. Kotisivu Theme uses unique script to delay the loading of analytics so it does not have any performance impact on your site."
 msgstr ""
 
 #: inc/theme/rational-option-pages/class-site-analytics.php:41
@@ -210,148 +194,20 @@ msgstr ""
 msgid "Site Options"
 msgstr ""
 
-#: src/__template-library__/address--address/edit.js:27
-#: src/__template-library__/address--email/edit.js:33
-#: src/__template-library__/address--name/edit.js:28
-#: src/__template-library__/address--phone/edit.js:34
-#: src/__template-library__/contact-us/edit.js:41
-#: src/__template-library__/timeline-list-item/components/Inspector.js:15
-#: src/features/inspector/lib/iconSelector.js:41
-msgid "Settings"
+#: src/blocks/dynamic/blog-grid/includes/card.php:27
+msgid "Read more"
 msgstr ""
 
-#: src/__template-library__/address--address/edit.js:29
-#: src/__template-library__/address--email/edit.js:35
-#: src/__template-library__/address--name/edit.js:30
-#: src/__template-library__/address--phone/edit.js:36
-msgid "Use icon"
-msgstr ""
-
-#: src/__template-library__/address--address/edit.js:37
-#: src/__template-library__/address--address/edit.js:38
-msgid "Add street address"
-msgstr ""
-
-#: src/__template-library__/address--email/edit.js:44
-#: src/__template-library__/address--email/edit.js:45
-#: src/__template-library__/contact-us--email/edit.js:31
-#: src/__template-library__/contact-us--email/edit.js:32
-msgid "Add email address"
-msgstr ""
-
-#: src/__template-library__/address--name/edit.js:38
-#: src/__template-library__/address--name/edit.js:39
-msgid "Add company or person name"
-msgstr ""
-
-#: src/__template-library__/address--phone/edit.js:45
-#: src/__template-library__/address--phone/edit.js:46
-msgid "Add phone number"
-msgstr ""
-
-#: src/__template-library__/apartment--tag/edit.js:19
-#: src/__template-library__/apartment--tag/edit.js:20
-msgid "Add tag text"
-msgstr ""
-
-#: src/__template-library__/contact-list-item/edit.js:31
-#: src/__template-library__/contact-list-item/edit.js:32
-#: src/__template-library__/link-list-item/edit.js:31
-#: src/__template-library__/link-list-item/edit.js:32
-msgid "Add text"
-msgstr ""
-
-#: src/__template-library__/contact-list/components/ColumnInserterButton.js:16
-#: src/__template-library__/icon-list/components/ColumnInserterButton.js:16
-#: src/__template-library__/link-list/components/ColumnInserterButton.js:16
-#: src/__template-library__/timeline-list/components/ColumnInserterButton.js:16
-msgid "Add new item"
-msgstr ""
-
-#: src/__template-library__/contact-us--name/edit.js:20
-#: src/__template-library__/contact-us--name/edit.js:21
-msgid "Add contact person name"
-msgstr ""
-
-#: src/__template-library__/contact-us--phone/edit.js:31
-#: src/__template-library__/contact-us--phone/edit.js:32
-msgid "Add phonenumber"
-msgstr ""
-
-#: src/__template-library__/contact-us--title/edit.js:20
-#: src/__template-library__/contact-us--title/edit.js:21
-msgid "Add contact person title"
-msgstr ""
-
-#: src/__template-library__/contact-us/edit.js:43
-msgid "Set as wide"
-msgstr ""
-
-#: src/__template-library__/contact-us/edit.js:50
-#: src/__template-library__/contact-us/edit.js:51
-msgid "Add section heading"
-msgstr ""
-
-#: src/__template-library__/icon-list-item/edit.js:22
-#: src/__template-library__/icon-list-item/edit.js:23
-msgid "Add item name"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/components/Inspector.js:17
-msgid "Timeline Status"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/components/Inspector.js:21
-msgid "Not Set"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/components/Inspector.js:22
-msgid "Coming"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/components/Inspector.js:23
-msgid "In Progress"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/components/Inspector.js:24
-msgid "Ready"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/edit.js:29
-#: src/__template-library__/timeline-list-item/edit.js:30
-msgid "Add timeline name"
-msgstr ""
-
-#: src/__template-library__/timeline-list-item/edit.js:39
-#: src/__template-library__/timeline-list-item/edit.js:40
-msgid "Add status text"
-msgstr ""
-
-#: src/blocks/core/paragraph/components/Inspector.js:33
-msgid "Miscellaneous"
-msgstr ""
-
-#: src/blocks/core/paragraph/components/Inspector.js:43
-msgid "Reset"
-msgstr ""
-
-#: src/blocks/dynamic/blog-grid/render.php:53
+#: src/blocks/dynamic/blog-grid/render.php:62
 msgid "Show earlier posts"
 msgstr ""
 
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:94
-#: src/blocks/dynamic/blog-grid/view.js:51
-msgid "No more posts to fetch:"
+#: src/blocks/dynamic/blog-post/render.php:12
+msgid "min read"
 msgstr ""
 
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:96
-#: src/blocks/dynamic/blog-grid/view.js:53
-msgid "Posts fetched succesfully:"
-msgstr ""
-
-#: src/blocks/dynamic/blog-grid/scripts/helpers.js:112
-#: src/blocks/dynamic/blog-grid/view.js:63
-msgid "Error while loading more posts"
+#: src/blocks/dynamic/dark-mode-toggle/render.php:21
+msgid "Change color scheme"
 msgstr ""
 
 #: src/blocks/dynamic/site-footer/render.php:24
@@ -370,12 +226,8 @@ msgstr ""
 msgid "©"
 msgstr ""
 
-#: src/blocks/dynamic/site-logo/components/Inspector.js:19
-msgid "Site logo settings"
-msgstr ""
-
-#: src/blocks/dynamic/site-logo/components/Inspector.js:22
-msgid "Enable home link"
+#: src/blocks/dynamic/site-header/render.php:9
+msgid "Menu"
 msgstr ""
 
 #: src/blocks/dynamic/site-social/render.php:10
@@ -426,220 +278,604 @@ msgstr ""
 msgid "Follow us on WhatsApp"
 msgstr ""
 
-#: src/blocks/static/aside/variations.js:6
-msgid "Aside | 100"
-msgstr ""
-
-#: src/blocks/static/aside/variations.js:17
-msgid "Aside | 50-50"
-msgstr ""
-
-#: src/blocks/static/aside/variations.js:31
-msgid "Aside | 33-33-33"
-msgstr ""
-
-#: src/blocks/static/hero/variations.js:6
-msgid "Hero | Background Image"
-msgstr ""
-
-#: src/blocks/static/image-gallery/components/Inspector.js:21
-msgid "Image Gallery Settings"
-msgstr ""
-
-#: src/blocks/static/image-gallery/components/Inspector.js:23
-msgid "Section Heading"
-msgstr ""
-
-#: src/blocks/static/image-gallery/components/Inspector.js:24
-msgid ""
-"Add some descriptive information (ex. title or heading) for assistive "
-"technologies"
-msgstr ""
-
-#: src/blocks/static/image-gallery/edit.js:38
-msgid "Selected images will be shown here"
-msgstr ""
-
-#: src/blocks/static/map/variations.js:6
-msgid "Map | Full Width"
-msgstr ""
-
-#: src/blocks/static/map/variations.js:21
-msgid "Map | With Address"
-msgstr ""
-
-#: src/blocks/static/section/variations.js:6
-msgid "Section | 100"
-msgstr ""
-
-#: src/blocks/static/section/variations.js:17
-msgid "Section | 50-50"
-msgstr ""
-
-#: src/blocks/static/section/variations.js:31
-msgid "Section | 33-33-33"
-msgstr ""
-
-#: src/blocks/static/wrapper/variations.js:6
-msgid "Wrapper | 100"
-msgstr ""
-
-#: src/blocks/static/wrapper/variations.js:17
-msgid "Wrapper | 50-50"
-msgstr ""
-
-#: src/blocks/static/wrapper/variations.js:31
-msgid "Wrapper | 33-33-33"
-msgstr ""
-
-#: src/features/image/lib/common/inspector/fullWidth.js:21
-msgid "Full Width"
-msgstr ""
-
-#: src/features/image/lib/common/inspector/lazyLoad.js:19
-msgid "Lazy Load"
-msgstr ""
-
-#: src/features/image/lib/common/inspector/preview.js:28
-msgid "Change image"
-msgstr ""
-
-#: src/features/image/lib/common/inspector/preview.js:32
-msgid "Remove image"
-msgstr ""
-
-#: src/features/image/lib/imageSelectorSidebar.js:20
-msgid "Select background image"
-msgstr ""
-
-#: src/features/image/lib/utilities/functions/getImage.js:33
-msgid "Pick a image"
-msgstr ""
-
-#: src/features/inspector/lib/alignmentReverse.js:21
-msgid "Reverse Block Alignment"
-msgstr ""
-
-#: src/features/inspector/lib/ariaLabelControls.js:19
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
 msgid "Accessibility"
 msgstr ""
 
-#: src/features/inspector/lib/ariaLabelControls.js:21
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
 msgid "Aria Labelled By"
 msgstr ""
 
-#: src/features/inspector/lib/ariaLabelControls.js:22
-msgid ""
-"Identifies the element (or elements) that labels the element it is applied "
-"to. Use the same ID as in the section heading."
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+msgid "Identifies the element (or elements) that labels the element it is applied to. Use the same ID as in the section heading."
 msgstr ""
 
-#: src/features/inspector/lib/ariaLabelControls.js:27
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
 msgid "Aria label"
 msgstr ""
 
-#: src/features/inspector/lib/ariaLabelControls.js:28
-msgid ""
-"If section heading doesn`t match correct description, you can use aria-"
-"label. IMPORTANT! Use aria-labelledby by default."
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+msgid "If section heading doesn`t match correct description, you can use aria-label. IMPORTANT! Use aria-labelledby by default."
 msgstr ""
 
-#: src/features/inspector/lib/backgroundColor.js:37
-msgid "Use Background Color"
-msgstr ""
-
-#: src/features/inspector/lib/backgroundColorControl.js:27
+#: build/blocks/aside.js:1
+#: build/blocks/details.js:1
+#: build/blocks/form.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
 msgid "Color settings"
 msgstr ""
 
-#: src/features/inspector/lib/backgroundColorControl.js:33
+#: build/blocks/aside.js:1
+#: build/blocks/details.js:1
+#: build/blocks/form.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
 msgid "Background color"
 msgstr ""
 
-#: src/features/inspector/lib/backgroundImage.js:21
-msgid "Use Background Image"
-msgstr ""
-
-#: src/features/inspector/lib/dropShadow.js:21
-msgid "Drop Shadow"
-msgstr ""
-
-#: src/features/inspector/lib/eventTracking.js:20
-msgid "Analytics"
-msgstr ""
-
-#: src/features/inspector/lib/eventTracking.js:22
-msgid "Track Events"
-msgstr ""
-
-#: src/features/inspector/lib/eventTracking.js:27
-msgid "Identifier"
-msgstr ""
-
-#: src/features/inspector/lib/eventTracking.js:28
-msgid "ex. name for this button"
-msgstr ""
-
-#: src/features/inspector/lib/gridAlignControls.js:75
-msgid "Alignment Controls"
-msgstr ""
-
-#: src/features/inspector/lib/gridAlignControls.js:137
-msgid "Reverse Order"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:54
-msgid "Unicode"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:55
-msgid "For example fas fa-user"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:74
-msgid "Link Settings"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:76
-msgid "URL"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:81
-msgid "Title"
-msgstr ""
-
-#: src/features/inspector/lib/iconSelector.js:86
-msgid "Set icon as link"
-msgstr ""
-
-#: src/features/inspector/lib/linkControls.js:80
-msgid "Link"
-msgstr ""
-
-#: src/features/inspector/lib/linkControls.js:88
-msgid "Unlink"
-msgstr ""
-
-#: src/features/inspector/lib/transparentBackground.js:21
-msgid "Transparent Background"
-msgstr ""
-
-#: src/features/inspector/lib/widthControls.js:36
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
 msgid "Width Controls"
 msgstr ""
 
-#. Theme Name of the plugin/theme
-msgid "Kotisivu Block Theme"
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/grid-item.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Alignment Controls"
 msgstr ""
 
-#. Theme URI of the plugin/theme
-msgid "https://www.kotisivu.dev"
+#: build/blocks/aside.js:1
+#: build/blocks/form.js:1
+#: build/blocks/grid-item.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Reverse Order"
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "Super lightweight block theme"
+#: build/blocks/aside.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Gap Controls"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Kotisivu Dev"
+#: build/blocks/aside.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Gap"
+msgstr ""
+
+#: build/blocks/aside.js:1
+#: build/blocks/details.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Choose variation"
+msgstr ""
+
+#: build/blocks/aside.js:1
+#: build/blocks/details.js:1
+#: build/blocks/grid.js:1
+#: build/blocks/hero.js:1
+#: build/blocks/map.js:1
+#: build/blocks/section.js:1
+#: build/blocks/wrapper.js:1
+msgid "Select a block variation to start with."
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:151
+msgid "Pause"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:152
+msgid "Play"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:158
+msgid "Now Playing"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:170
+msgid "Loading..."
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:199
+msgid "Elapsed Time"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:204
+msgid "Timeline"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:218
+msgid "Total Duration"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:234
+msgid "Now playing song"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+#: src/blocks/dynamic/audio-player/components/AudioPlayer.jsx:237
+msgid "from artist"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+msgid "No audio files found"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+msgid "Playlist"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+msgid "Play song"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+msgid "of"
+msgstr ""
+
+#: build/blocks/audio-player-view-script.js:1
+msgid "in playlist"
+msgstr ""
+
+#: build/blocks/audio-player.js:1
+msgid "This is an accessible audio player with playlist feature. Your audio playlist will be rendered on the front-end."
+msgstr ""
+
+#: build/blocks/blog-grid-view-script.js:1
+msgid "No more posts to fetch:"
+msgstr ""
+
+#: build/blocks/blog-grid-view-script.js:1
+msgid "Posts fetched succesfully:"
+msgstr ""
+
+#: build/blocks/blog-grid-view-script.js:1
+msgid "Error while loading more posts"
+msgstr ""
+
+#: build/blocks/blog-grid.js:1
+msgid "Error occurred"
+msgstr ""
+
+#: build/blocks/blog-grid.js:1
+msgid "Read More"
+msgstr ""
+
+#: build/blocks/blog-grid.js:1
+msgid "Loading"
+msgstr ""
+
+#: build/blocks/blog-grid.js:1
+msgid "No posts"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Behaviour"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Select the behaviour for this block."
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Open on page load"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Schema"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Select the schema type for this block."
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Use schema"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Container (details) schema property"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Container (details) schema type"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Heading (summary) schema property"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Content (text) schema property"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Content (text) schema type"
+msgstr ""
+
+#: build/blocks/details.js:1
+msgid "Add a descriptive text here..."
+msgstr ""
+
+#: build/blocks/image-gallery.js:1
+msgid "Image Gallery Settings"
+msgstr ""
+
+#: build/blocks/image-gallery.js:1
+msgid "Section Heading"
+msgstr ""
+
+#: build/blocks/image-gallery.js:1
+msgid "Add some descriptive information (ex. title or heading) for assistive technologies"
+msgstr ""
+
+#: build/blocks/image-gallery.js:1
+msgid "Selected images will be shown here"
+msgstr ""
+
+#: build/blocks/image-gallery.js:1
+msgid "Client"
+msgstr ""
+
+#: build/blocks/site-logo-dynamic.js:1
+#: build/blocks/site-logo.js:1
+msgid "Site logo settings"
+msgstr ""
+
+#: build/blocks/site-logo-dynamic.js:1
+#: build/blocks/site-logo.js:1
+msgid "Enable home link"
+msgstr ""
+
+#: build/blocks/wrapper.js:1
+msgid "Shadow"
+msgstr ""
+
+#: src/blocks/core/paragraph/components/Inspector.js:33
+msgid "Miscellaneous"
+msgstr ""
+
+#: src/blocks/core/paragraph/components/Inspector.js:43
+msgid "Reset"
+msgstr ""
+
+#: src/blocks/dynamic/audio-player/block.json
+msgctxt "block title"
+msgid "Audio Player"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/block.json
+msgctxt "block title"
+msgid "Blog Grid"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/block.json
+msgctxt "block description"
+msgid "Grid view of blog posts"
+msgstr ""
+
+#: src/blocks/dynamic/blog-grid/block.json
+msgctxt "block keyword"
+msgid "blog, grid"
+msgstr ""
+
+#: src/blocks/dynamic/blog-post/block.json
+msgctxt "block title"
+msgid "Blog Post"
+msgstr ""
+
+#: src/blocks/dynamic/dark-mode-toggle/block.json
+msgctxt "block title"
+msgid "Dark Mode Toggle"
+msgstr ""
+
+#: src/blocks/dynamic/site-address/block.json
+msgctxt "block title"
+msgid "Address"
+msgstr ""
+
+#: src/blocks/dynamic/site-company-id/block.json
+msgctxt "block title"
+msgid "Company ID (VAT)"
+msgstr ""
+
+#: src/blocks/dynamic/site-company-name/block.json
+msgctxt "block title"
+msgid "Company Name"
+msgstr ""
+
+#: src/blocks/dynamic/site-email/block.json
+msgctxt "block title"
+msgid "Email"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/block.json
+msgctxt "block title"
+msgid "Site Footer"
+msgstr ""
+
+#: src/blocks/dynamic/site-footer/block.json
+#: src/blocks/dynamic/site-header/block.json
+msgctxt "block keyword"
+msgid "menu, header"
+msgstr ""
+
+#: src/blocks/dynamic/site-header/block.json
+msgctxt "block title"
+msgid "Site Header"
+msgstr ""
+
+#: src/blocks/dynamic/site-hours/block.json
+msgctxt "block title"
+msgid "Opening Hours"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo-dynamic/block.json
+msgctxt "block title"
+msgid "Dynamic Company Logo"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo-dynamic/block.json
+msgctxt "block description"
+msgid "Display site logo on your site. Toggles color between light and dark based on background color."
+msgstr ""
+
+#: src/blocks/dynamic/site-logo-dynamic/block.json
+#: src/blocks/dynamic/site-logo/block.json
+msgctxt "block keyword"
+msgid "site, logo"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo/block.json
+msgctxt "block title"
+msgid "Company Logo"
+msgstr ""
+
+#: src/blocks/dynamic/site-logo/block.json
+msgctxt "block description"
+msgid "Display site logo on your site"
+msgstr ""
+
+#: src/blocks/dynamic/site-phone/block.json
+msgctxt "block title"
+msgid "Phone"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/block.json
+msgctxt "block title"
+msgid "Social Accounts"
+msgstr ""
+
+#: src/blocks/dynamic/site-social/block.json
+msgctxt "block description"
+msgid "Add global social icons to your site."
+msgstr ""
+
+#: src/blocks/dynamic/site-social/block.json
+msgctxt "block keyword"
+msgid "social, icons, header"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Primary"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Primary (Dark)"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Secondary"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Background"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Foreground"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "White"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Black"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Light Grey"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Grey"
+msgstr ""
+
+#: theme.json
+msgctxt "Color name"
+msgid "Dark Grey"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "1"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "2"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "3"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "4"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "5"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "6"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "7"
+msgstr ""
+
+#: theme.json
+msgctxt "Space size name"
+msgid "8"
+msgstr ""
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Clash Display"
+msgstr ""
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Fira Sans"
+msgstr ""
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Fira Code"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Big Headings"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Colossal"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Gigantic"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Huge"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr ""
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Tiny"
+msgstr ""
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Header"
+msgstr ""
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Footer"
+msgstr ""
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Page Content"
+msgstr ""
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Blog Content"
+msgstr ""
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Form"
 msgstr ""
