@@ -143,7 +143,7 @@ module.exports = [
 				cleanAfterEveryBuildPatterns: ['!blocks/fonts/**', '!blocks/images/**'],
 			}),
 			new MiniCssExtractPlugin({
-				filename: '[name].css'
+				filename: 'style-[name].css'
 			}),
 			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
 			!IS_PRODUCTION &&
@@ -155,7 +155,14 @@ module.exports = [
 		].filter(Boolean),
 		module: {
 			rules
-		}
+		},
+		optimization: {
+			minimize: true,
+			minimizer: [
+				new CssMinimizerPlugin(),
+				new TerserPlugin(),
+			],
+		},
 	},
 	/* Theme spesific files */
 	{
