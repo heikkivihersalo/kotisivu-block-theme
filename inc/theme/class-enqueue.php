@@ -79,6 +79,13 @@ class Enqueue extends Theme {
             $file_info = pathinfo($glob);
 
             /**
+             * Exclude list
+             */
+            if ($file_info['filename'] === 'sanitize') continue;
+            if ($file_info['filename'] === 'dark-mode') continue;
+            if ($file_info['filename'] === 'inline') continue;
+            
+            /**
              * If in admin panel, enqueue all files
              */
             if ($is_admin_enqueue) :
