@@ -1,7 +1,1 @@
-.site-social {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1em;
-}
-
+.site-social__link{pointer-events:none}.site-social{display:flex;flex-direction:row;flex-wrap:wrap;gap:1em}
