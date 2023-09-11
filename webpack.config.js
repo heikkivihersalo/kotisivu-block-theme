@@ -22,6 +22,8 @@
 --------------------------------------------------------------*/
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -160,7 +162,10 @@ module.exports = [
 		...defaultConfig,
 		entry: {
 			'theme': [THEME_SOURCE_PATH + '/theme.js', ...getCoreBlocks()],
-			'admin': THEME_SOURCE_PATH + '/admin.js'
+			'admin': THEME_SOURCE_PATH + '/admin.js',
+			'inline': THEME_SOURCE_PATH + '/inline.js',
+			'sanitize': THEME_SOURCE_PATH + '/sanitize.js',
+			'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
 		},
 		output: {
 			filename: '[name].js',
@@ -179,10 +184,17 @@ module.exports = [
 				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
 			}),
 			!process.env.WP_NO_EXTERNALS &&
-			new DependencyExtractionWebpackPlugin(),
+			new DependencyExtractionWebpackPlugin()
 		].filter(Boolean),
 		module: {
 			rules
-		}
+		},
+		optimization: {
+			minimize: true,
+			minimizer: [
+				new CssMinimizerPlugin(),
+				new TerserPlugin(),
+			],
+		},
 	}
 ];
