@@ -22,38 +22,43 @@ defined('ABSPATH') or die();
  */
 class WP_Head extends Theme {
     /**
+     * Constructor
+     */
+    public function __construct() {
+        parent::__construct();
+    }
+
+    /**
      * Inline sanitize CSS styles
      */
     public function inline_sanitize_css(): void {
-        require_once(__DIR__ . '/inline-css/sanitize.php');
+?>
+        <style id="ksd-sanitize-inline-css">
+            <?php echo file_get_contents($this->parent_path . '/build/theme/sanitize.css') ?>
+        </style>
+    <?php
     }
 
     /**
-     * Inline utility CSS styles
-     */
-    public function inline_utilities_css(): void {
-        require_once(__DIR__ . '/inline-css/utilities.php');
-    }
-
-    /**
-     * Inline custom CSS styles
-     */
-    public function inline_custom_css(): void {
-        require_once(__DIR__ . '/inline-css/custom.php');
-    }
-
-    /**
-     * Inline dark mode CSS styles
+     * Inline dark mode css
      */
     public function inline_dark_mode_css(): void {
-        require_once(__DIR__ . '/inline-css/dark-mode.php');
+    ?>
+        <style id="ksd-dark-mode-inline-css">
+            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.css') ?>
+        </style>
+    <?php
     }
 
     /**
-     * Inline privacy policy CSS styles
+     * Inline CSS styles
      */
-    public function inline_privacy_policy_css(): void {
-        require_once(__DIR__ . '/inline-css/privacy-policy.php');
+    public function inline_custom_css(): void {
+    ?>
+        <style id="ksd-custom-inline-css">
+            <?php echo file_get_contents($this->parent_path . '/build/theme/inline.css') ?>
+        </style>
+    <?php
     }
 
     /**
@@ -62,8 +67,7 @@ class WP_Head extends Theme {
     public function inline_dark_mode_cookie(): void { ?>
         <meta name="color-scheme" content="dark light">
         <script data-no-optimize="1">
-            const cookies = document.cookie.split(";");
-            cookies.some(e => e.includes("color-scheme=dark")) ? document.getElementsByTagName("html")[0].setAttribute("color-scheme", "dark") : cookies.some(e => e.includes("color-scheme=light")) && document.getElementsByTagName("html")[0].setAttribute("color-scheme", "light");
+            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.js') ?>
         </script>
         <?php
     }
@@ -81,9 +85,11 @@ class WP_Head extends Theme {
 
                 $path = $folder . $slug . '.min.css';
                 $rel = 'stylesheet';
-                ?>
-                    <link rel="preload" href="<?php echo $path ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel ?>"'><noscript><link rel="<?php echo $rel ?>" href="<?php echo $path ?>"></noscript>
-                <?php
+        ?>
+                <link rel="preload" href="<?php echo $path ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel ?>"'><noscript>
+                    <link rel="<?php echo $rel ?>" href="<?php echo $path ?>">
+                </noscript>
+        <?php
             endforeach;
         endif;
     }
@@ -101,8 +107,27 @@ class WP_Head extends Theme {
      * @return void 
      */
     public function inline_tag_manager(): void { ?>
-        <script>var initGTMOnEvent=function(t){initGTM(),t.currentTarget.removeEventListener(t.type,initGTMOnEvent)},initGTM=function(){if(window.gtmDidInit)return!1;window.gtmDidInit=!0;var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.onload=function(){dataLayer.push({event:"gtm.js","gtm.start":(new Date).getTime(),"gtm.uniqueEventId":0})},t.src="<?php echo $this->analytics['tagmanager-url'] ?>/gtm.js?id=<?php echo $this->analytics['tagmanager-id'] ?>",document.head.appendChild(t)};document.addEventListener("DOMContentLoaded",function(){setTimeout(initGTM, <?php echo $this->analytics['tagmanager-timeout'] ?>)}),document.addEventListener("scroll",initGTMOnEvent),document.addEventListener("mousemove",initGTMOnEvent),document.addEventListener("touchstart",initGTMOnEvent)</script>
-    <?php }
+        <script>
+            var initGTMOnEvent = function(t) {
+                    initGTM(), t.currentTarget.removeEventListener(t.type, initGTMOnEvent)
+                },
+                initGTM = function() {
+                    if (window.gtmDidInit) return !1;
+                    window.gtmDidInit = !0;
+                    var t = document.createElement("script");
+                    t.type = "text/javascript", t.async = !0, t.onload = function() {
+                        dataLayer.push({
+                            event: "gtm.js",
+                            "gtm.start": (new Date).getTime(),
+                            "gtm.uniqueEventId": 0
+                        })
+                    }, t.src = "<?php echo $this->analytics['tagmanager-url'] ?>/gtm.js?id=<?php echo $this->analytics['tagmanager-id'] ?>", document.head.appendChild(t)
+                };
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(initGTM, <?php echo $this->analytics['tagmanager-timeout'] ?>)
+            }), document.addEventListener("scroll", initGTMOnEvent), document.addEventListener("mousemove", initGTMOnEvent), document.addEventListener("touchstart", initGTMOnEvent)
+        </script>
+<?php }
 
     /**
      * Initialize class
@@ -111,9 +136,7 @@ class WP_Head extends Theme {
     public function init(): void {
         /* Add inline CSS */
         add_action('wp_head', [$this, 'inline_sanitize_css'], 0);
-        add_action('wp_head', [$this, 'inline_utilities_css'], 11);
         add_action('wp_head', [$this, 'inline_custom_css'], 11);
-        add_action('wp_head', [$this, 'inline_privacy_policy_css'], 11);
 
         /* Enable dark mode */
         if ($this->config['settings']['dark-mode']) :
