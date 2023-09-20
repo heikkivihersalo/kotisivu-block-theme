@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-logo-dynamic.js",
-	"editorStyle": "file:../../../../build/blocks/site-logo-dynamic.css",
-	"style": "file:../../../../build/blocks/style-site-logo-dynamic.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-logo-dynamic.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-logo-dynamic.css",
+	"style": "file:../../../../assets/css/blocks/style-site-logo-dynamic.css",
 	"attributes": {
 		"options": {
 			"type": "object"

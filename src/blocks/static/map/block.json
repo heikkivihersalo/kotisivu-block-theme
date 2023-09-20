@@ -23,9 +23,9 @@
 		"ariaLabel": true,
 		"align": ["full"]
 	},
-	"editorScript": "file:../../../../build/blocks/map.js",
-	"editorStyle": "file:../../../../build/blocks/map.css",
-	"style": "file:../../../../build/blocks/style-map.css",
+	"editorScript": "file:../../../../assets/js/blocks/map.js",
+	"editorStyle": "file:../../../../assets/css/blocks/map.css",
+	"style": "file:../../../../assets/css/blocks/style-map.css",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

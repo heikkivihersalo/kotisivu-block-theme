@@ -21,9 +21,9 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:../../../../build/blocks/form.js",
-	"editorStyle": "file:../../../../build/blocks/form.css",
-	"style": "file:../../../../build/blocks/style-form.css",
+	"editorScript": "file:../../../../assets/js/blocks/form.js",
+	"editorStyle": "file:../../../../assets/css/blocks/form.css",
+	"style": "file:../../../../assets/css/blocks/style-form.css",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

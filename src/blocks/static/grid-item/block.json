@@ -17,9 +17,9 @@
 		}
 	},
 	"parent": ["ksd/grid"],
-	"editorScript": "file:../../../../build/blocks/grid-item.js",
-	"editorStyle": "file:../../../../build/blocks/grid-item.css",
-	"style": "file:../../../../build/blocks/style-grid-item.css",
+	"editorScript": "file:../../../../assets/js/blocks/grid-item.js",
+	"editorStyle": "file:../../../../assets/css/blocks/grid-item.css",
+	"style": "file:../../../../assets/css/blocks/style-grid-item.css",
 	"attributes": {
 		"style": {
 			"type": "object"

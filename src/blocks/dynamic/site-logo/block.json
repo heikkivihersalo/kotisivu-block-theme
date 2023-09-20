@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-logo.js",
-	"editorStyle": "file:../../../../build/blocks/site-logo.css",
-	"style": "file:../../../../build/blocks/style-site-logo.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-logo.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-logo.css",
+	"style": "file:../../../../assets/css/blocks/style-site-logo.css",
 	"attributes": {
 		"options": {
 			"type": "object"

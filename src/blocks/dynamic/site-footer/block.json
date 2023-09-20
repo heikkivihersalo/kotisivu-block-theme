@@ -12,9 +12,9 @@
 		"className": false,
 		"multiple": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-footer.js",
-	"editorStyle": "file:../../../../build/blocks/site-footer.css",
-	"style": "file:../../../../build/blocks/style-site-footer.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-footer.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-footer.css",
+	"style": "file:../../../../assets/css/blocks/style-site-footer.css",
 	"attributes": {
 		"options": {
 			"type": "object"

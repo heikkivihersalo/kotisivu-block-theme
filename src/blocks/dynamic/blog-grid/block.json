@@ -11,10 +11,10 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/blog-grid.js",
-	"editorStyle": "file:../../../../build/blocks/blog-grid.css",
-	"style": "file:../../../../build/blocks/style-blog-grid.css",
-	"viewScript": "file:../../../../build/blocks/blog-grid-view-script.js",
+	"editorScript": "file:../../../../assets/js/blocks/blog-grid.js",
+	"editorStyle": "file:../../../../assets/css/blocks/blog-grid.css",
+	"style": "file:../../../../assets/css/blocks/style-blog-grid.css",
+	"viewScript": "file:../../../../assets/js/blocks/blog-grid-view-script.js",
 	"attributes": {
 	}
 }

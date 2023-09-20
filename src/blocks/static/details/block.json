@@ -20,10 +20,10 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:../../../../build/blocks/details.js",
-	"editorStyle": "file:../../../../build/blocks/details.css",
-	"style": "file:../../../../build/blocks/style-details.css",
-	"viewScript": "file:../../../../build/blocks/details-view-script.js",
+	"editorScript": "file:../../../../assets/js/blocks/details.js",
+	"editorStyle": "file:../../../../assets/css/blocks/details.css",
+	"style": "file:../../../../assets/css/blocks/style-details.css",
+	"viewScript": "file:../../../../assets/js/blocks/details-view-script.js",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

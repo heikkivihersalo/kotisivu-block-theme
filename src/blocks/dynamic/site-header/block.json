@@ -12,10 +12,10 @@
 		"className": false,
 		"multiple": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-header.js",
-	"editorStyle": "file:../../../../build/blocks/site-header.css",
-	"style": "file:../../../../build/blocks/style-site-header.css",
-	"viewScript": "file:../../../../build/blocks/site-header-view-script.js",
+	"editorScript": "file:../../../../assets/js/blocks/site-header.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-header.css",
+	"style": "file:../../../../assets/css/blocks/style-site-header.css",
+	"viewScript": "file:../../../../assets/js/blocks/site-header-view-script.js",
 	"attributes": {
 		"options": {
 			"type": "object"

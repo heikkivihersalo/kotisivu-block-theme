@@ -23,9 +23,9 @@
 		"ariaLabel": true,
 		"align": ["full"]
 	},
-	"editorScript": "file:../../../../build/blocks/aside.js",
-	"editorStyle": "file:../../../../build/blocks/aside.css",
-	"style": "file:../../../../build/blocks/style-aside.css",
+	"editorScript": "file:../../../../assets/js/blocks/aside.js",
+	"editorStyle": "file:../../../../assets/css/blocks/aside.css",
+	"style": "file:../../../../assets/css/blocks/style-aside.css",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

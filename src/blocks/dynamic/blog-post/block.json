@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/blog-post.js",
-	"editorStyle": "file:../../../../build/blocks/blog-post.css",
-	"style": "file:../../../../build/blocks/style-blog-post.css",
+	"editorScript": "file:../../../../assets/js/blocks/blog-post.js",
+	"editorStyle": "file:../../../../assets/css/blocks/blog-post.css",
+	"style": "file:../../../../assets/css/blocks/style-blog-post.css",
 	"attributes": {
 	}
 }

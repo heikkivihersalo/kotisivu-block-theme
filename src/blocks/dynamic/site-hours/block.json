@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-hours.js",
-	"editorStyle": "file:../../../../build/blocks/site-hours.css",
-	"style": "file:../../../../build/blocks/style-site-hours.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-hours.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-hours.css",
+	"style": "file:../../../../assets/css/blocks/style-site-hours.css",
 	"attributes": {
 		"options": {
 			"type": "object"

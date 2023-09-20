@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-email.js",
-	"editorStyle": "file:../../../../build/blocks/site-email.css",
-	"style": "file:../../../../build/blocks/style-site-email.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-email.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-email.css",
+	"style": "file:../../../../assets/css/blocks/style-site-email.css",
 	"attributes": {
 		"className": {
 			"type": "string"

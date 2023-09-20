@@ -21,9 +21,9 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:../../../../build/blocks/grid.js",
-	"editorStyle": "file:../../../../build/blocks/grid.css",
-	"style": "file:../../../../build/blocks/style-grid.css",
+	"editorScript": "file:../../../../assets/js/blocks/grid.js",
+	"editorStyle": "file:../../../../assets/css/blocks/grid.css",
+	"style": "file:../../../../assets/css/blocks/style-grid.css",
 	"attributes": {
 		"style": {
 			"type": "object"

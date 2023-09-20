@@ -12,9 +12,9 @@
 		"className": false,
 		"multiple": false
 	},
-	"editorScript": "file:../../../../build/blocks/dark-mode-toggle.js",
-	"editorStyle": "file:../../../../build/blocks/dark-mode-toggle.css",
-	"style": "file:../../../../build/blocks/style-dark-mode-toggle.css",
-	"viewScript": "file:../../../../build/blocks/dark-mode-toggle-view-script.js",
+	"editorScript": "file:../../../../assets/js/blocks/dark-mode-toggle.js",
+	"editorStyle": "file:../../../../assets/css/blocks/dark-mode-toggle.css",
+	"style": "file:../../../../assets/css/blocks/style-dark-mode-toggle.css",
+	"viewScript": "file:../../../../assets/js/blocks/dark-mode-toggle-view-script.js",
 	"attributes": {}
 }

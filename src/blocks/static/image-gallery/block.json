@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/image-gallery.js",
-    "editorStyle": "file:../../../../build/blocks/image-gallery.css",
-    "style": "file:../../../../build/blocks/style-image-gallery.css",
+	"editorScript": "file:../../../../assets/js/blocks/image-gallery.js",
+    "editorStyle": "file:../../../../assets/css/blocks/image-gallery.css",
+    "style": "file:../../../../assets/css/blocks/style-image-gallery.css",
 	"attributes": {
 		"sectionHeading": {
 			"type": "string",

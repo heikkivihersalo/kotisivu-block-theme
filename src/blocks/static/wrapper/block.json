@@ -22,9 +22,9 @@
 		},
 		"align": ["full"]
 	},
-	"editorScript": "file:../../../../build/blocks/wrapper.js",
-	"editorStyle": "file:../../../../build/blocks/wrapper.css",
-	"style": "file:../../../../build/blocks/style-wrapper.css",
+	"editorScript": "file:../../../../assets/js/blocks/wrapper.js",
+	"editorStyle": "file:../../../../assets/css/blocks/wrapper.css",
+	"style": "file:../../../../assets/css/blocks/style-wrapper.css",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

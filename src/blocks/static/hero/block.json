@@ -23,9 +23,9 @@
 		"ariaLabel": true,
 		"align": ["full"]
 	},
-	"editorScript": "file:../../../../build/blocks/hero.js",
-	"editorStyle": "file:../../../../build/blocks/hero.css",
-	"style": "file:../../../../build/blocks/style-hero.css",
+	"editorScript": "file:../../../../assets/js/blocks/hero.js",
+	"editorStyle": "file:../../../../assets/css/blocks/hero.css",
+	"style": "file:../../../../assets/css/blocks/style-hero.css",
 	"attributes": {
 		"blockClass": {
 			"type": "string",

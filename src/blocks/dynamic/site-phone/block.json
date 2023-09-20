@@ -11,9 +11,9 @@
 	"supports": {
 		"className": false
 	},
-	"editorScript": "file:../../../../build/blocks/site-phone.js",
-	"editorStyle": "file:../../../../build/blocks/site-phone.css",
-	"style": "file:../../../../build/blocks/style-site-phone.css",
+	"editorScript": "file:../../../../assets/js/blocks/site-phone.js",
+	"editorStyle": "file:../../../../assets/css/blocks/site-phone.css",
+	"style": "file:../../../../assets/css/blocks/style-site-phone.css",
 	"attributes": {
 		"options": {
 			"type": "object"
