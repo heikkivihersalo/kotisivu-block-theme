@@ -5,6 +5,7 @@
 
 	/* Smooth scrolling */
 	scroll-behavior: smooth;
+	scroll-padding-top: 2em;
 }
 
 :where(section) {
