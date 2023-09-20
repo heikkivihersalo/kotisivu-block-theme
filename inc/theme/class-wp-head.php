@@ -34,7 +34,7 @@ class WP_Head extends Theme {
     public function inline_sanitize_css(): void {
 ?>
         <style id="ksd-sanitize-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/sanitize.css') ?>
+            <?php echo file_get_contents($this->parent_path . '/assets/css/theme/sanitize.css') ?>
         </style>
     <?php
     }
@@ -45,7 +45,7 @@ class WP_Head extends Theme {
     public function inline_dark_mode_css(): void {
     ?>
         <style id="ksd-dark-mode-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.css') ?>
+            <?php echo file_get_contents($this->parent_path . '/assets/css/theme/dark-mode.css') ?>
         </style>
     <?php
     }
@@ -56,7 +56,7 @@ class WP_Head extends Theme {
     public function inline_custom_css(): void {
     ?>
         <style id="ksd-custom-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/inline.css') ?>
+            <?php echo file_get_contents($this->parent_path . '/assets/css/theme/inline.css') ?>
         </style>
     <?php
     }
@@ -67,7 +67,7 @@ class WP_Head extends Theme {
     public function inline_dark_mode_cookie(): void { ?>
         <meta name="color-scheme" content="dark light">
         <script data-no-optimize="1">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.js') ?>
+            <?php echo file_get_contents($this->parent_path . '/assets/js/theme/dark-mode.js') ?>
         </script>
         <?php
     }
@@ -78,7 +78,7 @@ class WP_Head extends Theme {
      */
     public function inline_fontawesome(): void {
         if (isset($this->config['settings']['fontawesome'])) :
-            $folder = $this->parent_uri . '/public/icons/fontawesome/css/';
+            $folder = $this->parent_uri . '/assets/icons/fontawesome/css/';
 
             foreach ($this->config['settings']['fontawesome'] as $slug => $is_enabled) :
                 if (!$is_enabled) continue;
