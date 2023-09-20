@@ -135,22 +135,23 @@ module.exports = [
 			alias
 		},
 		output: {
-			filename: '[name].js',
-			path: path.resolve(process.cwd(), 'build/blocks')
+			filename: 'js/blocks/[name].js',
+			path: path.resolve(process.cwd(), 'assets')
 		},
 		plugins: [
 			new CleanWebpackPlugin({
-				cleanAfterEveryBuildPatterns: ['!blocks/fonts/**', '!blocks/images/**'],
+				cleanOnceBeforeBuildPatterns: [
+					'css/blocks/*',
+					'js/blocks/*'
+				],
 			}),
 			new MiniCssExtractPlugin({
-				filename: 'style-[name].css'
+				filename: 'css/blocks/style-[name].css'
 			}),
-			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
 			!IS_PRODUCTION &&
 			new LiveReloadPlugin({
 				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
 			}),
-			!process.env.WP_NO_EXTERNALS &&
 			new DependencyExtractionWebpackPlugin(),
 		].filter(Boolean),
 		module: {
@@ -175,22 +176,23 @@ module.exports = [
 			'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
 		},
 		output: {
-			filename: '[name].js',
-			path: path.resolve(process.cwd(), 'build/theme')
+			filename: 'js/theme/[name].js',
+			path: path.resolve(process.cwd(), 'assets')
 		},
 		plugins: [
 			new CleanWebpackPlugin({
-				cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**'],
+				cleanOnceBeforeBuildPatterns: [
+					'css/theme/*',
+					'js/theme/*'
+				],
 			}),
 			new MiniCssExtractPlugin({
-				filename: '[name].css'
+				filename: 'css/theme/[name].css'
 			}),
-			process.env.WP_BUNDLE_ANALYZER && new BundleAnalyzerPlugin(),
 			!IS_PRODUCTION &&
 			new LiveReloadPlugin({
 				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
 			}),
-			!process.env.WP_NO_EXTERNALS &&
 			new DependencyExtractionWebpackPlugin()
 		].filter(Boolean),
 		module: {
