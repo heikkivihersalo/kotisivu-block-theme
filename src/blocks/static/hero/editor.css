@@ -21,4 +21,5 @@
 .hero-two-column .hero__image > div,
 .hero-two-column .hero__image > div > img {
     height: 100%;
+    width: 100%;
 }
