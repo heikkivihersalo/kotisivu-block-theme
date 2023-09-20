@@ -144,7 +144,7 @@
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/ClashDisplay/ClashDisplay-Bold.woff2"]
+              "src": ["file:./assets/fonts/ClashDisplay/ClashDisplay-Bold.woff2"]
             }
           ]
         },
@@ -158,14 +158,14 @@
               "fontWeight": "700",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/FiraSans/FiraSans-700.woff2"]
+              "src": ["file:./assets/fonts/FiraSans/FiraSans-700.woff2"]
             },
             {
               "fontFamily": "Fira Sans",
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/FiraSans/FiraSans-Regular.woff2"]
+              "src": ["file:./assets/fonts/FiraSans/FiraSans-Regular.woff2"]
             }
           ]
         },
@@ -179,7 +179,7 @@
               "fontWeight": "400",
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./public/fonts/FiraCode/FiraCode-Regular.woff2"]
+              "src": ["file:./assets/fonts/FiraCode/FiraCode-Regular.woff2"]
             }
           ]
         }
