@@ -1,26 +1,22 @@
 /**
- * WordPress Dependencies
+ * WordPress dependencies
  */
-// import { __ } from "@wordpress/i18n";
-// import { addFilter } from "@wordpress/hooks";
-// import { CustomInspectorControls } from "./components/Inspector";
-// import { addMaxWidth } from "./components/BlockEditor";
-// import { addMaxWidthToFrontEnd } from "./components/BlockFrontEnd";
+import domReady from '@wordpress/dom-ready';
+import { registerBlockStyle } from '@wordpress/blocks';
 
-// addFilter(
-//     'editor.BlockEdit',
-//     'ksd/paragraph/inspector-controls',
-//     CustomInspectorControls
-// );
+/**
+ * Other dependencies
+ */
+import styles from './styles.json';
 
-// addFilter(
-//     'editor.BlockListBlock',
-//     'ksd/paragraph/block-editor',
-//     addMaxWidth
-// );
-
-// addFilter(
-//     'blocks.getSaveContent.extraProps',
-//     'ksd/paragraph/block-front-end',
-//     addMaxWidthToFrontEnd,
-// );
+/**
+ * Run on DOM ready
+ */
+domReady(function () {
+    /**
+     * Register custom button styles
+     */
+    styles.forEach((style) => {
+        registerBlockStyle('core/paragraph', style);
+    });
+});

@@ -1,0 +1,12 @@
+[
+	{
+		"name": "default",
+		"label": "Default",
+		"isDefault": true
+	},
+	{
+		"name": "narrow-text",
+		"label": "Narrow",
+		"isDefault": false
+	}
+]
