@@ -94,6 +94,12 @@ class WP_Head extends Theme {
         endif;
     }
 
+    public function inline_theme_color(): void { ?>
+        <meta name="theme-color" content="hsl(343, 100%, 48%)">
+        <meta name="msapplication-navbutton-color" content="hsl(343, 100%, 48%)">
+        <meta name="apple-mobile-web-app-status-bar-style" content="hsl(343, 100%, 48%)">
+    <?php }
+
     /**
      * Enqueue Font Awesome CSS to admin head
      * @return void 
@@ -153,6 +159,11 @@ class WP_Head extends Theme {
         /* Enable Google Tag Manager */
         if (isset($this->analytics['tagmanager-active'])) :
             add_action('wp_head', [$this, 'inline_tag_manager'], 0);
+        endif;
+
+        /* Enable theme color */
+        if ($this->config['settings']['theme-color']) :
+            add_action('wp_head', [$this, 'inline_theme_color'], 0);
         endif;
     }
 }

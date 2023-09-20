@@ -9,6 +9,7 @@
 			"solid": false,
 			"regular": false
 		},
+		"theme-color": true,
 		"splide": true,
 		"disable": {
 			"embeds": true,
