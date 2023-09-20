@@ -2,6 +2,9 @@
 	/* Font Smoothing */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
+	/* Smooth scrolling */
+	scroll-behavior: smooth;
 }
 
 :where(section) {
