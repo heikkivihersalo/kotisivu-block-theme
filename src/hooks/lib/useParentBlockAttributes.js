@@ -1,21 +1,25 @@
 import { useSelect } from '@wordpress/data';
 
 /**
- * Get attributes of the parent block
+ * Hook to get attributes of the parent block
  *
- * @param  clientId
- * @returns {Object} attributes
+ * @param  {string} clientId
+ * @returns {Object} attributes of the parent block
  * 
  * Original source:
  * @link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/
  */
 const useParentBlockAttributes = (clientId) => {
-    const attributes = useSelect((select) => {
-        const parentClientId = select('core/block-editor').getBlockHierarchyRootClientId(clientId);
-        return select('core/block-editor').getBlockAttributes(parentClientId);
-    }, [clientId]);
+    return useSelect((select) => {
+        const {
+            getBlockHierarchyRootClientId,
+            getBlockAttributes
+        } = select('core/block-editor');
 
-    return attributes;
+        const parentClientId = getBlockHierarchyRootClientId(clientId);
+
+        return getBlockAttributes(parentClientId);
+    }, [clientId]);
 };
 
 export { useParentBlockAttributes };
