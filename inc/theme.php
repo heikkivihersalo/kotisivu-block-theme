@@ -111,18 +111,17 @@ class Theme {
 
 
     /**
-     * Get config file and store it to cache
+     * Get config file and store it to WordPress Transients API
      * @param string $slug 
      * @param string $file_name 
      * @return mixed 
-     * TODO: Check for better cache solutions (WP Object Cache vs Transients)
      */
     public function get_config_file(string $slug, string $file_name): mixed {
         /**
          * Check config file for cache. If config file is not found from cache, load it from file
          */
-        $cache = wp_cache_get('kotisivu-block-theme_' . $slug);
-
+        $cache = get_transient('kotisivu-block-theme_' . $slug);
+        
         if ($cache === false) :
             /* Get config file */
             $config_file = file_get_contents($this->path . '/' . $file_name);
@@ -134,7 +133,7 @@ class Theme {
 
             /* Encode and set cache */
             $cache = json_decode($config_file, true);
-            wp_cache_set('kotisivu-block-theme_' . $slug, $cache);
+            set_transient('kotisivu-block-theme_' . $slug, $cache, 12 * 3600);
         endif;
 
         return $cache;
