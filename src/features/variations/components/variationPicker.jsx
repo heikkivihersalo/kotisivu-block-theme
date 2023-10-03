@@ -10,6 +10,10 @@ const VariationPicker = ({ setAttributes, blockVariations }) => {
 		return null;
 	}
 
+	const handleSelect = (variation) => {
+		setAttributes(getAttributesFromProps(variation));
+	};
+
 	return (
 		<>
 			<BlockVariationPicker
@@ -18,9 +22,7 @@ const VariationPicker = ({ setAttributes, blockVariations }) => {
 					"Select a block variation to start with.",
 					"kotisivu-block-theme"
 				)}
-				onSelect={(variation) =>
-					setAttributes(getAttributesFromProps(variation))
-				}
+				onSelect={handleSelect}
 				variations={blockVariations}
 			/>
 		</>

@@ -1,8 +1,10 @@
 /**
  * Utility functions
- * =================
+ * ==========================================================
  * 
- * 
+ * This file contains utility functions that are used to manipulate and convert
+ * block styles and attributes. These functions are primarily used in the 
+ * block editor for customizing the appearance and behavior of blocks.
  * 
  * @author Heikki Vihersalo
  * @link https://www.kotisivu.dev
@@ -14,52 +16,38 @@
  * @param {object} style Block style attributes
  * @returns {object} Block style object
  */
-export function getBlockSyles({ style }) {
+export const getBlockStyles = ({ style }) => {
     const convertVerticalBarSyntaxToCSS = (string) => {
-        /**
-         * Guard clauses
-         */
-        if (string == "0") return undefined; // Some error in the editor attributes causes string to be 0
-
-        // if (typeof string !== 'string' || !(string instanceof String)) return console.log("Not a string");
-
+        if (string === "0") return undefined;
         let val = string.split(":")[1].trim();
-        return "var(--wp--" + val.replaceAll("|", "--") + ")";
+        return `var(--wp--${val.replaceAll("|", "--")})`;
     }
 
-    const hasGrdiAlignment = (style) => {
-        if (style?.justifyContent || style?.justifyItems || style?.alignItems || style?.alignContent) {
-            return true;
-        }
-        return false;
+    const hasGridAlignment = (style) => {
+        return style?.justifyContent || style?.justifyItems || style?.alignItems || style?.alignContent;
     }
 
     return {
-        background: style?.backgroundColor ? style.backgroundColor : undefined,
-        marginTop: style?.spacing?.margin?.top ? convertVerticalBarSyntaxToCSS(style.spacing.margin.top) : undefined,
-        marginBottom: style?.spacing?.margin?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.margin.bottom) : undefined,
-        paddingTop: style?.spacing?.padding?.top ? convertVerticalBarSyntaxToCSS(style.spacing.padding.top) : undefined,
-        paddingBottom: style?.spacing?.padding?.bottom ? convertVerticalBarSyntaxToCSS(style.spacing.padding.bottom) : undefined,
-        paddingLeft: style?.spacing?.padding?.left ? convertVerticalBarSyntaxToCSS(style.spacing.padding.left) : undefined,
-        paddingRight: style?.spacing?.padding?.right ? convertVerticalBarSyntaxToCSS(style.spacing.padding.right) : undefined,
-        width: style?.width ? style?.width : undefined,
-        height: style?.height ? style?.height : undefined,
-        display: hasGrdiAlignment(style) ? 'grid' : undefined,
-        justifyItems: style?.justifyItems ? style?.justifyItems : undefined,
-        alignItems: style?.alignItems ? style?.alignItems : undefined,
-        alignContent: style?.alignContent ? style?.alignContent : undefined,
-        gap: style?.gap ? style.gap : undefined
+        background: style?.backgroundColor,
+        marginTop: style?.spacing?.margin?.top && convertVerticalBarSyntaxToCSS(style.spacing.margin.top),
+        marginBottom: style?.spacing?.margin?.bottom && convertVerticalBarSyntaxToCSS(style.spacing.margin.bottom),
+        paddingTop: style?.spacing?.padding?.top && convertVerticalBarSyntaxToCSS(style.spacing.padding.top),
+        paddingBottom: style?.spacing?.padding?.bottom && convertVerticalBarSyntaxToCSS(style.spacing.padding.bottom),
+        paddingLeft: style?.spacing?.padding?.left && convertVerticalBarSyntaxToCSS(style.spacing.padding.left),
+        paddingRight: style?.spacing?.padding?.right && convertVerticalBarSyntaxToCSS(style.spacing.padding.right),
+        width: style?.width,
+        height: style?.height,
+        display: hasGridAlignment(style) ? 'grid' : undefined,
+        justifyItems: style?.justifyItems,
+        alignItems: style?.alignItems,
+        alignContent: style?.alignContent,
+        gap: style?.gap
     }
 }
 
 /**
  * Get is-reversed class based on isReversed attribute
  * @param {boolean} isReversed 
- * @returns {string|boolean}
+ * @returns {string|undefined}
  */
-export const getIsReversedClass = (isReversed) => {
-    if (isReversed) {
-        return 'is-reversed';
-    }
-    return false;
-}
+export const getIsReversedClass = (isReversed) => isReversed ? 'is-reversed' : undefined;

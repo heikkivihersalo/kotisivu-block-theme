@@ -1,11 +1,9 @@
-import { __ } from "@wordpress/i18n";
-
 /**
- * Remove attributes from the given element
+ * Reset image attributes
  * @param {*} props 
  */
-const removeImage = (props) => (event) => {
-    props.setAttributes({
+const resetImageAttributes = (props) => (event) => {
+    const defaultAttributes = {
         mediaUrl: '',
         mediaId: 0,
         mediaAlt: '',
@@ -14,7 +12,8 @@ const removeImage = (props) => (event) => {
         mediaHeight: '',
         mediaSrcset: '',
         sizes: []
-    })
+    };
+    props.setAttributes(defaultAttributes);
 }
 
-export { removeImage }
+export { resetImageAttributes as removeImage }

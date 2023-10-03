@@ -4,21 +4,8 @@
  * @returns { String } - status of the song (play, pause, complete, undefined)
  */
 const checkSongStatus = async (status) => {
-    const STATUS_MAP = {
-        PLAY: 'play',
-        PAUSE: 'pause',
-        COMPLETE: 'complete',
-        SEEK: 'seek',
-        STREAM: 'stream'
-    };
-
-    for (let key in STATUS_MAP) {
-        if (STATUS_MAP[key] === status) {
-            return STATUS_MAP[key];
-        }
-    }
-
-    return 'undefined'; // if status is not valid, set it to undefined
+    const VALID_STATUSES = ['play', 'pause', 'complete', 'seek', 'stream'];
+    return VALID_STATUSES.includes(status) ? status : 'undefined';
 }
 
 /**
@@ -26,15 +13,15 @@ const checkSongStatus = async (status) => {
  * @param {Object} song - song object
  * @returns {Object} - formatted song object
  */
-const formatSong = async (song) => {
+const formatSong = async ({ id, title, artist, album, sampleRate, format }) => {
     return {
-        id: song?.id,
-        title: song?.title,
-        artist: song?.artist,
-        album: song?.album,
+        id,
+        title,
+        artist,
+        album,
         meta: {
-            sampleRate: song?.sampleRate,
-            format: song?.format,
+            sampleRate,
+            format,
         }
     }
 }
@@ -45,19 +32,20 @@ const formatSong = async (song) => {
  * @param {Number} duration - duration of the song
  * @returns {String} - percent range of the song
  */
-const getPercentRange = async (currentTime, duration) => {
+const getPercentRange = (currentTime, duration) => {
     const percent = Math.round((currentTime / duration) * 100);
+    const ranges = {
+        '0': 15,
+        '15': 25,
+        '25': 50,
+        '50': 75,
+        '75': 100
+    };
 
-    if (percent <= 15) {
-        return '0';
-    } else if (percent >= 15 && percent <= 25) {
-        return '15';
-    } else if (percent > 25 && percent <= 50) {
-        return '25';
-    } else if (percent > 50 && percent <= 75) {
-        return '50';
-    } else if (percent > 75 && percent <= 100) {
-        return '75';
+    for (let range in ranges) {
+        if (percent <= ranges[range]) {
+            return range;
+        }
     }
 }
 
@@ -67,22 +55,20 @@ const getPercentRange = async (currentTime, duration) => {
  * @returns {Array} - formatted track list
  */
 const formatTrackList = async (tracks) => {
-    return tracks.map((track, index) => {
-        return {
-            id: index,
-            title: track?.title.rendered,
-            artist: track?.media_details?.artist,
-            album: track?.media_details?.album,
-            meta: {
-                sampleRate: track?.media_details?.sample_rate,
-                format: track?.media_details?.fileformat,
-            },
-            time: {
-                duration: track?.media_details?.length,
-                durationFormatted: track?.media_details?.length_formatted
-            }
+    return tracks.map((track, index) => ({
+        id: index,
+        title: track?.title.rendered,
+        artist: track?.media_details?.artist,
+        album: track?.media_details?.album,
+        meta: {
+            sampleRate: track?.media_details?.sample_rate,
+            format: track?.media_details?.fileformat,
+        },
+        time: {
+            duration: track?.media_details?.length,
+            durationFormatted: track?.media_details?.length_formatted
         }
-    });
+    }));
 }
 
 /**
@@ -93,40 +79,29 @@ const formatTrackList = async (tracks) => {
  * @returns { void }
  */
 async function pushMusicEventsToDatalayer(song, currentTime, status) {
-    /**
-     * Check if status is valid
-     */
     const songStatus = await checkSongStatus(status);
     const songPercent = await getPercentRange(currentTime, song?.duration);
     const songData = await formatSong(song);
+    const timeData = {
+        current: Math.round(currentTime),
+        duration: song?.duration,
+        percent: Math.round((currentTime / song?.duration) * 100)
+    };
 
-    /**
-     * Push data to dataLayer
-     * If song status is seek or stream, don't push the event
-     */
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        event: `music_${songStatus}`,
-        song: songData,
-        time: {
-            current: Math.round(currentTime),
-            duration: song?.duration,
-            percent: Math.round((currentTime / song?.duration) * 100)
-        }
-    });
 
-    /**
-     * Push data to dataLayer
-     */
-    window.dataLayer = window.dataLayer || [];
+    if (songStatus !== 'seek' && songStatus !== 'stream') {
+        window.dataLayer.push({
+            event: `music_${songStatus}`,
+            song: songData,
+            time: timeData
+        });
+    }
+
     window.dataLayer.push({
         event: `music_${status}_${songPercent}`,
         song: songData,
-        time: {
-            current: Math.round(currentTime),
-            duration: song?.duration,
-            percent: Math.round((currentTime / song?.duration) * 100)
-        }
+        time: timeData
     });
 }
 
