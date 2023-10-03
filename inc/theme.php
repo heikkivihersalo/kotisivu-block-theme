@@ -92,6 +92,7 @@ class Theme {
         $this->options = $this->get_options_file('site-options');
         $this->analytics = $this->get_options_file('site-analytics');
         $this->config = $this->get_config_file('theme_config', 'config.json');
+        $this->blocks = $this->get_config_file('theme_blocks', 'blocks.json');
 
         /**
          * Load class files
@@ -109,6 +110,13 @@ class Theme {
             require_once $class;
     }
 
+    /**
+     * Get transient lifespan based on user role and app state
+     * @return int
+     */
+    private function get_transient_lifespan(): int {
+        return (is_super_admin() && \WP_DEBUG) ? 1 : \DAY_IN_SECONDS;
+    }
 
     /**
      * Get config file and store it to WordPress Transients API
@@ -120,8 +128,8 @@ class Theme {
         /**
          * Check config file for cache. If config file is not found from cache, load it from file
          */
-        $cache = get_transient('kotisivu-block-theme_' . $slug);
-        
+        $cache = get_transient($this->textdomain . '_' . $slug);
+
         if ($cache === false) :
             /* Get config file */
             $config_file = file_get_contents($this->path . '/' . $file_name);
@@ -133,7 +141,7 @@ class Theme {
 
             /* Encode and set cache */
             $cache = json_decode($config_file, true);
-            set_transient('kotisivu-block-theme_' . $slug, $cache, 12 * 3600);
+            set_transient($this->textdomain . '_' . $slug, $cache, $this->get_transient_lifespan());
         endif;
 
         return $cache;
@@ -148,12 +156,12 @@ class Theme {
         /**
          * Check options for cache. If not found, load it from database
          */
-        $cache = wp_cache_get('kotisivu-block-theme_' . $slug);
+        $cache = wp_cache_get($this->textdomain . '_' . $slug);
 
         if ($cache === false) {
-            get_option('kotisivu-block-theme_' . $slug);
-            $cache = get_option('kotisivu-block-theme_' . $slug);
-            wp_cache_set('kotisivu-block-theme_' . $slug, $cache);
+            get_option($this->textdomain . '_' . $slug);
+            $cache = get_option($this->textdomain . '_' . $slug);
+            wp_cache_set($this->textdomain . '_' . $slug, $cache);
         }
 
         return $cache;
@@ -182,7 +190,9 @@ class Theme {
         $cleanup = new Cleanup();
         $cleanup->init();
 
-        $options = new Options();
-        $options->init();
+        if (is_user_logged_in() && is_admin()) {
+            $options = new Options();
+            $options->init();
+        }
     }
 }
