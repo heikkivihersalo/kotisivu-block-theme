@@ -84,9 +84,7 @@ class BlockDynamic extends Blocks {
         /**
          * Include translations if set
          */
-        if ($this->config["blocks"]["translations"]) :
-            if (class_exists('Translation')) new Translation($block_name, 'kotisivu-block-theme');
-        endif;
+        if (class_exists('Translation')) new Translation($block_name, 'kotisivu-block-theme');
     }
 
     /**
@@ -123,7 +121,7 @@ class BlockDynamic extends Blocks {
      * @return void 
      */
     public function register_dynamic_blocks(): void {
-        foreach ($this->config['blocks']['dynamic'] as $block) :
+        foreach ($this->blocks['dynamic'] as $block) :
             $this->register_block($block['slug'], $block['render_callback'], $block['attributes']);
         endforeach;
     }
@@ -135,10 +133,9 @@ class BlockDynamic extends Blocks {
     public function init(): void {
         /* Guard Clauses */
         if (!function_exists('register_block_type')) return;
-        if (!$this->config['blocks']['dynamic']) return;
+        if (!$this->blocks['dynamic']) return;
 
-        /* Check if block translations are set */
-        if ($this->config["blocks"]["translations"]) require_once dirname(__FILE__) . '/class-blocks-translation.php';
+        // require_once dirname(__FILE__) . '/class-blocks-translation.php';
 
         /* Register blocks */
         add_action('init', [$this, 'register_dynamic_blocks']);

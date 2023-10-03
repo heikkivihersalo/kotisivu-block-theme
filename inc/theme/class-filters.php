@@ -95,14 +95,14 @@ class Filters extends Theme {
              * Static and core blocks already only has slugs stored to array
              * Dynamic blocks needs to be parsed and create new slug array
              */
-            $static = $this->config["blocks"]["static"];
-            $default = $this->config["blocks"]["default"];
-            $dynamic = $this->config["blocks"]["dynamic"];
+            $static = $this->blocks["static"];
+            $default = $this->blocks["default"];
+            $dynamic = $this->blocks["dynamic"];
             $dynamic_block_slugs = [];
 
             /* Parse only the slug from dynamic blocks. if array empty, do nothing */
             if ($dynamic) :
-                foreach ($this->config["blocks"]["dynamic"] as $block) :
+                foreach ($this->blocks["dynamic"] as $block) :
                     array_push($dynamic_block_slugs, $block['slug']);
                 endforeach;
             endif;
