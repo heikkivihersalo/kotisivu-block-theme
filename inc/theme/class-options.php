@@ -27,7 +27,10 @@ class Options extends Theme {
      * @return void 
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/rational-option-pages/*.php') as $class)
+        foreach (glob(dirname(__FILE__) . '/options/rational-option-pages/*.php') as $class)
+            require_once $class;
+
+        foreach (glob(dirname(__FILE__) . '/options/*.php') as $class)
             require_once $class;
     }
 
@@ -36,9 +39,6 @@ class Options extends Theme {
      * @return void
      */
     public function create_analytics_page(): void {
-        /**
-         * Create new options page
-         */
         $analyticsPage = new SiteAnalytics();
         new \RationalOptionPages($analyticsPage->init());
     }
@@ -48,11 +48,26 @@ class Options extends Theme {
      * @return void
      */
     public function create_options_page(): void {
-        /**
-         * Create new options page
-         */
         $optionsPage = new SiteOptions('kotisivu-block-theme');
         new \RationalOptionPages($optionsPage->init());
+    }
+
+    /**
+     * Create new options page for theme social media accounts
+     * @return void
+     */
+    public function create_social_media_page(): void {
+        $socialMediaPage = new SiteSocialMedia('kotisivu-block-theme');
+        new \RationalOptionPages($socialMediaPage->init());
+    }
+
+    /**
+     * Create new options section for theme cache
+     * @return void
+     */
+    public function create_general_page(): void {
+        $generalPage = new SiteGeneralOptions();
+        $generalPage->init();
     }
 
     /**
@@ -60,7 +75,9 @@ class Options extends Theme {
      * @return void
      */
     public function init() {
+        $this->create_general_page();
         $this->create_analytics_page();
         $this->create_options_page();
+        $this->create_social_media_page();
     }
 }
