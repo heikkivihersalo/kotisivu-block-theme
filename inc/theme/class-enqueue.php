@@ -84,7 +84,7 @@ class Enqueue extends Theme {
             if ($file_info['filename'] === 'sanitize') continue;
             if ($file_info['filename'] === 'dark-mode') continue;
             if ($file_info['filename'] === 'inline') continue;
-            
+
             /**
              * If in admin panel, enqueue all files
              */
@@ -194,7 +194,10 @@ class Enqueue extends Theme {
      */
     public function init(): void {
         add_action('wp_enqueue_scripts', [$this, 'add_theme_styles_and_scripts']);
-        add_action('admin_enqueue_scripts', [$this, 'add_admin_styles_and_scripts']);
         add_action('enqueue_block_editor_assets', [$this, 'add_admin_styles_and_scripts']);
+
+        if (is_user_logged_in()) {
+            add_action('admin_enqueue_scripts', [$this, 'add_admin_styles_and_scripts']);
+        }
     }
 }
