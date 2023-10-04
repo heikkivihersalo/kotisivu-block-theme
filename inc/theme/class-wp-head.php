@@ -153,7 +153,10 @@ class WP_Head extends Theme {
         /* Enable Font Awesome */
         if ($this->config['settings']['fontawesome']['all'] || $this->config['settings']['fontawesome']['brand'] || $this->config['settings']['fontawesome']['solid'] || $this->config['settings']['fontawesome']['regular']) :
             add_action('wp_head', [$this, 'inline_fontawesome'], 11);
-            add_action('admin_head', [$this, 'add_fontawesome_to_admin'], 11);
+
+            if (is_user_logged_in()) {
+                add_action('admin_head', [$this, 'add_fontawesome_to_admin'], 11);
+            }
         endif;
 
         /* Enable Google Tag Manager */
