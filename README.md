@@ -357,43 +357,45 @@ WordPress default image sizes are customized a little bit to better support vari
 Custom Post Types can be configured straight from config.json file. This utilizes PostTypes dependency with a metabox wrapper.
 
 ```json
-"customPostTypes": [
-  {
-    "active": true,
-    "names": {
-      "name": "Example Post Type",
-      "singular": "Example",
-      "plural": "Examples",
-      "slug": "example"
+"customPostTypes": {
+  "enabled": false,
+  "postTypes": [
+    {
+      "names": {
+        "name": "Example Post Type",
+        "singular": "Example",
+        "plural": "Examples",
+        "slug": "example"
+      },
+      "options": {
+        "hierarchical": false,
+        "has_archive": false,
+        "show_in_rest": true,
+        "supports": ["title", "editor", "thumbnail"]
+      },
+      "labels": {
+        "name": "Example Post Type",
+        "singular_name": "Example",
+        "menu_name": "Examples",
+        "all_items": "Examples",
+        "add_new": "Add new",
+        "add_new_item": "Add new example",
+        "edit_item": "Edit example",
+        "new_item": "New example",
+        "view_item": "View example",
+        "search_items": "Search examples",
+        "not_found": "No examples found",
+        "not_found_in_trash": "No examples found in trash",
+        "parent_item_colon": "Parent example"
+      },
+      "icon": "dashicons-star-filled",
+      "metaboxes": {
+        ...
+      }
     },
-    "options": {
-      "hierarchical": false,
-      "has_archive": false,
-      "show_in_rest": true,
-      "supports": ["title", "editor", "thumbnail"]
-    },
-    "labels": {
-      "name": "Example Post Type",
-      "singular_name": "Example",
-      "menu_name": "Examples",
-      "all_items": "Examples",
-      "add_new": "Add new",
-      "add_new_item": "Add new example",
-      "edit_item": "Edit example",
-      "new_item": "New example",
-      "view_item": "View example",
-      "search_items": "Search examples",
-      "not_found": "No examples found",
-      "not_found_in_trash": "No examples found in trash",
-      "parent_item_colon": "Parent example"
-    },
-    "icon": "dashicons-star-filled",
-    "metaboxes": {
-      ...
-    }
-  }
-  ...
-]
+    ...
+  ]
+}
 ```
 
 #### Metaboxes
