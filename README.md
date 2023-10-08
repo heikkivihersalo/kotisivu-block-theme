@@ -1,5 +1,8 @@
 # Kotisivu Block Theme
 
+![Static Badge](https://img.shields.io/badge/Block_Theme-blue?logo=wordpress) ![GitHub repo size](https://img.shields.io/github/repo-size/heikkivihersalo/kotisivu-block-theme) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/heikkivihersalo/kotisivu-block-theme/main) ![GitHub](https://img.shields.io/github/license/heikkivihersalo/kotisivu-block-theme)
+
+
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
 Theme uses OOP patterns wherever possible (modified to work with WordPress).
