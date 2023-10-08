@@ -187,7 +187,7 @@ class Theme {
         $wp_head = new WP_Head();
         $wp_head->init();
 
-        $cleanup = new Cleanup();
+        $cleanup = new Junk();
         $cleanup->init();
 
         if (is_user_logged_in() && is_admin()) {
