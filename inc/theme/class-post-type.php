@@ -72,9 +72,6 @@ class CustomPostType {
      * @return void 
      */
     private function register_post_type(array $post_type_config): void {
-        /* Guardclauses */
-        if (!$post_type_config['active']) return;
-
         $post_type = new PostTypes\PostType(
             array(
                 'name' => $post_type_config['names']['name'],
@@ -126,7 +123,7 @@ class CustomPostType {
      * @return void 
      */
     public function init(): void {
-        $this->post_types = $this->config["customPostTypes"] ?? [];
+        $this->post_types = $this->config["customPostTypes"]['postTypes'] ?? [];
 
         foreach ($this->post_types as $post_type) :
             $this->register_post_type($post_type);

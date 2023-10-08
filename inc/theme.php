@@ -178,12 +178,14 @@ class Theme {
         $filters = new Filters();
         $filters->init();
 
-        $post_types = new CustomPostType($this->config);
-        $post_types->init();
-
+        if ($this->config['customPostTypes']['enabled']) {
+            $post_types = new CustomPostType($this->config);
+            $post_types->init();
+        }
+        
         if ($this->config['customDatabaseTables']['enabled']) {
-            $database = new Database($this->config);
-            $database->init();
+            $tables = new Database($this->config);
+            $tables->init();
         }
 
         $enqueue = new Enqueue();
