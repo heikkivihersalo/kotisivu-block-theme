@@ -39,17 +39,6 @@ class Enqueue extends Theme {
          */
         if (is_child_theme()) :
             $this->enqueue_assets($this->path . '/assets/**/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
-
-            /**
-             * Load React app CSS and JS files from Child Theme
-             * - Files and folders related to react: 'webpack.config.js', 'package.json', 'build', 'src'
-             * - Using yarn is recommended (npm might not work on some modules)
-             * - package.json contains necessary build and yarn configurations
-             * - Build will fail if webpack.config.js is not found
-             */
-            if ($this->config['settings']['react-app']) :
-                $this->enqueue_assets($this->path . '/app/build/*.{js,css}', GLOB_BRACE, $this->uri);
-            endif;
         endif;
     }
 
