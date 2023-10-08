@@ -1,0 +1,12 @@
+@supports not (background-color: oklch(0%, 0, 0)) {
+    body {
+        --wp--preset--color--primary: var(--wp--custom--color--fallback--primary);
+        --wp--preset--color--primary-dark: var(--wp--custom--color--fallback--primary-dark);
+        --wp--preset--color--secondary: var(--wp--custom--color--fallback--secondary);
+        --wp--preset--color--background: var(--wp--custom--color--fallback--background);
+        --wp--preset--color--foreground: var(--wp--custom--color--fallback--foreground);
+        --wp--preset--color--grey-light: var(--wp--custom--color--fallback--grey-light);
+        --wp--preset--color--grey: var(--wp--custom--color--fallback--grey);
+        --wp--preset--color--grey-dark: var(--wp--custom--color--fallback--grey-dark);
+    }
+}
