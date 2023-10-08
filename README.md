@@ -2,7 +2,6 @@
 
 ![Static Badge](https://img.shields.io/badge/Block_Theme-blue?logo=wordpress) ![GitHub repo size](https://img.shields.io/github/repo-size/heikkivihersalo/kotisivu-block-theme) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/heikkivihersalo/kotisivu-block-theme/main) ![GitHub](https://img.shields.io/github/license/heikkivihersalo/kotisivu-block-theme)
 
-
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
 Theme uses OOP patterns wherever possible (modified to work with WordPress).
@@ -30,7 +29,9 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress).
 
 ## Get Started
 
-Theme uses yarn as a package manager. You can get started simply by running `yarn` command on your preferred editor. Then you can build files with `yarn build` or start development session `yarn start`.
+You can use the theme just by downloading it and uploading it to your WordPress site. Some customizations can be done directly to theme.json.
+
+To start developing or customizing for example new blocks, you can get started simply by running `yarn` command on your preferred editor. Then you can build files with `yarn build` or start development session `yarn start`. While developing your site, [Local](https://localwp.com/) works really well.
 
 ### Get node_modules
 
