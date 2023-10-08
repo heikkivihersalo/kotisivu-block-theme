@@ -14,7 +14,7 @@ import metadata from './block.json';
 import { InnerBlocksAppender } from '@features/inspector';
 import Inspector from "./components/Inspector.js";
 import { VariationPicker, getBlockVariations } from "@features/variations";
-import { getBlockSyles } from '@utils';
+import { getBlockStyles } from '@utils';
 
 /**
  * Styles
@@ -39,7 +39,7 @@ const Edit = (props) => {
 	 */
 	const blockProps = useBlockProps({
 		className: classnames(blockClass),
-		style: getBlockSyles({ style })
+		style: getBlockStyles({ style })
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({

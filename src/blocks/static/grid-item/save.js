@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { getBlockSyles } from '@utils';
+import { getBlockStyles } from '@utils';
 
 const Save = (props) => {
 	const {
@@ -13,7 +13,7 @@ const Save = (props) => {
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
 		className: classnames(blockClass),
-		style: getBlockSyles({ style })
+		style: getBlockStyles({ style })
 	}));
 
 	return (

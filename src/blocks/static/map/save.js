@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { getBlockSyles, getIsReversedClass } from '@utils/index';
+import { getBlockStyles, getIsReversedClass } from '@utils';
 
 const Save = (props) => {
 	const {
@@ -16,7 +16,7 @@ const Save = (props) => {
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
 		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockSyles({ style }),
+		style: getBlockStyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
 	}));

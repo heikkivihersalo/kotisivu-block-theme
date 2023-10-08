@@ -15,7 +15,7 @@ import metadata from './block.json';
 import { InnerBlocksAppender } from '@features/inspector';
 import Inspector from "./components/Inspector.js";
 import { VariationPicker, getBlockVariations } from "@features/variations";
-import { getBlockSyles, getIsReversedClass } from '@utils';
+import { getBlockStyles, getIsReversedClass } from '@utils';
 
 /**
  * Styles
@@ -43,7 +43,7 @@ const Edit = (props) => {
 	 */
 	const blockProps = useBlockProps({
 		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockSyles({ style }),
+		style: getBlockStyles({ style }),
 		open: isOpenOnLoad
 	});
 

@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
 import classnames from 'classnames';
-import { getBlockSyles } from '@utils';
+import { getBlockStyles } from '@utils';
 
 const Save = (props) => {
 	const {
@@ -21,7 +21,7 @@ const Save = (props) => {
 
 	const { children, ...innerBlocksProps } = useInnerBlocksProps.save(useBlockProps.save({
 		className: classnames(blockClass),
-		style: getBlockSyles({ style }),
+		style: getBlockStyles({ style }),
 		open: isOpenOnLoad,
 		"aria-expanded": isOpenOnLoad ? "true" : "false"
 	}));
