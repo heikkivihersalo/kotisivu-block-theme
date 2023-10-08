@@ -20,17 +20,17 @@
       "palette": [
         {
           "slug": "primary",
-          "color": "hsl(343, 100%, 48%)",
+          "color": "oklch(61.41% 0.27 18.75)",
           "name": "Primary"
         },
         {
           "slug": "primary-dark",
-          "color": "hsl(343, 100%, 28%)",
+          "color": "oklch(36.62% 0.165 16.44)",
           "name": "Primary (Dark)"
         },
         {
           "slug": "secondary",
-          "color": "hsl(163, 100%, 48%)",
+          "color": "oklch(85.83% 0.2508 163.9)",
           "name": "Secondary"
         },
         {
