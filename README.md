@@ -181,6 +181,7 @@ There are also own variables for `small` and `tiny` sizes.
 
 Margins and line-heights can be adjusted on elements -section.
 
+> [!NOTE]
 > NOTE: WordPress currently has a bug on fluid typography. Use clamp instead.
 
 ### Colors
@@ -192,17 +193,17 @@ Colors are defined using default WordPress scheme that adds new CSS variable for
 If dark mode is enabled for site, some values are overriden by separate file. If you need to change these values you can do it from theme.json and by editing custom variable values (--wp--custom--color--dark-mode--<COLOR_SLUG>)
 
 ```json
-    "custom": {
+"custom": {
+  ...
+  "color": {
+    "darkMode": {
+      "colorBlack": "some hsl values",
       ...
-      "color": {
-        "darkMode": {
-          "colorBlack": "some hsl values",
-          ...
-        },
-        ...
-      }
-      ...
-    }
+    },
+    ...
+  }
+  ...
+}
 ```
 
 #### Link Colors
@@ -214,25 +215,25 @@ Link colors can be adjusted on elements -section. Defaults works really well and
 Spacing uses default WordPress formatting (--wp--preset--spacing--<SPACING_SLUG>) and is calculated with clamp. Values work pretty well across different sites and doesn't usually require any modifications. There are times where spacing needs to be something different so easiest is to use CSS calc() -function in these situations.
 
 ```json
-    "spacing": {
-      "units": ["em", "rem", "%", "vw", "vh"],
-      "blockGap": null,
-      "margin": true,
-      "padding": true,
-      "spacingSizes": [
-        {
-          "size": "clamp(0.618046971569839rem, calc(0.615109684219015rem + 0.0146864367541203vw), 0.63273340832396rem)",
-          "slug": "20",
-          "name": "1"
-        },
-        {
-          "size": "clamp(1rem, calc(0.975rem + 0.125vw), 1.125rem)",
-          "slug": "30",
-          "name": "2"
-        },
-        ...
-      ]
-    }
+"spacing": {
+  "units": ["em", "rem", "%", "vw", "vh"],
+  "blockGap": null,
+  "margin": true,
+  "padding": true,
+  "spacingSizes": [
+    {
+      "size": "clamp(0.618046971569839rem, calc(0.615109684219015rem + 0.0146864367541203vw), 0.63273340832396rem)",
+      "slug": "20",
+      "name": "1"
+    },
+    {
+      "size": "clamp(1rem, calc(0.975rem + 0.125vw), 1.125rem)",
+      "slug": "30",
+      "name": "2"
+    },
+    ...
+  ]
+}
 ```
 
 ### Core Block Styling
@@ -287,10 +288,10 @@ If enabled it adds following meta tags to the site head:
 To modify the color change state to active and add color value to `color` -key.
 
 ```json
-  "themeColor": {
-    "active": true,
-    "color": "hsl(343, 100%, 48%)"
-  }
+"themeColor": {
+  "active": true,
+  "color": "hsl(343, 100%, 48%)"
+}
 ```
 
 ### Disable WordPress Default Configs
@@ -321,16 +322,16 @@ You can disable some of the wordpress default stuff from loading. These are not 
 You can set site menus that are registered to the site from here. Please do note that if you do any changes, you need to update blocks that use these menus.
 
 ```json
-	"menus": [
-		{
-			"slug": "primary-navigation",
-			"name": "Header Navigation"
-		},
-		{
-			"slug": "secondary-navigation",
-			"name": "Footer Navigation"
-		}
-	]
+"menus": [
+  {
+    "slug": "primary-navigation",
+    "name": "Header Navigation"
+  },
+  {
+    "slug": "secondary-navigation",
+    "name": "Footer Navigation"
+  }
+]
 ```
 
 ### Image Sizes
@@ -352,43 +353,43 @@ WordPress default image sizes are customized a little bit to better support vari
 Custom Post Types can be configured straight from config.json file. This utilizes PostTypes dependency with a metabox wrapper.
 
 ```json
-	"customPostTypes": [
-		{
-			"active": true,
-			"names": {
-				"name": "Example Post Type",
-				"singular": "Example",
-				"plural": "Examples",
-				"slug": "example"
-			},
-			"options": {
-				"hierarchical": false,
-				"has_archive": false,
-				"show_in_rest": true,
-				"supports": ["title", "editor", "thumbnail"]
-			},
-			"labels": {
-				"name": "Example Post Type",
-				"singular_name": "Example",
-				"menu_name": "Examples",
-				"all_items": "Examples",
-				"add_new": "Add new",
-				"add_new_item": "Add new example",
-				"edit_item": "Edit example",
-				"new_item": "New example",
-				"view_item": "View example",
-				"search_items": "Search examples",
-				"not_found": "No examples found",
-				"not_found_in_trash": "No examples found in trash",
-				"parent_item_colon": "Parent example"
-			},
-			"icon": "dashicons-star-filled",
-			"metaboxes": {
-        ...
-      }
+"customPostTypes": [
+  {
+    "active": true,
+    "names": {
+      "name": "Example Post Type",
+      "singular": "Example",
+      "plural": "Examples",
+      "slug": "example"
+    },
+    "options": {
+      "hierarchical": false,
+      "has_archive": false,
+      "show_in_rest": true,
+      "supports": ["title", "editor", "thumbnail"]
+    },
+    "labels": {
+      "name": "Example Post Type",
+      "singular_name": "Example",
+      "menu_name": "Examples",
+      "all_items": "Examples",
+      "add_new": "Add new",
+      "add_new_item": "Add new example",
+      "edit_item": "Edit example",
+      "new_item": "New example",
+      "view_item": "View example",
+      "search_items": "Search examples",
+      "not_found": "No examples found",
+      "not_found_in_trash": "No examples found in trash",
+      "parent_item_colon": "Parent example"
+    },
+    "icon": "dashicons-star-filled",
+    "metaboxes": {
+      ...
     }
-    ...
-  ]
+  }
+  ...
+]
 ```
 
 #### Metaboxes
@@ -396,26 +397,26 @@ Custom Post Types can be configured straight from config.json file. This utilize
 Metaboxes are a custom built wrapper to extend functionalities of PostType library. For simple purposes it is meant to replace plugins like Advanced Custom Fields. However, for more complex use cases it might be smart to use separate plugin to handle custom fields. Currently supported fields are: `url`, `text`, `number`, `checkbox`, `select`.
 
 ```json
-			"metaboxes": {
-				"active": false,
-				"options": {
-					"id": "option",
-					"title": "title",
-					"screen": ["example"]
-				},
-				"markup": [
-					{
-						"id": "text_input",
-						"label": "Text Input",
-						"type": "text"
-					},
-					{
-						"id": "url_input",
-						"label": "URL Input",
-						"type": "url"
-					}
-				]
-			}
+"metaboxes": {
+  "active": false,
+  "options": {
+    "id": "option",
+    "title": "title",
+    "screen": ["example"]
+  },
+  "markup": [
+    {
+      "id": "text_input",
+      "label": "Text Input",
+      "type": "text"
+    },
+    {
+      "id": "url_input",
+      "label": "URL Input",
+      "type": "url"
+    }
+  ]
+}
 ```
 
 ---
@@ -439,6 +440,7 @@ Theme settings can be found on admin panel. Certain config files such as `blocks
 
 Theme uses custom Tag Manager script that sets a delay for loading the container. Ideology is to load analytics after everything else, so any analytics script that is added, does not slow down the page. Default delay 2 seconds works really well and does not usually require any changes.
 
+> [!NOTE]
 > Tag Manager is recommended way to add any analytics related scripts including CMP (Cookie Management Platform).
 
 ### Contact and Social Platform Information
