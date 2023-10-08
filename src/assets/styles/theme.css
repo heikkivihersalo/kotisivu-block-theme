@@ -2,3 +2,24 @@
 @import '../../blocks/core/list/index.css';
 @import '../../blocks/core/separator/index.css';
 @import '../../blocks/core/image/index.css';
+
+/* Set privacy policy to have default margins */
+.privacy-policy main > section {
+	margin-block: var(--wp--preset--spacing--60);
+	width: var(--wp--custom--narrow-size);
+}
+
+.privacy-policy h1 {
+	font-size: var(--wp--preset--font-size--gigantic);
+	margin-bottom: var(--wp--preset--spacing--40);
+}
+
+.privacy-policy h2 {
+	font-size: var(--wp--preset--font-size--huge);
+	margin-top: var(--wp--preset--spacing--50);
+}
+
+.privacy-policy h3 {
+	font-size: var(--wp--preset--font-size--large);
+	margin-top: var(--wp--preset--spacing--40);
+}
