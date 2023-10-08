@@ -181,6 +181,11 @@ class Theme {
         $post_types = new CustomPostType($this->config);
         $post_types->init();
 
+        if ($this->config['customDatabaseTables']['enabled']) {
+            $database = new Database($this->config);
+            $database->init();
+        }
+
         $enqueue = new Enqueue();
         $enqueue->init();
 
