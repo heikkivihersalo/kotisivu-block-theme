@@ -1,1 +1,1 @@
-import '../styles/sanitize.css';
+import '../styles/inline/sanitize.css';

@@ -1,4 +1,4 @@
-import '../styles/dark-mode.css';
+import '../styles/inline/dark-mode.css';
 
 const cookies = document.cookie.split(";");
 cookies.some(e => e.includes("color-scheme=dark"))
