@@ -94,10 +94,15 @@ class WP_Head extends Theme {
         endif;
     }
 
+    /**
+     * Inline theme color
+     * @return void
+     */
     public function inline_theme_color(): void { ?>
-        <meta name="theme-color" content="hsl(343, 100%, 48%)">
-        <meta name="msapplication-navbutton-color" content="hsl(343, 100%, 48%)">
-        <meta name="apple-mobile-web-app-status-bar-style" content="hsl(343, 100%, 48%)">
+        <?php $color = $this->config['settings']['themeColor']['color']; ?>
+        <meta name="theme-color" content="<?php echo $color ?>">
+        <meta name="msapplication-navbutton-color" content="<?php echo $color ?>">
+        <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo $color ?>">
     <?php }
 
     /**
@@ -145,7 +150,7 @@ class WP_Head extends Theme {
         add_action('wp_head', [$this, 'inline_custom_css'], 11);
 
         /* Enable dark mode */
-        if ($this->config['settings']['dark-mode']) :
+        if ($this->config['settings']['darkMode']) :
             add_action('wp_head', [$this, 'inline_dark_mode_cookie'], 0);
             add_action('wp_head', [$this, 'inline_dark_mode_css'], 11);
         endif;
@@ -165,7 +170,7 @@ class WP_Head extends Theme {
         endif;
 
         /* Enable theme color */
-        if ($this->config['settings']['theme-color']) :
+        if ($this->config['settings']['themeColor']['active']) :
             add_action('wp_head', [$this, 'inline_theme_color'], 0);
         endif;
     }
