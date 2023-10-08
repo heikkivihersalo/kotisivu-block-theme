@@ -1,35 +1,36 @@
 {
 	"settings": {
-		"react-app": false,
 		"jquery": "footer",
-		"dark-mode": true,
+		"darkMode": true,
 		"fontawesome": {
 			"all": true,
 			"brands": false,
 			"solid": false,
 			"regular": false
 		},
-		"theme-color": true,
-		"splide": true,
-		"disable": {
-			"embeds": true,
+		"themeColor": {
+			"active": true,
+			"color": "hsl(343, 100%, 48%)"
+		},
+		"removeHeaderJunk": {
+			"canonical": true,
+			"duotone": true,
 			"emojis": true,
-			"feed_links": true,
-			"index_link": true,
-			"json_api": true,
-			"post_links": true,
-			"recource_hints": true,
-			"rel_canonical": true,
-			"rest_api": true,
+			"feed-links": true,
+			"gravatar": false,
+			"jquery-migrate": true,
+			"json-api": true,
+			"next-prev-links": true,
 			"rsd": true,
 			"shortlink": true,
-			"version": true,
-			"wlwmanifest": true,
-			"duotone": true,
+			"woocommerce-version": true,
+			"wp-version": true,
+			"xlmrpc": true
+		},
+		"removeStyleJunk": {
 			"block-library": true,
-			"block-library-theme": true,
-			"global-styles": false,
-			"woocommerce-block-style": false
+			"fluent-forms": true,
+			"global-styles": false
 		}
 	},
 	"menus": [
