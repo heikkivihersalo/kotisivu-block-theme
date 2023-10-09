@@ -31,6 +31,7 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress).
   - [Custom Post Types](#custom-post-types)
   - [Metaboxes](#metaboxes)
   - [Custom Database Tables](#custom-database-tables)
+- [Blocks.json](#blocksjson)
 - [Security](#security)
 - [Admin Settings](#admin-settings)
 
@@ -278,6 +279,9 @@ To center element to the page with proper margins, setting `margin-inline: auto`
 
 Basic configurations can be done from the `config.json` -file.
 
+> [!NOTE]
+> This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
+
 ### jQuery Loading
 
 You can switch between loading jQuery normally, on footer or not loading at all. Please do note that if you are using any plugins that require jQuery, you might need to load it normally. WordPress admin requires jQuery so it cannot be disabled completely.
@@ -474,6 +478,56 @@ Adding custom database tables can be done by enabling the feature and deactivati
     }
   ]
 }
+```
+
+---
+
+## Blocks.json
+
+All blocks are configured in blocks.json file. This file is used to get block names, render callbacks and core blocks whitelist. Block files are loaded from `src/blocks` folder at the corresponding folder. For example `ksd/example-block` is loaded from `src/blocks/static/ksd/example-block` folder, which then includes all files required by the block.
+
+> [!NOTE]
+> This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
+
+```json
+{
+	"static": [ // Static blocks
+    ...
+		"ksd/example-block",
+    ...
+	],
+	"dynamic": [ // Dynamic blocks
+    ...
+		{
+			"slug": "ksd/example-dynamic-block",
+			"render_callback": "render_example_dynamic_block",
+			"attributes": {
+        "exampleString": {
+					"type": "string"
+				},
+				"exampleConditional": {
+					"type": "boolean",
+					"default": true
+				}
+			}
+		},
+    ...
+	],
+	"default": [ // Blocks that are whitelisted for core blocks
+		"core/paragraph",
+		"core/image",
+		"core/heading",
+		"core/list",
+		"core/list-item",
+		"core/html",
+		"core/button",
+		"core/buttons",
+		"core/separator",
+		"core/shortcode",
+		"core/block" // Reusable blocks
+	]
+}
+
 ```
 
 ---
