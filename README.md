@@ -490,43 +490,41 @@ All blocks are configured in blocks.json file. This file is used to get block na
 > This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
 
 ```json
-{
-	"static": [ // Static blocks
-    ...
-		"ksd/example-block",
-    ...
-	],
-	"dynamic": [ // Dynamic blocks
-    ...
-		{
-			"slug": "ksd/example-dynamic-block",
-			"render_callback": "render_example_dynamic_block",
-			"attributes": {
-        "exampleString": {
-					"type": "string"
-				},
-				"exampleConditional": {
-					"type": "boolean",
-					"default": true
-				}
-			}
-		},
-    ...
-	],
-	"default": [ // Blocks that are whitelisted for core blocks
-		"core/paragraph",
-		"core/image",
-		"core/heading",
-		"core/list",
-		"core/list-item",
-		"core/html",
-		"core/button",
-		"core/buttons",
-		"core/separator",
-		"core/shortcode",
-		"core/block" // Reusable blocks
-	]
-}
+"static": [ // Static blocks
+  ...
+  "ksd/example-block",
+  ...
+],
+"dynamic": [ // Dynamic blocks
+  ...
+  {
+    "slug": "ksd/example-dynamic-block",
+    "render_callback": "render_example_dynamic_block",
+    "attributes": {
+      "exampleString": {
+        "type": "string"
+      },
+      "exampleConditional": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  ...
+],
+"default": [ // Blocks that are whitelisted for core blocks
+  "core/paragraph",
+  "core/image",
+  "core/heading",
+  "core/list",
+  "core/list-item",
+  "core/html",
+  "core/button",
+  "core/buttons",
+  "core/separator",
+  "core/shortcode",
+  "core/block" // Reusable blocks
+]
 
 ```
 
