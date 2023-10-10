@@ -39,9 +39,15 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress).
 
 ## Get Started
 
-You can use the theme just by downloading it and uploading it to your WordPress site. Some customizations can be done directly to theme.json.
+You can use the theme just by downloading it and uploading it to your WordPress site. Some customizations can be done directly to theme.json. Except for few modifications, Kotisivu Block theme relies heavily on [WordPress](https://wordpress.org/) and [Gutenberg](https://wordpress.org/gutenberg/) core so you should be familiar with those.
 
 To start developing or customizing for example new blocks, you can get started simply by running `yarn` command on your preferred editor. Then you can build files with `yarn build` or start development session `yarn start`. While developing your site, [Local](https://localwp.com/) works really well.
+
+For basic sites, Kotisivu Theme does not require any plugins (except for forms because there is no point on developing own solutions for that). Also for simplicity I opted out from using composer or any css frameworks.
+
+Make sure that you have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) installed on your computer to make any JS or CSS changes. PHP -files can be edited directly from `inc` folder.
+
+Other thing to note is that `functions.php` file is meant to be kept as clean as possible. It only loads the main classes (Theme and Blocks) and does not require any modifications. If you need to add any custom functions, it is recommended to do so by creating a new class and loading it from `inc/theme` folder. You can also add new functions or methods to existing classes if that is more suitable.
 
 ### Get node_modules
 
@@ -57,11 +63,15 @@ yarn start
 
 ### Build theme files
 
+Build files are minified and optimized for production use. This approach works great but there is still some testing required if inline styles or one big CSS file is better for performance.
+
 ```console
 yarn build
 ```
 
 ### Make translation files
+
+For translation files [Poedit](https://poedit.net/) works really well. Just run `yarn make-pot` and open the .pot file with Poedit. Please do note that Poedit feature that creates translations from .pot file does not work properly (it doesn't recognize any files outside WordPress default logic for example if you have separate components folder for JSX components). You need to create the translations manually with `make-pot`. After that you can use Poedit to update the translations.
 
 ```console
 yarn make-pot
