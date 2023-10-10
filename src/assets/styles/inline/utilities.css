@@ -149,8 +149,8 @@
 }
 
 /** 
-     * GRID COLUMNS 
-     */
+* GRID COLUMNS 
+*/
 :where(
 		.grid-cols-1,
 		.grid-cols-2,
