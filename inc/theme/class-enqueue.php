@@ -104,7 +104,7 @@ class Enqueue extends Theme {
          * Common attributes
          */
         $attributes = [];
-        $attributes['handle'] = basename($glob, '.css');
+        $attributes['handle'] = explode(".", basename($glob, '.css'))[0]; // Get rid of .css or .js extension
         $attributes['ver'] = filemtime($glob);
 
         /**
