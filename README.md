@@ -452,6 +452,9 @@ Metaboxes are a custom built wrapper to extend functionalities of PostType libra
 
 Adding custom database tables can be done by enabling the feature and deactivating and activating the theme. This will run `after_switch_theme` -hook and create the tables with the schema provided.
 
+> [!WARNING]
+> This feature is still in very barebone state. Test it thoroughly before using it in production.
+
 ```json
 "customDatabaseTables": {
   "enabled": false,
