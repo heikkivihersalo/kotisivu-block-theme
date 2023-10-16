@@ -77,6 +77,22 @@ For translation files [Poedit](https://poedit.net/) works really well. Just run 
 yarn make-pot
 ```
 
+### General tips
+
+While developing different iterations of this theme (and native Gutenberg block building in general), I have found out several workflows that work really well. Here are some of them:
+
+1. Block variations and templates work really well together. For example, a lot the times markup can be created just with core blocks and by applying desired styling to them. Take a look at the `hero` block for an example how this can be done.
+
+2. Think block style as a utility class. Sometimes there can be situations where you need to do something just a little bit different. There is no need to create new inspector controls for this. Just create a new block style and use it when needed.
+
+3. Taking away all the control is probably not the best idea. Ideology behind `section` and `wrapper` is to limit possibilities that client has. Also it creates a little bit cleaner markup. However there is a custom built styling options (css grid, background color and spacing). These are probably one of the most common controls that are needed for different sections, so it is wise to have the ability to control them straight from the editor.
+
+4. Creating separate set of utility classes is also probably a good thing. In `src/assets/styles/inline/utilities.css` you can find current utility classes that are added to the site <head>. Really useful ones are basically all the css-grid related stuff (`grid-cols-<XX>`) and `is-visually-hidden` that hides the element visually but keeps it accessible for screen readers.
+
+5. Dynamic blocks are great for site headers, footers, dynamic data or React apps. Usually client does not need that much of an control to modify header or footer information so you can just build it with PHP. Content can be fetched from options or menus. You can also create a block template to give little bit of control. Dynamic blocks work great for blog post templates (or similar). It is so much easier to create markup with PHP than with FSE (Full Site Editor).
+
+6. For more complex stuff, you can use `view.js` files to build anything from an simple block to entire react app. Just remember that Poedit doesn't understand anything outside of WordPress default logic so you need to create the translations manually with `make-pot`.
+
 ---
 
 ## Basic Structure
