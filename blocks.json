@@ -33,6 +33,11 @@
 			"attributes": {}
 		},
 		{
+			"slug": "ksd/reference-slider",
+			"render_callback": "render_reference_slider",
+			"attributes": {}
+		},
+		{
 			"slug": "ksd/navigation-footer",
 			"render_callback": "render_navigation_footer",
 			"attributes": {}
