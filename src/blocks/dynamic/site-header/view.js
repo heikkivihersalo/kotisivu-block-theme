@@ -1,17 +1,9 @@
 import domReady from '@wordpress/dom-ready';
 
 domReady(function () {
-    // ========================
-    // ====== CONSTANTS =======
-    // ========================
-
     const NAV_CONTAINER = document.getElementsByTagName("header")[0];
     const NAV_MOBILE_TOGGLE = document.getElementsByClassName("header__toggle")[0];
-    const NAV_LINKS = document.querySelectorAll(".wp-block-pages-list__item");
-
-    // ========================
-    // ====== FUNCTIONS =======
-    // ========================
+    const NAV_LINKS = document.querySelectorAll(".header__menu .menu-item");
 
     /**
      * Enable sticky header
@@ -23,13 +15,13 @@ domReady(function () {
         document.addEventListener("scroll", () => {
             /* Set opacity to 0 to animate sticky transition */
             window.scrollY > 100
-                ? NAV_CONTAINER.classList.add("sticky-opacity")
-                : NAV_CONTAINER.classList.remove("sticky-opacity");
+                ? NAV_CONTAINER.classList.add("has-transition")
+                : NAV_CONTAINER.classList.remove("has-transition");
 
             /* Set position to 'sticky' for sticky header */
             window.scrollY > 500
-                ? NAV_CONTAINER.classList.add("sticky-header")
-                : NAV_CONTAINER.classList.remove("sticky-header");
+                ? NAV_CONTAINER.classList.add("is-sticky")
+                : NAV_CONTAINER.classList.remove("is-sticky");
         });
     }
 
@@ -70,15 +62,8 @@ domReady(function () {
         });
     }
 
-    // ========================
-    // ========= INIT =========
-    // ========================
-
     (async () => {
         try {
-            /**
-             * Mobile menu
-             */
             enableStickyHeader();
             openMobileMenu();
             closeMobileMenu();
