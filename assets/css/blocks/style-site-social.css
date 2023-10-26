@@ -1,1 +1,7 @@
-.site-social__link{pointer-events:none}.site-social{display:flex;flex-direction:row;flex-wrap:wrap;gap:1em}
+/*!*********************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/blocks/dynamic/site-social/editor.css ***!
+  \*********************************************************************************************/.site-social__link{pointer-events:none}
+/*!********************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/blocks/dynamic/site-social/style.css ***!
+  \********************************************************************************************/.site-social{display:flex;flex-direction:row;flex-wrap:wrap;gap:1em}
+/*# sourceMappingURL=style-site-social.css.map*/

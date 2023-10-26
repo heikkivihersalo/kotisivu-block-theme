@@ -1,1 +1,8 @@
-.details{max-width:var(--wp--custom--narrow-size);width:100%}.details__wrapper{display:flex}.details__wrapper>:first-child{margin-top:0}.details__heading{align-items:center;display:flex}.details__heading:before{font-size:1.25em;font-weight:700;margin-right:.5em}.details[aria-expanded=true] .details__heading:before{content:"-"}.details[aria-expanded=false] .details__heading:before{content:"+"}
+/*!****************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/blocks/static/details/editor.css ***!
+  \****************************************************************************************/
+
+/*!***************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/blocks/static/details/style.css ***!
+  \***************************************************************************************/.details{max-width:var(--wp--custom--narrow-size);width:100%}.details__wrapper{display:flex}.details__wrapper>:first-child{margin-top:0}.details__heading{align-items:center;display:flex}.details__heading:before{font-size:1.25em;font-weight:700;margin-right:.5em}.details[aria-expanded=true] .details__heading:before{content:"-"}.details[aria-expanded=false] .details__heading:before{content:"+"}
+/*# sourceMappingURL=style-details.css.map*/
