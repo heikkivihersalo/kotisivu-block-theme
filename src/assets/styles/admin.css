@@ -13,10 +13,6 @@
 /*--------------------------------------------------------------
   2.0 Edtior Styles
 --------------------------------------------------------------*/
-.editor-styles-wrapper h1 {
-	font-size: var(--wp--preset--font-size--gigantic) !important;
-}
-
 button.ksd-editor-btn.ksd-editor-btn--placeholder {
 	margin: 1rem;
 	padding: 0.5rem 1rem;
@@ -269,59 +265,11 @@ section:not(section:last-of-type) {
 /**
  * BUTTONS
  */
-/* Default styles */
-.wp-block-button__link {
-	--_background-color: var(--wp--preset--color--primary);
-	--_text-color: var(--wp--preset--color--white);
-
-	--_border-color: var(--wp--preset--color--grey-light);
-	--_border: 4px solid var(--_border-color);
-	--_radius: 0;
-
-	--_size: 15rem;
-
-	--_shadow-color: var(--wp--preset--color--grey-light);
-	--_shadow-base: 0.05em;
-	--_shadow: var(--_shadow-base) var(--_shadow-base) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 2) calc(var(--_shadow-base) * 2) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 3) calc(var(--_shadow-base) * 3) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 4) calc(var(--_shadow-base) * 4) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 5) calc(var(--_shadow-base) * 5) 0px 0px
-			var(--_shadow-color);
-
-	position: relative;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	font-size: calc(var(--wp--preset--font-size--medium) * 1.2);
-	font-family: var(--wp--preset--font-family--accent);
-	color: var(--_text-color);
-	font-weight: bold;
-	text-transform: uppercase;
-	line-height: 1.2;
-	white-space: nowrap;
-
-	padding-block: 1em;
-	padding-inline: 3em;
-
-	min-width: var(--_size) !important;
-
-	background: var(--_background-color);
-
-	border-radius: var(--_radius);
-	border: var(--_border);
-
-	box-shadow: var(--_shadow);
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-}
+.editor-styles-wrapper .wp-element-button, .editor-styles-wrapper .wp-block-button__link {
+	background-color: var(--_background-color) !important;
+	color: var(--_text-color) !important;
+	border: var(--_border) !important;
+ }
 
 /* Set disabled state */
 :is(a, button).wp-block-button__link:disabled {
