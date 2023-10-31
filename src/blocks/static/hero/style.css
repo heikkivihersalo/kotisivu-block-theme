@@ -3,7 +3,7 @@
  ** ==================== */
 
 .hero {
-	--_height: 800px;
+	--_height: min(800px, 100vh);
 	isolation: isolate;
 	align-items: center;
 	justify-items: center;
