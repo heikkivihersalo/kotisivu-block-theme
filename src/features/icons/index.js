@@ -1,3 +1,5 @@
+export * from './contact/Email.jsx';
+export * from './contact/Phone.jsx';
 export * from './css-grid/AlignContentCenter.jsx';
 export * from './css-grid/AlignContentSpaceAround.jsx';
 export * from './css-grid/AlignContentSpaceBetween.jsx';
