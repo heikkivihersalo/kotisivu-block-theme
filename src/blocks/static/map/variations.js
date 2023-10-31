@@ -12,6 +12,7 @@ const variations = [
             }]
         ],
         attributes: {
+            templateLock: "all",
             blockClass: "map",
             style: {}
         }
@@ -36,6 +37,7 @@ const variations = [
             }]
         ],
         attributes: {
+            templateLock: "all",
             blockClass: "map grid-cols-2",
             style: {
                 backgroundColor: "var(--wp--preset--color--grey-light)",
