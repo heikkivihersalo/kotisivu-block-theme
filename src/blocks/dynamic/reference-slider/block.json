@@ -4,7 +4,7 @@
 	"name": "ksd/reference-slider",
 	"title": "Reference Slider",
 	"category": "widgets",
-	"icon": "grid-view",
+	"icon": "slides",
 	"description": "",
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",

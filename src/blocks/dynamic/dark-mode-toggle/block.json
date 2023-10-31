@@ -4,7 +4,7 @@
 	"name": "ksd/dark-mode-toggle",
 	"title": "Dark Mode Toggle",
 	"category": "theme",
-	"icon": "grid-view",
+	"icon": "block-default",
 	"description": "",
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",

@@ -4,7 +4,7 @@
 	"name": "ksd/contact-card",
 	"title": "Contact Card",
 	"category": "design",
-	"icon": "layout",
+	"icon": "excerpt-view",
 	"description": "",
 	"keywords": ["contact", "list", "card"],
 	"textdomain": "kotisivu-block-theme",

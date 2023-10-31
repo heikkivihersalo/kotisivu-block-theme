@@ -4,7 +4,7 @@
 	"name": "ksd/grid",
 	"title": "Grid",
 	"category": "design",
-	"icon": "layout",
+	"icon": "grid-view",
 	"description": "",
 	"keywords": ["container, columns, column, 50, wrapper"],
 	"textdomain": "kotisivu-block-theme",

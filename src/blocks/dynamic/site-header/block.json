@@ -4,7 +4,7 @@
 	"name": "ksd/site-header",
 	"title": "Site Header",
 	"category": "theme",
-	"icon": "grid-view",
+	"icon": "block-default",
 	"description": "",
 	"keywords": ["menu, header"],
 	"textdomain": "kotisivu-block-theme",

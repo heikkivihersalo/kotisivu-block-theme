@@ -4,7 +4,7 @@
 	"name": "ksd/blog-post",
 	"title": "Blog Post",
 	"category": "blog",
-	"icon": "grid-view",
+	"icon": "text-page",
 	"description": "",
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",
