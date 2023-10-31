@@ -1,8 +1,12 @@
 :where(.map) {
 	--_logo-width: 20rem;
+	--_map-width: 100%;
+	--_map-height: 400px;
+
 	align-items: center;
 
 	width: var(--wp--custom--content-size);
+	margin-block: var(--wp--preset--spacing--50);
 	margin-inline: auto;
 }
 
@@ -25,7 +29,8 @@
 }
 
 :where(.map > iframe) {
-	width: 100%;
+	width: var(--_map-width);
+	height: var(--_map-height);
 }
 
 .map__address-container .site-contact__icon {
