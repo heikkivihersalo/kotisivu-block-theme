@@ -77,14 +77,10 @@ class BlockDynamic extends Blocks {
                     'attributes' => $attributes,
                 )
             );
+            $this->set_translation(explode('/', $slug)[1]);
         } catch (\Exception $e) {
             $this->write_log($e->getMessage());
         }
-
-        /**
-         * Include translations if set
-         */
-        if (class_exists('Translation')) new Translation($block_name, 'kotisivu-block-theme');
     }
 
     /**
@@ -107,6 +103,7 @@ class BlockDynamic extends Blocks {
      * Write to log
      * @param string $message 
      * @return void 
+     * TODO: Make sure this is working
      */
     private function write_log($log): void {
         if (is_array($log) || is_object($log)) {
@@ -114,6 +111,29 @@ class BlockDynamic extends Blocks {
         } else {
             error_log($log);
         }
+    }
+
+    /**
+     * Set translation
+     * @param string $slug
+     * @return void
+     */
+    public function set_translation(string $slug): void {
+        $block_slug = 'ksd-' . $slug . '-view-script';
+
+        wp_set_script_translations(
+            $block_slug,
+            'kotisivu-block-theme',
+            $this->parent_path . '/languages'
+        );
+
+        add_filter('load_script_translation_file', function (string $file, string $handle, string $domain) use ($block_slug) {
+            if (strpos($handle, $block_slug) !== false && 'kotisivu-block-theme' === $domain) {
+                $file = str_replace(WP_LANG_DIR . '/themes', $this->parent_path . '/languages', $file);
+            }
+
+            return $file;
+        }, 10, 3);
     }
 
     /**

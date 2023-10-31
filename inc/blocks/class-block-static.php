@@ -36,15 +36,10 @@ class BlockStatic extends Blocks {
         foreach ($this->blocks['static'] as $block) :
             try {
                 register_block_type($this->get_block_path($block, 'static'));
+                $this->set_translation(explode('/', $block)[1]);
             } catch (\Exception $e) {
                 $this->write_log($e->getMessage());
             }
-
-            /**
-             * Include translations
-             */
-            $translation = new BlockTranslation(explode('/', $block)[1]);
-            $translation->translate_static_blocks();
 
         endforeach;
     }
@@ -77,6 +72,29 @@ class BlockStatic extends Blocks {
         } else {
             error_log($log);
         }
+    }
+
+    /**
+     * Set translation
+     * @param string $slug
+     * @return void
+     */
+    public function set_translation(string $slug): void {
+        $block_slug = 'ksd-' . $slug;
+
+        wp_set_script_translations(
+            $block_slug,
+            'kotisivu-block-theme',
+            $this->parent_path . '/languages'
+        );
+
+        add_filter('load_script_translation_file', function (string $file, string $handle, string $domain) use ($block_slug) {
+            if (strpos($handle, $block_slug) !== false && 'kotisivu-block-theme' === $domain) {
+                $file = str_replace(WP_LANG_DIR . '/themes', $this->parent_path . '/languages', $file);
+            }
+
+            return $file;
+        }, 10, 3);
     }
 
 
