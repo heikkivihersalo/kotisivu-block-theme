@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "ksd/map",
 	"title": "Map",
-	"category": "sections",
+	"category": "widgets",
 	"icon": "location-alt",
 	"description": "",
 	"keywords": [""],
