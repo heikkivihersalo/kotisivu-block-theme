@@ -1,1 +1,0 @@
-{"version":3,"file":"css/blocks/style-site-phone.css","mappings":";;gGAAA,qBACI,mBACJ","sources":["webpack://kotisivu-block-theme/./src/blocks/dynamic/site-phone/editor.css"],"sourcesContent":[".site-contact--phone {\n    pointer-events: none;\n}"],"names":[],"sourceRoot":""}
