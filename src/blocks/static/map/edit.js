@@ -75,7 +75,7 @@ const Edit = (props) => {
 	return (
 		<>
 			<Inspector {...props} />
-			<section {...innerBlocksProps} />
+			<div {...innerBlocksProps} />
 		</>
 	);
 };

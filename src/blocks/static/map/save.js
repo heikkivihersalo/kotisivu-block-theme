@@ -22,7 +22,7 @@ const Save = (props) => {
 	}));
 
 	return (
-		<section {...innerBlocksProps} />
+		<div {...innerBlocksProps} />
 	)
 
 };
