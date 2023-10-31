@@ -210,6 +210,44 @@ class Filters extends Theme {
     }
 
     /**
+     * Add featured image to posts query
+     */
+    function register_rest_images_for_references() {
+        register_rest_field('references', 'metadata', array(
+            'get_callback' => function ($data) {
+                $image_id = get_post_thumbnail_id($data['id']);
+                $image_meta = wp_get_attachment_image_src($image_id, 'medium');
+                $meta = get_post_meta($data['id'], '', '');
+                $logo_id = esc_attr(preg_replace('/\D/', '', $meta['company_logo'][0]));
+                $logo_meta = wp_get_attachment_url($logo_id, 'medium');
+
+                $reference = array(
+                    'id' => isset($data['id']) ? $data['id'] : '',
+                    'title' => isset($data['title']['rendered']) ? $data['title']['rendered'] : '',
+                    'content' => isset($meta['reference_content']) ? $meta['reference_content'] : '',
+                    'link' => isset($data['link']) ? $data['link'] : '',
+                    'name' => isset($meta['reference_name']) ? $meta['reference_name'] : '',
+                    'logo' =>  array(
+                        'id' => $logo_id,
+                        'url' => $logo_meta,
+                    ),
+                    'featured_image' => array(
+                        'id' => $image_id,
+                        'url' => isset($image_meta[0]) ? $image_meta[0] : '',
+                        'width' => isset($image_meta[1]) ? $image_meta[1] : '',
+                        'height' => isset($image_meta[2]) ? $image_meta[2] : '',
+                        'alt' => get_post_meta($image_id, '_wp_attachment_image_alt', true) !== null ? get_post_meta($image_id, '_wp_attachment_image_alt', true) : '',
+                        'title' => get_the_title($image_id)
+                    )   
+                );
+
+                $meta['reference'] = $reference;
+                return $meta;
+            },
+        ));
+    }
+
+    /**
      * Disable REST API for non logged in users
      * @param mixed $result
      * @return mixed
