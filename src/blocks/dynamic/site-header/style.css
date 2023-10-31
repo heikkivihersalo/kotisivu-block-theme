@@ -205,13 +205,9 @@
 	}
 }
 
-/** ======================
- **   HEADER STATES
- ** ==================== */
-
-/**
- * Active state
- */
+/** ==========================
+ ** HEADER OPEN STATE (MOBILE)
+ ** ======================= */
 
 /* Set full height */
 .header.active {
@@ -245,6 +241,27 @@
 	display: flex;
 	flex-direction: column;
 }
+
+/** ==========================
+ ** HEADER STICKY
+ ** ======================= */
+.has-transition.header {
+	opacity: 0;
+}
+
+.is-sticky.header {
+	position: sticky;
+	top: 0;
+	z-index: 9999;
+
+	height: initial;
+
+	opacity: 1;
+
+	transition: opacity 0.2s ease-in-out;
+}
+
+
 
 /** ======================
  **   ANIMATIONS

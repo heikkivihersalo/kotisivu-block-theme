@@ -19,7 +19,7 @@ domReady(function () {
                 : NAV_CONTAINER.classList.remove("has-transition");
 
             /* Set position to 'sticky' for sticky header */
-            window.scrollY > 500
+            window.scrollY > 300
                 ? NAV_CONTAINER.classList.add("is-sticky")
                 : NAV_CONTAINER.classList.remove("is-sticky");
         });
