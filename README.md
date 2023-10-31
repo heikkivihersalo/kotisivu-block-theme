@@ -76,6 +76,11 @@ For translation files [Poedit](https://poedit.net/) works really well. Just run 
 ```console
 yarn make-pot
 ```
+After translations are done, remember to create json files with `yarn make-json` command. This is required for Gutenberg to load the translations.
+
+```console
+yarn make-json
+```
 
 ### General tips
 
