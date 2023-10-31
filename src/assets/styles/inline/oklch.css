@@ -8,5 +8,6 @@
         --wp--preset--color--grey-light: var(--wp--custom--color--fallback--grey-light);
         --wp--preset--color--grey: var(--wp--custom--color--fallback--grey);
         --wp--preset--color--grey-dark: var(--wp--custom--color--fallback--grey-dark);
+        --wp--preset--color--grey-extra-dark: var(--wp--custom--color--fallback--grey-extra-dark);
     }
 }

@@ -67,6 +67,11 @@
           "slug": "grey-dark",
           "color": "hsl(343, 4%, 22%)",
           "name": "Dark Grey"
+        },
+        {
+          "slug": "grey-extra-dark",
+          "color": "hsl(233, 4%, 12%)",
+          "name": "Dark Grey"
         }
       ],
       "text": true,
@@ -99,7 +104,8 @@
           "foreground": "hsl(343, 5%, 8%)",
           "greyLight": "hsl(343, 0%, 95%)",
           "grey": "hsl(343, 4%, 52%)",
-          "greyDark": "hsl(343, 4%, 22%)"
+          "greyDark": "hsl(343, 4%, 22%)",
+          "greyExtraDark": "hsl(233, 4%, 12%)"
         }
       }
     },

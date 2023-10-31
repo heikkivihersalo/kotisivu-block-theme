@@ -22,7 +22,7 @@ body {
 	color-scheme: dark;
 	--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
 	--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-	--wp--preset--color--grey-light: var(--_color-grey-extra-dark);
+	--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
 	--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
 	--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
 }
@@ -37,7 +37,7 @@ body {
 		color-scheme: dark;
 		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
 		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--grey-light: var(--_color-grey-extra-dark);
+		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
 		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
 	}
@@ -71,7 +71,7 @@ body {
 		color-scheme: dark;
 		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
 		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--grey-light: var(--_color-grey-extra-dark);
+		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
 		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
 	}
