@@ -40,7 +40,11 @@ class BlockStatic extends Blocks {
                 $this->write_log($e->getMessage());
             }
 
-            if (class_exists('Translation')) new Translation($block, 'kotisivu-block-theme');
+            /**
+             * Include translations
+             */
+            $translation = new BlockTranslation(explode('/', $block)[1]);
+            $translation->translate_static_blocks();
 
         endforeach;
     }
