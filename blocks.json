@@ -1,6 +1,10 @@
 {
 	"static": [
 		"ksd/aside",
+		"ksd/contact-info-list",
+		"ksd/contact-info-list-item",
+		"ksd/contact-list",
+		"ksd/contact-list-item",
 		"ksd/details",
 		"ksd/form",
 		"ksd/grid",
