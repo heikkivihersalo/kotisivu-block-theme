@@ -7,20 +7,10 @@ defined('ABSPATH') or die();
 /**
  * Add filters to modify the theme behavior
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class SiteAnalytics extends Theme {
+
+class SiteAnalytics {
     /**
      * Initialize options
      * @return array 

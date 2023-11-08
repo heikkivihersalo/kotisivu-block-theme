@@ -7,20 +7,27 @@ defined('ABSPATH') or die();
 /**
  * Clean all extra junk from the theme
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme
  */
-class Junk extends Theme {
+
+class Junk {
+    /**
+     * Theme settings extracted from config.json file
+     * @var array
+     */
+    protected $settings;
+
+    /**
+     * Constructor
+     * @return void
+     */
+    public function __construct($settings) {
+        /**
+         * Set attributes
+         */
+        $this->settings = $settings;
+    }
+
     /**
      * Removes WordPress version
      * @return string 
@@ -134,7 +141,7 @@ class Junk extends Theme {
         /**
          * Remove canonical link
          */
-        if ($this->config['settings']['removeHeaderJunk']['canonical']) {
+        if ($this->settings['removeHeaderJunk']['canonical']) {
             remove_action('embed_head', 'rel_canonical');
             remove_action('wp_head', 'rel_canonical');
             add_filter('wpseo_canonical', '__return_false');
@@ -142,21 +149,21 @@ class Junk extends Theme {
         /**
          * Remove duotone
          */
-        if ($this->config['settings']['removeHeaderJunk']['duotone']) {
+        if ($this->settings['removeHeaderJunk']['duotone']) {
             remove_action('wp_body_open', 'wp_global_styles_render_svg_filters');
         }
 
         /**
          * Disable WordPress emojis
          */
-        if ($this->config['settings']['removeHeaderJunk']['emojis']) {
+        if ($this->settings['removeHeaderJunk']['emojis']) {
             add_action('init', [$this, 'disable_wp_emojis']);
         }
 
         /**
          * Remove feed links
          */
-        if ($this->config['settings']['removeHeaderJunk']['feed-links']) {
+        if ($this->settings['removeHeaderJunk']['feed-links']) {
             remove_action('wp_head', 'feed_links', 2);
             remove_action('wp_head', 'feed_links_extra', 3);
         }
@@ -164,7 +171,7 @@ class Junk extends Theme {
         /**
          * Disable gravatar
          */
-        if ($this->config['settings']['removeHeaderJunk']['gravatar']) {
+        if ($this->settings['removeHeaderJunk']['gravatar']) {
             add_filter('get_avatar', '__return_false');
             add_filter('option_show_avatars', '__return_false');
         }
@@ -172,14 +179,14 @@ class Junk extends Theme {
         /**
          * Remove jQuery migrate from loading
          */
-        if ($this->config['settings']['removeHeaderJunk']['jquery-migrate']) {
+        if ($this->settings['removeHeaderJunk']['jquery-migrate']) {
             add_action('wp_default_scripts', [$this, 'remove_jquery_migrate']);
         }
 
         /**
          * Disable JSON API and remove link from header
          */
-        if ($this->config['settings']['removeHeaderJunk']['json-api']) {
+        if ($this->settings['removeHeaderJunk']['json-api']) {
             add_action('after_setup_theme', [$this, 'remove_json_api']);
             add_action('after_setup_theme', [$this, 'disable_json_api']);
         }
@@ -187,7 +194,7 @@ class Junk extends Theme {
         /**
          * Remove the next and previous post links
          */
-        if ($this->config['settings']['removeHeaderJunk']['next-prev-links']) {
+        if ($this->settings['removeHeaderJunk']['next-prev-links']) {
             remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
             remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
         }
@@ -195,14 +202,14 @@ class Junk extends Theme {
         /**
          * Remove really simple discovery link
          */
-        if ($this->config['settings']['removeHeaderJunk']['rsd']) {
+        if ($this->settings['removeHeaderJunk']['rsd']) {
             remove_action('wp_head', 'rsd_link');
         }
 
         /**
          * Remove shortlink url from header
          */
-        if ($this->config['settings']['removeHeaderJunk']['shortlink']) {
+        if ($this->settings['removeHeaderJunk']['shortlink']) {
             remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
             remove_action('template_redirect', 'wp_shortlink_header', 11, 0);
         }
@@ -210,21 +217,21 @@ class Junk extends Theme {
         /**
          * Remove WooCommerce version number
          */
-        if ($this->config['settings']['removeHeaderJunk']['woocommerce-version']) {
+        if ($this->settings['removeHeaderJunk']['woocommerce-version']) {
             remove_action('wp_head', 'wc_generator_tag');
         }
 
         /**
          * Remove WordPress version number
          */
-        if ($this->config['settings']['removeHeaderJunk']['wp-version']) {
+        if ($this->settings['removeHeaderJunk']['wp-version']) {
             add_filter('the_generator', [$this, 'remove_wp_version']);
         }
 
         /**
          * Remove XLM-RPC
          */
-        if ($this->config['settings']['removeHeaderJunk']['xlmrpc']) {
+        if ($this->settings['removeHeaderJunk']['xlmrpc']) {
             add_action('wp_default_scripts', array($this, 'disable_xmlrpc'), 9999);
         }
     }
@@ -264,15 +271,15 @@ class Junk extends Theme {
      * @return void
      */
     public function remove_style_junk(): void {
-        if ($this->config['settings']['removeStyleJunk']['block-library']) {
+        if ($this->settings['removeStyleJunk']['block-library']) {
             add_action('wp_enqueue_scripts', [$this, 'remove_block_library_styles'], 100);
         }
 
-        if ($this->config['settings']['removeStyleJunk']['fluent-forms']) {
+        if ($this->settings['removeStyleJunk']['fluent-forms']) {
             add_action('wp_enqueue_scripts', [$this, 'remove_fluent_forms_styles'], 100);
         }
 
-        if ($this->config['settings']['removeStyleJunk']['global-styles']) {
+        if ($this->settings['removeStyleJunk']['global-styles']) {
             add_action('wp_enqueue_scripts', [$this, 'remove_global_styles'], 100);
         }
     }

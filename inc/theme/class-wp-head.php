@@ -7,25 +7,45 @@ defined('ABSPATH') or die();
 /**
  * Add elements to site <head> section
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class WP_Head extends Theme {
+
+class WP_Head {
+    /**
+     * Parent path
+     * @var string
+     */
+    protected $parent_path;
+
+    /**
+     * Parent URI
+     * @var string
+     */
+    protected $parent_uri;
+
+    /**
+     * Theme settings extracted from config.json file
+     * @var array
+     */
+    protected $settings;
+
+    /**
+     * Theme analytics options database table
+     * @var array
+     */
+    protected $analytics;
+
     /**
      * Constructor
      */
-    public function __construct() {
-        parent::__construct();
+    public function __construct($parent_path, $parent_uri, $settings, $analytics) {
+        /**
+         * Set attributes
+         */
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->settings = $settings;
+        $this->analytics = $analytics;
     }
 
     /**
@@ -77,10 +97,10 @@ class WP_Head extends Theme {
      * @return void 
      */
     public function inline_fontawesome(): void {
-        if (isset($this->config['settings']['fontawesome'])) :
+        if (isset($this->settings['fontawesome'])) :
             $folder = $this->parent_uri . '/assets/icons/fontawesome/css/';
 
-            foreach ($this->config['settings']['fontawesome'] as $slug => $is_enabled) :
+            foreach ($this->settings['fontawesome'] as $slug => $is_enabled) :
                 if (!$is_enabled) continue;
 
                 $path = $folder . $slug . '.min.css';
@@ -99,7 +119,7 @@ class WP_Head extends Theme {
      * @return void
      */
     public function inline_theme_color(): void { ?>
-        <?php $color = $this->config['settings']['themeColor']['color']; ?>
+        <?php $color = $this->settings['themeColor']['color']; ?>
         <meta name="theme-color" content="<?php echo $color ?>">
         <meta name="msapplication-navbutton-color" content="<?php echo $color ?>">
         <meta name="apple-mobile-web-app-status-bar-style" content="<?php echo $color ?>">
@@ -150,13 +170,13 @@ class WP_Head extends Theme {
         add_action('wp_head', [$this, 'inline_custom_css'], 11);
 
         /* Enable dark mode */
-        if ($this->config['settings']['darkMode']) :
+        if ($this->settings['darkMode']) :
             add_action('wp_head', [$this, 'inline_dark_mode_cookie'], 0);
             add_action('wp_head', [$this, 'inline_dark_mode_css'], 11);
         endif;
 
         /* Enable Font Awesome */
-        if ($this->config['settings']['fontawesome']['all'] || $this->config['settings']['fontawesome']['brand'] || $this->config['settings']['fontawesome']['solid'] || $this->config['settings']['fontawesome']['regular']) :
+        if ($this->settings['fontawesome']['all'] || $this->settings['fontawesome']['brands'] || $this->settings['fontawesome']['solid'] || $this->settings['fontawesome']['regular']) :
             add_action('wp_head', [$this, 'inline_fontawesome'], 11);
 
             if (is_user_logged_in()) {
@@ -170,7 +190,7 @@ class WP_Head extends Theme {
         endif;
 
         /* Enable theme color */
-        if ($this->config['settings']['themeColor']['active']) :
+        if ($this->settings['themeColor']['active']) :
             add_action('wp_head', [$this, 'inline_theme_color'], 0);
         endif;
     }

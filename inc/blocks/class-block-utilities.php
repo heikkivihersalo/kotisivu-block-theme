@@ -4,8 +4,11 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-class BlockUtilities extends Blocks {
+/**
+ *
+ * @package Kotisivu\BlockTheme
+ */
+class BlockUtilities {
 	public function __construct() {
-		parent::__construct();
 	}
 }

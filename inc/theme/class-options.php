@@ -4,8 +4,7 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-
-class Options extends Theme {
+class Options {
     /**
      * Constructor
      * @return void 
@@ -48,8 +47,8 @@ class Options extends Theme {
      * @return void
      */
     public function create_options_page(): void {
-        $optionsPage = new SiteOptions('kotisivu-block-theme');
-        new \RationalOptionPages($optionsPage->init());
+        $contactPage = new SiteContact('kotisivu-block-theme');
+        new \RationalOptionPages($contactPage->init());
     }
 
     /**
@@ -66,7 +65,7 @@ class Options extends Theme {
      * @return void
      */
     public function create_general_page(): void {
-        $generalPage = new SiteGeneralOptions();
+        $generalPage = new SiteOptions();
         $generalPage->init();
     }
 

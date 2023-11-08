@@ -7,20 +7,10 @@ defined('ABSPATH') or die();
 /**
  * Add filters to modify the theme behavior
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class SiteOptions extends Theme {
+
+class SiteContact {
 
     /**
      * Get contact section
@@ -42,10 +32,18 @@ class SiteOptions extends Theme {
                 ),
                 'phone' => array(
                     'id'            => 'contact-phone',
-                    'title'            => __('Phone', 'kotisivu-block-theme'),
+                    'title'            => __('Phone (Tel)', 'kotisivu-block-theme'),
                     'type'            => 'tel',
-                    'text'          => __('Use format +358123456789', 'kotisivu-block-theme'),
-                    'placeholder'    => '+358123456789',
+                    'text'          => __('Customer support phone number', 'kotisivu-block-theme'),
+                    'placeholder'    => '03 782 8091',
+                    'sanitize' => true
+                ),
+                'gsm' => array(
+                    'id'            => 'contact-gsm',
+                    'title'            => __('Phone (GSM)', 'kotisivu-block-theme'),
+                    'type'            => 'tel',
+                    'text'          => __('Customer support phone number', 'kotisivu-block-theme'),
+                    'placeholder'    => '0400 418 939',
                     'sanitize' => true
                 ),
                 'name'        => array(
@@ -62,18 +60,18 @@ class SiteOptions extends Theme {
                 ),
                 'address'        => array(
                     'id'            => 'contact-address',
-                    'title'            => __('Address', 'kotisivu-block-theme'),
+                    'title'            => __('Contact Information', 'kotisivu-block-theme'),
                     'type'            => 'wp_editor',
-                    'value'            => 'Kotikatu 1<br>00000 Helsinki',
+                    'value'            => 'Vinssikatu 3<br>15700 Lahti',
                     'sanitize' => true
                 ),
-                'opening_hours'        => array(
-                    'id'            => 'contact-opening-hours',
-                    'title'            => __('Opening Hours', 'kotisivu-block-theme'),
+                'billing_address'        => array(
+                    'id'            => 'billing-address',
+                    'title'            => __('Billing', 'kotisivu-block-theme'),
                     'type'            => 'wp_editor',
-                    'value'            => 'Mon-Fri 9-17<br>Sat-Sun 10-16',
+                    'value'            => 'A-Kuivaus Oy<br>PL 36541<br>01051 LASKUT',
                     'sanitize' => true
-                ),
+                )
             )
         );
     }

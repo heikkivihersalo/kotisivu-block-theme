@@ -4,33 +4,47 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-class BlockDynamic extends Blocks {
+/**
+ *
+ * @package Kotisivu\BlockTheme
+ */
+class BlockDynamic {
     /**
-     * 
+     * Blocks
+     * @var array
      */
-    protected $path;
+    protected $blocks;
 
     /**
-     * 
+     * Parent path
      */
     protected $parent_path;
 
     /**
-     * 
+     * Parent URI
      */
-    protected $config;
+    protected $parent_uri;
 
     /**
-     * 
+     * Path
      */
-    protected $options;
+    protected $path;
+
+    /**
+     * URI
+     */
+    protected $uri;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($path, $parent_path, $config, $options) {
-        parent::__construct($path, $parent_path, $config, $options);
+    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri) {
+        $this->blocks = $blocks;
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
     }
 
     /**
@@ -141,7 +155,7 @@ class BlockDynamic extends Blocks {
      * @return void 
      */
     public function register_dynamic_blocks(): void {
-        foreach ($this->blocks['dynamic'] as $block) :
+        foreach ($this->blocks as $block) :
             $this->register_block($block['slug'], $block['render_callback'], $block['attributes']);
         endforeach;
     }
@@ -153,9 +167,7 @@ class BlockDynamic extends Blocks {
     public function init(): void {
         /* Guard Clauses */
         if (!function_exists('register_block_type')) return;
-        if (!$this->blocks['dynamic']) return;
-
-        // require_once dirname(__FILE__) . '/class-blocks-translation.php';
+        if (!$this->blocks) return;
 
         /* Register blocks */
         add_action('init', [$this, 'register_dynamic_blocks']);

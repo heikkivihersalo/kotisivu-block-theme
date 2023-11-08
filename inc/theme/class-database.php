@@ -6,28 +6,27 @@ defined('ABSPATH') or die();
 
 /**
  * 
- * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme
  */
-class Database extends Theme {
+
+class Database {
+    /**
+     * Tables
+     * @var array
+     */
+    protected $tables;
+
     /**
      * Constructor
      * @return void
      */
-    public function __construct() {
+    public function __construct($tables) {
         global $wpdb;
-        parent::__construct();
+
+        /**
+         * Set attributes
+         */
+        $this->tables = $tables;
     }
 
     /**
@@ -48,7 +47,7 @@ class Database extends Theme {
         /**
          * Loop over custom database tables
          */
-        foreach ($this->config['customDatabaseTables']['tables'] as $table) {
+        foreach ($this->tables as $table) {
             $name = $wpdb->prefix . $table['name'];
             $schema = $this->get_schema($table['schema']);
 

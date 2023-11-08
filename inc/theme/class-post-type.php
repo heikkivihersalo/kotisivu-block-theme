@@ -9,19 +9,9 @@ defined('ABSPATH') or die();
 /**
  * Create new custom post type
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
+
 class CustomPostType {
     /**
      * Custom post types
@@ -30,16 +20,10 @@ class CustomPostType {
     private $post_types;
 
     /**
-     * Theme config file
-     * @var array
-     */
-    private $config;
-
-    /**
      * Constructor
      * @return void 
      */
-    public function __construct($config) {
+    public function __construct($post_types) {
         /**
          * Require dependencies
          */
@@ -54,7 +38,7 @@ class CustomPostType {
         /**
          * Set attributes
          */
-        $this->config = $config;
+        $this->post_types = $post_types ?? [];
     }
 
     /**
@@ -123,8 +107,6 @@ class CustomPostType {
      * @return void 
      */
     public function init(): void {
-        $this->post_types = $this->config["customPostTypes"]['postTypes'] ?? [];
-
         foreach ($this->post_types as $post_type) :
             $this->register_post_type($post_type);
         endforeach;

@@ -4,13 +4,16 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-class BlockCategories extends Blocks {
+/**
+ *
+ * @package Kotisivu\BlockTheme
+ */
+class BlockCategories {
     /**
      * Constructor
      * @return void
      */
     public function __construct() {
-        parent::__construct();
     }
 
     /**

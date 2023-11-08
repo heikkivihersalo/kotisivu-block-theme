@@ -10,20 +10,62 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
  * Enqueue files to theme and admin. Gets all styles theme/assets/styles folder and gets all scripts from theme/assets/scripts folder.
  * Parent theme files can be overridden by child theme if corresponding files are created to child theme
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class Enqueue extends Theme {
+
+class Enqueue {
+    /**
+     * Parent theme path
+     * @var string
+     */
+    protected $parent_path;
+
+    /**
+     * Parent theme uri
+     * @var string
+     */
+    protected $parent_uri;
+
+    /**
+     * Child theme path
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * Child theme uri
+     * @var string
+     */
+    protected $uri;
+
+    /**
+     * Files that are excluded from enqueueing
+     * @var array
+     */
+    protected $excluded_files;
+
+    /**
+     * Files that are only enqueued in admin panel
+     * @var array
+     */
+    protected $admin_only_files;
+
+    /**
+     * Constructor
+     * @return void 
+     */
+    public function __construct($parent_path, $parent_uri, $path, $uri) {
+        /**
+         * Set attributes
+         */
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
+        $this->excluded_files = ['sanitize', 'dark-mode', 'inline'];
+        $this->admin_only_files = ['admin', 'cpt'];
+    }
+
     /**
      * Add scripts and styles to theme
      * @return void 
@@ -68,29 +110,47 @@ class Enqueue extends Theme {
             $file_info = pathinfo($glob);
 
             /**
-             * Exclude list
+             * Exlude inline styles and scripts
              */
-            if ($file_info['filename'] === 'sanitize') continue;
-            if ($file_info['filename'] === 'dark-mode') continue;
-            if ($file_info['filename'] === 'inline') continue;
+            foreach ($this->excluded_files as $exluded_file) :
+                if ($file_info['filename'] === $exluded_file) continue 2;
+            endforeach;
 
             /**
              * If in admin panel, enqueue all files
+             * TODO: Rewrite this to be cleaner
              */
             if ($is_admin_enqueue) :
+                $IS_NEW_POST = !empty($GLOBALS['pagenow']) && 'post-new.php' === $GLOBALS['pagenow'];
+                $IS_EDIT_POST = !empty($GLOBALS['pagenow']) && 'post.php' === $GLOBALS['pagenow'];
+
+
+                if (!empty($GLOBALS['pagenow']) && 'theme-install.php' === $GLOBALS['pagenow']) continue;
+
+                if ($file_info['filename'] === 'cpt') :
+                    if ($IS_NEW_POST || $IS_EDIT_POST) :
+                        $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
+                        $this->enqueue_file($attributes);
+                    endif;
+                    continue;
+                endif;
+
                 $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
                 $this->enqueue_file($attributes);
-                /**
-                 * if outside admin, skip admin.js file
-                 */
+
             else :
-                if ($file_info['filename'] === 'admin') continue;
+                /**
+                 * If not in admin panel, enqueue all files except admin only files
+                 */
+                foreach ($this->admin_only_files as $admin_only_file) :
+                    if ($file_info['filename'] === $admin_only_file) continue 2;
+                endforeach;
+
                 $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
                 $this->enqueue_file($attributes);
             endif;
         endforeach;
     }
-
 
     /**
      * 

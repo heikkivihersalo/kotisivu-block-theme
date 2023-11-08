@@ -4,9 +4,16 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-class BlockAjax extends Blocks {
+/**
+ *
+ * @package Kotisivu\BlockTheme
+ */
+class BlockAjax {
+    /**
+     * Constructor
+     * @return void 
+     */
     public function __construct() {
-        parent::__construct();
     }
 
     public function load_more_blog_posts(): void {

@@ -92,7 +92,6 @@ class Theme {
         $this->options = $this->get_options_file('site-options');
         $this->analytics = $this->get_options_file('site-analytics');
         $this->config = $this->get_config_file('theme_config', 'config.json');
-        $this->blocks = $this->get_config_file('theme_blocks', 'blocks.json');
 
         /**
          * Load class files
@@ -128,7 +127,7 @@ class Theme {
         /**
          * Check config file for cache. If config file is not found from cache, load it from file
          */
-        $cache = get_transient($this->textdomain . '_' . $slug);
+        $cache = get_transient('kotisivu-block-theme' . '_' . $slug);
 
         if ($cache === false) :
             /* Get config file */
@@ -141,7 +140,7 @@ class Theme {
 
             /* Encode and set cache */
             $cache = json_decode($config_file, true);
-            set_transient($this->textdomain . '_' . $slug, $cache, $this->get_transient_lifespan());
+            set_transient('kotisivu-block-theme' . '_' . $slug, $cache, $this->get_transient_lifespan());
         endif;
 
         return $cache;
@@ -156,12 +155,12 @@ class Theme {
         /**
          * Check options for cache. If not found, load it from database
          */
-        $cache = wp_cache_get($this->textdomain . '_' . $slug);
+        $cache = wp_cache_get('kotisivu-block-theme' . '_' . $slug);
 
         if ($cache === false) {
-            get_option($this->textdomain . '_' . $slug);
-            $cache = get_option($this->textdomain . '_' . $slug);
-            wp_cache_set($this->textdomain . '_' . $slug, $cache);
+            get_option('kotisivu-block-theme' . '_' . $slug);
+            $cache = get_option('kotisivu-block-theme' . '_' . $slug);
+            wp_cache_set('kotisivu-block-theme' . '_' . $slug, $cache);
         }
 
         return $cache;
@@ -172,29 +171,29 @@ class Theme {
      * @return void 
      */
     public function init() {
-        $support = new ThemeSupport();
+        $support = new ThemeSupport($this->config);
         $support->init();
 
-        $filters = new Filters();
+        $filters = new Filters($this->config, $this->parent_path);
         $filters->init();
 
         if ($this->config['customPostTypes']['enabled']) {
-            $post_types = new CustomPostType($this->config);
+            $post_types = new CustomPostType($this->config['customPostTypes']['postTypes']);
             $post_types->init();
         }
-        
+
         if ($this->config['customDatabaseTables']['enabled']) {
-            $tables = new Database($this->config);
+            $tables = new Database($this->config['customDatabaseTables']['tables']);
             $tables->init();
         }
 
-        $enqueue = new Enqueue();
+        $enqueue = new Enqueue($this->parent_path, $this->parent_uri, $this->path, $this->uri);
         $enqueue->init();
 
-        $wp_head = new WP_Head();
+        $wp_head = new WP_Head($this->parent_path, $this->parent_uri, $this->config['settings'], $this->analytics);
         $wp_head->init();
 
-        $cleanup = new Junk();
+        $cleanup = new Junk($this->config['settings']);
         $cleanup->init();
 
         if (is_user_logged_in() && is_admin()) {

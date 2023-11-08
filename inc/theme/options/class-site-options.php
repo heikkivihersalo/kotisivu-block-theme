@@ -7,20 +7,15 @@ defined('ABSPATH') or die();
 /**
  * Add filters to modify the theme behavior
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class SiteGeneralOptions extends Theme {
+
+class SiteOptions {
+    /**
+     * Get general options
+     * @return array
+     */
+
     /**
      * Create main page
      * @return void
@@ -93,7 +88,7 @@ class SiteGeneralOptions extends Theme {
     public function purge_transient_cache(): void {
         global $wpdb;
 
-        $prefix = esc_sql($this->textdomain);
+        $prefix = esc_sql('kotisivu-block-theme');
         $options = $wpdb->options;
 
         $sql = $wpdb->prepare("SELECT option_name FROM $options WHERE option_name LIKE '%s'", esc_sql("_transient_timeout_$prefix%"));

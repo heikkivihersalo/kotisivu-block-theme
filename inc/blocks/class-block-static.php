@@ -4,28 +4,47 @@ namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
 
-class BlockStatic extends Blocks {
+/**
+ *
+ * @package Kotisivu\BlockTheme
+ */
+class BlockStatic {
     /**
-     * 
+     * Blocks
+     * @var array
      */
-    protected $path;
+    protected $blocks;
 
     /**
-     * 
+     * Parent path
      */
     protected $parent_path;
 
     /**
-     * 
+     * Parent URI
      */
-    protected $config;
+    protected $parent_uri;
+
+    /**
+     * Path
+     */
+    protected $path;
+
+    /**
+     * URI
+     */
+    protected $uri;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($path, $parent_path, $config) {
-        parent::__construct($path, $parent_path, $config);
+    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri) {
+        $this->blocks = $blocks;
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
     }
 
     /**
@@ -33,7 +52,7 @@ class BlockStatic extends Blocks {
      * @return void 
      */
     public function register_static_blocks(): void {
-        foreach ($this->blocks['static'] as $block) :
+        foreach ($this->blocks as $block) :
             try {
                 register_block_type($this->get_block_path($block, 'static'));
                 $this->set_translation(explode('/', $block)[1]);
@@ -104,9 +123,7 @@ class BlockStatic extends Blocks {
      */
     public function init(): void {
         if (!function_exists('register_block_type')) return;
-        if (!$this->blocks['static']) return;
-
-        // require_once dirname(__FILE__) . '/class-blocks-translation.php';
+        if (!$this->blocks) return;
 
         /* Register blocks */
         add_action('init', [$this, 'register_static_blocks']);

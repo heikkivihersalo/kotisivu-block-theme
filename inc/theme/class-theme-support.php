@@ -7,20 +7,27 @@ defined('ABSPATH') or die();
 /**
  * Set default configurations
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class ThemeSupport extends Theme {
+
+class ThemeSupport {
+    /**
+     * Theme config file
+     * @var array
+     */
+    private $config;
+
+    /**
+     * Constructor
+     * @return void 
+     */
+    public function __construct($config) {
+        /**
+         * Set attributes
+         */
+        $this->config = $config;
+    }
+
     /**
      * 
      * @return void 
@@ -123,6 +130,6 @@ class ThemeSupport extends Theme {
         /**
          * Add customizer to theme
          */
-        add_action( 'customize_register', '__return_true' );
+        add_action('customize_register', '__return_true');
     }
 }

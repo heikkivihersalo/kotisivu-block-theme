@@ -7,20 +7,32 @@ defined('ABSPATH') or die();
 /**
  * Add filters to modify the theme behavior
  * 
- * Inherits following attributes
- * * name
- * * version
- * * textdomain
- * * options
- * * config
- * * path
- * * uri
- * * parent_path
- * * parent_uri
- * 
  * @package Kotisivu\BlockTheme 
  */
-class Filters extends Theme {
+
+class Filters {
+    /**
+     * @var array $config
+     */
+    private $config;
+
+    /**
+     * @var string $path
+     */
+    private $path;
+
+    /**
+     * Constructor
+     * @return void 
+     */
+    public function __construct($config, $path) {
+        /**
+         * Set attributes
+         */
+        $this->config = $config;
+        $this->path = $path;
+    }
+
     /**
      * Add custom image options to admin interface
      * @param array $sizes 
@@ -82,49 +94,6 @@ class Filters extends Theme {
         return 20;
     }
 
-    /**
-     * Define allowed block types for Gutenberg
-     * @param mixed $block_editor_context 
-     * @param mixed $editor_context 
-     * @return array 
-     */
-    public function allowed_block_types($block_editor_context, $editor_context): array {
-        if (!empty($editor_context->post) || $editor_context->name === 'core/edit-site') :
-            /** 
-             * Get block arrays
-             * Static and core blocks already only has slugs stored to array
-             * Dynamic blocks needs to be parsed and create new slug array
-             */
-            $static = $this->blocks["static"];
-            $default = $this->blocks["default"];
-            $dynamic = $this->blocks["dynamic"];
-            $dynamic_block_slugs = [];
-
-            /* Parse only the slug from dynamic blocks. if array empty, do nothing */
-            if ($dynamic) :
-                foreach ($this->blocks["dynamic"] as $block) :
-                    array_push($dynamic_block_slugs, $block['slug']);
-                endforeach;
-            endif;
-
-            /* Return merged block array */
-            return array_merge(
-                $static,
-                $default,
-                $dynamic_block_slugs
-            );
-        endif;
-
-        /**
-         * If 'block_editor_context' is an array, return content
-         */
-        if (is_array($block_editor_context)) {
-            return $block_editor_context;
-        }
-
-        /* Else return an empty array */
-        return array();
-    }
 
     /**
      * Disable jQuery
@@ -158,7 +127,7 @@ class Filters extends Theme {
      * Load translations
      */
     public function load_translations(): void {
-        load_theme_textdomain('kotisivu-block-theme', $this->parent_path . '/languages');
+        load_theme_textdomain('kotisivu-block-theme', $this->path . '/languages');
     }
 
     /**
@@ -238,7 +207,7 @@ class Filters extends Theme {
                         'height' => isset($image_meta[2]) ? $image_meta[2] : '',
                         'alt' => get_post_meta($image_id, '_wp_attachment_image_alt', true) !== null ? get_post_meta($image_id, '_wp_attachment_image_alt', true) : '',
                         'title' => get_the_title($image_id)
-                    )   
+                    )
                 );
 
                 $meta['reference'] = $reference;
@@ -298,7 +267,6 @@ class Filters extends Theme {
         add_filter('upload_mimes', [$this, 'allow_svg_uploads']);
         add_filter('excerpt_length', [$this, 'limit_excerpt_length'], 999);
         add_filter('http_request_args', [$this, 'disable_theme_update'], 10, 2);
-        add_filter('allowed_block_types_all', [$this, 'allowed_block_types'], 10, 2);
         add_filter('wp_enqueue_scripts', [$this, 'remove_jquery']);
         add_action('rest_api_init', [$this, 'register_rest_images_for_posts']);
         add_action('rest_api_init', [$this, 'register_rest_images_for_media']);
