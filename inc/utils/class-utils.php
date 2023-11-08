@@ -81,6 +81,46 @@ final class Utils {
     }
 
     /**
+     * Set block translation
+     * @param string $block_slug
+     * @param string $path
+     * @return void
+     */
+    public static function set_block_translation($block_slug, $path): void {
+        wp_set_script_translations(
+            $block_slug,
+            'kotisivu-block-theme',
+            $path . '/languages'
+        );
+
+        add_filter('load_script_translation_file', function (string $file, string $handle, string $domain) use ($block_slug, $path) {
+            if (strpos($handle, $block_slug) !== false && 'kotisivu-block-theme' === $domain) {
+                $file = str_replace(WP_LANG_DIR . '/themes', $path . '/languages', $file);
+            }
+
+            return $file;
+        }, 10, 3);
+    }
+
+    /**
+     * Get path to block folder. Checks child theme first, if not found, uses parent theme blocks folder.
+     * @param string $block name of the block with namespace 
+     * @param string $type type of block (static or dynamic)
+     * @param string $path path to child theme
+     * @param string $parent_path path to parent theme
+     * @return string path to block folder 
+     */
+    public static function get_block_path(string $block, string $type, string $path, string $parent_path): string {
+        $_name = explode('/', $block)[1];
+        $_path = $path . '/src/blocks';
+        $_parent_path = $parent_path . '/src/blocks';
+
+        return file_exists("{$_path}/{$type}/{$_name}")
+            ? "{$_path}/{$type}/{$_name}"
+            : "{$_parent_path}/{$type}/{$_name}";
+    }
+
+    /**
      * Write to log
      * @param string $message 
      * @return void 
