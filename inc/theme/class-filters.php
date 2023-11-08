@@ -19,18 +19,18 @@ class Filters {
     /**
      * @var string $path
      */
-    private $path;
+    private $parent_path;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($config, $path) {
+    public function __construct($config, $parent_path) {
         /**
          * Set attributes
          */
         $this->config = $config;
-        $this->path = $path;
+        $this->parent_path = $parent_path;
     }
 
     /**
@@ -127,7 +127,7 @@ class Filters {
      * Load translations
      */
     public function load_translations(): void {
-        load_theme_textdomain('kotisivu-block-theme', $this->path . '/languages');
+        load_theme_textdomain('kotisivu-block-theme', $this->parent_path . '/languages');
     }
 
     /**
