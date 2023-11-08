@@ -40,6 +40,15 @@ class BlockDynamic {
      * @return void 
      */
     public function __construct($blocks, $parent_path, $parent_uri, $path, $uri) {
+        /**
+         * Get classes
+         */
+        foreach (glob(dirname(__DIR__) . '/utils/*.php') as $utility_class)
+            require_once $utility_class;
+
+        /**
+         * Set attributes
+         */
         $this->blocks = $blocks;
         $this->parent_path = $parent_path;
         $this->parent_uri = $parent_uri;
@@ -93,7 +102,7 @@ class BlockDynamic {
             );
             $this->set_translation(explode('/', $slug)[1]);
         } catch (\Exception $e) {
-            $this->write_log($e->getMessage());
+            Utils::write_log($e->getMessage());
         }
     }
 
@@ -111,20 +120,6 @@ class BlockDynamic {
         return file_exists("{$_path}/{$type}/{$_name}")
             ? "{$_path}/{$type}/{$_name}"
             : "{$_parent_path}/{$type}/{$_name}";
-    }
-
-    /**
-     * Write to log
-     * @param string $message 
-     * @return void 
-     * TODO: Make sure this is working
-     */
-    private function write_log($log): void {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
     }
 
     /**

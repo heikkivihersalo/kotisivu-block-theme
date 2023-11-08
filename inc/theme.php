@@ -75,6 +75,15 @@ class Theme {
      */
     public function __construct() {
         /**
+         * Get classes
+         */
+        foreach (glob(dirname(__FILE__) . '/theme/*.php') as $theme_class)
+            require_once $theme_class;
+
+        foreach (glob(dirname(__FILE__) . '/utils/*.php') as $utility_class)
+            require_once $utility_class;
+
+        /**
          * Get current theme object
          */
         $theme = wp_get_theme();
@@ -89,81 +98,9 @@ class Theme {
         $this->uri = get_theme_file_uri();
         $this->parent_path = get_parent_theme_file_path();
         $this->parent_uri = get_parent_theme_file_uri();
-        $this->options = $this->get_options_file('site-options');
-        $this->analytics = $this->get_options_file('site-analytics');
-        $this->config = $this->get_config_file('theme_config', 'config.json');
-
-        /**
-         * Load class files
-         */
-        $this->load_classes();
-    }
-
-
-    /**
-     * Require classes related to the theme
-     * @return void 
-     */
-    private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/theme/*.php') as $class)
-            require_once $class;
-    }
-
-    /**
-     * Get transient lifespan based on user role and app state
-     * @return int
-     */
-    private function get_transient_lifespan(): int {
-        return (is_super_admin() && \WP_DEBUG) ? 1 : \DAY_IN_SECONDS;
-    }
-
-    /**
-     * Get config file and store it to WordPress Transients API
-     * @param string $slug 
-     * @param string $file_name 
-     * @return mixed 
-     */
-    public function get_config_file(string $slug, string $file_name): mixed {
-        /**
-         * Check config file for cache. If config file is not found from cache, load it from file
-         */
-        $cache = get_transient('kotisivu-block-theme' . '_' . $slug);
-
-        if ($cache === false) :
-            /* Get config file */
-            $config_file = file_get_contents($this->path . '/' . $file_name);
-
-            /* Fallback if config.json is not found from child theme */
-            if (!$config_file) :
-                $config_file = file_get_contents($this->parent_path . '/' . $file_name);
-            endif;
-
-            /* Encode and set cache */
-            $cache = json_decode($config_file, true);
-            set_transient('kotisivu-block-theme' . '_' . $slug, $cache, $this->get_transient_lifespan());
-        endif;
-
-        return $cache;
-    }
-
-    /**
-     * Get site options from database and store it to cache
-     * @param string $slug 
-     * @return mixed
-     */
-    public function get_options_file(string $slug): mixed {
-        /**
-         * Check options for cache. If not found, load it from database
-         */
-        $cache = wp_cache_get('kotisivu-block-theme' . '_' . $slug);
-
-        if ($cache === false) {
-            get_option('kotisivu-block-theme' . '_' . $slug);
-            $cache = get_option('kotisivu-block-theme' . '_' . $slug);
-            wp_cache_set('kotisivu-block-theme' . '_' . $slug, $cache);
-        }
-
-        return $cache;
+        $this->options = Utils::get_options_file('site-options');
+        $this->analytics = Utils::get_options_file('site-analytics');
+        $this->config = Utils::get_config_file('theme_config', 'config.json', $this->path, $this->parent_path);
     }
 
     /**
@@ -171,17 +108,26 @@ class Theme {
      * @return void 
      */
     public function init() {
+        /**
+         * Theme Support
+         */
         $support = new ThemeSupport(
             $this->config
         );
         $support->init();
 
+        /**
+         * Filters
+         */
         $filters = new Filters(
             $this->config,
             $this->parent_path
         );
         $filters->init();
 
+        /**
+         * Custom Post Types
+         */
         if ($this->config['customPostTypes']['enabled']) {
             $post_types = new CustomPostType(
                 $this->config['customPostTypes']['postTypes']
@@ -189,6 +135,9 @@ class Theme {
             $post_types->init();
         }
 
+        /**
+         * Custom Database Tables
+         */
         if ($this->config['customDatabaseTables']['enabled']) {
             $tables = new Database(
                 $this->config['customDatabaseTables']['tables']
@@ -196,6 +145,9 @@ class Theme {
             $tables->init();
         }
 
+        /**
+         * Enqueue styles and scripts
+         */
         $enqueue = new Enqueue(
             $this->parent_path,
             $this->parent_uri,
@@ -204,6 +156,9 @@ class Theme {
         );
         $enqueue->init();
 
+        /**
+         * WP Head
+         */
         $wp_head = new WP_Head(
             $this->parent_path,
             $this->parent_uri,
@@ -212,11 +167,17 @@ class Theme {
         );
         $wp_head->init();
 
+        /**
+         * Clean up WordPress junk
+         */
         $cleanup = new Junk(
             $this->config['settings']
         );
         $cleanup->init();
 
+        /**
+         * Add option pages to admin panel
+         */
         if (is_user_logged_in() && is_admin()) {
             $options = new Options();
             $options->init();

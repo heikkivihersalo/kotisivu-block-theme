@@ -40,6 +40,15 @@ class BlockStatic {
      * @return void 
      */
     public function __construct($blocks, $parent_path, $parent_uri, $path, $uri) {
+        /**
+         * Get classes
+         */
+        foreach (glob(dirname(__DIR__) . '/utils/*.php') as $utility_class)
+            require_once $utility_class;
+
+        /**
+         * Set attributes
+         */
         $this->blocks = $blocks;
         $this->parent_path = $parent_path;
         $this->parent_uri = $parent_uri;
@@ -57,7 +66,7 @@ class BlockStatic {
                 register_block_type($this->get_block_path($block, 'static'));
                 $this->set_translation(explode('/', $block)[1]);
             } catch (\Exception $e) {
-                $this->write_log($e->getMessage());
+                Utils::write_log($e->getMessage());
             }
 
         endforeach;
@@ -77,20 +86,6 @@ class BlockStatic {
         return file_exists("{$_path}/{$type}/{$_name}")
             ? "{$_path}/{$type}/{$_name}"
             : "{$_parent_path}/{$type}/{$_name}";
-    }
-
-
-    /**
-     * Write to log
-     * @param string $message 
-     * @return void 
-     */
-    private function write_log($log): void {
-        if (is_array($log) || is_object($log)) {
-            error_log(print_r($log, true));
-        } else {
-            error_log($log);
-        }
     }
 
     /**

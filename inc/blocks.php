@@ -45,28 +45,22 @@ class Blocks {
      */
     public function __construct() {
         /**
+         * Get classes
+         */
+        foreach (glob(dirname(__FILE__) . '/blocks/*.php') as $block_class)
+            require_once $block_class;
+
+        foreach (glob(dirname(__FILE__) . '/utils/*.php') as $utility_class)
+            require_once $utility_class;
+
+        /**
          * Set attributes
          */
         $this->path = get_theme_file_path();
         $this->uri = get_theme_file_uri();
         $this->parent_path = get_parent_theme_file_path();
         $this->parent_uri = get_parent_theme_file_uri();
-        $this->blocks = $this->get_config_file('theme_blocks', 'blocks.json');
-
-        /**
-         * Load class files
-         */
-        $this->load_classes();
-    }
-
-
-    /**
-     * Load Classes
-     * @return void
-     */
-    private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/blocks/*.php') as $class)
-            require_once $class;
+        $this->blocks = Utils::get_config_file('theme_blocks', 'blocks.json', $this->path, $this->parent_path);
     }
 
     /**
@@ -82,51 +76,6 @@ class Blocks {
         }
 
         return $url;
-    }
-
-    /**
-     * Adds functionality to return '__return_true' string to used in filters and hooks
-     * @return string 
-     */
-    public function return_true(): string {
-        return '__return_true';
-    }
-
-    /**
-     * Get transient lifespan based on user role and app state
-     * @return int
-     */
-    private function get_transient_lifespan(): int {
-        return (is_super_admin() && \WP_DEBUG) ? 1 : \DAY_IN_SECONDS;
-    }
-
-    /**
-     * Get config file and store it to WordPress Transients API
-     * @param string $slug 
-     * @param string $file_name 
-     * @return mixed 
-     */
-    public function get_config_file(string $slug, string $file_name): mixed {
-        /**
-         * Check config file for cache. If config file is not found from cache, load it from file
-         */
-        $cache = get_transient('kotisivu-block-theme' . '_' . $slug);
-
-        if ($cache === false) :
-            /* Get config file */
-            $config_file = file_get_contents($this->path . '/' . $file_name);
-
-            /* Fallback if config.json is not found from child theme */
-            if (!$config_file) :
-                $config_file = file_get_contents($this->parent_path . '/' . $file_name);
-            endif;
-
-            /* Encode and set cache */
-            $cache = json_decode($config_file, true);
-            set_transient('kotisivu-block-theme' . '_' . $slug, $cache, $this->get_transient_lifespan());
-        endif;
-
-        return $cache;
     }
 
     /**
@@ -181,7 +130,7 @@ class Blocks {
         /**
          * Load extra block configurations
          */
-        add_filter('should_load_separate_core_block_assets', [$this, 'return_true']);
+        add_filter('should_load_separate_core_block_assets', 'Utils::return_true');
         add_filter('plugins_url', [$this, 'fix_file_paths'], 10, 3);
         add_filter('allowed_block_types_all', [$this, 'allowed_block_types'], 10, 2);
 
