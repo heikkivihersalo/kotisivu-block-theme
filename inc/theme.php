@@ -171,29 +171,50 @@ class Theme {
      * @return void 
      */
     public function init() {
-        $support = new ThemeSupport($this->config);
+        $support = new ThemeSupport(
+            $this->config
+        );
         $support->init();
 
-        $filters = new Filters($this->config, $this->parent_path);
+        $filters = new Filters(
+            $this->config,
+            $this->parent_path
+        );
         $filters->init();
 
         if ($this->config['customPostTypes']['enabled']) {
-            $post_types = new CustomPostType($this->config['customPostTypes']['postTypes']);
+            $post_types = new CustomPostType(
+                $this->config['customPostTypes']['postTypes']
+            );
             $post_types->init();
         }
 
         if ($this->config['customDatabaseTables']['enabled']) {
-            $tables = new Database($this->config['customDatabaseTables']['tables']);
+            $tables = new Database(
+                $this->config['customDatabaseTables']['tables']
+            );
             $tables->init();
         }
 
-        $enqueue = new Enqueue($this->parent_path, $this->parent_uri, $this->path, $this->uri);
+        $enqueue = new Enqueue(
+            $this->parent_path,
+            $this->parent_uri,
+            $this->path,
+            $this->uri
+        );
         $enqueue->init();
 
-        $wp_head = new WP_Head($this->parent_path, $this->parent_uri, $this->config['settings'], $this->analytics);
+        $wp_head = new WP_Head(
+            $this->parent_path,
+            $this->parent_uri,
+            $this->config['settings'],
+            $this->analytics
+        );
         $wp_head->init();
 
-        $cleanup = new Junk($this->config['settings']);
+        $cleanup = new Junk(
+            $this->config['settings']
+        );
         $cleanup->init();
 
         if (is_user_logged_in() && is_admin()) {
