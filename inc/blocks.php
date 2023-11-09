@@ -130,7 +130,7 @@ class Blocks {
         /**
          * Load extra block configurations
          */
-        add_filter('should_load_separate_core_block_assets', 'Utils::return_true');
+        add_filter('should_load_separate_core_block_assets', 'Kotisivu\BlockTheme\Utils::return_true');
         add_filter('plugins_url', [$this, 'fix_file_paths'], 10, 3);
         add_filter('allowed_block_types_all', [$this, 'allowed_block_types'], 10, 2);
 
