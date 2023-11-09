@@ -46,6 +46,8 @@
 
 	border: var(--_border) !important;
 	border-radius: 0 !important;
+
+	width: 100%;
 }
 
 :is(input, textarea).ff-el-form-control::placeholder {
