@@ -32,18 +32,9 @@ class SiteContact {
                 ),
                 'phone' => array(
                     'id'            => 'contact-phone',
-                    'title'            => __('Phone (Tel)', 'kotisivu-block-theme'),
+                    'title'            => __('Phone', 'kotisivu-block-theme'),
                     'type'            => 'tel',
-                    'text'          => __('Customer support phone number', 'kotisivu-block-theme'),
-                    'placeholder'    => '03 782 8091',
-                    'sanitize' => true
-                ),
-                'gsm' => array(
-                    'id'            => 'contact-gsm',
-                    'title'            => __('Phone (GSM)', 'kotisivu-block-theme'),
-                    'type'            => 'tel',
-                    'text'          => __('Customer support phone number', 'kotisivu-block-theme'),
-                    'placeholder'    => '0400 418 939',
+                    'placeholder'    => '044 123 1234',
                     'sanitize' => true
                 ),
                 'name'        => array(
@@ -53,23 +44,22 @@ class SiteContact {
                     'sanitize' => true
                 ),
                 'id'        => array(
-                    'id'        => 'contact-company-id',
+                    'id'        => 'contact-business-id',
                     'type'     => 'text',
-                    'title'            => __('Company ID (VAT)', 'kotisivu-block-theme'),
+                    'title'            => __('Business ID', 'kotisivu-block-theme'),
+                    'sanitize' => true
+                ),
+                'vat'        => array(
+                    'id'        => 'contact-vat-number',
+                    'type'     => 'text',
+                    'title'            => __('VAT number', 'kotisivu-block-theme'),
                     'sanitize' => true
                 ),
                 'address'        => array(
                     'id'            => 'contact-address',
                     'title'            => __('Contact Information', 'kotisivu-block-theme'),
                     'type'            => 'wp_editor',
-                    'value'            => 'Vinssikatu 3<br>15700 Lahti',
-                    'sanitize' => true
-                ),
-                'billing_address'        => array(
-                    'id'            => 'billing-address',
-                    'title'            => __('Billing', 'kotisivu-block-theme'),
-                    'type'            => 'wp_editor',
-                    'value'            => 'A-Kuivaus Oy<br>PL 36541<br>01051 LASKUT',
+                    'value'            => 'Osoite 123, 12345 Kaupunki',
                     'sanitize' => true
                 )
             )

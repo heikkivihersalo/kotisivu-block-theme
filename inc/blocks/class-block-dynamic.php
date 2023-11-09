@@ -39,7 +39,7 @@ class BlockDynamic {
      * Constructor
      * @return void 
      */
-    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri) {
+    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri, $options) {
         /**
          * Get classes
          */
@@ -54,6 +54,7 @@ class BlockDynamic {
         $this->parent_uri = $parent_uri;
         $this->path = $path;
         $this->uri = $uri;
+        $this->options = $options;
     }
 
     /**

@@ -43,7 +43,7 @@ class Blocks {
      * Constructor
      * @return void 
      */
-    public function __construct() {
+    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri, $options) {
         /**
          * Get classes
          */
@@ -56,11 +56,12 @@ class Blocks {
         /**
          * Set attributes
          */
-        $this->path = get_theme_file_path();
-        $this->uri = get_theme_file_uri();
-        $this->parent_path = get_parent_theme_file_path();
-        $this->parent_uri = get_parent_theme_file_uri();
-        $this->blocks = Utils::get_config_file('theme_blocks', 'blocks.json', $this->path, $this->parent_path);
+        $this->blocks = $blocks;
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
+        $this->options = $options;
     }
 
     /**
@@ -157,7 +158,8 @@ class Blocks {
             $this->parent_path,
             $this->parent_uri,
             $this->path,
-            $this->uri
+            $this->uri,
+            $this->options
         );
         $dynamic_blocks->init();
 

@@ -73,34 +73,26 @@ class Theme {
      * Theme constructor
      * @return void 
      */
-    public function __construct() {
+    public function __construct($name, $version, $textdomain, $parent_path, $parent_uri, $path, $uri, $options, $analytics, $config) {
         /**
          * Get classes
          */
         foreach (glob(dirname(__FILE__) . '/theme/*.php') as $theme_class)
             require_once $theme_class;
 
-        foreach (glob(dirname(__FILE__) . '/utils/*.php') as $utility_class)
-            require_once $utility_class;
-
-        /**
-         * Get current theme object
-         */
-        $theme = wp_get_theme();
-
         /**
          * Set theme attributes
          */
-        $this->name = $theme->get('Name');
-        $this->version = $theme->get('Version');
-        $this->textdomain = $theme->get('TextDomain');
-        $this->path = get_theme_file_path();
-        $this->uri = get_theme_file_uri();
-        $this->parent_path = get_parent_theme_file_path();
-        $this->parent_uri = get_parent_theme_file_uri();
-        $this->options = Utils::get_options_file('site-options');
-        $this->analytics = Utils::get_options_file('site-analytics');
-        $this->config = Utils::get_config_file('theme_config', 'config.json', $this->path, $this->parent_path);
+        $this->name = $name;
+        $this->version = $version;
+        $this->textdomain = $textdomain;
+        $this->parent_path = $parent_path;
+        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
+        $this->options = $options;
+        $this->analytics = $analytics;
+        $this->config = $config;
     }
 
     /**
