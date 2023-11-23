@@ -25,15 +25,17 @@ function get_site_logo_content(mixed $logo, bool $is_link, string $company_name,
     $width = $logo[1] == 0 ? '350px' : $logo[1];
     $height = $logo[2] == 0 ? '100%' : $logo[2];
     $alt = $company_name . ' Logo';
+    $aria_label = $is_link ? 'aria-label="' . __('Return back to homepage', 'kotisivu-block-theme') . '"' : '';
 
     $string = sprintf(
-        '<%s class="%s" %s aria-roledescription="logo">
+        '<%s class="%s" %s aria-roledescription="logo" %s>
             <img src="%s" width="%s" height="%s" alt="%s" aria-hidden="true" tabindex="-1" />
             <span class="is-visually-hidden">%s</span>
         </%s>',
         $tag,
         $class_name,
         $href,
+        $aria_label,
         $src,
         $width,
         $height,
