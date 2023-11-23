@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Kotisivu Block Theme 1.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/kotisivu-block-"
 "theme\n"
-"POT-Creation-Date: 2023-11-23T09:41:38+00:00\n"
-"PO-Revision-Date: 2023-11-23 11:47+0200\n"
+"POT-Creation-Date: 2023-11-23T10:56:17+00:00\n"
+"PO-Revision-Date: 2023-11-23 12:57+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -17,6 +17,7 @@ msgstr ""
 "X-Domain: kotisivu-block-theme\n"
 
 #. Theme Name of the theme
+#, fuzzy
 msgid "Kotisivu Block Theme"
 msgstr "Kotisivu Lohkoteema"
 
@@ -60,16 +61,6 @@ msgstr "Dynaaminen data"
 msgid "Add New"
 msgstr "Lisää uusi"
 
-#: inc/patterns/404.php:12
-msgctxt "Page not found."
-msgid "404"
-msgstr "404"
-
-#: inc/patterns/404.php:15
-#, fuzzy
-msgid "This page could not be found."
-msgstr "Tätä sivua ei löytynyt."
-
 #: inc/theme/options/class-site-options.php:25
 msgid "Kotisivu Theme Options"
 msgstr "Kotisivu-teeman asetukset"
@@ -112,6 +103,7 @@ msgid "Tag Manager"
 msgstr "Tag Manager"
 
 #: inc/theme/options/rational-option-pages/class-site-analytics.php:28
+#, fuzzy
 msgid ""
 "Using Tag Manager is the recommended way of adding analytics (including "
 "cookie management) to your site. Kotisivu Theme uses unique script to delay "
@@ -150,13 +142,11 @@ msgid "Add contact information here."
 msgstr "Lisää yhteystiedot tähän."
 
 #: inc/theme/options/rational-option-pages/class-site-contact.php:28
-#: src/blocks/dynamic/site-email/render.php:16
 msgid "Email"
 msgstr "Sähköpostiosoite"
 
 #: inc/theme/options/rational-option-pages/class-site-contact.php:35
 #: src/blocks/dynamic/site-phone/render.php:92
-#: src/blocks/dynamic/site-phone/render.php:94
 msgid "Phone"
 msgstr "Puhelinnumero"
 
@@ -240,6 +230,7 @@ msgid "Show earlier posts"
 msgstr "Näytä aiemmat"
 
 #: src/blocks/dynamic/blog-post/render.php:12
+#, fuzzy
 msgid "min read"
 msgstr "min lukuaika"
 
@@ -250,6 +241,22 @@ msgstr "Värimaailman muuttaminen"
 #: src/blocks/dynamic/reference-slider/render.php:7
 msgid "Our References"
 msgstr "Referenssejä"
+
+#: src/blocks/dynamic/site-404/render.php:13
+msgid "Page not found"
+msgstr "Sivua ei löytynyt"
+
+#: src/blocks/dynamic/site-404/render.php:16
+msgid "Is there anything we can help you with?"
+msgstr "Voimmeko auttaa sinua jossain?"
+
+#: src/blocks/dynamic/site-404/render.php:17
+msgid "Please contact us"
+msgstr "Ota yhteyttä"
+
+#: src/blocks/dynamic/site-email/render.php:17
+msgid "Send email to"
+msgstr "Lähetä sähköpostia osoitteeseen"
 
 #: src/blocks/dynamic/site-footer/render.php:9
 #: src/blocks/dynamic/site-footer/render.php:17
@@ -274,8 +281,13 @@ msgid "Menu"
 msgstr "Valikko"
 
 #: src/blocks/dynamic/site-logo-dynamic/render.php:16
+#: src/blocks/dynamic/site-logo/render.php:28
 msgid "Return back to homepage"
 msgstr "Palaa takaisin etusivulle"
+
+#: src/blocks/dynamic/site-phone/render.php:96
+msgid "Call to"
+msgstr "Soita numeroon"
 
 #: src/blocks/dynamic/site-social/render.php:10
 msgid "Follow us on Facebook"
@@ -667,6 +679,11 @@ msgstr "Tumman tilan vaihto"
 msgctxt "block title"
 msgid "Reference Slider"
 msgstr "Viittauksen liukusäädin"
+
+#: src/blocks/dynamic/site-404/block.json
+msgctxt "block title"
+msgid "404"
+msgstr "404"
 
 #: src/blocks/dynamic/site-address/block.json
 msgctxt "block title"
