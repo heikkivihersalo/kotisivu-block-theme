@@ -1,4 +1,27 @@
 <?php
+function format_footer_business_id(string $business_id, string $vat_number): string {
+    /**
+     * If site uses Polylang, check if current language is Finnish
+     */
+    if (function_exists('pll_current_language')) {
+        $current_lang = pll_current_language();
+        if ($current_lang !== 'fi') {
+            return __('VAT', 'kotisivu-block-theme') . ': ' . $vat_number;
+        }
+    }
+
+    /**
+     * If site does not use translation plugin, check if current language is Finnish
+     */    
+    if (get_locale() !== 'fi') {
+        return __('VAT', 'kotisivu-block-theme') . ': ' . $vat_number;
+    }
+
+    /**
+     * Return business id (site is in Finnish)
+     */
+    return __('Business ID', 'kotisivu-block-theme') . ': ' . $business_id;
+}
 
 function render_site_footer($block_attributes, $content) { ?>
     <?php $contact = array(
@@ -6,7 +29,8 @@ function render_site_footer($block_attributes, $content) { ?>
         'email' => isset($block_attributes["options"]['contact-email']) ? $block_attributes["options"]['contact-email'] : '',
         'address' => isset($block_attributes["options"]['contact-address']) ? $block_attributes["options"]['contact-address'] : '',
         'name' => isset($block_attributes["options"]['contact-company-name']) ? $block_attributes["options"]['contact-company-name'] : get_bloginfo('name'),
-        'id' => isset($block_attributes["options"]['contact-company-id']) ? $block_attributes["options"]['contact-company-id'] : ''
+        'id' => isset($block_attributes["options"]['contact-business-id']) ? $block_attributes["options"]['contact-business-id'] : '',
+        'vat' => isset($block_attributes["options"]['contact-vat-number']) ? $block_attributes["options"]['contact-vat-number'] : ''
     ); ?>
 
     <?php
@@ -23,9 +47,9 @@ function render_site_footer($block_attributes, $content) { ?>
         <div class="footer__column">
             <h2><?php _e('Company', 'kotisivu-block-theme'); ?></h2>
             <address class="footer__contact">
-                <h3><?php echo $contact['name']; ?></h3>
-                <?php echo $contact['address'] . '<br>'; ?>
-                <?php echo __('VAT ID', 'kotisivu-block-theme') . ': ' . $contact['id']; ?>
+                <?php echo $contact['name']; ?><br>
+                <?php echo $contact['address']; ?><br>
+                <?php echo format_footer_business_id($contact['id'], $contact['vat']); ?>
             </address>
         </div>
         <div class="footer__column">
