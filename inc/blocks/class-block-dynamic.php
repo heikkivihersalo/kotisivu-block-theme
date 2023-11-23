@@ -36,6 +36,11 @@ class BlockDynamic {
     protected $uri;
 
     /**
+     * Options
+     */
+    protected $options;
+
+    /**
      * Constructor
      * @return void 
      */
