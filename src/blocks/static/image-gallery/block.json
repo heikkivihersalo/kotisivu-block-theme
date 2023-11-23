@@ -15,10 +15,6 @@
     "editorStyle": "file:../../../../assets/css/blocks/image-gallery.css",
     "style": "file:../../../../assets/css/blocks/style-image-gallery.css",
 	"attributes": {
-		"sectionHeading": {
-			"type": "string",
-			"default": ""
-		},
 		"images": {
 			"type": "array",
 			"source": "query",

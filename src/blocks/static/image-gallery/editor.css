@@ -1,11 +1,7 @@
-.image-gallery {
-	display: grid;
-	gap: 1em;
-}
-
-.image-gallery .is-visually-hidden {
-    text-align: center;
-    margin-inline: auto;
+.image-gallery__editor-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
 
 .image-gallery__help-text {
@@ -13,7 +9,7 @@
 	margin-bottom: 3rem;
 }
 
-.image-gallery__container {
+.image-gallery {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 }
@@ -24,7 +20,7 @@
 	object-fit: contain;
 }
 
-.is-style-image-gallery-client .image-gallery__container {
+.is-style-image-gallery-client.image-gallery {
 	display: flex;
 	flex-direction: row;
 	align-items: center;

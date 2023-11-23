@@ -1,9 +1,10 @@
 /**
  * REGULAR STYLES
  */
-:where(.image-gallery__container) {
+:where(.image-gallery) {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	margin-top: var(--wp--preset--spacing--60);
 }
 
 :where(.image-gallery__item) {
@@ -15,7 +16,7 @@
 /**
  * IMAGE GALLERY CLIENT
  */
-.is-style-image-gallery-client .image-gallery__container {
+.is-style-image-gallery-client.image-gallery {
 	display: flex;
 	flex-direction: row;
 	align-items: center;

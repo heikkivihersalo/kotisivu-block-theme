@@ -4,13 +4,9 @@ import { useBlockProps } from "@wordpress/block-editor";
 import Img from './components/Img';
 
 const Save = (props) => {
-
-	console.log(props);
-
 	const {
 		attributes: {
-			images,
-			sectionHeading
+			images
 		},
 	} = props;
 
@@ -19,16 +15,13 @@ const Save = (props) => {
 	});
 
 	return (
-		<section {...blockProps}>
-			<h2 className="is-visually-hidden">{sectionHeading}</h2>
-			<div className="image-gallery__container">
-				{
-					images.map(image => (
-						<Img key={image.mediaID} image={image} imageClass={"image-gallery__item"} />
-					))
-				}
-			</div>
-		</section>
+		<div {...blockProps}>
+			{
+				images.map(image => (
+					<Img key={image.mediaID} image={image} imageClass={"image-gallery__item"} />
+				))
+			}
+		</div>
 	);
 };
 
