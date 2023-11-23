@@ -40,6 +40,12 @@ class Blocks {
     protected $blocks;
 
     /**
+     * Options
+     * @var array
+     */
+    protected $options;
+
+    /**
      * Constructor
      * @return void 
      */
