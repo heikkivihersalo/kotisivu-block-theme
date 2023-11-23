@@ -106,9 +106,7 @@ class WP_Head {
                 $path = $folder . $slug . '.min.css';
                 $rel = 'stylesheet';
         ?>
-                <link rel="preload" href="<?php echo $path ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel ?>"'><noscript>
-                    <link rel="<?php echo $rel ?>" href="<?php echo $path ?>">
-                </noscript>
+                <link rel="preload" href="<?php echo $path ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel ?>"'>
         <?php
             endforeach;
         endif;
