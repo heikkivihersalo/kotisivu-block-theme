@@ -223,7 +223,7 @@
 			"fontSizes": [
 				{
 					"name": "Big Headings",
-					"size": "calc(clamp(4.20872691292189rem, calc(3.77864082984006rem + 2.15043041540916vw), 6.35915732833105rem) * 0.85)",
+					"size": "calc(clamp(2.985984rem, calc(2.3208783806419rem + 3.32552809679049vw), 6.31151209679049rem) * 0.85)",
 					"slug": "big-headings"
 				},
 				{
