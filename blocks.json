@@ -42,8 +42,8 @@
 			"attributes": {}
 		},
 		{
-			"slug": "ksd/navigation-footer",
-			"render_callback": "render_navigation_footer",
+			"slug": "ksd/site-404",
+			"render_callback": "render_site_404",
 			"attributes": {}
 		},
 		{
