@@ -31,6 +31,10 @@
 			"block-library": true,
 			"fluent-forms": true,
 			"global-styles": false
+		},
+		"otherJunk": {
+			"unauthorized-rest-api": false,
+			"author-pages": true
 		}
 	},
 	"menus": [
@@ -43,7 +47,6 @@
 			"name": "Footer Navigation"
 		}
 	],
-	"patterns": ["404"],
 	"customImages": {
 		"defaultSizes": [
 			{
