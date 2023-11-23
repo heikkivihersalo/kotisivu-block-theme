@@ -118,6 +118,12 @@ class Theme {
         $filters->init();
 
         /**
+         * Rest
+         */
+        $rest = new Rest();
+        $rest->init();
+
+        /**
          * Custom Post Types
          */
         if ($this->config['customPostTypes']['enabled']) {
