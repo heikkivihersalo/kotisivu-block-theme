@@ -65,6 +65,11 @@ class BlockStatic {
             try {
                 $block_path = Utils::get_block_path($block, 'static', $this->path, $this->parent_path);
                 register_block_type($block_path);
+
+                if (file_exists($block_path . '/patterns.php')) {
+                    require_once $block_path . '/patterns.php';
+                }
+
                 Utils::set_block_translation(
                     'ksd-' . explode('/', $block)[1],
                     $this->parent_path
