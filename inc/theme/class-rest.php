@@ -46,7 +46,7 @@ class Rest {
      */
     public function get_custom_image_meta(mixed $field, string $size = 'medium') {
         $id = esc_attr(preg_replace('/\D/', '', $field));
-        $url = wp_get_attachment_url($logo_id, $size);
+        $url = wp_get_attachment_url($id, $size);
 
         return array(
             'id' => $id,
@@ -86,7 +86,14 @@ class Rest {
     public function register_rest_images_for_references() {
         register_rest_field('references', 'metadata', array(
             'get_callback' => function ($data) {
+                /**
+                 * Get post meta
+                 */
                 $meta = get_post_meta($data['id'], '', '');
+
+                /**
+                 * Build reference data
+                 */
                 $reference = array(
                     'id' => isset($data['id']) ? $data['id'] : '',
                     'title' => isset($data['title']['rendered']) ? $data['title']['rendered'] : '',
@@ -94,10 +101,17 @@ class Rest {
                     'link' => isset($data['link']) ? $data['link'] : '',
                     'name' => isset($meta['reference_name']) ? $meta['reference_name'] : '',
                     'logo' =>  get_custom_image_meta($meta['company_logo'][0], 'medium'),
-                    'featured_image' => $this->get_featured_image_meta($data['id'], 'medium');
+                    'featured_image' => $this->get_featured_image_meta($data['id'], 'medium')
                 );
 
+                /**
+                 * Add reference data to meta
+                 */
                 $meta['reference'] = $reference;
+
+                /**
+                 * Return meta
+                 */
                 return $meta;
             },
         ));
