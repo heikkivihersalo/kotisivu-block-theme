@@ -5,7 +5,7 @@ const Img = ({image, imageClass}) => {
             loading={image.lazyLoad}
             className={imageClass}
             src={image.mediaURL}
-            alt={image.mediaAlt}
+            alt={image.mediaALT}
             width={image.mediaWidth}
             height={image.mediaHeight}
             type={image.mediaMime}
