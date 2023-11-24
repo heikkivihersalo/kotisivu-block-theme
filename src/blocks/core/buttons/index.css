@@ -15,13 +15,13 @@
 	--_background-color: var(--wp--preset--color--primary);
 	--_text-color: var(--wp--preset--color--white);
 
-	--_border-color: var(--wp--preset--color--grey-light);
+	--_border-color: var(--wp--preset--color--black);
 	--_border: 4px solid var(--_border-color);
 	--_radius: 0;
 
 	--_size: 15rem;
 
-	--_shadow-color: var(--wp--preset--color--grey-light);
+	--_shadow-color: var(--wp--preset--color--black);
 	--_shadow-base: 0.05em;
 	--_shadow: var(--_shadow-base) var(--_shadow-base) 0px 0px
 			var(--_shadow-color),
@@ -76,22 +76,22 @@
 
 /* Fill Styles */
 .is-style-primary-fill > :is(a, button).wp-block-button__link {
-	--_border-color: var(--wp--preset--color--grey-light);
+	--_border-color: var(--wp--preset--color--black);
 	--_background-color: var(--wp--preset--color--primary);
 	--_text-color: var(--wp--preset--color--white);
 }
 
 .is-style-secondary-fill > :is(a, button).wp-block-button__link {
-	--_border-color: var(--wp--preset--color--grey-light);
-	--_background-color: var(--wp--preset--color--foreground);
-	--_text-color: var(--wp--preset--color--background);
+	--_border-color: var(--wp--preset--color--black);
+	--_background-color: var(--wp--preset--color--white);
+	--_text-color: var(--wp--preset--color--black);
 }
 
 /* Outline Styles */
 .is-style-primary-outline > :is(a, button).wp-block-button__link {
 	background: none;
 	--_background-color: var(--wp--preset--color--primary);
-	--_text-color: var(--wp--preset--color--grey-light);
+	--_text-color: var(--wp--preset--color--white);
 }
 
 .is-style-secondary-outline > :is(a, button).wp-block-button__link {
