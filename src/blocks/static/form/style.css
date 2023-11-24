@@ -75,6 +75,11 @@
 	margin-top: var(--wp--preset--spacing--50);
 }
 
+.ff_submit_btn_wrapper .wp-block-button__link {
+	--_border-color: var(--wp--preset--color--grey-dark);
+	--_shadow-color: var(--wp--preset--color--grey-dark);
+}
+
 /* Modifiers */
 .ff-el-form-hide_label .ff-el-input--label {
 	display: none;
@@ -89,6 +94,6 @@
 }
 
 [color-scheme="light"] .ff-btn-submit {
-	--_shadow-color: var(--wp--preset--color--grey-dark);
-	border-color: var(--wp--preset--color--grey-dark) !important;
+	--_border-color: var(--wp--preset--color--black);
+	--_shadow-color: var(--wp--preset--color--black);
 }
