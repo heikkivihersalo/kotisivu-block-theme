@@ -65,6 +65,22 @@ class Junk {
     }
 
     /**
+     * Disable REST API user endpoints
+     * @param array $endpoints
+     * @return array
+     */
+    public function disable_rest_api_user_endpoints($endpoints): array {
+        if (isset($endpoints['/wp/v2/users'])) {
+            unset($endpoints['/wp/v2/users']);
+        }
+        if (isset($endpoints['/wp/v2/users/(?P<id>[\d]+)'])) {
+            unset($endpoints['/wp/v2/users/(?P<id>[\d]+)']);
+        }
+
+        return $endpoints;
+    }
+
+    /**
      * Disable author pages
      * @return void
      */
@@ -335,6 +351,10 @@ class Junk {
         }
         if ($this->settings['otherJunk']['author-pages']) {
             add_action('template_redirect', [$this, 'disable_author_pages']);
+        }
+
+        if ($this->settings['otherJunk']['rest-api-user-endpoints']) {
+            add_filter('rest_endpoints', [$this, 'disable_rest_api_user_endpoints']);
         }
     }
 
