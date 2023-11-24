@@ -4,7 +4,13 @@ function render_dark_mode_toggle($block_attributes, $content) { ?>
     <?php wp_enqueue_script('ksd-dark-mode-toggle-view-script') ?>
 
     <?php ob_start(); ?>
-    <button class="scheme-toggle">
+    <button 
+        id="color-scheme-toggle"
+        class="scheme-toggle" 
+        title="<?php _e('Toggles light and dark color scheme', 'kotisivu-block-theme'); ?>"
+        aria-label="auto"
+        aria-live="polite"
+    >
         <!-- Light Mode SVG -->
         <svg class="scheme-toggle__icon" width="672" height="672" viewBox="0 0 672 672" fill="none" aria-hidden="true">
             <circle class="scheme-toggle__icon-circle" cx="336" cy="336" r="150" />
@@ -18,8 +24,6 @@ function render_dark_mode_toggle($block_attributes, $content) { ?>
             <line class="scheme-toggle__icon-line" x1="485.787" y1="165.787" x2="552.574" y2="99" />
             <line class="scheme-toggle__icon-line" x1="321" y1="109.451" x2="321" y2="15" />
         </svg>
-        <span class="is-visually-hidden"><?php _e('Change color scheme', 'kotisivu-block-theme'); ?></span>
     </button>
     <?php return ob_get_clean(); ?>
-
 <?php } ?>

@@ -1,4 +1,5 @@
 import domReady from '@wordpress/dom-ready';
+import { __ } from "@wordpress/i18n";
 
 /**
  * On DOM ready
@@ -15,7 +16,7 @@ domReady(function () {
     const switchToDarkMode = () => {
         html.setAttribute("color-scheme", "dark");
         schemeToggleButtons.forEach((btn) => {
-            btn.setAttribute("aria-label", "Switch to light mode");
+            btn.setAttribute("aria-label", __('Dark color scheme', 'kotisivu-block-theme'));
         });
     };
 
@@ -26,7 +27,7 @@ domReady(function () {
     const switchToLightMode = () => {
         html.setAttribute("color-scheme", "light");
         schemeToggleButtons.forEach((btn) => {
-            btn.setAttribute("aria-label", "Switch to dark mode");
+            btn.setAttribute("aria-label", __('Light color scheme', 'kotisivu-block-theme'));
         });
     };
 

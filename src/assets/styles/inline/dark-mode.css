@@ -11,20 +11,28 @@
  * !NOTE - This is the default color scheme and there probably is no need to edit these values.
  */
 body {
-	--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-white);
-	--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-black);
-	--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-light);
+	--wp--preset--color--background: var(--wp--custom--color--dark-mode--white);
+	--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--black);
+	--wp--preset--color--grey-light: var(
+		--wp--custom--color--dark-mode--grey-light
+	);
 	--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-	--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+	--wp--preset--color--grey-dark: var(
+		--wp--custom--color--dark-mode--grey-dark
+	);
 }
 
 [color-scheme="dark"] body {
 	color-scheme: dark;
-	--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
-	--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-	--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
+	--wp--preset--color--background: var(--wp--custom--color--dark-mode--black);
+	--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--white);
+	--wp--preset--color--grey-light: var(
+		--wp--custom--color--dark-mode--grey-extra-dark
+	);
 	--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-	--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+	--wp--preset--color--grey-dark: var(
+		--wp--custom--color--dark-mode--grey-dark
+	);
 }
 
 /**
@@ -35,20 +43,28 @@ body {
 @media (prefers-color-scheme: dark) {
 	body {
 		color-scheme: dark;
-		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
-		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
+		--wp--preset--color--background: var(--wp--custom--color--dark-mode--black);
+		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--white);
+		--wp--preset--color--grey-light: var(
+			--wp--custom--color--dark-mode--grey-extra-dark
+		);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+		--wp--preset--color--grey-dark: var(
+			--wp--custom--color--dark-mode--grey-dark
+		);
 	}
 
 	[color-scheme="light"] body {
 		color-scheme: light;
-		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-black);
-		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-light);
+		--wp--preset--color--background: var(--wp--custom--color--dark-mode--white);
+		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--black);
+		--wp--preset--color--grey-light: var(
+			--wp--custom--color--dark-mode--grey-light
+		);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+		--wp--preset--color--grey-dark: var(
+			--wp--custom--color--dark-mode--grey-dark
+		);
 	}
 }
 
@@ -60,19 +76,27 @@ body {
 @media (prefers-color-scheme: light) {
 	body {
 		color-scheme: light;
-		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-black);
-		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-light);
+		--wp--preset--color--background: var(--wp--custom--color--dark-mode--white);
+		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--black);
+		--wp--preset--color--grey-light: var(
+			--wp--custom--color--dark-mode--grey-light
+		);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+		--wp--preset--color--grey-dark: var(
+			--wp--custom--color--dark-mode--grey-dark
+		);
 	}
 
 	[color-scheme="dark"] body {
 		color-scheme: dark;
-		--wp--preset--color--background: var(--wp--custom--color--dark-mode--color-black);
-		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--color-white);
-		--wp--preset--color--grey-light: var(--wp--custom--color--dark-mode--grey-extra-dark);
+		--wp--preset--color--background: var(--wp--custom--color--dark-mode--black);
+		--wp--preset--color--foreground: var(--wp--custom--color--dark-mode--white);
+		--wp--preset--color--grey-light: var(
+			--wp--custom--color--dark-mode--grey-extra-dark
+		);
 		--wp--preset--color--grey: var(--wp--custom--color--dark-mode--grey);
-		--wp--preset--color--grey-dark: var(--wp--custom--color--dark-mode--grey-dark);
+		--wp--preset--color--grey-dark: var(
+			--wp--custom--color--dark-mode--grey-dark
+		);
 	}
 }
