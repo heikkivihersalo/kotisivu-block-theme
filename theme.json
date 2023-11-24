@@ -20,57 +20,57 @@
 			"palette": [
 				{
 					"slug": "primary",
-					"color": "oklch(61.41% 0.27 18.75)",
+					"color": "oklch(47.97% 0.21 8.13)",
 					"name": "Primary"
 				},
 				{
 					"slug": "primary-dark",
-					"color": "oklch(36.62% 0.165 16.44)",
+					"color": "oklch(32.65% 0.1469 8.13)",
 					"name": "Primary (Dark)"
 				},
 				{
 					"slug": "secondary",
-					"color": "oklch(85.83% 0.2508 163.9)",
+					"color": "oklch(44.29% 0.077 172.81)",
 					"name": "Secondary"
 				},
 				{
 					"slug": "background",
-					"color": "hsl(343, 0%, 100%)",
+					"color": "oklch(99% 0.005 353.45)",
 					"name": "Background"
 				},
 				{
 					"slug": "foreground",
-					"color": "hsl(343, 5%, 8%)",
+					"color": "oklch(20% 0.005 353.45)",
 					"name": "Foreground"
 				},
 				{
 					"slug": "white",
-					"color": "hsl(0, 0%, 100%)",
+					"color": "oklch(99% 0.005 353.45)",
 					"name": "White"
 				},
 				{
 					"slug": "black",
-					"color": "hsl(343, 5%, 8%)",
+					"color": "oklch(20% 0.005 353.45)",
 					"name": "Black"
 				},
 				{
 					"slug": "grey-light",
-					"color": "hsl(343, 0%, 95%)",
+					"color": "oklch(75% 0.005 353.45)",
 					"name": "Light Grey"
 				},
 				{
 					"slug": "grey",
-					"color": "hsl(343, 4%, 52%)",
+					"color": "oklch(60% 0.005 353.45)",
 					"name": "Grey"
 				},
 				{
 					"slug": "grey-dark",
-					"color": "hsl(343, 4%, 22%)",
+					"color": "oklch(45% 0.005 353.45)",
 					"name": "Dark Grey"
 				},
 				{
 					"slug": "grey-extra-dark",
-					"color": "hsl(233, 4%, 12%)",
+					"color": "oklch(30% 0.005 353.45)",
 					"name": "Dark Grey"
 				}
 			],
@@ -89,23 +89,26 @@
 			"wideSize": "var(--wp--style--global--wide-size)",
 			"color": {
 				"darkMode": {
-					"colorBlack": "hsl(180, 5%, 8%)",
-					"colorWhite": "hsl(0, 0%, 100%)",
-					"greyLight": "hsl(0, 0%, 95%)",
-					"grey": "hsl(233, 4%, 52%)",
-					"greyDark": "hsl(233, 4%, 22%)",
-					"greyExtraDark": "hsl(233, 4%, 12%)"
+					"primary": "oklch(47.97% 0.21 8.13)",
+					"primaryDark": "oklch(32.65% 0.1469 8.13)",
+					"secondary": "oklch(78.1% 0.144 163.04)",
+					"white": "oklch(99% 0.005 353.45)",
+					"black": "oklch(20% 0.005 353.45)",
+					"greyLight": "oklch(75% 0.005 353.45)",
+					"grey": "oklch(60% 0.005 353.45)",
+					"greyDark": "oklch(45% 0.005 353.45)",
+					"greyExtraDark": "oklch(30% 0.005 353.45)"
 				},
 				"fallback": {
-					"primary": "hsl(343, 100%, 48%)",
-					"primaryDark": "hsl(343, 100%, 28%)",
-					"secondary": "hsl(163, 100%, 48%)",
-					"background": "hsl(343, 0%, 100%)",
-					"foreground": "hsl(343, 5%, 8%)",
-					"greyLight": "hsl(343, 0%, 95%)",
-					"grey": "hsl(343, 4%, 52%)",
-					"greyDark": "hsl(343, 4%, 22%)",
-					"greyExtraDark": "hsl(233, 4%, 12%)"
+					"primary": "hsl(335, 100%, 34%)",
+					"primaryDark": "hsl(336.84 100% 20)",
+					"secondary": "hsl(156.27 62% 56%)",
+					"background": "hsl(338.73 88% 99%)",
+					"foreground": "hsl(338.17 6% 9%)",
+					"greyLight": "hsl(338.69 3% 68%)",
+					"grey": "hsl(338.64 2% 51%)",
+					"greyDark": "hsl(338.56 2% 34%)",
+					"greyExtraDark": "hsl(338.4 3% 18%)"
 				}
 			}
 		},
