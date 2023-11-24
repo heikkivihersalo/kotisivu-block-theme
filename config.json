@@ -33,6 +33,7 @@
 			"global-styles": false
 		},
 		"otherJunk": {
+			"rest-api-user-endpoints": false,
 			"unauthorized-rest-api": false,
 			"author-pages": true
 		}
