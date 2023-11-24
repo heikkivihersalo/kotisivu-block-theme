@@ -233,7 +233,7 @@
 
 /* Set full height */
 .header.active {
-	height: 100vh;
+	height: 100vh !important;
 	flex-direction: column;
 }
 
