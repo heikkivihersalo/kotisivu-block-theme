@@ -11,7 +11,6 @@ defined('ABSPATH') or die();
  */
 
 class SiteContact {
-
     /**
      * Get contact section
      * @return array
