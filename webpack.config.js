@@ -2,9 +2,6 @@
  * Webpack configuration file for multi-block WordPress theme
  * @author Heikki Vihersalo
  * @link https://www.kotisivu.dev
- * 
- * Forked from Phil Solas multi-block plugin and modified to fit theme
- * @link https://github.com/phil-sola/multi-block-plugin/blob/master/webpack.config.js
  */
 
 /*--------------------------------------------------------------
@@ -13,197 +10,163 @@
 1.0 Dependencies
 2.0 Constants
 3.0 Helper functions
-4.0 Common module configurations
-5.0 Webpack configurations
+4.0 Webpack configurations
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
   1.0 Dependencies
 --------------------------------------------------------------*/
-const defaultConfig = require('@wordpress/scripts/config/webpack.config');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const LiveReloadPlugin = require('webpack-livereload-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const glob = require('glob');
+
+// Import the @wordpress/scripts config.
+const defaultConfig = require('@wordpress/scripts/config/webpack.config')
+
+// Import the utility to auto-generate the entry points in the src directory.
+const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config')
 
 /*--------------------------------------------------------------
   2.0 Constants
 --------------------------------------------------------------*/
 const BLOCK_SOURCE_PATH = './src/blocks';
 const THEME_SOURCE_PATH = './src/assets/scripts';
-const IS_PRODUCTION = process.env.NODE_ENV === 'development';
 
 /*--------------------------------------------------------------
   3.0 Helper functions
 --------------------------------------------------------------*/
 /**
- * Get live reload port
- * @param {string} inputPort
- * @returns {number}
+ * Override the default WordPress plugins config.
+ * @param {array} plugins
+ * @returns {array}
  */
-const getLiveReloadPort = (inputPort) => {
-	const parsedPort = parseInt(inputPort, 10);
-	return Number.isInteger(parsedPort) ? parsedPort : 35729;
-};
+const getPlugins = (plugins) => {
+    plugins.forEach((p, i) => {
+        /**
+         * Override the default CleanWebpackPlugin config.
+         */
+        if (p.constructor.name === 'CleanWebpackPlugin') {
+            plugins.splice(i, 1, new CleanWebpackPlugin({
+                ...p,
+                cleanOnceBeforeBuildPatterns: [
+                    '**/*',
+                    '!fonts/**',
+                    '!images/**',
+                    '!icons/**',
+                    '!js/**', 
+                    '!css/**'
+                ],
+                cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**', '!icons/**', '!js/**', '!css/**']
+            }));
+        }
+    })
+
+    return plugins;
+}
 
 /**
  * Get all core blocks from source folder
  * @returns {array}
  */
 function getCoreBlocks() {
-	const src = glob.sync(BLOCK_SOURCE_PATH + "/core/**/*.js");
-	const blocks = [];
+    const src = glob.sync(BLOCK_SOURCE_PATH + "/core/**/*.js");
+    const blocks = [];
 
-	src.forEach(entry => {
-		switch (entry.split('/')[5]) {
-			case 'index.js':
-				blocks.push(entry);
-				break;
-			default:
-				break;
-		}
-	});
+    src.forEach(entry => {
+        switch (entry.split('/')[5]) {
+            case 'index.js':
+                blocks.push(entry);
+                break;
+            default:
+                break;
+        }
+    });
 
-	return blocks;
+    return blocks;
 };
-
-/**
- * Get all custom blocks from source folder
- * @returns {object}
- */
-function getCustomBlocks() {
-	const src = [...glob.sync(BLOCK_SOURCE_PATH + "/static/*/*.js"), ...glob.sync(BLOCK_SOURCE_PATH + "/dynamic/*/*.js")];
-	const blocks = {};
-
-	src.forEach(entry => {
-		switch (entry.split('/')[5]) {
-			case 'index.js':
-				blocks[`${entry.split('/')[4]}`] = entry;
-				break;
-			case 'view.js':
-				blocks[`${entry.split('/')[4]}-view-script`] = entry;
-			default:
-				break;
-		}
-	});
-
-	return blocks;
-};
-
-/*--------------------------------------------------------------
-  4.0 Common module configurations
---------------------------------------------------------------*/
-const rules = [
-	{
-		test: /\.css$/i,
-		use: [
-			MiniCssExtractPlugin.loader,
-			'css-loader'
-		]
-	},
-	{
-		test: /\.js$|jsx/,
-		exclude: /node_modules/,
-		use: {
-			loader: "babel-loader",
-			options: {
-				presets: ['@wordpress/babel-preset-default']
-			}
-		}
-	}
-];
-
-const alias = {
-	'@features': path.resolve('src/features'),
-	'@utils': path.resolve('src/utils'),
-	'@hooks': path.resolve('src/hooks'),
-}
 
 /*--------------------------------------------------------------
   4.0 Webpack configurations
 --------------------------------------------------------------*/
 module.exports = [
-	/* WordPress blocks */
-	{
-		...defaultConfig,
-		entry: getCustomBlocks,
-		resolve: {
-			alias
-		},
-		output: {
-			filename: 'js/blocks/[name].js',
-			path: path.resolve(process.cwd(), 'assets')
-		},
-		plugins: [
-			new CleanWebpackPlugin({
-				cleanOnceBeforeBuildPatterns: [
-					'css/blocks/*',
-					'js/blocks/*'
-				],
-			}),
-			new MiniCssExtractPlugin({
-				filename: 'css/blocks/style-[name].css'
-			}),
-			!IS_PRODUCTION &&
-			new LiveReloadPlugin({
-				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
-			}),
-			new DependencyExtractionWebpackPlugin(),
-		].filter(Boolean),
-		module: {
-			rules
-		},
-		optimization: {
-			minimize: true,
-			minimizer: [
-				new CssMinimizerPlugin(),
-				new TerserPlugin(),
-			],
-		},
-	},
-	/* Theme spesific files */
-	{
-		...defaultConfig,
-		entry: {
-			'theme': [THEME_SOURCE_PATH + '/theme.js', ...getCoreBlocks()],
-			'admin': THEME_SOURCE_PATH + '/admin.js',
-			'inline': THEME_SOURCE_PATH + '/inline.js',
-			'sanitize': THEME_SOURCE_PATH + '/sanitize.js',
-			'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
-		},
-		output: {
-			filename: 'js/theme/[name].js',
-			path: path.resolve(process.cwd(), 'assets')
-		},
-		plugins: [
-			new CleanWebpackPlugin({
-				cleanOnceBeforeBuildPatterns: [
-					'css/theme/*',
-					'js/theme/*'
-				],
-			}),
-			new MiniCssExtractPlugin({
-				filename: 'css/theme/[name].css'
-			}),
-			!IS_PRODUCTION &&
-			new LiveReloadPlugin({
-				port: getLiveReloadPort(process.env.WP_LIVE_RELOAD_PORT),
-			}),
-			new DependencyExtractionWebpackPlugin()
-		].filter(Boolean),
-		module: {
-			rules
-		},
-		optimization: {
-			minimize: true,
-			minimizer: [
-				new CssMinimizerPlugin(),
-				new TerserPlugin(),
-			],
-		},
-	}
-];
+    //
+    // Extend the default WordPress config.
+    //
+    {
+        ...defaultConfig,
+        entry: {
+            ...getWebpackEntryPoints(),
+        },
+        output: {
+            path: path.resolve(process.cwd(), 'assets'),
+        },
+        resolve: {
+            alias: {
+                '@features': path.resolve('src/features'),
+                '@utils': path.resolve('src/utils'),
+                '@hooks': path.resolve('src/hooks')
+            }
+        },
+        plugins: getPlugins(defaultConfig.plugins),
+    },
+    //
+    // Theme config.
+    //
+    {
+        entry: {
+            'theme': [THEME_SOURCE_PATH + '/theme.js', ...getCoreBlocks()],
+            'admin': THEME_SOURCE_PATH + '/admin.js',
+            'inline': THEME_SOURCE_PATH + '/inline.js',
+            'sanitize': THEME_SOURCE_PATH + '/sanitize.js',
+            'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
+        },
+        output: {
+            filename: 'js/theme/[name].js',
+            path: path.resolve(process.cwd(), 'assets')
+        },
+        plugins: [
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: [
+                    'css/theme/*',
+                    'js/theme/*'
+                ],
+            }),
+            new MiniCssExtractPlugin({
+                filename: 'css/theme/[name].css'
+            }),
+            new DependencyExtractionWebpackPlugin()
+        ].filter(Boolean),
+        module: {
+            rules: [
+                {
+                    test: /\.css$/i,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader'
+                    ]
+                },
+                {
+                    test: /\.js$|jsx/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ['@wordpress/babel-preset-default']
+                        }
+                    }
+                }
+            ]
+        },
+        optimization: {
+            minimize: true,
+            minimizer: [
+                new CssMinimizerPlugin(),
+                new TerserPlugin(),
+            ],
+        },
+    }
+]
