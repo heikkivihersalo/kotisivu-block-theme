@@ -34,7 +34,7 @@ const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config')
   2.0 Constants
 --------------------------------------------------------------*/
 const BLOCK_SOURCE_PATH = './src/blocks';
-const THEME_SOURCE_PATH = './src/assets/scripts';
+const THEME_SOURCE_PATH = './src/theme/scripts';
 
 /*--------------------------------------------------------------
   3.0 Helper functions
@@ -57,10 +57,9 @@ const getPlugins = (plugins) => {
                     '!fonts/**',
                     '!images/**',
                     '!icons/**',
-                    '!js/**', 
-                    '!css/**'
+                    '!theme/**'
                 ],
-                cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**', '!icons/**', '!js/**', '!css/**']
+                cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**', '!icons/**', '!theme/**']
             }));
         }
     })
@@ -100,6 +99,7 @@ module.exports = [
         ...defaultConfig,
         entry: {
             ...getWebpackEntryPoints(),
+            'blocks/core/core': getCoreBlocks(),
         },
         output: {
             path: path.resolve(process.cwd(), 'assets'),
@@ -118,25 +118,24 @@ module.exports = [
     //
     {
         entry: {
-            'theme': [THEME_SOURCE_PATH + '/theme.js', ...getCoreBlocks()],
+            'theme': [THEME_SOURCE_PATH + '/theme.js'],
             'admin': THEME_SOURCE_PATH + '/admin.js',
             'inline': THEME_SOURCE_PATH + '/inline.js',
             'sanitize': THEME_SOURCE_PATH + '/sanitize.js',
             'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
         },
         output: {
-            filename: 'js/theme/[name].js',
+            filename: 'theme/[name].js',
             path: path.resolve(process.cwd(), 'assets')
         },
         plugins: [
             new CleanWebpackPlugin({
                 cleanOnceBeforeBuildPatterns: [
-                    'css/theme/*',
-                    'js/theme/*'
+                    'theme/*'
                 ],
             }),
             new MiniCssExtractPlugin({
-                filename: 'css/theme/[name].css'
+                filename: 'theme/[name].css'
             }),
             new DependencyExtractionWebpackPlugin()
         ].filter(Boolean),

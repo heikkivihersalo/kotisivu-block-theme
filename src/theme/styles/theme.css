@@ -1,8 +1,3 @@
-@import '../../blocks/core/buttons/index.css';
-@import '../../blocks/core/list/index.css';
-@import '../../blocks/core/separator/index.css';
-@import '../../blocks/core/image/index.css';
-
 /* Set privacy policy to have default margins */
 .privacy-policy main > section {
 	margin-block: var(--wp--preset--spacing--60);

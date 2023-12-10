@@ -74,13 +74,13 @@ class Enqueue {
         /**
          * Enqueue parent theme files
          */
-        $this->enqueue_assets($this->parent_path . '/assets/**/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri);
+        $this->enqueue_assets($this->parent_path . '/assets/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri);
 
         /**
          * Enqueue child theme files
          */
         if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/assets/**/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
+            $this->enqueue_assets($this->path . '/assets/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
         endif;
     }
 
@@ -88,10 +88,10 @@ class Enqueue {
      * Add scripts and styles to admin
      */
     public function add_admin_styles_and_scripts(): void {
-        $this->enqueue_assets($this->parent_path . '/assets/**/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri, true);
+        $this->enqueue_assets($this->parent_path . '/assets/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri, true);
 
         if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/assets/**/theme/*.{js,css}', GLOB_BRACE,  $this->uri, true);
+            $this->enqueue_assets($this->path . '/assets/theme/*.{js,css}', GLOB_BRACE,  $this->uri, true);
         endif;
     }
 
@@ -178,7 +178,7 @@ class Enqueue {
          */
         if ($extension === 'css') :
             $attributes['type'] = 'text/css';
-            $attributes['src'] = $uri . '/assets/css/theme/' . basename($glob);
+            $attributes['src'] = $uri . '/assets/theme/' . basename($glob);
             $attributes['deps'] = [];
             $attributes['media'] = 'all';
         endif;
@@ -188,7 +188,7 @@ class Enqueue {
          */
         if ($extension === 'js') :
             $attributes['type'] = 'text/javascript';
-            $attributes['src'] = $uri . '/assets/js/theme/' . basename($glob);
+            $attributes['src'] = $uri . '/assets/theme/' . basename($glob);
             $attributes['in_footer'] = true;
 
             $assets_file = dirname($glob) . '/' . basename($glob, '.js') . '.asset.php';
