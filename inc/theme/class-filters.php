@@ -142,5 +142,9 @@ class Filters {
         add_filter('excerpt_length', [$this, 'limit_excerpt_length'], 999);
         add_filter('http_request_args', [$this, 'disable_theme_update'], 10, 2);
         add_filter('wp_enqueue_scripts', [$this, 'remove_jquery']);
+        // TODO: Add filter to limit inline styles size
+        // add_filter('styles_inline_size_limit', function () {
+        //     return 50000; // Size in bytes.
+        // });
     }
 }
