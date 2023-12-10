@@ -93,28 +93,10 @@ class Blocks {
      */
     public function allowed_block_types($block_editor_context, $editor_context): array {
         if (!empty($editor_context->post) || $editor_context->name === 'core/edit-site') :
-            /** 
-             * Get block arrays
-             * Static and core blocks already only has slugs stored to array
-             * Dynamic blocks needs to be parsed and create new slug array
-             */
-            $static = $this->blocks["static"];
-            $default = $this->blocks["default"];
-            $dynamic = $this->blocks["dynamic"];
-            $dynamic_block_slugs = [];
-
-            /* Parse only the slug from dynamic blocks. if array empty, do nothing */
-            if ($dynamic) :
-                foreach ($this->blocks["dynamic"] as $block) :
-                    array_push($dynamic_block_slugs, $block['slug']);
-                endforeach;
-            endif;
-
             /* Return merged block array */
             return array_merge(
-                $static,
-                $default,
-                $dynamic_block_slugs
+                $this->blocks["custom"],
+                $this->blocks["core"]
             );
         endif;
 
@@ -150,24 +132,14 @@ class Blocks {
         /**
          * Register blocks
          */
-        $static_blocks = new BlockStatic(
-            $this->blocks['static'],
+        $custom_blocks = new BlockCustom(
+            $this->blocks['custom'],
             $this->parent_path,
             $this->parent_uri,
             $this->path,
             $this->uri
         );
-        $static_blocks->init();
-
-        $dynamic_blocks = new BlockDynamic(
-            $this->blocks['dynamic'],
-            $this->parent_path,
-            $this->parent_uri,
-            $this->path,
-            $this->uri,
-            $this->options
-        );
-        $dynamic_blocks->init();
+        $custom_blocks->init();
 
         /**
          * Register ajax calls

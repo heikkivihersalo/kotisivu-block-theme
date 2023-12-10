@@ -1,10 +1,14 @@
 {
-	"static": [
+	"custom": [
 		"ksd/aside",
+		"ksd/audio-player",
+		"ksd/blog-grid",
+		"ksd/blog-post",
 		"ksd/contact-card",
 		"ksd/contact-card-item",
 		"ksd/contact-info-list",
 		"ksd/contact-info-list-item",
+		"ksd/dark-mode-toggle",
 		"ksd/details",
 		"ksd/form",
 		"ksd/grid",
@@ -12,111 +16,23 @@
 		"ksd/hero",
 		"ksd/image-gallery",
 		"ksd/map",
+		"ksd/reference-slider",
 		"ksd/section",
+		"ksd/site-404",
+		"ksd/site-address",
+		"ksd/site-company-id",
+		"ksd/site-company-name",
+		"ksd/site-email",
+		"ksd/site-footer",
+		"ksd/site-header",
+		"ksd/site-hours",
+		"ksd/site-logo",
+		"ksd/site-logo-dynamic",
+		"ksd/site-phone",
+		"ksd/site-social",
 		"ksd/wrapper"
 	],
-	"dynamic": [
-		{
-			"slug": "ksd/audio-player",
-			"render_callback": "render_audio_player",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/blog-grid",
-			"render_callback": "render_blog_grid",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/blog-post",
-			"render_callback": "render_blog_post",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/dark-mode-toggle",
-			"render_callback": "render_dark_mode_toggle",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/reference-slider",
-			"render_callback": "render_reference_slider",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-404",
-			"render_callback": "render_site_404",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-address",
-			"render_callback": "render_site_address",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-company-id",
-			"render_callback": "render_site_company_id",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-company-name",
-			"render_callback": "render_site_company_name",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-email",
-			"render_callback": "render_site_email",
-			"attributes": {
-				"className": {
-					"type": "string"
-				}
-			}
-		},
-		{
-			"slug": "ksd/site-footer",
-			"render_callback": "render_site_footer",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-header",
-			"render_callback": "render_site_header",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-hours",
-			"render_callback": "render_site_hours",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-logo",
-			"render_callback": "render_site_logo",
-			"attributes": {
-				"isLink": {
-					"type": "boolean",
-					"default": true
-				}
-			}
-		},
-		{
-			"slug": "ksd/site-logo-dynamic",
-			"render_callback": "render_site_logo_dynamic",
-			"attributes": {
-				"isLink": {
-					"type": "boolean",
-					"default": true
-				}
-			}
-		},
-		{
-			"slug": "ksd/site-phone",
-			"render_callback": "render_site_phone",
-			"attributes": {}
-		},
-		{
-			"slug": "ksd/site-social",
-			"render_callback": "render_site_social",
-			"attributes": {}
-		}
-	],
-	"default": [
+	"core": [
 		"core/paragraph",
 		"core/image",
 		"core/heading",

@@ -1,9 +1,0 @@
-:where(.address) {
-    display: flex;
-    flex-direction: column;
-}
-
-:where(.address > *) {
-    margin-inline: initial;
-    width: fit-content;
-}

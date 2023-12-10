@@ -1,7 +1,0 @@
-.wp-block-button__link {
-    pointer-events: none;
-}
-
-.blog-grid__container > .wp-block-button .wp-block-button__link {
-    margin-inline: auto;
-}
