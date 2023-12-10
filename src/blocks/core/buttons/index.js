@@ -5,9 +5,10 @@ import domReady from '@wordpress/dom-ready';
 import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 
 /**
- * Other dependencies
+ * Internal dependencies
  */
 import styles from './styles.json';
+import './index.css';
 
 /**
  * Run on DOM ready

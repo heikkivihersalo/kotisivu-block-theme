@@ -6,10 +6,11 @@ import { addFilter } from '@wordpress/hooks';
 import domReady from '@wordpress/dom-ready';
 
 /**
- * Other dependencies
+ * Internal dependencies
  */
 import { updateBlockMarkup, initBlockStyles } from './utils';
 import styles from './styles.json';
+import './index.css';
 
 
 /**

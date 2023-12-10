@@ -141,6 +141,15 @@ class Blocks {
         );
         $custom_blocks->init();
 
+        $core_blocks = new BlockCore(
+            $this->blocks['core'],
+            $this->parent_path,
+            $this->parent_uri,
+            $this->path,
+            $this->uri
+        );
+        $core_blocks->init();
+        
         /**
          * Register ajax calls
          */
