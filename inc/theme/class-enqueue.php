@@ -96,6 +96,12 @@ class Enqueue {
     }
 
     /**
+     * Smart enqueue function
+     * https://neliosoftware.com/blog/devtips-smart-enqueuing-block-styles-in-fse/
+     */
+    // TODO: Implement smart enqueue to theme
+
+    /**
      * Enqueue theme file from selected path. 
      * If file is already enqueued, deenqueue it first and then enqueue it again.
      * Can be used to override parent theme styles and scripts.
