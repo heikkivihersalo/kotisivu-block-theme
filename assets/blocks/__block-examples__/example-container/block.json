@@ -1,13 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/block.json",
   "apiVersion": 3,
-  "name": "ksd/aside",
-  "title": "Aside",
-  "category": "containers",
-  "icon": "layout",
+  "name": "ksd/example-container",
+  "title": "Example Wrapper Block",
+  "icon": "block-default",
   "description": "",
+  "category": "theme",
   "keywords": [
-    "container, columns, column, aside"
+    ""
   ],
   "textdomain": "kotisivu-block-theme",
   "supports": {
@@ -42,7 +42,7 @@
       "type": "object",
       "default": {
         "margin": {
-          "top": "var(--wp--preset--spacing--50)",
+          "top": "0",
           "bottom": "var(--wp--preset--spacing--50)"
         }
       }
@@ -70,10 +70,6 @@
         "insert",
         false
       ]
-    },
-    "isReversed": {
-      "type": "boolean",
-      "default": false
     },
     "variationName": {
       "type": "string",
