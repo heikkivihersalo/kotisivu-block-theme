@@ -133,4 +133,82 @@ final class Utils {
             error_log($log);
         }
     }
+
+    /**
+     * Check if string starts with another string
+     * @param string $string 
+     * @param string $startString 
+     * @return bool 
+     */
+    private static function startsWith($string, $startString) {
+        $len = strlen($startString);
+        return (substr($string, 0, $len) === $startString);
+    }
+
+    /**
+     * Format phone number to Finnish format
+     * @param mixed $num 
+     * @return string 
+     */
+    public static function format_phone_num($num): string {
+        /**
+         * If number is in correct format, return it
+         */
+        if (self::startsWith($num, '+358')) {
+            return preg_replace('/\s+/', '', $num);
+        }
+
+        /**
+         * If number is in local format (e.g. 0401234567), format it to Finnish format
+         */
+        if (self::startsWith($num, '0')) {
+            switch ($num):
+                case (self::startsWith($num, '040')):
+                    return preg_replace('/\s+/', '', sprintf(
+                        "%s %s %s",
+                        '+358' . substr($num, 1, 2),
+                        substr($num, 3, 3),
+                        substr($num, 6)
+                    ));
+                    break;
+                case (self::startsWith($num, '050')):
+                    return preg_replace('/\s+/', '', sprintf(
+                        "%s %s %s",
+                        '+358' . substr($num, 1, 2),
+                        substr($num, 3, 3),
+                        substr($num, 6)
+                    ));
+                    break;
+                case (self::startsWith($num, '044')):
+                    return preg_replace('/\s+/', '', sprintf(
+                        "%s %s %s",
+                        '+358' . substr($num, 1, 2),
+                        substr($num, 3, 3),
+                        substr($num, 6)
+                    ));
+                    break;
+                case (self::startsWith($num, '045')):
+                    return preg_replace('/\s+/', '', sprintf(
+                        "%s %s %s",
+                        '+358' . substr($num, 1, 2),
+                        substr($num, 3, 3),
+                        substr($num, 6)
+                    ));
+                    break;
+                case (self::startsWith($num, '09')):
+                    return preg_replace('/\s+/', '', sprintf(
+                        "%s %s %s",
+                        '+358' . substr($num, 1, 2),
+                        substr($num, 3, 3),
+                        substr($num, 6)
+                    ));
+                    break;
+                default:
+                    return $num;
+                    break;
+            endswitch;
+        }
+
+        return $num;
+    }
 }
