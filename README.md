@@ -4,7 +4,7 @@
 
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
-Theme uses OOP patterns wherever possible (modified to work with WordPress).
+Theme uses OOP patterns wherever possible (modified to work with WordPress). WordPress really isn't OOP friendly but it cleans up the code a lot and makes it easier to maintain.
 
 ---
 
@@ -12,6 +12,7 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress).
 
 - [Get Started](#get-started)
 - [Basic Structure](#basic-structure)
+- [CSS Styles](#css-styles)
 - [External Depencencies](#external-depencencies)
   - [PostTypes](#posttypes)
   - [RationalOptionPages](#rationaloptionpages)
@@ -31,6 +32,7 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress).
   - [Custom Post Types](#custom-post-types)
   - [Metaboxes](#metaboxes)
   - [Custom Database Tables](#custom-database-tables)
+- [Enqueuing scripts and styles](#enqueuing-scripts-and-styles)
 - [Blocks.json](#blocksjson)
 - [Security](#security)
 - [Admin Settings](#admin-settings)
@@ -76,6 +78,7 @@ For translation files [Poedit](https://poedit.net/) works really well. Just run 
 ```console
 yarn make-pot
 ```
+
 After translations are done, remember to create json files with `yarn make-json` command. This is required for Gutenberg to load the translations.
 
 ```console
@@ -92,11 +95,18 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 3. Taking away all the control is probably not the best idea. Ideology behind `section` and `wrapper` is to limit possibilities that client has. Also it creates a little bit cleaner markup. However there is a custom built styling options (css grid, background color and spacing). These are probably one of the most common controls that are needed for different sections, so it is wise to have the ability to control them straight from the editor.
 
-4. Creating separate set of utility classes is also probably a good thing. In `src/assets/styles/inline/utilities.css` you can find current utility classes that are added to the site <head>. Really useful ones are basically all the css-grid related stuff (`grid-cols-<XX>`) and `is-visually-hidden` that hides the element visually but keeps it accessible for screen readers.
+4. Creating separate set of utility classes is also probably a good thing. In `src/assets/styles/inline/utilities.css` you can find current utility classes that are added to the site <head>. Really useful ones are basically all the css-grid related stuff (`has-cols-<XX>`) and `is-visually-hidden` that hides the element visually but keeps it accessible for screen readers.
 
 5. Dynamic blocks are great for site headers, footers, dynamic data or React apps. Usually client does not need that much of an control to modify header or footer information so you can just build it with PHP. Content can be fetched from options or menus. You can also create a block template to give little bit of control. Dynamic blocks work great for blog post templates (or similar). It is so much easier to create markup with PHP than with FSE (Full Site Editor).
 
 6. For more complex stuff, you can use `view.js` files to build anything from an simple block to entire react app. Just remember that Poedit doesn't understand anything outside of WordPress default logic so you need to create the translations manually with `make-pot`.
+
+7. There are several different block examples that you can use as a starting point.
+
+- `example-container` is a starting point for InnerBlocks. It can be used for simple layout elements that can take advantage of Gutenberg Core blocks. Different layouts can be created with CSS and block variations.
+- `example-dynamic` is a starting point for dynamic blocks. It can be used for blocks that require server side rendering. For example, if you need to fetch data from API or database, this is the way to go. There is also a possibility to add Innerblocks if you need to support user generated content.
+- `example-view-script` is a starting point for blocks that require React. It can be used for blocks that require more complex logic or for example React apps. **You can combine view scripts with server-side-rendering and vice versa.** It is also possible to add InnerBlocks to these blocks (look example-dynamic as an example). View scripts can also be used to load vanilla JS scripts (see `site-header` or `site-dark-mode-toggle` as an example).
+- For static blocks see more explanation from [https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering](https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering)
 
 ---
 
@@ -105,50 +115,42 @@ While developing different iterations of this theme (and native Gutenberg block 
 ```javascript
 ├── .vscode // VSCode spesific config files for a faster workflow
 ├── assets // Theme assets that are loaded on front-end and back-end
-│   ├── css // Theme CSS files. You can add your own files here if you wish (except for build files)
-│   │   ├── blocks // Build folder for blocks (don't add own files here)
-│   │   │   ├── ...
-│   │   ├── theme // Build folder for theme (don't add own files here)
-│   │   │   ├── ...
+│   │   blocks // Build folder for blocks (don't add own files here)
+│   │   ├── ...
 │   ├── fonts // Theme fonts. NOTE! Remember to add correct paths to theme.json
 │   │   ├── ...
 │   ├── icons // Theme icons. It is advisable to folder the icons accordingly
+│   │   theme // Build folder for theme (don't add own files here)
 │   │   ├── ...
-│   ├── js // Theme JS files. You can add your own files here if you wish (except for build files)
-│   │   ├── blocks // Build folder for blocks (don't add own files here)
-│   │   │   ├── ...
-│   │   ├── theme // Build folder for theme (don't add own files here)
-│   │   │   ├── ...
 ├── inc
 │   ├── blocks // Any block related classes goes here
 │   │   ├── ...
 │   ├── lib // External dependencies goes here. DO NOT add your own customizations in this folder. Use a wrapper instead.
-│   ├── patterns // Prior Gutenberg style patterns folder for PHP files
 │   ├── theme // Any theme related classes goes here for example main files for theme cleanup, enqueues etc.
 │   │   ├── options // All options related things goes here
 │   │   ├── post-types // All post types related things goes here
 │   │   │   ├── class-metabox.php // Adds metabox support for PostTypes dependency
 │   │   ├── ...
+│   ├── utils // Utils for reusability purposes
 │   ├── blocks.php // Main blocks class. Loads all classes from blocks folder
 │   ├── theme.php // Main theme class. Loads all classes from theme folder
 ├── languages // WordPress main folder for translations
 ├── parts // Block theme style parts folder
 ├── src // JS and CSS files that requires a build process (Blocks, theme CSS and JS)
-│   ├── __template-library__ // Blocks saved from older projects. Might be a useful starting point for new blocks
-│   ├── assets
 │   ├── blocks
 │   │   ├── core // Core block modifications
 │   │   │   ├── ...
-│   │   ├── dynamic // Custom Gutenberg Dynamic blocks
+│   │   ├── custom // Custom Gutenberg blocks
 │   │   │   ├── ...
-│   │   ├── static // Custom Gutenberg Static block
-│   │   │   ├── ...
-│   ├── features // Custom built components for reusability purposes
+│   ├── features // Custom built components aka. features for reusability purposes
 │   │   ├── ...
 │   ├── hooks // Custom built hooks for reusability purposes
 │   │   ├── ...
-│   ├── lib // External dependencies that are not loaded from package.json
-│   │   ├── ...
+│   ├── theme // Theme related JS and CSS
+│   │   ├── scripts // Theme scripts.
+│   │   │   ├── ...
+│   │   ├── styles // Custom Gutenberg blocks
+│   │   │   ├── ...
 │   ├── utils // Utility functions
 │   │   ├── ...
 ├── templates // Block theme style templates folder
@@ -163,6 +165,10 @@ While developing different iterations of this theme (and native Gutenberg block 
 ```
 
 ---
+
+## CSS Styles
+
+Blocks uses BEM naming convention for css classes. For more information read [https://getbem.com/introduction/](https://getbem.com/introduction/)
 
 ## External Depencencies
 
@@ -345,25 +351,24 @@ To modify the color change state to active and add color value to `color` -key.
 ### Disable WordPress Default Configs
 
 You can disable some of the wordpress default stuff from loading. These are not usually required but if you are having problems, you can try disabling these.
-
-| Config Option         | Description                                                                                                                             |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| "canonical"           | Remove canonical link. `Default: true`                                                                                                  |
-| "duotone"             | Remove duotone. Only removes SVG's. Variables are still added. Might become obsolete in the future. `Default: true`                     |
-| "emojis"              | Disable WordPress emojis. `Default: true`                                                                                               |
-| "feed-links"          | Remove feed links. `Default: true`                                                                                                      |
-| "gravatar"            | Disable Gravatar. `Default: false`                                                                                                      |
-| "jquery-migrate"      | Remove jQuery migrate scripts from loading. If you are using really old legacy plugins, jquery-migrate might be needed. `Default: true` |
-| "json-api"            | Disable JSON API and remove link from header. `Default: true`                                                                           |
-| "next-prev-links"     | Remove the next and previous post links. `Default: true`                                                                                |
-| "rsd"                 | Remove Really Simple Discovery link. `Default: true`                                                                                    |
-| "shortlink"           | Remove shortlink url from header                                                                                                        |
-| "woocommerce-version" | Remove WooCommerce version number showing up on frontend. `Default: true`                                                               |
-| "wp-version"          | Remove WordPress version number showing up on frontend. `Default: true`                                                                 |
-| "xlmrpc"              | Disable XML-RPC methods that require authentication. `Default: true`                                                                    |
-| "block-library"       | Disable Gutenberg block library styles. `Default: true`                                                                                 |
-| "fluent-forms"        | Disable Fluent Form plugins styles. `Default: true`                                                                                     |
-| "global-styles"       | Disable global styles (theme.json). `Default: false`                                                                                    |
+| Config Option | Description |
+| --------------------- | ----------- |
+| "canonical" | Remove canonical link. `Default: true` |
+| "duotone" | Remove duotone. Only removes SVG's. Variables are still added. Might become obsolete in the future. `Default: true` |
+| "emojis" | Disable WordPress emojis. `Default: true` |
+| "feed-links" | Remove feed links. `Default: true` |
+| "gravatar" | Disable Gravatar. `Default: false` |
+| "jquery-migrate" | Remove jQuery migrate scripts from loading. If you are using really old legacy plugins, jquery-migrate might be needed. `Default: true` |
+| "json-api" | Disable JSON API and remove link from header. `Default: true` |
+| "next-prev-links" | Remove the next and previous post links. `Default: true` |
+| "rsd" | Remove Really Simple Discovery link. `Default: true` |
+| "shortlink" | Remove shortlink url from header |
+| "woocommerce-version" | Remove WooCommerce version number showing up on frontend. `Default: true` |
+| "wp-version" | Remove WordPress version number showing up on frontend. `Default: true` |
+| "xlmrpc" | Disable XML-RPC methods that require authentication. `Default: true` |
+| "block-library" | Disable Gutenberg block library styles. `Default: true` |
+| "fluent-forms" | Disable Fluent Form plugins styles. `Default: true` |
+| "global-styles" | Disable global styles (theme.json). `Default: false` |
 
 ### Site Menus
 
@@ -516,50 +521,40 @@ Adding custom database tables can be done by enabling the feature and deactivati
 
 ---
 
+## Enqueuing scripts and styles
+
+---
+
 ## Blocks.json
 
-All blocks are configured in blocks.json file. This file is used to get block names, render callbacks and core blocks whitelist. Block files are loaded from `src/blocks` folder at the corresponding folder. For example `ksd/example-block` is loaded from `src/blocks/static/ksd/example-block` folder, which then includes all files required by the block.
+All blocks are configured in blocks.json file. This file is used to get block names and core blocks whitelist. Block files are loaded from `src/blocks` folder at the corresponding folder. For example `ksd/example-block` is loaded from `src/blocks/custom/example-block` folder, which then includes all files required by the block. File `block.json` (notice singular form) is used to configure the actual block.
 
 > [!NOTE]
 > This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
 
 ```json
-"static": [ // Static blocks
-  ...
-  "ksd/example-block",
-  ...
-],
-"dynamic": [ // Dynamic blocks
-  ...
-  {
-    "slug": "ksd/example-dynamic-block",
-    "render_callback": "render_example_dynamic_block",
-    "attributes": {
-      "exampleString": {
-        "type": "string"
-      },
-      "exampleConditional": {
-        "type": "boolean",
-        "default": true
-      }
-    }
-  },
-  ...
-],
-"default": [ // Blocks that are whitelisted for core blocks
-  "core/paragraph",
-  "core/image",
-  "core/heading",
-  "core/list",
-  "core/list-item",
-  "core/html",
-  "core/button",
-  "core/buttons",
-  "core/separator",
-  "core/shortcode",
-  "core/block" // Reusable blocks
-]
-
+{
+	"custom": [
+		"ksd/example-container",
+		"ksd/example-dynamic",
+		"ksd/example-view-script"
+    ...
+	],
+	"default": [
+		// Blocks that are whitelisted for core blocks
+		"core/paragraph",
+		"core/image",
+		"core/heading",
+		"core/list",
+		"core/list-item",
+		"core/html",
+		"core/button",
+		"core/buttons",
+		"core/separator",
+		"core/shortcode",
+		"core/block" // Reusable blocks
+	]
+}
 ```
 
 ---
