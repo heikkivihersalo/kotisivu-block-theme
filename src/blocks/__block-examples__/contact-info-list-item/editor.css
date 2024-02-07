@@ -1,0 +1,13 @@
+.wp-block-ksd-contact-info-list-item {
+	list-style: none;
+	padding: 0;
+
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+	gap: var(--wp--preset--spacing--30);
+}
+
+.wp-block-ksd-contact-info-list-item > span {
+	display: none;
+}

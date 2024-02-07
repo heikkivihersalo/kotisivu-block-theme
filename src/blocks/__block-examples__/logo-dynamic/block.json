@@ -1,0 +1,27 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "ksd/logo-dynamic",
+	"title": "Dynamic Company Logo",
+	"category": "dynamic-data",
+	"icon": "nametag",
+	"description": "Display site logo on your site. Toggles color between light and dark based on background color.",
+	"keywords": ["site, logo"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"options": {
+			"type": "object"
+		},
+		"isLink": {
+			"type": "boolean",
+			"default": true
+		}
+	}
+}
