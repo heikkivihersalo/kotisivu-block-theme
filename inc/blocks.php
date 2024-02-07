@@ -95,8 +95,10 @@ class Blocks {
         if (!empty($editor_context->post) || $editor_context->name === 'core/edit-site') :
             /* Return merged block array */
             return array_merge(
+                $this->blocks["core"],
                 $this->blocks["custom"],
-                $this->blocks["core"]
+                $this->blocks["parts"],
+                $this->blocks["templates"]
             );
         endif;
 
@@ -137,9 +139,33 @@ class Blocks {
             $this->parent_path,
             $this->parent_uri,
             $this->path,
-            $this->uri
+            $this->uri,
+            'custom'
         );
+
         $custom_blocks->init();
+
+        $part_blocks = new BlockCustom(
+            $this->blocks['parts'],
+            $this->parent_path,
+            $this->parent_uri,
+            $this->path,
+            $this->uri,
+            'parts'
+        );
+
+        $part_blocks->init();
+
+        $template_blocks = new BlockCustom(
+            $this->blocks['templates'],
+            $this->parent_path,
+            $this->parent_uri,
+            $this->path,
+            $this->uri,
+            'templates'
+        );
+
+        $template_blocks->init();
 
         $core_blocks = new BlockCore(
             $this->blocks['core'],
@@ -148,8 +174,9 @@ class Blocks {
             $this->path,
             $this->uri
         );
+
         $core_blocks->init();
-        
+
         /**
          * Register ajax calls
          */
