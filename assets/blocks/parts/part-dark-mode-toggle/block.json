@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/block.json",
   "apiVersion": 2,
   "name": "ksd/part-dark-mode-toggle",
-  "title": "Part | Dark Mode Toggle",
+  "title": "Dark Mode Toggle",
   "category": "theme",
   "icon": "block-default",
   "description": "",
