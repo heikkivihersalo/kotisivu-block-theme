@@ -157,33 +157,44 @@
 				"schema": [
 					{
 						"name": "id",
-						"type": "mediumint",
-						"length": 9,
+						"type": "int",
+						"length": 20,
+						"unsigned": true,
 						"not_null": true,
 						"auto_increment": true,
 						"primary_key": true
 					},
 					{
-						"name": "time",
+						"name": "other_table_id",
+						"type": "int",
+						"length": 20,
+						"unsigned": true,
+						"foreign_key": {
+							"table": "other_table",
+							"column": "id",
+							"on_delete": "restrict",
+							"on_update": "cascade"
+						}
+					},
+					{
+						"name": "longtext_example",
+						"type": "longtext",
+						"default": "''"
+					},
+					{
+						"name": "boolean_example",
+						"type": "boolean"
+					},
+					{
+						"name": "varchar_example",
+						"type": "varchar",
+						"length": 255,
+						"default": "''"
+					},
+					{
+						"name": "time_example",
 						"type": "datetime",
 						"default": "'0000-00-00 00:00:00'",
-						"not_null": true
-					},
-					{
-						"name": "name",
-						"type": "tinytext",
-						"not_null": true
-					},
-					{
-						"name": "text",
-						"type": "text",
-						"not_null": true
-					},
-					{
-						"name": "url",
-						"type": "varchar",
-						"length": 55,
-						"default": "''",
 						"not_null": true
 					}
 				]
