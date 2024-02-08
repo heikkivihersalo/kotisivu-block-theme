@@ -6,7 +6,7 @@ import { __ } from "@wordpress/i18n";
  */
 domReady(function () {
     const html = document.getElementsByTagName("html")[0];
-    const schemeToggleButtons = document.querySelectorAll(".scheme-toggle");
+    const schemeToggleButtons = document.querySelectorAll(".dark-mode-toggle");
     const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
 
     /**
