@@ -18,9 +18,9 @@ $attributes = get_block_wrapper_attributes([
 ?>
 
 <header <?php echo wp_kses_data($attributes); ?>>
-    <?php echo do_blocks('<!-- wp:ksd/logo {"className":"header__logo", "isLink":true} /-->'); ?>
-    <nav class="header__site-nav">
-        <button class="header__toggle" aria-controls="primary-navigation" aria-expanded="false">
+    <?php echo do_blocks('<!-- wp:ksd/logo {"className":"site-header__logo", "isLink":true} /-->'); ?>
+    <nav class="site-header__nav">
+        <button class="site-header__toggle" aria-controls="primary-navigation" aria-expanded="false">
             <span class="is-visually-hidden"><?php _e('Menu', 'kotisivu-block-theme'); ?></span>
             <svg fill="var(--_toggle-color)" viewBox="0 0 100 100" width="50" aria-hidden="true">
                 <rect class="line top" width="80" height="10" x="10" y="25" rx="5">
@@ -35,10 +35,10 @@ $attributes = get_block_wrapper_attributes([
             <?php wp_nav_menu(array(
                 'theme_location' => 'primary-navigation',
                 'container' => '',
-                'menu_class' => 'header__menu',
+                'menu_class' => 'site-header__menu',
                 'menu_id' => 'primary-navigation'
             )); ?>
         <?php endif; ?>
-        <?php echo do_blocks('<!-- wp:ksd/dark-mode-toggle /-->'); ?>
+        <?php echo $content; ?>
     </nav>
 </header>
