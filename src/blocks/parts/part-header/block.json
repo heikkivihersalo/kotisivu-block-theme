@@ -1,8 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "ksd/site-header",
-	"title": "Site Header",
+	"name": "ksd/part-header",
+	"title": "Part | Header",
 	"category": "theme",
 	"icon": "block-default",
 	"description": "",
@@ -18,8 +18,5 @@
 	"render": "file:./render.php",
 	"viewScript": "file:./view.js",
 	"attributes": {
-		"options": {
-			"type": "object"
-		}
 	}
 }

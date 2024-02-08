@@ -1,8 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "ksd/site-footer",
-	"title": "Site Footer",
+	"name": "ksd/part-footer",
+	"title": "Part | Footer",
 	"category": "theme",
 	"icon": "block-default",
 	"description": "",
@@ -16,9 +16,5 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"render": "file:./render.php",
-	"attributes": {
-		"options": {
-			"type": "object"
-		}
-	}
+	"attributes": {}
 }
