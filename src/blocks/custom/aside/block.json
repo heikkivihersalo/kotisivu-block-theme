@@ -33,7 +33,12 @@
 		},
 		"style": {
 			"type": "object",
-			"default": {}
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
 		},
 		"ariaLabel": {
 			"type": "string"

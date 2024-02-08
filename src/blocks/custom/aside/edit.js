@@ -3,8 +3,7 @@
  */
 import { __ } from "@wordpress/i18n";
 import {
-	useBlockProps,
-	InspectorControls
+	useBlockProps
 } from "@wordpress/block-editor";
 import classnames from 'classnames';
 
@@ -25,14 +24,14 @@ import './editor.css';
 const Edit = (props) => {
 	const {
 		attributes: {
+			blockClass,
 			ariaLabel,
 			ariaLabelledBy,
-			blockClass,
 			template,
 			templateLock,
 			style,
-			isReversed,
-			variationName
+			variationName,
+			isReversed
 		},
 		setAttributes,
 		clientId

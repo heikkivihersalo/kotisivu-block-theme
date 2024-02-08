@@ -12,7 +12,7 @@ import {
 	BackgroundColorControl,
 	WidthControls,
 	GridAlignControls,
-	GapControls
+	GapControls,
 } from "@features/inspector";
 
 const Inspector = (props) => {

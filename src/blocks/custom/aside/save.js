@@ -6,9 +6,9 @@ import { getBlockStyles, getIsReversedClass } from '@utils';
 const Save = (props) => {
 	const {
 		attributes: {
+			blockClass,
 			ariaLabel,
 			ariaLabelledBy,
-			blockClass,
 			style,
 			isReversed
 		}
@@ -22,8 +22,9 @@ const Save = (props) => {
 	}));
 
 	return (
-		<aside {...innerBlocksProps} />
+		<section {...innerBlocksProps} />
 	)
+
 };
 
 export default Save;

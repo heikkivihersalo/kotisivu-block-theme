@@ -8,7 +8,7 @@ const variations = [
         scope: 'block',
         innerBlocks: [],
         attributes: {
-            blockClass: "grid-cols-1",
+            blockClass: "",
             style: {}
         }
     },
