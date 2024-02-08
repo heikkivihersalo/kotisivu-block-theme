@@ -8,10 +8,9 @@
 		"ksd/template-search",
 		"ksd/template-single"
 	],
-	"parts": ["ksd/part-header", "ksd/part-footer"],
+	"parts": ["ksd/part-dark-mode-toggle", "ksd/part-header", "ksd/part-footer"],
 	"custom": [
 		"ksd/aside",
-		"ksd/dark-mode-toggle",
 		"ksd/details",
 		"ksd/form",
 		"ksd/hero",
