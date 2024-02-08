@@ -1,5 +1,12 @@
-const Save = () => {
-	return null;
-};
+/**
+ * WordPress dependencies
+ */
+import { InnerBlocks } from '@wordpress/block-editor'
 
-export default Save;
+/**
+ * Block save function
+ * @returns {JSX.Element} - Block inner blocks markup
+ */
+export default function Save() {
+	return <InnerBlocks.Content />
+};
