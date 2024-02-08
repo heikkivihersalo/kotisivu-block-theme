@@ -1,16 +1,17 @@
 /**
- * WordPress dependencies
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { __ } from "@wordpress/i18n";
 
 /**
  * Internal dependencies
  */
 import metadata from './block.json';
-import variations from './variations.js';
 import edit from "./edit";
 import save from "./save";
+import variations from './variations.js';
 import './style.css';
 
 /**
@@ -19,12 +20,27 @@ import './style.css';
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
 registerBlockType(metadata.name, {
+    /**
+     * @see ./edit.js
+     */
     edit,
+    /**
+     * @see ./save.js
+     */
     save,
+    /**
+     * @see ./variations.js
+     */
     variations,
-    getEditWrapperProps() {
+    /**
+     * Sets alignment.
+     *
+     * @param attributes
+     * @returns {{'data-align': *}}
+     */
+    getEditWrapperProps(attributes) {
         return {
-            'data-align': 'full',
+            'data-align': 'full'
         };
-    }
+    },
 });

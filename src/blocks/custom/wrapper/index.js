@@ -1,9 +1,9 @@
 /**
- * WordPress dependencies
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
-import { registerBlockType, registerBlockStyle } from '@wordpress/blocks';
-import domReady from '@wordpress/dom-ready';
-import { __ } from "@wordpress/i18n";
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -20,24 +20,27 @@ import './style.css';
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
 registerBlockType(metadata.name, {
+    /**
+     * @see ./edit.js
+     */
     edit,
+    /**
+     * @see ./save.js
+     */
     save,
+    /**
+     * @see ./variations.js
+     */
     variations,
-    getEditWrapperProps() {
+    /**
+     * Sets alignment.
+     *
+     * @param attributes
+     * @returns {{'data-align': *}}
+     */
+    getEditWrapperProps(attributes) {
         return {
-            'data-align': 'full',
+            'data-align': 'full'
         };
-    }
-});
-
-/**
- * Run on DOM ready
- * 
- * @see https://developer.wordpress.org/reference/functions/register_block_style/
- */
-domReady(function () {
-    registerBlockStyle(metadata.name, {
-        name: 'wrapper-shadow',
-        label: __('Shadow', 'kotisivu-block-theme'),
-    });
+    },
 });

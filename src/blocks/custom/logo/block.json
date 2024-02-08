@@ -3,7 +3,7 @@
 	"apiVersion": 2,
 	"name": "ksd/logo",
 	"title": "Logo",
-	"category": "dynamic-data",
+	"category": "theme",
 	"icon": "nametag",
 	"description": "Display site logo on your site",
 	"keywords": ["site, logo"],
