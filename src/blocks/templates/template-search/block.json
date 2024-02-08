@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "ksd/template-search",
 	"title": "Template | Search",
-	"category": "theme",
+	"category": "templates",
 	"icon": "block-default",
 	"description": "",
 	"keywords": [""],
