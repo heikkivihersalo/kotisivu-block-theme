@@ -5,12 +5,6 @@
 	width: 100%;
 }
 
-@media screen and (min-width: 1200px) {
-	.wp-block-button {
-		width: calc(50% - var(--wp--preset--spacing--30, 0.5em) * 0.5);
-	}
-}
-
 .wp-block-button__link {
 	--_background-color: var(--wp--preset--color--primary);
 	--_text-color: var(--wp--preset--color--white);
@@ -20,19 +14,6 @@
 	--_radius: 0;
 
 	--_size: 15rem;
-
-	--_shadow-color: var(--wp--preset--color--black);
-	--_shadow-base: 0.05em;
-	--_shadow: var(--_shadow-base) var(--_shadow-base) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 2) calc(var(--_shadow-base) * 2) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 3) calc(var(--_shadow-base) * 3) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 4) calc(var(--_shadow-base) * 4) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 5) calc(var(--_shadow-base) * 5) 0px 0px
-			var(--_shadow-color);
 
 	position: relative;
 
@@ -57,17 +38,6 @@
 
 	border-radius: var(--_radius);
 	border: var(--_border);
-
-	box-shadow: var(--_shadow);
-	user-select: none;
-	-webkit-user-select: none;
-	touch-action: manipulation;
-}
-
-.wp-block-button__link:active {
-	box-shadow: 0px 0px 0px 0px;
-	top: calc(var(--_shadow-base) * 5);
-	left: calc(var(--_shadow-base) * 5);
 }
 
 /* ==================== */
