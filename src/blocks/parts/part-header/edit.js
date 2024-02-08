@@ -27,8 +27,8 @@ export default function Edit(props) {
 
 	return (
 		<header {...blockProps}>
-			<div>Site Logo</div>
-			<div>Site Navigation</div>
+			<div className="editor-site-logo-placeholder">Site Logo</div>
+			<div className="editor-site-navigation-placeholder">Site Navigation</div>
 			<InnerBlocks template={template} templateLock={templateLock} allowedBlocks={allowedBlocks} />
 		</header>
 	);
