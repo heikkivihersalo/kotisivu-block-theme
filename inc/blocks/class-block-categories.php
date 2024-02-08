@@ -72,6 +72,15 @@ class BlockCategories {
             array_push(
                 $block_categories,
                 array(
+                    'slug'  => 'templates',
+                    'title' => __('Templates', 'kotisivu-block-theme'),
+                    'icon'  => null,
+                )
+            );
+
+            array_push(
+                $block_categories,
+                array(
                     'slug'  => 'dynamic-data',
                     'title' => __('Dynamic Data', 'kotisivu-block-theme'),
                     'icon'  => null,
