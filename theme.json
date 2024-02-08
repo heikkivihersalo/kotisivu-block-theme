@@ -381,30 +381,5 @@
 		}
 	},
 	"templateParts": [
-		{
-			"name": "header",
-			"title": "Header",
-			"area": "header"
-		},
-		{
-			"name": "footer",
-			"title": "Footer",
-			"area": "footer"
-		},
-		{
-			"name": "page-content",
-			"title": "Page Content",
-			"area": "uncategorized"
-		},
-		{
-			"name": "single-content",
-			"title": "Blog Content",
-			"area": "uncategorized"
-		},
-		{
-			"name": "form",
-			"title": "Form",
-			"area": "uncategorized"
-		}
 	]
 }
