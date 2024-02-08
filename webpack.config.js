@@ -122,7 +122,7 @@ module.exports = [
             'admin': THEME_SOURCE_PATH + '/admin.js',
             'inline': THEME_SOURCE_PATH + '/inline.js',
             'sanitize': THEME_SOURCE_PATH + '/sanitize.js',
-            'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js',
+            'dark-mode': THEME_SOURCE_PATH + '/dark-mode.js'
         },
         output: {
             filename: 'theme/[name].js',
