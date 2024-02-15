@@ -112,8 +112,8 @@ final class Utils {
      */
     public static function get_block_path(string $block, string $type, string $path, string $parent_path): string {
         $_name = explode('/', $block)[1];
-        $_path = $path . '/assets/blocks';
-        $_parent_path = $parent_path . '/assets/blocks';
+        $_path = $path . '/build/blocks';
+        $_parent_path = $parent_path . '/build/blocks';
 
         return file_exists("{$_path}/{$type}/{$_name}")
             ? "{$_path}/{$type}/{$_name}"
