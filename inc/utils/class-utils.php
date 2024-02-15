@@ -64,7 +64,6 @@ final class Utils {
         $cache = wp_cache_get('kotisivu-block-theme' . '_' . $slug);
 
         if ($cache === false) {
-            get_option('kotisivu-block-theme' . '_' . $slug);
             $cache = get_option('kotisivu-block-theme' . '_' . $slug);
             wp_cache_set('kotisivu-block-theme' . '_' . $slug, $cache);
         }
