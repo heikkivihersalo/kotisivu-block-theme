@@ -54,12 +54,10 @@ const getPlugins = (plugins) => {
                 ...p,
                 cleanOnceBeforeBuildPatterns: [
                     '**/*',
-                    '!fonts/**',
                     '!images/**',
-                    '!icons/**',
                     '!theme/**'
                 ],
-                cleanAfterEveryBuildPatterns: ['!fonts/**', '!images/**', '!icons/**', '!theme/**']
+                cleanAfterEveryBuildPatterns: ['!images/**', '!theme/**']
             }));
         }
     })
@@ -102,7 +100,7 @@ module.exports = [
             'blocks/core/core': getCoreBlocks(),
         },
         output: {
-            path: path.resolve(process.cwd(), 'assets'),
+            path: path.resolve(process.cwd(), 'build'),
         },
         resolve: {
             alias: {
@@ -126,7 +124,7 @@ module.exports = [
         },
         output: {
             filename: 'theme/[name].js',
-            path: path.resolve(process.cwd(), 'assets')
+            path: path.resolve(process.cwd(), 'build')
         },
         plugins: [
             new CleanWebpackPlugin({
