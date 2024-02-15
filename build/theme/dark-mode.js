@@ -1,0 +1,1 @@
+(()=>{"use strict";const e=document.cookie.split(";");e.some((e=>e.includes("color-scheme=dark")))&&document.getElementsByTagName("html")[0].setAttribute("color-scheme","dark"),e.some((e=>e.includes("color-scheme=light")))&&document.getElementsByTagName("html")[0].setAttribute("color-scheme","light")})();

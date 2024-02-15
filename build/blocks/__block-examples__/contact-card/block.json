@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "ksd/contact-card",
+  "title": "Contact Card",
+  "category": "design",
+  "icon": "excerpt-view",
+  "description": "",
+  "keywords": [
+    "contact",
+    "list",
+    "card"
+  ],
+  "textdomain": "kotisivu-block-theme",
+  "supports": {
+    "className": false,
+    "html": true,
+    "anchor": true,
+    "color": {
+      "text": false,
+      "background": true
+    },
+    "spacing": {
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "padding": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "attributes": {
+    "style": {
+      "type": "object"
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockWrapper": {
+      "type": "string",
+      "default": "div"
+    },
+    "template": {
+      "type": "array",
+      "default": []
+    },
+    "allowedBlocks": {
+      "type": "array"
+    },
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        false
+      ]
+    },
+    "variationName": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}
