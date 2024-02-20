@@ -86,6 +86,14 @@ After translations are done, remember to create json files with `yarn make-json`
 yarn make-json
 ```
 
+### Create zip folder
+
+To create a zip folder from theme, run `yarn zip` command. This is a quick way to create zip folder for theme updates. Zipped folder can be uploaded straight to WordPress.
+
+```console
+yarn zip
+```
+
 ### General tips
 
 While developing different iterations of this theme (and native Gutenberg block building in general), I have found out several workflows that work really well. Here are some of them:
