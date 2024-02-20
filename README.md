@@ -540,7 +540,15 @@ To user this doesn't make such big of an difference but creating new templates a
 > [!NOTE]
 > If it is required for user to edit template parts, you must create a page template completely with FSE.
 
-Templates and parts are located in `src` folder. For example `src/blocks/templates` and `src/blocksparts`. Parts like header and footer prefixed with `part-` and templates prefixed with `template-`.
+Templates and parts are located in `src` folder. For example `src/blocks/templates` and `src/blocks/parts`. Parts like header and footer prefixed with `part-` and templates prefixed with `template-`.
+
+`do_blocks` -function is excelent for rendering individual blocks or parts in templates. This can be anything from dark-mode-toggle to social icons etc.
+
+Example usage:
+
+```php
+  echo do_blocks('<!-- wp:<BLOCK_NAMESPACE>/<BLOCK_SLUG> {"attribute_key":"attribute_val"} /-->');
+```
 
 ## Enqueuing scripts and styles
 
@@ -605,3 +613,7 @@ Theme uses custom Tag Manager script that sets a delay for loading the container
 ### Contact and Social Platform Information
 
 Theme has a centralized place to add company's social platform and contact information. These can be dynamically fetched from database so you don't have to pass same information again and again. For example default footer and social icon blocks use dynamic data.
+
+```
+
+```
