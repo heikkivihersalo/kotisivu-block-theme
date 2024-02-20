@@ -32,6 +32,7 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress). Wor
   - [Custom Post Types](#custom-post-types)
   - [Metaboxes](#metaboxes)
   - [Custom Database Tables](#custom-database-tables)
+- [Templates and Parts](#templates-and-parts)
 - [Enqueuing scripts and styles](#enqueuing-scripts-and-styles)
 - [Blocks.json](#blocksjson)
 - [Security](#security)
@@ -114,13 +115,10 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 ```javascript
 ├── .vscode // VSCode spesific config files for a faster workflow
-├── assets // Theme assets that are loaded on front-end and back-end
-│   │   blocks // Build folder for blocks (don't add own files here)
+├── build // Build files created from src folder
+│   │   blocks
 │   │   ├── ...
-│   ├── fonts // Theme fonts. NOTE! Remember to add correct paths to theme.json
-│   │   ├── ...
-│   ├── icons // Theme icons. It is advisable to folder the icons accordingly
-│   │   theme // Build folder for theme (don't add own files here)
+│   │   theme
 │   │   ├── ...
 ├── inc
 │   ├── blocks // Any block related classes goes here
@@ -136,6 +134,10 @@ While developing different iterations of this theme (and native Gutenberg block 
 │   ├── theme.php // Main theme class. Loads all classes from theme folder
 ├── languages // WordPress main folder for translations
 ├── parts // Block theme style parts folder
+├── public // Other theme assets that are loaded on front-end and back-end (fonts and icons etc.)
+│   ├── fonts // Theme fonts. NOTE! Remember to add correct paths to theme.json
+│   │   ├── ...
+│   ├── icons // Theme icons. It is advisable to folder the icons accordingly
 ├── src // JS and CSS files that requires a build process (Blocks, theme CSS and JS)
 │   ├── blocks
 │   │   ├── core // Core block modifications
@@ -520,6 +522,25 @@ Adding custom database tables can be done by enabling the feature and deactivati
 ```
 
 ---
+
+## Templates and Parts
+
+To provide more flexible developer experience, theme bypasses block theme default templating system. Instead, it uses dynamic blocks to create different parts of the site.
+
+For example typical block theme index.html file looks like this:
+
+```html
+<!-- wp:ksd/part-header /-->
+<!-- wp:ksd/template-index /-->
+<!-- wp:ksd/part-footer /-->
+```
+
+To user this doesn't make such big of an difference but creating new templates and parts with PHP and React is much more flexible than trying to do everything with FSE (Full Site Editor).
+
+> [!NOTE]
+> If it is required for user to edit template parts, you must create a page template completely with FSE.
+
+Templates and parts are located in `src` folder. For example `src/blocks/templates` and `src/blocksparts`. Parts like header and footer prefixed with `part-` and templates prefixed with `template-`.
 
 ## Enqueuing scripts and styles
 
