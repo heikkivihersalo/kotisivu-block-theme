@@ -31,12 +31,12 @@ $theme_path = get_theme_file_path();
 $theme_uri = get_theme_file_uri();
 $theme_options = Utils::get_options_file('site-options');
 $theme_analytics = Utils::get_options_file('site-analytics');
-$theme_config = Utils::get_config_file('theme_config', 'config.json', $theme_path, $theme_parent_path);
+$theme_config = include(dirname(__FILE__) . '/theme.config.php');
 
 /**
  * Get block attributes
  */
-$blocks = Utils::get_config_file('theme_blocks', 'blocks.json', $theme_path, $theme_parent_path);
+$blocks = include(dirname(__FILE__) . '/blocks.config.php');
 
 /*
 |--------------------------------------------------------------------------
