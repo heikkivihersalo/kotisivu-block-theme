@@ -1,5 +1,14 @@
-{
-	"templates": [
+<?php
+
+namespace Kotisivu\BlockTheme;
+
+defined('ABSPATH') or die();
+
+/**
+ * Set blocks configuration
+ */
+return array(
+	"templates" => [
 		"ksd/template-404",
 		"ksd/template-archive",
 		"ksd/template-home",
@@ -8,8 +17,8 @@
 		"ksd/template-search",
 		"ksd/template-single"
 	],
-	"parts": ["ksd/part-dark-mode-toggle", "ksd/part-header", "ksd/part-footer"],
-	"custom": [
+	"parts" => ["ksd/part-dark-mode-toggle", "ksd/part-header", "ksd/part-footer"],
+	"custom" => [
 		"ksd/aside",
 		"ksd/details",
 		"ksd/form",
@@ -19,7 +28,7 @@
 		"ksd/social-icons",
 		"ksd/wrapper"
 	],
-	"core": [
+	"core" => [
 		"core/paragraph",
 		"core/image",
 		"core/heading",
@@ -32,4 +41,4 @@
 		"core/shortcode",
 		"core/block"
 	]
-}
+);
