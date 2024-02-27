@@ -13,7 +13,7 @@ const Edit = (props) => {
 		<div {...blockProps}>
 			<Inspector {...props} />
 			<ServerSideRender
-				block="ksd/site-logo"
+				block="ksd/part-logo-dynamic"
 				attributes={props.attributes}
 				className={props.className}
 			/>

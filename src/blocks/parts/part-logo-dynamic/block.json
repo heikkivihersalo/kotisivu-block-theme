@@ -1,11 +1,11 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "ksd/logo",
-	"title": "Logo",
+	"name": "ksd/part-logo-dynamic",
+	"title": "Part | Dynamic Company Logo",
 	"category": "theme",
-	"icon": "nametag",
-	"description": "Display site logo on your site",
+	"icon": "block-default",
+	"description": "Display site logo on your site. Toggles color between light and dark based on background color.",
 	"keywords": ["site, logo"],
 	"textdomain": "kotisivu-block-theme",
 	"supports": {
