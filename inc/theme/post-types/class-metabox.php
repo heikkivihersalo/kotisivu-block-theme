@@ -151,22 +151,34 @@ class Metabox {
     public function create_field($post, $field) {
         ob_start(); ?>
         <div class="metabox__input-wrapper">
-            <label for="<?php echo $field['id']; ?>"><?php _e($field['label'], 'kotisivu-block-theme'); ?></label>
+            <?php if ($field['type'] == 'checkbox-group') : ?>
+                <!-- Checkbox Group --->
+                <fieldset>
+                    <legend class="screen-reader-text"><?php _e($field['label'], 'kotisivu-block-theme'); ?></legend>
+                    <?php foreach ($field['options'] as $option) : ?>
+                        <input type="checkbox" id="<?php echo $field['id'] . '_' . $option ?>" name="<?php echo $field['id']  . '_' . $option ?>" value="1" <?php checked(1, esc_attr(get_post_meta($post->ID, $field['id']  . '_' . $option, true))) ?>>
+                        <label for="<?php echo $field['id']  . '_' . $option ?>"><?php echo $option ?></label>
+                    <?php endforeach; ?>
+                </fieldset>
+            <?php endif; ?>
+
             <?php if ($field['type'] == 'text' || $field['type'] == 'url' || $field['type'] == 'number') : ?>
                 <!-- Text, URL, Number --->
+                <label for="<?php echo $field['id']; ?>"><?php _e($field['label'], 'kotisivu-block-theme'); ?></label>
                 <input type="<?php echo $field['type'] ?>" id="<?php echo $field['id'] ?>" name="<?php echo $field['id'] ?>" value="<?php echo esc_attr(get_post_meta($post->ID, $field['id'], true)) ?>">
             <?php endif ?>
 
             <?php if ($field['type'] == 'checkbox') : ?>
                 <!-- Checkbox --->
+                <label for="<?php echo $field['id']; ?>"><?php _e($field['label'], 'kotisivu-block-theme'); ?></label>
                 <input type="<?php echo $field['type'] ?>" id="<?php echo $field['id'] ?>" name="<?php echo $field['id'] ?>" value="1" <?php checked(1, esc_attr(get_post_meta($post->ID, $field['id'], true))) ?>>
             <?php endif; ?>
 
             <?php if ($field['type'] == 'select') : ?>
                 <?php $meta_values = get_post_meta($post->ID, $field['id'], true); ?>
                 <!-- Select --->
+                <label for="<?php echo $field['id']; ?>"><?php _e($field['label'], 'kotisivu-block-theme'); ?></label>
                 <select name="<?php echo $field['id'] ?>">
-                    <?php var_dump($field); ?>
                     <?php foreach ($field['options'] as $option) : ?>
                         <option value="<?php echo $option['value'] ?>" <?php selected($meta_values, $option['value']); ?>><?php echo $option['label'] ?></option>
                     <?php endforeach; ?>
@@ -250,34 +262,73 @@ class Metabox {
         foreach ($this->markup as $field) {
             /* Sanitize Fields */
             if ($field['type'] == 'url') {
-                $content = sanitize_url($_POST[$field['id']]);
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    sanitize_url($_POST[$field['id']])
+                );
             }
 
             if ($field['type'] == 'text') {
-                $content = sanitize_text_field($_POST[$field['id']]);
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    sanitize_text_field($_POST[$field['id']])
+                );
             }
 
             if ($field['type'] == 'checkbox') {
-                $content = sanitize_text_field($_POST[$field['id']]);
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    sanitize_text_field($_POST[$field['id']])
+                );
+            }
+
+            if ($field['type'] == 'checkbox-group') {
+                foreach ($field['options'] as $option => $value) {
+                    $field_id = $field['id'] . '_' . $value;
+
+                    $this->update_database_value(
+                        $post_id,
+                        $field_id,
+                        sanitize_text_field($_POST[$field_id])
+                    );
+                }
             }
 
             if ($field['type'] == 'number') {
-                $content = sanitize_text_field($_POST[$field['id']]);
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    sanitize_text_field($_POST[$field['id']])
+                );
             }
 
             if ($field['type'] == 'select') {
-                $content = sanitize_text_field($_POST[$field['id']]);
-            }
-
-            /* Save to database */
-            if (isset($_POST[$field['id']])) {
-                update_post_meta($post->ID, $field['id'], $content);
-            } else {
-                delete_post_meta($post->ID, $field['id']);
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    sanitize_text_field($_POST[$field['id']])
+                );
             }
         }
 
         return $post_id;
+    }
+
+    /**
+     * Update database value
+     * @param string $post_id
+     * @param string $field
+     * @param string $content
+     */
+    public function update_database_value($post_id, $field, $content) {
+        if (isset($_POST[$field])) {
+            update_post_meta($post_id, $field, $content);
+        } else {
+            delete_post_meta($post_id, $field);
+        }
     }
 
     /**

@@ -152,6 +152,32 @@ return array(
 							"id" => "url_input",
 							"label" => __("URL Input", "kotisivu-block-theme"),
 							"type" => "url"
+						],
+						[
+							"id" => "number_input",
+							"label" => __("Number Input", "kotisivu-block-theme"),
+							"type" => "number"
+						],
+						[
+							"id" => "checkbox_input",
+							"label" => __("Checkbox Input", "kotisivu-block-theme"),
+							"type" => "checkbox"
+						],
+						[
+							"id" => "checkbox-group_input",
+							"label" => __("Checkbox Group Input", "kotisivu-block-theme"),
+							"type" => "checkbox-group",
+							"options" => ["option1", "option2", "option3"]
+						],
+						[
+							"id" => "select_input",
+							"label" => __("Select Input", "kotisivu-block-theme"),
+							"type" => "select",
+							"options" => [
+								["value" => "option1", "label" => "Option 1"],
+								["value" => "option2", "label" => "Option 2"],
+								["value" => "option3", "label" => "Option 3"]
+							]
 						]
 					]
 				]
