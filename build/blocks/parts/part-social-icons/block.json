@@ -1,13 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/block.json",
   "apiVersion": 2,
-  "name": "ksd/logo",
-  "title": "Logo",
+  "name": "ksd/part-social-icons",
+  "title": "Part | Social Icons",
   "category": "theme",
-  "icon": "nametag",
-  "description": "Display site logo on your site",
+  "icon": "block-default",
+  "description": "Add global social icons to your site.",
   "keywords": [
-    "site, logo"
+    "social, icons, header"
   ],
   "textdomain": "kotisivu-block-theme",
   "supports": {
@@ -17,13 +17,5 @@
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
   "render": "file:./render.php",
-  "attributes": {
-    "options": {
-      "type": "object"
-    },
-    "isLink": {
-      "type": "boolean",
-      "default": true
-    }
-  }
+  "attributes": {}
 }

@@ -1,13 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/block.json",
   "apiVersion": 2,
-  "name": "ksd/social-icons",
-  "title": "Social Accounts",
-  "category": "dynamic-data",
-  "icon": "networking",
-  "description": "Add global social icons to your site.",
+  "name": "ksd/part-logo-dynamic",
+  "title": "Part | Dynamic Company Logo",
+  "category": "theme",
+  "icon": "block-default",
+  "description": "Display site logo on your site. Toggles color between light and dark based on background color.",
   "keywords": [
-    "social, icons, header"
+    "site, logo"
   ],
   "textdomain": "kotisivu-block-theme",
   "supports": {
@@ -20,6 +20,10 @@
   "attributes": {
     "options": {
       "type": "object"
+    },
+    "isLink": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
