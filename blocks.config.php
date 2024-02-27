@@ -17,7 +17,14 @@ return array(
 		"ksd/template-search",
 		"ksd/template-single"
 	],
-	"parts" => ["ksd/part-dark-mode-toggle", "ksd/part-header", "ksd/part-footer"],
+	"parts" => [
+		"ksd/part-dark-mode-toggle",
+		"ksd/part-header",
+		"ksd/part-footer",
+		"ksd/part-logo",
+		"ksd/part-logo-dynamic",
+		"ksd/part-social-icons"
+	],
 	"custom" => [
 		"ksd/aside",
 		"ksd/details",
@@ -25,7 +32,6 @@ return array(
 		"ksd/hero",
 		"ksd/logo",
 		"ksd/section",
-		"ksd/social-icons",
 		"ksd/wrapper"
 	],
 	"core" => [
