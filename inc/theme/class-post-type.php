@@ -90,6 +90,18 @@ class CustomPostType {
         if ($post_type_config['metaboxes']['active']) :
             $this->register_metaboxes($post_type_config['metaboxes']);
         endif;
+
+        if (isset($post_type_config['slug_translations'])) :
+            /**
+             * Add rewrite rules for slug translations
+             * If any problems occur, flush rewrite rules from settings
+             */
+            foreach ($post_type_config['slug_translations'] as $lang => $slug) :
+                $regex = '^' . $slug . '/([^/]*)/?';
+                $url = 'index.php?post_type=' . $post_type_config['names']['slug'] . '&name=$matches[1]';
+                add_rewrite_rule($regex, $url, 'top');
+            endforeach;
+        endif;
     }
 
     /**
@@ -109,6 +121,23 @@ class CustomPostType {
     public function init(): void {
         foreach ($this->post_types as $post_type) :
             $this->register_post_type($post_type);
+
+            /**
+             * If Polylang is enabled, add filter to change post type link
+             * to match the current language slug
+             */
+            if (function_exists('pll_get_post_language')) :
+                add_filter('post_type_link', function ($post_link, $post) use ($post_type) {
+                    $urls = $post_type['slug_translations'];
+                    $post_type = $post_type['names']['slug'];
+
+                    if (get_post_type($post) == $post_type) {
+                        $post_link = str_replace($post_type, urlencode($urls[pll_get_post_language($post->ID)]), $post_link);
+                    }
+
+                    return $post_link;
+                }, 10, 2);
+            endif;
         endforeach;
     }
 }

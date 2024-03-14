@@ -135,6 +135,10 @@ return array(
 					"parent_item_colon" => __("Parent example", "kotisivu-block-theme")
 				],
 				"icon" => "dashicons-star-filled",
+				"slug_translations" => [
+					"en" => "example",
+					"fi" => "esimerkki"
+				],
 				"metaboxes" => [
 					"active" => false,
 					"options" => [
