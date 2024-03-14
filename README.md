@@ -415,6 +415,8 @@ WordPress default image sizes are customized a little bit to better support vari
 
 Custom Post Types can be configured straight from config.json file. This utilizes PostTypes dependency with a metabox wrapper.
 
+TODO: Update this section with new PHP model
+
 ```json
 "customPostTypes": {
   "enabled": false,
@@ -448,6 +450,10 @@ Custom Post Types can be configured straight from config.json file. This utilize
         "parent_item_colon": "Parent example"
       },
       "icon": "dashicons-star-filled",
+      "slug_translations": {
+        "en": "example",
+        "fi": "esimerkki"
+      },
       "metaboxes": {
         ...
       }
@@ -456,6 +462,10 @@ Custom Post Types can be configured straight from config.json file. This utilize
   ]
 }
 ```
+
+#### Slug Translations
+
+TODO: Add instructions slug translations
 
 #### Metaboxes
 
