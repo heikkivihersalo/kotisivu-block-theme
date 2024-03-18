@@ -21,8 +21,10 @@ return array(
 		"ksd/part-dark-mode-toggle",
 		"ksd/part-header",
 		"ksd/part-footer",
+		"ksd/part-language-picker",
 		"ksd/part-logo",
 		"ksd/part-logo-dynamic",
+		"ksd/part-nav-header",
 		"ksd/part-social-icons"
 	],
 	"custom" => [
@@ -30,7 +32,6 @@ return array(
 		"ksd/details",
 		"ksd/form",
 		"ksd/hero",
-		"ksd/logo",
 		"ksd/section",
 		"ksd/wrapper"
 	],
