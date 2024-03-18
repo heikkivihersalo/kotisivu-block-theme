@@ -98,7 +98,7 @@ class WP_Head {
      */
     public function inline_fontawesome(): void {
         if (isset($this->settings['fontawesome'])) :
-            $folder = $this->parent_uri . '/build/icons/fontawesome/css/';
+            $folder = $this->parent_uri . '/public/icons/fontawesome/css/';
 
             foreach ($this->settings['fontawesome'] as $slug => $is_enabled) :
                 if (!$is_enabled) continue;
