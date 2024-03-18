@@ -1,15 +1,39 @@
-.dynamic-logo {
+.site-header__logo {
 	--_default-color: hsl(0, 1%, 16%);
 	--_dark-color: hsl(0, 0%, 100%);
 	--_light-color: hsl(0, 1%, 16%);
 
-	--_logo-color: var(--_default-color);
+	--_color: var(--_default-color);
+
+	position: fixed;
+	width: 100%;
+
+	height: var(--_header-height);
+	background: var(--_header-background-color);
 }
 
-[color-scheme="dark"] .dynamic-logo {
-	--_logo-color: var(--_dark-color);
+.site-header__logo__link {
+	position: fixed;
+
+	height: var(--_header-height);
+	width: clamp(
+		11.0890051808976rem,
+		calc(9.30881991978825rem + 8.90092630554659vw),
+		19.9899314864442rem
+	);
+
+	padding: 1em;
+
+	z-index: 9999;
 }
 
-[color-scheme="light"] .dynamic-logo {
-	--_logo-color: var(--_default-color);
+/** ======================
+ ** COLOR SCHEMES
+ ** ==================== */
+[color-scheme="dark"] .site-header__logo {
+	--_color: var(--_dark-color);
+}
+
+[color-scheme="light"] .site-header__logo {
+	--_color: var(--_default-color);
 }
