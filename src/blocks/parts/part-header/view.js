@@ -1,5 +1,8 @@
 import domReady from '@wordpress/dom-ready';
 
+// TODO: Handle arrow navigation
+// TODO: Handle rest of the keyboard navigation
+// TODO: Handle scroll lock when modal is open
 domReady(function () {
     const SITE_HEADER = document.getElementsByClassName("site-header")[0];
 
