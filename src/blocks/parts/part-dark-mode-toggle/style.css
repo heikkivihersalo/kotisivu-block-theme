@@ -1,67 +1,47 @@
-/**
- * Global styling
- */
+/** ==========================
+ ** TOGGLE
+ ** ======================= */
 .dark-mode-toggle {
-	--_icon-size: 3em;
-	--_icon-scale: 0.75;
-	--_icon-color: var(--wp--preset--color--background);
-	--_icon-background-color: var(--wp--preset--color--foreground);
-
-	display: none;
-	position: relative;
-
-	margin: 1rem;
-	padding: 1rem;
-
-	background-color: var(--_icon-background-color);
-
+	/* Resets */
+	background: none;
 	border: none;
-	border-radius: 50%;
 
-	transform: scale(var(--_icon-scale));
+	/* Custom properties */
+	--_text-family: var(--wp--preset--font-family--heading);
+	--_text-weight: 600;
+	--_text-size: var(--wp--preset--font-size--medium);
+	--_text-color: var(--wp--preset--color--foreground);
+
+	--_icon-size: 1.375rem;
+	--_icon-color: var(--wp--preset--color--foreground);
+	--_icon-line-width: 50px;
+
+	/* Custom Styles */
+	position: relative;
+	cursor: pointer;
+
+	padding: 0.375em 0.75em;
 }
 
+/** ==========================
+ ** ICON
+ ** ======================= */
 .dark-mode-toggle__icon {
 	width: var(--_icon-size);
 	height: var(--_icon-size);
 }
 
-@media screen and (min-width: 1000px) {
-	.dark-mode-toggle {
-		display: inline-block;
-	}
-}
-
-/**
- * Light mode icon (moon)
- */
-.dark-mode-toggle__icon-circle {
-	fill: var(--_icon-color);
-}
-
-.dark-mode-toggle__icon-overlap {
-	fill: var(--_icon-background-color);
+[color-scheme="dark"] .dark-mode-toggle__icon--moon,
+[color-scheme="light"] .dark-mode-toggle__icon--sun {
 	display: none;
 }
 
-[color-scheme="light"] .dark-mode-toggle__icon-overlap {
-	display: inline-block;
-	transform: translate(5.5em, -3.5em);
-}
-
-[color-scheme="light"] .dark-mode-toggle__icon-line {
-	display: none;
-}
-
-[color-scheme="light"] .dark-mode-toggle__icon {
-	transform: scale(2);
-}
-
-/**
- * Dark mode icon (sun)
- */
-.dark-mode-toggle__icon-line {
-	stroke: var(--_icon-color);
-	stroke-width: 40;
-	stroke-linecap: round;
+/** ==========================
+ ** TEXT
+ ** ======================= */
+.dark-mode-toggle__text {
+	font-family: var(--_text-family);
+	font-size: var(--_text-size);
+	font-weight: var(--_text-weight);
+	color: var(--_text-color);
 }
