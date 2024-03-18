@@ -49,11 +49,15 @@ return array(
 	],
 	"menus" => [
 		[
-			"slug" => "primary-navigation",
+			"slug" => "header-nav",
 			"name" => __("Header Navigation", "kotisivu-block-theme")
 		],
 		[
-			"slug" => "secondary-navigation",
+			"slug" => "legal-nav",
+			"name" => __("Legal Navigation", "kotisivu-block-theme")
+		],
+		[
+			"slug" => "footer-nav",
 			"name" => __("Footer Navigation", "kotisivu-block-theme")
 		]
 	],
