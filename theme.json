@@ -54,6 +54,11 @@
 					"name": "Black"
 				},
 				{
+					"slug": "grey-extra-light",
+					"color": "oklch(95% 0.005 353.45)",
+					"name": "Light Grey"
+				},
+				{
 					"slug": "grey-light",
 					"color": "oklch(75% 0.005 353.45)",
 					"name": "Light Grey"
@@ -380,6 +385,5 @@
 			}
 		}
 	},
-	"templateParts": [
-	]
+	"templateParts": []
 }
