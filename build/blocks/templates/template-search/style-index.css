@@ -1,1 +1,1 @@
-:where(main){margin-inline:auto;width:var(--wp--custom--wide-size)}:where(main>section){margin-inline:auto;width:var(--wp--custom--content-size)}:where(main>section):not(section:first-of-type){margin-top:var(--wp--preset--spacing--60)}:where(main>section):not(section:last-of-type){margin-bottom:var(--wp--preset--spacing--60)}
+

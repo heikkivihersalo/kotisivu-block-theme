@@ -11,15 +11,18 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-$attributes = get_block_wrapper_attributes([
-    'class' => 'content-area',
-]);
-
+$sanitized_attributes = wp_kses_data(
+    get_block_wrapper_attributes([
+        'id' => 'primary',
+        'class' => 'content-area',
+    ])
+);
 ?>
 
-<div id="primary" <?php echo wp_kses_data($attributes); ?>>
+<div <?php echo $sanitized_attributes ?>>
     <main id="main" class="site-main">
-        <h1><?php the_title(); ?></h1>
-        <?php the_content(); ?>
+        <?php echo do_blocks(
+            sprintf('<!-- wp:ksd/%s /-->', $attributes['innerBlockName'])
+        ); ?>
     </main>
 </div>
