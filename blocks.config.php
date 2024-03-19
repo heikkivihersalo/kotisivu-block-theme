@@ -12,8 +12,10 @@ return array(
 		"ksd/template-404",
 		"ksd/template-archive",
 		"ksd/template-home",
+		"ksd/template-index",
+		"ksd/template-legal",
+		"ksd/template-main",
 		"ksd/template-page",
-		"ksd/template-privacy-policy",
 		"ksd/template-search",
 		"ksd/template-single"
 	],
