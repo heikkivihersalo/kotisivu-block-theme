@@ -21,7 +21,7 @@ export default function Edit(props) {
 	return (
 		<div {...blockProps}>
 			<ServerSideRender
-				block="ksd/template-privacy-policy"
+				block="ksd/template-legal"
 				attributes={props.attributes}
 			/>
 		</div>

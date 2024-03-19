@@ -1,20 +1,20 @@
-.privacy-policy main {
+.legal > main {
 	width: var(--wp--custom--narrow-size);
 	margin-inline: auto;
 	margin-block: var(--wp--preset--spacing--60);
 }
 
-.privacy-policy h1 {
+.legal > main h1 {
 	font-size: var(--wp--preset--font-size--gigantic);
 	margin-bottom: var(--wp--preset--spacing--40);
 }
 
-.privacy-policy h2 {
+.legal > main h2 {
 	font-size: var(--wp--preset--font-size--huge);
 	margin-top: var(--wp--preset--spacing--50);
 }
 
-.privacy-policy h3 {
+.legal > main h3 {
 	font-size: var(--wp--preset--font-size--large);
 	margin-top: var(--wp--preset--spacing--40);
 }
