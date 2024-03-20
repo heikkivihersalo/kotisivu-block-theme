@@ -19,9 +19,9 @@
   "style": "file:./style-index.css",
   "render": "file:./render.php",
   "attributes": {
-    "innerBlockName": {
+    "templateSlug": {
       "type": "string",
-      "default": ""
+      "default": "template-index"
     }
   }
 }
