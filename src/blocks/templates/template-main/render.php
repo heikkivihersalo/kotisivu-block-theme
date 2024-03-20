@@ -22,7 +22,7 @@ $sanitized_attributes = wp_kses_data(
 <div <?php echo $sanitized_attributes ?>>
     <main id="main" class="site-main">
         <?php echo do_blocks(
-            sprintf('<!-- wp:ksd/%s /-->', $attributes['innerBlockName'])
+            sprintf('<!-- wp:ksd/%s /-->', $attributes['templateSlug'])
         ); ?>
     </main>
 </div>
