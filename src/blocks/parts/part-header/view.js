@@ -2,9 +2,10 @@ import domReady from '@wordpress/dom-ready';
 
 // TODO: Handle arrow navigation
 // TODO: Handle rest of the keyboard navigation
-// TODO: Handle scroll lock when modal is open
 domReady(function () {
+    const SITE_BODY = document.getElementsByTagName("body")[0];
     const SITE_HEADER = document.getElementsByClassName("site-header")[0];
+    const SITE_CONTENT = document.getElementsByClassName("wp-site-blocks")[0];
 
     const NAV_CONTAINER = document.getElementById("header-dialog-container");
     const NAV_TOGGLE_OPEN = document.getElementById("header-dialog-btn--open");
@@ -24,6 +25,46 @@ domReady(function () {
     };
 
     /**
+     * Remove element interaction to prevent scrolling and clicking
+     * @param {HTMLElement} element - Element to remove interaction
+     * @return void
+     */
+    function removeElementInteraction(element) {
+        /**
+         * Guard Clauses
+         */
+        if (element === SITE_HEADER) return;
+
+        /**
+         * Set inert and aria-hidden attributes to prevent interaction
+         * Set overflow to hidden to prevent scrolling
+         */
+        element.setAttribute('inert', true);
+        element.setAttribute('aria-hidden', 'true');
+
+        SITE_BODY.style.overflow = 'hidden';
+    }
+
+    /**
+     * Restore element interaction to normal when closing mobile menu
+     * @param {HTMLElement} element - Element to restore interaction
+     * @return void
+     */
+    function restoreElementInteraction(element) {
+        /**
+         * Guard Clauses
+         */
+        if (element === SITE_HEADER) return;
+
+        /**
+         * Restore element interaction to normal
+         */
+        element.removeAttribute('inert');
+        element.removeAttribute('aria-hidden');
+        SITE_BODY.removeAttribute('style');
+    }
+
+    /**
      * Open mobile menu
      * @param {PointerEvent|KeyboardEvent} [event = null] - Event object
      * @return void
@@ -31,6 +72,10 @@ domReady(function () {
     async function openMobileMenu(event = null) {
         if (event) {
             event.preventDefault();
+        }
+
+        for (let i = 0; i < SITE_CONTENT.children.length; i++) {
+            removeElementInteraction(SITE_CONTENT.children[i]);
         }
 
         SITE_HEADER.setAttribute(ATTRIBUTES.MODAL, "open");
@@ -44,6 +89,10 @@ domReady(function () {
      * @return void
      */
     function closeMobileMenu() {
+        for (let i = 0; i < SITE_CONTENT.children.length; i++) {
+            restoreElementInteraction(SITE_CONTENT.children[i]);
+        }
+
         SITE_HEADER.setAttribute(ATTRIBUTES.MODAL, "closed");
         NAV_TOGGLE_OPEN.setAttribute(ATTRIBUTES.EXPANDED, "false");
         NAV_TOGGLE_OPEN.focus();
@@ -153,6 +202,7 @@ domReady(function () {
 
     /**
      * Add listener for closing mobile menu when link is clicked
+     * This prevents anchor links from not working when used in mobile device
      * @return void
      */
     function handleLinkClicks() {
