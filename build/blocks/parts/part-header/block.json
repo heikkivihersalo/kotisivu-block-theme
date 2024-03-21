@@ -19,43 +19,5 @@
   "style": "file:./style-index.css",
   "render": "file:./render.php",
   "viewScript": "file:./view.js",
-  "attributes": {
-    "template": {
-      "type": "array",
-      "default": [
-        [
-          "ksd/wrapper",
-          {
-            "className": "site-header__wrapper",
-            "template": [
-              [
-                "ksd/part-dark-mode-toggle"
-              ],
-              [
-                "core/buttons",
-                {
-                  "className": "site-header__buttons"
-                }
-              ]
-            ],
-            "variationName": "wrapper-100"
-          }
-        ]
-      ]
-    },
-    "allowedBlocks": {
-      "type": "array"
-    },
-    "templateLock": {
-      "type": [
-        "string",
-        "boolean"
-      ],
-      "enum": [
-        "all",
-        "insert",
-        false
-      ]
-    }
-  }
+  "attributes": {}
 }
