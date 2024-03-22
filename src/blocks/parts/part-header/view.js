@@ -3,227 +3,286 @@ import domReady from '@wordpress/dom-ready';
 // TODO: Handle arrow navigation
 // TODO: Handle rest of the keyboard navigation
 domReady(function () {
-    const SITE_BODY = document.getElementsByTagName("body")[0];
-    const SITE_HEADER = document.getElementsByClassName("site-header")[0];
-    const SITE_CONTENT = document.getElementsByClassName("wp-site-blocks")[0];
+    let dialog = {
+        container: document.getElementById("header-dialog-container"),
+        toggleOpen: document.getElementById("header-dialog-btn--open"),
+        toggleClose: document.getElementById("header-dialog-btn--close"),
+    }
 
-    const NAV_CONTAINER = document.getElementById("header-dialog-container");
-    const NAV_TOGGLE_OPEN = document.getElementById("header-dialog-btn--open");
-    const NAV_TOGGLE_CLOSE = document.getElementById("header-dialog-btn--close");
+    let site = {
+        header: document.getElementsByTagName("header")[0],
+        content: document.getElementsByClassName("content-area")[0],
+        footer: document.getElementsByTagName("footer")[0],
+    }
 
-    const MENU_CONTAINER = document.getElementsByClassName("site-header__menu")[0];
-    const MENU_LINKS = document.querySelectorAll(".site-header__menu-item");
+    let menu = {
+        container: document.getElementsByClassName("site-header__menu")[0],
+        links: document.querySelectorAll(".site-header__menu-item"),
+        first: document.querySelectorAll(".site-header__menu-item a")[0],
+        last: document.querySelectorAll(".site-header__menu-item:last-child > :is(a, span)")[0],
+    }
 
-    const MENU_FIRST_ITEM = MENU_LINKS[0].children[0];
-    const MENU_LAST_ITEM = MENU_LINKS[MENU_LINKS.length - 1].children[0];
-
-    const ATTRIBUTES = {
-        MODAL: 'data-modal',
-        EXPANDED: 'aria-expanded',
-        TRANSITION: 'data-transition',
-        STICKY: 'data-sticky'
+    let attributes = {
+        modal: 'data-modal',
+        expanded: 'aria-expanded',
+        transition: 'data-transition',
+        sticky: 'data-sticky'
     };
 
-    /**
-     * Remove element interaction to prevent scrolling and clicking
-     * @param {HTMLElement} element - Element to remove interaction
-     * @return void
-     */
-    function removeElementInteraction(element) {
-        /**
-         * Guard Clauses
-         */
-        if (element === SITE_HEADER) return;
-
-        /**
-         * Set inert and aria-hidden attributes to prevent interaction
-         * Set overflow to hidden to prevent scrolling
-         */
-        element.setAttribute('inert', true);
-        element.setAttribute('aria-hidden', 'true');
-
-        SITE_BODY.style.overflow = 'hidden';
-    }
-
-    /**
-     * Restore element interaction to normal when closing mobile menu
-     * @param {HTMLElement} element - Element to restore interaction
-     * @return void
-     */
-    function restoreElementInteraction(element) {
-        /**
-         * Guard Clauses
-         */
-        if (element === SITE_HEADER) return;
-
-        /**
-         * Restore element interaction to normal
-         */
-        element.removeAttribute('inert');
-        element.removeAttribute('aria-hidden');
-        SITE_BODY.removeAttribute('style');
-    }
-
-    /**
-     * Open mobile menu
-     * @param {PointerEvent|KeyboardEvent} [event = null] - Event object
-     * @return void
-     */
-    async function openMobileMenu(event = null) {
-        if (event) {
-            event.preventDefault();
-        }
-
-        for (let i = 0; i < SITE_CONTENT.children.length; i++) {
-            removeElementInteraction(SITE_CONTENT.children[i]);
-        }
-
-        SITE_HEADER.setAttribute(ATTRIBUTES.MODAL, "open");
-        NAV_TOGGLE_OPEN.setAttribute(ATTRIBUTES.EXPANDED, "true");
-
-        document.querySelectorAll(".site-header__menu-item a")[0].focus();
-    }
-
-    /**
-     * Close mobile menu
-     * @return void
-     */
-    function closeMobileMenu() {
-        for (let i = 0; i < SITE_CONTENT.children.length; i++) {
-            restoreElementInteraction(SITE_CONTENT.children[i]);
-        }
-
-        SITE_HEADER.setAttribute(ATTRIBUTES.MODAL, "closed");
-        NAV_TOGGLE_OPEN.setAttribute(ATTRIBUTES.EXPANDED, "false");
-        NAV_TOGGLE_OPEN.focus();
-    }
-
-    /**
-     * Handle sticky header
-     * @return void
-     */
-    function handleStickyHeader() {
-        document.addEventListener("scroll", () => {
-            /* Set opacity to 0 to animate sticky transition */
-            window.scrollY > 100
-                ? SITE_HEADER.setAttribute(ATTRIBUTES.TRANSITION, "true")
-                : SITE_HEADER.removeAttribute(ATTRIBUTES.TRANSITION);
-
-            /* Set position to 'sticky' for sticky header */
-            window.scrollY > 300
-                ? SITE_HEADER.setAttribute(ATTRIBUTES.STICKY, "true")
-                : SITE_HEADER.removeAttribute(ATTRIBUTES.STICKY);
-        });
-    }
-
-    function handleKeyboardNavigation() {
-        /**
-         * Events to trigger on keydown event
-         * Keydown event shows CURRENT focused element
-         */
-        document.addEventListener("keyup", (e) => {
-            const isModalOpen = SITE_HEADER.getAttribute(ATTRIBUTES.MODAL) === "open";
-
-            switch (e.key) {
-                case "Tab":
-                    break;
-                case "Enter":
-
-                    break;
-                case "Escape":
-                    closeMobileMenu();
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        /**
-         * Events to trigger on keydown event
-         * Keydown event shows LAST focused element
-         * Meaning it shows the element that was focused before the current one
-         */
-        document.addEventListener("keydown", (e) => {
-            const isModalOpen = SITE_HEADER.getAttribute(ATTRIBUTES.MODAL) === "open";
-
-            switch (e.key) {
-                case "Tab":
-                    if (isModalOpen) {
-                        if (e.shiftKey) {
-                            /* Guard Clause. If last item, allow default behaviour */
-                            if (document.activeElement === MENU_LAST_ITEM) {
-                                return;
-                            }
-
-                            if (document.activeElement === NAV_TOGGLE_CLOSE) {
-                                MENU_LAST_ITEM.focus();
-                                e.preventDefault();
-                                return;
-                            }
-                        }
-
-                        if (document.activeElement === MENU_LAST_ITEM) {
-                            NAV_TOGGLE_CLOSE.focus();
-                            e.preventDefault();
-
-                            return;
-                        }
-                    }
-                    break;
-                case "Enter":
-                    break;
-                case "Escape":
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    /**
-     * Add listener for opening mobile menu
-     * @return void
-     */
-    function handleToggleClicks() {
-        const toggles = [NAV_TOGGLE_OPEN, NAV_TOGGLE_CLOSE];
-
-        toggles.forEach((toggle) => {
-            toggle.addEventListener("click", (e) => {
-                const currentState = SITE_HEADER.getAttribute(ATTRIBUTES.MODAL);
-
-                if (!currentState || currentState === "closed") {
-                    openMobileMenu(e);
-                } else {
-                    closeMobileMenu();
-                }
-            });
-        });
-    }
-
-    /**
-     * Add listener for closing mobile menu when link is clicked
-     * This prevents anchor links from not working when used in mobile device
-     * @return void
-     */
-    function handleLinkClicks() {
-        MENU_LINKS.forEach((link) => {
-            link.addEventListener("click", () => {
-                closeMobileMenu();
-            });
-        });
-    }
-
-    /**
-     * Initialize Menu
-     */
     (async () => {
         try {
-            handleToggleClicks();
-            handleLinkClicks();
-            handleStickyHeader();
-            handleKeyboardNavigation();
+            handleToggleClicks(site, dialog, menu, attributes);
+            handleLinkClicks(site, dialog, menu, attributes);
+            handleStickyHeader(site.header, attributes);
+            handleKeyboardNavigation(site, dialog, menu, attributes);
         } catch (err) {
             console.error(err);
         }
     })();
 });
+
+/**
+ * Add listener for opening mobile menu
+ * @param {object} site - Site elements object
+ * @param {HTMLElement} site.header - Site header element
+ * @param {HTMLElement} site.content - Site content element
+ * @param {HTMLElement} site.footer - Site footer element
+ * @param {object} dialog - Dialog elements object
+ * @param {HTMLElement} dialog.container - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
+ * @param {object} menu - Menu elements object
+ * @param {HTMLElement} menu.container - Menu container element
+ * @param {NodeList} menu.links - Menu links
+ * @param {object} attributes - Attributes object
+ * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
+ * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @return void
+ */
+function handleToggleClicks(site, dialog, menu, attributes) {
+    const toggles = [dialog.toggleOpen, dialog.toggleClose];
+
+    toggles.forEach((toggle) => {
+        toggle.addEventListener("click", (e) => {
+            const currentState = site.header.getAttribute(attributes.modal);
+
+            if (!currentState || currentState === "closed") {
+                openMobileMenu(e, site, dialog.toggleOpen, menu.first, attributes);
+            } else {
+                closeMobileMenu(e, site, dialog.toggleOpen, attributes);
+            }
+        });
+    });
+}
+
+/**
+ * Add listener for closing mobile menu when link is clicked
+ * This prevents anchor links from not working when used in mobile device
+ * @param {object} site - Site elements object
+ * @param {HTMLElement} site.header - Site header element
+ * @param {HTMLElement} site.content - Site content element
+ * @param {HTMLElement} site.footer - Site footer element
+ * @param {object} dialog - Dialog elements object
+ * @param {HTMLElement} dialog.container - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
+ * @param {object} menu - Menu elements object
+ * @param {HTMLElement} menu.container - Menu container element
+ * @param {NodeList} menu.links - Menu links
+ * @param {object} attributes - Attributes object
+ * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
+ * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @return void
+ */
+function handleLinkClicks(site, dialog, menu, attributes) {
+    menu.links.forEach((link) => {
+        link.addEventListener("click", () => {
+            closeMobileMenu(e, site, dialog.toggleOpen, attributes);
+        });
+    });
+}
+
+/**
+ * Open mobile menu
+ * @param {Event} [event = null] - Event object
+ * @param {object} site - Site elements object
+ * @param {HTMLElement} site.header - Site header element
+ * @param {HTMLElement} site.content - Site content element
+ * @param {HTMLElement} site.footer - Site footer element
+ * @param {HTMLElement} toggleOpen - Open mobile menu button
+ * @param {HTMLElement} menuFirstElement - First element in the mobile menu
+ * @param {object} attributes - Attributes object
+ * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
+ * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @return void
+ */
+async function openMobileMenu(event = null, site, toggleOpen, menuFirstElement, attributes = { modal: 'data-modal', expanded: 'aria-expanded' }) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    /**
+     * Disable site content interaction and visibility to prevent interaction with the site content when mobile menu is open
+     */
+    Object.values(site).forEach((element) => {
+        if (element === site.header) return;
+
+        element.setAttribute('inert', true);
+        element.setAttribute('aria-hidden', 'true');
+    });
+
+    document.getElementsByTagName("body")[0].style.overflow = 'hidden';
+
+    /**
+     * Open mobile menu and set focus to the first element in the menu
+     */
+    site.header.setAttribute(attributes.modal, "open");
+    toggleOpen.setAttribute(attributes.expanded, "true");
+    menuFirstElement.focus();
+}
+
+/**
+ * Close mobile menu
+ * @param {Event} [event = null] - Event object
+ * @param {object} site - Site elements object
+ * @param {HTMLElement} site.header - Site header element
+ * @param {HTMLElement} site.content - Site content element
+ * @param {HTMLElement} site.footer - Site footer element
+ * @param {HTMLElement} toggleOpen - Open mobile menu button
+ * @param {object} attributes - Attributes object
+ * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
+ * @param {String} attributes.expanded - Expanded attribute. Default is 'data-expanded'
+ * @return void
+ */
+function closeMobileMenu(event = null, site, toggleOpen, attributes = { modal: 'data-modal', expanded: 'data-expanded' }) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    /**
+     * Restore site content interaction and visibility to normal
+     */
+    Object.values(site).forEach((element) => {
+        if (element === site.header) return;
+
+        element.removeAttribute('inert');
+        element.removeAttribute('aria-hidden');
+    });
+
+    document.getElementsByTagName("body")[0].removeAttribute('style');
+
+    /**
+     * Close mobile menu
+     */
+    site.header.setAttribute(attributes.modal, "closed");
+    toggleOpen.setAttribute(attributes.expanded, "false");
+    toggleOpen.focus();
+}
+
+/**
+ * Handle sticky header
+ * @param {HTMLElement} header - Site header element
+ * @param {Object} attributes - Attributes object
+ * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @return void
+ */
+function handleStickyHeader(header, attributes = { transition: 'data-transition', sticky: 'data-sticky' }) {
+    document.addEventListener("scroll", () => {
+        /* Set opacity to 0 to animate sticky transition */
+        window.scrollY > 100
+            ? header.setAttribute(attributes.transition, "true")
+            : header.removeAttribute(attributes.transition);
+
+        /* Set position to 'sticky' for sticky header */
+        window.scrollY > 300
+            ? header.setAttribute(attributes.sticky, "true")
+            : header.removeAttribute(attributes.sticky);
+    });
+}
+
+/**
+ * Handle keyboard navigation
+ * @param {object} site - Site elements object
+ * @param {HTMLElement} site.header - Site header element
+ * @param {HTMLElement} site.content - Site content element
+ * @param {HTMLElement} site.footer - Site footer element
+ * @param {object} dialog - Dialog elements object
+ * @param {HTMLElement} dialog.container - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
+ * @param {object} menu - Menu elements object
+ * @param {HTMLElement} menu.container - Menu container element
+ * @param {NodeList} menu.links - Menu links
+ * @param {object} attributes - Attributes object
+ * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
+ * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @return void
+ */
+function handleKeyboardNavigation(site, dialog, menu, attributes) {
+    /**
+     * Events to trigger on keydown event
+     * Keydown event shows CURRENT focused element
+     */
+    document.addEventListener("keyup", (e) => {
+        const isModalOpen = site.header.getAttribute(attributes.modal) === "open";
+
+        switch (e.key) {
+            case "Tab":
+                break;
+            case "Enter":
+
+                break;
+            case "Escape":
+                closeMobileMenu(e, site, dialog.toggleOpen, attributes);
+                break;
+            default:
+                break;
+        }
+    });
+
+    /**
+     * Events to trigger on keydown event
+     * Keydown event shows LAST focused element
+     * Meaning it shows the element that was focused before the current one
+     */
+    document.addEventListener("keydown", (e) => {
+        const isModalOpen = site.header.getAttribute(attributes.modal) === "open";
+
+        switch (e.key) {
+            case "Tab":
+                if (isModalOpen) {
+                    if (e.shiftKey) {
+                        /* Guard Clause. If last item, allow default behaviour */
+                        if (document.activeElement === menu.last) {
+                            return;
+                        }
+
+                        if (document.activeElement === dialog.toggleClose) {
+                            menu.last.focus();
+                            e.preventDefault();
+                            return;
+                        }
+                    }
+
+                    if (document.activeElement === menu.last) {
+                        dialog.toggleClose.focus();
+                        e.preventDefault();
+
+                        return;
+                    }
+                }
+                break;
+            case "Enter":
+                break;
+            case "Escape":
+                break;
+            default:
+                break;
+        }
+    });
+}
