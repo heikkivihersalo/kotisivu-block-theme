@@ -175,6 +175,12 @@ class Theme {
         $cleanup->init();
 
         /**
+         * Add ajax actions
+         */
+        $ajax = new Ajax();
+        $ajax->init();
+
+        /**
          * Add option pages to admin panel
          */
         if (is_user_logged_in() && is_admin()) {

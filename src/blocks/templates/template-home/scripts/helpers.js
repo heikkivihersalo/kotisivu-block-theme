@@ -15,7 +15,7 @@ const createPostCardNode = (string) => {
  */
 const createErrorNode = (errorMessage) => {
     let element = document.createElement('div');
-    element.className = "blog-post-list__error-message";
+    element.className = "posts__message--error";
     element.innerHTML = `<p>${errorMessage}</p>`;
 
     return element;

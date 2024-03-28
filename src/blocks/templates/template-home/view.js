@@ -7,10 +7,10 @@ import { getPosts, createPostCardNode, createErrorNode } from "./scripts/helpers
  */
 domReady(function () {
     let elements = {
-        container: document.getElementById("blog-post-container"),
-        list: document.getElementById("blog-post-list"),
-        cards: document.querySelectorAll(".blog-grid__item"),
-        loadMore: document.getElementById("blog-load-more")
+        container: document.getElementById("posts-container"),
+        list: document.getElementById("posts-list"),
+        cards: document.querySelectorAll(".posts__list-item"),
+        loadMore: document.getElementById("load-next-posts")
     }
 
     let counters = {
@@ -18,10 +18,10 @@ domReady(function () {
     }
 
     let request = {
-        url: PHP_VARIABLES.ajax_url,
+        url: AJAX.url,
         data: {
-            action: 'load_more_posts',
-            security: PHP_VARIABLES.ajax_nonce,
+            action: 'get_next_page',
+            security: AJAX.nonce,
             paged: 2 // Init to 2 because first page is already loaded.
         },
         headers: {
@@ -34,6 +34,9 @@ domReady(function () {
      */
     elements.loadMore.addEventListener('click', async () => {
         try {
+
+            console.log('Request:', request);
+
             //Get posts from ajax
             const data = await getPosts(request);
 
