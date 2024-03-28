@@ -48,7 +48,8 @@ class ThemeSupport {
         $this->editor_styles([
             'theme.css',
             'admin.css',
-            'core.css'
+            'core.css',
+            'inline.css'
         ]);
 
         $this->custom_image_sizes($this->config["customImages"]["defaultSizes"]);
