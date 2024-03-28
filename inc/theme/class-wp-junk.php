@@ -18,14 +18,21 @@ class Junk {
     protected $settings;
 
     /**
+     * Theme post types
+     * @var array
+     */
+    protected $custom_post_types;
+
+    /**
      * Constructor
      * @return void
      */
-    public function __construct($settings) {
+    public function __construct($settings, $post_types = array()) {
         /**
          * Set attributes
          */
         $this->settings = $settings;
+        $this->custom_post_types = $post_types;
     }
 
     /**
@@ -355,6 +362,31 @@ class Junk {
 
         if ($this->settings['otherJunk']['rest-api-user-endpoints']) {
             add_filter('rest_endpoints', [$this, 'disable_rest_api_user_endpoints']);
+        }
+
+        add_action('admin_init', [$this, 'set_default_dashboard_metaboxes']);
+    }
+
+    /**
+     * Set default dashboard metaboxes
+     * @param int $user_id
+     * @return void
+     */
+    public function set_default_dashboard_metaboxes($user_id = NULL) {
+        if (!$user_id) $user_id = get_current_user_id();
+
+        $meta_key = "metaboxhidden_dashboard";
+
+        if (!get_user_option($meta_key, $user_id)) {
+            $meta_value = array(
+                'dashboard_site_health',
+                'dashboard_right_now',
+                'dashboard_activity',
+                'dashboard_quick_press',
+                'dashboard_primary'
+            );
+
+            update_user_option($user_id, $meta_key, $meta_value, true);
         }
     }
 
