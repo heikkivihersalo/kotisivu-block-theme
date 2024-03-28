@@ -331,6 +331,41 @@ class Junk {
     }
 
     /**
+     * Set default dashboard metaboxes
+     * @param int $user_id
+     * @return void
+     */
+    public function set_default_dashboard_metaboxes($user_id = NULL) {
+        if (!$user_id) $user_id = get_current_user_id();
+
+        $meta_key = "metaboxhidden_dashboard";
+
+        if (!get_user_option($meta_key, $user_id)) {
+            update_user_option($user_id, $meta_key, $this->settings['removeDashboardJunk'], true);
+        }
+    }
+
+    /**
+     * Remove admin bar items
+     * @return void
+     */
+    public function remove_admin_bar_items() {
+        global $wp_admin_bar;
+
+        foreach ($this->settings['removeAdminBarJunk'] as $key => $value) {
+            if ($value['remove']) {
+                $wp_admin_bar->remove_menu($key);
+            } else {
+                foreach ($value['children'] as $child => $remove) {
+                    if ($remove) {
+                        $wp_admin_bar->remove_menu($child);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Remove style junk from loading
      * @return void
      */
@@ -364,30 +399,8 @@ class Junk {
             add_filter('rest_endpoints', [$this, 'disable_rest_api_user_endpoints']);
         }
 
+        add_action("admin_bar_menu", [$this, 'remove_admin_bar_items'], 999);
         add_action('admin_init', [$this, 'set_default_dashboard_metaboxes']);
-    }
-
-    /**
-     * Set default dashboard metaboxes
-     * @param int $user_id
-     * @return void
-     */
-    public function set_default_dashboard_metaboxes($user_id = NULL) {
-        if (!$user_id) $user_id = get_current_user_id();
-
-        $meta_key = "metaboxhidden_dashboard";
-
-        if (!get_user_option($meta_key, $user_id)) {
-            $meta_value = array(
-                'dashboard_site_health',
-                'dashboard_right_now',
-                'dashboard_activity',
-                'dashboard_quick_press',
-                'dashboard_primary'
-            );
-
-            update_user_option($user_id, $meta_key, $meta_value, true);
-        }
     }
 
     /**
