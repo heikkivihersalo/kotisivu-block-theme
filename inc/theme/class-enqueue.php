@@ -42,7 +42,7 @@ class Enqueue {
      * Files that are excluded from enqueueing
      * @var array
      */
-    protected $excluded_files;
+    protected $inline_files;
 
     /**
      * Files that are only enqueued in admin panel
@@ -62,8 +62,8 @@ class Enqueue {
         $this->parent_uri = $parent_uri;
         $this->path = $path;
         $this->uri = $uri;
-        $this->excluded_files = ['sanitize', 'dark-mode', 'inline'];
-        $this->admin_only_files = ['admin', 'cpt'];
+        $this->inline_files = ['sanitize', 'dark-mode', 'inline'];
+        $this->admin_only_files = ['admin', 'cpt', 'inline'];
     }
 
     /**
@@ -110,49 +110,48 @@ class Enqueue {
      * @param string $uri 
      * @return void 
      */
-    private function enqueue_assets(string $pattern, int $flags, string $uri, bool $is_admin_enqueue = false): void {
+    private function enqueue_assets(string $pattern, int $flags, string $uri, bool $IS_ADMIN_ENQUEUE = false): void {
         foreach (glob($pattern, $flags) as $glob) :
-            /* Get file information */
-            $file_info = pathinfo($glob);
-
             /**
-             * Exlude inline styles and scripts
+             * Get file info
              */
-            foreach ($this->excluded_files as $exluded_file) :
-                if ($file_info['filename'] === $exluded_file) continue 2;
-            endforeach;
+            $FILE_INFO = pathinfo($glob);
+            $IS_ADMIN_ONLY = in_array($FILE_INFO['filename'], $this->admin_only_files);
+            $IS_INLINE_ONLY = in_array($FILE_INFO['filename'], $this->inline_files);
 
             /**
              * If in admin panel, enqueue all files
-             * TODO: Rewrite this to be cleaner
              */
-            if ($is_admin_enqueue) :
+            if ($IS_ADMIN_ENQUEUE) :
+                /**
+                 * Guard clauses
+                 */
+                if (!empty($GLOBALS['pagenow']) && 'theme-install.php' === $GLOBALS['pagenow']) continue;
+                if ($IS_INLINE_ONLY && !$IS_ADMIN_ONLY) continue;
+
+                /**
+                 * Enqueue admin files
+                 */
                 $IS_NEW_POST = !empty($GLOBALS['pagenow']) && 'post-new.php' === $GLOBALS['pagenow'];
                 $IS_EDIT_POST = !empty($GLOBALS['pagenow']) && 'post.php' === $GLOBALS['pagenow'];
 
-
-                if (!empty($GLOBALS['pagenow']) && 'theme-install.php' === $GLOBALS['pagenow']) continue;
-
-                if ($file_info['filename'] === 'cpt') :
+                if ($FILE_INFO['filename'] === 'cpt') :
                     if ($IS_NEW_POST || $IS_EDIT_POST) :
-                        $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
+                        $attributes =  $this->get_file_attributes($glob, $uri, $FILE_INFO['extension']);
                         $this->enqueue_file($attributes);
                     endif;
                     continue;
                 endif;
 
-                $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
+                $attributes =  $this->get_file_attributes($glob, $uri, $FILE_INFO['extension']);
                 $this->enqueue_file($attributes);
-
             else :
                 /**
                  * If not in admin panel, enqueue all files except admin only files
                  */
-                foreach ($this->admin_only_files as $admin_only_file) :
-                    if ($file_info['filename'] === $admin_only_file) continue 2;
-                endforeach;
+                if ($IS_ADMIN_ONLY) continue;
 
-                $attributes =  $this->get_file_attributes($glob, $uri, $file_info['extension']);
+                $attributes =  $this->get_file_attributes($glob, $uri, $FILE_INFO['extension']);
                 $this->enqueue_file($attributes);
             endif;
         endforeach;
