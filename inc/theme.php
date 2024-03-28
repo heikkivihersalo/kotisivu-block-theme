@@ -169,7 +169,8 @@ class Theme {
          * Clean up WordPress junk
          */
         $cleanup = new Junk(
-            $this->config['settings']
+            $this->config['settings'],
+            $this->config['customPostTypes']['postTypes'] ?? []
         );
         $cleanup->init();
 
