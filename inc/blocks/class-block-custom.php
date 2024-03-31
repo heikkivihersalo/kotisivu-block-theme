@@ -16,16 +16,6 @@ class BlockCustom {
     protected $blocks;
 
     /**
-     * Parent path
-     */
-    protected $parent_path;
-
-    /**
-     * Parent URI
-     */
-    protected $parent_uri;
-
-    /**
      * Path
      */
     protected $path;
@@ -42,10 +32,16 @@ class BlockCustom {
     protected $type;
 
     /**
+     * Namespace
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * Constructor
      * @return void 
      */
-    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri, $type = 'custom') {
+    public function __construct($blocks, $path, $uri, $type = 'custom') {
         /**
          * Get classes
          */
@@ -56,11 +52,35 @@ class BlockCustom {
          * Set attributes
          */
         $this->blocks = $blocks;
-        $this->parent_path = $parent_path;
-        $this->parent_uri = $parent_uri;
-        $this->path = $path;
+        $this->path = $this->get_path($type, $path);
         $this->uri = $uri;
         $this->type = $type;
+        $this->namespace = "ksd";
+    }
+
+    /**
+     * Get path based on type of block (custom, templates, parts)
+     * @param string $type
+     * @param string $path
+     * @return string
+     */
+    private function get_path($type, $path): string {
+        switch ($type) {
+            case 'custom':
+                $path = $path . '/build/blocks/custom';
+                break;
+            case 'templates':
+                $path = $path . '/build/templates';
+                break;
+            case 'parts':
+                $path = $path . '/build/blocks/parts';
+                break;
+            default:
+                $path = $path . '/build/blocks/custom';
+                break;
+        }
+
+        return $path;
     }
 
     /**
@@ -69,19 +89,13 @@ class BlockCustom {
      */
     public function register_custom_blocks(): void {
         foreach ($this->blocks as $block) :
-            // Get block path
-            $block_path = Utils::get_block_path($block, $this->type, $this->path, $this->parent_path);
-
-            // Trigger error if deprecated function is used
-            add_filter('doing_it_wrong_trigger_error', function ($trigger, $function, $message, $version) use ($block, $block_path) {
-                throw new \Exception("Trying to register block {$block} but failed for some reason.\n\nThis can be caused of non-existing block in block.json. Make sure that preceding and next blocks in block.json list exists.\n\n Message: {$message}\n");
-            }, 10, 4);
-
             // Register block
-            register_block_type($block_path);
+            register_block_type($this->path . '/' . explode('/', $block)[1]);
+
+            // Set block translation
             Utils::set_block_translation(
-                'ksd-' . explode('/', $block)[1],
-                $this->parent_path
+                $this->namespace . '-' . explode('/', $block)[1],
+                $this->path
             );
 
         endforeach;
