@@ -102,21 +102,40 @@ final class Utils {
     }
 
     /**
-     * Get path to block folder. Checks child theme first, if not found, uses parent theme blocks folder.
-     * @param string $block name of the block with namespace 
-     * @param string $type type of block (static or dynamic)
-     * @param string $path path to child theme
-     * @param string $parent_path path to parent theme
-     * @return string path to block folder 
+     * Get block directories
+     * Can be used to get all blocks that needs to be registered
+     * @param string $path 
+     * @return array 
      */
-    public static function get_block_path(string $block, string $type, string $path, string $parent_path): string {
-        $_name = explode('/', $block)[1];
-        $_path = $path . '/build/blocks';
-        $_parent_path = $parent_path . '/build/blocks';
+    public static function get_block_directories(string $path = null, string $namespace): array {
+        if ($path === null) {
+            return [];
+        }
 
-        return file_exists("{$_path}/{$type}/{$_name}")
-            ? "{$_path}/{$type}/{$_name}"
-            : "{$_parent_path}/{$type}/{$_name}";
+        foreach (scandir($path) as $block) {
+            // Remove unnecessary files (e.g. .gitignore, .DS_Store, ., .. etc.)
+            if ($block === '.' || $block === '..' || $block === '.DS_Store' || strpos($block, '.') === true) continue;
+
+            // Add block to array
+            $blocks[] = $namespace . '/' . $block;
+
+            // Check if block is core block and has child blocks
+            // E.g. core/buttons, core/list
+            if ($namespace === 'core') :
+                switch ($block) {
+                    case 'buttons':
+                        $blocks[] = 'core/button';
+                        break;
+                    case 'list':
+                        $blocks[] = 'core/list-item';
+                        break;
+                    default:
+                        break;
+                }
+            endif;
+        }
+
+        return $blocks;
     }
 
     /**
