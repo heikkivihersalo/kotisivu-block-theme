@@ -58,22 +58,10 @@ class Theme {
     protected $uri;
 
     /**
-     * Path to parent theme directory
-     * @var string
-     */
-    protected $parent_path;
-
-    /**
-     * URI of the parent theme directory
-     * @var string
-     */
-    protected $parent_uri;
-
-    /**
      * Theme constructor
      * @return void 
      */
-    public function __construct($name, $version, $textdomain, $parent_path, $parent_uri, $path, $uri, $options, $analytics, $config) {
+    public function __construct($name, $version, $textdomain, $path, $uri, $options, $analytics, $config) {
         /**
          * Get classes
          */
@@ -86,8 +74,6 @@ class Theme {
         $this->name = $name;
         $this->version = $version;
         $this->textdomain = $textdomain;
-        $this->parent_path = $parent_path;
-        $this->parent_uri = $parent_uri;
         $this->path = $path;
         $this->uri = $uri;
         $this->options = $options;
@@ -113,7 +99,7 @@ class Theme {
          */
         $filters = new Filters(
             $this->config,
-            $this->parent_path
+            $this->path
         );
         $filters->init();
 
@@ -147,8 +133,6 @@ class Theme {
          * Enqueue styles and scripts
          */
         $enqueue = new Enqueue(
-            $this->parent_path,
-            $this->parent_uri,
             $this->path,
             $this->uri
         );
@@ -158,8 +142,8 @@ class Theme {
          * WP Head
          */
         $wp_head = new WP_Head(
-            $this->parent_path,
-            $this->parent_uri,
+            $this->path,
+            $this->uri,
             $this->config['settings'],
             $this->analytics
         );

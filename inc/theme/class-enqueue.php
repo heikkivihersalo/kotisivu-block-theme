@@ -15,18 +15,6 @@ include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 
 class Enqueue {
     /**
-     * Parent theme path
-     * @var string
-     */
-    protected $parent_path;
-
-    /**
-     * Parent theme uri
-     * @var string
-     */
-    protected $parent_uri;
-
-    /**
      * Child theme path
      * @var string
      */
@@ -54,12 +42,10 @@ class Enqueue {
      * Constructor
      * @return void 
      */
-    public function __construct($parent_path, $parent_uri, $path, $uri) {
+    public function __construct($path, $uri) {
         /**
          * Set attributes
          */
-        $this->parent_path = $parent_path;
-        $this->parent_uri = $parent_uri;
         $this->path = $path;
         $this->uri = $uri;
         $this->inline_files = ['sanitize', 'dark-mode', 'inline'];
@@ -71,28 +57,14 @@ class Enqueue {
      * @return void 
      */
     public function add_theme_styles_and_scripts(): void {
-        /**
-         * Enqueue parent theme files
-         */
-        $this->enqueue_assets($this->parent_path . '/build/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri);
-
-        /**
-         * Enqueue child theme files
-         */
-        if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
-        endif;
+        $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri);
     }
 
     /**
      * Add scripts and styles to admin
      */
     public function add_admin_styles_and_scripts(): void {
-        $this->enqueue_assets($this->parent_path . '/build/theme/*.{js,css}', GLOB_BRACE, $this->parent_uri, true);
-
-        if (is_child_theme()) :
-            $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri, true);
-        endif;
+        $this->enqueue_assets($this->path . '/build/theme/*.{js,css}', GLOB_BRACE,  $this->uri, true);
     }
 
     /**
