@@ -56,12 +56,12 @@ module.exports = {
     entry: {
         ...getWebpackEntryPoints(),
         'blocks/core/core': getCoreBlocks(),
-        'theme/admin': path.resolve(__dirname, 'src/theme/scripts/admin.js'),
-        'theme/cpt': path.resolve(__dirname, 'src/theme/scripts/cpt.js'),
-        'theme/dark-mode': path.resolve(__dirname, 'src/theme/scripts/dark-mode.js'),
-        'theme/inline': path.resolve(__dirname, 'src/theme/scripts/inline.js'),
-        'theme/sanitize': path.resolve(__dirname, 'src/theme/scripts/sanitize.js'),
-        'theme/theme': path.resolve(__dirname, 'src/theme/scripts/theme.js'),
+        'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
+        'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.js'),
+        'assets/dark-mode': path.resolve(__dirname, 'src/assets/scripts/dark-mode.js'),
+        'assets/inline': path.resolve(__dirname, 'src/assets/scripts/inline.js'),
+        'assets/sanitize': path.resolve(__dirname, 'src/assets/scripts/sanitize.js'),
+        'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
     },
     resolve: {
         alias: {

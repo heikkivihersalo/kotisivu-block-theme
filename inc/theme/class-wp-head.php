@@ -54,7 +54,7 @@ class WP_Head {
     public function inline_sanitize_css(): void {
 ?>
         <style id="ksd-sanitize-inline-css">
-            <?php echo file_get_contents($this->path . '/build/theme/sanitize.css') ?>
+            <?php echo file_get_contents($this->path . '/build/assets/sanitize.css') ?>
         </style>
     <?php
     }
@@ -65,7 +65,7 @@ class WP_Head {
     public function inline_dark_mode_css(): void {
     ?>
         <style id="ksd-dark-mode-inline-css">
-            <?php echo file_get_contents($this->path . '/build/theme/dark-mode.css') ?>
+            <?php echo file_get_contents($this->path . '/build/assets/dark-mode.css') ?>
         </style>
     <?php
     }
@@ -76,7 +76,7 @@ class WP_Head {
     public function inline_custom_css(): void {
     ?>
         <style id="ksd-custom-inline-css">
-            <?php echo file_get_contents($this->path . '/build/theme/inline.css') ?>
+            <?php echo file_get_contents($this->path . '/build/assets/inline.css') ?>
         </style>
     <?php
     }
@@ -87,7 +87,7 @@ class WP_Head {
     public function inline_dark_mode_cookie(): void { ?>
         <meta name="color-scheme" content="dark light">
         <script data-no-optimize="1">
-            <?php echo file_get_contents($this->path . '/build/theme/dark-mode.js') ?>
+            <?php echo file_get_contents($this->path . '/build/assets/dark-mode.js') ?>
         </script>
         <?php
     }
