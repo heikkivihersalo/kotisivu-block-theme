@@ -15,13 +15,13 @@ class WP_Head {
      * Parent path
      * @var string
      */
-    protected $parent_path;
+    protected $path;
 
     /**
      * Parent URI
      * @var string
      */
-    protected $parent_uri;
+    protected $uri;
 
     /**
      * Theme settings extracted from config.json file
@@ -38,12 +38,12 @@ class WP_Head {
     /**
      * Constructor
      */
-    public function __construct($parent_path, $parent_uri, $settings, $analytics) {
+    public function __construct($path, $uri, $settings, $analytics) {
         /**
          * Set attributes
          */
-        $this->parent_path = $parent_path;
-        $this->parent_uri = $parent_uri;
+        $this->path = $path;
+        $this->uri = $uri;
         $this->settings = $settings;
         $this->analytics = $analytics;
     }
@@ -54,7 +54,7 @@ class WP_Head {
     public function inline_sanitize_css(): void {
 ?>
         <style id="ksd-sanitize-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/sanitize.css') ?>
+            <?php echo file_get_contents($this->path . '/build/theme/sanitize.css') ?>
         </style>
     <?php
     }
@@ -65,7 +65,7 @@ class WP_Head {
     public function inline_dark_mode_css(): void {
     ?>
         <style id="ksd-dark-mode-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.css') ?>
+            <?php echo file_get_contents($this->path . '/build/theme/dark-mode.css') ?>
         </style>
     <?php
     }
@@ -76,7 +76,7 @@ class WP_Head {
     public function inline_custom_css(): void {
     ?>
         <style id="ksd-custom-inline-css">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/inline.css') ?>
+            <?php echo file_get_contents($this->path . '/build/theme/inline.css') ?>
         </style>
     <?php
     }
@@ -87,7 +87,7 @@ class WP_Head {
     public function inline_dark_mode_cookie(): void { ?>
         <meta name="color-scheme" content="dark light">
         <script data-no-optimize="1">
-            <?php echo file_get_contents($this->parent_path . '/build/theme/dark-mode.js') ?>
+            <?php echo file_get_contents($this->path . '/build/theme/dark-mode.js') ?>
         </script>
         <?php
     }
@@ -98,7 +98,7 @@ class WP_Head {
      */
     public function inline_fontawesome(): void {
         if (isset($this->settings['fontawesome'])) :
-            $folder = $this->parent_uri . '/public/icons/fontawesome/css/';
+            $folder = $this->uri . '/public/icons/fontawesome/css/';
 
             foreach ($this->settings['fontawesome'] as $slug => $is_enabled) :
                 if (!$is_enabled) continue;

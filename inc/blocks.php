@@ -22,34 +22,34 @@ class Blocks {
     protected $uri;
 
     /**
-     * Path to parent theme directory
-     * @var string
-     */
-    protected $parent_path;
-
-    /**
-     * URI of the parent theme directory
-     * @var string
-     */
-    protected $parent_uri;
-
-    /**
-     * Blocks
+     * Custom blocks
      * @var array
      */
-    protected $blocks;
+    protected $custom_blocks;
 
     /**
-     * Options
+     * Part blocks
      * @var array
      */
-    protected $options;
+    protected $part_blocks;
+
+    /**
+     * Template blocks
+     * @var array
+     */
+    protected $template_blocks;
+
+    /**
+     * Core blocks
+     * @var array
+     */
+    protected $core_blocks;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($blocks, $parent_path, $parent_uri, $path, $uri, $options) {
+    public function __construct($path, $uri) {
         /**
          * Get classes
          */
@@ -62,12 +62,16 @@ class Blocks {
         /**
          * Set attributes
          */
-        $this->blocks = $blocks;
-        $this->parent_path = $parent_path;
-        $this->parent_uri = $parent_uri;
         $this->path = $path;
         $this->uri = $uri;
-        $this->options = $options;
+
+        /**
+         * Get block directories
+         */
+        $this->custom_blocks = Utils::get_block_directories($path . '/src/blocks/custom', 'ksd');
+        $this->part_blocks = Utils::get_block_directories($path . '/src/blocks/parts', 'ksd');
+        $this->template_blocks = Utils::get_block_directories($path . '/src/templates', 'ksd');
+        $this->core_blocks = Utils::get_block_directories($path . '/src/blocks/core', 'core');
     }
 
     /**
@@ -93,12 +97,36 @@ class Blocks {
      */
     public function allowed_block_types($block_editor_context, $editor_context): array {
         if (!empty($editor_context->post) || $editor_context->name === 'core/edit-site') :
+
             /* Return merged block array */
             return array_merge(
-                $this->blocks["core"],
-                $this->blocks["custom"],
-                $this->blocks["parts"],
-                $this->blocks["templates"]
+                /**
+                 * Define must use blocks that are always available
+                 */
+                array(
+                    "core/html",
+                    "core/shortcode",
+                    "core/block" // This is a must for reusable blocks
+                ),
+                /**
+                 * Theme specific custom blocks
+                 */
+                $this->custom_blocks,
+                /** 
+                 * For core blocks that has child blocks like core/buttons, core/list etc.
+                 * They checked on the fly in the function `Utils::get_block_directories()`
+                 * !NOTE If you add new core block that has child blocks, you need to add it here
+                 */
+                $this->core_blocks,
+                /** 
+                 * Theme specific part blocks
+                 */
+                $this->part_blocks,
+                /**
+                 * Theme templates. These are not allowed to be used in the editor
+                 * This is basically Kotisivu Block Theme way to handle templates. Templates for pages, posts etc.
+                 */
+                $this->template_blocks
             );
         endif;
 
@@ -135,9 +163,7 @@ class Blocks {
          * Register blocks
          */
         $custom_blocks = new BlockCustom(
-            $this->blocks['custom'],
-            $this->parent_path,
-            $this->parent_uri,
+            $this->custom_blocks,
             $this->path,
             $this->uri,
             'custom'
@@ -146,9 +172,7 @@ class Blocks {
         $custom_blocks->init();
 
         $part_blocks = new BlockCustom(
-            $this->blocks['parts'],
-            $this->parent_path,
-            $this->parent_uri,
+            $this->part_blocks,
             $this->path,
             $this->uri,
             'parts'
@@ -157,9 +181,7 @@ class Blocks {
         $part_blocks->init();
 
         $template_blocks = new BlockCustom(
-            $this->blocks['templates'],
-            $this->parent_path,
-            $this->parent_uri,
+            $this->template_blocks,
             $this->path,
             $this->uri,
             'templates'
@@ -168,11 +190,10 @@ class Blocks {
         $template_blocks->init();
 
         $core_blocks = new BlockCore(
-            $this->blocks['core'],
-            $this->parent_path,
-            $this->parent_uri,
+            $this->core_blocks,
             $this->path,
-            $this->uri
+            $this->uri,
+            'core'
         );
 
         $core_blocks->init();
