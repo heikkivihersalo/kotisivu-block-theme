@@ -1,0 +1,6 @@
+.editor-site-content {
+	display: grid;
+	height: 100vh;
+	justify-items: center;
+	align-items: center;
+}

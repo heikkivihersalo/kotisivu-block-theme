@@ -70,7 +70,7 @@ class BlockCustom {
                 $path = $path . '/build/block-library/custom';
                 break;
             case 'templates':
-                $path = $path . '/build/templates';
+                $path = $path . '/build/page-templates';
                 break;
             case 'parts':
                 $path = $path . '/build/block-library/parts';

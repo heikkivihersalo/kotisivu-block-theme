@@ -70,7 +70,7 @@ class Blocks {
          */
         $this->custom_blocks = Utils::get_block_directories($path . '/src/block-library/custom', 'ksd');
         $this->part_blocks = Utils::get_block_directories($path . '/src/block-library/parts', 'ksd');
-        $this->template_blocks = Utils::get_block_directories($path . '/src/templates', 'ksd');
+        $this->template_blocks = Utils::get_block_directories($path . '/src/page-templates', 'ksd');
         $this->core_blocks = Utils::get_block_directories($path . '/src/block-library/core', 'core');
     }
 
