@@ -32,7 +32,7 @@ const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
  * @returns {array}
  */
 function getCoreBlocks() {
-    const src = glob.sync("./src/blocks/core/**/*.js");
+    const src = glob.sync("./src/block-library/core/**/*.js");
     const blocks = [];
 
     src.forEach(entry => {
@@ -55,7 +55,7 @@ module.exports = {
     ...defaultConfig,
     entry: {
         ...getWebpackEntryPoints(),
-        'blocks/core/core': getCoreBlocks(),
+        'block-library/core/core': getCoreBlocks(),
         'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
         'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.js'),
         'assets/dark-mode': path.resolve(__dirname, 'src/assets/scripts/dark-mode.js'),

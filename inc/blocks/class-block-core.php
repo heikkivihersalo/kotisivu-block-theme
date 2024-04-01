@@ -50,11 +50,11 @@ class BlockCore {
      */
     public function enqueue_core_blocks(): void {
         // Get assets file
-        $assets_file = require $this->path . '/build/blocks/core/core.asset.php';
+        $assets_file = require $this->path . '/build/block-library/core/core.asset.php';
 
         wp_enqueue_script(
             'block-core',
-            $this->uri . '/build/blocks/core/core.js',
+            $this->uri . '/build/block-library/core/core.js',
             $assets_file['dependencies'],
             $assets_file['version'],
             true
@@ -62,7 +62,7 @@ class BlockCore {
 
         wp_enqueue_style(
             'block-core',
-            $this->uri . '/build/blocks/core/core.css',
+            $this->uri . '/build/block-library/core/core.css',
             [],
             $assets_file['version'],
             'all'
