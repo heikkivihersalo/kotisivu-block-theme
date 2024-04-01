@@ -9,9 +9,9 @@ import {
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@features/inspector';
+import { InnerBlocksAppender } from '@components/inspector';
 import metadata from './block.json';
-import { VariationPicker, getBlockVariations } from "@features/variations";
+import { VariationPicker, getBlockVariations } from "@components/variations";
 
 /**
  * Styles

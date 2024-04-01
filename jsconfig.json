@@ -3,9 +3,10 @@
 		"target": "ES6",
 		"baseUrl": "./src",
 		"paths": {
-			"@features/*": ["features/*"],
+			"@components/*": ["components/*"],
 			"@hooks/*": ["hooks/*"],
 			"@icons/*": ["icons/*"],
+			"@stores/*": ["stores/*"],
 			"@utils/*": ["utils/*"]
 		}
 	},

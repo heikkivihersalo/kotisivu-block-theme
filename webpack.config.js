@@ -65,9 +65,10 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '@features': path.resolve('src/features'),
+            '@components': path.resolve('src/components'),
             '@hooks': path.resolve('src/hooks'),
             '@icons': path.resolve('src/icons'),
+            '@stores': path.resolve('src/stores'),
             '@utils': path.resolve('src/utils')
         }
     }

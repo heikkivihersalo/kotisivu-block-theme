@@ -4,7 +4,7 @@ import {
 } from "@wordpress/block-editor";
 import classnames from 'classnames';
 
-import { InnerBlocksAppender } from '@features/inspector';
+import { InnerBlocksAppender } from '@components/inspector';
 import Inspector from "./components/Inspector.js";
 import { getBlockStyles } from '@utils';
 

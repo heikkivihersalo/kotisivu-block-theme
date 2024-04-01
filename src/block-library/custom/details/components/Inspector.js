@@ -10,7 +10,7 @@ import { PanelBody, PanelRow, ToggleControl, TextControl } from "@wordpress/comp
  */
 import {
 	BackgroundColorControl
-} from "@features/inspector";
+} from "@components/inspector";
 
 const Inspector = (props) => {
 	const {

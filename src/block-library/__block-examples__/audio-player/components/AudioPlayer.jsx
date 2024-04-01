@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from "@wordpress/element";
 import { PlayButton, StopButton, Placeholder } from "../icons";
 
 import PlayerContext from "../context/PlayerContext";
-import { pushMusicEventsToDatalayer } from "@features/analytics";
+import { pushMusicEventsToDatalayer } from "@components/analytics";
 
 /**
  * Audio player component
@@ -26,28 +26,28 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 						await pushMusicEventsToDatalayer(
 							trackRef.current,
 							mediaTime,
-							"stream"
+							"stream",
 						);
 						break;
 					case 26:
 						await pushMusicEventsToDatalayer(
 							trackRef.current,
 							mediaTime,
-							"stream"
+							"stream",
 						);
 						break;
 					case 51:
 						await pushMusicEventsToDatalayer(
 							trackRef.current,
 							mediaTime,
-							"stream"
+							"stream",
 						);
 						break;
 					case 76:
 						await pushMusicEventsToDatalayer(
 							trackRef.current,
 							mediaTime,
-							"stream"
+							"stream",
 						);
 						break;
 					default:
@@ -87,14 +87,14 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 			pushMusicEventsToDatalayer(
 				trackRef.current,
 				audioPlayer.currentTime,
-				"pause"
+				"pause",
 			);
 		} else {
 			audioPlayer.play();
 			pushMusicEventsToDatalayer(
 				trackRef.current,
 				audioPlayer.currentTime,
-				"play"
+				"play",
 			);
 		}
 	}
@@ -233,10 +233,10 @@ const AudioPlayer = ({ playerRef, trackRef }) => {
 			/>
 			<p className="is-visually-hidden">{`${__(
 				"Now playing song",
-				"kotisivu-block-theme"
+				"kotisivu-block-theme",
 			)} ${trackRef.current?.album} ${__(
 				"from artist",
-				"kotisivu-block-theme"
+				"kotisivu-block-theme",
 			)} ${trackRef.current?.artist}`}</p>
 		</>
 	);

@@ -26,7 +26,7 @@ import { Placeholder } from './icons';
  * Helpers
  */
 import { convertEntityToText } from './scripts/helpers';
-import { pushMusicEventsToDatalayer, pushMusicViewEventsToDataLayer } from '@features/analytics';
+import { pushMusicEventsToDatalayer, pushMusicViewEventsToDataLayer } from '@components/analytics';
 
 const Playlist = () => {
     // DOM references to the audio player, current track and current track index

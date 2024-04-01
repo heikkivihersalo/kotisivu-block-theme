@@ -12,7 +12,7 @@ import {
     GridAlignControls,
     GapControls,
     WidthControls
-} from "@features/inspector";
+} from "@components/inspector";
 
 const Inspector = (props) => {
     return (

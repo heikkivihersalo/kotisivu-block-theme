@@ -11,9 +11,9 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import metadata from './block.json';
-import { InnerBlocksAppender } from '@features/inspector';
+import { InnerBlocksAppender } from '@components/inspector';
 import Inspector from "./components/Inspector.js";
-import { VariationPicker, getBlockVariations } from "@features/variations";
+import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles } from '@utils';
 
 /**

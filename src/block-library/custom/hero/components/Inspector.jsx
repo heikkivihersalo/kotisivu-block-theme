@@ -12,7 +12,7 @@ import {
 	BackgroundColorControl,
 	WidthControls,
 	GridAlignControls,
-} from "@features/inspector";
+} from "@components/inspector";
 
 const Inspector = (props) => {
 	return (

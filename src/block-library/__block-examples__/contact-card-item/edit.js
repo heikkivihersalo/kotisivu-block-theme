@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@features/inspector';
+import { InnerBlocksAppender } from '@components/inspector';
 import { Wrapper } from './wrapper.js';
 
 /**
@@ -50,7 +50,7 @@ const Edit = (props) => {
 	}
 
 	return (
-		<>	
+		<>
 			<Wrapper  {...wrapperProps} />
 		</>
 	);

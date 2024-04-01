@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { ImageMarkup } from '@features/image';
+import { ImageMarkup } from '@components/image';
 import { Button } from "@wordpress/components";
 import placeholder from '../../../placeholder.png';
 

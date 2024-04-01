@@ -9,7 +9,7 @@ import { InspectorControls } from "@wordpress/block-editor";
  */
 import {
     GridAlignControls
-} from "@features/inspector";
+} from "@components/inspector";
 
 const Inspector = (props) => {
     return (

@@ -15,8 +15,8 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@features/inspector';
-import { VariationPicker, getBlockVariations } from "@features/variations";
+import { InnerBlocksAppender } from '@components/inspector';
+import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles } from '@utils';
 
 /**
