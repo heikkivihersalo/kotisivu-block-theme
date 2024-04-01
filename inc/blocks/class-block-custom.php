@@ -67,16 +67,16 @@ class BlockCustom {
     private function get_path($type, $path): string {
         switch ($type) {
             case 'custom':
-                $path = $path . '/build/blocks/custom';
+                $path = $path . '/build/block-library/custom';
                 break;
             case 'templates':
-                $path = $path . '/build/templates';
+                $path = $path . '/build/page-templates';
                 break;
             case 'parts':
-                $path = $path . '/build/blocks/parts';
+                $path = $path . '/build/block-library/parts';
                 break;
             default:
-                $path = $path . '/build/blocks/custom';
+                $path = $path . '/build/block-library/custom';
                 break;
         }
 

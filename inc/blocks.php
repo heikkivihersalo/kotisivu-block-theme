@@ -68,10 +68,10 @@ class Blocks {
         /**
          * Get block directories
          */
-        $this->custom_blocks = Utils::get_block_directories($path . '/src/blocks/custom', 'ksd');
-        $this->part_blocks = Utils::get_block_directories($path . '/src/blocks/parts', 'ksd');
-        $this->template_blocks = Utils::get_block_directories($path . '/src/templates', 'ksd');
-        $this->core_blocks = Utils::get_block_directories($path . '/src/blocks/core', 'core');
+        $this->custom_blocks = Utils::get_block_directories($path . '/src/block-library/custom', 'ksd');
+        $this->part_blocks = Utils::get_block_directories($path . '/src/block-library/parts', 'ksd');
+        $this->template_blocks = Utils::get_block_directories($path . '/src/page-templates', 'ksd');
+        $this->core_blocks = Utils::get_block_directories($path . '/src/block-library/core', 'core');
     }
 
     /**

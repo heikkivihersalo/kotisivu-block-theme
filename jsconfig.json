@@ -3,9 +3,11 @@
 		"target": "ES6",
 		"baseUrl": "./src",
 		"paths": {
-			"@features/*": ["features/*"],
-			"@utils/*": ["utils/*"],
-			"@hooks/*": ["hooks/*"]
+			"@components/*": ["components/*"],
+			"@hooks/*": ["hooks/*"],
+			"@icons/*": ["icons/*"],
+			"@stores/*": ["stores/*"],
+			"@utils/*": ["utils/*"]
 		}
 	},
 	"exclude": ["node_modules"]
