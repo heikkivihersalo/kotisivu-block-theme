@@ -12,7 +12,7 @@ import {
     WidthFull,
     WidthContent,
     WidthNarrow
-} from "@features/icons";
+} from "@icons";
 
 const WidthControls = ({ attributes, setAttributes }) => {
     const FULL_WIDTH = 'var(--wp--custom--wide-size)';

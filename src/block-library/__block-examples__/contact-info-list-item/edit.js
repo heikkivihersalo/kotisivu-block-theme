@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import { useBlockProps, RichText } from "@wordpress/block-editor";
 import Inspector from './components/Inspector'
 import { useRef } from '@wordpress/element';
-import { Email, Phone } from '@features/icons';
+import { Email, Phone } from '@icons';
 
 import './editor.css';
 

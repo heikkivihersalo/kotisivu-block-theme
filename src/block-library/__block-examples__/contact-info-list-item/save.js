@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { Email, Phone } from '@features/icons';
+import { Email, Phone } from '@icons';
 
 const Save = (props) => {
 	const {

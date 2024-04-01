@@ -30,7 +30,7 @@ import {
     JustifyItemsStart,
     JustifyItemsStretch
 }
-    from "@features/icons";
+    from "@icons";
 
 const GridAlignControls = (props) => {
     const {
