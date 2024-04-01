@@ -31,11 +31,6 @@ $theme_options = Utils::get_options_file('site-options');
 $theme_analytics = Utils::get_options_file('site-analytics');
 $theme_config = include(dirname(__FILE__) . '/theme.config.php');
 
-/**
- * Get block attributes
- */
-$blocks = include(dirname(__FILE__) . '/blocks.config.php');
-
 /*
 |--------------------------------------------------------------------------
 | Initialize Theme
