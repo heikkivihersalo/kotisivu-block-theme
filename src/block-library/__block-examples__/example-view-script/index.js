@@ -30,10 +30,9 @@ registerBlockType(metadata.name, {
     /**
      * Sets alignment.
      *
-     * @param  attributes
-     * @return {{'data-align': *}}
+     * @return {{'data-align': *}} Edit wrapper props
      */
-    getEditWrapperProps(attributes) {
+    getEditWrapperProps() {
         return {
             'data-align': 'full'
         };

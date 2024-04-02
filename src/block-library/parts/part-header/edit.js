@@ -1,20 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
 import { useBlockProps } from "@wordpress/block-editor";
 
 /**
- * Styles
+ * Internal dependencies
  */
 import './editor.css';
 
 /**
  * Block edit function
- * @param {Object} props - block props
- * @return {Object} - React component
+ * @return {JSX.Element} React component
  */
-export default function Edit(props) {
+export default function Edit() {
 	const blockProps = useBlockProps();
 
 	return (

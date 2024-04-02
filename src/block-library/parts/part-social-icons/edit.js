@@ -1,9 +1,20 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import { useBlockProps } from "@wordpress/block-editor";
 import ServerSideRender from '@wordpress/server-side-render';
+
+/**
+ * Internal dependencies
+ */
 import './editor.css';
 
-const Edit = (props) => {
+/**
+ * Block edit function
+ * @param {Object} props Properties
+ * @return {JSX.Element} React component
+ */
+export default function Edit(props) {
 	const blockProps = useBlockProps();
 
 	return (
@@ -15,5 +26,3 @@ const Edit = (props) => {
 		</div>
 	);
 };
-
-export default Edit;

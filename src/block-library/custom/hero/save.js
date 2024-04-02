@@ -1,9 +1,21 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
 import { getBlockStyles } from '@utils';
 
-const Save = (props) => {
+/**
+ * Block save function
+ * @param {Object} props Properties
+ * @return {JSX.Element} Block innerBlocks markup
+ */
+export default function Save(props) {
 	const {
 		attributes: {
 			blockClass,
@@ -25,5 +37,3 @@ const Save = (props) => {
 	)
 
 };
-
-export default Save;

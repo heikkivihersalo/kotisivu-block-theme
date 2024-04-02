@@ -1,38 +1,24 @@
 /**
- * Settings
- */
-import metadata from './block.json';
-
-/**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
 import {
 	useBlockProps,
 } from "@wordpress/block-editor";
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
+import metadata from './block.json';
 import { InnerBlocksAppender } from '@components/inspector';
 import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles } from '@utils';
-
-/**
- * Components
- */
+import './editor.css';
 import Inspector from "./components/Inspector.jsx";
 
 /**
- * Styles
- */
-import './editor.css';
-
-/**
  * Block edit function
- * @param {Object} props - block props
- * @return {Object} - React component
+ * @param {Object} props Block props
+ * @return {JSX.Element} React component
  */
 export default function Edit(props) {
 	const {
@@ -53,7 +39,7 @@ export default function Edit(props) {
 	// Set block props
 	//
 	const blockProps = useBlockProps({
-		className: classnames(blockClass),
+		className: blockClass,
 		style: getBlockStyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null

@@ -1,6 +1,6 @@
 /**
  * Block save function
- * @return {JSX.Element} - Block inner blocks markup
+ * @return {null} Null
  */
 export default function Save() {
 	return null;

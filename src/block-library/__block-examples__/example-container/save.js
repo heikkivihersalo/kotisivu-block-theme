@@ -1,13 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
@@ -16,8 +10,8 @@ import { getBlockStyles } from '@utils';
 
 /**
  * Block save function
- * @param {Object} props - block props
- * @return {Object} - React component
+ * @param {Object} props Block props
+ * @return {JSX.Element} React component
  */
 export default function Save(props) {
 	const {
@@ -30,7 +24,7 @@ export default function Save(props) {
 	} = props;
 
 	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(blockClass),
+		className: blockClass,
 		style: getBlockStyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null

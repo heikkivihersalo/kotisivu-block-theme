@@ -1,19 +1,26 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import { useBlockProps } from "@wordpress/block-editor";
 import ServerSideRender from '@wordpress/server-side-render';
+
+/**
+ * Internal dependencies
+ */
 import './editor.css';
 
-const Edit = (props) => {
+/**
+ * Block edit function
+ * @return {JSX.Element} React component
+ */
+export default function Edit() {
 	const blockProps = useBlockProps();
 
 	return (
 		<div {...blockProps}>
 			<ServerSideRender
 				block="ksd/site-footer"
-				attributes={props.attributes}
 			/>
 		</div>
 	);
 };
-
-export default Edit;

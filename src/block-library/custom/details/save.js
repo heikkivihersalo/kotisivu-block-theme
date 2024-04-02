@@ -1,9 +1,20 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import { useBlockProps, useInnerBlocksProps, RichText } from '@wordpress/block-editor';
 import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
 import { getBlockStyles } from '@utils';
 
-const Save = (props) => {
+/**
+ * Block save function
+ * @param {Object} props Properties
+ * @return {JSX.Element} Block markup
+ */
+export default function Save(props) {
 	const {
 		attributes: {
 			blockClass,
@@ -41,16 +52,14 @@ const Save = (props) => {
 				</div>
 			</details>
 		)
-	} 
-		return (
-			<details {...innerBlocksProps}>
-				<RichText.Content tagName="summary" className="details__heading" value={headingContent} />
-				<div className="details__wrapper details__wrapper--text">
-					{children}
-				</div>
-			</details>
-		)
-	
-};
+	}
+	return (
+		<details {...innerBlocksProps}>
+			<RichText.Content tagName="summary" className="details__heading" value={headingContent} />
+			<div className="details__wrapper details__wrapper--text">
+				{children}
+			</div>
+		</details>
+	)
 
-export default Save;
+};
