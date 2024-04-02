@@ -1,4 +1,4 @@
-<li class="posts__list-item" data-url=" <?php echo esc_url(get_permalink()); ?>">
+<li class="posts__list-item" data-url="<?php echo esc_url(get_permalink()); ?>">
     <?php $author_name = get_the_author_meta('display_name'); ?>
     <?php $author_id = get_the_author_meta('ID'); ?>
     <?php $author_profile_image = get_avatar($author_id, 96); ?>
