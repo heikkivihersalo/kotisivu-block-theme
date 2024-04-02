@@ -26,7 +26,7 @@ $home_id = get_option('page_for_posts');
 wp_add_inline_script(
     'ksd-template-home-view-script',
     sprintf(
-        'const %1$s = %2$s',
+        'const %s = %s',
         'AJAX',
         json_encode([
             'url' => admin_url('admin-ajax.php'),
@@ -58,7 +58,7 @@ $query = new WP_Query(array(
         <ul id="posts-list" class="posts__list">
             <?php if ($query->have_posts()) : ?>
                 <?php while ($query->have_posts()) : $query->the_post(); ?>
-                    <?php get_template_part('src/blocks/templates/template-home/includes/card'); ?>
+                    <?php get_template_part('src/page-templates/template-home/includes/card'); ?>
                 <?php endwhile; ?>
             <?php endif; ?>
         </ul>
