@@ -1,6 +1,7 @@
 import {
     store as blocksStore,
 } from '@wordpress/blocks';
+
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -8,6 +9,7 @@ import { useSelect } from '@wordpress/data';
  * @param {string} blockName
  * @return {Array} blockVariations
  */
+// TODO: Refactor this to React standards
 export const getBlockVariations = (blockName) => {
     return useSelect(
         (select) => {
