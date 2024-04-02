@@ -4,24 +4,25 @@ import { getPosts, createPostCardNode, createErrorNode } from "./scripts/helpers
 
 /**
  * Handle user requests about loading more blog posts
+ * @return {void}
  */
 domReady(function () {
-    let elements = {
+    const elements = {
         container: document.getElementById("posts-container"),
         list: document.getElementById("posts-list"),
         cards: document.querySelectorAll(".posts__list-item"),
         loadMore: document.getElementById("load-next-posts")
     }
 
-    let counters = {
+    const counters = {
         postsLoaded: elements.list.childElementCount,
     }
 
-    let request = {
-        url: AJAX.url,
+    const request = {
+        url: AJAX.url, // eslint-disable-line no-undef
         data: {
             action: 'get_next_page',
-            security: AJAX.nonce,
+            security: AJAX.nonce, // eslint-disable-line no-undef
             paged: 2 // Init to 2 because first page is already loaded.
         },
         headers: {
@@ -34,9 +35,6 @@ domReady(function () {
      */
     elements.loadMore.addEventListener('click', async () => {
         try {
-
-            console.log('Request:', request);
-
             //Get posts from ajax
             const data = await getPosts(request);
 
@@ -49,15 +47,8 @@ domReady(function () {
             //Update current page index
             request.data.paged++;
 
-            //Log succesful fetch
-            if (data.posts.length == 0) {
-                console.info(__('No more posts to fetch:', 'kotisivu-block-theme'));
-            } else {
-                console.info(__('Posts fetched succesfully:', 'kotisivu-block-theme'), data.posts);
-            }
-
             // If reached end of the list hide add more button
-            if (counters.postsLoaded == data.postCount) {
+            if (counters.postsLoaded === data.postCount) {
                 elements.loadMore.disabled = true;
                 elements.loadMore.setAttribute("aria-disabled", "true");
             }
