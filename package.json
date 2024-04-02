@@ -22,10 +22,8 @@
 		"@wordpress/i18n": "^4.51.0",
 		"@wordpress/prettier-config": "^3.11.0",
 		"@wordpress/scripts": "^26.13.0",
-		"eslint-import-resolver-node": "^0.3.9",
 		"eslint-import-resolver-webpack": "^0.13.8",
 		"eslint-plugin-import": "^2.29.1",
-		"eslint-plugin-import-alias": "^1.2.0",
 		"prettier": "3.2.5"
 	},
 	"files": [
@@ -51,5 +49,8 @@
 		"theme.json",
 		"webpack.config.js",
 		"yarn.lock"
-	]
+	],
+	"dependencies": {
+		"classnames": "^2.5.1"
+	}
 }
