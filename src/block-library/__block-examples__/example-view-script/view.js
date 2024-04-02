@@ -7,7 +7,7 @@ import domReady from '@wordpress/dom-ready';
 
 /**
  * External dependencies
- * 
+ *
  */
 
 /**

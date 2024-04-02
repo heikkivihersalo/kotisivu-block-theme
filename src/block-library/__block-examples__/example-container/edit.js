@@ -32,7 +32,7 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props - block props
- * @returns {Object} - React component
+ * @return {Object} - React component
  */
 export default function Edit(props) {
 	const {
@@ -60,10 +60,10 @@ export default function Edit(props) {
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	//

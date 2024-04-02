@@ -28,7 +28,7 @@ import { useContext, useEffect, useState } from "@wordpress/element";
 
 /**
  * Example Component
- * @returns {JSX.Element}
+ * @return {JSX.Element}
  */
 function Example() {
 	return (

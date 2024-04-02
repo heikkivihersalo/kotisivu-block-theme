@@ -17,7 +17,7 @@ import { getBlockStyles } from '@utils';
 /**
  * Block save function
  * @param {Object} props - block props
- * @returns {Object} - React component
+ * @return {Object} - React component
  */
 export default function Save(props) {
 	const {
