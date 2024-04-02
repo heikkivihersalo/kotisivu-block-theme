@@ -1,20 +1,20 @@
 /**
  * Creates DOM element from given html string
- * @param {string} string 
- * @returns Given html string as a DOM element
+ * @param {string} string
+ * @return Given html string as a DOM element
  */
 const createPostCardNode = (string) => {
-    let element = document.createElement('div') // Create temporary 'div' -element
+    const element = document.createElement('div') // Create temporary 'div' -element
     element.innerHTML = string;
     return element.firstChild; // exclude temporary div from return statement
 }
 
 /**
  * Creates DOM element from given string
- * @param {string} errorMessage 
+ * @param {string} errorMessage
  */
 const createErrorNode = (errorMessage) => {
-    let element = document.createElement('div');
+    const element = document.createElement('div');
     element.className = "posts__message--error";
     element.innerHTML = `<p>${errorMessage}</p>`;
 
@@ -29,7 +29,7 @@ const createErrorNode = (errorMessage) => {
 const getPosts = async ({ url, data, headers }) => {
     const response = await fetch(url, {
         method: 'POST',
-        headers: headers,
+        headers,
         body: (new URLSearchParams(data)).toString()
     });
 
