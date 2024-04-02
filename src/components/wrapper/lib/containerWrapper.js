@@ -19,7 +19,7 @@ const ContainerWrapper = (props) => {
 
 	/**
 	 * Define the default case.
-	 * @returns {JSX.Element}
+	 * @return {JSX.Element}
 	 */
 	const defaultCase = () => {
 		return (
@@ -29,7 +29,7 @@ const ContainerWrapper = (props) => {
 		);
 	}
 
-	/** 
+	/**
 	 * If wrapperName is not defined, return the default case.
 	 */
 	if (!container) {
@@ -38,7 +38,7 @@ const ContainerWrapper = (props) => {
 
 	/**
 	 * Return the correct HTML wrapper for element 
-	 * @returns {JSX.Element}
+	 * @return {JSX.Element}
 	 */
 	switch (container) {
 		case 'div':

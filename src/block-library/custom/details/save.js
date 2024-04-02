@@ -41,7 +41,7 @@ const Save = (props) => {
 				</div>
 			</details>
 		)
-	} else {
+	} 
 		return (
 			<details {...innerBlocksProps}>
 				<RichText.Content tagName="summary" className="details__heading" value={headingContent} />
@@ -50,7 +50,7 @@ const Save = (props) => {
 				</div>
 			</details>
 		)
-	}
+	
 };
 
 export default Save;

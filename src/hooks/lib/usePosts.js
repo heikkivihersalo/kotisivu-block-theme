@@ -2,8 +2,8 @@ import { useSelect } from '@wordpress/data';
 
 /**
  * Hook to get posts
- * @param perPage Number of posts to return per page
- * @returns {array}
+ * @param  perPage Number of posts to return per page
+ * @return {Array}
  * 
  * Original source:
  * @link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/

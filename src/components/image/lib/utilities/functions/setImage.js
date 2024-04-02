@@ -1,7 +1,7 @@
 /**
  * Converts sizes to srcSet
- * @param {Array} sizes 
- * @returns {String} srcSet
+ * @param {Array} sizes
+ * @return {string} srcSet
  */
 const convertToSrcSet = (sizes) => {
     return sizes
@@ -13,8 +13,8 @@ const convertToSrcSet = (sizes) => {
 
 /**
  * Converts sizes to media query strings
- * @param {Array} sizes 
- * @returns {String} sizes
+ * @param {Array} sizes
+ * @return {string} sizes
  */
 const convertToSizes = (sizes) => {
     const reversedSizes = [...sizes].reverse();
@@ -26,9 +26,9 @@ const convertToSizes = (sizes) => {
 }
 
 /**
- * 
- * @param {*} obj 
- * @returns 
+ *
+ * @param {*} obj
+ * @return 
  */
 const getImageSizes = (obj) => {
     const sizes = Object.entries(obj).map(
@@ -50,8 +50,8 @@ const getImageSizes = (obj) => {
 
 /**
  * Sets the image attributes
- * @param {Object} media 
- * @param {Object} props 
+ * @param {Object} media
+ * @param {Object} props
  */
 const setImage = (media, props) => {
     const { mime, url, id, alt, sizes, width, height } = media;

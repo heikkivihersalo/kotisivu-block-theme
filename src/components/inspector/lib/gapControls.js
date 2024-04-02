@@ -53,9 +53,9 @@ const GapControls = ({ attributes, setAttributes }) => {
 
     /**
      * Change block alignment attribute value to new one
-     * @param currentStyles block current styles
-     * @param key 
-     * @param newValue 
+     * @param  currentStyles block current styles
+     * @param  key
+     * @param  newValue
      * @return { void } 
      */
     const onStyleChange = (currentStyles, key, newValue) => {

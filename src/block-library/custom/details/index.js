@@ -35,8 +35,8 @@ registerBlockType(metadata.name, {
     /**
      * Sets alignment.
      *
-     * @param attributes
-     * @returns {{'data-align': *}}
+     * @param  attributes
+     * @return {{'data-align': *}}
      */
     getEditWrapperProps(attributes) {
         return {

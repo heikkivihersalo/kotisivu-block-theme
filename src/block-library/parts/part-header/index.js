@@ -18,14 +18,14 @@ const {
 } = metadata;
 
 export const settings = {
-    apiVersion: apiVersion,
+    apiVersion,
     title: __(title, 'kotisivu-block-theme'),
     description: __(description, 'kotisivu-block-theme'),
-    category: category,
-    icon: icon,
-    supports: supports,
-    keywords: keywords,
-    textdomain: textdomain,
+    category,
+    icon,
+    supports,
+    keywords,
+    textdomain,
     edit,
     save,
     getEditWrapperProps() {

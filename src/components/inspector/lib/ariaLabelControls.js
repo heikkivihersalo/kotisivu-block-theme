@@ -5,7 +5,17 @@ import { TextControl, PanelBody } from '@wordpress/components';
  * Controllers for aria-label and aria-labelledby
  * Props ariaLabel and ariaLabelledBy must be defined in block attributes
  *
- * @param { object } { attributes, setAttributes }
+ * @param {Object} { attributes, setAttributes }
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param {.attributes
+ * @param {.setAttributes
  * @return { JSX.Element } AriaLabelControls 
  */
 const AriaLabelControls = ({ attributes, setAttributes }) => {

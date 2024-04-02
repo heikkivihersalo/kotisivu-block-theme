@@ -43,9 +43,9 @@ const GridAlignControls = (props) => {
 
     /**
      * Change block alignment attribute value to new one
-     * @param currentStyles block current styles
-     * @param key aligment style key (alignContent, alignItems, justifyContent, justifyItems)
-     * @param newValue new aligment value based on selected key
+     * @param  currentStyles block current styles
+     * @param  key           aligment style key (alignContent, alignItems, justifyContent, justifyItems)
+     * @param  newValue      new aligment value based on selected key
      * @return { void } 
      */
     const onStyleChange = (currentStyles, key, newValue) => {

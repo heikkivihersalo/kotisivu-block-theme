@@ -3,26 +3,26 @@ import domReady from '@wordpress/dom-ready';
 // TODO: Handle arrow navigation
 // TODO: Handle rest of the keyboard navigation
 domReady(function () {
-    let dialog = {
+    const dialog = {
         container: document.getElementById("header-dialog-container"),
         toggleOpen: document.getElementById("header-dialog-btn--open"),
         toggleClose: document.getElementById("header-dialog-btn--close"),
     }
 
-    let site = {
+    const site = {
         header: document.getElementsByTagName("header")[0],
         content: document.getElementsByClassName("content-area")[0],
         footer: document.getElementsByTagName("footer")[0],
     }
 
-    let menu = {
+    const menu = {
         container: document.getElementsByClassName("site-header__menu")[0],
         links: document.querySelectorAll(".site-header__menu-item"),
         first: document.querySelectorAll(".site-header__menu-item a")[0],
         last: document.querySelectorAll(".site-header__menu-item:last-child > :is(a, span)")[0],
     }
 
-    let attributes = {
+    const attributes = {
         modal: 'data-modal',
         expanded: 'aria-expanded',
         transition: 'data-transition',
@@ -43,20 +43,20 @@ domReady(function () {
 
 /**
  * Add listener for opening mobile menu
- * @param {object} site - Site elements object
- * @param {HTMLElement} site.header - Site header element
- * @param {HTMLElement} site.content - Site content element
- * @param {HTMLElement} site.footer - Site footer element
- * @param {object} dialog - Dialog elements object
- * @param {HTMLElement} dialog.container - Dialog container element
- * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
- * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
- * @param {object} menu - Menu elements object
- * @param {HTMLElement} menu.container - Menu container element
- * @param {NodeList} menu.links - Menu links
- * @param {object} attributes - Attributes object
- * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
- * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @param {Object}      site                - Site elements object
+ * @param {HTMLElement} site.header         - Site header element
+ * @param {HTMLElement} site.content        - Site content element
+ * @param {HTMLElement} site.footer         - Site footer element
+ * @param {Object}      dialog              - Dialog elements object
+ * @param {HTMLElement} dialog.container    - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen   - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose  - Close mobile menu button
+ * @param {Object}      menu                - Menu elements object
+ * @param {HTMLElement} menu.container      - Menu container element
+ * @param {NodeList}    menu.links          - Menu links
+ * @param {Object}      attributes          - Attributes object
+ * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
+ * @param {string}      attributes.expanded - Expanded attribute. Default is 'aria-expanded'
  * @return void
  */
 function handleToggleClicks(site, dialog, menu, attributes) {
@@ -78,22 +78,22 @@ function handleToggleClicks(site, dialog, menu, attributes) {
 /**
  * Add listener for closing mobile menu when link is clicked
  * This prevents anchor links from not working when used in mobile device
- * @param {object} site - Site elements object
- * @param {HTMLElement} site.header - Site header element
- * @param {HTMLElement} site.content - Site content element
- * @param {HTMLElement} site.footer - Site footer element
- * @param {object} dialog - Dialog elements object
- * @param {HTMLElement} dialog.container - Dialog container element
- * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
- * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
- * @param {object} menu - Menu elements object
- * @param {HTMLElement} menu.container - Menu container element
- * @param {NodeList} menu.links - Menu links
- * @param {object} attributes - Attributes object
- * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
- * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
- * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
- * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @param {Object}      site                  - Site elements object
+ * @param {HTMLElement} site.header           - Site header element
+ * @param {HTMLElement} site.content          - Site content element
+ * @param {HTMLElement} site.footer           - Site footer element
+ * @param {Object}      dialog                - Dialog elements object
+ * @param {HTMLElement} dialog.container      - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen     - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose    - Close mobile menu button
+ * @param {Object}      menu                  - Menu elements object
+ * @param {HTMLElement} menu.container        - Menu container element
+ * @param {NodeList}    menu.links            - Menu links
+ * @param {Object}      attributes            - Attributes object
+ * @param {string}      attributes.modal      - Modal attribute. Default is 'data-modal'
+ * @param {string}      attributes.expanded   - Expanded attribute. Default is 'aria-expanded'
+ * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
  * @return void
  */
 function handleLinkClicks(site, dialog, menu, attributes) {
@@ -106,16 +106,16 @@ function handleLinkClicks(site, dialog, menu, attributes) {
 
 /**
  * Open mobile menu
- * @param {Event} [event = null] - Event object
- * @param {object} site - Site elements object
- * @param {HTMLElement} site.header - Site header element
- * @param {HTMLElement} site.content - Site content element
- * @param {HTMLElement} site.footer - Site footer element
- * @param {HTMLElement} toggleOpen - Open mobile menu button
- * @param {HTMLElement} menuFirstElement - First element in the mobile menu
- * @param {object} attributes - Attributes object
- * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
- * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
+ * @param {Event}       [event = null]      - Event object
+ * @param {Object}      site                - Site elements object
+ * @param {HTMLElement} site.header         - Site header element
+ * @param {HTMLElement} site.content        - Site content element
+ * @param {HTMLElement} site.footer         - Site footer element
+ * @param {HTMLElement} toggleOpen          - Open mobile menu button
+ * @param {HTMLElement} menuFirstElement    - First element in the mobile menu
+ * @param {Object}      attributes          - Attributes object
+ * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
+ * @param {string}      attributes.expanded - Expanded attribute. Default is 'aria-expanded'
  * @return void
  */
 async function openMobileMenu(event = null, site, toggleOpen, menuFirstElement, attributes = { modal: 'data-modal', expanded: 'aria-expanded' }) {
@@ -145,15 +145,15 @@ async function openMobileMenu(event = null, site, toggleOpen, menuFirstElement, 
 
 /**
  * Close mobile menu
- * @param {Event} [event = null] - Event object
- * @param {object} site - Site elements object
- * @param {HTMLElement} site.header - Site header element
- * @param {HTMLElement} site.content - Site content element
- * @param {HTMLElement} site.footer - Site footer element
- * @param {HTMLElement} toggleOpen - Open mobile menu button
- * @param {object} attributes - Attributes object
- * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
- * @param {String} attributes.expanded - Expanded attribute. Default is 'data-expanded'
+ * @param {Event}       [event = null]      - Event object
+ * @param {Object}      site                - Site elements object
+ * @param {HTMLElement} site.header         - Site header element
+ * @param {HTMLElement} site.content        - Site content element
+ * @param {HTMLElement} site.footer         - Site footer element
+ * @param {HTMLElement} toggleOpen          - Open mobile menu button
+ * @param {Object}      attributes          - Attributes object
+ * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
+ * @param {string}      attributes.expanded - Expanded attribute. Default is 'data-expanded'
  * @return void
  */
 function closeMobileMenu(event = null, site, toggleOpen, attributes = { modal: 'data-modal', expanded: 'data-expanded' }) {
@@ -183,10 +183,10 @@ function closeMobileMenu(event = null, site, toggleOpen, attributes = { modal: '
 
 /**
  * Handle sticky header
- * @param {HTMLElement} header - Site header element
- * @param {Object} attributes - Attributes object
- * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
- * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @param {HTMLElement} header                - Site header element
+ * @param {Object}      attributes            - Attributes object
+ * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
  * @return void
  */
 function handleStickyHeader(header, attributes = { transition: 'data-transition', sticky: 'data-sticky' }) {
@@ -205,22 +205,22 @@ function handleStickyHeader(header, attributes = { transition: 'data-transition'
 
 /**
  * Handle keyboard navigation
- * @param {object} site - Site elements object
- * @param {HTMLElement} site.header - Site header element
- * @param {HTMLElement} site.content - Site content element
- * @param {HTMLElement} site.footer - Site footer element
- * @param {object} dialog - Dialog elements object
- * @param {HTMLElement} dialog.container - Dialog container element
- * @param {HTMLElement} dialog.toggleOpen - Open mobile menu button
- * @param {HTMLElement} dialog.toggleClose - Close mobile menu button
- * @param {object} menu - Menu elements object
- * @param {HTMLElement} menu.container - Menu container element
- * @param {NodeList} menu.links - Menu links
- * @param {object} attributes - Attributes object
- * @param {String} attributes.modal - Modal attribute. Default is 'data-modal'
- * @param {String} attributes.expanded - Expanded attribute. Default is 'aria-expanded'
- * @param {String} attributes.transition - Transition attribute. Default is 'data-transition'
- * @param {String} attributes.sticky - Sticky attribute. Default is 'data-sticky'
+ * @param {Object}      site                  - Site elements object
+ * @param {HTMLElement} site.header           - Site header element
+ * @param {HTMLElement} site.content          - Site content element
+ * @param {HTMLElement} site.footer           - Site footer element
+ * @param {Object}      dialog                - Dialog elements object
+ * @param {HTMLElement} dialog.container      - Dialog container element
+ * @param {HTMLElement} dialog.toggleOpen     - Open mobile menu button
+ * @param {HTMLElement} dialog.toggleClose    - Close mobile menu button
+ * @param {Object}      menu                  - Menu elements object
+ * @param {HTMLElement} menu.container        - Menu container element
+ * @param {NodeList}    menu.links            - Menu links
+ * @param {Object}      attributes            - Attributes object
+ * @param {string}      attributes.modal      - Modal attribute. Default is 'data-modal'
+ * @param {string}      attributes.expanded   - Expanded attribute. Default is 'aria-expanded'
+ * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
+ * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
  * @return void
  */
 function handleKeyboardNavigation(site, dialog, menu, attributes) {
@@ -273,7 +273,7 @@ function handleKeyboardNavigation(site, dialog, menu, attributes) {
                         dialog.toggleClose.focus();
                         e.preventDefault();
 
-                        return;
+                        
                     }
                 }
                 break;

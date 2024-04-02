@@ -34,10 +34,10 @@ const Edit = (props) => {
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	return (

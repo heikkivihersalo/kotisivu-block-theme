@@ -12,7 +12,7 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props - block props
- * @returns {Object} - React component
+ * @return {Object} - React component
  */
 export default function Edit(props) {
 	const blockProps = useBlockProps();

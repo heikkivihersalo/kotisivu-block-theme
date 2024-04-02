@@ -3,8 +3,8 @@ import SrcSet from './common/srcset';
 
 /**
  * Get image markup
- * @param {*} props 
- * @returns 
+ * @param {*} props
+ * @return 
  */
 const ImageMarkup = ({ attributes: { mediaMime }, srcset, img }) => {
 
@@ -14,7 +14,7 @@ const ImageMarkup = ({ attributes: { mediaMime }, srcset, img }) => {
     if (srcset) return <SrcSet {...props} />;
 
     /**
-     * 
+     *
      */
     if (img) return <Img {...props} />;
 

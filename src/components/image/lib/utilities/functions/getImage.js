@@ -5,9 +5,9 @@ import placeholder from '../../../placeholder.png';
 
 /**
  * Get image markup for block
- * @param {*} props 
- * @param {*} openEvent 
- * @returns 
+ * @param {*} props
+ * @param {*} openEvent
+ * @return 
  */
 const getImage = ({ attributes: { className, mediaUrl, mediaAlt, mediaMime } }, openEvent) => {
     /**
@@ -19,7 +19,7 @@ const getImage = ({ attributes: { className, mediaUrl, mediaAlt, mediaMime } }, 
                 <Button onClick={openEvent} className="button button-large">
                     {__('Pick a image', 'kotisivu-block-theme')}
                 </Button>
-                <img class="image-placeholder" src={placeholder} />
+                <img className="image-placeholder" src={placeholder} />
             </div>
         );
     }

@@ -48,10 +48,10 @@ const Edit = (props) => {
 	});
 
 	const { children, ...innerBlocksProps } = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	/**
@@ -71,6 +71,7 @@ const Edit = (props) => {
 
 	/**
 	 * Return block edit view
+	 * @param content
 	 */
 	return (
 		<>
@@ -81,7 +82,7 @@ const Edit = (props) => {
 					className="details__heading"
 					value={headingContent}
 					onChange={(content) => setAttributes({ headingContent: content })}
-					placeholder={__('Add a descriptive text here...', 'kotisivu-block-theme')}
+					placeholder={__('Add a descriptive text here…', 'kotisivu-block-theme')}
 				/>
 				{children}
 			</details>

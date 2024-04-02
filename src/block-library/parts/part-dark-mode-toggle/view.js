@@ -31,7 +31,7 @@ domReady(function () {
         });
     };
 
-    /** 
+    /**
      * Add cookie to user browser according to used scheme
      * Cookie age is set to 30 days
      * @return {void}

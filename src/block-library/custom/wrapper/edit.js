@@ -40,14 +40,14 @@ const Edit = (props) => {
 	 */
 	const blockProps = useBlockProps({
 		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockStyles({ style })
+		style: getBlockStyles(style),
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	/**

@@ -5,7 +5,17 @@ import { PanelColorSettings } from '@wordpress/block-editor';
  * Wrapper for panelColorSettings
  * Block style must be defined in block attributes
  *
- * @param { object } { attributes, setAttributes }
+ * @param {Object} { attributes, setAttributes }
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param            {.attributes
+ * @param            {.setAttributes
+ * @param {.attributes
+ * @param {.setAttributes
  * @return { JSX.Element } PanelColorSettings 
  */
 const BackgroundColorControl = ({ attributes, setAttributes }) => {

@@ -3,8 +3,8 @@ import { useSelect } from '@wordpress/data';
 /**
  * Hook to get attributes of the parent block
  *
- * @param  {string} clientId
- * @returns {Object} attributes of the parent block
+ * @param {string} clientId
+ * @return {Object} attributes of the parent block
  * 
  * Original source:
  * @link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/

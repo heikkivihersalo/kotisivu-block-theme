@@ -2,6 +2,7 @@ import { useState, useLayoutEffect } from '@wordpress/element';
 
 /**
  * Get the dimensions of a React ref object
+ * @param ref
  */
 const getElementDimensions = (ref) => {
   return {
@@ -13,7 +14,7 @@ const getElementDimensions = (ref) => {
 /**
  * A hook to get the dimensions of a React element
  * @param {React.RefObject} ref - A React ref object
- * @returns {Object} { width: number, height: number } - The dimensions of the element
+ * @return {Object} { width: number, height: number } - The dimensions of the element
  */
 function useElementDimensions(ref) {
   const [elementDimensions, setElementDimensions] = useState();

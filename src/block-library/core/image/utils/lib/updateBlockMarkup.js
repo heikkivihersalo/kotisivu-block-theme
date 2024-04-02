@@ -26,7 +26,7 @@ function updateBlockMarkup(element, blockType, attributes) {
     if (!element?.props?.children?.props?.children[0]) return element;
     if (attributes.caption || attributes?.href) return element;
 
-    /** 
+    /**
      * Get the image props
      */
     const { props: {
@@ -57,7 +57,7 @@ function updateBlockMarkup(element, blockType, attributes) {
                 return null;
         }
     }
-    /** 
+    /**
      * If image doesn't have figcaption, create image element
      */
     const imageBlock = createElement('img', {

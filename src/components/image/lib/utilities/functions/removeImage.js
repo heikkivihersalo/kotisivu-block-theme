@@ -1,6 +1,6 @@
 /**
  * Reset image attributes
- * @param {*} props 
+ * @param {*} props
  */
 const resetImageAttributes = (props) => (event) => {
     const defaultAttributes = {

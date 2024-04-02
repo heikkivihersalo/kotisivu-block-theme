@@ -20,9 +20,9 @@ const InnerBlocksAppender = ( { clientId, template, templateLock, allowedBlocks,
 	return useInnerBlocksProps(
 		{ ...blockProps },
 		{
-			template: template,
-			templateLock: templateLock,
-			allowedBlocks: allowedBlocks,
+			template,
+			templateLock,
+			allowedBlocks,
 			renderAppender: hasChildBlocks
 				? undefined
 				: InnerBlocks.ButtonBlockAppender
