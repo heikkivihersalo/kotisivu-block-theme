@@ -12,12 +12,12 @@
 	],
 	"settings": {
 		"import/resolver": {
-			"node": {
-				"paths": ["src"],
-				"extensions": [".js", ".jsx", ".ts", ".tsx"],
+			"webpack": {
+				"config": "./webpack.config.js",
 			},
 		},
 	},
+	"ignorePatterns": ["**/components/**/__deprecated__/*.js"],
 	"rules": {
 		"prettier/prettier": 0,
 		"comma-dangle": [
@@ -30,5 +30,12 @@
 				"functions": "only-multiline",
 			},
 		],
+		"no-console": [
+			"error",
+			{
+				"allow": ["warn", "error"],
+			},
+		],
+		"jsdoc/check-line-alignment": 0,
 	},
 }
