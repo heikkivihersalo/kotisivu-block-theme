@@ -4,19 +4,11 @@ import { PanelColorSettings } from '@wordpress/block-editor';
 /**
  * Wrapper for panelColorSettings
  * Block style must be defined in block attributes
- *
- * @param {Object} { attributes, setAttributes }
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param {.attributes
- * @param {.setAttributes
- * @return { JSX.Element } PanelColorSettings 
+ * 
+ * @param {Object} props Block props
+ * @param {Object} props.attributes Gutenberg block attributes
+ * @param {Function} props.setAttributes Gutenberg setAttributes function
+ * @return {JSX.Element} InspectorControl Element
  */
 const BackgroundColorControl = ({ attributes, setAttributes }) => {
     const {

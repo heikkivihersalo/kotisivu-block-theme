@@ -1,5 +1,7 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
-
 import {
     PanelBody,
     PanelRow,
@@ -8,6 +10,9 @@ import {
     ToggleControl
 } from "@wordpress/components";
 
+/**
+ * Internal dependencies
+ */
 import {
     AlignContentCenter,
     AlignContentSpaceAround,
@@ -32,6 +37,12 @@ import {
 }
     from "@icons";
 
+/**
+ * Controllers for grid aligment
+ *
+ * @param {Object} props Block props
+ * @return {JSX.Element} InspectorControl Element
+ */
 const GridAlignControls = (props) => {
     const {
         attributes: {
@@ -41,12 +52,17 @@ const GridAlignControls = (props) => {
         setAttributes
     } = props;
 
+    /** @typedef {'alignContent' | 'alignItems' | 'justifyContent' | 'justifyItems'} GridAttribute */
+    /** @typedef {'center' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch'} AlignContent */
+    /** @typedef {'center' | 'start' | 'end' | 'stretch' | 'baseline'} AlignItems */
+    /** @typedef {'center' | 'start' | 'end' | 'space-between' | 'space-around' | 'space-evenly'} JustifyContent */
+    /** @typedef {'center' | 'start' | 'end' | 'stretch'} JustifyItems */
     /**
      * Change block alignment attribute value to new one
-     * @param  currentStyles block current styles
-     * @param  key           aligment style key (alignContent, alignItems, justifyContent, justifyItems)
-     * @param  newValue      new aligment value based on selected key
-     * @return { void } 
+     * @param {Object} currentStyles block current styles
+     * @param {GridAttribute} key aligment style key
+     * @param {AlignContent | AlignItems | JustifyContent | JustifyItems} newValue new aligment value based on selected key
+     * @return {void}
      */
     const onStyleChange = (currentStyles, key, newValue) => {
         if (newValue === currentStyles?.[key]) {
@@ -140,7 +156,7 @@ const GridAlignControls = (props) => {
                                     showTooltip="true"
                                     icon={<JustifyContentEnd />}
                                     isPressed={style?.justifyContent === 'end'}
-                                    onClick={() => onAlignChange(style, 'justifyContent', 'end')}
+                                    onClick={() => onStyleChange(style, 'justifyContent', 'end')}
                                 />
                                 <Button
                                     label="Add justify-content: space-between"

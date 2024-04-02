@@ -5,7 +5,12 @@ import {
     ToggleControl
 } from "@wordpress/components";
 
-
+/**
+ * Controllers for background image
+ *
+ * @param {Object} props Block props
+ * @return {JSX.Element} InspectorControl Element
+ */
 const BackgroundImage = (props) => {
     const {
         attributes: {

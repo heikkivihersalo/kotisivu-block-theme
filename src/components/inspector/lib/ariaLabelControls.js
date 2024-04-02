@@ -5,18 +5,10 @@ import { TextControl, PanelBody } from '@wordpress/components';
  * Controllers for aria-label and aria-labelledby
  * Props ariaLabel and ariaLabelledBy must be defined in block attributes
  *
- * @param {Object} { attributes, setAttributes }
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param            {.attributes
- * @param            {.setAttributes
- * @param {.attributes
- * @param {.setAttributes
- * @return { JSX.Element } AriaLabelControls 
+ * @param {Object} props Block props
+ * @param {Object} props.attributes Gutenberg block attributes
+ * @param {Function} props.setAttributes Gutenberg setAttributes function
+ * @return {JSX.Element} InspectorControl Element
  */
 const AriaLabelControls = ({ attributes, setAttributes }) => {
     const {

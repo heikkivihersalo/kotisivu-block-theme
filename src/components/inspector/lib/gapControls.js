@@ -4,7 +4,14 @@ import {
     PanelBody,
     RangeControl
 } from "@wordpress/components";
-
+/**
+ * Controllers for gap
+ *
+ * @param {Object} props Block props
+ * @param {Object} props.attributes Gutenberg block attributes
+ * @param {Function} props.setAttributes Gutenberg setAttributes function
+ * @return {JSX.Element} InspectorControl Element
+ */
 const GapControls = ({ attributes, setAttributes }) => {
     const marks = [
         {
