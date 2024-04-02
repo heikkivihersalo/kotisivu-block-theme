@@ -1,7 +1,7 @@
 /**
  * Set correct wrapper for HTML container.
- * @param {props} props
- * @return {JSX.Element} 
+ * @param {props} props Default WordPress props
+ * @return {JSX.Element} Wrapper for child elements
  */
 const ContainerWrapper = (props) => {
 	/**
@@ -18,61 +18,49 @@ const ContainerWrapper = (props) => {
 	} = props;
 
 	/**
-	 * Define the default case.
-	 * @return {JSX.Element}
-	 */
-	const defaultCase = () => {
-		return (
-			<div id={id || null}  className={classes} style={styles}>
-				{children}
-			</div>
-		);
-	}
-
-	/**
 	 * If wrapperName is not defined, return the default case.
 	 */
 	if (!container) {
-		return defaultCase;
+		return <div id={id || null} className={classes} style={styles}>
+			{children}
+		</div>;
 	}
 
-	/**
-	 * Return the correct HTML wrapper for element 
-	 * @return {JSX.Element}
-	 */
 	switch (container) {
 		case 'div':
 			return (
-				<div id={id || null}  className={classes} style={styles}>
+				<div id={id || null} className={classes} style={styles}>
 					{children}
 				</div>
 			);
 		case 'section':
 			return (
-				<section id={id || null}  className={classes} style={styles}>
+				<section id={id || null} className={classes} style={styles}>
 					{children}
 				</section>
 			);
 		case 'article':
 			return (
-				<article id={id || null}  className={classes} style={styles}>
+				<article id={id || null} className={classes} style={styles}>
 					{children}
 				</article>
 			);
 		case 'aside':
 			return (
-				<aside id={id || null}  className={classes} style={styles}>
+				<aside id={id || null} className={classes} style={styles}>
 					{children}
 				</aside>
 			);
 		case 'main':
 			return (
-				<main id={id || null}  className={classes} style={styles}>
+				<main id={id || null} className={classes} style={styles}>
 					{children}
 				</main>
 			);
 		default:
-			return defaultCase;
+			return <div id={id || null} className={classes} style={styles}>
+				{children}
+			</div>;
 	}
 }
 
