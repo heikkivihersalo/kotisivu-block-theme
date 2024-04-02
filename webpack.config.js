@@ -1,7 +1,7 @@
 /**
  * Webpack configuration file for multi-block WordPress theme
  * @author Heikki Vihersalo
- * @link https://www.kotisivu.dev
+ * {@link https://www.kotisivu.dev www.kotisivu.dev}
  */
 
 /*--------------------------------------------------------------
@@ -15,13 +15,24 @@
 /*--------------------------------------------------------------
   1.0 Dependencies
 --------------------------------------------------------------*/
+/**
+ * Import path and glob modules
+ */
+// eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const glob = require('glob');
 
-// Import the @wordpress/scripts config.
+/**
+ * Import the default Webpack configuration from WordPress scripts
+ * @type {import('webpack').Configuration}
+ */
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 
-// Import the utility to auto-generate the entry points in the src directory.
+/**
+ * Import the getWebpackEntryPoints function from WordPress scripts
+ * @type {import('@wordpress/scripts').WebpackUtils}
+ */
 const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
 
 /*--------------------------------------------------------------
@@ -29,7 +40,7 @@ const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
 --------------------------------------------------------------*/
 /**
  * Get all core blocks from source folder
- * @returns {array}
+ * @return {string[]} List of core block paths
  */
 function getCoreBlocks() {
     const src = glob.sync("./src/block-library/core/**/*.js");
@@ -64,12 +75,13 @@ module.exports = {
         'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
     },
     resolve: {
+        extensions: ['.js', '.jsx', '.json', '.css'],
         alias: {
-            '@components': path.resolve('src/components'),
-            '@hooks': path.resolve('src/hooks'),
-            '@icons': path.resolve('src/icons'),
-            '@stores': path.resolve('src/stores'),
-            '@utils': path.resolve('src/utils')
+            '@components': path.resolve(__dirname, 'src', 'components'),
+            '@hooks': path.resolve(__dirname, 'src', 'hooks'),
+            '@icons': path.resolve(__dirname, 'src', 'icons'),
+            '@stores': path.resolve(__dirname, 'src', 'stores'),
+            '@utils': path.resolve(__dirname, 'src', 'utils')
         }
     }
 }
