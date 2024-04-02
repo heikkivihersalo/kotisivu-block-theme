@@ -13,7 +13,7 @@ export const addModifiers = (props, attributeKey, attributeValue, modifier, elem
     props.setAttributes({ [attributeKey]: !attributeValue });
 
     attributeValue
-        ? arr = arr.filter(item => item != modifier)
+        ? arr = arr.filter(item => item !== modifier)
         : arr.push(modifier);
 
     props.setAttributes({ [elementName]: cleanSpaces(arr.join(" ")) });
