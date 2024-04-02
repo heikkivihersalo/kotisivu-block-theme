@@ -1,7 +1,7 @@
 /**
  * Creates DOM element from given html string
  * @param {string} string
- * @return Given html string as a DOM element
+ * @return {HTMLUnknownElement} DOM element // TODO: Check if this is correct
  */
 const createPostCardNode = (string) => {
     const element = document.createElement('div') // Create temporary 'div' -element
@@ -12,6 +12,7 @@ const createPostCardNode = (string) => {
 /**
  * Creates DOM element from given string
  * @param {string} errorMessage
+ * @return {HTMLDivElement} - Error message as a DOM element
  */
 const createErrorNode = (errorMessage) => {
     const element = document.createElement('div');
@@ -23,8 +24,11 @@ const createErrorNode = (errorMessage) => {
 
 /**
  * Fetches posts from ajax
- * @param {*} { url, data, headers }
- * @return {*} 
+ * @param {Object} options         - Options for fetch request
+ * @param {string} options.url     - URL for fetch request
+ * @param {Object} options.data    - Data for fetch request
+ * @param {Object} options.headers - Headers for fetch request
+ * @return {Object} Posts and post count
  */
 const getPosts = async ({ url, data, headers }) => {
     const response = await fetch(url, {

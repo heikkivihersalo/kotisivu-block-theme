@@ -7,7 +7,7 @@ import { useSelect } from '@wordpress/data';
  * @return {Object} attributes of the parent block
  * 
  * Original source:
- * @link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/
+ * {@link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/}
  */
 const useParentBlockAttributes = (clientId) => {
     return useSelect((select) => {
