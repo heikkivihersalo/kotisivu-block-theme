@@ -13,7 +13,7 @@ import classnames from 'classnames';
  */
 import metadata from './block.json';
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.js";
+import Inspector from "./components/Inspector.jsx";
 import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles, getIsReversedClass } from '@utils';
 import './editor.css';
@@ -70,9 +70,6 @@ export default function Edit(props) {
 		)
 	}
 
-	/**
-	 * Return block edit view
-	 */
 	return (
 		<>
 			<Inspector {...props} />

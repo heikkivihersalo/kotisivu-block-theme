@@ -10,7 +10,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.js";
+import Inspector from "./components/Inspector.jsx";
 import { getBlockStyles } from '@utils';
 import './editor.css';
 
