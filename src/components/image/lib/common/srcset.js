@@ -1,3 +1,8 @@
+/**
+ * SrcSet component
+ * @param {Object} props Component properties
+ * @return {JSX.Element} SrcSet component
+ */
 const SrcSet = (props) => {
     const {
         attributes: {

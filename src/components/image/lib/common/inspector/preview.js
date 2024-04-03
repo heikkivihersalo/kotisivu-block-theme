@@ -1,3 +1,6 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
 import {
     MediaUpload,
@@ -6,9 +9,18 @@ import {
 import {
     Button
 } from "@wordpress/components";
+
+/**
+ * Internal dependencies
+ */
 import { removeImage, setImage } from '../../utilities/index';
 import Lazyload from "./lazyLoad";
 
+/**
+ * Preview component for image block
+ * @param {Object} props Component properties
+ * @return {JSX.Element} Preview component
+ */
 const Preview = (props) => {
     const {
         attributes: {

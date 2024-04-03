@@ -1,9 +1,16 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
-import { addModifiers } from '../utils';
 import {
     PanelRow,
     ToggleControl
 } from "@wordpress/components";
+
+/**
+ * Internal dependencies
+ */
+import { addModifiers } from '@utils';
 
 /**
  * Controllers for background image

@@ -57,7 +57,7 @@ domReady(function () {
  * @param {Object}      attributes          - Attributes object
  * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
  * @param {string}      attributes.expanded - Expanded attribute. Default is 'aria-expanded'
- * @return void
+ * @return {void}
  */
 function handleToggleClicks(site, dialog, menu, attributes) {
     const toggles = [dialog.toggleOpen, dialog.toggleClose];
@@ -94,11 +94,11 @@ function handleToggleClicks(site, dialog, menu, attributes) {
  * @param {string}      attributes.expanded   - Expanded attribute. Default is 'aria-expanded'
  * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
  * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
- * @return void
+ * @return {void}
  */
 function handleLinkClicks(site, dialog, menu, attributes) {
     menu.links.forEach((link) => {
-        link.addEventListener("click", () => {
+        link.addEventListener("click", (e) => {
             closeMobileMenu(e, site, dialog.toggleOpen, attributes);
         });
     });
@@ -116,7 +116,7 @@ function handleLinkClicks(site, dialog, menu, attributes) {
  * @param {Object}      attributes          - Attributes object
  * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
  * @param {string}      attributes.expanded - Expanded attribute. Default is 'aria-expanded'
- * @return void
+ * @return {void}
  */
 async function openMobileMenu(event = null, site, toggleOpen, menuFirstElement, attributes = { modal: 'data-modal', expanded: 'aria-expanded' }) {
     if (event) {
@@ -154,7 +154,7 @@ async function openMobileMenu(event = null, site, toggleOpen, menuFirstElement, 
  * @param {Object}      attributes          - Attributes object
  * @param {string}      attributes.modal    - Modal attribute. Default is 'data-modal'
  * @param {string}      attributes.expanded - Expanded attribute. Default is 'data-expanded'
- * @return void
+ * @return {void}
  */
 function closeMobileMenu(event = null, site, toggleOpen, attributes = { modal: 'data-modal', expanded: 'data-expanded' }) {
     if (event) {
@@ -187,16 +187,18 @@ function closeMobileMenu(event = null, site, toggleOpen, attributes = { modal: '
  * @param {Object}      attributes            - Attributes object
  * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
  * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
- * @return void
+ * @return {void}
  */
 function handleStickyHeader(header, attributes = { transition: 'data-transition', sticky: 'data-sticky' }) {
     document.addEventListener("scroll", () => {
         /* Set opacity to 0 to animate sticky transition */
+        /* eslint-disable-next-line no-unused-expressions */
         window.scrollY > 100
             ? header.setAttribute(attributes.transition, "true")
             : header.removeAttribute(attributes.transition);
 
         /* Set position to 'sticky' for sticky header */
+        /* eslint-disable-next-line no-unused-expressions */
         window.scrollY > 300
             ? header.setAttribute(attributes.sticky, "true")
             : header.removeAttribute(attributes.sticky);
@@ -221,7 +223,7 @@ function handleStickyHeader(header, attributes = { transition: 'data-transition'
  * @param {string}      attributes.expanded   - Expanded attribute. Default is 'aria-expanded'
  * @param {string}      attributes.transition - Transition attribute. Default is 'data-transition'
  * @param {string}      attributes.sticky     - Sticky attribute. Default is 'data-sticky'
- * @return void
+ * @return {void}
  */
 function handleKeyboardNavigation(site, dialog, menu, attributes) {
     /**
@@ -229,8 +231,6 @@ function handleKeyboardNavigation(site, dialog, menu, attributes) {
      * Keydown event shows CURRENT focused element
      */
     document.addEventListener("keyup", (e) => {
-        const isModalOpen = site.header.getAttribute(attributes.modal) === "open";
-
         switch (e.key) {
             case "Tab":
                 break;
@@ -256,24 +256,27 @@ function handleKeyboardNavigation(site, dialog, menu, attributes) {
         switch (e.key) {
             case "Tab":
                 if (isModalOpen) {
+                    /* eslint-disable-next-line @wordpress/no-global-active-element */
+                    const currentElement = document.activeElement;
+
                     if (e.shiftKey) {
                         /* Guard Clause. If last item, allow default behaviour */
-                        if (document.activeElement === menu.last) {
+                        if (currentElement === menu.last) {
                             return;
                         }
 
-                        if (document.activeElement === dialog.toggleClose) {
+                        if (currentElement === dialog.toggleClose) {
                             menu.last.focus();
                             e.preventDefault();
                             return;
                         }
                     }
 
-                    if (document.activeElement === menu.last) {
+                    if (currentElement === menu.last) {
                         dialog.toggleClose.focus();
                         e.preventDefault();
 
-                        
+
                     }
                 }
                 break;

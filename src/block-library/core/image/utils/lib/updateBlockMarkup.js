@@ -5,18 +5,16 @@ import { createElement } from '@wordpress/element';
 import classnames from 'classnames';
 
 /**
- * Custom dependencies
+ * Internal dependencies
  */
 import { getBlockSizeClass } from '../../utils';
 
-
 /**
  * Update block markup
- *
- * @param {*} element
- * @param {*} blockType
- * @param {*} attributes
- * @return {*} 
+ * @param {Object} element Block element
+ * @param {Object} blockType Block type
+ * @param {Object} attributes Block attributes
+ * @return {JSX.Element} Updated block element
  */
 function updateBlockMarkup(element, blockType, attributes) {
     /**
@@ -38,7 +36,7 @@ function updateBlockMarkup(element, blockType, attributes) {
         width,
         style
     } } = element.props.children.props.children[0];
-    
+
     const getAlignmentClass = (align) => {
         if (!align) return null;
 

@@ -1,11 +1,22 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
 import {
     PanelRow,
     ToggleControl
 } from "@wordpress/components";
 
-import { addModifiers } from '../../@utils';
+/**
+ * Internal dependencies
+ */
+import { addModifiers } from '@utils';
 
+/**
+ * Full width control component
+ * @param {Object} props Component properties
+ * @return {JSX.Element} Full width control component
+ */
 const FullWidth = (props) => {
     const {
         attributes: {

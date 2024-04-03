@@ -1,16 +1,21 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import {
     MediaUpload,
     MediaUploadCheck
 } from "@wordpress/block-editor";
 
-import {
-    PanelRow,
-    TextControl
-} from "@wordpress/components";
-
+/**
+ * Internal dependencies
+ */
 import { setImage, getImage } from '../../utilities/index';
 
+/**
+ * Sidebar component for image block
+ * @param {Object} props Component properties
+ * @return {JSX.Element} Sidebar component
+ */
 const Sidebar = (props) => {
     const {
         attributes: {

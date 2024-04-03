@@ -1,7 +1,7 @@
 /**
  * Converts sizes to srcSet
- * @param {Array} sizes
- * @return {string} srcSet
+ * @param {Array} sizes Image sizes
+ * @return {string} srcSet string for image
  */
 const convertToSrcSet = (sizes) => {
     return sizes
@@ -13,8 +13,8 @@ const convertToSrcSet = (sizes) => {
 
 /**
  * Converts sizes to media query strings
- * @param {Array} sizes
- * @return {string} sizes
+ * @param {Array} sizes Image sizes
+ * @return {Array} media query strings for image
  */
 const convertToSizes = (sizes) => {
     const reversedSizes = [...sizes].reverse();
@@ -26,9 +26,9 @@ const convertToSizes = (sizes) => {
 }
 
 /**
- *
- * @param {*} obj
- * @return 
+ * Get image sizes from WordPress object
+ * @param {Object} obj WordPress image object
+ * @return {Array} Image sizes 
  */
 const getImageSizes = (obj) => {
     const sizes = Object.entries(obj).map(
@@ -52,6 +52,7 @@ const getImageSizes = (obj) => {
  * Sets the image attributes
  * @param {Object} media
  * @param {Object} props
+ * @return {void}
  */
 const setImage = (media, props) => {
     const { mime, url, id, alt, sizes, width, height } = media;

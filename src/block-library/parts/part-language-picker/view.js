@@ -6,7 +6,7 @@ domReady(function () {
 
     /**
      * Add listener for opening country picker
-     * @return void
+     * @return {void}
      */
     function handleCountryPickerClicks() {
         if (!LANG_PICKER_BUTTON) return;
@@ -31,6 +31,10 @@ domReady(function () {
         });
     }
 
+    /**
+     * Handle country picker keyboard events
+     * @return {void}
+     */
     function handleCountryPickerKeyboard() {
         LANG_PICKER_BUTTON.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {

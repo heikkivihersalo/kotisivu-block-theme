@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import {__} from '@wordpress/i18n';
-// eslint-disable-next-line no-unused-vars @wordpress/no-unsafe-wp-apis
+// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 import {__experimentalBlockVariationPicker as BlockVariationPicker} from '@wordpress/block-editor';
 import {getAttributesFromProps} from '../utils';
 
