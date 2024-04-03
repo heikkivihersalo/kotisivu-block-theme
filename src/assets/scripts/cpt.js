@@ -1,5 +1,6 @@
 /**
  * Image Uploader for Custom Post Type
+ * TODO: Refactor this to more modern React component using WP API
  */
 document.addEventListener('DOMContentLoaded', () => {
     const UPLOAD_IMAGE_BUTTON_CHOOSE = document.querySelector('.image-uploader__button--choose');
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     UPLOAD_IMAGE_BUTTON_CHOOSE.addEventListener('click', (e) => {
         e.preventDefault();
-        let frame;
+        let frame; // eslint-disable-line prefer-const
 
         if (frame) {
             frame.open();
