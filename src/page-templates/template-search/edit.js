@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps } from "@wordpress/block-editor";
+import { __ } from '@wordpress/i18n';
+import { useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -15,12 +15,10 @@ import './editor.css';
  */
 export default function Edit() {
 	const blockProps = useBlockProps({
-		className: 'editor-site-content'
+		className: 'editor-site-content',
 	});
 
 	return (
-		<div {...blockProps}>
-			{__('Site Content', 'kotisivu-theme-blocks')}
-		</div>
+		<div {...blockProps}>{__('Site Content', 'kotisivu-theme-blocks')}</div>
 	);
-};
+}
