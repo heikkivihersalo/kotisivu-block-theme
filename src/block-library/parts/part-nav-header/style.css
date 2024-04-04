@@ -161,7 +161,6 @@
 .site-header__toggle {
 	/* Resets */
 	background: none;
-	border: none;
 	padding: 0;
 
 	/* Variables */
@@ -171,8 +170,8 @@
 	--_margin-block: var(--_header-offset-block);
 	--_margin-inline: var(--_header-offset-inline);
 
-	--_border: 0px solid var(--wp--preset--color--foreground);
-	--_radius: 0px;
+	--_border: 0 solid var(--wp--preset--color--foreground);
+	--_radius: 0;
 
 	--_animation-duration: 200ms;
 

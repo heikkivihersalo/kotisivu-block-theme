@@ -85,7 +85,7 @@
 
 /* Set disabled state */
 :is(a, button).wp-block-button__link:disabled {
-	color: grey;
+	color: var(--wp--preset--color--grey);
 	pointer-events: none;
 	visibility: hidden;
 }

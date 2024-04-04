@@ -7,16 +7,17 @@
 
 	--_shadow-color: var(--wp--preset--color--grey-light);
 	--_shadow-base: 0.1em;
-	--_shadow: var(--_shadow-base) var(--_shadow-base) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 2) calc(var(--_shadow-base) * 2) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 3) calc(var(--_shadow-base) * 3) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 4) calc(var(--_shadow-base) * 4) 0px 0px
-			var(--_shadow-color),
-		calc(var(--_shadow-base) * 5) calc(var(--_shadow-base) * 5) 0px 0px
-			var(--_shadow-color);
+	--_shadow:
+		var(--_shadow-base) var(--_shadow-base) 0 0
+		var(--_shadow-color),
+		calc(var(--_shadow-base) * 2) calc(var(--_shadow-base) * 2) 0 0
+		var(--_shadow-color),
+		calc(var(--_shadow-base) * 3) calc(var(--_shadow-base) * 3) 0 0
+		var(--_shadow-color),
+		calc(var(--_shadow-base) * 4) calc(var(--_shadow-base) * 4) 0 0
+		var(--_shadow-color),
+		calc(var(--_shadow-base) * 5) calc(var(--_shadow-base) * 5) 0 0
+		var(--_shadow-color);
 
 	border-radius: var(--_radius);
 	border: var(--_border);

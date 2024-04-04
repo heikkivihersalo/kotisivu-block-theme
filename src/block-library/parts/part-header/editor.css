@@ -19,7 +19,7 @@
 
 .editor-site-logo-placeholder,
 .editor-site-navigation-placeholder {
-	color: white;
+	color: var(--wp--preset--color--white);
 
 	padding: 1em 2em;
 

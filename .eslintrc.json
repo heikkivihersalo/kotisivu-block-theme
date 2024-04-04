@@ -4,18 +4,18 @@
 		"es6": true,
 		"browser": false,
 		"node": true,
-		"commonjs": true,
+		"commonjs": true
 	},
 	"extends": [
 		"plugin:@wordpress/eslint-plugin/recommended",
-		"plugin:import/recommended",
+		"plugin:import/recommended"
 	],
 	"settings": {
 		"import/resolver": {
 			"webpack": {
-				"config": "./webpack.config.js",
-			},
-		},
+				"config": "./webpack.config.js"
+			}
+		}
 	},
 	"ignorePatterns": ["**/components/**/__deprecated__/*.js"],
 	"rules": {
@@ -27,15 +27,15 @@
 				"objects": "only-multiline",
 				"imports": "only-multiline",
 				"exports": "only-multiline",
-				"functions": "only-multiline",
-			},
+				"functions": "only-multiline"
+			}
 		],
 		"no-console": [
 			"error",
 			{
-				"allow": ["warn", "error"],
-			},
+				"allow": ["warn", "error"]
+			}
 		],
-		"jsdoc/check-line-alignment": 0,
-	},
+		"jsdoc/check-line-alignment": 0
+	}
 }

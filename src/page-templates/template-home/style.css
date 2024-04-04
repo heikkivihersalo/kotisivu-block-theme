@@ -92,7 +92,7 @@ main > section:last-of-type {
 }
 
 .posts__list-item:hover
-	:is(.posts__list-item__heading, .posts__list-item__excerpt) {
+:is(.posts__list-item__heading, .posts__list-item__excerpt) {
 	color: var(--wp--preset--color--foreground);
 }
 
