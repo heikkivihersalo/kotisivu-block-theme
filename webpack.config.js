@@ -43,45 +43,54 @@ const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
  * @return {string[]} List of core block paths
  */
 function getCoreBlocks() {
-    const src = glob.sync("./src/block-library/core/**/*.js");
-    const blocks = [];
+	const src = glob.sync('./src/block-library/core/**/*.js');
+	const blocks = [];
 
-    src.forEach(entry => {
-        switch (entry.split('/')[5]) {
-            case 'index.js':
-                blocks.push(entry);
-                break;
-            default:
-                break;
-        }
-    });
+	src.forEach((entry) => {
+		switch (entry.split('/')[5]) {
+			case 'index.js':
+				blocks.push(entry);
+				break;
+			default:
+				break;
+		}
+	});
 
-    return blocks;
-};
+	return blocks;
+}
 
 /*--------------------------------------------------------------
   3.0 Webpack configurations
 --------------------------------------------------------------*/
 module.exports = {
-    ...defaultConfig,
-    entry: {
-        ...getWebpackEntryPoints(),
-        'block-library/core/core': getCoreBlocks(),
-        'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
-        'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.js'),
-        'assets/dark-mode': path.resolve(__dirname, 'src/assets/scripts/dark-mode.js'),
-        'assets/inline': path.resolve(__dirname, 'src/assets/scripts/inline.js'),
-        'assets/sanitize': path.resolve(__dirname, 'src/assets/scripts/sanitize.js'),
-        'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
-    },
-    resolve: {
-        extensions: ['.js', '.jsx', '.json', '.css'],
-        alias: {
-            '@components': path.resolve(__dirname, 'src', 'components'),
-            '@hooks': path.resolve(__dirname, 'src', 'hooks'),
-            '@icons': path.resolve(__dirname, 'src', 'icons'),
-            '@stores': path.resolve(__dirname, 'src', 'stores'),
-            '@utils': path.resolve(__dirname, 'src', 'utils')
-        }
-    }
-}
+	...defaultConfig,
+	entry: {
+		...getWebpackEntryPoints(),
+		'block-library/core/core': getCoreBlocks(),
+		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
+		'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.js'),
+		'assets/dark-mode': path.resolve(
+			__dirname,
+			'src/assets/scripts/dark-mode.js'
+		),
+		'assets/inline': path.resolve(
+			__dirname,
+			'src/assets/scripts/inline.js'
+		),
+		'assets/sanitize': path.resolve(
+			__dirname,
+			'src/assets/scripts/sanitize.js'
+		),
+		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
+	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.json', '.css'],
+		alias: {
+			'@components': path.resolve(__dirname, 'src', 'components'),
+			'@hooks': path.resolve(__dirname, 'src', 'hooks'),
+			'@icons': path.resolve(__dirname, 'src', 'icons'),
+			'@stores': path.resolve(__dirname, 'src', 'stores'),
+			'@utils': path.resolve(__dirname, 'src', 'utils'),
+		},
+	},
+};
