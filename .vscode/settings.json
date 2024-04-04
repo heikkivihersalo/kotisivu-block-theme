@@ -1,7 +1,7 @@
 {
 	"prettier.requireConfig": true,
-	"prettier.bracketSpacing": false,
 	"prettier.trailingComma": "es5",
+	"prettier.bracketSpacing": true,
 	"eslint.experimental.useFlatConfig": true,
 	"eslint.format.enable": true,
 	"eslint.workingDirectories": []
