@@ -1,6 +1,6 @@
-import { __ } from "@wordpress/i18n";
+import { __ } from '@wordpress/i18n';
 import { ImageMarkup } from '@components/image';
-import { Button } from "@wordpress/components";
+import { Button } from '@wordpress/components';
 import placeholder from '../../../placeholder.png';
 
 /**
@@ -10,39 +10,37 @@ import placeholder from '../../../placeholder.png';
  * @return {JSX.Element} Image markup
  */
 const getImage = (props, eventCallback) => {
-    const {
-        className,
-        mediaUrl,
-        mediaAlt,
-        mediaMime
-    } = props.attributes;
+	const { className, mediaUrl, mediaAlt, mediaMime } = props.attributes;
 
-    /**
-     *  If no image is selected, return 'upload image' button
-     */
-    if (!mediaUrl) {
-        return (
-            <div className="button-container" >
-                <Button onClick={eventCallback} className="button button-large">
-                    {__('Pick a image', 'kotisivu-block-theme')}
-                </Button>
-                <img className="image-placeholder" src={placeholder} alt={mediaAlt} />
-            </div>
-        );
-    }
+	/**
+	 *  If no image is selected, return 'upload image' button
+	 */
+	if (!mediaUrl) {
+		return (
+			<div className="button-container">
+				<Button onClick={eventCallback} className="button button-large">
+					{__('Pick a image', 'kotisivu-block-theme')}
+				</Button>
+				<img
+					className="image-placeholder"
+					src={placeholder}
+					alt={mediaAlt}
+				/>
+			</div>
+		);
+	}
 
-    /**
-     * If image is svg, return correct markup for svg image
-     */
-    if (mediaMime === "image/svg+xml") {
-        return <img className={className} src={mediaUrl} alt={mediaAlt} />
-    }
+	/**
+	 * If image is svg, return correct markup for svg image
+	 */
+	if (mediaMime === 'image/svg+xml') {
+		return <img className={className} src={mediaUrl} alt={mediaAlt} />;
+	}
 
-    /**
-     * Return markup for image element
-     */
-    return (<ImageMarkup {...props} />);
-}
+	/**
+	 * Return markup for image element
+	 */
+	return <ImageMarkup {...props} />;
+};
 
-export { getImage }
-
+export { getImage };

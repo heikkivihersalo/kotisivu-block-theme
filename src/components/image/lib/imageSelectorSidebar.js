@@ -1,10 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import {
-    PanelBody,
-} from "@wordpress/components";
+import { __ } from '@wordpress/i18n';
+import { PanelBody } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -20,24 +18,21 @@ import Sidebar from './common/inspector/sidebar';
  * @return {JSX.Element} Image selector sidebar component
  */
 const ImageSelectorSidebar = (props) => {
-    const {
-        attributes: {
-            mediaUrl,
-        }
-    } = props;
+	const {
+		attributes: { mediaUrl },
+	} = props;
 
-    return (
-        <PanelBody
-            title={__("Select background image", "kotisivu-block-theme")}
-            initialOpen={true}
-        >
-            <Sidebar {...props} />
-            {mediaUrl && <Preview {...props} />}
-            <FullWidth {...props} />
-            <LazyLoad {...props} />
-        </PanelBody>
-    )
-}
+	return (
+		<PanelBody
+			title={__('Select background image', 'kotisivu-block-theme')}
+			initialOpen={true}
+		>
+			<Sidebar {...props} />
+			{mediaUrl && <Preview {...props} />}
+			<FullWidth {...props} />
+			<LazyLoad {...props} />
+		</PanelBody>
+	);
+};
 
-
-export { ImageSelectorSidebar }
+export { ImageSelectorSidebar };

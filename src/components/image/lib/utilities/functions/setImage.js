@@ -4,12 +4,12 @@
  * @return {string} srcSet string for image
  */
 const convertToSrcSet = (sizes) => {
-    return sizes
-        .slice()
-        .reverse()
-        .map(({ width, url }) => `${url} ${width}w`)
-        .join(', ');
-}
+	return sizes
+		.slice()
+		.reverse()
+		.map(({ width, url }) => `${url} ${width}w`)
+		.join(', ');
+};
 
 /**
  * Converts sizes to media query strings
@@ -17,36 +17,38 @@ const convertToSrcSet = (sizes) => {
  * @return {Array} media query strings for image
  */
 const convertToSizes = (sizes) => {
-    const reversedSizes = [...sizes].reverse();
-    return reversedSizes.map((size, index) => {
-        return index === (reversedSizes.length - 1)
-            ? `${size.width}px`
-            : `(max-width: ${size.width}px) ${size.width}px`
-    }).join(', ');
-}
+	const reversedSizes = [...sizes].reverse();
+	return reversedSizes
+		.map((size, index) => {
+			return index === reversedSizes.length - 1
+				? `${size.width}px`
+				: `(max-width: ${size.width}px) ${size.width}px`;
+		})
+		.join(', ');
+};
 
 /**
  * Get image sizes from WordPress object
  * @param {Object} obj WordPress image object
- * @return {Array} Image sizes 
+ * @return {Array} Image sizes
  */
 const getImageSizes = (obj) => {
-    const sizes = Object.entries(obj).map(
-        ([key, value], index) => ({
-            id: index,
-            name: key,
-            url: value.url,
-            width: value.width,
-            height: value.height
-        })
-    );
+	const sizes = Object.entries(obj).map(([key, value], index) => ({
+		id: index,
+		name: key,
+		url: value.url,
+		width: value.width,
+		height: value.height,
+	}));
 
-    /* Sort images from largest to smallest */
-    const isHorizontal = sizes[0].width >= sizes[0].height;
-    sizes.sort((a, b) => isHorizontal ? b.width - a.width : b.height - a.height);
+	/* Sort images from largest to smallest */
+	const isHorizontal = sizes[0].width >= sizes[0].height;
+	sizes.sort((a, b) =>
+		isHorizontal ? b.width - a.width : b.height - a.height
+	);
 
-    return sizes;
-}
+	return sizes;
+};
 
 /**
  * Sets the image attributes
@@ -55,33 +57,33 @@ const getImageSizes = (obj) => {
  * @return {void}
  */
 const setImage = (media, props) => {
-    const { mime, url, id, alt, sizes, width, height } = media;
+	const { mime, url, id, alt, sizes, width, height } = media;
 
-    /* If image is svg, set svg properties correctly */
-    if (mime === "image/svg+xml") {
-        props.setAttributes({
-            mediaUrl: url,
-            mediaId: id,
-            mediaAlt: alt,
-            mediaMime: mime,
-        });
-        return;
-    }
+	/* If image is svg, set svg properties correctly */
+	if (mime === 'image/svg+xml') {
+		props.setAttributes({
+			mediaUrl: url,
+			mediaId: id,
+			mediaAlt: alt,
+			mediaMime: mime,
+		});
+		return;
+	}
 
-    /* Get image sizes from WordPress */
-    const imageSizes = getImageSizes(sizes);
+	/* Get image sizes from WordPress */
+	const imageSizes = getImageSizes(sizes);
 
-    /* Set attributes for image block */
-    props.setAttributes({
-        mediaUrl: url,
-        mediaId: id,
-        mediaAlt: alt,
-        mediaMime: mime,
-        mediaWidth: width,
-        mediaHeight: height,
-        mediaSrcSet: convertToSrcSet(imageSizes),
-        mediaSrcSizes: convertToSizes(imageSizes)
-    });
-}
+	/* Set attributes for image block */
+	props.setAttributes({
+		mediaUrl: url,
+		mediaId: id,
+		mediaAlt: alt,
+		mediaMime: mime,
+		mediaWidth: width,
+		mediaHeight: height,
+		mediaSrcSet: convertToSrcSet(imageSizes),
+		mediaSrcSizes: convertToSizes(imageSizes),
+	});
+};
 
-export { setImage }
+export { setImage };

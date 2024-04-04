@@ -9,12 +9,12 @@ import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
  * @return {void}
  */
 function initBlockStyles(styles = []) {
-    unregisterBlockStyle('core/image', 'default');
-    unregisterBlockStyle('core/image', 'rounded');
+	unregisterBlockStyle('core/image', 'default');
+	unregisterBlockStyle('core/image', 'rounded');
 
-    styles.forEach((style) => {
-        registerBlockStyle('core/image', style);
-    });
+	styles.forEach((style) => {
+		registerBlockStyle('core/image', style);
+	});
 }
 
-export { initBlockStyles }
+export { initBlockStyles };

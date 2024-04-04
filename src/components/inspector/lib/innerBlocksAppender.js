@@ -19,7 +19,13 @@ import { useSelect } from '@wordpress/data';
  * @param {Object} props.blockProps Block props
  * @return {JSX.Element} InspectorControl Element
  */
-const InnerBlocksAppender = ({ clientId, template, templateLock, allowedBlocks, blockProps }) => {
+const InnerBlocksAppender = ({
+	clientId,
+	template,
+	templateLock,
+	allowedBlocks,
+	blockProps,
+}) => {
 	const { hasChildBlocks } = useSelect(
 		(select) => {
 			const { getBlockOrder } = select(blockEditorStore);
@@ -38,7 +44,7 @@ const InnerBlocksAppender = ({ clientId, template, templateLock, allowedBlocks, 
 			allowedBlocks,
 			renderAppender: hasChildBlocks
 				? undefined
-				: InnerBlocks.ButtonBlockAppender
+				: InnerBlocks.ButtonBlockAppender,
 		}
 	);
 };

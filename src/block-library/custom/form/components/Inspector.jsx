@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {InspectorControls} from '@wordpress/block-editor';
+import { InspectorControls } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

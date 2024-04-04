@@ -9,21 +9,20 @@ const ContainerWrapper = (props) => {
 	 */
 	const {
 		children,
-		attributes: {
-			id,
-			container
-		},
+		attributes: { id, container },
 		classes,
-		styles
+		styles,
 	} = props;
 
 	/**
 	 * If wrapperName is not defined, return the default case.
 	 */
 	if (!container) {
-		return <div id={id || null} className={classes} style={styles}>
-			{children}
-		</div>;
+		return (
+			<div id={id || null} className={classes} style={styles}>
+				{children}
+			</div>
+		);
 	}
 
 	switch (container) {
@@ -58,10 +57,12 @@ const ContainerWrapper = (props) => {
 				</main>
 			);
 		default:
-			return <div id={id || null} className={classes} style={styles}>
-				{children}
-			</div>;
+			return (
+				<div id={id || null} className={classes} style={styles}>
+					{children}
+				</div>
+			);
 	}
-}
+};
 
 export { ContainerWrapper };

@@ -1,11 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import {
-    PanelRow,
-    ToggleControl
-} from "@wordpress/components";
+import { __ } from '@wordpress/i18n';
+import { PanelRow, ToggleControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -18,24 +15,28 @@ import { addModifiers } from '@utils';
  * @return {JSX.Element} Full width control component
  */
 const FullWidth = (props) => {
-    const {
-        attributes: {
-            isFullWidth,
-            className
-        }
-    } = props;
+	const {
+		attributes: { isFullWidth, className },
+	} = props;
 
-    return (
-        <>
-            <PanelRow>
-                <ToggleControl
-                    label={__("Full Width", "kotisivu-theme-blocks")}
-                    checked={isFullWidth}
-                    onChange={addModifiers(props, "isFullWidth", isFullWidth, "is-full-width", "className", className)}
-                />
-            </PanelRow>
-        </>
-    )
-}
+	return (
+		<>
+			<PanelRow>
+				<ToggleControl
+					label={__('Full Width', 'kotisivu-theme-blocks')}
+					checked={isFullWidth}
+					onChange={addModifiers(
+						props,
+						'isFullWidth',
+						isFullWidth,
+						'is-full-width',
+						'className',
+						className
+					)}
+				/>
+			</PanelRow>
+		</>
+	);
+};
 
-export default FullWidth
+export default FullWidth;

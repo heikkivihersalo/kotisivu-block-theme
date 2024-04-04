@@ -4,7 +4,7 @@
  * @return {string|undefined} is-reversed class if isReversed is true
  */
 function getIsReversedClass(isReversed) {
-    return isReversed ? 'is-reversed' : undefined
-};
+	return isReversed ? 'is-reversed' : undefined;
+}
 
-export { getIsReversedClass }
+export { getIsReversedClass };

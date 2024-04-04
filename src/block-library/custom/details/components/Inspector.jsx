@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import {__} from '@wordpress/i18n';
-import {InspectorControls} from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+import { InspectorControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	PanelRow,
@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import {BackgroundColorControl} from '@components/inspector';
+import { BackgroundColorControl } from '@components/inspector';
 
 /**
  * Inspector controls
@@ -58,7 +58,7 @@ const Inspector = (props) => {
 							)}
 							checked={isOpenOnLoad}
 							onChange={() =>
-								setAttributes({isOpenOnLoad: !isOpenOnLoad})
+								setAttributes({ isOpenOnLoad: !isOpenOnLoad })
 							}
 						/>
 					</PanelRow>
@@ -78,7 +78,7 @@ const Inspector = (props) => {
 							label={__('Use schema', 'kotisivu-block-theme')}
 							checked={useSchema}
 							onChange={() =>
-								setAttributes({useSchema: !useSchema})
+								setAttributes({ useSchema: !useSchema })
 							}
 						/>
 					</PanelRow>
@@ -115,7 +115,9 @@ const Inspector = (props) => {
 								)}
 								value={headingSchemaProp}
 								onChange={(content) =>
-									setAttributes({headingSchemaProp: content})
+									setAttributes({
+										headingSchemaProp: content,
+									})
 								}
 							/>
 							<TextControl
@@ -125,7 +127,9 @@ const Inspector = (props) => {
 								)}
 								value={contentSchemaProp}
 								onChange={(content) =>
-									setAttributes({contentSchemaProp: content})
+									setAttributes({
+										contentSchemaProp: content,
+									})
 								}
 							/>
 							<TextControl
@@ -135,7 +139,9 @@ const Inspector = (props) => {
 								)}
 								value={contentSchemaType}
 								onChange={(content) =>
-									setAttributes({contentSchemaType: content})
+									setAttributes({
+										contentSchemaType: content,
+									})
 								}
 							/>
 						</>

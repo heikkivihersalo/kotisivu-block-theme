@@ -21,19 +21,18 @@ export default function Save(props) {
 			ariaLabel,
 			ariaLabelledBy,
 			style,
-			isReversed
-		}
+			isReversed,
+		},
 	} = props;
 
-	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockStyles({ style }),
-		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
-	}));
+	const innerBlocksProps = useInnerBlocksProps.save(
+		useBlockProps.save({
+			className: classnames(blockClass, getIsReversedClass(isReversed)),
+			style: getBlockStyles({ style }),
+			'aria-label': ariaLabel ? ariaLabel : null,
+			'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
+		})
+	);
 
-	return (
-		<section {...innerBlocksProps} />
-	)
-
-};
+	return <section {...innerBlocksProps} />;
+}

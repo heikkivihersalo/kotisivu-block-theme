@@ -9,8 +9,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Internal dependencies
  */
 import metadata from './block.json';
-import edit from "./edit";
-import save from "./save";
+import edit from './edit';
+import save from './save';
 import './style.css';
 
 /**
@@ -19,22 +19,22 @@ import './style.css';
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
 registerBlockType(metadata.name, {
-    /**
-     * @see ./edit.js
-     */
-    edit,
-    /**
-     * @see ./save.js
-     */
-    save,
-    /**
-     * Sets alignment.
-     *
-     * @return {{'data-align': *}} Edit wrapper props
-     */
-    getEditWrapperProps() {
-        return {
-            'data-align': 'full'
-        };
-    },
+	/**
+	 * @see ./edit.js
+	 */
+	edit,
+	/**
+	 * @see ./save.js
+	 */
+	save,
+	/**
+	 * Sets alignment.
+	 *
+	 * @return {{'data-align': *}} Edit wrapper props
+	 */
+	getEditWrapperProps() {
+		return {
+			'data-align': 'full',
+		};
+	},
 });

@@ -12,11 +12,11 @@ import { useState, useLayoutEffect } from '@wordpress/element';
  * @return {Dimensions} The dimensions of the element
  */
 const getElementDimensions = (ref) => {
-  return {
-    width: ref.current.offsetWidth,
-    height: ref.current.offsetHeight
-  };
-}
+	return {
+		width: ref.current.offsetWidth,
+		height: ref.current.offsetHeight,
+	};
+};
 
 /**
  * A hook to get the dimensions of a React element
@@ -24,30 +24,30 @@ const getElementDimensions = (ref) => {
  * @return {Dimensions} The dimensions of the element
  */
 function useElementDimensions(ref) {
-  const [elementDimensions, setElementDimensions] = useState();
+	const [elementDimensions, setElementDimensions] = useState();
 
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      setElementDimensions(getElementDimensions(ref));
-    }
+	useLayoutEffect(() => {
+		const handleResize = () => {
+			setElementDimensions(getElementDimensions(ref));
+		};
 
-    /**
-     * Get the dimensions of the element
-     */
-    handleResize();
+		/**
+		 * Get the dimensions of the element
+		 */
+		handleResize();
 
-    /**
-     * Add a resize event listener to the window
-     */
-    window.addEventListener('resize', handleResize);
+		/**
+		 * Add a resize event listener to the window
+		 */
+		window.addEventListener('resize', handleResize);
 
-    /**
-     * Remove the resize event listener from the window
-     */
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+		/**
+		 * Remove the resize event listener from the window
+		 */
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
-  return elementDimensions;
+	return elementDimensions;
 }
 
 export { useElementDimensions };

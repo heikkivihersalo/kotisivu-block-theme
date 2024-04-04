@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps } from "@wordpress/block-editor";
+import { useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 
 /**
  * Internal dependencies
  */
-import Inspector from "./components/Inspector";
+import Inspector from './components/Inspector';
 import './editor.css';
 
 /**
@@ -17,7 +17,7 @@ import './editor.css';
  */
 export default function Edit(props) {
 	const blockProps = useBlockProps({
-		className: "site-logo-editor-wrapper"
+		className: 'site-logo-editor-wrapper',
 	});
 
 	return (
@@ -30,4 +30,4 @@ export default function Edit(props) {
 			/>
 		</div>
 	);
-};
+}

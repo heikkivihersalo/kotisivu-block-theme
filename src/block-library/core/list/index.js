@@ -14,10 +14,10 @@ import './index.css';
  * Run on DOM ready
  */
 domReady(function () {
-    /**
-     * Register custom button styles
-     */
-    styles.forEach((style) => {
-        registerBlockStyle('core/list', style);
-    });
+	/**
+	 * Register custom button styles
+	 */
+	styles.forEach((style) => {
+		registerBlockStyle('core/list', style);
+	});
 });

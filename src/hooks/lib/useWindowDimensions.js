@@ -11,8 +11,8 @@ import { useState, useEffect } from '@wordpress/element';
  * @return {Dimensions} The dimensions of the window
  */
 function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return { width, height };
+	const { innerWidth: width, innerHeight: height } = window;
+	return { width, height };
 }
 
 /**
@@ -20,18 +20,20 @@ function getWindowDimensions() {
  * @return {Dimensions} The dimensions of the window
  */
 function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+	const [windowDimensions, setWindowDimensions] = useState(
+		getWindowDimensions()
+	);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowDimensions(getWindowDimensions());
-    }
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowDimensions(getWindowDimensions());
+		};
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
-  return windowDimensions;
+	return windowDimensions;
 }
 
 export { useWindowDimensions };

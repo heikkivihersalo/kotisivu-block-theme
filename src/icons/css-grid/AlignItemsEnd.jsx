@@ -3,9 +3,9 @@ const AlignItemsEnd = (props) => (
 		xmlns="http://www.w3.org/2000/svg"
 		xmlSpace="preserve"
 		style={{
-			fillRule: "evenodd",
-			clipRule: "evenodd",
-			strokeLinejoin: "round",
+			fillRule: 'evenodd',
+			clipRule: 'evenodd',
+			strokeLinejoin: 'round',
 			strokeMiterlimit: 2,
 		}}
 		viewBox="0 0 33 29"
@@ -14,7 +14,7 @@ const AlignItemsEnd = (props) => (
 		<path
 			d="M197.001 119.761v22.085h-6v-22.085h6Zm18.012 28.09h-32.036v-3.037h32.036v3.037Zm-8.026-20.043v14.038h-6v-14.038h6Z"
 			style={{
-				fill: "currentColor",
+				fill: 'currentColor',
 			}}
 			transform="translate(-182.977 -119.761)"
 		/>

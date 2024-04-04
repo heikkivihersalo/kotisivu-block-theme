@@ -10,18 +10,16 @@ import SelectorButton from './common/inspector/button';
  * @return {JSX.Element} Image selector component
  */
 const ImageSelector = (props) => {
-    const {
-        attributes: {
-            mediaUrl,
-        }
-    } = props;
+	const {
+		attributes: { mediaUrl },
+	} = props;
 
-    return (
-        <>
-            <SelectorButton {...props} />
-            {mediaUrl && <Preview {...props} />}
-        </>
-    );
-}
+	return (
+		<>
+			<SelectorButton {...props} />
+			{mediaUrl && <Preview {...props} />}
+		</>
+	);
+};
 
 export { ImageSelector };
