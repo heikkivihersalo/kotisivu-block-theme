@@ -1,21 +1,20 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import {
-	useBlockProps,
-	RichText
-} from "@wordpress/block-editor";
+import { __ } from '@wordpress/i18n';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.jsx";
-import { VariationPicker, getBlockVariations } from "@components/variations";
+import { VariationPicker } from '@components/variations';
 import { getBlockStyles, getIsReversedClass } from '@utils';
+
+import Inspector from './components/Inspector.jsx';
+
+import metadata from './block.json';
 import './editor.css';
 
 /**
@@ -33,10 +32,10 @@ export default function Edit(props) {
 			variationName,
 			isReversed,
 			headingContent,
-			isOpenOnLoad
+			isOpenOnLoad,
 		},
 		setAttributes,
-		clientId
+		clientId,
 	} = props;
 
 	/**
@@ -45,29 +44,24 @@ export default function Edit(props) {
 	const blockProps = useBlockProps({
 		className: classnames(blockClass, getIsReversedClass(isReversed)),
 		style: getBlockStyles({ style }),
-		open: isOpenOnLoad
+		open: isOpenOnLoad,
 	});
 
 	const { children, ...innerBlocksProps } = InnerBlocksAppender({
 		clientId,
 		template,
 		templateLock,
-		blockProps
+		blockProps,
 	});
-
-	/**
-	 * Get variations
-	 */
-	const blockVariations = getBlockVariations(metadata.name);
 
 	/* If variation isn't selected, render variation select screen */
 	if (!variationName) {
 		return (
 			<VariationPicker
+				blockName={metadata.name}
 				setAttributes={setAttributes}
-				blockVariations={blockVariations}
 			/>
-		)
+		);
 	}
 
 	return (
@@ -78,11 +72,16 @@ export default function Edit(props) {
 					tagName="summary"
 					className="details__heading"
 					value={headingContent}
-					onChange={(content) => setAttributes({ headingContent: content })}
-					placeholder={__('Add a descriptive text here…', 'kotisivu-block-theme')}
+					onChange={(content) =>
+						setAttributes({ headingContent: content })
+					}
+					placeholder={__(
+						'Add a descriptive text here…',
+						'kotisivu-block-theme'
+					)}
 				/>
 				{children}
 			</details>
 		</>
 	);
-};
+}

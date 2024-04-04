@@ -16,19 +16,15 @@ import { getBlockStyles, getIsReversedClass } from '@utils';
  */
 export default function Save(props) {
 	const {
-		attributes: {
-			blockClass,
-			style,
-			isReversed
-		}
+		attributes: { blockClass, style, isReversed },
 	} = props;
 
-	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockStyles({ style })
-	}));
+	const innerBlocksProps = useInnerBlocksProps.save(
+		useBlockProps.save({
+			className: classnames(blockClass, getIsReversedClass(isReversed)),
+			style: getBlockStyles({ style }),
+		})
+	);
 
-	return (
-		<div {...innerBlocksProps} />
-	)
-};
+	return <div {...innerBlocksProps} />;
+}

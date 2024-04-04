@@ -11,17 +11,17 @@ import './index.css';
  * Run on DOM ready
  */
 domReady(function () {
-    /**
-     * Unregister default button styles
-     */
-    unregisterBlockStyle('core/separator', 'default');
-    unregisterBlockStyle('core/separator', 'wide');
-    unregisterBlockStyle('core/separator', 'dots');
+	/**
+	 * Unregister default button styles
+	 */
+	unregisterBlockStyle('core/separator', 'default');
+	unregisterBlockStyle('core/separator', 'wide');
+	unregisterBlockStyle('core/separator', 'dots');
 
-    /**
-     * Register custom button styles
-     */
-    styles.forEach((style) => {
-        registerBlockStyle('core/separator', style);
-    });
+	/**
+	 * Register custom button styles
+	 */
+	styles.forEach((style) => {
+		registerBlockStyle('core/separator', style);
+	});
 });

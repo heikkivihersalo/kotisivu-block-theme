@@ -16,23 +16,17 @@ import { getBlockStyles } from '@utils';
  */
 export default function Save(props) {
 	const {
-		attributes: {
-			blockClass,
-			ariaLabel,
-			ariaLabelledBy,
-			style
-		}
+		attributes: { blockClass, ariaLabel, ariaLabelledBy, style },
 	} = props;
 
-	const innerBlocksProps = useInnerBlocksProps.save(useBlockProps.save({
-		className: classnames(blockClass),
-		style: getBlockStyles({ style }),
-		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
-	}));
+	const innerBlocksProps = useInnerBlocksProps.save(
+		useBlockProps.save({
+			className: classnames(blockClass),
+			style: getBlockStyles({ style }),
+			'aria-label': ariaLabel ? ariaLabel : null,
+			'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
+		})
+	);
 
-	return (
-		<section {...innerBlocksProps} />
-	)
-
-};
+	return <section {...innerBlocksProps} />;
+}

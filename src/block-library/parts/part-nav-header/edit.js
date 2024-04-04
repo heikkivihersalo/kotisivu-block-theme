@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps } from "@wordpress/block-editor";
+import { useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 
 /**
@@ -18,9 +18,7 @@ export default function Edit() {
 
 	return (
 		<div {...blockProps}>
-			<ServerSideRender
-				block="ksd/part-nav-header"
-			/>
+			<ServerSideRender block="ksd/part-nav-header" />
 		</div>
 	);
-};
+}

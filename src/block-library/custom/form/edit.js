@@ -1,16 +1,14 @@
 /**
  * WordPress dependencies
  */
-import {
-	useBlockProps,
-} from "@wordpress/block-editor";
+import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.jsx";
+import Inspector from './components/Inspector.jsx';
 import { getBlockStyles } from '@utils';
 import './editor.css';
 
@@ -29,7 +27,7 @@ export default function Edit(props) {
 			templateLock,
 			style,
 		},
-		clientId
+		clientId,
 	} = props;
 
 	/**
@@ -39,14 +37,14 @@ export default function Edit(props) {
 		className: classnames(blockClass),
 		style: getBlockStyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
 		clientId,
 		template,
 		templateLock,
-		blockProps
+		blockProps,
 	});
 
 	return (
@@ -55,4 +53,4 @@ export default function Edit(props) {
 			<section {...innerBlocksProps} />
 		</>
 	);
-};
+}

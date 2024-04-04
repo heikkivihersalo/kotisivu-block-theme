@@ -1,19 +1,19 @@
 /**
  * WordPress dependencies
  */
-import {
-	useBlockProps
-} from "@wordpress/block-editor";
+import { useBlockProps } from '@wordpress/block-editor';
 import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import metadata from './block.json';
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.jsx";
-import { VariationPicker, getBlockVariations } from "@components/variations";
+import { VariationPicker } from '@components/variations';
 import { getBlockStyles } from '@utils';
+
+import Inspector from './components/Inspector.jsx';
+
+import metadata from './block.json';
 import './editor.css';
 
 /**
@@ -30,10 +30,10 @@ export default function Edit(props) {
 			template,
 			templateLock,
 			style,
-			variationName
+			variationName,
 		},
 		setAttributes,
-		clientId
+		clientId,
 	} = props;
 
 	/**
@@ -43,29 +43,24 @@ export default function Edit(props) {
 		className: classnames(blockClass),
 		style: getBlockStyles({ style }),
 		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
 		clientId,
 		template,
 		templateLock,
-		blockProps
+		blockProps,
 	});
-
-	/**
-	 * Get variations
-	 */
-	const blockVariations = getBlockVariations(metadata.name);
 
 	/* If variation isn't selected, render variation select screen */
 	if (!variationName) {
 		return (
 			<VariationPicker
+				blockName={metadata.name}
 				setAttributes={setAttributes}
-				blockVariations={blockVariations}
 			/>
-		)
+		);
 	}
 
 	/**
@@ -77,4 +72,4 @@ export default function Edit(props) {
 			<section {...innerBlocksProps} />
 		</>
 	);
-};
+}

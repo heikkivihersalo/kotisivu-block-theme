@@ -23,7 +23,9 @@
 }
 
 .footer > div {
-	max-width: calc(var(--wp--custom--wide-size) - var(--wp--preset--spacing--50));
+	max-width: calc(
+		var(--wp--custom--wide-size) - var(--wp--preset--spacing--50)
+	);
 	margin-inline: auto;
 }
 
