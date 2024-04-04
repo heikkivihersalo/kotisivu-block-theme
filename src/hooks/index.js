@@ -1,3 +1,4 @@
+export * from './lib/useBlockVariations';
 export * from './lib/useCustomPost';
 export * from './lib/useElementDimensions';
 export * from './lib/useParentBlockAttributes';

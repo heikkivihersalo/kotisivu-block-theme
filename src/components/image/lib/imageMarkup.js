@@ -7,33 +7,30 @@ import SrcSet from './common/srcset';
  * @return {JSX.Element} Image markup
  */
 const ImageMarkup = (props) => {
-    const {
-        attributes: {
-            mediaMime
-        },
-        srcset,
-        img
-    } = props;
+	const {
+		attributes: { mediaMime },
+		srcset,
+		img,
+	} = props;
 
-    /**
-     * Force desired image format
-     */
-    if (srcset) return <SrcSet {...props} />;
+	/**
+	 * Force desired image format
+	 */
+	if (srcset) return <SrcSet {...props} />;
 
-    /**
-     *
-     */
-    if (img) return <Img {...props} />;
+	/**
+	 *
+	 */
+	if (img) return <Img {...props} />;
 
-    /**
-     * Load default behaviour
-     */
-    return (
-        mediaMime === "image/svg+xml"
-            ? <Img {...props} />
-            : <SrcSet {...props} />
-    );
-}
+	/**
+	 * Load default behaviour
+	 */
+	return mediaMime === 'image/svg+xml' ? (
+		<Img {...props} />
+	) : (
+		<SrcSet {...props} />
+	);
+};
 
-export { ImageMarkup }
-
+export { ImageMarkup };
