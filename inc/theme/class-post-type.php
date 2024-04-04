@@ -131,7 +131,7 @@ class CustomPostType {
                     $urls = $post_type['slug_translations'];
                     $post_type = $post_type['names']['slug'];
 
-                    if (get_post_type($post) == $post_type) {
+                    if (get_post_type($post) == $post_type && isset($urls[pll_get_post_language($post->ID)])) {
                         $post_link = str_replace($post_type, urlencode($urls[pll_get_post_language($post->ID)]), $post_link);
                     }
 
