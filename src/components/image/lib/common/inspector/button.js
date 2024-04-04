@@ -1,10 +1,21 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import {
     MediaUpload,
     MediaUploadCheck
 } from "@wordpress/block-editor";
+
+/**
+ * Internal dependencies
+ */
 import { getImage, setImage } from '../../utilities/index';
 
+/**
+ * Button component for image block
+ * @param {Object} props Component properties
+ * @return {JSX.Element} Button component
+ */
 const Button = (props) => {
     const {
         attributes: {

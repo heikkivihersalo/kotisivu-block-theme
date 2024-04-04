@@ -184,6 +184,20 @@ class Metabox {
                     <?php endforeach; ?>
                 </select>
             <?php endif; ?>
+
+            <?php if ($field['type'] == 'image') : ?>
+                <!-- Image Upload -->
+                <?php $img_src = wp_get_attachment_image_src(get_post_meta($post->ID, $field['id'], true), 'full'); ?>
+
+                <div class="image-uploader">
+                    <input class="metabox__input-field metabox__input-field--image image-uploader__input-field" id="<?php echo esc_attr($field['id']); ?>" type="hidden" name="<?php echo $field['id']; ?>" value="<?php echo esc_attr(get_post_meta($post->ID, $field['id'], true)) ?>" />
+                    <img src="<?php echo $img_src[0] ?>" style="width: 300px;" alt="" class="image-uploader__preview<?php echo is_array($img_src) == '' ? ' is-visually-hidden--no-tag' : ''; ?>" />
+                    <div class="image-uploader__buttons">
+                        <button class="image-uploader__button image-uploader__button--choose<?php echo is_array($img_src) == '' ? ' ' : ' is-visually-hidden--no-tag'; ?>">Choose image</button>
+                        <button class="image-uploader__button image-uploader__button--remove<?php echo is_array($img_src) == '' ? ' is-visually-hidden--no-tag' : ''; ?>">Remove Image</button>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
 
 <?php $buffer = ob_get_contents();
@@ -310,6 +324,14 @@ class Metabox {
                     $post_id,
                     $field['id'],
                     sanitize_text_field($_POST[$field['id']])
+                );
+            }
+
+            if ($field['type'] == 'image') {
+                $this->update_database_value(
+                    $post_id,
+                    $field['id'],
+                    intval($_POST[$field['id']])
                 );
             }
         }

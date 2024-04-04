@@ -23,9 +23,7 @@
 }
 
 .footer > div {
-	max-width: calc(
-		var(--wp--custom--wide-size) - var(--wp--preset--spacing--50)
-	);
+	max-width: calc(var(--wp--custom--wide-size) - var(--wp--preset--spacing--50));
 	margin-inline: auto;
 }
 
@@ -42,7 +40,7 @@
 	font-size: var(--wp--preset--font-size--large);
 }
 
-/** 
+/**
  * LOGO
  */
 .footer__logo img {
@@ -57,7 +55,7 @@
 	}
 }
 
-/** 
+/**
  * CONTACT INFORMATION
  */
 .footer__site-contact-wrapper {

@@ -31,7 +31,7 @@ domReady(function () {
         });
     };
 
-    /** 
+    /**
      * Add cookie to user browser according to used scheme
      * Cookie age is set to 30 days
      * @return {void}
@@ -78,11 +78,10 @@ domReady(function () {
              * Switch to dark mode if user prefers dark mode
              */
             if (prefersDarkMode.matches) {
+                /* eslint-disable-next-line no-unused-expressions */
                 currentScheme === "dark" || null ? switchToLightMode() : switchToDarkMode();
             } else {
-                /**
-                 * Else switch to light mode
-                 */
+                /* eslint-disable-next-line no-unused-expressions */
                 currentScheme === "light" || null ? switchToDarkMode() : switchToLightMode();
             }
 

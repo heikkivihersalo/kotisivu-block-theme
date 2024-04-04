@@ -1,8 +1,9 @@
 /**
  * Reset image attributes
- * @param {*} props 
+ * @param {Object} props Block properties
+ * @return {Function} Function to reset image attributes
  */
-const resetImageAttributes = (props) => (event) => {
+const resetImageAttributes = (props) => () => {
     const defaultAttributes = {
         mediaUrl: '',
         mediaId: 0,

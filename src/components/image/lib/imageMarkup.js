@@ -3,10 +3,17 @@ import SrcSet from './common/srcset';
 
 /**
  * Get image markup
- * @param {*} props 
- * @returns 
+ * @param {Object} props Image properties
+ * @return {JSX.Element} Image markup
  */
-const ImageMarkup = ({ attributes: { mediaMime }, srcset, img }) => {
+const ImageMarkup = (props) => {
+    const {
+        attributes: {
+            mediaMime
+        },
+        srcset,
+        img
+    } = props;
 
     /**
      * Force desired image format
@@ -14,7 +21,7 @@ const ImageMarkup = ({ attributes: { mediaMime }, srcset, img }) => {
     if (srcset) return <SrcSet {...props} />;
 
     /**
-     * 
+     *
      */
     if (img) return <Img {...props} />;
 

@@ -13,16 +13,17 @@ import classnames from 'classnames';
  */
 import metadata from './block.json';
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.js";
+import Inspector from "./components/Inspector.jsx";
 import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles, getIsReversedClass } from '@utils';
-
-/**
- * Styles
- */
 import './editor.css';
 
-const Edit = (props) => {
+/**
+ * Block edit function
+ * @param {Object} props Properties
+ * @return {JSX.Element} React component
+ */
+export default function Edit(props) {
 	const {
 		attributes: {
 			blockClass,
@@ -48,10 +49,10 @@ const Edit = (props) => {
 	});
 
 	const { children, ...innerBlocksProps } = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	/**
@@ -69,9 +70,6 @@ const Edit = (props) => {
 		)
 	}
 
-	/**
-	 * Return block edit view
-	 */
 	return (
 		<>
 			<Inspector {...props} />
@@ -81,12 +79,10 @@ const Edit = (props) => {
 					className="details__heading"
 					value={headingContent}
 					onChange={(content) => setAttributes({ headingContent: content })}
-					placeholder={__('Add a descriptive text here...', 'kotisivu-block-theme')}
+					placeholder={__('Add a descriptive text here…', 'kotisivu-block-theme')}
 				/>
 				{children}
 			</details>
 		</>
 	);
 };
-
-export default Edit;

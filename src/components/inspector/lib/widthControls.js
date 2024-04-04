@@ -1,5 +1,7 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from "@wordpress/i18n";
-
 import {
     PanelBody,
     PanelRow,
@@ -8,23 +10,35 @@ import {
     ToggleControl
 } from "@wordpress/components";
 
+/**
+ * Internal dependencies
+ */
 import {
     WidthFull,
     WidthContent,
     WidthNarrow
 } from "@icons";
 
+/**
+ * Controllers for block width
+ * @param {Object} props Component props
+ * @param {Object} props.attributes Gutenberg block attributes
+ * @param {Function} props.setAttributes Gutenberg setAttributes function
+ * @return {JSX.Element} InspectorControl Element
+ */
 const WidthControls = ({ attributes, setAttributes }) => {
     const FULL_WIDTH = 'var(--wp--custom--wide-size)';
     const CONTENT_WIDTH = 'var(--wp--custom--content-size)';
     const NARROW_WIDTH = 'var(--wp--custom--narrow-size)';
 
+    /** @typedef {'width' | 'height'} SizeKey */
+    /** @typedef {'var(--wp--custom--wide-size)' | 'var(--wp--custom--content-size)' | 'var(--wp--custom--narrow-size)' | '100%'} SizeValue */
     /**
      * Change block alignment attribute value to new one
-     * @param currentStyles block current styles
-     * @param key aligment style key (alignContent, alignItems, justifyContent, justifyItems)
-     * @param newValue new aligment value based on selected key
-     * @return { void } 
+     * @param {Object} currentStyles block current styles
+     * @param {SizeKey} key aligment style key
+     * @param {SizeValue} newValue new aligment value based on selected key
+     * @return {void}
      */
     const onStyleChange = (currentStyles, key, newValue) => {
         if (newValue === currentStyles?.[key]) {
@@ -34,16 +48,14 @@ const WidthControls = ({ attributes, setAttributes }) => {
                     [key]: undefined
                 }
             });
-
-            return;
+        } else {
+            setAttributes({
+                style: {
+                    ...currentStyles,
+                    [key]: newValue
+                }
+            });
         }
-
-        setAttributes({
-            style: {
-                ...currentStyles,
-                [key]: newValue
-            }
-        });
     }
 
     return (

@@ -5,9 +5,9 @@
 /* Fix image height */
 .wp-block-ksd-hero figure > div,
 .wp-block-ksd-hero figure > div > img {
-    height: var(--_height) !important;
-    width: 100% !important;
-    object-fit: cover;
+	height: var(--_height) !important;
+	width: 100% !important;
+	object-fit: cover;
 }
 
 /** ======================
@@ -15,19 +15,19 @@
  ** ==================== */
 
 .hero-two-column {
-    display: grid;
-    justify-items: center;
-    align-items: revert;
-    width: 100%;
-    height: auto !important;
+	display: grid;
+	justify-items: center;
+	align-items: revert;
+	width: 100%;
+	height: auto !important;
 }
 
 .hero-two-column .hero__content {
-    width: revert !important;
-    height: revert !important;
+	width: revert !important;
+	height: revert !important;
 }
 .hero-two-column .hero__image > div,
 .hero-two-column .hero__image > div > img {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
 }

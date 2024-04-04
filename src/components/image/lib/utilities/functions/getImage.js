@@ -5,21 +5,28 @@ import placeholder from '../../../placeholder.png';
 
 /**
  * Get image markup for block
- * @param {*} props 
- * @param {*} openEvent 
- * @returns 
+ * @param {Object} props Block properties
+ * @param {PointerEvent} eventCallback Event callback
+ * @return {JSX.Element} Image markup
  */
-const getImage = ({ attributes: { className, mediaUrl, mediaAlt, mediaMime } }, openEvent) => {
+const getImage = (props, eventCallback) => {
+    const {
+        className,
+        mediaUrl,
+        mediaAlt,
+        mediaMime
+    } = props.attributes;
+
     /**
      *  If no image is selected, return 'upload image' button
      */
     if (!mediaUrl) {
         return (
             <div className="button-container" >
-                <Button onClick={openEvent} className="button button-large">
+                <Button onClick={eventCallback} className="button button-large">
                     {__('Pick a image', 'kotisivu-block-theme')}
                 </Button>
-                <img class="image-placeholder" src={placeholder} />
+                <img className="image-placeholder" src={placeholder} alt={mediaAlt} />
             </div>
         );
     }

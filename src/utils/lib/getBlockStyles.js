@@ -1,17 +1,22 @@
 /**
- * Get and convert the block styles to correct object
- * @param {object} style Block style attributes
- * @returns {object} Block style object
+ * Check if the style object has grid alignment properties
+ * @param {Object} style - Current block styles
+ * @return {boolean} True if the style object has grid alignment properties
  */
-function getBlockStyles({ style }) {
+function checkGridAlignment(style) {
+    return style?.justifyContent || style?.justifyItems || style?.alignItems || style?.alignContent;
+}
+
+/**
+ * Get and convert the block styles to correct object
+ * @param {Object} style - Current block styles
+ * @return {Object} Block style object
+ */
+function getBlockStyles(style) {
     const convertVerticalBarSyntaxToCSS = (string) => {
         if (string === "0") return undefined;
-        let val = string.split(":")[1].trim();
+        const val = string.split(":")[1].trim();
         return `var(--wp--${val.replaceAll("|", "--")})`;
-    }
-
-    const hasGridAlignment = (style) => {
-        return style?.justifyContent || style?.justifyItems || style?.alignItems || style?.alignContent;
     }
 
     return {
@@ -24,7 +29,7 @@ function getBlockStyles({ style }) {
         paddingRight: style?.spacing?.padding?.right && convertVerticalBarSyntaxToCSS(style.spacing.padding.right),
         width: style?.width,
         height: style?.height,
-        display: hasGridAlignment(style) ? 'grid' : undefined,
+        display: checkGridAlignment(style) ? 'grid' : undefined,
         justifyItems: style?.justifyItems,
         alignItems: style?.alignItems,
         alignContent: style?.alignContent,

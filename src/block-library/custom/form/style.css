@@ -15,10 +15,10 @@
 	--_font-color: var(--wp--preset--color--foreground);
 	--_font-family: var(--wp--preset--font-family--accent);
 
-    width: var(--wp--custom--content-size);
-    max-width: var(--_width);
+	width: var(--wp--custom--content-size);
+	max-width: var(--_width);
 	margin-block: var(--wp--preset--spacing--50);
-    margin-inline: auto;
+	margin-inline: auto;
 }
 
 .fluentform fieldset,
@@ -31,8 +31,8 @@
  * Form Labels
  */
 .ff-el-input--label label {
-    font-family: var(--wp--preset--font-family--heading);
-    font-size: var(--wp--preset--font-size--large);
+	font-family: var(--wp--preset--font-family--heading);
+	font-size: var(--wp--preset--font-size--large);
 }
 
 /**
@@ -60,7 +60,7 @@
 /**
  * Field States
  */
- /* Focus */
+/* Focus */
 :is(input, textarea).ff-el-form-control:focus {
 	color: var(--wp--preset--color--black) !important;
 	background: var(--wp--preset--color--white) !important;

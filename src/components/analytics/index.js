@@ -1,1 +1,0 @@
-export { pushMusicEventsToDatalayer, pushMusicViewEventsToDataLayer } from './lib/music-player';

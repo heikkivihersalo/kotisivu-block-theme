@@ -1,16 +1,25 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import {
 	useBlockProps,
 } from "@wordpress/block-editor";
 import classnames from 'classnames';
 
+/**
+ * Internal dependencies
+ */
 import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from "./components/Inspector.js";
+import Inspector from "./components/Inspector.jsx";
 import { getBlockStyles } from '@utils';
-
 import './editor.css';
 
-const Edit = (props) => {
+/**
+ * Block edit function
+ * @param {Object} props Properties
+ * @return {JSX.Element} React component
+ */
+export default function Edit(props) {
 	const {
 		attributes: {
 			ariaLabel,
@@ -34,10 +43,10 @@ const Edit = (props) => {
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	return (
@@ -47,5 +56,3 @@ const Edit = (props) => {
 		</>
 	);
 };
-
-export default Edit;

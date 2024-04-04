@@ -17,7 +17,7 @@ main > .entry-content > section.not-found-hero {
 
 .not-found-hero__heading {
 	font-size: calc(var(--wp--preset--font-size--colossal) * 2);
-	margin-bottom: 0em;
+	margin-bottom: 0;
 }
 
 .not-found-hero__text {

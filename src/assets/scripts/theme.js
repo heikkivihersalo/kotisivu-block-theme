@@ -16,9 +16,9 @@ import '../styles/theme.css';
      */
     links.forEach(link => {
         link.addEventListener('click', () => {
-            let eventName = 'link_click';
-            let eventType = link.dataset.type;
-            let eventLabel = link.dataset.label;
+            const eventName = 'link_click';
+            const eventType = link.dataset.type;
+            const eventLabel = link.dataset.label;
 
             /**
              * Push an event to the `dataLayer` array

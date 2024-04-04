@@ -1,3 +1,8 @@
+/**
+ * Image component
+ * @param {Object} props Component properties
+ * @return {JSX.Element} Image component
+ */
 const Img = (props) => {
     const {
         attributes: {

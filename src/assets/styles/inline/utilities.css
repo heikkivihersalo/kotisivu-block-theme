@@ -148,17 +148,17 @@
 	grid-area: stack;
 }
 
-/** 
-* GRID COLUMNS 
+/**
+* GRID COLUMNS
 */
 :where(
-		.grid-cols-1,
-		.grid-cols-2,
-		.grid-cols-3,
-		.grid-cols-4,
-		.grid-cols-5,
-		.grid-cols-6
-	) {
+.grid-cols-1,
+.grid-cols-2,
+.grid-cols-3,
+.grid-cols-4,
+.grid-cols-5,
+.grid-cols-6
+) {
 	--_gap-desktop: var(--wp--preset--spacing--50);
 	--_gap-mobile: var(--wp--preset--spacing--40);
 
@@ -215,30 +215,30 @@
 	}
 
 	:where(
-			:is(
-					.grid-cols-2-rv,
-					.grid-cols-70-30-rv,
-					.grid-cols-75-25-rv,
-					.grid-cols-30-70-rv,
-					.grid-cols-25-75-rv,
-					.is-reversed
-				)
-				div:first-child
-		) {
+	:is(
+		.grid-cols-2-rv,
+		.grid-cols-70-30-rv,
+		.grid-cols-75-25-rv,
+		.grid-cols-30-70-rv,
+		.grid-cols-25-75-rv,
+		.is-reversed
+	)
+	div:first-child
+) {
 		order: 2;
 	}
 
 	:where(
-			:is(
-					.grid-cols-2-rv,
-					.grid-cols-70-30-rv,
-					.grid-cols-75-25-rv,
-					.grid-cols-30-70-rv,
-					.grid-cols-25-75-rv,
-					.is-reversed
-				)
-				div:last-child
-		) {
+	:is(
+		.grid-cols-2-rv,
+		.grid-cols-70-30-rv,
+		.grid-cols-75-25-rv,
+		.grid-cols-30-70-rv,
+		.grid-cols-25-75-rv,
+		.is-reversed
+	)
+	div:last-child
+) {
 		order: 1;
 	}
 }

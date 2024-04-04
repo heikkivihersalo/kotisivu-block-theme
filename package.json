@@ -9,14 +9,27 @@
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",
 		"zip": "wp-scripts plugin-zip",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style 'src/**/*.css'",
+		"lint:js": "wp-scripts lint-js",
 		"make-pot": "wp i18n make-pot . languages/kotisivu-block-theme.pot --slug=kotisivu-block-theme --domain=kotisivu-block-theme --exclude=src/blocks/static,src/blocks/dynamic/*/*.js,src/features,src/utils,src/hooks,src/__template-library__",
 		"make-json": "wp i18n make-json languages/ --no-purge"
+	},
+	"dependencies": {
+		"classnames": "^2.5.1"
 	},
 	"devDependencies": {
 		"@wordpress/block-editor": "^12.19.1",
 		"@wordpress/blocks": "^12.28.1",
+		"@wordpress/eslint-plugin": "^17.11.0",
 		"@wordpress/i18n": "^4.51.0",
-		"@wordpress/scripts": "^26.13.0"
+		"@wordpress/prettier-config": "^3.11.0",
+		"@wordpress/scripts": "^26.13.0",
+		"@wordpress/stylelint-config": "^21.38.0",
+		"eslint-import-resolver-webpack": "^0.13.8",
+		"eslint-plugin-import": "^2.29.1",
+		"prettier": "3.2.5",
+		"stylelint-config-prettier": "^9.0.5"
 	},
 	"files": [
 		".vscode",

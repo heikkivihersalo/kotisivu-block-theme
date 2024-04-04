@@ -1,5 +1,7 @@
-const Save = () => {
+/**
+ * Block save function
+ * @return {null} Null
+ */
+export default function Save() {
 	return null;
 };
-
-export default Save;

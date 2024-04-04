@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
 import {
 	useBlockProps
 } from "@wordpress/block-editor";
@@ -15,13 +14,14 @@ import { InnerBlocksAppender } from '@components/inspector';
 import Inspector from "./components/Inspector.jsx";
 import { VariationPicker, getBlockVariations } from "@components/variations";
 import { getBlockStyles, getIsReversedClass } from '@utils';
-
-/**
- * Styles
- */
 import './editor.css';
 
-const Edit = (props) => {
+/**
+ * Block edit function
+ * @param {Object} props Properties
+ * @return {JSX.Element} React component
+ */
+export default function Edit(props) {
 	const {
 		attributes: {
 			blockClass,
@@ -40,14 +40,14 @@ const Edit = (props) => {
 	 */
 	const blockProps = useBlockProps({
 		className: classnames(blockClass, getIsReversedClass(isReversed)),
-		style: getBlockStyles({ style })
+		style: getBlockStyles(style),
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
-		clientId: clientId,
-		template: template,
-		templateLock: templateLock,
-		blockProps: blockProps
+		clientId,
+		template,
+		templateLock,
+		blockProps
 	});
 
 	/**
@@ -75,5 +75,3 @@ const Edit = (props) => {
 		</>
 	);
 };
-
-export default Edit;

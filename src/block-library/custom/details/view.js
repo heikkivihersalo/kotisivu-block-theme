@@ -1,6 +1,11 @@
-import { __ } from "@wordpress/i18n";
+/**
+ * WordPress dependencies
+ */
 import domReady from '@wordpress/dom-ready';
 
+/**
+ * On DOM ready
+ */
 domReady(() => {
     const details = document.querySelectorAll('details');
 

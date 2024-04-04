@@ -3,18 +3,18 @@
  ** - Note, must have 'is-style-full' class/style selected on WP
  ** ==================== */
 .wp-block-ksd-section > figure.is-style-full {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .wp-block-ksd-section > figure.is-style-full > div,
 .wp-block-ksd-section > figure.is-style-full > div > img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover;
-    object-position: center center;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover;
+	object-position: center center;
 }
 
 .wp-block-ksd-section > .wp-block-ksd-column > .block-editor-block-list__block {
-    height: revert !important;
+	height: revert !important;
 }

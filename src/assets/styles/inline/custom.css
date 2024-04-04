@@ -45,9 +45,6 @@
 
 @media screen and (min-width: 1600px) {
 	body {
-		--wp--custom--content-size: min(
-			calc(100% - calc(var(--wp--preset--spacing--40)) * 2),
-			1400px
-		);
+		--wp--custom--content-size: min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), 1400px);
 	}
 }

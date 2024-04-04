@@ -60,7 +60,7 @@ class Ajax {
                  * Get current post content
                  */
                 ob_start();
-                get_template_part('src/blocks/templates/template-home/includes/card');
+                get_template_part('src/page-templates/template-home/includes/card');
                 $post_content = ob_get_clean();
 
                 /**
