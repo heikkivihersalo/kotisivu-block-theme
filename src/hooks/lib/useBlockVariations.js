@@ -9,7 +9,6 @@ import { useSelect } from '@wordpress/data';
  * @param {string} blockName
  * @return {Array} blockVariations
  */
-// TODO: Refactor this to React standards
 function useBlockVariations(blockName) {
 	return useSelect(
 		(select) => {
