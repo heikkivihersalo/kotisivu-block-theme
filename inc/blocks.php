@@ -89,6 +89,19 @@ class Blocks {
         return $url;
     }
 
+    private function filter_part_blocks($blocks): array {
+        $part_blocks = array();
+        foreach ($blocks as $block) {
+            // Skip footer and header blocks
+            if (strpos($block, 'footer', 4) !== false || strpos($block, 'header', 4) !== false) {
+                continue;
+            }
+
+            $part_blocks[] = $block;
+        }
+        return $part_blocks;
+    }
+
     /**
      * Define allowed block types for Gutenberg
      * @param mixed $block_editor_context 
@@ -120,13 +133,10 @@ class Blocks {
                 $this->core_blocks,
                 /** 
                  * Theme specific part blocks
+                 * - These include blocks like footer, header, dark mode switch etc.
+                 * - Footer and header blocks are excluded from block inserter
                  */
-                $this->part_blocks,
-                /**
-                 * Theme templates. These are not allowed to be used in the editor
-                 * This is basically Kotisivu Block Theme way to handle templates. Templates for pages, posts etc.
-                 */
-                $this->template_blocks
+                self::filter_part_blocks($this->part_blocks),
             );
         endif;
 
