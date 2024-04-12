@@ -89,7 +89,12 @@ class Blocks {
         return $url;
     }
 
-    private function filter_part_blocks($blocks): array {
+    /**
+     * Exclude footer and header blocks from block inserter
+     * @param array $blocks 
+     * @return array 
+     */
+    private function filter_part_blocks(array $blocks): array {
         $part_blocks = array();
         foreach ($blocks as $block) {
             // Skip footer and header blocks
