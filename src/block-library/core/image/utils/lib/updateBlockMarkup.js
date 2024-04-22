@@ -10,6 +10,30 @@ import classnames from 'classnames';
 import { getBlockSizeClass } from '../../utils';
 
 /**
+ * Get block alignment class name
+ * @param {string} align Block alignment
+ * @return {string} Alignment class name
+ */
+function getAlignmentClass(align) {
+	if (!align) return null;
+
+	switch (align) {
+		case 'left':
+			return 'has-align-left';
+		case 'right':
+			return 'has-align-right';
+		case 'center':
+			return 'has-align-center';
+		case 'wide':
+			return 'has-align-wide';
+		case 'full':
+			return 'has-align-full';
+		default:
+			return null;
+	}
+}
+
+/**
  * Update block markup
  * @param {Object} element Block element
  * @param {Object} blockType Block type
@@ -20,35 +44,26 @@ function updateBlockMarkup(element, blockType, attributes) {
 	/**
 	 * Guard clauses
 	 */
-	if (!element || blockType.name !== 'core/image') return element;
-	if (!element?.props?.children?.props?.children[0]) return element;
-	if (attributes.caption || attributes?.href) return element;
+	if (!element || blockType.name !== 'core/image') {
+		return element; // If element is not an image block
+	}
+
+	const imageElement = element?.props?.children?.props?.children[0];
+	const figureElement = element?.props?.children?.props?.children[1];
+	const hasCaption = figureElement?.props?.value?.text;
+	const hasLink = imageElement?.props?.href;
+
+	if (!imageElement || hasCaption || hasLink) {
+		return element; // If image has a caption or a link, return the original element
+	}
 
 	/**
 	 * Get the image props
 	 */
 	const {
 		props: { className, src, title, alt, height, width, style },
-	} = element.props.children.props.children[0];
+	} = imageElement;
 
-	const getAlignmentClass = (align) => {
-		if (!align) return null;
-
-		switch (align) {
-			case 'left':
-				return 'has-align-left';
-			case 'right':
-				return 'has-align-right';
-			case 'center':
-				return 'has-align-center';
-			case 'wide':
-				return 'has-align-wide';
-			case 'full':
-				return 'has-align-full';
-			default:
-				return null;
-		}
-	};
 	/**
 	 * If image doesn't have figcaption, create image element
 	 */
