@@ -145,33 +145,34 @@ class Enqueue {
         $attributes['ver'] = filemtime($glob);
 
         /**
-         * CSS attributes
+         * Set other attributes based on file extension
          */
-        if ($extension === 'css') :
-            $attributes['type'] = 'text/css';
-            $attributes['src'] = $uri . '/build/assets/' . basename($glob);
-            $attributes['deps'] = [];
-            $attributes['media'] = 'all';
-        endif;
-
-        /**
-         * JS attributes
-         */
-        if ($extension === 'js') :
-            $attributes['type'] = 'text/javascript';
-            $attributes['src'] = $uri . '/build/assets/' . basename($glob);
-            $attributes['in_footer'] = true;
-
-            $assets_file = dirname($glob) . '/' . basename($glob, '.js') . '.asset.php';
-
-            if (file_exists($assets_file)) :
-                $asset = require($assets_file);
-                $attributes['deps'] = $asset['dependencies'];
-            else :
+        switch ($extension) {
+            case 'css':
+                $attributes['type'] = 'text/css';
+                $attributes['src'] = $uri . '/build/assets/' . basename($glob);
                 $attributes['deps'] = [];
-            endif;
-        endif;
+                $attributes['media'] = 'all';
+                break;
 
+            case 'js':
+                $attributes['type'] = 'text/javascript';
+                $attributes['src'] = $uri . '/build/assets/' . basename($glob);
+                $attributes['in_footer'] = true;
+
+                $assets_file = dirname($glob) . '/' . basename($glob, '.js') . '.asset.php';
+
+                if (file_exists($assets_file)) :
+                    $asset = require($assets_file);
+                    $attributes['deps'] = $asset['dependencies'];
+                else :
+                    $attributes['deps'] = [];
+                endif;
+                break;
+
+            default:
+                break;
+        }
 
         return $attributes;
     }
@@ -184,33 +185,46 @@ class Enqueue {
      * @return void 
      */
     private function enqueue_file(array $attributes): void {
-        if ($attributes['type'] === 'text/css') :
-            /* Check if file is already enqueued */
-            if (wp_style_is($attributes['handle'], 'enqueued')) :
-                wp_deregister_style($attributes['handle']);
-                wp_dequeue_style($attributes['handle']);
-            endif;
+        /**
+         * Set handle
+         */
+        $handle = 'ksd-' . $attributes['handle'];
 
-            wp_register_style($attributes['handle'], $attributes['src'], $attributes['deps'], $attributes['ver'], $attributes['media']);
-            wp_enqueue_style($attributes['handle']);
-        endif;
+        /**
+         * Enqueue file based on type
+         */
+        switch ($attributes['type']) {
+            case 'text/css':
+                /* Check if file is already enqueued */
+                if (wp_style_is($handle, 'enqueued')) :
+                    wp_deregister_style($handle);
+                    wp_dequeue_style($handle);
+                endif;
 
-        if ($attributes['type'] === 'text/javascript') :
-            /* Check if file is already enqueued */
-            if (wp_script_is($attributes['handle'], 'enqueued')) :
-                wp_deregister_script($attributes['handle']);
-                wp_dequeue_script($attributes['handle']);
-            endif;
+                wp_register_style($handle, $attributes['src'], $attributes['deps'], $attributes['ver'], $attributes['media']);
+                wp_enqueue_style($handle);
+                break;
 
-            wp_register_script($attributes['handle'], $attributes['src'], $attributes['deps'], $attributes['ver'], $attributes['in_footer']);
-            wp_enqueue_script($attributes['handle']);
+            case 'text/javascript':
+                /* Check if file is already enqueued */
+                if (wp_script_is($handle, 'enqueued')) :
+                    wp_deregister_script($handle);
+                    wp_dequeue_script($handle);
+                endif;
 
-            /** 
-             * Set translations 
-             * @url https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
-             */
-            wp_set_script_translations($attributes['handle'], 'kotisivu-block-theme');
-        endif;
+                wp_register_script($handle, $attributes['src'], $attributes['deps'], $attributes['ver'], $attributes['in_footer']);
+                wp_enqueue_script($handle);
+
+                /** 
+                 * Set translations 
+                 * @url https://make.wordpress.org/core/2018/11/09/new-javascript-i18n-support-in-wordpress/
+                 */
+                wp_set_script_translations($handle, 'kotisivu-block-theme');
+                break;
+
+            default:
+                break;
+        }
     }
 
 
