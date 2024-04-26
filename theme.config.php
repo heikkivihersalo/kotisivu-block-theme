@@ -98,7 +98,7 @@ return array(
 				"children" => []
 			],
 			"edit" => [
-				"remove" => true,
+				"remove" => false,
 				"children" => []
 			],
 			"user-actions" => [ // to the right - next to your avatar image
