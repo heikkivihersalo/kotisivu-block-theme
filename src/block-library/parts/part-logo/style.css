@@ -1,0 +1,22 @@
+.site-header__logo {
+	position: fixed;
+	width: 100%;
+
+	height: var(--_header-height);
+	background: var(--_header-background-color);
+}
+
+.site-header__logo__link {
+	position: fixed;
+
+	height: var(--_header-height);
+	width: clamp(
+		11.0890051808976rem,
+		calc(9.30881991978825rem + 8.90092630554659vw),
+		19.9899314864442rem
+	);
+
+	padding: 1em;
+
+	z-index: 9999;
+}
