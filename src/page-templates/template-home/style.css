@@ -11,18 +11,18 @@ main > section:last-of-type {
 /** ======================
  ** HERO
  ** ==================== */
-.hero {
+.blog .hero {
 	display: grid;
 }
 
-.hero__heading {
+.blog .hero__heading {
 	order: 2;
 	text-align: center;
 
 	margin-top: var(--wp--preset--spacing--60);
 }
 
-.hero__image {
+.blog .hero__image {
 	max-height: 400px;
 
 	order: 1;
@@ -92,7 +92,7 @@ main > section:last-of-type {
 }
 
 .posts__list-item:hover
-:is(.posts__list-item__heading, .posts__list-item__excerpt) {
+	:is(.posts__list-item__heading, .posts__list-item__excerpt) {
 	color: var(--wp--preset--color--foreground);
 }
 

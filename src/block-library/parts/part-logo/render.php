@@ -1,53 +1,6 @@
 <?php
 
 /**
- * Get site logo content
- * @param mixed|array|bool $logo 
- * @param bool $isLink 
- * @param string 
- * @return string 
- */
-function get_site_logo_content(mixed $logo, bool $is_link, string $company_name, string $class_name): string {
-
-    /**
-     * If no logo is present, return site/blog name
-     */
-    if (!$logo) return $company_name;
-
-    /**
-     * If logo is found, return logo either a link or as a div
-     */
-    $site_url = get_home_url();
-
-    $tag = $is_link ? 'a' : 'div';
-    $href = $is_link ? 'href="' . $site_url . '"' : '';
-    $src = $logo[0];
-    $width = $logo[1] == 0 ? '350px' : $logo[1];
-    $height = $logo[2] == 0 ? '100%' : $logo[2];
-    $alt = $company_name . ' Logo';
-    $aria_label = $is_link ? 'aria-label="' . __('Return back to homepage', 'kotisivu-block-theme') . '"' : '';
-
-    $string = sprintf(
-        '<%s class="%s" %s aria-roledescription="logo" %s>
-            <img src="%s" width="%s" height="%s" alt="%s" aria-hidden="true" tabindex="-1" />
-            <span class="is-visually-hidden">%s</span>
-        </%s>',
-        $tag,
-        $class_name,
-        $href,
-        $aria_label,
-        $src,
-        $width,
-        $height,
-        $alt,
-        $company_name,
-        $tag
-    );
-
-    return $string;
-}
-
-/**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *
  * The following variables are exposed to the file:
@@ -59,8 +12,23 @@ function get_site_logo_content(mixed $logo, bool $is_link, string $company_name,
  */
 
 $logo = wp_get_attachment_image_src(get_theme_mod('custom_logo'), 'full');
-$isLink = isset($attributes['isLink']) ? $attributes['isLink'] : false;
-$className = isset($attributes['className']) ? $attributes['className'] : "";
 $companyName = isset($attributes["options"]['contact-company-name']) ? $attributes["options"]['contact-company-name'] : get_bloginfo('name');
 
-echo get_site_logo_content($logo, $isLink, $companyName, $className);
+if ($logo !== false) :
+    $src = $logo[0];
+    $width = $logo[1] == 0 ? '350px' : $logo[1];
+    $height = $logo[2] == 0 ? '100%' : $logo[2];
+else :
+    $src = '';
+    $width = '350px';
+    $height = '100%';
+endif;
+
+?>
+
+<div class="site-header__logo">
+    <a class="site-header__logo__link" href="<?php echo get_home_url(); ?>" aria-label="<?php _e('Return back to homepage', 'kotisivu-block-theme'); ?>">
+        <img src="<?php echo $src; ?>" width="<?php echo $width; ?>" height="<?php echo $height; ?>" alt="<?php echo $companyName; ?> Logo" aria-hidden="true" tabindex="-1" />
+        <span class="is-visually-hidden"><?php echo get_bloginfo('name'); ?></span>
+    </a>
+</div>
