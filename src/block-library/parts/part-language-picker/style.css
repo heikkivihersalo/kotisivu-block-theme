@@ -14,10 +14,35 @@
 	--_text-color: var(--wp--preset--color--white);
 }
 
+.language-picker__list {
+	padding: 0;
+}
+
 @media screen and (min-width: 800px) {
 	.language-picker {
 		border-right: 1px solid var(--wp--preset--color--foreground);
 	}
+}
+
+/** ======================
+ ** LANGUAGE LIST
+ ** ==================== */
+.language-picker__list-item {
+	display: flex;
+
+	position: relative;
+}
+
+.language-picker__list-item__icon {
+	--_current-icon-size: 0.75em;
+	--_current-icon-color: var(--wp--preset--color--foreground);
+
+	width: var(--_current-icon-size);
+	height: var(--_current-icon-size);
+	position: absolute;
+	top: 50%;
+	left: -1.1em;
+	transform: translateY(-50%);
 }
 
 /** ======================
@@ -35,12 +60,7 @@
 	cursor: pointer;
 }
 
-.language-picker__button__icon {
-	width: 1.25rem;
-	height: 1.25rem;
-}
-
-.language-picker__button__current {
+.language-picker__button__text {
 	font-family: var(--wp--preset--font-family--text);
 	font-size: var(--wp--preset--font-size--medium);
 	font-weight: 600;
@@ -48,8 +68,9 @@
 	color: var(--_text-color);
 }
 
-.language-picker__list {
-	padding: 0;
+.language-picker__button__icon {
+	width: 1.25rem;
+	height: 1.25rem;
 }
 
 /** ======================
@@ -91,25 +112,4 @@
 
 [aria-expanded="true"].language-picker__button + .language-picker__tooltip {
 	display: none;
-}
-
-/** ======================
- ** LANGUAGE LIST
- ** ==================== */
-.language-picker__list__item {
-	display: flex;
-
-	position: relative;
-}
-
-.language-picker__list__item-icon {
-	--_current-icon-size: 0.75em;
-	--_current-icon-color: var(--wp--preset--color--foreground);
-
-	width: var(--_current-icon-size);
-	height: var(--_current-icon-size);
-	position: absolute;
-	top: 50%;
-	left: -1.1em;
-	transform: translateY(-50%);
 }
