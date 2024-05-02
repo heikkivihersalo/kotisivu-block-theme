@@ -99,17 +99,19 @@
 					"secondary": "oklch(78.1% 0.144 163.04)",
 					"white": "oklch(99% 0.005 353.45)",
 					"black": "oklch(20% 0.005 353.45)",
+					"greyExtraLight": "oklch(95% 0.005 353.45)",
 					"greyLight": "oklch(75% 0.005 353.45)",
 					"grey": "oklch(60% 0.005 353.45)",
 					"greyDark": "oklch(45% 0.005 353.45)",
 					"greyExtraDark": "oklch(30% 0.005 353.45)"
 				},
-				"fallback": {
+				"oklchFallback": {
 					"primary": "hsl(335, 100%, 34%)",
 					"primaryDark": "hsl(336.84 100% 20)",
 					"secondary": "hsl(156.27 62% 56%)",
 					"background": "hsl(338.73 88% 99%)",
 					"foreground": "hsl(338.17 6% 9%)",
+					"greyExtraLight": "hsl(338.69 3% 68%)",
 					"greyLight": "hsl(338.69 3% 68%)",
 					"grey": "hsl(338.64 2% 51%)",
 					"greyDark": "hsl(338.56 2% 34%)",
@@ -247,27 +249,32 @@
 			"fontSizes": [
 				{
 					"name": "Colossal",
-					"size": "clamp(4.20872691292189rem, calc(3.77864082984006rem + 2.15043041540916vw), 6.35915732833105rem)",
+					"size": "clamp(1.80203247070313rem, calc(1.21547540943632rem + 2.932785306334vw), 4.73481777703713rem)",
 					"slug": "colossal"
 				},
 				{
 					"name": "Gigantic",
-					"size": "clamp(2.368593037rem, calc(2.0829366444rem + 1.428281963vw), 3.796875rem)",
+					"size": "clamp(1.601806640625rem, calc(1.21176770212778rem + 1.95019469248613vw), 3.55200133311113rem)",
 					"slug": "gigantic"
 				},
 				{
 					"name": "Huge",
-					"size": "clamp(1.776889rem, calc(1.6260168rem + 0.754361vw), 2.53125rem)",
+					"size": "clamp(1.423828125rem, calc(1.175660316675rem + 1.240839041625vw), 2.664667166625rem)",
 					"slug": "huge"
 				},
 				{
+					"name": "Extra Large",
+					"size": "clamp(1.265625rem, calc(1.118949975rem + 0.733375125vw), 1.999000125rem)",
+					"slug": "x-large"
+				},
+				{
 					"name": "Large",
-					"size": "clamp(1.333rem, calc(1.2621rem + 0.3545vw), 1.6875rem)",
+					"size": "clamp(1.125rem, calc(1.050075rem + 0.374625vw), 1.499625rem)",
 					"slug": "large"
 				},
 				{
 					"name": "Medium",
-					"size": "1.0875rem",
+					"size": "clamp(1rem, calc(0.975rem + 0.125vw), 1.125rem)",
 					"slug": "medium"
 				},
 				{
