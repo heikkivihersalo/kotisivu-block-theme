@@ -23,7 +23,7 @@ $attributes = get_block_wrapper_attributes([
 //
 // Get site options
 //
-$options = get_option('kotisivu-block-theme_site-options');
+$options = Utils::get_options_file('site-options');
 $contact = array(
     'phone' => isset($options['contact-phone']) ? $options['contact-phone'] : '',
     'email' => isset($options['contact-email']) ? $options['contact-email'] : '',
@@ -55,6 +55,6 @@ $contact = array(
                 <?php endif; ?>
             </nav>
         </div>
-        <?php echo do_blocks('<!-- wp:ksd/social-icons {"className":"footer__socials"} /-->'); ?>
+        <?php echo do_blocks('<!-- wp:ksd/part-social-icons {"className":"footer__socials"} /-->'); ?>
     </div>
 </footer>
