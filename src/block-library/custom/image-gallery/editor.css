@@ -1,0 +1,19 @@
+.image-gallery-editor {
+	display: grid;
+	justify-items: center;
+
+	margin-block: var(--wp--preset--spacing--50);
+}
+
+.image-gallery-editor__images {
+	margin-block: 0;
+}
+
+.image-gallery-editor__help {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.image-gallery-editor .components-button {
+	margin-top: var(--wp--preset--spacing--30);
+}
