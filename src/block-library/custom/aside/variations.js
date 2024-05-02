@@ -19,7 +19,7 @@ const variations = [
 		scope: 'block',
 		innerBlocks: [['ksd/wrapper'], ['ksd/wrapper']],
 		attributes: {
-			blockClass: 'grid-cols-2',
+			blockClass: 'cols-2',
 			style: {},
 		},
 	},
@@ -30,7 +30,7 @@ const variations = [
 		scope: 'block',
 		innerBlocks: [['ksd/wrapper'], ['ksd/wrapper'], ['ksd/wrapper']],
 		attributes: {
-			blockClass: 'grid-cols-3',
+			blockClass: 'cols-3',
 			style: {},
 		},
 	},

@@ -51,7 +51,7 @@ const variations = [
 			],
 		],
 		attributes: {
-			blockClass: 'hero hero-stacked is-stacked',
+			blockClass: 'hero hero-stacked',
 			templateLock: 'all',
 			width: 'var(--wp--custom--wide-size)',
 			style: {},
@@ -107,7 +107,7 @@ const variations = [
 			],
 		],
 		attributes: {
-			blockClass: 'hero hero-two-column grid-cols-2',
+			blockClass: 'hero hero-two-column',
 			templateLock: 'all',
 			width: 'var(--wp--custom--wide-size)',
 			style: {},
