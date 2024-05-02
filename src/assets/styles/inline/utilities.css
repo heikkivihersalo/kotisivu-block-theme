@@ -1,5 +1,5 @@
 /**
-* ALIGNMENT
+* WORDPRESS DEFAULT ALIGNMENT
 */
 :where(.has-text-align-left) {
 	text-align: left;
@@ -97,6 +97,9 @@
 	justify-items: stretch;
 }
 
+/**
+ * WORDPRESS DEFAULT GAP
+ */
 :where(.has-extra-small-gap) {
 	gap: var(--wp--preset--spacing--20);
 }
@@ -152,13 +155,13 @@
 * GRID COLUMNS
 */
 :where(
-.grid-cols-1,
-.grid-cols-2,
-.grid-cols-3,
-.grid-cols-4,
-.grid-cols-5,
-.grid-cols-6
-) {
+		.cols-1,
+		.cols-2,
+		.cols-3,
+		.cols-4,
+		.cols-5,
+		.cols-6
+	) {
 	--_gap-desktop: var(--wp--preset--spacing--50);
 	--_gap-mobile: var(--wp--preset--spacing--40);
 
@@ -170,75 +173,81 @@
 }
 
 @media screen and (min-width: 800px) {
-	:where(.grid-cols-1, .grid-cols-1-rv) {
+	:where(.cols-1, .cols-1-rv) {
 		grid-template-columns: repeat(1, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-2, .grid-cols-2-rv) {
+	:where(.cols-2, .cols-2-rv) {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-70-30, .grid-cols-70-30-rv) {
+	:where(.cols-70-30, .cols-70-30-rv) {
 		grid-template-columns: 0.67fr 0.33fr;
 	}
 
-	:where(.grid-cols-30-70, .grid-cols-30-70-rv) {
+	:where(.cols-30-70, .cols-30-70-rv) {
 		grid-template-columns: 0.33fr 0.67fr;
 	}
 
-	:where(.grid-cols-75-25, .grid-cols-75-25-rv) {
+	:where(.cols-75-25, .cols-75-25-rv) {
 		grid-template-columns: 0.75fr 0.25fr;
 	}
 
-	:where(.grid-cols-25-75, .grid-cols-25-75-rv) {
+	:where(.cols-25-75, .cols-25-75-rv) {
 		grid-template-columns: 0.75fr 0.25fr;
 	}
 
-	:where(.grid-cols-3) {
+	:where(.cols-3) {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-4) {
+	:where(.cols-4) {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-5) {
+	:where(.cols-5) {
 		grid-template-columns: repeat(5, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-6) {
+	:where(.cols-6) {
 		grid-template-columns: repeat(6, minmax(0, 1fr));
 	}
 
-	:where(.grid-cols-2, .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6) {
+	:where(
+			.cols-2,
+			.cols-3,
+			.cols-4,
+			.cols-5,
+			.cols-6
+		) {
 		gap: var(--_gap-desktop);
 	}
 
 	:where(
-	:is(
-		.grid-cols-2-rv,
-		.grid-cols-70-30-rv,
-		.grid-cols-75-25-rv,
-		.grid-cols-30-70-rv,
-		.grid-cols-25-75-rv,
-		.is-reversed
-	)
-	div:first-child
-) {
+			:is(
+					.cols-2-rv,
+					.cols-70-30-rv,
+					.cols-75-25-rv,
+					.cols-30-70-rv,
+					.cols-25-75-rv,
+					.is-reversed
+				)
+				div:first-child
+		) {
 		order: 2;
 	}
 
 	:where(
-	:is(
-		.grid-cols-2-rv,
-		.grid-cols-70-30-rv,
-		.grid-cols-75-25-rv,
-		.grid-cols-30-70-rv,
-		.grid-cols-25-75-rv,
-		.is-reversed
-	)
-	div:last-child
-) {
+			:is(
+					.cols-2-rv,
+					.cols-70-30-rv,
+					.cols-75-25-rv,
+					.cols-30-70-rv,
+					.cols-25-75-rv,
+					.is-reversed
+				)
+				div:last-child
+		) {
 		order: 1;
 	}
 }

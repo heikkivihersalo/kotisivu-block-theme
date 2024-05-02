@@ -13,17 +13,22 @@ function checkGridAlignment(style) {
 }
 
 /**
+ * Convert vertical bar syntax to CSS variable
+ * @param {string} string - Vertical bar syntax string
+ * @return {string|undefined} CSS variable or undefined
+ */
+function convertVerticalBarSyntaxToCSS(string) {
+	if (string === '0') return undefined;
+	const val = string.split(':')[1].trim();
+	return `var(--wp--${val.replaceAll('|', '--')})`;
+}
+
+/**
  * Get and convert the block styles to correct object
  * @param {Object} style - Current block styles
  * @return {Object} Block style object
  */
 function getBlockStyles(style) {
-	const convertVerticalBarSyntaxToCSS = (string) => {
-		if (string === '0') return undefined;
-		const val = string.split(':')[1].trim();
-		return `var(--wp--${val.replaceAll('|', '--')})`;
-	};
-
 	return {
 		background: style?.backgroundColor,
 		marginTop:
