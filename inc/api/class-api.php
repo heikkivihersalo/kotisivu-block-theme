@@ -37,9 +37,9 @@ class Api {
      */
     public function init() {
         add_action('rest_api_init', function () {
-            $example = new RouteExample('example');
-            $example->register_crud_endpoints();
-            $example->register_custom_endpoints();
+            $options = new RouteOptions('options');
+            $options->register_crud_endpoints();
+            $options->register_custom_endpoints();
         });
     }
 }

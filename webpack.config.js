@@ -82,6 +82,7 @@ module.exports = {
 			'src/assets/scripts/sanitize.js'
 		),
 		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
+		'assets/store': path.resolve(__dirname, 'src/stores/index.js'),
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', '.json', '.css'],

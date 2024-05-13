@@ -28,12 +28,6 @@ class Theme {
     protected $textdomain;
 
     /**
-     * Theme options database table
-     * @var array|false
-     */
-    protected $options;
-
-    /**
      * Theme analytics options database table
      * @var array|false
      */
@@ -61,7 +55,7 @@ class Theme {
      * Theme constructor
      * @return void 
      */
-    public function __construct($name, $version, $textdomain, $path, $uri, $options, $analytics, $config) {
+    public function __construct($name, $version, $textdomain, $path, $uri, $analytics, $config) {
         /**
          * Get classes
          */
@@ -76,7 +70,6 @@ class Theme {
         $this->textdomain = $textdomain;
         $this->path = $path;
         $this->uri = $uri;
-        $this->options = $options;
         $this->analytics = $analytics;
         $this->config = $config;
     }

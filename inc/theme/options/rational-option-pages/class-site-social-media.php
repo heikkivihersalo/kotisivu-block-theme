@@ -127,8 +127,8 @@ class SiteSocialMedia {
      */
     public function init() {
         return array(
-            'kotisivu-block-theme_site-options' => array(
-                'page_title' => __('Social Media Accounts', 'kotisivu-block-theme'),
+            'kotisivu-block-theme_site-social' => array(
+                'page_title' => __('Social Media', 'kotisivu-block-theme'),
                 'parent_slug' => 'kotisivu_theme_settings',
                 'sections' => array(
                     'section-social' => $this->get_social_media_section(),
