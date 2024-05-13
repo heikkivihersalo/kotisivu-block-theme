@@ -27,7 +27,6 @@ $theme_version = $theme->get('Version');
 $theme_textdomain = $theme->get('TextDomain');
 $theme_path = get_template_directory();
 $theme_uri = get_template_directory_uri();
-$theme_options = Utils::get_options_file('site-options');
 $theme_analytics = Utils::get_options_file('site-analytics');
 $theme_config = include(dirname(__FILE__) . '/theme.config.php');
 
