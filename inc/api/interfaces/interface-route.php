@@ -6,7 +6,7 @@ defined('ABSPATH') or die();
 
 interface RouteInterface {
     const VERSION = '1';
-    const NAMESPACE = 'rossy-block-theme/v';
+    const NAMESPACE = 'kotisivu-block-theme/v';
 
     /**
      * Register default CRUD endpoints
