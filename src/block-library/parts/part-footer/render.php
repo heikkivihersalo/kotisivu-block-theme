@@ -23,7 +23,7 @@ $attributes = get_block_wrapper_attributes([
 //
 // Get site options
 //
-$options = Utils::get_options_file('site-options');
+$options = Utils::get_options_file('site-contact');
 $contact = array(
     'phone' => isset($options['contact-phone']) ? $options['contact-phone'] : '',
     'email' => isset($options['contact-email']) ? $options['contact-email'] : '',
