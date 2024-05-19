@@ -17,7 +17,13 @@
 			}
 		}
 	},
-	"ignorePatterns": ["**/components/**/__deprecated__/*.js"],
+	"ignorePatterns": [
+		"**/components/**/__deprecated__/*.js",
+		"**/node_modules/**",
+		"**/build/**",
+		"**/dist/**",
+		"**/public/**"
+	],
 	"rules": {
 		"prettier/prettier": 0,
 		"comma-dangle": [
@@ -36,6 +42,7 @@
 				"allow": ["warn", "error"]
 			}
 		],
-		"jsdoc/check-line-alignment": 0
+		"jsdoc/check-line-alignment": 0,
+		"import/no-unresolved": 0 // Turn off "Unable to resolve path to module ..." error
 	}
 }
