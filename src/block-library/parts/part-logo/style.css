@@ -1,5 +1,9 @@
 .site-header__logo {
+	--_logo-padding: 1em;
+
 	position: fixed;
+	top: 0;
+
 	width: 100%;
 
 	height: var(--_header-height);
@@ -7,16 +11,22 @@
 }
 
 .site-header__logo__link {
+	display: flex;
+	align-items: center;
+
 	position: fixed;
 
 	height: var(--_header-height);
-	width: clamp(
-		11.0890051808976rem,
-		calc(9.30881991978825rem + 8.90092630554659vw),
-		19.9899314864442rem
-	);
-
-	padding: 1em;
+	width: 100%;
 
 	z-index: 9999;
+}
+
+.site-header__logo__link img {
+	padding-inline: var(--_logo-padding);
+
+	width: fit-content;
+	height: calc(var(--_header-height) - 1 * var(--_logo-padding));
+
+	object-fit: contain;
 }
