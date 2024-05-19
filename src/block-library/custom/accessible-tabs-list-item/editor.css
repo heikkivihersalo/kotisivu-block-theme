@@ -1,0 +1,23 @@
+.editor-accessible-tabs__list-item {
+	position: relative;
+}
+
+.editor-accessible-tabs__list-item::before {
+	content: attr(data-tab-id);
+
+	font-size: var(--wp--preset--font-size--tiny);
+	font-weight: 900;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--primary);
+	line-height: 1;
+
+	border-bottom: 1px solid var(--wp--preset--color--primary);
+
+	position: absolute;
+	top: -1em;
+	left: 0;
+}
+
+.editor-accessible-tabs__list-item button {
+	border-bottom: none !important;
+}
