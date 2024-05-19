@@ -52,7 +52,9 @@ class ThemeSupport {
             'inline.css'
         ]);
 
-        $this->custom_image_sizes($this->config["customImages"]["defaultSizes"]);
+        if (isset($this->config["customImages"])) :
+            $this->custom_image_sizes($this->config["customImages"]["defaultSizes"]);
+        endif;
     }
 
     /**

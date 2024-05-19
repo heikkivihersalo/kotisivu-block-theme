@@ -27,6 +27,12 @@ class Enqueue {
     protected $uri;
 
     /**
+     * Theme config file
+     * @var array
+     */
+    protected $config;
+
+    /**
      * Files that are excluded from enqueueing
      * @var array
      */
@@ -42,12 +48,13 @@ class Enqueue {
      * Constructor
      * @return void 
      */
-    public function __construct($path, $uri) {
+    public function __construct($path, $uri, $config) {
         /**
          * Set attributes
          */
         $this->path = $path;
         $this->uri = $uri;
+        $this->config = $config;
         $this->inline_files = ['sanitize', 'dark-mode', 'inline'];
         $this->admin_only_files = ['admin', 'cpt', 'inline'];
     }

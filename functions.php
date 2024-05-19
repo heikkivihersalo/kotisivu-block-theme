@@ -46,7 +46,6 @@ $theme = new Theme(
     $theme_textdomain,
     $theme_path,
     $theme_uri,
-    $theme_options,
     $theme_analytics,
     $theme_config
 );
