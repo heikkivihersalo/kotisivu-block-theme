@@ -127,7 +127,8 @@ class Theme {
          */
         $enqueue = new Enqueue(
             $this->path,
-            $this->uri
+            $this->uri,
+            $this->config['settings']
         );
         $enqueue->init();
 
