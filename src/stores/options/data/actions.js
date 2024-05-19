@@ -2,12 +2,7 @@
  * Internal dependencies
  */
 import TYPES from '../types';
-const {
-	SET_SOCIAL,
-	SET_CONTACT,
-	GET_SOCIAL,
-	GET_CONTACT,
-} = TYPES;
+const { SET_SOCIAL, SET_CONTACT, GET_SOCIAL, GET_CONTACT } = TYPES;
 
 /**
  * Actions for the options store.
