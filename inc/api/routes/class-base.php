@@ -52,7 +52,7 @@ abstract class RouteBase extends Api implements RouteInterface {
          */
         register_rest_route(
             RouteInterface::NAMESPACE . RouteInterface::VERSION,
-            '/' . $this->base . '/' . Regex::PUBLIC_ID->get_request_regex(),
+            '/' . $this->base . '/' . Regex::NUMERIC_ID->get_request_regex(),
             array(
                 'methods' => \WP_REST_Server::READABLE, // Alias for GET transport method.
                 'callback' => [$this, 'get_item_by_id'],
@@ -80,7 +80,7 @@ abstract class RouteBase extends Api implements RouteInterface {
          */
         register_rest_route(
             RouteInterface::NAMESPACE . RouteInterface::VERSION,
-            '/' . $this->base . '/' . Regex::PUBLIC_ID->get_request_regex(),
+            '/' . $this->base . '/' . Regex::NUMERIC_ID->get_request_regex(),
             array(
                 'methods' => \WP_REST_Server::EDITABLE, // Alias for POST, PUT, PATCH transport methods together.
                 'callback' => [$this, 'update_item'],
@@ -94,7 +94,7 @@ abstract class RouteBase extends Api implements RouteInterface {
          */
         register_rest_route(
             RouteInterface::NAMESPACE . RouteInterface::VERSION,
-            '/' . $this->base . '/' . Regex::PUBLIC_ID->get_request_regex(),
+            '/' . $this->base . '/' . Regex::NUMERIC_ID->get_request_regex(),
             array(
                 'methods' => \WP_REST_Server::DELETABLE, // Alias for DELETE transport method.
                 'callback' => [$this, 'delete_item'],

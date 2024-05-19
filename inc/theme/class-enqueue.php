@@ -57,7 +57,18 @@ class Enqueue {
      * @return void 
      */
     public function add_theme_styles_and_scripts(): void {
+        /**
+         * Enqueue theme styles and scripts
+         */
         $this->enqueue_assets($this->path . '/build/assets/*.{js,css}', GLOB_BRACE,  $this->uri);
+
+        /**
+         * Enqueue Splide slider styles and scripts
+         */
+        wp_register_script('splide', $this->uri . '/public/lib/splide/splide.min.js', '', filemtime($this->path . '/public/lib/splide/splide.min.js'), true);
+        wp_register_style('splide', $this->uri . '/public/lib/splide/splide-core.min.css', '', filemtime($this->path . '/public/lib/splide/splide-core.min.css'), 'all');
+        wp_enqueue_style('splide');
+        wp_enqueue_script('splide');
     }
 
     /**
@@ -90,6 +101,11 @@ class Enqueue {
             $FILE_INFO = pathinfo($glob);
             $IS_ADMIN_ONLY = in_array($FILE_INFO['filename'], $this->admin_only_files);
             $IS_INLINE_ONLY = in_array($FILE_INFO['filename'], $this->inline_files);
+
+            /**
+             * Check dark mode setting
+             */
+            if ($FILE_INFO['filename'] === 'dark-mode' && !$this->config['darkMode']) continue;
 
             /**
              * If in admin panel, enqueue all files

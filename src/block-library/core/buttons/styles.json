@@ -1,19 +1,10 @@
 [
 	{
-		"name": "primary-fill",
-		"label": "Primary (Fill)",
-		"isDefault": true
+		"name": "secondary",
+		"label": "Secondary"
 	},
 	{
-		"name": "primary-outline",
-		"label": "Primary (Outline)"
-	},
-	{
-		"name": "secondary-fill",
-		"label": "Secondary (Fill)"
-	},
-	{
-		"name": "secondary-outline",
-		"label": "Secondary (Outline)"
+		"name": "text",
+		"label": "Text"
 	}
 ]
