@@ -2,6 +2,8 @@
 
 ![Static Badge](https://img.shields.io/badge/Block_Theme-blue?logo=wordpress) ![GitHub repo size](https://img.shields.io/github/repo-size/heikkivihersalo/kotisivu-block-theme) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/heikkivihersalo/kotisivu-block-theme/main) ![GitHub](https://img.shields.io/github/license/heikkivihersalo/kotisivu-block-theme)
 
+![Hero Image](readme.jpg)
+
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
 Theme uses OOP patterns wherever possible (modified to work with WordPress). WordPress really isn't OOP friendly but it cleans up the code a lot and makes it easier to maintain.
@@ -10,39 +12,40 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress). Wor
 
 ## Table of Contents
 
-- [Get Started](#get-started)
-- [Basic Structure](#basic-structure)
-- [CSS Styles](#css-styles)
-- [External Depencencies](#external-depencencies)
-  - [PostTypes](#posttypes)
-  - [RationalOptionPages](#rationaloptionpages)
-- [Theme JSON](#theme-json)
-  - [Fonts](#fonts)
-  - [Colors](#colors)
-  - [Spacing](#spacing)
-  - [Core Block Styling](#core-block-styling)
-  - [Site and Content Width](#site-and-content-width)
-- [Theme Config](#theme-config)
-  - [jQuery Loading](#jquery-loading)
-  - [Dark Mode](#dark-mode)
-  - [Theme Color](#theme-color)
-  - [Disable WordPress Default Configs](#disable-wordpress-default-configs)
-  - [Site Menus](#site-menus)
-  - [Image Sizes](#image-sizes)
-  - [Custom Post Types](#custom-post-types)
-  - [Metaboxes](#metaboxes)
-  - [Custom Database Tables](#custom-database-tables)
-- [Templates and Parts](#templates-and-parts)
-- [Enqueuing scripts and styles](#enqueuing-scripts-and-styles)
-- [Blocks.json](#blocksjson)
-- [Security](#security)
-- [Admin Settings](#admin-settings)
+-   [Get Started](#get-started)
+-   [Basic Structure](#basic-structure)
+-   [CSS Styles](#css-styles)
+-   [External Dependencies](#external-depencencies)
+-   [Theme JSON](#theme-json)
+
+    -   [Fonts](#fonts)
+    -   [Colors](#colors)
+    -   [Spacing](#spacing)
+    -   [Core Block Styling](#core-block-styling)
+    -   [Site and Content Width](#site-and-content-width)
+
+-   [Templating System](#templating-system)
+-   [Theme Config](#theme-config)
+
+    -   [jQuery Loading](#jquery-loading)
+    -   [Dark Mode](#dark-mode)
+    -   [Theme Color](#theme-color)
+    -   [Disable WordPress Default Configs](#disable-wordpress-default-configs)
+    -   [Disable Admin Bar and Menu Junk](#disable-admin-bar-and-menu-junk)
+
+-   [Custom Post Types](#custom-post-types)
+-   [Custom Database Tables](#custom-database-tables)
+-   [Custom API Endpoints](#custom-api-endpoints)
+-   [Enqueuing scripts and styles](#enqueuing-scripts-and-styles)
+-   [Security](#security)
+-   [Admin Settings and Options](#admin-settings-and-options)
+-   [Todo](#todo)
 
 ---
 
 ## Get Started
 
-You can use the theme just by downloading it and uploading it to your WordPress site. Some customizations can be done directly to theme.json. Except for few modifications, Kotisivu Block theme relies heavily on [WordPress](https://wordpress.org/) and [Gutenberg](https://wordpress.org/gutenberg/) core so you should be familiar with those.
+Except for few modifications, Kotisivu Block theme relies heavily on [WordPress](https://wordpress.org/) and [Gutenberg](https://wordpress.org/gutenberg/) core so you should be familiar with those.
 
 To start developing or customizing for example new blocks, you can get started simply by running `yarn` command on your preferred editor. Then you can build files with `yarn build` or start development session `yarn start`. While developing your site, [Local](https://localwp.com/) works really well.
 
@@ -104,7 +107,7 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 3. Taking away all the control is probably not the best idea. Ideology behind `section` and `wrapper` is to limit possibilities that client has. Also it creates a little bit cleaner markup. However there is a custom built styling options (css grid, background color and spacing). These are probably one of the most common controls that are needed for different sections, so it is wise to have the ability to control them straight from the editor.
 
-4. Creating separate set of utility classes is also probably a good thing. In `src/assets/styles/inline/utilities.css` you can find current utility classes that are added to the site <head>. Really useful ones are basically all the css-grid related stuff (`has-cols-<XX>`) and `is-visually-hidden` that hides the element visually but keeps it accessible for screen readers.
+4. Creating separate set of utility classes is also probably a good thing. In `src/assets/styles/inline/utilities.css` you can find current utility classes that are added to the site <head>. Really useful ones are basically all the css-grid related stuff (`cols-<XX>`) and `is-visually-hidden` that hides the element visually but keeps it accessible for screen readers.
 
 5. Dynamic blocks are great for site headers, footers, dynamic data or React apps. Usually client does not need that much of an control to modify header or footer information so you can just build it with PHP. Content can be fetched from options or menus. You can also create a block template to give little bit of control. Dynamic blocks work great for blog post templates (or similar). It is so much easier to create markup with PHP than with FSE (Full Site Editor).
 
@@ -112,10 +115,10 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 7. There are several different block examples that you can use as a starting point.
 
-- `example-container` is a starting point for InnerBlocks. It can be used for simple layout elements that can take advantage of Gutenberg Core blocks. Different layouts can be created with CSS and block variations.
-- `example-dynamic` is a starting point for dynamic blocks. It can be used for blocks that require server side rendering. For example, if you need to fetch data from API or database, this is the way to go. There is also a possibility to add Innerblocks if you need to support user generated content.
-- `example-view-script` is a starting point for blocks that require React. It can be used for blocks that require more complex logic or for example React apps. **You can combine view scripts with server-side-rendering and vice versa.** It is also possible to add InnerBlocks to these blocks (look example-dynamic as an example). View scripts can also be used to load vanilla JS scripts (see `site-header` or `site-dark-mode-toggle` as an example).
-- For static blocks see more explanation from [https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering](https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering)
+-   `example-container` is a starting point for InnerBlocks. It can be used for simple layout elements that can take advantage of Gutenberg Core blocks. Different layouts can be created with CSS and block variations.
+-   `example-dynamic` is a starting point for dynamic blocks. It can be used for blocks that require server side rendering. For example, if you need to fetch data from API or database, this is the way to go. There is also a possibility to add Innerblocks if you need to support user generated content.
+-   `example-view-script` is a starting point for blocks that require React. It can be used for blocks that require more complex logic or for example React apps. **You can combine view scripts with server-side-rendering and vice versa.** It is also possible to add InnerBlocks to these blocks (look example-dynamic as an example). View scripts can also be used to load vanilla JS scripts (see `site-header` or `site-dark-mode-toggle` as an example).
+-   For static blocks see more explanation from [https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering](https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering)
 
 ---
 
@@ -124,11 +127,8 @@ While developing different iterations of this theme (and native Gutenberg block 
 ```javascript
 ├── .vscode // VSCode spesific config files for a faster workflow
 ├── build // Build files created from src folder
-│   │   blocks
-│   │   ├── ...
-│   │   theme
-│   │   ├── ...
 ├── inc
+│   ├── api // Boilerplate for custom API endpoints
 │   ├── blocks // Any block related classes goes here
 │   │   ├── ...
 │   ├── lib // External dependencies goes here. DO NOT add your own customizations in this folder. Use a wrapper instead.
@@ -141,35 +141,50 @@ While developing different iterations of this theme (and native Gutenberg block 
 │   ├── blocks.php // Main blocks class. Loads all classes from blocks folder
 │   ├── theme.php // Main theme class. Loads all classes from theme folder
 ├── languages // WordPress main folder for translations
-├── parts // Block theme style parts folder
 ├── public // Other theme assets that are loaded on front-end and back-end (fonts and icons etc.)
 │   ├── fonts // Theme fonts. NOTE! Remember to add correct paths to theme.json
 │   │   ├── ...
 │   ├── icons // Theme icons. It is advisable to folder the icons accordingly
+│   │   ├── ...
+│   ├── lib // Pure JS libraries that are not required to be built (Splide for example)
 ├── src // JS and CSS files that requires a build process (Blocks, theme CSS and JS)
-│   ├── blocks
+│   ├── assets // Theme related JS and CSS
+│   │   ├── scripts // Theme scripts
+│   │   │   ├── ...
+│   │   ├── styles // Theme styles
+│   │   │   ├── ...
+│   ├── block-library
 │   │   ├── core // Core block modifications
 │   │   │   ├── ...
 │   │   ├── custom // Custom Gutenberg blocks
 │   │   │   ├── ...
-│   ├── features // Custom built components aka. features for reusability purposes
+│   │   ├── parts // Theme parts like header, footer and navigation
+│   │   │   ├── ...
+│   ├── components // Custom built components for reusability purposes
 │   │   ├── ...
 │   ├── hooks // Custom built hooks for reusability purposes
 │   │   ├── ...
-│   ├── theme // Theme related JS and CSS
-│   │   ├── scripts // Theme scripts.
-│   │   │   ├── ...
-│   │   ├── styles // Custom Gutenberg blocks
-│   │   │   ├── ...
+│   ├── icons // Global icons that are used across the blocks
+│   │   ├── ...
+│   ├── page-templates // Page template that are used to hydrate WordPress templates
+│   │   ├── ...
+│   ├── stores // Boilerplate for WordPress Redux stores
+│   │   ├── ...
 │   ├── utils // Utility functions
 │   │   ├── ...
 ├── templates // Block theme style templates folder
-├── .babelrc
-├── blocks.json // Config file for blocks supported by theme. Remember to add any new blocks in here
-├── config.json // Config file for theme related options
+├── .editorconfig
+├── .eslintignore
+├── .eslintrc.json
+├── .gitignore
+├── .prettierignore
+├── .prettierrc.js
+├── .stylelintrc.json
 ├── functions.php // WordPress functions PHP. Mainly just loading the main classes (Theme and Blocks). Meant to kept as clean as possible and probably don't require any modifications
 ├── jsconfig.json // Config for build and development processes
+├── package.json
 ├── style.css // Required by WordPress. Don't add any styles in here
+├── theme.config.php // Default config file for file building
 ├── theme.json // Block theme core config file
 ├── webpack.config.js // Default config file for file building
 ```
@@ -191,6 +206,18 @@ Post Types is a simple library to add custom post types to a WordPress theme.
 ### RationalOptionPages [[Github](https://github.com/jeremyHixon/RationalOptionPages)]
 
 Option pages are a pain to work with and RationalOptionPages makes it little bit easier.
+
+### Other recommendations
+
+These are not installed by default but are recommended to use in more complex projects.
+
+#### Tanstack Query [[Link](https://tanstack.com/query/latest)]
+
+Can be used to build performant and complex queries for data fetching.
+
+#### React Router [[Link](https://reactrouter.com/en/main)]
+
+Can be used to handle URL parameters in React apps.
 
 ---
 
@@ -216,7 +243,7 @@ Font families are configured as a array. Add as many fonts as you like. For diff
               "fontWeight": "<FONT_WEIGHT>", // For example 700
               "fontStyle": "normal",
               "fontStretch": "normal",
-              "src": ["file:./assets/fonts/<FOLDER>/<FILE>.woff2"]
+              "src": ["file:./public/fonts/<FOLDER>/<FILE>.woff2"]
             }
           ],
           ...
@@ -282,6 +309,7 @@ Spacing uses default WordPress formatting (--wp--preset--spacing--<SPACING_SLUG>
   "margin": true,
   "padding": true,
   "spacingSizes": [
+    ...
     {
       "size": "clamp(0.618046971569839rem, calc(0.615109684219015rem + 0.0146864367541203vw), 0.63273340832396rem)",
       "slug": "20",
@@ -322,12 +350,45 @@ To center element to the page with proper margins, setting `margin-inline: auto`
 
 ---
 
-## Theme Config
+## Templating System
 
-Basic configurations can be done from the `config.json` -file.
+To provide more flexible developer experience, theme bypasses block theme default templating system. Instead, it uses dynamic blocks to create different parts of the site. Template structure is handled by first creating a normal HTML template in `templates` folder.
+
+For example typical block theme index.html file looks like this:
+
+```html
+<!-- wp:ksd/part-header /-->
+<!-- wp:ksd/template-main { "templateSlug": "template-index", "className": "" } /-->
+<!-- wp:ksd/part-footer /-->
+```
+
+Block `template-main` is a wrapper for the main content and can be used to also add global styling. `templateSlug` -key is used to fetch the correct template from `templates` folder. `className` -key is used to add custom classes to the template.
+
+Take a look at `templates` and `src/page-templates` folders, and you can notice that the file/folder names pretty much match each other.
 
 > [!NOTE]
-> This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
+> Everything block related are handled in `Blocks` -class. However page templates are excluded from user controlled blocks so they cannot be insereted from the editor.
+
+Templates are then modified with PHP and React. These are stored in `src/page-templates` folder and are part of the regular build process.
+
+To user this doesn't make such big of an difference but creating new templates and parts with PHP and React is much more flexible than trying to do everything with FSE (Full Site Editor).
+
+> [!NOTE]
+> If it is required for user to edit template parts, you must create a page template completely with FSE.
+
+`do_blocks` -function is excelent for rendering individual blocks or parts in templates. This can be anything from dark-mode-toggle to social icons etc.
+
+Example usage:
+
+```php
+  echo do_blocks('<!-- wp:<BLOCK_NAMESPACE>/<BLOCK_SLUG> {"attribute_key":"attribute_val"} /-->');
+```
+
+---
+
+## Theme Config
+
+Basic configurations can be done from the `theme.config.php` -file.
 
 ### jQuery Loading
 
@@ -335,7 +396,7 @@ You can switch between loading jQuery normally, on footer or not loading at all.
 
 ### Dark Mode
 
-Enabling dark mode loads necessary assets to use dark mode. You need to have a toggle with class `scheme-toggle` to switch between light and dark mode. Theme has own block for simple toggle that can be used.
+Enabling dark mode loads necessary assets to use dark mode. You need to have a toggle with class `.dark-mode-toggle` to switch between light and dark mode. Theme has own block for simple toggle that can be used.
 
 ### Theme Color
 
@@ -351,11 +412,13 @@ If enabled it adds following meta tags to the site head:
 
 To modify the color change state to active and add color value to `color` -key.
 
-```json
-"themeColor": {
-  "active": true,
-  "color": "hsl(343, 100%, 48%)"
-}
+```php
+...
+  "themeColor" => [
+    "active" => true,
+    "color" => "hsl(343, 100%, 48%)"
+  ],
+...
 ```
 
 ### Disable WordPress Default Configs
@@ -380,21 +443,33 @@ You can disable some of the wordpress default stuff from loading. These are not 
 | "fluent-forms" | Disable Fluent Form plugins styles. `Default: true` |
 | "global-styles" | Disable global styles (theme.json). `Default: false` |
 
+### Disable Admin Bar and Menu Junk
+
+You can disable admin bar and menu junk from loading. This is useful if you want to keep the admin area clean.
+
+TODO: Add options and examples
+
 ### Site Menus
 
 You can set site menus that are registered to the site from here. Please do note that if you do any changes, you need to update blocks that use these menus.
 
-```json
-"menus": [
-  {
-    "slug": "primary-navigation",
-    "name": "Header Navigation"
-  },
-  {
-    "slug": "secondary-navigation",
-    "name": "Footer Navigation"
-  }
-]
+```php
+...
+"menus" => [
+  [
+    "slug" => "header-nav",
+    "name" => __("Header Navigation", "kotisivu-block-theme")
+  ],
+  [
+    "slug" => "legal-nav",
+    "name" => __("Legal Navigation", "kotisivu-block-theme")
+  ],
+  [
+    "slug" => "footer-nav",
+    "name" => __("Footer Navigation", "kotisivu-block-theme")
+  ]
+],
+...
 ```
 
 ### Image Sizes
@@ -411,198 +486,58 @@ WordPress default image sizes are customized a little bit to better support vari
 | Small        | small        | 768px  | 576px  | Custom  |
 | Extra Small  | extra_small  | 640px  | 480px  | Custom  |
 
-### Custom Post Types
+---
 
-Custom Post Types can be configured straight from config.json file. This utilizes PostTypes dependency with a metabox wrapper.
+## Custom Post Types
 
 TODO: Update this section with new PHP model
 
-```json
-"customPostTypes": {
-  "enabled": false,
-  "postTypes": [
-    {
-      "names": {
-        "name": "Example Post Type",
-        "singular": "Example",
-        "plural": "Examples",
-        "slug": "example"
-      },
-      "options": {
-        "hierarchical": false,
-        "has_archive": false,
-        "show_in_rest": true,
-        "supports": ["title", "editor", "thumbnail"]
-      },
-      "labels": {
-        "name": "Example Post Type",
-        "singular_name": "Example",
-        "menu_name": "Examples",
-        "all_items": "Examples",
-        "add_new": "Add new",
-        "add_new_item": "Add new example",
-        "edit_item": "Edit example",
-        "new_item": "New example",
-        "view_item": "View example",
-        "search_items": "Search examples",
-        "not_found": "No examples found",
-        "not_found_in_trash": "No examples found in trash",
-        "parent_item_colon": "Parent example"
-      },
-      "icon": "dashicons-star-filled",
-      "slug_translations": {
-        "en": "example",
-        "fi": "esimerkki"
-      },
-      "metaboxes": {
-        ...
-      }
-    },
-    ...
-  ]
-}
+```php
+
 ```
 
-#### Slug Translations
+### Slug Translations
 
 TODO: Add instructions slug translations
 
-#### Metaboxes
+### Metaboxes
+
+TODO: Update this section with new PHP model
 
 Metaboxes are a custom built wrapper to extend functionalities of PostType library. For simple purposes it is meant to replace plugins like Advanced Custom Fields. However, for more complex use cases it might be smart to use separate plugin to handle custom fields. Currently supported fields are: `url`, `text`, `number`, `checkbox`, `select`.
 
-```json
-"metaboxes": {
-  "active": false,
-  "options": {
-    "id": "option",
-    "title": "title",
-    "screen": ["example"]
-  },
-  "markup": [
-    {
-      "id": "text_input",
-      "label": "Text Input",
-      "type": "text"
-    },
-    {
-      "id": "url_input",
-      "label": "URL Input",
-      "type": "url"
-    }
-  ]
-}
+```php
+
 ```
 
-### Custom Database Tables
+---
+
+## Custom Database Tables
 
 Adding custom database tables can be done by enabling the feature and deactivating and activating the theme. This will run `after_switch_theme` -hook and create the tables with the schema provided.
+
+TODO: Add documentation
 
 > [!WARNING]
 > This feature is still in very barebone state. Test it thoroughly before using it in production.
 
-```json
-"customDatabaseTables": {
-  "enabled": false,
-  "tables": [
-    {
-      "name": "example",
-      "schema": [
-        {
-          "name": "id",
-          "type": "mediumint",
-          "length": 9,
-          "not_null": true,
-          "auto_increment": true,
-          "primary_key": true
-        },
-        {
-          "name": "time",
-          "type": "datetime",
-          "default": "'0000-00-00 00:00:00'",
-          "not_null": true
-        },
-        {
-          "name": "name",
-          "type": "tinytext",
-          "not_null": true
-        },
-        {
-          "name": "text",
-          "type": "text",
-          "not_null": true
-        },
-        ...
-      ]
-    }
-  ]
-}
+```php
+
 ```
 
 ---
 
-## Templates and Parts
+## Custom API Endpoints
 
-To provide more flexible developer experience, theme bypasses block theme default templating system. Instead, it uses dynamic blocks to create different parts of the site.
+Custom API endpoints are a great way to provide customized logic to front-end and to keep queries clean.
 
-For example typical block theme index.html file looks like this:
+TODO: Add documentation
 
-```html
-<!-- wp:ksd/part-header /-->
-<!-- wp:ksd/template-index /-->
-<!-- wp:ksd/part-footer /-->
-```
-
-To user this doesn't make such big of an difference but creating new templates and parts with PHP and React is much more flexible than trying to do everything with FSE (Full Site Editor).
-
-> [!NOTE]
-> If it is required for user to edit template parts, you must create a page template completely with FSE.
-
-Templates and parts are located in `src` folder. For example `src/blocks/templates` and `src/blocks/parts`. Parts like header and footer prefixed with `part-` and templates prefixed with `template-`.
-
-`do_blocks` -function is excelent for rendering individual blocks or parts in templates. This can be anything from dark-mode-toggle to social icons etc.
-
-Example usage:
-
-```php
-  echo do_blocks('<!-- wp:<BLOCK_NAMESPACE>/<BLOCK_SLUG> {"attribute_key":"attribute_val"} /-->');
-```
+---
 
 ## Enqueuing scripts and styles
 
----
-
-## Blocks.json
-
-All blocks are configured in blocks.json file. This file is used to get block names and core blocks whitelist. Block files are loaded from `src/blocks` folder at the corresponding folder. For example `ksd/example-block` is loaded from `src/blocks/custom/example-block` folder, which then includes all files required by the block. File `block.json` (notice singular form) is used to configure the actual block.
-
-> [!NOTE]
-> This is file is cached as WordPress object cache so if you do any changes, you need to purge the cache. This can be done from theme settings.
-
-```json
-{
-	"custom": [
-		"ksd/example-container",
-		"ksd/example-dynamic",
-		"ksd/example-view-script"
-    ...
-	],
-	"default": [
-		// Blocks that are whitelisted for core blocks
-		"core/paragraph",
-		"core/image",
-		"core/heading",
-		"core/list",
-		"core/list-item",
-		"core/html",
-		"core/button",
-		"core/buttons",
-		"core/separator",
-		"core/shortcode",
-		"core/block" // Reusable blocks
-	]
-}
-```
+TODO: Add documentation
 
 ---
 
@@ -617,9 +552,9 @@ There can be more things that are disabled in the future.
 
 ---
 
-## Admin Settings
+## Admin Settings and Options
 
-Theme settings can be found on admin panel. Certain config files such as `blocks.json` and `config.json` are saved on WordPress object cache. Cache is basically disabled on logged-in admin accounts but if you are having problems, you can purge the cache from theme settings.
+Theme settings can be found on admin panel.
 
 ### Analytics
 
@@ -632,6 +567,11 @@ Theme uses custom Tag Manager script that sets a delay for loading the container
 
 Theme has a centralized place to add company's social platform and contact information. These can be dynamically fetched from database so you don't have to pass same information again and again. For example default footer and social icon blocks use dynamic data.
 
-```
+## Todo
 
-```
+-   [ ] Add Typescript support
+-   [ ] Make example blocks and experiment with interactivity api
+-   [ ] Add documentation and examples for custom API endpoints
+-   [ ] Add documentation and examples for custom database tables
+-   [ ] Add documentation and examples for custom post types
+-   [ ] Add documentation and examples for Redux stores
