@@ -27,6 +27,12 @@ class Enqueue {
     protected $uri;
 
     /**
+     * Theme settings extracted from theme.config.php file
+     * @var array
+     */
+    protected $config;
+
+    /**
      * Files that are excluded from enqueueing
      * @var array
      */
@@ -42,12 +48,13 @@ class Enqueue {
      * Constructor
      * @return void 
      */
-    public function __construct($path, $uri) {
+    public function __construct($path, $uri, $config) {
         /**
          * Set attributes
          */
         $this->path = $path;
         $this->uri = $uri;
+        $this->config = $config;
         $this->inline_files = ['sanitize', 'dark-mode', 'inline'];
         $this->admin_only_files = ['admin', 'cpt', 'inline'];
     }
@@ -76,6 +83,16 @@ class Enqueue {
      */
     public function add_admin_styles_and_scripts(): void {
         $this->enqueue_assets($this->path . '/build/assets/*.{js,css}', GLOB_BRACE,  $this->uri, true);
+
+        /**
+         * Enqueue Font Awesome for backend
+         */
+        wp_register_style('fontawesome-brands', $this->uri . '/public/icons/fontawesome/css/brands.min.css', '', filemtime($this->path . '/public/icons/fontawesome/css/brands.min.css'), 'all');
+        wp_register_style('fontawesome-regular', $this->uri . '/public/icons/fontawesome/css/regular.min.css', '', filemtime($this->path . '/public/icons/fontawesome/css/regular.min.css'), 'all');
+        wp_register_style('fontawesome-solid', $this->uri . '/public/icons/fontawesome/css/solid.min.css', '', filemtime($this->path . '/public/icons/fontawesome/css/solid.min.css'), 'all');
+        wp_enqueue_style('fontawesome-brands');
+        wp_enqueue_style('fontawesome-regular');
+        wp_enqueue_style('fontawesome-solid');
     }
 
     /**
