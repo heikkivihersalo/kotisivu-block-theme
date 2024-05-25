@@ -27,6 +27,7 @@ class Enqueue {
     protected $uri;
 
     /**
+     * Theme config file
      * Theme settings extracted from theme.config.php file
      * @var array
      */

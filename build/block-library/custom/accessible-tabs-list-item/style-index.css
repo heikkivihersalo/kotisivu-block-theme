@@ -1,0 +1,1 @@
+.accessible-tabs__list-item__button{background:none;border:none;cursor:pointer;font-size:var(--wp--preset--font-size--medium);font-weight:700;padding:.25em 1.5em;text-transform:uppercase}[aria-selected=true].accessible-tabs__list-item__button{border-bottom:3px solid var(--wp--preset--color--primary)}

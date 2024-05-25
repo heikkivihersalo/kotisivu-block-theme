@@ -1,0 +1,39 @@
+/**
+ * REGULAR STYLES
+ */
+.image-gallery {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--wp--preset--spacing--50);
+	margin-block: var(--wp--preset--spacing--50);
+}
+
+.image-gallery__item {
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+}
+
+@media screen and (min-width: 800px) {
+	.image-gallery {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+/**
+ * SQUARE
+ */
+.image-gallery.is-style-square .image-gallery__item {
+	object-fit: cover;
+	object-position: center center;
+	aspect-ratio: 1 / 1;
+}
+
+/**
+ * WIDE
+ */
+ .image-gallery.is-style-wide .image-gallery__item {
+	object-fit: cover;
+	object-position: center center;
+	aspect-ratio: 16 / 9;
+}
