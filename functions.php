@@ -3,24 +3,20 @@
 namespace Kotisivu\BlockTheme;
 
 defined('ABSPATH') or die();
+
 /*
 |--------------------------------------------------------------------------
 | Get options
 |--------------------------------------------------------------------------
 |
-| 
+| Get all required classes and options
 |
 */
-/**
- * Get classes
- */
+
 foreach (glob(dirname(__FILE__) . '/inc/utils/*.php') as $utility_class) :
     require_once $utility_class;
 endforeach;
 
-/**
- * Get theme attributes
- */
 $theme = wp_get_theme();
 $theme_name = $theme->get('Name');
 $theme_version = $theme->get('Version');

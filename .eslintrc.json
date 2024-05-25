@@ -17,13 +17,6 @@
 			}
 		}
 	},
-	"ignorePatterns": [
-		"**/components/**/__deprecated__/*.js",
-		"**/node_modules/**",
-		"**/build/**",
-		"**/dist/**",
-		"**/public/**"
-	],
 	"rules": {
 		"prettier/prettier": 0,
 		"comma-dangle": [
