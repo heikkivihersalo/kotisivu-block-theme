@@ -228,14 +228,19 @@ return array(
 					"active" => false,
 					"options" => [
 						"id" => "option",
-						"title" => "title",
-						"screen" => ["example"]
+						"title" => "Title",
+						"screen" => ["exampleposttype"]
 					],
 					"markup" => [
 						[
-							"id" => "text_input",
-							"label" => __("Text Input", "kotisivu-block-theme"),
+							"id" => "text_input_1",
+							"label" => __("Text Input 1", "kotisivu-block-theme"),
 							"type" => "text"
+						],
+						[
+							"id" => "textarea_input_1",
+							"label" => __("TextArea Input", "kotisivu-block-theme"),
+							"type" => "textarea"
 						],
 						[
 							"id" => "url_input",
@@ -253,15 +258,44 @@ return array(
 							"type" => "checkbox"
 						],
 						[
-							"id" => "checkbox-group_input",
+							"id" => "checkbox_group_input",
 							"label" => __("Checkbox Group Input", "kotisivu-block-theme"),
 							"type" => "checkbox-group",
-							"options" => ["option1", "option2", "option3"]
+							"options" => [
+								["value" => "option1", "label" => "Option 1"],
+								["value" => "option2", "label" => "Option 2"],
+								["value" => "option3", "label" => "Option 3"]
+							]
+						],
+						[
+							"id" => "date_input",
+							"label" => __("Date Input", "kotisivu-block-theme"),
+							"type" => "date"
+						],
+						[
+							"id" => "image_input",
+							"label" => __("Image Input", "kotisivu-block-theme"),
+							"type" => "image"
 						],
 						[
 							"id" => "select_input",
 							"label" => __("Select Input", "kotisivu-block-theme"),
 							"type" => "select",
+							"options" => [
+								["value" => "option1", "label" => "Option 1"],
+								["value" => "option2", "label" => "Option 2"],
+								["value" => "option3", "label" => "Option 3"]
+							]
+						],
+						[
+							"id" => "rich_text_input",
+							"label" => __("Rich Text Input", "kotisivu-block-theme"),
+							"type" => "rich-text"
+						],
+						[
+							"id" => "radio_group_input",
+							"label" => __("Radio Group Input", "kotisivu-block-theme"),
+							"type" => "radio-group",
 							"options" => [
 								["value" => "option1", "label" => "Option 1"],
 								["value" => "option2", "label" => "Option 2"],
