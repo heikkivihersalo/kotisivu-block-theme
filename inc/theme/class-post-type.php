@@ -46,8 +46,20 @@ class CustomPostType {
      * @return void 
      */
     private function load_classes(): void {
-        foreach (glob(dirname(__FILE__) . '/post-types/*.php') as $class)
-            require_once $class;
+        require_once dirname(__FILE__) . '/metabox/interface-metabox-field.php';
+        require_once dirname(__FILE__) . '/class-metabox.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-checkbox-group.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-checkbox.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-date.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-image.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-number.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-radio-group.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-rich-text.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-select.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-text.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-textarea.php';
+        require_once dirname(__FILE__) . '/metabox/class-metabox-field-url.php';
     }
 
     /**
@@ -110,8 +122,11 @@ class CustomPostType {
      * @return void 
      */
     private function register_metaboxes(array $metaboxes): void {
-        $metabox = new PostTypes\Metabox($metaboxes['options'], $metaboxes['markup']);
-        $metabox->register();
+        $metabox = new Metabox(
+            $metaboxes['markup'],
+            $metaboxes['options']['title'],
+            $metaboxes['options']['screen'],
+        );
     }
 
     /**
