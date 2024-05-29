@@ -504,7 +504,7 @@ TODO: Add instructions slug translations
 
 TODO: Update this section with new PHP model
 
-Metaboxes are a custom built wrapper to extend functionalities of PostType library. For simple purposes it is meant to replace plugins like Advanced Custom Fields. However, for more complex use cases it might be smart to use separate plugin to handle custom fields. Currently supported fields are: `url`, `text`, `number`, `checkbox`, `select`.
+Metaboxes are a custom built wrapper to extend functionalities of PostType library. For simple purposes it is meant to replace plugins like Advanced Custom Fields (and in my opinion it is way cleaner and better alternative). However, for more complex use cases it might be smart to use separate plugin to handle custom fields. Currently supported fields are: `checkbox-group`, `checkbox`, `date`, `image`, `number`, `radio-group`, `rich-text`, `select`, `text`, `textarea`, `url`.
 
 ```php
 
