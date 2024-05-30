@@ -80,6 +80,36 @@ final class Utils {
     }
 
     /**
+     * Build custom post types from array
+     * @param array $post_types
+     * @param string $path
+     * @return void
+     */
+    public static function build_post_types(array $post_types, string $path): void {
+        foreach ($post_types as $post_type) {
+            $slug = strtolower($post_type);
+
+            $classname = __NAMESPACE__ . '\\' . $post_type;
+            $file_path = $path . '/inc/post-types/' . str_replace('_', '-', strtolower($post_type)) . '.php';
+
+            if (!file_exists($file_path)) {
+                throw new \WP_Error('invalid-cpt', __('The custom post type class file does not exist.', 'kotisivu-block-theme'), $classname);
+            }
+            // Get the class file, only try to require if not already imported
+            if (!class_exists($classname)) {
+                require $file_path;
+            }
+
+            if (!class_exists($classname)) {
+                throw new \WP_Error('invalid-cpt', __('The custom post type you attempting to create does not have a class to instance. Possible problems: your configuration does not match the class file name; the class file name does not exist.', 'kotisivu-block-theme'), $classname);
+            }
+
+            $post_type_class = new $classname($slug);
+            $post_type_class->register();
+        }
+    }
+
+    /**
      * Set block translation
      * @param string $block_slug
      * @param string $path
