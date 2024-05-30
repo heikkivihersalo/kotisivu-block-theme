@@ -11,19 +11,20 @@ defined('ABSPATH') or die();
  * 
  * @package Kotisivu\BlockTheme 
  */
-
-class CustomPostType {
+abstract class PostType {
     /**
-     * Custom post types
-     * @var array
+     * Post type slug or name.
+     * @var string
      */
-    private $post_types;
+    public $slug;
 
     /**
      * Constructor
      * @return void 
      */
-    public function __construct($post_types) {
+    public function __construct(string $slug) {
+        $this->slug = $slug;
+
         /**
          * Require dependencies
          */
@@ -33,19 +34,6 @@ class CustomPostType {
         /**
          * Load class files
          */
-        $this->load_classes();
-
-        /**
-         * Set attributes
-         */
-        $this->post_types = $post_types ?? [];
-    }
-
-    /**
-     * Load classes from custom-post-type-folder
-     * @return void 
-     */
-    private function load_classes(): void {
         require_once dirname(__FILE__) . '/metabox/interface-metabox-field.php';
         require_once dirname(__FILE__) . '/class-metabox.php';
         require_once dirname(__FILE__) . '/metabox/class-metabox-field.php';
@@ -64,95 +52,121 @@ class CustomPostType {
 
     /**
      * Register post type
-     * @param array $post_type_config 
      * @return void 
      */
-    private function register_post_type(array $post_type_config): void {
-        $post_type = new PostTypes\PostType(
-            array(
-                'name' => $post_type_config['names']['name'],
-                'singular' => __($post_type_config['names']['singular'], 'kotisivu-block-theme'),
-                'plural' => __($post_type_config['names']['plural'], 'kotisivu-block-theme'),
-                'slug' => $post_type_config['names']['slug']
-            ),
-            $post_type_config['options']
-        );
+    abstract protected function register();
 
-        /* Translate labels */
-        $post_type->labels(array(
-            'name' => __($post_type_config['labels']['name'], 'kotisivu-block-theme'),
-            'singular_name' => __($post_type_config['labels']['singular_name'], 'kotisivu-block-theme'),
-            'menu_name' => __($post_type_config['labels']['menu_name'], 'kotisivu-block-theme'),
-            'all_items' => __($post_type_config['labels']['all_items'], 'kotisivu-block-theme'),
-            'add_new' => __($post_type_config['labels']['add_new'], 'kotisivu-block-theme'),
-            'add_new_item' => __($post_type_config['labels']['add_new_item'], 'kotisivu-block-theme'),
-            'edit_item' => __($post_type_config['labels']['edit_item'], 'kotisivu-block-theme'),
-            'new_item' => __($post_type_config['labels']['new_item'], 'kotisivu-block-theme'),
-            'view_item' => __($post_type_config['labels']['view_item'], 'kotisivu-block-theme'),
-            'search_items' => __($post_type_config['labels']['search_items'], 'kotisivu-block-theme'),
-            'not_found' => __($post_type_config['labels']['not_found'], 'kotisivu-block-theme'),
-            'not_found_in_trash' => __($post_type_config['labels']['not_found_in_trash'], 'kotisivu-block-theme'),
-            'parent_item_colon' => __($post_type_config['labels']['parent_item_colon'], 'kotisivu-block-theme'),
-        ));
+    /**
+     * Register post type
+     * @param array $names
+     * @param array $options
+     * @param array $labels
+     * @param string $icon
+     * @param array $metaboxes
+     * @param array $additional
+     * @return void 
+     */
+    public function register_post_type(array $names, array $options, array $labels, string $icon = "", array $metaboxes = [], array $additional = []): void {
+        $post_type = new PostTypes\PostType($names['slug']);
+        $post_type->options($options);
+        $post_type->labels($labels);
 
-        $post_type->icon($post_type_config['icon']);
+        $post_type->icon($icon);
         $post_type->register();
 
         /* Add Metaboxes */
-        if ($post_type_config['metaboxes']['active']) :
-            $this->register_metaboxes($post_type_config['metaboxes']);
+        if ($metaboxes['active']) :
+            $metabox = new Metabox(
+                $metaboxes['markup'],
+                $metaboxes['options']['title'],
+                $metaboxes['options']['screen'],
+            );
         endif;
 
-        if (isset($post_type_config['slug_translations'])) :
-            /**
-             * Add rewrite rules for slug translations
-             * If any problems occur, flush rewrite rules from settings
-             */
-            foreach ($post_type_config['slug_translations'] as $lang => $slug) :
-                $regex = '^' . $slug . '/([^/]*)/?';
-                $url = 'index.php?post_type=' . $post_type_config['names']['slug'] . '&name=$matches[1]';
-                add_rewrite_rule($regex, $url, 'top');
+        // TODO: Add support for slug translations
+        // if (isset($additional['slug_translations'])) :
+        //     $this->translate_slugs($names['slug'], $additional['slug_translations']);
+        // endif;
+
+        if (isset($additional['taxonomies'])) :
+            foreach ($additional['taxonomies'] as $tax) :
+                $taxonomy = new PostTypes\Taxonomy($tax['names']['slug'], $tax['options'], $tax['labels']);
+                $taxonomy->register();
             endforeach;
         endif;
+
+        /**
+         * Add permalink settings
+         */
+        $this->add_permalink_setting($names['plural']);
     }
 
     /**
-     * Register metaboxes for a post type
-     * @param array $metaboxes 
+     * Translate slugs
+     * @param string $slug 
+     * @param array $translations 
      * @return void 
      */
-    private function register_metaboxes(array $metaboxes): void {
-        $metabox = new Metabox(
-            $metaboxes['markup'],
-            $metaboxes['options']['title'],
-            $metaboxes['options']['screen'],
-        );
-    }
+    public function translate_slugs(string $slug, array $translations): void {
+        if (!function_exists('pll_get_post_language')) {
+            return;
+        }
 
-    /**
-     * Initialize class
-     * @return void 
-     */
-    public function init(): void {
-        foreach ($this->post_types as $post_type) :
-            $this->register_post_type($post_type);
+        add_filter('post_type_link', function ($post_link, $post) use ($slug, $translations) {
+            if (get_post_type($post) == $slug && isset($translations[pll_get_post_language($post->ID)])) {
+                $post_link = str_replace($slug, urlencode($translations[pll_get_post_language($post->ID)]), $post_link);
+            }
 
-            /**
-             * If Polylang is enabled, add filter to change post type link
-             * to match the current language slug
-             */
-            if (function_exists('pll_get_post_language')) :
-                add_filter('post_type_link', function ($post_link, $post) use ($post_type) {
-                    $urls = $post_type['slug_translations'];
-                    $post_type = $post_type['names']['slug'];
+            return $post_link;
+        }, 10, 2);
 
-                    if (get_post_type($post) == $post_type && isset($urls[pll_get_post_language($post->ID)])) {
-                        $post_link = str_replace($post_type, urlencode($urls[pll_get_post_language($post->ID)]), $post_link);
-                    }
-
-                    return $post_link;
-                }, 10, 2);
-            endif;
+        /**
+         * Add rewrite rules for slug translations
+         * If any problems occur, flush rewrite rules from settings
+         */
+        foreach ($translations as $lang => $slug) :
+            $regex = '^' . $slug . '/([^/]*)/?';
+            $url = 'index.php?post_type=' . $slug . '&name=$matches[1]';
+            add_rewrite_rule($regex, $url, 'top');
         endforeach;
+    }
+
+    /**
+     * Add permalink setting
+     * @param string $name
+     * @return void
+     */
+    public function add_permalink_setting($name) {
+        add_action('admin_init', function () use ($name) {
+            add_settings_field(
+                'kotisivu_block_theme_' . $this->slug,
+                sprintf(
+                    __('%s Base', 'kotisivu-block-theme'),
+                    $name
+                ),
+                [$this, 'generate_setting_output'],
+                'permalink',
+                'optional'
+            );
+        });
+
+        add_action('admin_init', function () {
+            if (isset($_POST['permalink_structure'])) {
+                update_option('kotisivu_block_theme_' . $this->slug, trim($_POST['kotisivu_block_theme_' . $this->slug]));
+            }
+        });
+    }
+
+    /**
+     * Generate setting output for permalink settings
+     * @return void
+     */
+    public function generate_setting_output() {
+        echo sprintf(
+            '<input name="%s" type="text" class="regular-text code" value="%s" placeholder="%s" />',
+            'kotisivu_block_theme_' . $this->slug,
+            esc_attr(get_option('kotisivu_block_theme_' . $this->slug)),
+            $this->slug
+        );
     }
 }

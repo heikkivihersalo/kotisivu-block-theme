@@ -106,10 +106,10 @@ class Theme {
          * Custom Post Types
          */
         if ($this->config['customPostTypes']['enabled']) {
-            $post_types = new CustomPostType(
-                $this->config['customPostTypes']['postTypes']
+            Utils::build_post_types(
+                $this->config['customPostTypes']['postTypes'],
+                $this->path
             );
-            $post_types->init();
         }
 
         /**
