@@ -24,6 +24,12 @@ class Metabox {
     protected $fields = [];
 
     /**
+     * Metabox title
+     * @var string
+     */
+    protected $title;
+
+    /**
      * Metabox label
      * @var string
      */
