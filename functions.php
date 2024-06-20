@@ -7,7 +7,7 @@ defined('ABSPATH') or die();
 /**
  * Load bootstrap file
  */
-require_once(dirname(__FILE__) . '/inc/bootstrap.php');
+require_once(dirname(__FILE__) . '/bootstrap.php');
 
 /**
  * Set theme name, textdomain, version, path and uri
