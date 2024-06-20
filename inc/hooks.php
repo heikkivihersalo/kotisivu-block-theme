@@ -24,11 +24,28 @@ if (is_admin()) {
  * 
  */
 require_once SITE_PATH . '/inc/hooks/scripts-styles.php';
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_splide');
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_theme');
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_dark_mode');
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_redux_store');
-add_action('wp_enqueue_scripts', __NAMESPACE__ . '\remove_scripts_and_styles');
+if (file_exists(SITE_PATH . '/build/assets/theme.js')) {
+    add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_splide');
+    add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_theme');
+    add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_dark_mode');
+    add_action('wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_redux_store');
+    add_action('wp_enqueue_scripts', __NAMESPACE__ . '\remove_scripts_and_styles');
+
+    /* Admin only scripts and styles */
+    if (is_admin()) {
+        add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_custom_post_type');
+        add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_admin');
+        add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_fontawesome');
+    }
+} else {
+    add_action('admin_notices', function () {
+?>
+        <div class="notice notice-error">
+            <p><?php _e('Theme assets are missing. Run `yarn` and/or `yarn build` to generate them.', SITE_TEXTDOMAIN); ?></p>
+        </div>
+<?php
+    });
+}
 
 /* Inline color meta */
 add_action('wp_head', __NAMESPACE__ . '\inline_theme_color', 0);
@@ -45,13 +62,6 @@ add_action('wp_head', __NAMESPACE__ . '\inline_tag_manager', 0);
 
 /* Enable Font Awesome */
 add_action('wp_head', __NAMESPACE__ . '\inline_fontawesome', 11);
-
-/* Admin only scripts and styles */
-if (is_admin()) {
-    add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_custom_post_type');
-    add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_admin');
-    add_action('admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_fontawesome');
-}
 
 /**
  * Handle image sizes
