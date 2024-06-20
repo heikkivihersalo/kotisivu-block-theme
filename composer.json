@@ -16,9 +16,9 @@
 		}
 	],
 	"autoload": {
-		"classmap": [
-			"inc/"
-		]
+		"psr-4": {
+			"PostTypes\\": "inc/custom-post-types/"
+		}
 	},
 	"require": {
 		"jjgrainger/posttypes": "^2.2"
