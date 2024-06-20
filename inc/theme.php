@@ -5,165 +5,68 @@ namespace Kotisivu\BlockTheme;
 defined('ABSPATH') or die();
 
 /**
+ * Menu Walker 
  * 
- * @package Kotisivu\BlockTheme 
  */
-class Theme {
-    /**
-     * Theme name
-     * @var string|false
-     */
-    protected $name;
+require_once SITE_PATH . '/inc/theme/class-menu-walker.php';
+
+/**
+ * Options 
+ * 
+ */
+if (is_user_logged_in() && is_admin()) {
+    require_once SITE_PATH . '/inc/theme/options/options.php';
 
     /**
-     * Theme version
-     * @var string|false
+     * Create primary option page
      */
-    protected $version;
+    add_action('admin_menu', __NAMESPACE__ . '\setup_theme_options');
 
     /**
-     * Theme textdomain
-     * @var string|false
+     * Create option pages
      */
-    protected $textdomain;
+    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/analytics.php'));
+    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/contact.php'));
+    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/social-media.php'));
+}
 
-    /**
-     * Theme analytics options database table
-     * @var array|false
-     */
-    protected $analytics;
+/**
+ * Custom Post Types
+ * 
+ */
+require_once SITE_PATH . '/inc/theme/custom-post-types/class-post-type.php';
 
-    /**
-     * Theme config file. File is saved on cache and loaded if found. Returns array if success, false on failure.
-     * @var mixed|false
-     */
-    protected $config;
+/**
+ * First: we register the taxonomies and post types after setup theme
+ * If air-helper loads (for translations), we unregister the original taxonomies and post types
+ * and reregister them with the translated ones.
+ *
+ * This allows the slugs translations to work before the translations are available,
+ * and for the label translations to work if they are available.
+ */
+add_action('after_setup_theme', function () {
+    Utils::build_post_types(SITE_SETTINGS['post_types'], SITE_PATH);
+});
 
-    /**
-     * Path to stylesheet directory of the current theme. Searches in the stylesheet directory before the template directory so themes which inherit from a parent theme can just override one file.
-     * @var string
-     */
-    protected $path;
+/**
+ * Custom Database Tables
+ * 
+ * !WARNING EXPERIMENTAL FEATURE!
+ */
+if (SITE_SETTINGS['database_tables']['enabled']) {
+    require_once SITE_PATH . '/inc/theme/databases/class-database.php';
+    $tables = new Database(
+        SITE_SETTINGS['database_tables']['tables']
+    );
+    $tables->init();
+}
 
-    /**
-     * Stylesheet directory URI of the current theme. Searches in the stylesheet directory before the template directory so themes which inherit from a parent theme can just override one file.
-     * @var string
-     */
-    protected $uri;
-
-    /**
-     * Theme constructor
-     * @return void 
-     */
-    public function __construct($name, $version, $textdomain, $path, $uri, $analytics, $config) {
-        /**
-         * Get classes
-         */
-        foreach (glob(dirname(__FILE__) . '/theme/*.php') as $theme_class)
-            require_once $theme_class;
-
-        /**
-         * Set theme attributes
-         */
-        $this->name = $name;
-        $this->version = $version;
-        $this->textdomain = $textdomain;
-        $this->path = $path;
-        $this->uri = $uri;
-        $this->analytics = $analytics;
-        $this->config = $config;
-    }
-
-    /**
-     * Initialize class
-     * @return void 
-     */
-    public function init() {
-        /**
-         * Theme Support
-         */
-        $support = new ThemeSupport(
-            $this->config
-        );
-        $support->init();
-
-        /**
-         * Filters
-         */
-        $filters = new Filters(
-            $this->config,
-            $this->path
-        );
-        $filters->init();
-
-        /**
-         * Rest
-         */
-        $rest = new Rest();
-        $rest->init();
-
-        /**
-         * Custom Post Types
-         */
-        if ($this->config['customPostTypes']['enabled']) {
-            Utils::build_post_types(
-                $this->config['customPostTypes']['postTypes'],
-                $this->path
-            );
-        }
-
-        /**
-         * Custom Database Tables
-         */
-        if ($this->config['customDatabaseTables']['enabled']) {
-            $tables = new Database(
-                $this->config['customDatabaseTables']['tables']
-            );
-            $tables->init();
-        }
-
-        /**
-         * Enqueue styles and scripts
-         */
-        $enqueue = new Enqueue(
-            $this->path,
-            $this->uri,
-            $this->config['settings']
-        );
-        $enqueue->init();
-
-        /**
-         * WP Head
-         */
-        $wp_head = new WP_Head(
-            $this->path,
-            $this->uri,
-            $this->config['settings'],
-            $this->analytics
-        );
-        $wp_head->init();
-
-        /**
-         * Clean up WordPress junk
-         */
-        $cleanup = new Junk(
-            $this->config['settings'],
-            $this->config['customPostTypes']['postTypes'] ?? []
-        );
-        $cleanup->init();
-
-        /**
-         * Add ajax actions
-         */
-        $ajax = new Ajax();
-        $ajax->init();
-
-        /**
-         * Add option pages to admin panel
-         */
-        if (is_user_logged_in() && is_admin()) {
-            $options = new Options();
-            $options->init();
-        }
-    }
+/**
+ * Custom API
+ * 
+ */
+if (SITE_SETTINGS['api']) {
+    require_once SITE_PATH . '/inc/theme/api/class-api.php';
+    $api = new Api();
+    $api->init();
 }

@@ -41,7 +41,7 @@ class BlockCustom {
      * Constructor
      * @return void 
      */
-    public function __construct($blocks, $path, $uri, $type = 'custom') {
+    public function __construct($blocks, $type = 'custom') {
         /**
          * Get classes
          */
@@ -52,8 +52,7 @@ class BlockCustom {
          * Set attributes
          */
         $this->blocks = $blocks;
-        $this->path = $this->get_path($type, $path);
-        $this->uri = $uri;
+        $this->path = $this->get_path($type, SITE_PATH);
         $this->type = $type;
         $this->namespace = "ksd";
     }

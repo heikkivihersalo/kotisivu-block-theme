@@ -57,8 +57,8 @@ class BlockDynamic {
         $this->blocks = $blocks;
         $this->parent_path = $parent_path;
         $this->parent_uri = $parent_uri;
-        $this->path = $path;
-        $this->uri = $uri;
+        SITE_PATH = $path;
+        SITE_URI = $uri;
         $this->options = $options;
     }
 
@@ -73,7 +73,7 @@ class BlockDynamic {
         /**
          * Get paths to block
          */
-        $block_path = Utils::get_block_path($slug, 'dynamic', $this->path, $this->parent_path);
+        $block_path = Utils::get_block_path($slug, 'dynamic', SITE_PATH, $this->parent_path);
 
         /** 
          * Guard Clauses 

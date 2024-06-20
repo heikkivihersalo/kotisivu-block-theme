@@ -57,6 +57,16 @@ psd
 thumb
 sketch
 
+### Build files etc. ###
+build
+dist
+out
+target
+vendor
+
+### Environment ###
+.env
+
 ### WordPress ###
 # Core
 #
