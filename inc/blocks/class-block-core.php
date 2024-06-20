@@ -16,20 +16,10 @@ class BlockCore {
     protected $blocks;
 
     /**
-     * Path
-     */
-    protected $path;
-
-    /**
-     * URI
-     */
-    protected $uri;
-
-    /**
      * Constructor
      * @return void 
      */
-    public function __construct($blocks, $path, $uri) {
+    public function __construct($blocks) {
         /**
          * Get classes
          */
@@ -40,8 +30,6 @@ class BlockCore {
          * Set attributes
          */
         $this->blocks = $blocks;
-        $this->path = $path;
-        $this->uri = $uri;
     }
 
     /**
@@ -50,11 +38,11 @@ class BlockCore {
      */
     public function enqueue_core_blocks(): void {
         // Get assets file
-        $assets_file = require $this->path . '/build/block-library/core/core.asset.php';
+        $assets_file = require SITE_PATH . '/build/block-library/core/core.asset.php';
 
         wp_enqueue_script(
             'block-core',
-            $this->uri . '/build/block-library/core/core.js',
+            SITE_URI . '/build/block-library/core/core.js',
             $assets_file['dependencies'],
             $assets_file['version'],
             true
@@ -62,7 +50,7 @@ class BlockCore {
 
         wp_enqueue_style(
             'block-core',
-            $this->uri . '/build/block-library/core/core.css',
+            SITE_URI . '/build/block-library/core/core.css',
             [],
             $assets_file['version'],
             'all'
