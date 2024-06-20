@@ -2,8 +2,6 @@
 
 namespace Kotisivu\BlockTheme;
 
-use PostTypes;
-
 defined('ABSPATH') or die();
 
 /**
@@ -28,8 +26,8 @@ abstract class PostType {
         /**
          * Require dependencies
          */
-        foreach (glob(dirname(__DIR__) . '/lib/post-types/src/*.php') as $class)
-            require_once $class;
+        // foreach (glob(dirname(__DIR__, 2) . '/lib/post-types/src/*.php') as $class)
+        //     require_once $class;
 
         /**
          * Load class files
@@ -67,7 +65,7 @@ abstract class PostType {
      * @return void 
      */
     public function register_post_type(array $names, array $options, array $labels, string $icon = "", array $metaboxes = [], array $additional = []): void {
-        $post_type = new PostTypes\PostType($names['slug']);
+        $post_type = new \PostTypes\PostType($names['slug']);
         $post_type->options($options);
         $post_type->labels($labels);
 
@@ -90,7 +88,7 @@ abstract class PostType {
 
         if (isset($additional['taxonomies'])) :
             foreach ($additional['taxonomies'] as $tax) :
-                $taxonomy = new PostTypes\Taxonomy($tax['names']['slug'], $tax['options'], $tax['labels']);
+                $taxonomy = new \PostTypes\Taxonomy($tax['names']['slug'], $tax['options'], $tax['labels']);
                 $taxonomy->register();
             endforeach;
         endif;
