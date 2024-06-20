@@ -10,18 +10,6 @@ defined('ABSPATH') or die();
  */
 class Blocks {
     /**
-     * Path to stylesheet directory of the current theme. Searches in the stylesheet directory before the template directory so themes which inherit from a parent theme can just override one file.
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Stylesheet directory URI of the current theme. Searches in the stylesheet directory before the template directory so themes which inherit from a parent theme can just override one file.
-     * @var string
-     */
-    protected $uri;
-
-    /**
      * Custom blocks
      * @var array
      */
@@ -49,7 +37,7 @@ class Blocks {
      * Constructor
      * @return void 
      */
-    public function __construct($path, $uri) {
+    public function __construct() {
         /**
          * Get classes
          */
@@ -60,18 +48,12 @@ class Blocks {
             require_once $utility_class;
 
         /**
-         * Set attributes
-         */
-        $this->path = $path;
-        $this->uri = $uri;
-
-        /**
          * Get block directories
          */
-        $this->custom_blocks = Utils::get_block_directories($path . '/src/block-library/custom', 'ksd');
-        $this->part_blocks = Utils::get_block_directories($path . '/src/block-library/parts', 'ksd');
-        $this->template_blocks = Utils::get_block_directories($path . '/src/page-templates', 'ksd');
-        $this->core_blocks = Utils::get_block_directories($path . '/src/block-library/core', 'core');
+        $this->custom_blocks = Utils::get_block_directories(SITE_PATH . '/src/block-library/custom', 'ksd');
+        $this->part_blocks = Utils::get_block_directories(SITE_PATH . '/src/block-library/parts', 'ksd');
+        $this->template_blocks = Utils::get_block_directories(SITE_PATH . '/src/page-templates', 'ksd');
+        $this->core_blocks = Utils::get_block_directories(SITE_PATH . '/src/block-library/core', 'core');
     }
 
     /**
@@ -82,7 +64,7 @@ class Blocks {
      * @return string 
      */
     public function fix_file_paths(string $url, string $path, string $plugin): string {
-        if (strpos($url, $this->path) !== false) {
+        if (strpos($url, SITE_PATH) !== false) {
             $url = str_replace('wp-content/plugins' . ABSPATH, '', $url);
         }
 
@@ -179,8 +161,6 @@ class Blocks {
          */
         $custom_blocks = new BlockCustom(
             $this->custom_blocks,
-            $this->path,
-            $this->uri,
             'custom'
         );
 
@@ -188,8 +168,6 @@ class Blocks {
 
         $part_blocks = new BlockCustom(
             $this->part_blocks,
-            $this->path,
-            $this->uri,
             'parts'
         );
 
@@ -197,8 +175,6 @@ class Blocks {
 
         $template_blocks = new BlockCustom(
             $this->template_blocks,
-            $this->path,
-            $this->uri,
             'templates'
         );
 
@@ -206,8 +182,6 @@ class Blocks {
 
         $core_blocks = new BlockCore(
             $this->core_blocks,
-            $this->path,
-            $this->uri,
             'core'
         );
 
