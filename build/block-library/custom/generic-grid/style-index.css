@@ -1,1 +1,0 @@
-.generic-grid{display:grid;gap:var(--wp--preset--spacing--30);grid-template-columns:repeat(1,1fr);margin-block:var(--wp--preset--spacing--10);margin-bottom:var(--wp--preset--spacing--50)}@media screen and (min-width:800px){.generic-grid{grid-template-columns:repeat(2,1fr)}}@media screen and (min-width:1200px){.generic-grid{grid-template-columns:repeat(3,1fr)}}
