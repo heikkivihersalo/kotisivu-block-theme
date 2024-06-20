@@ -1,0 +1,26 @@
+{
+	"name": "kotisivu-dev/kotisivu-block-theme",
+	"description": "Kotisivu Block theme",
+	"type": "false",
+	"license": "GPL-2.0-or-later",
+	"config": {
+		"platform": {
+			"php": "8.2"
+		}
+	},
+	"version": "1.0.0",
+	"authors": [
+		{
+			"name": "Kotisivu Dev",
+			"email": "heikki@kotisivu.dev"
+		}
+	],
+	"autoload": {
+		"classmap": [
+			"inc/"
+		]
+	},
+	"require": {
+		"jjgrainger/posttypes": "^2.2"
+	}
+}
