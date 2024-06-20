@@ -24,12 +24,6 @@ abstract class PostType {
         $this->slug = $slug;
 
         /**
-         * Require dependencies
-         */
-        // foreach (glob(dirname(__DIR__, 2) . '/lib/post-types/src/*.php') as $class)
-        //     require_once $class;
-
-        /**
          * Load class files
          */
         require_once dirname(__FILE__) . '/metabox/interface-metabox-field.php';
@@ -65,6 +59,18 @@ abstract class PostType {
      * @return void 
      */
     public function register_post_type(array $names, array $options, array $labels, string $icon = "", array $metaboxes = [], array $additional = []): void {
+        if (!class_exists('\PostTypes\PostType')) {
+            add_action('admin_notices', function () {
+?>
+                <div class="notice notice-error">
+                    <p><?php _e('PostTypes dependencies are missing. Run `composer install` to generate them.', 'kotisivu-block-theme'); ?></p>
+                </div>
+<?php
+            });
+
+            return;
+        }
+
         $post_type = new \PostTypes\PostType($names['slug']);
         $post_type->options($options);
         $post_type->labels($labels);

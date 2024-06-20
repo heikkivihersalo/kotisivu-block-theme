@@ -48,6 +48,20 @@ class Blocks {
             require_once $utility_class;
 
         /**
+         * Check if dependencies and build files exist
+         */
+        if (!file_exists(SITE_PATH . '/build/block-library/core/core.asset.php')) {
+            add_action('admin_notices', function () {
+?>
+                <div class="notice notice-error">
+                    <p><?php _e('Block library assets are missing. Run `yarn` and/or `yarn build` to generate them.', SITE_TEXTDOMAIN); ?></p>
+                </div>
+<?php
+            });
+            return;
+        }
+
+        /**
          * Get block directories
          */
         $this->custom_blocks = Utils::get_block_directories(SITE_PATH . '/src/block-library/custom', 'ksd');
