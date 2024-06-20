@@ -90,7 +90,7 @@ final class Utils {
             $slug = strtolower($post_type);
 
             $classname = __NAMESPACE__ . '\\' . $post_type;
-            $file_path = $path . '/inc/post-types/' . str_replace('_', '-', strtolower($post_type)) . '.php';
+            $file_path = $path . '/inc/theme/custom-post-types/post-types/' . str_replace('_', '-', strtolower($post_type)) . '.php';
 
             if (!file_exists($file_path)) {
                 throw new \WP_Error('invalid-cpt', __('The custom post type class file does not exist.', 'kotisivu-block-theme'), $classname);
@@ -258,5 +258,58 @@ final class Utils {
         }
 
         return $num;
+    }
+
+    /**
+     * Disable WP emojis from TinyMCE
+     * @return void
+     */
+    public static function disable_emojis_tinymce($plugins): array {
+        return is_array($plugins) ? array_diff($plugins, array('wpemoji')) : array();
+    }
+
+    /**
+     * Disable WP emojis DNS prefetch
+     * @param $urls
+     * @param $relation_type
+     *
+     * @return array
+     */
+    public static function disable_emojis_remove_dns_prefetch($urls, $relation_type): array {
+        if ('dns-prefetch' !== $relation_type) {
+            return $urls;
+        }
+
+        $svg_url = preg_grep('/images\/core\/emoji/', $urls);
+
+        if (empty($svg_url)) {
+            return $urls;
+        }
+
+        $svg_url = reset($svg_url);
+        $svg_url = apply_filters('emoji_svg_url', $svg_url);
+        $urls = array_diff($urls, array($svg_url));
+
+        return $urls;
+    }
+
+    /**
+     * Get featured image metadata
+     * @param mixed $id
+     * @param string $size
+     * @return array
+     */
+    public static function get_featured_image_meta(mixed $post_id, string $size = 'medium') {
+        $id = get_post_thumbnail_id($post_id);
+        $meta = wp_get_attachment_image_src($id, $size);
+
+        return array(
+            'id' => $id,
+            'url' => $meta[0],
+            'width' => $meta[1],
+            'height' => $meta[2],
+            'alt' => get_post_meta($id, '_wp_attachment_image_alt', true),
+            'title' => get_the_title($id)
+        );
     }
 }
