@@ -101,6 +101,9 @@ kotisivu-block-theme.zip
 # htaccess
 /.htaccess
 
+# Cache files
+.phpcs-cache
+
 # All plugins
 # Note: If you wish to whitelist plugins,
 # uncomment the next line

@@ -34,7 +34,9 @@
 	},
 	"files": [
 		".vscode",
-		"build",
+		"build/assets",
+		"build/block-library",
+		"build/page-templates",
 		"inc",
 		"languages",
 		"public",
