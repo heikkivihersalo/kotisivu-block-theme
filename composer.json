@@ -31,10 +31,13 @@
 		"jjgrainger/posttypes": "^2.2"
 	},
 	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
 		"phpunit/phpunit": "^11.2",
-		"wp-coding-standards/wpcs": "^3.1",
+		"phpcompatibility/php-compatibility": "dev-develop as 9.3.5",
+		"phpcsstandards/phpcsutils": "^1.0",
+		"phpcsstandards/phpcsextra": "^1.2.0",
 		"phpcompatibility/phpcompatibility-wp": "*",
-		"squizlabs/php_codesniffer": "^3.10",
-		"automattic/vipwpcs": "^3.0"
+		"squizlabs/php_codesniffer": "*",
+		"wp-coding-standards/wpcs": "^3.0"
 	}
 }
