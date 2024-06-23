@@ -111,7 +111,7 @@ abstract class MetaboxField extends Metabox implements MetaboxFieldInterface {
 	public function save( int $post_id, array $options = array() ): void {
 		// Nonce verification is done in the parent class so we can safely ignore it here.
 		if ( array_key_exists( $this->id, $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			$val = $this->sanitize( $_POST[ $this->id ] );
+			$val = $this->sanitize( $_POST[ $this->id ] ); // phpcs:ignore
 			update_post_meta( $post_id, $this->id, $val );
 		}
 	}

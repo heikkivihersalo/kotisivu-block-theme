@@ -156,7 +156,7 @@ class Database {
 				switch ( $property ) :
 					case 'type':
 						// Default boolean to bit(1)
-						if ( $value === 'boolean' ) {
+						if ( 'boolean' === $value ) {
 							$value = 'bit(1)';
 						}
 						// Other types
@@ -183,11 +183,11 @@ class Database {
 						break;
 					case 'primary_key':
 						if ( $value ) {
-							$primary_key = 'PRIMARY KEY  ' . '(' . $properties['name'] . ')';
+							$primary_key = 'PRIMARY KEY  (' . $properties['name'] . ')';
 						}
 						break;
 					case 'foreign_key':
-						$key       = 'FOREIGN KEY  ' . '(' . $properties['name'] . ')';
+						$key       = 'FOREIGN KEY  (' . $properties['name'] . ')';
 						$reference = 'REFERENCES ' . $prefix . $value['table'] . '(' . $value['column'] . ')';
 						$on_delete = isset( $value['on_delete'] ) ? 'ON DELETE ' . $value['on_delete'] : '';
 						$on_update = isset( $value['on_update'] ) ? 'ON UPDATE ' . $value['on_update'] : '';
