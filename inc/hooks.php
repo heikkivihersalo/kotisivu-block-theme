@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -47,7 +47,7 @@ if ( file_exists( SITE_PATH . '/build/assets/theme.js' ) ) {
 		function () {
 			?>
 		<div class="notice notice-error">
-			<p><?php _e( 'Theme assets are missing. Run `yarn` and/or `yarn build` to generate them.', SITE_TEXTDOMAIN ); ?></p>
+			<p><?php _e( 'Theme assets are missing. Run `yarn` and/or `yarn build` to generate them.', 'kotisivu-block-theme' ); ?></p>
 		</div>
 			<?php
 		}

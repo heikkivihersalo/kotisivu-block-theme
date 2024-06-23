@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || die();
 /**
  * Add custom image options for WordPress
  *
- * @param mixed $sizes
+ * @param mixed $sizes Image sizes
  * @return void
  */
 function modify_default_image_sizes( mixed $sizes ): void {
@@ -36,7 +36,7 @@ function modify_default_image_sizes( mixed $sizes ): void {
 /**
  * Add custom image options to admin interface
  *
- * @param mixed $sizes
+ * @param mixed $sizes Image sizes
  * @return array
  */
 function add_custom_image_sizes( mixed $sizes ): array {

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -11,28 +11,24 @@ namespace Kotisivu\BlockTheme;
 defined( 'ABSPATH' ) || die();
 
 /**
- * Disable WordPress default update api calls
+ * Ensure that a theme is never updated. This works by removing the
+ * theme from the list of available updates.
  *
- * @param array  $response
- * @param string $url
+ * @author: Micah Wood
+ * @url: https://wpscholar.com/blog/exclude-plugin-theme-from-wordpress-updates/
+ * Original snippets posted by Mark Jaquith
+ * https://markjaquith.wordpress.com/2009/12/14/excluding-your-plugin-or-theme-from-update-checks/
+ *
+ * @param array  $response Response
+ * @param string $url 	URL
  * @return array response
  */
 function disable_theme_update( array $response, string $url ): array {
-	/**
-	 * Ensure that a theme is never updated. This works by removing the
-	 * theme from the list of available updates.
-	 *
-	 * @author: Micah Wood
-	 * @url: https://wpscholar.com/blog/exclude-plugin-theme-from-wordpress-updates/
-	 *
-	 * Original snippets posted by Mark Jaquith
-	 * https://markjaquith.wordpress.com/2009/12/14/excluding-your-plugin-or-theme-from-update-checks/
-	 */
 	if ( 0 === strpos( $url, 'https://api.wordpress.org/themes/update-check' ) ) {
 		$themes = json_decode( $response['body']['themes'] );
 		unset( $themes->themes->{'kotisivu-block-theme'} );
 		unset( $themes->themes->{'style'} );
-		$response['body']['themes'] = json_encode( $themes );
+		$response['body']['themes'] = wp_json_encode( $themes );
 	}
 
 	return $response;
@@ -41,7 +37,7 @@ function disable_theme_update( array $response, string $url ): array {
 /**
  * Add image support for SVG's
  *
- * @param array $mimes
+ * @param array $mimes Mime types
  * @return array
  */
 function allow_svg_uploads( array $mimes ): array {
@@ -52,7 +48,7 @@ function allow_svg_uploads( array $mimes ): array {
 /**
  * Override default excerpt length
  *
- * @param int $length
+ * @param int $length Excerpt length
  * @return int
  */
 function limit_excerpt_length( int $length ): int {
@@ -71,7 +67,7 @@ function set_inline_size_limit() {
 /**
  * Set default dashboard metaboxes
  *
- * @param int $user_id
+ * @param int $user_id User ID
  * @return void
  */
 function set_default_dashboard_metaboxes( $user_id = null ) {

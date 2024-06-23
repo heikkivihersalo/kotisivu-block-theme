@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *
@@ -7,8 +6,8 @@
  *     $attributes (array): The block attributes.
  *     $content (string): The block default content.
  *     $block (WP_Block): The block instance.
- * 
- * Template file will be wrapped with `template-main` block. 
+ *
+ * Template file will be wrapped with `template-main` block.
  * It is used to keep the same structure for all templates and to avoid code duplication.
  * CSS classes can be passed in WordPress HTML -template which will be added to content area.
  *

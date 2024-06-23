@@ -1,13 +1,12 @@
 <?php
-
 /**
  * Get the total reading time of a post
- * @param string $content
- * @return string $reading_time
+ * @param string $content The content of the post
+ * @return string $reading_time The reading time of the post
  */
 function get_reading_time( $content ) {
-	$word_count   = str_word_count( strip_tags( $content ) );
-	$reading_time = ceil( $word_count / 200 ) == 0 ? 1 : ceil( $word_count / 200 );
+	$word_count   = str_word_count( wp_strip_all_tags( $content ) );
+	$reading_time = ceil( $word_count / 200 ) === 0 ? 1 : ceil( $word_count / 200 );
 
 	return $reading_time . ' ' . __( 'min read', 'kotisivu-block-theme' );
 }

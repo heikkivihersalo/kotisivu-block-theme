@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -89,9 +89,9 @@ class Blocks {
 	/**
 	 * Fix theme paths when used inside theme
 	 *
-	 * @param string $url
-	 * @param string $path
-	 * @param string $plugin
+	 * @param string $url URL
+	 * @param string $path Path
+	 * @param string $plugin Plugin
 	 * @return string
 	 */
 	public function fix_file_paths( string $url, string $path, string $plugin ): string {
@@ -105,7 +105,7 @@ class Blocks {
 	/**
 	 * Exclude footer and header blocks from block inserter
 	 *
-	 * @param array $blocks
+	 * @param array $blocks Blocks
 	 * @return array
 	 */
 	private function filter_part_blocks( array $blocks ): array {
@@ -124,12 +124,12 @@ class Blocks {
 	/**
 	 * Define allowed block types for Gutenberg
 	 *
-	 * @param mixed $block_editor_context
-	 * @param mixed $editor_context
+	 * @param mixed $block_editor_context Block editor context
+	 * @param mixed $editor_context Editor context
 	 * @return array
 	 */
 	public function allowed_block_types( $block_editor_context, $editor_context ): array {
-		if ( ! empty( $editor_context->post ) || $editor_context->name === 'core/edit-site' ) :
+		if ( ! empty( $editor_context->post ) || 'core/edit-site' === $editor_context->name ) :
 
 			/* Return merged block array */
 			return array_merge(

@@ -4,7 +4,7 @@ namespace Kotisivu\BlockTheme;
 
 use Walker_Nav_Menu;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  * Add custom walker to header menu
@@ -15,11 +15,11 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 	/**
 	 * Start element
 	 *
-	 * @param string $output
-	 * @param object $item
-	 * @param int    $depth
-	 * @param array  $args
-	 * @param int    $id
+	 * @param string $output Used to append additional content (passed by reference).
+	 * @param object $item Menu item data object.
+	 * @param int    $depth Depth of menu item. Used for padding.
+	 * @param array  $args An object of wp_nav_menu() arguments.
+	 * @param int    $id ID of the current menu item. Default 0.
 	 * @return void
 	 */
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
@@ -69,7 +69,7 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 		/**
 		 * Build item (link) output
 		 */
-		$is_link = $item->url && $item->url != '#';
+		$is_link = $item->url && '#' !== $item->url;
 
 		$item_output  = $args->before;
 		$item_output .= $is_link ? '<a' . $attributes . '>' : '<a class="site-header__menu-title">';
@@ -87,10 +87,10 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 	/**
 	 * End element
 	 *
-	 * @param string $output
-	 * @param object $category
-	 * @param int    $depth
-	 * @param array  $args
+	 * @param string $output Used to append additional content (passed by reference).
+	 * @param object $category Menu item data object.
+	 * @param int    $depth Depth of menu item. Used for padding.
+	 * @param array  $args An object of wp_nav_menu() arguments.
 	 * @return void
 	 */
 	public function end_el( &$output, $category, $depth = 0, $args = array() ) {
@@ -100,9 +100,9 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 	/**
 	 * Start level
 	 *
-	 * @param string $output
-	 * @param int    $depth
-	 * @param array  $args
+	 * @param string $output Used to append additional content (passed by reference).
+	 * @param int    $depth Depth of menu item. Used for padding.
+	 * @param array  $args An object of wp_nav_menu() arguments.
 	 * @return void
 	 */
 	public function start_lvl( &$output, $depth = 0, $args = array() ) {
@@ -127,9 +127,9 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 	/**
 	 * End level
 	 *
-	 * @param string $output
-	 * @param int    $depth
-	 * @param array  $args
+	 * @param string $output Used to append additional content (passed by reference).
+	 * @param int    $depth Depth of menu item. Used for padding.
+	 * @param array  $args An object of wp_nav_menu() arguments.
 	 * @return void
 	 */
 	public function end_lvl( &$output, $depth = 0, $args = array() ) {

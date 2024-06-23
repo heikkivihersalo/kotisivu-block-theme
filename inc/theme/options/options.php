@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -43,9 +43,9 @@ function purge_transient_cache(): void {
 /**
  * Get theme menu HTML
  *
- * @return string
+ * @return void
  */
-function get_theme_menu_html() {
+function get_theme_menu_html(): void {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( 'You do not have sufficient permissions to access this page' );
 	}

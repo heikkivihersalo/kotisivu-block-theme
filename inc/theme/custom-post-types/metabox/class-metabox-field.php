@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -15,21 +15,20 @@ defined( 'ABSPATH' ) || die();
  *
  * @package Kotisivu\BlockTheme
  */
-
 abstract class MetaboxField extends Metabox implements MetaboxFieldInterface {
 	/**
 	 * Field id
 	 *
 	 * @var string
 	 */
-	protected $id;
+	protected string $id;
 
 	/**
 	 * Field label
 	 *
 	 * @var string
 	 */
-	protected $label;
+	protected string $label;
 
 	/**
 	 * Post
@@ -110,7 +109,8 @@ abstract class MetaboxField extends Metabox implements MetaboxFieldInterface {
 	 * @inheritDoc
 	 */
 	public function save( int $post_id, array $options = array() ): void {
-		if ( array_key_exists( $this->id, $_POST ) ) {
+		// Nonce verification is done in the parent class so we can safely ignore it here.
+		if ( array_key_exists( $this->id, $_POST ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$val = $this->sanitize( $_POST[ $this->id ] );
 			update_post_meta( $post_id, $this->id, $val );
 		}
@@ -121,7 +121,8 @@ abstract class MetaboxField extends Metabox implements MetaboxFieldInterface {
 	 */
 	public function save_group( int $post_id, array $options ): void {
 		foreach ( $options as $option ) {
-			if ( isset( $_POST[ $this->id . '_' . $option['value'] ] ) ) {
+			// Nonce verification is done in the parent class so we can safely ignore it here.
+			if ( isset( $_POST[ $this->id . '_' . $option['value'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 				update_post_meta( $post_id, $this->id . '_' . $option['value'], '1' );
 			} else {
 				delete_post_meta( $post_id, $this->id . '_' . $option['value'] );

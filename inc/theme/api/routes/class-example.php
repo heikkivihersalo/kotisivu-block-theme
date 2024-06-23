@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  *
@@ -42,11 +42,11 @@ class RouteExample extends RouteBase implements RouteInterface {
 			return new \WP_REST_Response(
 				array(
 					'status'  => 'error',
-					'type'    => $e->getType(),
+					'type'    => $e->get_type(),
 					'code'    => $e->getCode(),
 					'message' => $e->getMessage(),
 				),
-				$e->getHttpStatus()
+				$e->get_http_status()
 			);
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );

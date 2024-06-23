@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  * Enum Permission
@@ -29,7 +29,7 @@ enum Permission {
 			self::ADMIN => function () {
 				$user = wp_get_current_user();
 
-				if ( in_array( 'administrator', (array) $user->roles ) ) {
+				if ( in_array( 'administrator', (array) $user->roles, true ) ) {
 					return true;
 				}
 			},

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -60,12 +60,12 @@ abstract class PostType {
 	/**
 	 * Register post type
 	 *
-	 * @param array  $names
-	 * @param array  $options
-	 * @param array  $labels
-	 * @param string $icon
-	 * @param array  $metaboxes
-	 * @param array  $additional
+	 * @param array  $names   Array of names for post type
+	 * @param array  $options Array of options for post type
+	 * @param array  $labels Array of labels for post type
+	 * @param string $icon   Icon for post type
+	 * @param array  $metaboxes Array of metaboxes for post type
+	 * @param array  $additional Array of additional settings for post type
 	 * @return void
 	 */
 	public function register_post_type( array $names, array $options, array $labels, string $icon = '', array $metaboxes = array(), array $additional = array() ): void {
@@ -121,8 +121,8 @@ abstract class PostType {
 	/**
 	 * Translate slugs
 	 *
-	 * @param string $slug
-	 * @param array  $translations
+	 * @param string $slug Slug
+	 * @param array  $translations Array of translations
 	 * @return void
 	 */
 	public function translate_slugs( string $slug, array $translations ): void {
@@ -157,7 +157,7 @@ abstract class PostType {
 	/**
 	 * Add permalink setting
 	 *
-	 * @param string $name
+	 * @param string $name Name of the post type
 	 * @return void
 	 */
 	public function add_permalink_setting( $name ) {

@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  * Regex enum
@@ -57,7 +57,7 @@ enum Regex {
 	/**
 	 * Format regex for request (remove start and end of regex)
 	 *
-	 * @param string $regex
+	 * @param string $regex Regex
 	 * @return string
 	 */
 	private static function format_regex_for_request( string $regex ): string {

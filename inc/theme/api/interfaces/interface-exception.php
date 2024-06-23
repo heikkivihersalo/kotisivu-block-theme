@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 interface ExceptionInterface {
 	/**
@@ -10,14 +10,14 @@ interface ExceptionInterface {
 	 *
 	 * @return string
 	 */
-	public function getType(): string;
+	public function get_type(): string;
 
 	/**
 	 * Get HTTP status code
 	 *
 	 * @return int
 	 */
-	public function getHttpStatus(): int;
+	public function get_http_status(): int;
 }
 
 interface ParametersInvalidExceptionInterface extends ExceptionInterface {
@@ -134,8 +134,8 @@ interface DeleteFailedDependencyExceptionInterface extends ExceptionInterface {
 	/**
 	 * Constructor
 	 *
-	 * @param string                 $message Exception message (optional)
-	 * @param HTTP_Error_Not_Allowed $error Error code (optional)
+	 * @param string                              $message Exception message (optional)
+	 * @param HTTP_Error_Delete_Failed_Dependency $error Error code (optional)
 	 * @return void
 	 */
 	public function __construct( $message = null, HTTP_Error_Delete_Failed_Dependency $error = HTTP_Error_Delete_Failed_Dependency::GENERIC );
@@ -145,8 +145,8 @@ interface NotImplementedExceptionInterface extends ExceptionInterface {
 	/**
 	 * Constructor
 	 *
-	 * @param string                 $message Exception message (optional)
-	 * @param HTTP_Error_Not_Allowed $error Error code (optional)
+	 * @param string                     $message Exception message (optional)
+	 * @param HTTP_Error_Not_Implemented $error Error code (optional)
 	 * @return void
 	 */
 	public function __construct( $message = null, HTTP_Error_Not_Implemented $error = HTTP_Error_Not_Implemented::GENERIC );

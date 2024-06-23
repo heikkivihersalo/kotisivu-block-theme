@@ -1,21 +1,15 @@
 <?php
-/**
- * 
- *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
- */
 
 namespace Kotisivu\BlockTheme;
 
 defined( 'ABSPATH' ) || die();
 
 /**
- *
+ * Metabox class for adding custom fields to post types
  *
  * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
-
 class Metabox {
 	/**
 	 * Nonce
@@ -29,52 +23,54 @@ class Metabox {
 	 *
 	 * @var array
 	 */
-	protected $fields = array();
+	protected array $fields = array();
 
 	/**
 	 * Metabox title
 	 *
 	 * @var string
 	 */
-	protected $title;
+	protected string $title;
 
 	/**
 	 * Metabox label
 	 *
 	 * @var string
 	 */
-	protected $label;
+	protected string $label;
 
 	/**
 	 * Post types
 	 *
 	 * @var array
 	 */
-	protected $post_types = array( 'post', 'page' );
+	protected array $post_types = array( 'post', 'page' );
 
 	/**
 	 * Position
 	 *
 	 * @var string [ normal | advanced | side ]
 	 */
-	protected $position = 'normal';
+	protected string $position = 'normal';
 
 	/**
 	 * Priority
 	 *
 	 * @var string
 	 */
-	protected $priority = 'high';
+	protected string $priority = 'high';
 
 	/**
 	 * Constructor
 	 *
-	 * @param string $type
-	 * @param string $title
-	 * @param string $label
+	 * @param array  $fields Fields to display in metabox
+	 * @param string $title Title of metabox
+	 * @param array  $post_types Post types to display metabox on (default: post, page)
+	 * @param string $position Position of metabox (default: normal)
+	 * @param string $priority Priority of metabox (default: high)
 	 * @return void
 	 */
-	public function __construct( $fields, $title, $post_types = array( 'post', 'page' ), $position = 'normal', $priority = 'high' ) {
+	public function __construct( array $fields, string $title, array $post_types = array( 'post', 'page' ), string $position = 'normal', string $priority = 'high' ) {
 		$this->fields     = $fields;
 		$this->title      = $title;
 		$this->post_types = $post_types;
@@ -104,7 +100,7 @@ class Metabox {
 	/**
 	 * Render metabox
 	 *
-	 * @param \WP_Post $post
+	 * @param \WP_Post $post Post object
 	 * @return void
 	 */
 	public function render_html( \WP_Post $post ): void {
@@ -183,14 +179,17 @@ class Metabox {
 	/**
 	 * Save metabox
 	 *
-	 * @param int $post_id
-	 * @return int
+	 * @param int $post_id Post ID
+	 * @return int Post ID
 	 */
 	public function save_metabox( int $post_id ): int {
 		/**
 		 * Validate save function
 		 */
-		if ( ! isset( $_POST[ $this->nonce ] ) || ! wp_verify_nonce( $_POST[ $this->nonce ], basename( __FILE__ ) ) ) {
+		$sanitized_nonce = isset( $_POST[ $this->nonce ] ) ? sanitize_text_field( $_POST[ $this->nonce ] ) : '';
+		$nonce_action    = basename( __FILE__ );
+
+		if ( ! wp_verify_nonce( $sanitized_nonce, $nonce_action ) ) {
 			return $post_id;
 		}
 

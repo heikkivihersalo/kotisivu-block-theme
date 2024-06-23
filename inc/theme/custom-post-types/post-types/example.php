@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -105,7 +105,7 @@ class Example extends PostType {
 		 * - radio-group
 		 */
 		$metaboxes = array(
-			'active'  => true,
+			'active'  => false,
 			'options' => array(
 				'id'     => 'option',
 				'title'  => 'Example Metabox',

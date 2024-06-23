@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *
@@ -13,18 +12,18 @@
 
 use Kotisivu\BlockTheme\Utils;
 
-//
-// Get block wrapper attributes
-//
+/**
+ * Get block wrapper attributes
+ */
 $attributes = get_block_wrapper_attributes(
 	array(
 		'class' => 'site-footer',
 	)
 );
 
-//
-// Get site options
-//
+/**
+ * Get site options
+ */
 $options = Utils::get_options_file( 'site-contact' );
 $contact = array(
 	'phone'   => isset( $options['contact-phone'] ) ? $options['contact-phone'] : '',
@@ -44,7 +43,7 @@ $contact = array(
 
 	<div class="footer__bottom">
 		<div class="footer__legal">
-			<span class="footer__copyright"><?php echo __( '©', 'kotisivu-block-theme' ) . ' ' . date( 'Y' ) . ' ' . $contact['name']; ?></span>
+			<span class="footer__copyright"><?php echo __( '©', 'kotisivu-block-theme' ) . ' ' . gmdate( 'Y' ) . ' ' . $contact['name']; ?></span>
 			<span class="footer__dot">&#x2022;</span>
 			<nav class="footer__site-nav">
 				<?php if ( has_nav_menu( 'secondary-navigation' ) ) : ?>

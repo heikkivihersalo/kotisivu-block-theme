@@ -1,10 +1,4 @@
 <?php
-/**
- * 
- *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
- */
 
 namespace Kotisivu\BlockTheme;
 
@@ -14,8 +8,8 @@ defined( 'ABSPATH' ) || die();
  *
  *
  * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
-
 class UrlField extends MetaboxField implements MetaboxFieldInterface {
 	/**
 	 * @inheritDoc
