@@ -52,7 +52,8 @@
         <exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
         <exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
         <exclude name="Squiz.Commenting.FunctionComment.ExtraParamComment" />
-
+        <exclude name="Squiz.Commenting.FileComment.WrongStyle" />
+        
         <!-- General code style related excludes -->
         <exclude name="Squiz.PHP.DisallowMultipleAssignments.Found" />
         <exclude name="Squiz.PHP.EmbeddedPhp.MultipleStatements" />
