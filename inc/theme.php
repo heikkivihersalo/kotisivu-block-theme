@@ -1,38 +1,41 @@
 <?php
+/**
+ * 
+ *
+ * @package Kotisivu\BlockTheme
+ * @since 1.0.0
+ */
 
 namespace Kotisivu\BlockTheme;
 
-defined('ABSPATH') or die();
+defined( 'ABSPATH' ) || die();
 
 /**
- * Menu Walker 
- * 
+ * Menu Walker
  */
 require_once SITE_PATH . '/inc/theme/class-menu-walker.php';
 
 /**
- * Options 
- * 
+ * Options
  */
-if (is_user_logged_in() && is_admin()) {
-    require_once SITE_PATH . '/inc/theme/options/options.php';
+if ( is_user_logged_in() && is_admin() ) {
+	require_once SITE_PATH . '/inc/theme/options/options.php';
 
-    /**
-     * Create primary option page
-     */
-    add_action('admin_menu', __NAMESPACE__ . '\setup_theme_options');
+	/**
+	 * Create primary option page
+	 */
+	add_action( 'admin_menu', __NAMESPACE__ . '\setup_theme_options' );
 
-    /**
-     * Create option pages
-     */
-    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/analytics.php'));
-    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/contact.php'));
-    new \RationalOptionPages(include(dirname(__FILE__) . '/theme/options/pages/social-media.php'));
+	/**
+	 * Create option pages
+	 */
+	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/analytics.php' );
+	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/contact.php' );
+	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/social-media.php' );
 }
 
 /**
  * Custom Post Types
- * 
  */
 require_once SITE_PATH . '/inc/theme/custom-post-types/class-post-type.php';
 
@@ -44,29 +47,31 @@ require_once SITE_PATH . '/inc/theme/custom-post-types/class-post-type.php';
  * This allows the slugs translations to work before the translations are available,
  * and for the label translations to work if they are available.
  */
-add_action('after_setup_theme', function () {
-    Utils::build_post_types(SITE_SETTINGS['post_types'], SITE_PATH);
-});
+add_action(
+	'after_setup_theme',
+	function () {
+		Utils::build_post_types( SITE_SETTINGS['post_types'], SITE_PATH );
+	}
+);
 
 /**
  * Custom Database Tables
- * 
+ *
  * !WARNING EXPERIMENTAL FEATURE!
  */
-if (SITE_SETTINGS['database_tables']['enabled']) {
-    require_once SITE_PATH . '/inc/theme/databases/class-database.php';
-    $tables = new Database(
-        SITE_SETTINGS['database_tables']['tables']
-    );
-    $tables->init();
+if ( SITE_SETTINGS['database_tables']['enabled'] ) {
+	require_once SITE_PATH . '/inc/theme/databases/class-database.php';
+	$tables = new Database(
+		SITE_SETTINGS['database_tables']['tables']
+	);
+	$tables->init();
 }
 
 /**
  * Custom API
- * 
  */
-if (SITE_SETTINGS['api']) {
-    require_once SITE_PATH . '/inc/theme/api/class-api.php';
-    $api = new Api();
-    $api->init();
+if ( SITE_SETTINGS['api'] ) {
+	require_once SITE_PATH . '/inc/theme/api/class-api.php';
+	$api = new Api();
+	$api->init();
 }

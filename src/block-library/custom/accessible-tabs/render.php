@@ -18,5 +18,5 @@
 ?>
 
 <div class="accessible-tabs">
-    <?php echo $content; ?>
+	<?php echo $content; ?>
 </div>
