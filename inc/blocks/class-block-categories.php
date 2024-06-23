@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -24,9 +24,9 @@ class BlockCategories {
 
 	/**
 	 * Register custom block categories
-	 * @param mixed $block_categories 
-	 * @param mixed $editor_context 
-	 * @return mixed 
+	 * @param mixed $block_categories Block categories
+	 * @param mixed $editor_context Editor context
+	 * @return mixed
 	 */
 	public function register_categories( mixed $block_categories, mixed $editor_context ): mixed {
 		if ( ! empty( $editor_context->post ) ) {
@@ -98,7 +98,7 @@ class BlockCategories {
 
 	/**
 	 * Initialize class
-	 * @return void 
+	 * @return void
 	 */
 	public function init(): void {
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ), 10, 2 );

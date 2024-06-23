@@ -4,7 +4,7 @@ namespace Kotisivu\BlockTheme\Api;
 
 use Kotisivu\BlockTheme\Utils;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  *
@@ -52,8 +52,8 @@ class RouteOptions extends RouteBase implements RouteInterface {
 	/**
 	 * Get contact information
 	 *
-	 * @param \WP_REST_Request $request
-	 * @return \WP_REST_Response|\WP_Error
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
 	 */
 	public function get_contact_information( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
@@ -79,8 +79,8 @@ class RouteOptions extends RouteBase implements RouteInterface {
 	/**
 	 * Get social accounts
 	 *
-	 * @param \WP_REST_Request $request
-	 * @return \WP_REST_Response|\WP_Error
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
 	 */
 	public function get_social_accounts( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {

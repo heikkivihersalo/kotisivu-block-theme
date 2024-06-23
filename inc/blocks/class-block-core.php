@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -23,7 +23,7 @@ class BlockCore {
 
 	/**
 	 * Constructor
-	 * @return void 
+	 * @return void
 	 */
 	public function __construct( $blocks ) {
 		/**
@@ -66,7 +66,7 @@ class BlockCore {
 
 	/**
 	 * Initialize class
-	 * @return void 
+	 * @return void
 	 */
 	public function init(): void {
 		if ( ! function_exists( 'register_block_type' ) ) {

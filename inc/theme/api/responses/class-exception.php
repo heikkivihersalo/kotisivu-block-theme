@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 /**
  * Used when parameters are invalid (e.g. wrong type or spelled wrong)
  *
@@ -34,14 +34,14 @@ class ParametersInvalidException extends \Exception implements ParametersInvalid
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -77,14 +77,14 @@ class ParametersMissingException extends \Exception implements ParametersMissing
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -120,14 +120,14 @@ class ParametersEmptyException extends \Exception implements ParametersEmptyExce
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -163,14 +163,14 @@ class PaginationInvalidParametersException extends \Exception implements Paginat
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -206,14 +206,14 @@ class PaginationOutOfRangeException extends \Exception implements PaginationOutO
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -249,14 +249,14 @@ class NotFoundException extends \Exception implements NotFoundExceptionInterface
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -292,14 +292,14 @@ class AlreadyExistsException extends \Exception implements AlreadyExistsExceptio
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -335,14 +335,14 @@ class FetchFailedException extends \Exception implements FetchFailedExceptionInt
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -378,14 +378,14 @@ class CreationFailedException extends \Exception implements CreationFailedExcept
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -421,14 +421,14 @@ class UpdateFailedException extends \Exception implements UpdateFailedExceptionI
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -464,14 +464,14 @@ class DeleteFailedException extends \Exception implements DeleteFailedExceptionI
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -507,14 +507,14 @@ class DeleteFailedDependencyException extends \Exception implements DeleteFailed
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }
@@ -550,14 +550,14 @@ class NotImplementedException extends \Exception implements NotImplementedExcept
 	/**
 	 * @inheritDoc
 	 */
-	public function getType(): string {
+	public function get_type(): string {
 		return $this->error->get_type();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function getHttpStatus(): int {
+	public function get_http_status(): int {
 		return $this->error->get_http_status();
 	}
 }

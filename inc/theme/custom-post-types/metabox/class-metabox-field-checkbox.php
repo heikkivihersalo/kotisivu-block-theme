@@ -1,10 +1,4 @@
 <?php
-/**
- * 
- *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
- */
 
 namespace Kotisivu\BlockTheme;
 
@@ -14,8 +8,8 @@ defined( 'ABSPATH' ) || die();
  *
  *
  * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
-
 class CheckboxField extends MetaboxField implements MetaboxFieldInterface {
 	/**
 	 * @inheritDoc
@@ -49,7 +43,8 @@ class CheckboxField extends MetaboxField implements MetaboxFieldInterface {
 	 * @inheritDoc
 	 */
 	public function save( int $post_id, array $options = array() ): void {
-		if ( isset( $_POST[ $this->id ] ) ) {
+		// Nonce verification is done in the parent class so we can safely ignore it here.
+		if ( isset( $_POST[ $this->id ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			update_post_meta( $post_id, $this->id, '1' );
 		} else {
 			delete_post_meta( $post_id, $this->id );

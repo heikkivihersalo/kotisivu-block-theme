@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -13,9 +13,9 @@ defined( 'ABSPATH' ) || die();
 /**
  * Remove WordPress version from header
  *
- * @return string
+ * @return void
  */
-function remove_wp_version() {
+function remove_wp_version(): void {
 	if ( SITE_SETTINGS['security']['version'] ) {
 		remove_action( 'wp_head', 'wp_generator' );
 		remove_action( 'wp_head', 'wc_generator_tag' );
@@ -27,7 +27,7 @@ function remove_wp_version() {
  *
  * @return  void
  */
-function disable_xmlrpc( $scripts ) {
+function disable_xmlrpc( $scripts ): void {
 	if ( SITE_SETTINGS['security']['xmlrpc'] ) {
 		add_filter( 'xmlrpc_enabled', '__return_false' );
 	}
@@ -38,7 +38,7 @@ function disable_xmlrpc( $scripts ) {
  *
  * @return void
  */
-function disable_author_pages() {
+function disable_author_pages(): void {
 	if ( SITE_SETTINGS['security']['author-pages'] ) {
 		global $wp_query;
 
@@ -52,7 +52,7 @@ function disable_author_pages() {
 /**
  * Disable REST API user endpoints
  *
- * @param array $endpoints
+ * @param array $endpoints The current REST api endpoints
  * @return array
  */
 function disable_rest_api_user_endpoints( $endpoints ): array {
@@ -71,11 +71,11 @@ function disable_rest_api_user_endpoints( $endpoints ): array {
 /**
  * Disable REST API for non logged in users
  *
- * @param mixed $result
+ * @param mixed $result The result of the authentication check.
  * @return mixed
  * @link https://developer.wordpress.org/rest-api/using-the-rest-api/frequently-asked-questions/#require-authentication-for-all-requests
  */
-function disable_rest_api_for_non_logged_in_users( $result ) {
+function disable_rest_api_for_non_logged_in_users( $result ): mixed {
 	if ( ! SITE_SETTINGS['security']['unauthorized-rest-api'] ) {
 		return $result;
 	}
@@ -91,7 +91,7 @@ function disable_rest_api_for_non_logged_in_users( $result ) {
 	if ( ! is_user_logged_in() ) {
 		return new WP_Error(
 			'rest_not_logged_in',
-			__( 'You are not currently logged in.' ),
+			'You are not currently logged in.',
 			array( 'status' => 401 )
 		);
 	}

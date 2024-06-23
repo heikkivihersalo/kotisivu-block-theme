@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -14,12 +14,13 @@ interface MetaboxFieldInterface {
 	/**
 	 * Constructor
 	 *
-	 * @param string   $id
-	 * @param string   $label
-	 * @param \WP_Post $post
+	 * @param string   $id    ID for field
+	 * @param string   $label Label for field
+	 * @param \WP_Post $post   WP_Post object
+	 * @param array    $options Array of options for field
 	 * @return void
 	 */
-	public function __construct( string $id, string $label = '', \WP_Post $post = null );
+	public function __construct( string $id, string $label = '', \WP_Post $post = null, array $options = array() );
 
 	/**
 	 * Get id
@@ -59,8 +60,8 @@ interface MetaboxFieldInterface {
 	/**
 	 * Get field html
 	 *
-	 * @param array  $field
-	 * @param string $value
+	 * @param array  $field Data for field
+	 * @param string $value Field value
 	 * @return void
 	 */
 	public function get_html();
@@ -68,7 +69,7 @@ interface MetaboxFieldInterface {
 	/**
 	 * Sanitize field
 	 *
-	 * @param string value
+	 * @param string $value Field value
 	 * @return string
 	 */
 	public function sanitize( string $value ): string;
@@ -76,7 +77,7 @@ interface MetaboxFieldInterface {
 	/**
 	 * Save field
 	 *
-	 * @param int $post_id
+	 * @param int $post_id Post ID
 	 * @return int
 	 */
 	public function save( int $post_id, array $options = array() ): void;

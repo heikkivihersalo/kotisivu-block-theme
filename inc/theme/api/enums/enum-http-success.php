@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 require_once dirname( __DIR__ ) . '/interfaces/interface-http-response.php';
 

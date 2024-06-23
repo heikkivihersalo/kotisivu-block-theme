@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -27,7 +27,7 @@ function get_next_page(): void {
 	$post_type      = 'post';
 	$post_count     = wp_count_posts( $post_type );
 	$posts_per_page = 6;
-	$paged          = urldecode( $_POST['paged'] );
+	$paged          = isset( $_POST['paged'] ) ? urldecode( (int) $_POST['paged'] ) : 1;
 	$index          = 0;
 	$response       = array(
 		'posts'      => array(),
@@ -84,7 +84,6 @@ function get_next_page(): void {
 	/**
 	 * Return a response
 	 */
-	echo json_encode( $response );
+	echo wp_json_encode( $response );
 	exit;
-	wp_die();
 }

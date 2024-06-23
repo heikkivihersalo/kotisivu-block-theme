@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *

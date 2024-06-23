@@ -2,7 +2,7 @@
 
 namespace Kotisivu\BlockTheme\Api;
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 interface HTTP_Response_Interface {
 	public function values();

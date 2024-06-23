@@ -1,10 +1,4 @@
 <?php
-/**
- * 
- *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
- */
 
 namespace Kotisivu\BlockTheme;
 
@@ -12,9 +6,10 @@ defined( 'ABSPATH' ) || die();
 
 /**
  *
+ *
  * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
-
 class Database {
 	/**
 	 * Tables
@@ -131,7 +126,7 @@ class Database {
 	/**
 	 * Get SQL query
 	 *
-	 * @param array $schema
+	 * @param array $schema Schema
 	 * @return string
 	 */
 	public function get_schema( $schema, $prefix ): string {

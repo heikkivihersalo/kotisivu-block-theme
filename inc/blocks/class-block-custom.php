@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -22,32 +22,15 @@ class BlockCustom {
 	protected $blocks;
 
 	/**
-	 * Path
-	 */
-	protected $path;
-
-	/**
-	 * URI
-	 */
-	protected $uri;
-
-	/**
 	 * Type
 	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * Namespace
-	 * @var string
-	 */
-	protected $namespace;
-
-	/**
 	 * Constructor
-	 * @return void 
 	 */
-	public function __construct( $blocks, $type = 'custom' ) {
+	public function __construct( array $blocks, string $type = 'custom' ) {
 		/**
 		 * Get classes
 		 */
@@ -59,15 +42,13 @@ class BlockCustom {
 		 * Set attributes
 		 */
 		$this->blocks    = $blocks;
-		$this->path      = $this->get_path( $type, SITE_PATH );
 		$this->type      = $type;
-		$this->namespace = 'ksd';
 	}
 
 	/**
 	 * Get path based on type of block (custom, templates, parts)
-	 * @param string $type
-	 * @param string $path
+	 * @param string $type Type of block (custom, templates, parts)
+	 * @param string $path Site global path
 	 * @return string
 	 */
 	private function get_path( $type, $path ): string {
@@ -91,17 +72,19 @@ class BlockCustom {
 
 	/**
 	 * Register static blocks
-	 * @return void 
+	 * @return void
 	 */
 	public function register_custom_blocks(): void {
+		$path = $this->get_path( $this->type, SITE_PATH );
+
 		foreach ( $this->blocks as $block ) :
 			// Register block
-			register_block_type( $this->path . '/' . explode( '/', $block )[1] );
+			register_block_type( $path . '/' . explode( '/', $block )[1] );
 
 			// Set block translation
 			Utils::set_block_translation(
-				$this->namespace . '-' . explode( '/', $block )[1],
-				$this->path
+				'ksd' . '-' . explode( '/', $block )[1],
+				$path
 			);
 
 		endforeach;
@@ -109,7 +92,7 @@ class BlockCustom {
 
 	/**
 	 * Initialize class
-	 * @return void 
+	 * @return void
 	 */
 	public function init(): void {
 		if ( ! function_exists( 'register_block_type' ) ) {
