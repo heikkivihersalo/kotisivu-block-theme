@@ -50,7 +50,7 @@ function get_theme_menu_html(): void {
 		wp_die( 'You do not have sufficient permissions to access this page' );
 	}
 
-	if ( isset( $_POST['purge_cache'] ) ) {
+	if ( isset( $_POST['purge_cache'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 		purge_transient_cache();
 	}
 

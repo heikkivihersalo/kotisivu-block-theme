@@ -41,11 +41,11 @@ final class Utils {
 		/**
 		 * Check options for cache. If not found, load it from database
 		 */
-		$cache = wp_cache_get( 'kotisivu-block-theme' . '_' . $slug );
+		$cache = wp_cache_get( 'kotisivu-block-theme_' . $slug );
 
 		if ( false === $cache ) {
-			$cache = get_option( 'kotisivu-block-theme' . '_' . $slug );
-			wp_cache_set( 'kotisivu-block-theme' . '_' . $slug, $cache );
+			$cache = get_option( 'kotisivu-block-theme_' . $slug );
+			wp_cache_set( 'kotisivu-block-theme_' . $slug, $cache );
 		}
 
 		return $cache;

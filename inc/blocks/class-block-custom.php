@@ -83,7 +83,7 @@ class BlockCustom {
 
 			// Set block translation
 			Utils::set_block_translation(
-				'ksd' . '-' . explode( '/', $block )[1],
+				'ksd-' . explode( '/', $block )[1],
 				$path
 			);
 

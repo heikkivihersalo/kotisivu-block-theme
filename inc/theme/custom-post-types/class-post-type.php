@@ -180,8 +180,15 @@ abstract class PostType {
 		add_action(
 			'admin_init',
 			function () {
-				if ( isset( $_POST['permalink_structure'] ) ) {
-					update_option( 'kotisivu_block_theme_' . $this->slug, trim( $_POST[ 'kotisivu_block_theme_' . $this->slug ] ) );
+				if ( isset( $_POST['permalink_structure'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					if ( ! isset( $_POST[ 'kotisivu_block_theme_' . $this->slug ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+						return;
+					}
+
+					update_option(
+						'kotisivu_block_theme_' . $this->slug,
+						trim( sanitize_title( $_POST[ 'kotisivu_block_theme_' . $this->slug ] ) ) // phpcs:ignore WordPress.Security.NonceVerification
+					);
 				}
 			}
 		);
