@@ -16,6 +16,12 @@ defined( 'ABSPATH' ) || die();
 require_once __DIR__ . '/bootstrap.php';
 
 /**
+ * Get required WordPress dependencies
+ */
+require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
+require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
+
+/**
  * Set theme name, textdomain, version, path and uri
  */
 $theme = wp_get_theme();
@@ -264,7 +270,7 @@ define(
 		 * Set custom database tables (EXPERIMENTAL)
 		 */
 		'database_tables' => array(
-			'enabled' => false,
+			'enabled' => true,
 			'tables'  => array(
 				array(
 					'name'   => 'example',
@@ -277,18 +283,6 @@ define(
 							'not_null'       => true,
 							'auto_increment' => true,
 							'primary_key'    => true,
-						),
-						array(
-							'name'        => 'other_table_id',
-							'type'        => 'int',
-							'length'      => 20,
-							'unsigned'    => true,
-							'foreign_key' => array(
-								'table'     => 'other_table',
-								'column'    => 'id',
-								'on_delete' => 'restrict',
-								'on_update' => 'cascade',
-							),
 						),
 						array(
 							'name'    => 'longtext_example',
