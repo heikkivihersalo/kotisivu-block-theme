@@ -25,13 +25,21 @@ if ( ! class_exists( 'RationalOptionPages' ) ) {
 function purge_transient_cache(): void {
 	global $wpdb;
 
-	$prefix  = esc_sql( 'kotisivu-block-theme' );
-	$options = $wpdb->options;
+	/**
+	 * Get all transients that are related to Kotisivu Block Theme
+	 */
+	// phpcs:ignore -- We need to use direct query here
+	$transients = $wpdb->get_col(
+		$wpdb->prepare(
+			'SELECT option_name FROM %i WHERE option_name LIKE %s',
+			$wpdb->options, // Name of the options table
+			'_transient_timeout_kotisivu-block-theme%'
+		)
+	);
 
-	$sql = $wpdb->prepare( "SELECT option_name FROM $options WHERE option_name LIKE '%s'", esc_sql( "_transient_timeout_$prefix%" ) );
-
-	$transients = $wpdb->get_col( $sql );
-
+	/**
+	 * Delete all transients
+	 */
 	foreach ( $transients as $transient ) {
 		$key = str_replace( '_transient_timeout_', '', $transient );
 		delete_transient( $key );
