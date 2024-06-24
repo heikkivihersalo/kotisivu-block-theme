@@ -126,9 +126,10 @@ final class Utils {
 	 * Get block directories
 	 * Can be used to get all blocks that needs to be registered
 	 * @param string $path Path to block directory
+	 * @param string $type Type of block (e.g. core, custom)
 	 * @return array
 	 */
-	public static function get_block_directories( string $path = null, string $namespace ): array {
+	public static function get_block_directories( string $path = null, string $type ): array {
 		if ( null === $path ) {
 			return array();
 		}
@@ -140,11 +141,11 @@ final class Utils {
 			}
 
 			// Add block to array
-			$blocks[] = $namespace . '/' . $block;
+			$blocks[] = $type . '/' . $block;
 
 			// Check if block is core block and has child blocks
 			// E.g. core/buttons, core/list
-			if ( 'core' === $namespace ) :
+			if ( 'core' === $type ) :
 				switch ( $block ) {
 					case 'buttons':
 						$blocks[] = 'core/button';
@@ -162,29 +163,15 @@ final class Utils {
 	}
 
 	/**
-	 * Write to log
-	 * @param string $message Message to write to log
-	 * @return void
-	 * TODO: Make sure this is working
-	 */
-	public static function write_log( $message ): void {
-		if ( is_array( $message ) || is_object( $message ) ) {
-			error_log( print_r( $message, true ) );
-		} else {
-			error_log( $message );
-		}
-	}
-
-	/**
 	 * Check if string starts with another string
-	 * @param string $string String to check
-	 * @param string $start_string String to check against
+	 * @param string $str String that is checked against
+	 * @param string $str_to_check String to check
 	 * @return bool
 	 */
-	private static function starts_with( $string, $start_string ) {
-		$len = strlen( $start_string );
+	private static function starts_with( $str, $str_to_check ) {
+		$len = strlen( $str_to_check );
 
-		return ( substr( $string, 0, $len ) === $start_string );
+		return ( substr( $str, 0, $len ) === $str_to_check );
 	}
 
 	/**
@@ -260,7 +247,6 @@ final class Utils {
 							substr( $num, 6 )
 						)
 					);
-					break;
 				default:
 					return $num;
 			endswitch;
