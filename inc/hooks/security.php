@@ -27,7 +27,7 @@ function remove_wp_version(): void {
  *
  * @return  void
  */
-function disable_xmlrpc( $scripts ): void {
+function disable_xmlrpc(): void {
 	if ( SITE_SETTINGS['security']['xmlrpc'] ) {
 		add_filter( 'xmlrpc_enabled', '__return_false' );
 	}
@@ -43,8 +43,8 @@ function disable_author_pages(): void {
 		global $wp_query;
 
 		if ( is_author() ) {
-			wp_redirect( get_option( 'home' ), 301 );
-			exit;
+			wp_safe_redirect( get_option( 'home' ), 301 );
+			exit();
 		}
 	}
 }
