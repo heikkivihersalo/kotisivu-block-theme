@@ -94,7 +94,7 @@ class Blocks {
 	 * @param string $plugin Plugin
 	 * @return string
 	 */
-	public function fix_file_paths( string $url, string $path, string $plugin ): string {
+	public function fix_file_paths( string $url ): string {
 		if ( strpos( $url, SITE_PATH ) !== false ) {
 			$url = str_replace( 'wp-content/plugins' . ABSPATH, '', $url );
 		}
