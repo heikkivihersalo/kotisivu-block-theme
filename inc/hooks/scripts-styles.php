@@ -137,9 +137,10 @@ function inline_theme_color(): void {
  * @return void
  */
 function inline_sanitize_css(): void {
+	$filesystem = new \WP_Filesystem_Direct( true );
 ?>
 	<style id="ksd-sanitize-inline-css">
-		<?php echo file_get_contents( SITE_PATH . '/build/assets/sanitize.css' ); ?>
+		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/sanitize.css' ); ?>
 	</style>
 <?php
 }
@@ -150,9 +151,10 @@ function inline_sanitize_css(): void {
  * @return void
  */
 function inline_custom_css(): void {
+	$filesystem = new \WP_Filesystem_Direct( true );
 ?>
 	<style id="ksd-custom-inline-css">
-		<?php echo file_get_contents( SITE_PATH . '/build/assets/inline.css' ); ?>
+		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/inline.css' ); ?>
 	</style>
 <?php
 }
@@ -166,13 +168,15 @@ function inline_dark_mode(): void {
 	if ( ! SITE_SETTINGS['dark_mode'] ) {
 		return;
 	}
+
+	$filesystem = new \WP_Filesystem_Direct( true );
 ?>
 	<meta name="color-scheme" content="dark light">
 	<script data-no-optimize="1">
-		<?php echo file_get_contents( SITE_PATH . '/build/assets/dark-mode.js' ); ?>
+		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/dark-mode.js' ); ?>
 	</script>
 	<style id="ksd-dark-mode-inline-css">
-		<?php echo file_get_contents( SITE_PATH . '/build/assets/dark-mode.css' ); ?>
+		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/dark-mode.css' ); ?>
 	</style>
 <?php
 }
