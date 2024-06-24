@@ -42,7 +42,7 @@ function modify_default_image_sizes( mixed $sizes ): void {
 function add_custom_image_sizes( mixed $sizes ): array {
 	$custom_images = array();
 
-	foreach ( SITE_IMAGE_SIZES['customSizes'] as $image ) :
+	foreach ( SITE_SETTINGS['image_sizes']['custom'] as $image ) :
 		$custom_images[ $image['slug'] ] = $image['name'];
 	endforeach;
 
