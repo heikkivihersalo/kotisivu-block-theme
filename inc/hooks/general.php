@@ -48,10 +48,9 @@ function allow_svg_uploads( array $mimes ): array {
 /**
  * Override default excerpt length
  *
- * @param int $length Excerpt length
  * @return int
  */
-function limit_excerpt_length( int $length ): int {
+function limit_excerpt_length(): int {
 	return 20;
 }
 
