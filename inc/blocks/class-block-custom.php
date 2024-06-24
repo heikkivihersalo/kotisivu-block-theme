@@ -1,114 +1,108 @@
 <?php
+/**
+ *
+ *
+ * @package Kotisivu\BlockTheme
+ * @since 1.0.0
+ */
 
 namespace Kotisivu\BlockTheme;
 
-defined('ABSPATH') or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  *
  * @package Kotisivu\BlockTheme
  */
 class BlockCustom {
-    /**
-     * Blocks
-     * @var array
-     */
-    protected $blocks;
+	/**
+	 * Blocks
+	 * @var array
+	 */
+	protected $blocks;
 
-    /**
-     * Path
-     */
-    protected $path;
+	/**
+	 * Type
+	 * @var string
+	 */
+	protected $type;
 
-    /**
-     * URI
-     */
-    protected $uri;
+	/**
+	 * Constructor
+	 */
+	public function __construct( array $blocks, string $type = 'custom' ) {
+		/**
+		 * Get classes
+		 */
+		foreach ( glob( dirname( __DIR__ ) . '/utils/*.php' ) as $utility_class ) {
+			require_once $utility_class;
+		}
 
-    /**
-     * Type
-     * @var string
-     */
-    protected $type;
+		/**
+		 * Set attributes
+		 */
+		$this->blocks    = $blocks;
+		$this->type      = $type;
+	}
 
-    /**
-     * Namespace
-     * @var string
-     */
-    protected $namespace;
+	/**
+	 * Get path based on type of block (custom, templates, parts)
+	 * @param string $type Type of block (custom, templates, parts)
+	 * @param string $path Site global path
+	 * @return string
+	 */
+	private function get_path( $type, $path ): string {
+		switch ( $type ) {
+			case 'custom':
+				$path = $path . '/build/block-library/custom';
+				break;
+			case 'templates':
+				$path = $path . '/build/page-templates';
+				break;
+			case 'parts':
+				$path = $path . '/build/block-library/parts';
+				break;
+			default:
+				$path = $path . '/build/block-library/custom';
+				break;
+		}
 
-    /**
-     * Constructor
-     * @return void 
-     */
-    public function __construct($blocks, $type = 'custom') {
-        /**
-         * Get classes
-         */
-        foreach (glob(dirname(__DIR__) . '/utils/*.php') as $utility_class)
-            require_once $utility_class;
+		return $path;
+	}
 
-        /**
-         * Set attributes
-         */
-        $this->blocks = $blocks;
-        $this->path = $this->get_path($type, SITE_PATH);
-        $this->type = $type;
-        $this->namespace = "ksd";
-    }
+	/**
+	 * Register static blocks
+	 * @return void
+	 */
+	public function register_custom_blocks(): void {
+		$path = $this->get_path( $this->type, SITE_PATH );
 
-    /**
-     * Get path based on type of block (custom, templates, parts)
-     * @param string $type
-     * @param string $path
-     * @return string
-     */
-    private function get_path($type, $path): string {
-        switch ($type) {
-            case 'custom':
-                $path = $path . '/build/block-library/custom';
-                break;
-            case 'templates':
-                $path = $path . '/build/page-templates';
-                break;
-            case 'parts':
-                $path = $path . '/build/block-library/parts';
-                break;
-            default:
-                $path = $path . '/build/block-library/custom';
-                break;
-        }
+		foreach ( $this->blocks as $block ) :
+			// Register block
+			register_block_type( $path . '/' . explode( '/', $block )[1] );
 
-        return $path;
-    }
+			// Set block translation
+			Utils::set_block_translation(
+				'ksd-' . explode( '/', $block )[1],
+				$path
+			);
 
-    /**
-     * Register static blocks
-     * @return void 
-     */
-    public function register_custom_blocks(): void {
-        foreach ($this->blocks as $block) :
-            // Register block
-            register_block_type($this->path . '/' . explode('/', $block)[1]);
+		endforeach;
+	}
 
-            // Set block translation
-            Utils::set_block_translation(
-                $this->namespace . '-' . explode('/', $block)[1],
-                $this->path
-            );
+	/**
+	 * Initialize class
+	 * @return void
+	 */
+	public function init(): void {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+		if ( ! $this->blocks ) {
+			return;
+		}
 
-        endforeach;
-    }
-
-    /**
-     * Initialize class
-     * @return void 
-     */
-    public function init(): void {
-        if (!function_exists('register_block_type')) return;
-        if (!$this->blocks) return;
-
-        /* Register blocks */
-        add_action('init', [$this, 'register_custom_blocks']);
-    }
+		/* Register blocks */
+		add_action( 'init', array( $this, 'register_custom_blocks' ) );
+	}
 }

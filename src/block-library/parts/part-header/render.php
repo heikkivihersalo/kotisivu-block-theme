@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *
@@ -11,14 +10,16 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-$attributes = get_block_wrapper_attributes([
-    'role' => 'banner',
-    'class' => 'site-header',
-    'data-modal' => 'closed',
-]);
+$attributes = get_block_wrapper_attributes(
+	array(
+		'role'       => 'banner',
+		'class'      => 'site-header',
+		'data-modal' => 'closed',
+	)
+);
 
 ?>
-<header <?php echo wp_kses_data($attributes); ?>>
-    <?php echo do_blocks('<!-- wp:ksd/part-logo-dynamic /-->'); ?>
-    <?php echo do_blocks('<!-- wp:ksd/part-nav-header /-->'); ?>
+<header <?php echo wp_kses_data( $attributes ); ?>>
+	<?php echo do_blocks( '<!-- wp:ksd/part-logo-dynamic /-->' ); ?>
+	<?php echo do_blocks( '<!-- wp:ksd/part-nav-header /-->' ); ?>
 </header>

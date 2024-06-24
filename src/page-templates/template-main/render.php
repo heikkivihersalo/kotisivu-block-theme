@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHP file to use when rendering the block type on the server to show on the front end.
  *
@@ -12,17 +11,21 @@
  */
 
 $sanitized_attributes = wp_kses_data(
-    get_block_wrapper_attributes([
-        'id' => 'primary',
-        'class' => 'content-area',
-    ])
+	get_block_wrapper_attributes(
+		array(
+			'id'    => 'primary',
+			'class' => 'content-area',
+		)
+	)
 );
 ?>
 
-<div <?php echo $sanitized_attributes ?>>
-    <main id="main" class="site-main">
-        <?php echo do_blocks(
-            sprintf('<!-- wp:ksd/%s /-->', $attributes['templateSlug'])
-        ); ?>
-    </main>
+<div <?php echo $sanitized_attributes; ?>>
+	<main id="main" class="site-main">
+		<?php
+		echo do_blocks(
+			sprintf( '<!-- wp:ksd/%s /-->', $attributes['templateSlug'] )
+		);
+		?>
+	</main>
 </div>
