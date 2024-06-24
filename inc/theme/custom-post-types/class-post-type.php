@@ -134,7 +134,7 @@ abstract class PostType {
 			'post_type_link',
 			function ( $post_link, $post ) use ( $slug, $translations ) {
 				if ( get_post_type( $post ) === $slug && isset( $translations[ pll_get_post_language( $post->ID ) ] ) ) {
-					$post_link = str_replace( $slug, urlencode( $translations[ pll_get_post_language( $post->ID ) ] ), $post_link );
+					$post_link = str_replace( $slug, rawurlencode( $translations[ pll_get_post_language( $post->ID ) ] ), $post_link );
 				}
 
 				return $post_link;
