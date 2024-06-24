@@ -75,7 +75,9 @@ class Database {
 			/**
 			 * Check if table already exists
 			 */
-			if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) == $sql['table_name'] ) {
+			// phpcs:ignore -- We need to use direct query here
+			$table_name_to_exists = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name));
+			if ( $table_name_to_exists === $sql['table_name'] ) {
 				add_action(
 					'admin_notices',
 					function () use ( $table_name ) {
@@ -95,7 +97,9 @@ class Database {
 			/**
 			 * Check if table was created succesfully
 			 */
-			if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) == $sql['table_name'] ) {
+			// phpcs:ignore -- We need to use direct query here
+			$table_name_created = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name));
+			if ( $table_name_created === $sql['table_name'] ) {
 				add_action(
 					'admin_notices',
 					function () use ( $table_name ) {
