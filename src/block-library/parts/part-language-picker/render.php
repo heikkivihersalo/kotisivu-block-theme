@@ -16,7 +16,7 @@ if ( function_exists( 'pll_the_languages' ) ) :
 
 	add_filter(
 		'pll_the_languages',
-		function ( $output, $args ) {
+		function ( $output ) {
 			$translations = pll_the_languages( array( 'raw' => 1 ) );
 			$output       = '';
 			$output      .= '<ul class="language-picker__list" role="listbox">';
