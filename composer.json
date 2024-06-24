@@ -25,7 +25,7 @@
 	},
 	"scripts": {
 		"php:lint": "./vendor/bin/phpcs",
-		"php:lint --fix": "./vendor/bin/phpcbf"
+		"php:fix": "./vendor/bin/phpcbf"
 	},
 	"require": {
 		"jjgrainger/posttypes": "^2.2"
