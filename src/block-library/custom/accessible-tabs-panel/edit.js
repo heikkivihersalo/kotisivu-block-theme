@@ -12,7 +12,7 @@ import {
  * Internal dependencies
  */
 import Inspector from './components/Inspector';
-import ActionButtons from './Components/ActionButtons';
+import ActionButtons from './components/ActionButtons';
 
 /**
  * Styles
