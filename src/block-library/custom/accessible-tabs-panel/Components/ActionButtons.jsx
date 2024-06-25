@@ -10,7 +10,7 @@ import { useDispatch } from '@wordpress/data';
  * @param {string} props.clientId - block client id
  * @return {Object} - React component
  */
-export default function ActionButtons({ clientId }) {
+const ActionButtons = ({ clientId }) => {
 	const { selectBlock } = useDispatch('core/block-editor');
 
 	const setSelectBlock = async () => {
@@ -33,4 +33,6 @@ export default function ActionButtons({ clientId }) {
 			</button>
 		</div>
 	);
-}
+};
+
+export default ActionButtons;
