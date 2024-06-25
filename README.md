@@ -8,16 +8,7 @@ Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as 
 
 Originally theme was based on [Brad's Boilerplate](https://github.com/LearnWebCode/brads-boilerplate-wordpress/tree/main/brads-boilerplate-theme) theme but has seen a lot of changes since then so I'm not quite sure if there is anything left from that. Most latest update borrows some ideas from [Dude's Air Light](https://github.com/digitoimistodude/air-light) theme.
 
-## Todo
-
--   [ ] Add Typescript support
--   [ ] Make example blocks and experiment with interactivity api
--   [ ] Handle post type and taxonomy translations
--   [ ] Add documentation and examples for custom API endpoints
--   [ ] Add documentation and examples for custom database tables
--   [ ] Add documentation and examples for custom post types
--   [ ] Add documentation and examples for custom metaboxes
--   [ ] Add documentation and examples for Redux stores
+For most sites, theme offers everything you need including **Custom Post Types**, **Custom Fields**, **Custom Database Tables** and **Custom API Endpoints**. This effectively replaces the need for a plugins like _Advanced Custom Fields_ or _Custom Post Type UI_. Please do note that for customizability reasons, some features are only boilerplate code and might require some modifications to work properly in your context.
 
 ---
 
