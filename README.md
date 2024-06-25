@@ -6,7 +6,18 @@
 
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
-Theme uses OOP patterns wherever possible (modified to work with WordPress). WordPress really isn't OOP friendly but it cleans up the code a lot and makes it easier to maintain.
+Originally theme was based on [Brad's Boilerplate](https://github.com/LearnWebCode/brads-boilerplate-wordpress/tree/main/brads-boilerplate-theme) theme but has seen a lot of changes since then so I'm not quite sure if there is anything left from that. Most latest update borrows some ideas from [Dude's Air Light](https://github.com/digitoimistodude/air-light) theme.
+
+## Todo
+
+-   [ ] Add Typescript support
+-   [ ] Make example blocks and experiment with interactivity api
+-   [ ] Handle post type and taxonomy translations
+-   [ ] Add documentation and examples for custom API endpoints
+-   [ ] Add documentation and examples for custom database tables
+-   [ ] Add documentation and examples for custom post types
+-   [ ] Add documentation and examples for custom metaboxes
+-   [ ] Add documentation and examples for Redux stores
 
 ---
 
@@ -39,7 +50,6 @@ Theme uses OOP patterns wherever possible (modified to work with WordPress). Wor
 -   [Enqueuing scripts and styles](#enqueuing-scripts-and-styles)
 -   [Security](#security)
 -   [Admin Settings and Options](#admin-settings-and-options)
--   [Todo](#todo)
 
 ---
 
@@ -49,11 +59,11 @@ Except for few modifications, Kotisivu Block theme relies heavily on [WordPress]
 
 To start developing or customizing for example new blocks, you can get started simply by running `yarn` command on your preferred editor. Then you can build files with `yarn build` or start development session `yarn start`. While developing your site, [Local](https://localwp.com/) works really well.
 
-For basic sites, Kotisivu Theme does not require any plugins (except for forms because there is no point on developing own solutions for that). Also for simplicity I opted out from using composer or any css frameworks.
+For basic sites, Kotisivu Theme does not require any plugins (except for forms because there is no point on developing own solutions for that).
 
 Make sure that you have [Node.js](https://nodejs.org/en/) and [Yarn](https://yarnpkg.com/) installed on your computer to make any JS or CSS changes. PHP -files can be edited directly from `inc` folder.
 
-Other thing to note is that `functions.php` file is meant to be kept as clean as possible. It only loads the main classes (Theme and Blocks) and does not require any modifications. If you need to add any custom functions, it is recommended to do so by creating a new class and loading it from `inc/theme` folder. You can also add new functions or methods to existing classes if that is more suitable.
+Other thing to note is that `functions.php` file is meant to be kept as clean as possible. It only loads the main classes and site settings. All theme modifications, features and customizations should be done in separate files on `inc` -folder. Theme is organized to handle core modifications in `hooks` -folder and all features in `theme` -folder. There is also a `blocks` -folder that handles all block related classes and features.
 
 ### Get node_modules
 
@@ -97,6 +107,28 @@ To create a zip folder from theme, run `yarn zip` command. This is a quick way t
 yarn zip
 ```
 
+### Linting
+
+Linting is enabled for PHP, JS and CSS. This is a great way to keep the code clean and consistent across the project. Linting is done with ESLint, Stylelint and PHP Code Sniffer. PHP uses WordPress coding standards with few modifications to prevent it from being too strict.
+
+#### Lint JS files
+
+```console
+yarn lint:js
+```
+
+#### Lint CSS files
+
+```console
+yarn lint:css
+```
+
+#### Lint PHP files
+
+```console
+composer lint:php
+```
+
 ### General tips
 
 While developing different iterations of this theme (and native Gutenberg block building in general), I have found out several workflows that work really well. Here are some of them:
@@ -113,13 +145,6 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 6. For more complex stuff, you can use `view.js` files to build anything from an simple block to entire react app. Just remember that Poedit doesn't understand anything outside of WordPress default logic so you need to create the translations manually with `make-pot`.
 
-7. There are several different block examples that you can use as a starting point.
-
--   `example-container` is a starting point for InnerBlocks. It can be used for simple layout elements that can take advantage of Gutenberg Core blocks. Different layouts can be created with CSS and block variations.
--   `example-dynamic` is a starting point for dynamic blocks. It can be used for blocks that require server side rendering. For example, if you need to fetch data from API or database, this is the way to go. There is also a possibility to add Innerblocks if you need to support user generated content.
--   `example-view-script` is a starting point for blocks that require React. It can be used for blocks that require more complex logic or for example React apps. **You can combine view scripts with server-side-rendering and vice versa.** It is also possible to add InnerBlocks to these blocks (look example-dynamic as an example). View scripts can also be used to load vanilla JS scripts (see `site-header` or `site-dark-mode-toggle` as an example).
--   For static blocks see more explanation from [https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering](https://developer.wordpress.org/block-editor/getting-started/tutorial/#adding-static-rendering)
-
 ---
 
 ## Basic Structure
@@ -128,18 +153,15 @@ While developing different iterations of this theme (and native Gutenberg block 
 ├── .vscode // VSCode spesific config files for a faster workflow
 ├── build // Build files created from src folder
 ├── inc
-│   ├── api // Boilerplate for custom API endpoints
 │   ├── blocks // Any block related classes goes here
+│   ├── hooks // WordPress core modifications goes here
+│   ├── lib // External dependencies that doesn't support composer goes here. DO NOT add your own customizations in this folder. Use a wrapper instead to modify library behaviour.
+│   ├── theme // Any theme related features goes here (post types, options etc.)
 │   │   ├── ...
-│   ├── lib // External dependencies goes here. DO NOT add your own customizations in this folder. Use a wrapper instead.
-│   ├── theme // Any theme related classes goes here for example main files for theme cleanup, enqueues etc.
-│   │   ├── options // All options related things goes here
-│   │   ├── post-types // All post types related things goes here
-│   │   │   ├── class-metabox.php // Adds metabox support for PostTypes dependency
-│   │   ├── ...
-│   ├── utils // Utils for reusability purposes
-│   ├── blocks.php // Main blocks class. Loads all classes from blocks folder
-│   ├── theme.php // Main theme class. Loads all classes from theme folder
+│   ├── blocks.php // Handle block related modifications and hooks
+│   ├── hooks.php // Handle WordPress core modifications and hooks
+│   ├── theme.php // Handle theme features and settings
+│   ├── utils.php // Utility functions that are used across the theme
 ├── languages // WordPress main folder for translations
 ├── public // Other theme assets that are loaded on front-end and back-end (fonts and icons etc.)
 │   ├── fonts // Theme fonts. NOTE! Remember to add correct paths to theme.json
@@ -180,11 +202,13 @@ While developing different iterations of this theme (and native Gutenberg block 
 ├── .prettierignore
 ├── .prettierrc.js
 ├── .stylelintrc.json
+├── bootstrap.php
+├── composer.json
+├── composer.lock
 ├── functions.php // WordPress functions PHP. Mainly just loading the main classes (Theme and Blocks). Meant to kept as clean as possible and probably don't require any modifications
 ├── jsconfig.json // Config for build and development processes
 ├── package.json
 ├── style.css // Required by WordPress. Don't add any styles in here
-├── theme.config.php // Default config file for file building
 ├── theme.json // Block theme core config file
 ├── webpack.config.js // Default config file for file building
 ```
@@ -193,7 +217,7 @@ While developing different iterations of this theme (and native Gutenberg block 
 
 ## CSS Styles
 
-Blocks uses BEM naming convention for css classes. For more information read [https://getbem.com/introduction/](https://getbem.com/introduction/)
+Blocks uses BEM naming convention for css classes. For more information read [https://getbem.com/introduction/](https://getbem.com/introduction/).
 
 ## External Depencencies
 
@@ -388,7 +412,7 @@ Example usage:
 
 ## Theme Config
 
-Basic configurations can be done from the `theme.config.php` -file.
+Basic configurations can be done from the `functions.php` -file.
 
 ### jQuery Loading
 
@@ -566,12 +590,3 @@ Theme uses custom Tag Manager script that sets a delay for loading the container
 ### Contact and Social Platform Information
 
 Theme has a centralized place to add company's social platform and contact information. These can be dynamically fetched from database so you don't have to pass same information again and again. For example default footer and social icon blocks use dynamic data.
-
-## Todo
-
--   [ ] Add Typescript support
--   [ ] Make example blocks and experiment with interactivity api
--   [ ] Add documentation and examples for custom API endpoints
--   [ ] Add documentation and examples for custom database tables
--   [ ] Add documentation and examples for custom post types
--   [ ] Add documentation and examples for Redux stores
