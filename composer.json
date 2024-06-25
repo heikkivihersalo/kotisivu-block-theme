@@ -24,8 +24,8 @@
 		}
 	},
 	"scripts": {
-		"php:lint": "./vendor/bin/phpcs",
-		"php:fix": "./vendor/bin/phpcbf"
+		"lint:php": "./vendor/bin/phpcs",
+		"lint:fix": "./vendor/bin/phpcbf"
 	},
 	"require": {
 		"jjgrainger/posttypes": "^2.2"
