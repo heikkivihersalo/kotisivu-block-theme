@@ -10,6 +10,7 @@
 		"start": "wp-scripts start",
 		"zip": "wp-scripts plugin-zip",
 		"format": "wp-scripts format",
+		"lint": "yarn lint:css && yarn lint:js",
 		"lint:css": "wp-scripts lint-style 'src/**/*.css'",
 		"lint:js": "wp-scripts lint-js",
 		"build:prod": "yarn format && yarn lint:css && yarn lint:js && yarn build && yarn zip",
