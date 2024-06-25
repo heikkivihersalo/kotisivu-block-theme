@@ -105,7 +105,7 @@ class Example extends PostType {
 		 * - radio-group
 		 */
 		$metaboxes = array(
-			'active'  => false,
+			'active'  => true,
 			'options' => array(
 				'id'     => 'option',
 				'title'  => 'Example Metabox',
