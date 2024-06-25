@@ -1,11 +1,11 @@
-name: Lint JavaScript
+name: JavaScript
 
 on: [pull_request]
 
 jobs:
-    build:
-        name: Test JS
-        runs-on: ubuntu-20.04
+    lint-js:
+        name: Lint JS
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
