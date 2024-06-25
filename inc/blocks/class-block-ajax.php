@@ -60,31 +60,31 @@ class BlockAjax {
 		 */
 		if ( $query->have_posts() ) :
 			while ( $query->have_posts() ) :
-			$query->the_post();
-			/**
-			 * Get current post content from 'blog grid' -block folder
-			 */
-			ob_start();
-			get_template_part( 'src/blocks/dynamic/blog-grid/includes/card' );
-			$post_content = ob_get_clean();
+				$query->the_post();
+				/**
+				 * Get current post content from 'blog grid' -block folder
+				 */
+				ob_start();
+				get_template_part( 'src/blocks/dynamic/blog-grid/includes/card' );
+				$post_content = ob_get_clean();
 
-			/**
-			 * Create response
-			 */
-			$response['posts'][] = array(
-			'index'     => $index,
-			'date'      => get_the_date( get_option( 'date_format' ) ),
-			'title'     => get_the_title(),
-			'excerpt'   => get_the_excerpt(),
-			'thumbnail' => get_the_post_thumbnail_url( get_the_ID(), 'full' ),
-			'url'       => esc_url( get_permalink() ),
-			'content'   => $post_content,
-			);
+				/**
+				 * Create response
+				 */
+				$response['posts'][] = array(
+					'index'     => $index,
+					'date'      => get_the_date( get_option( 'date_format' ) ),
+					'title'     => get_the_title(),
+					'excerpt'   => get_the_excerpt(),
+					'thumbnail' => get_the_post_thumbnail_url( get_the_ID(), 'full' ),
+					'url'       => esc_url( get_permalink() ),
+					'content'   => $post_content,
+				);
 
-			/**
-			 * Update index
-			 */
-			++$index;
+				/**
+				 * Update index
+				 */
+				++$index;
 			endwhile;
 		endif;
 

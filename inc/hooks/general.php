@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || die();
  * https://markjaquith.wordpress.com/2009/12/14/excluding-your-plugin-or-theme-from-update-checks/
  *
  * @param array  $response Response
- * @param string $url 	URL
+ * @param string $url   URL
  * @return array response
  */
 function disable_theme_update( array $response, string $url ): array {

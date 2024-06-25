@@ -111,9 +111,9 @@ function inline_fontawesome(): void {
 
 			$path = $folder . $slug . '.min.css';
 			$rel  = 'stylesheet';
-?>
+			?>
 			<link rel="preload" href="<?php echo $path; ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel; ?>"'>
-	<?php
+			<?php
 		endforeach;
 	}
 }
@@ -128,7 +128,7 @@ function inline_theme_color(): void {
 	<meta name="theme-color" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
 	<meta name="msapplication-navbutton-color" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
 	<meta name="apple-mobile-web-app-status-bar-style" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
-<?php
+	<?php
 }
 
 /**
@@ -138,11 +138,11 @@ function inline_theme_color(): void {
  */
 function inline_sanitize_css(): void {
 	$filesystem = new \WP_Filesystem_Direct( true );
-?>
+	?>
 	<style id="ksd-sanitize-inline-css">
 		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/sanitize.css' ); ?>
 	</style>
-<?php
+	<?php
 }
 
 /**
@@ -152,11 +152,11 @@ function inline_sanitize_css(): void {
  */
 function inline_custom_css(): void {
 	$filesystem = new \WP_Filesystem_Direct( true );
-?>
+	?>
 	<style id="ksd-custom-inline-css">
 		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/inline.css' ); ?>
 	</style>
-<?php
+	<?php
 }
 
 /**
@@ -170,7 +170,7 @@ function inline_dark_mode(): void {
 	}
 
 	$filesystem = new \WP_Filesystem_Direct( true );
-?>
+	?>
 	<meta name="color-scheme" content="dark light">
 	<script data-no-optimize="1">
 		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/dark-mode.js' ); ?>
@@ -178,7 +178,7 @@ function inline_dark_mode(): void {
 	<style id="ksd-dark-mode-inline-css">
 		<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/dark-mode.css' ); ?>
 	</style>
-<?php
+	<?php
 }
 
 /**
@@ -192,7 +192,7 @@ function inline_tag_manager(): void {
 	if ( ! $config || ! $config['tagmanager-active'] ) {
 		return;
 	}
-?>
+	?>
 	<script>
 		var initGTMOnEvent = function(t) {
 				initGTM(), t.currentTarget.removeEventListener(t.type, initGTMOnEvent)
@@ -213,7 +213,7 @@ function inline_tag_manager(): void {
 			setTimeout(initGTM, <?php echo $config['tagmanager-timeout']; ?>)
 		}), document.addEventListener("scroll", initGTMOnEvent), document.addEventListener("mousemove", initGTMOnEvent), document.addEventListener("touchstart", initGTMOnEvent)
 	</script>
-<?php
+	<?php
 }
 
 /**

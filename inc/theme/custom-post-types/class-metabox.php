@@ -186,7 +186,7 @@ class Metabox {
 		/**
 		 * Validate save function
 		 */
-		$sanitized_nonce = isset( $_POST[ $this->nonce ] ) ? sanitize_text_field( $_POST[ $this->nonce ] ) : '';
+		$sanitized_nonce = isset( $_POST[ $this->nonce ] ) ? sanitize_text_field( wp_unslash( $_POST[ $this->nonce ] ) ) : '';
 		$nonce_action    = basename( __FILE__ );
 
 		if ( ! wp_verify_nonce( $sanitized_nonce, $nonce_action ) ) {
