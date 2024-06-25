@@ -11,8 +11,8 @@ import {
 /**
  * Internal dependencies
  */
-import Inspector from './components/Inspector.jsx';
-import ActionButtons from './components/ActionButtons.jsx';
+import Inspector from './component/Inspector.jsx';
+import ActionButtons from './component/ActionButtons.jsx';
 
 /**
  * Styles
