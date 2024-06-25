@@ -3,9 +3,9 @@ name: PHP
 on: [pull_request]
 
 jobs:
-    build:
-        name: Test PHP
-        runs-on: ubuntu-20.04
+    lint-php:
+        name: Lint PHP
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout the repository

@@ -11,7 +11,7 @@ import { PanelBody, PanelRow, TextControl } from '@wordpress/components';
  * @param {Object} props - block props
  * @return {Object} - React component
  */
-export default function Inspector(props) {
+const Inspector = (props) => {
 	const {
 		attributes: { panelId },
 		setAttributes,
@@ -38,4 +38,6 @@ export default function Inspector(props) {
 			</InspectorControls>
 		</>
 	);
-}
+};
+
+export default Inspector;
