@@ -41,8 +41,8 @@ class BlockCustom {
 		/**
 		 * Set attributes
 		 */
-		$this->blocks    = $blocks;
-		$this->type      = $type;
+		$this->blocks = $blocks;
+		$this->type   = $type;
 	}
 
 	/**

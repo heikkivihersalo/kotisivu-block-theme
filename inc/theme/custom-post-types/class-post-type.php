@@ -187,7 +187,7 @@ abstract class PostType {
 
 					update_option(
 						'kotisivu_block_theme_' . $this->slug,
-						trim( sanitize_title( $_POST[ 'kotisivu_block_theme_' . $this->slug ] ) ) // phpcs:ignore WordPress.Security.NonceVerification
+						trim( sanitize_title( wp_unslash( $_POST[ 'kotisivu_block_theme_' . $this->slug ] ) ) ) // phpcs:ignore WordPress.Security.NonceVerification
 					);
 				}
 			}

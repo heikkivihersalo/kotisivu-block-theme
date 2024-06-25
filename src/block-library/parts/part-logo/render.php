@@ -10,7 +10,7 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-$logo        = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' );
+$logo         = wp_get_attachment_image_src( get_theme_mod( 'custom_logo' ), 'full' );
 $company_name = isset( $attributes['options']['contact-company-name'] ) ? $attributes['options']['contact-company-name'] : get_bloginfo( 'name' );
 
 if ( false !== $logo ) :
