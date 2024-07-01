@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Load theme feature related files from `inc/theme` -folder
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0

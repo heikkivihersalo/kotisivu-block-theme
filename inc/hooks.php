@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Load WordPress hooks from `inc/hooks` -folder
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0

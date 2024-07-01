@@ -14,36 +14,26 @@ defined( 'ABSPATH' ) || die();
  *
  * @package Kotisivu\BlockTheme
  */
-class BlockCore {
+class BlockCore extends Block {
 	/**
-	 * Blocks
-	 * @var array
+	 * @inheritDoc
 	 */
-	protected $blocks;
+	public function get_path(): string {
+		return SITE_PATH . '/build/block-library/core';
+	}
 
 	/**
-	 * Constructor
-	 * @return void
+	 * @inheritDoc
 	 */
-	public function __construct( $blocks ) {
-		/**
-		 * Get classes
-		 */
-		foreach ( glob( dirname( __DIR__ ) . '/utils/*.php' ) as $utility_class ) {
-			require_once $utility_class;
-		}
-
-		/**
-		 * Set attributes
-		 */
-		$this->blocks = $blocks;
+	public function get_blocks(): array {
+		return $this->get_block_directories( SITE_PATH . '/src/block-library/core', 'core' );
 	}
 
 	/**
 	 * Enqueue core block modifcations
 	 * @return void
 	 */
-	public function enqueue_core_blocks(): void {
+	public function register_blocks(): void {
 		// Get assets file
 		$assets_file = require SITE_PATH . '/build/block-library/core/core.asset.php';
 
@@ -62,21 +52,5 @@ class BlockCore {
 			$assets_file['version'],
 			'all'
 		);
-	}
-
-	/**
-	 * Initialize class
-	 * @return void
-	 */
-	public function init(): void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return;
-		}
-		if ( ! $this->blocks ) {
-			return;
-		}
-
-		/* Register blocks */
-		add_action( 'init', array( $this, 'enqueue_core_blocks' ) );
 	}
 }
