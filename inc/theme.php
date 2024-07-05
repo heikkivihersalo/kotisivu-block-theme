@@ -19,19 +19,13 @@ require_once SITE_PATH . '/inc/theme/class-menu-walker.php';
  * Options
  */
 if ( is_user_logged_in() && is_admin() ) {
-	require_once SITE_PATH . '/inc/theme/options/options.php';
+	require_once SITE_PATH . '/inc/theme/options.php';
 
 	/**
 	 * Create primary option page
 	 */
 	add_action( 'admin_menu', __NAMESPACE__ . '\setup_theme_options' );
-
-	/**
-	 * Create option pages
-	 */
-	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/analytics.php' );
-	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/contact.php' );
-	new \RationalOptionPages( include __DIR__ . '/theme/options/pages/social-media.php' );
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_theme_options' );
 }
 
 /**
@@ -64,6 +58,6 @@ if ( SITE_SETTINGS['database_tables']['enabled'] ) {
  */
 if ( SITE_SETTINGS['api'] ) {
 	require_once SITE_PATH . '/inc/theme/api/class-api.php';
-	$api = new Api();
+	$api = new \Kotisivu\BlockTheme\Api\Api();
 	$api->init();
 }
