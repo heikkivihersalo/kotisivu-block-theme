@@ -1,0 +1,12 @@
+.head {
+	display: grid;
+	grid-template-columns: fit-content(100%) auto;
+	align-items: center;
+	gap: 1rem;
+
+	margin-bottom: 0.375rem;
+}
+
+.head > h3 {
+	margin: 0;
+}
