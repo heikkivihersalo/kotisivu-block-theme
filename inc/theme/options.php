@@ -74,9 +74,7 @@ function enqueue_theme_options( $hook ) {
 		'ksd-admin-index',
 		'kotisivuSettings',
 		array(
-			'nonce'  => wp_create_nonce( 'wp_rest' ), // Nonce for REST API authentication (must be used in all REST API requests)
-			'apiUrl' => esc_url_raw( rest_url( 'kotisivu-block-theme/v1/options' ) ),
-			'prefix' => 'kotisivu-options',
+			'nonce' => wp_create_nonce( 'wp_rest' ), // Nonce for REST API authentication (must be used in all REST API requests)
 		)
 	);
 }
@@ -103,39 +101,14 @@ function setup_theme_options(): void {
 	/**
 	 * Create sub menu pages
 	 */
-	add_submenu_page(
-		'kotisivu-settings-general', // Parent Slug
-		__( 'General Settings', 'kotisivu-block-theme' ), // Page Title
-		__( 'General', 'kotisivu-block-theme' ), // Menu Title
-		'manage_options', // Capability
-		'kotisivu-settings-general', // Menu Slug
-		__NAMESPACE__ . '\get_html' // Callback function
-	);
-
-	add_submenu_page(
-		'kotisivu-settings-general', // Parent Slug
-		__( 'Analytics Settings', 'kotisivu-block-theme' ), // Page Title
-		__( 'Analytics', 'kotisivu-block-theme' ), // Menu Title
-		'manage_options', // Capability
-		'kotisivu-settings-analytics', // Menu Slug
-		__NAMESPACE__ . '\get_html' // Callback function
-	);
-
-	add_submenu_page(
-		'kotisivu-settings-general', // Parent Slug
-		__( 'Contact Settings', 'kotisivu-block-theme' ), // Page Title
-		__( 'Contact', 'kotisivu-block-theme' ), // Menu Title
-		'manage_options', // Capability
-		'kotisivu-settings-contact', // Menu Slug
-		__NAMESPACE__ . '\get_html' // Callback function
-	);
-
-	add_submenu_page(
-		'kotisivu-settings-general', // Parent Slug
-		__( 'Social Media Settings', 'kotisivu-block-theme' ), // Page Title
-		__( 'Social Media', 'kotisivu-block-theme' ), // Menu Title
-		'manage_options', // Capability
-		'kotisivu-settings-social-media', // Menu Slug
-		__NAMESPACE__ . '\get_html' // Callback function
-	);
+	foreach ( SITE_SETTINGS['setting_pages'] as $page ) {
+		add_submenu_page(
+			'kotisivu-settings-general', // Parent Slug
+			$page['name'], // Page Title
+			$page['name'], // Menu Title
+			'manage_options', // Capability
+			'kotisivu-settings-' . $page['slug'], // Menu Slug
+			__NAMESPACE__ . '\get_html' // Callback function
+		);
+	}
 }
