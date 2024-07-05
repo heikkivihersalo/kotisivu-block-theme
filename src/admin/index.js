@@ -17,34 +17,39 @@ import './style.css';
 
 /**
  * Main component
- *
+ * @return {JSX.Element} Main component
  */
 const Main = () => {
+	/**
+	 * Get current page
+	 * - WordPress adds page query parameter to the URL when navigating between pages (e.g. page=kotisivu-settings-general)
+	 * - We can use this to determine which page to display
+	 */
+	let currentPage = window.location.search.split(
+		'page=kotisivu-settings-'
+	)[1];
+
+	/**
+	 * Admin pages
+	 * - To make things easier, we can create an object with the page name as the key and the component as the value
+	 * - This way we can load pages dynamically based on the query parameter
+	 */
 	const PAGES = {
-		'kotisivu-settings-general': {
-			name: __('General', 'kotisivu-block-theme'),
-			component: <General />,
-		},
-		'kotisivu-settings-analytics': {
-			name: __('Analytics', 'kotisivu-block-theme'),
-			component: <Analytics />,
-		},
-		'kotisivu-settings-contact': {
-			name: __('Contact Information', 'kotisivu-block-theme'),
-			component: <Contact />,
-		},
-		'kotisivu-settings-social-media': {
-			name: __('Social Media Accounts', 'kotisivu-block-theme'),
-			component: <Social />,
-		},
+		general: <General />,
+		analytics: <Analytics />,
+		contact: <Contact />,
+		'social-media': <Social />,
 	};
 
+	/**
+	 * Render the component
+	 */
 	return (
 		<>
 			<header>
 				<h1>{__('Theme Settings', 'kotisivu-block-theme')}</h1>
 			</header>
-			{PAGES[window.location.search.split('page=')[1]].component}
+			{PAGES[currentPage]}
 		</>
 	);
 };
