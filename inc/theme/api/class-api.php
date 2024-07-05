@@ -32,8 +32,9 @@ class Api {
 			require_once $route;
 		}
 
-		// foreach (glob(dirname(__FILE__) . '/utils/*.php') as $utils)
-		// require_once $utils;
+		foreach ( glob( __DIR__ . '/utils/*.php' ) as $utils ) {
+			require_once $utils;
+		}
 	}
 
 	/**
