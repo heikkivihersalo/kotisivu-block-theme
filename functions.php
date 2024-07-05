@@ -207,6 +207,32 @@ define(
 		),
 
 		/**
+		 * Set site admin setting pages
+		 * - These are custom admin pages that are used to set site related settings
+		 * - Pages listed below will be generated dynamically based on the values
+		 * - To populate the page, you need to create new React page in the src/admin/pages folder
+		 * - If needed remember to create new REST Endpoints to the inc/theme/api folder
+		 */
+		'setting_pages'   => array(
+			array(
+				'slug' => 'general',
+				'name' => __( 'General', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'analytics',
+				'name' => __( 'Analytics', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'contact',
+				'name' => __( 'Contact', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'social-media',
+				'name' => __( 'Social Media', 'kotisivu-block-theme' ),
+			),
+		),
+
+		/**
 		 * Set custom image sizes
 		 * - This is a list of custom image sizes that are used in the theme
 		 * - You can add as many as you want but remember that each size will be generated for each image
