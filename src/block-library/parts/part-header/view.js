@@ -107,7 +107,11 @@ function handleToggleClicks(site, dialog, menu, attributes) {
 function handleLinkClicks(site, dialog, menu, attributes) {
 	menu.links.forEach((link) => {
 		link.addEventListener('click', (e) => {
-			if (site.header.getAttribute(attributes.modal) === 'open') {
+			const href = link.children[0].href;
+			if (
+				href.includes('#') &&
+				site.header.getAttribute(attributes.modal) === 'open'
+			) {
 				closeMobileMenu(e, site, dialog.toggleOpen, attributes);
 			}
 		});
