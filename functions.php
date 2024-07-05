@@ -313,7 +313,7 @@ define(
 		/**
 		 * Enable custom API
 		 */
-		'api'             => false,
+		'api'             => true,
 	)
 );
 
