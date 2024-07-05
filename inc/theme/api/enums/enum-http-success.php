@@ -17,6 +17,7 @@ enum HTTP_Success implements HTTP_Response_Interface {
 	case CREATED_SUCCESSFULLY;
 	case UPDATED_SUCCESSFULLY;
 	case DELETED_SUCCESSFULLY;
+	case CLEARED_SUCCESSFULLY;
 
 	public function values(): array {
 		return match ( $this ) {
@@ -31,7 +32,7 @@ enum HTTP_Success implements HTTP_Response_Interface {
 				'http_status' => 201,
 			),
 			self::UPDATED_SUCCESSFULLY => array(
-				'message'     => __( 'Resourceupdated successfully.', 'kotisivu-block-theme' ),
+				'message'     => __( 'Resource updated successfully.', 'kotisivu-block-theme' ),
 				'type'        => 'update_success',
 				'http_status' => 200,
 			),
@@ -39,7 +40,12 @@ enum HTTP_Success implements HTTP_Response_Interface {
 				'message'     => __( 'Resource deleted successfully.', 'kotisivu-block-theme' ),
 				'type'        => 'delete_success',
 				'http_status' => 200,
-			)
+			),
+			self::CLEARED_SUCCESSFULLY => array(
+				'message'     => __( 'Resource cleared successfully.', 'kotisivu-block-theme' ),
+				'type'        => 'clear_success',
+				'http_status' => 200,
+			),
 		};
 	}
 
@@ -48,7 +54,8 @@ enum HTTP_Success implements HTTP_Response_Interface {
 			self::FETCHED_SUCCESSFULLY,
 			self::CREATED_SUCCESSFULLY,
 			self::UPDATED_SUCCESSFULLY,
-			self::DELETED_SUCCESSFULLY => $this->values()['type'],
+			self::DELETED_SUCCESSFULLY,
+			self::CLEARED_SUCCESSFULLY => $this->values()['type'],
 		};
 	}
 
@@ -57,7 +64,8 @@ enum HTTP_Success implements HTTP_Response_Interface {
 			self::FETCHED_SUCCESSFULLY,
 			self::CREATED_SUCCESSFULLY,
 			self::UPDATED_SUCCESSFULLY,
-			self::DELETED_SUCCESSFULLY => $this->values()['message'],
+			self::DELETED_SUCCESSFULLY,
+			self::CLEARED_SUCCESSFULLY => $this->values()['message'],
 		};
 	}
 
@@ -66,7 +74,8 @@ enum HTTP_Success implements HTTP_Response_Interface {
 			self::FETCHED_SUCCESSFULLY,
 			self::CREATED_SUCCESSFULLY,
 			self::UPDATED_SUCCESSFULLY,
-			self::DELETED_SUCCESSFULLY => $this->values()['http_status'],
+			self::DELETED_SUCCESSFULLY,
+			self::CLEARED_SUCCESSFULLY => $this->values()['http_status'],
 		};
 	}
 
@@ -83,7 +92,8 @@ enum HTTP_Success implements HTTP_Response_Interface {
 			),
 			self::CREATED_SUCCESSFULLY,
 			self::UPDATED_SUCCESSFULLY,
-			self::DELETED_SUCCESSFULLY => array(
+			self::DELETED_SUCCESSFULLY,
+			self::CLEARED_SUCCESSFULLY => array(
 				'status'  => 'success',
 				'type'    => $this->values()['type'],
 				'message' => $message

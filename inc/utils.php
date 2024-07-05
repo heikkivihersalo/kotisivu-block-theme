@@ -163,6 +163,37 @@ final class Utils {
 	}
 
 	/**
+	 * Purge transient cache
+	 *
+	 * @return void
+	 */
+	public static function purge_transient_cache(): void {
+		global $wpdb;
+
+		/**
+		 * Get all transients that are related to Kotisivu Block Theme
+		 */
+		// phpcs:ignore -- We need to use direct query here
+		$transients = $wpdb->get_col(
+			$wpdb->prepare(
+				'SELECT option_name FROM %i WHERE option_name LIKE %s',
+				$wpdb->options, // Name of the options table
+				'_transient_timeout_kotisivu-block-theme%'
+			)
+		);
+
+		/**
+		 * Delete all transients
+		 */
+		foreach ( $transients as $transient ) {
+			$key = str_replace( '_transient_timeout_', '', $transient );
+			delete_transient( $key );
+		}
+
+		wp_cache_flush();
+	}
+
+	/**
 	 * Check if string starts with another string
 	 * @param string $str String that is checked against
 	 * @param string $str_to_check String to check

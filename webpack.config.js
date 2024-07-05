@@ -35,6 +35,12 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
  */
 const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
 
+/**
+ * Import custom Webpack packages
+ *
+ */
+const CopyPlugin = require('copy-webpack-plugin');
+
 /*--------------------------------------------------------------
   2.0 Helper functions
 --------------------------------------------------------------*/
@@ -83,6 +89,7 @@ module.exports = {
 		),
 		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
 		'assets/store': path.resolve(__dirname, 'src/stores/index.js'),
+		'admin/index': path.resolve(__dirname, 'src/admin/index.js'),
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', '.json', '.css'],
@@ -92,6 +99,18 @@ module.exports = {
 			'@icons': path.resolve(__dirname, 'src', 'icons'),
 			'@stores': path.resolve(__dirname, 'src', 'stores'),
 			'@utils': path.resolve(__dirname, 'src', 'utils'),
+			'@admin': path.resolve(__dirname, 'src', 'admin', 'components'),
 		},
 	},
+	plugins: [
+		...defaultConfig.plugins,
+		new CopyPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, 'src', 'admin', 'render.php'),
+					to: path.resolve(__dirname, 'build', 'admin', 'render.php'),
+				},
+			],
+		}),
+	],
 };
