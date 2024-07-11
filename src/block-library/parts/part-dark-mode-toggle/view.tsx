@@ -13,7 +13,7 @@ domReady(function () {
 	 * Switch to dark mode
 	 * @return {void}
 	 */
-	const switchToDarkMode = () => {
+	const switchToDarkMode = (): void => {
 		html.setAttribute('color-scheme', 'dark');
 		schemeToggleButtons.forEach((btn) => {
 			btn.setAttribute(
@@ -27,7 +27,7 @@ domReady(function () {
 	 * Switch to light mode
 	 * @return {void}
 	 */
-	const switchToLightMode = () => {
+	const switchToLightMode = (): void => {
 		html.setAttribute('color-scheme', 'light');
 		schemeToggleButtons.forEach((btn) => {
 			btn.setAttribute(
@@ -42,7 +42,7 @@ domReady(function () {
 	 * Cookie age is set to 30 days
 	 * @return {void}
 	 */
-	const setSchemeCookie = () => {
+	const setSchemeCookie = (): void => {
 		document.cookie =
 			'color-scheme = ' +
 			html.getAttribute('color-scheme') +
@@ -54,7 +54,7 @@ domReady(function () {
 	 * Write to dataLayer
 	 * @return {void}
 	 */
-	const writeToDataLayer = () => {
+	const writeToDataLayer = (): void => {
 		window.dataLayer = window.dataLayer || [];
 		window.dataLayer.push({
 			event: 'button_click',

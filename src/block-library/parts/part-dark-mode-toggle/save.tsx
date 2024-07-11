@@ -2,6 +2,6 @@
  * Block save function
  * @return {null} Null
  */
-export default function Save() {
+export default function Save(): null {
 	return null;
 }
