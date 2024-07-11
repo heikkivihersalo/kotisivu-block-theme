@@ -7,26 +7,30 @@ import ServerSideRender from '@wordpress/server-side-render';
 /**
  * Internal dependencies
  */
-import Inspector from './components/Inspector';
 import './editor.css';
 
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Object} props.attributes Block attributes
+ * @param {string} props.className Block class name
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
-	const blockProps = useBlockProps({
-		className: 'site-logo-editor-wrapper',
-	});
+export default function Edit({
+	attributes,
+	className,
+}: {
+	attributes: Record<string, any>;
+	className: string;
+}): JSX.Element {
+	const blockProps = useBlockProps();
 
 	return (
 		<div {...blockProps}>
-			<Inspector {...props} />
 			<ServerSideRender
 				block="ksd/part-logo-dynamic"
-				attributes={props.attributes}
-				className={props.className}
+				attributes={attributes}
+				className={className}
 			/>
 		</div>
 	);
