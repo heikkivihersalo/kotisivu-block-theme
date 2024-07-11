@@ -3,7 +3,6 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
-import Inspector from './components/Inspector';
 
 /**
  * Internal dependencies
@@ -11,18 +10,23 @@ import Inspector from './components/Inspector';
 import './editor.css';
 
 /**
+ * Types and interfaces
+ */
+interface EditProps {
+	attributes: Record<string, any>;
+	className: string;
+}
+
+/**
  * Block edit function
- * @param {Object} props Properties
+ * @param {EditProps} props Properties
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
-	const blockProps = useBlockProps({
-		className: 'site-logo-editor-wrapper',
-	});
+export default function Edit(props: EditProps): JSX.Element {
+	const blockProps = useBlockProps();
 
 	return (
 		<div {...blockProps}>
-			<Inspector {...props} />
 			<ServerSideRender
 				block="ksd/part-logo"
 				attributes={props.attributes}
