@@ -97,6 +97,7 @@ kotisivu-block-theme.zip
 /wp-content/uploads/
 
 # Log files
+coverage-ts
 
 # htaccess
 /.htaccess
