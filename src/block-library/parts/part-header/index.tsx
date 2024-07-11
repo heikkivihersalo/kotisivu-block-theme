@@ -14,25 +14,40 @@ import save from './save';
 import './style.css';
 
 /**
+ * Block metadata
+ */
+const { name, title, category, attributes } = metadata;
+
+/**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
-registerBlockType(metadata.name, {
+registerBlockType(name, {
 	/**
-	 * @see ./edit.js
+	 * @see ./block.json
+	 */
+	title,
+	/**
+	 * @see ./block.json
+	 */
+	category,
+	/**
+	 * @see ./block.json
+	 */
+	attributes,
+	/**
+	 * @see ./edit.tsx
 	 */
 	edit,
 	/**
-	 * @see ./save.js
+	 * @see ./save.tsx
 	 */
 	save,
 	/**
 	 * Sets alignment.
-	 *
-	 * @return {{'data-align': *}} Edit wrapper props
 	 */
-	getEditWrapperProps() {
+	getEditWrapperProps(): { 'data-align': string } {
 		return {
 			'data-align': 'full',
 		};
