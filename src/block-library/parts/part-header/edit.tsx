@@ -12,7 +12,7 @@ import './editor.css';
  * Block edit function
  * @return {JSX.Element} React component
  */
-export default function Edit() {
+export default function Edit(): JSX.Element {
 	const blockProps = useBlockProps();
 
 	return (
