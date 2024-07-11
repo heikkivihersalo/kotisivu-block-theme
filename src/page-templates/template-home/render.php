@@ -27,7 +27,7 @@ wp_add_inline_script(
 	sprintf(
 		'const %s = %s',
 		'AJAX',
-		wp_wp_json_encode(
+		wp_json_encode(
 			array(
 				'url'   => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'ajax-nonce' ),
