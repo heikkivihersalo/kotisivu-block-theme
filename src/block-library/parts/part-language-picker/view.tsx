@@ -3,22 +3,22 @@ import domReady from '@wordpress/dom-ready';
 domReady(function () {
 	const LANG_PICKER_DROPDOWN = document.getElementsByClassName(
 		'language-picker__dropdown'
-	)[0];
+	)[0] as HTMLElement;
 	const LANG_PICKER_BUTTON = document.getElementsByClassName(
 		'language-picker__button'
-	)[0];
+	)[0] as HTMLElement;
 
 	/**
 	 * Add listener for opening country picker
 	 * @return {void}
 	 */
-	function handleCountryPickerClicks() {
+	function handleCountryPickerClicks(): void {
 		if (!LANG_PICKER_BUTTON) return;
 
-		document.addEventListener('click', (e) => {
+		document.addEventListener('click', (e: MouseEvent) => {
 			if (
-				!LANG_PICKER_DROPDOWN.contains(e.target) &&
-				!LANG_PICKER_BUTTON.contains(e.target)
+				!LANG_PICKER_DROPDOWN.contains(e.target as HTMLElement) &&
+				!LANG_PICKER_BUTTON.contains(e.target as HTMLElement)
 			) {
 				LANG_PICKER_BUTTON.setAttribute('aria-expanded', 'false');
 				LANG_PICKER_DROPDOWN.setAttribute('data-open', 'false');
@@ -43,15 +43,15 @@ domReady(function () {
 	 * Handle country picker keyboard events
 	 * @return {void}
 	 */
-	function handleCountryPickerKeyboard() {
-		LANG_PICKER_BUTTON.addEventListener('keydown', (e) => {
+	function handleCountryPickerKeyboard(): void {
+		LANG_PICKER_BUTTON.addEventListener('keydown', (e: KeyboardEvent) => {
 			if (e.key === 'Enter') {
 				e.preventDefault();
 				LANG_PICKER_BUTTON.click();
 			}
 		});
 
-		LANG_PICKER_BUTTON.addEventListener('keyup', (e) => {
+		LANG_PICKER_BUTTON.addEventListener('keyup', (e: KeyboardEvent) => {
 			if (e.key === 'Escape') {
 				LANG_PICKER_BUTTON.setAttribute('aria-expanded', 'false');
 			}
