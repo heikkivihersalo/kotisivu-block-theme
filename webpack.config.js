@@ -92,7 +92,7 @@ module.exports = {
 		'admin/index': path.resolve(__dirname, 'src/admin/index.js'),
 	},
 	resolve: {
-		extensions: ['.js', '.jsx', '.json', '.css'],
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
 		alias: {
 			'@components': path.resolve(__dirname, 'src', 'components'),
 			'@hooks': path.resolve(__dirname, 'src', 'hooks'),

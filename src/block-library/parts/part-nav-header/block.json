@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "ksd/part-nav-header",
 	"title": "Part | Nav Header",
 	"category": "theme",
@@ -17,6 +17,5 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"render": "file:./render.php",
-	"viewScript": "file:./view.js",
 	"attributes": {}
 }
