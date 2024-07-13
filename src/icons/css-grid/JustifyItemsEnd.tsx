@@ -5,7 +5,7 @@ import type { SvgIcon } from '@icons';
  * @param {SvgIcon} props Icon properties
  * @param {string} props.className Class name
  * @param {string} props.fill Fill color
- * @return {JSX.Element}
+ * @return {JSX.Element} SVG icon
  */
 function JustifyItemsEnd({ className, fill }: SvgIcon): JSX.Element {
 	return (
