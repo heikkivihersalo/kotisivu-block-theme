@@ -1,5 +1,5 @@
-export * from './contact/Email.jsx';
-export * from './contact/Phone.jsx';
+export * from './contact/Email.tsx';
+export * from './contact/Phone.tsx';
 export * from './css-grid/AlignContentCenter.tsx';
 export * from './css-grid/AlignContentSpaceAround.tsx';
 export * from './css-grid/AlignContentSpaceBetween.tsx';
