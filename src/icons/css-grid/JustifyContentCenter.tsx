@@ -2,7 +2,9 @@ import type { SvgIcon } from '@icons';
 
 /**
  * Icon for justify content center
- * @param {SVGProps<SVGSVGElement>} props
+ * @param {SvgIcon} props Icon properties
+ * @param {string} props.className Class name
+ * @param {string} props.fill Fill color
  * @return {JSX.Element}
  */
 function JustifyContentCenter({ className, fill }: SvgIcon): JSX.Element {

@@ -2,7 +2,9 @@ import type { SvgIcon } from '@icons';
 
 /**
  * Icon for justify items start
- * @param {SVGProps<SVGSVGElement>} props
+ * @param {SvgIcon} props Icon properties
+ * @param {string} props.className Class name
+ * @param {string} props.fill Fill color
  * @return {JSX.Element}
  */
 function JustifyItemsStart({ className, fill }: SvgIcon): JSX.Element {
