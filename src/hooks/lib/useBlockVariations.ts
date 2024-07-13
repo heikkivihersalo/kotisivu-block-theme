@@ -4,14 +4,16 @@
 import { store as blocksStore } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 
+import type { BlockVariation } from '@hooks';
+
 /**
  * Get block variations
  * @param {string} blockName
  * @return {Array} blockVariations
  */
-function useBlockVariations(blockName) {
+function useBlockVariations(blockName: string): BlockVariation[] {
 	return useSelect(
-		(select) => {
+		(select: any) => {
 			const { getBlockVariations } = select(blocksStore);
 			return getBlockVariations(blockName, 'block');
 		},
