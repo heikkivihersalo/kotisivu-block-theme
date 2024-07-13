@@ -9,7 +9,7 @@ function cleanSpaces(str) {
 
 /**
  * Add modifier to DOM element
- * @param {Object}  props          Current block properties
+ * @param {Function} setAttributes Function to set attributes
  * @param {string}  attributeKey   Block attribute key
  * @param {boolean} attributeValue Block attribute value
  * @param {string}  modifier       String (html class) you want to add to DOM element
