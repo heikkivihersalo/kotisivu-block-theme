@@ -7,8 +7,8 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inspector';
-import Inspector from './components/Inspector.jsx';
+import { InnerBlocksAppender } from '@components/inner-blocks';
+import Inspector from './components/Inspector.tsx';
 import { getBlockStyles } from '@utils';
 import './editor.css';
 
