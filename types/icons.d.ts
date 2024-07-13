@@ -8,6 +8,9 @@ declare module '@icons' {
 
 	export type { SvgIcon };
 
+	const Email: ComponentType<SvgIcon>;
+	const Phone: ComponentType<SvgIcon>;
+
 	const AlignContentCenter: ComponentType<SvgIcon>;
 	const AlignContentSpaceAround: ComponentType<SvgIcon>;
 	const AlignContentSpaceBetween: ComponentType<SvgIcon>;
@@ -34,6 +37,8 @@ declare module '@icons' {
 	const WidthNarrow: ComponentType<SvgIcon>;
 
 	export {
+		Email,
+		Phone,
 		AlignContentCenter,
 		AlignContentSpaceAround,
 		AlignContentSpaceBetween,
