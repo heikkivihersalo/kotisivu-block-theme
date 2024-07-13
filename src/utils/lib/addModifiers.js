@@ -17,7 +17,7 @@ function cleanSpaces(str) {
  * @param {Object}  elementVal     Current class value
  */
 function addModifiers(
-	props,
+	setAttributes,
 	attributeKey,
 	attributeValue,
 	modifier,
@@ -26,7 +26,7 @@ function addModifiers(
 ) {
 	let arr = elementVal.split(' ');
 
-	props.setAttributes({ [attributeKey]: !attributeValue });
+	setAttributes({ [attributeKey]: !attributeValue });
 
 	if (attributeValue) {
 		arr = arr.filter((item) => item !== modifier);
@@ -34,7 +34,7 @@ function addModifiers(
 		arr.push(modifier);
 	}
 
-	props.setAttributes({ [elementName]: cleanSpaces(arr.join(' ')) });
+	setAttributes({ [elementName]: cleanSpaces(arr.join(' ')) });
 }
 
 export { addModifiers };
