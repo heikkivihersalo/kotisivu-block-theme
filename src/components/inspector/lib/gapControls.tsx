@@ -7,6 +7,12 @@ import { PanelBody, RangeControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
+import {
+	convertValueToSpacingVariable,
+	convertVariableToValue,
+} from '../utils';
+import { GapControlsProps } from '@components/inspector';
+
 const marks = [
 	{
 		value: 1,
@@ -43,32 +49,6 @@ const marks = [
 ];
 
 /**
- * Convert value to WordPress variable
- * @param {string} val Spacing value
- * @return {string} WordPress spacing variable formatted string
- */
-function convertValueToVariable(val) {
-	if (!val) return undefined;
-	return (
-		'var(--wp--preset--spacing--' +
-		marks.find((mark) => mark.value === val)?.label +
-		')'
-	);
-}
-
-/**
- * Convert variable to value
- * @param {string} variable WordPress spacing variable formatted string
- * @return {string} Spacing value
- */
-function convertVariableToValue(variable) {
-	if (!variable) return undefined;
-	return marks.find(
-		(mark) => mark.label === parseInt(variable.split('--')[4]).toString()
-	)?.value;
-}
-
-/**
  * Controllers for gap
  *
  * @param {Object} props Block props
@@ -76,16 +56,24 @@ function convertVariableToValue(variable) {
  * @param {Function} props.setAttributes Gutenberg setAttributes function
  * @return {JSX.Element} InspectorControl Element
  */
-const GapControls = ({ attributes, setAttributes }) => {
+const GapControls = ({
+	attributes,
+	setAttributes,
+}: GapControlsProps): JSX.Element => {
 	/**
 	 * Change block alignment attribute value to new one
-	 * @param  {Object} currentStyles block current styles
+	 * @param  {Record<string, any>} currentStyles block current styles
 	 * @param  {string} key style key to change (e.g. 'gap')
-	 * @param  {string} newValue new value to set
+	 * @param  {number} value new value to set
 	 * @return {void}
 	 */
-	const onStyleChange = (currentStyles, key, newValue) => {
-		newValue = convertValueToVariable(newValue);
+	const onStyleChange = (
+		currentStyles: Record<string, any>,
+		key: string,
+		value: number | undefined
+	): void => {
+		const newValue = convertValueToSpacingVariable(value, marks);
+
 		if (newValue === currentStyles?.[key]) {
 			setAttributes({
 				style: {
@@ -113,7 +101,10 @@ const GapControls = ({ attributes, setAttributes }) => {
 						allowReset
 						withInputField={false}
 						label={__('Gap', 'kotisivu-block-theme')}
-						value={convertVariableToValue(attributes.style?.gap)}
+						value={convertVariableToValue(
+							attributes.style?.gap,
+							marks
+						)}
 						marks={marks}
 						onChange={(newValue) =>
 							onStyleChange(attributes.style, 'gap', newValue)
