@@ -14,14 +14,12 @@ import {
 	GapControls,
 } from '@components/inspector';
 
-import { BlockEditProps } from '@wordpress/blocks';
-
 /**
  * Inspector controls
- * @param {Object} props Component properties
+ * @param {Record<string, any>} props Component properties
  * @return {JSX.Element} Inspector controls
  */
-const Inspector = (props: BlockEditProps<any>): JSX.Element => {
+const Inspector = (props: Record<string, any>): JSX.Element => {
 	const { attributes, setAttributes } = props;
 	return (
 		<>
