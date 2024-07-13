@@ -7,7 +7,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inspector';
+import { InnerBlocksAppender } from '@components/inner-blocks';
 import { VariationPicker } from '@components/variations';
 import metadata from './block.json';
 import './editor.css';

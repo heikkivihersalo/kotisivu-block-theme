@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { BackgroundColorControl } from '@components/inspector';
+import { BackgroundColorControls } from '@components/inspector';
 
 /**
  * Inspector controls
@@ -37,7 +37,7 @@ const Inspector = (props) => {
 	return (
 		<>
 			<InspectorControls group="styles">
-				<BackgroundColorControl {...props} />
+				<BackgroundColorControls {...props} />
 			</InspectorControls>
 			<InspectorControls>
 				<PanelBody

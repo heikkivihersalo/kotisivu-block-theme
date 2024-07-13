@@ -7,11 +7,11 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inspector';
+import { InnerBlocksAppender } from '@components/inner-blocks';
 import { VariationPicker } from '@components/variations';
 import { getBlockStyles, getIsReversedClass } from '@utils';
 
-import Inspector from './components/Inspector.jsx';
+import Inspector from './components/Inspector';
 
 import metadata from './block.json';
 import './editor.css';

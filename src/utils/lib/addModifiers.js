@@ -9,7 +9,7 @@ function cleanSpaces(str) {
 
 /**
  * Add modifier to DOM element
- * @param {Object}  props          Current block properties
+ * @param {Function} setAttributes Function to set attributes
  * @param {string}  attributeKey   Block attribute key
  * @param {boolean} attributeValue Block attribute value
  * @param {string}  modifier       String (html class) you want to add to DOM element
@@ -17,7 +17,7 @@ function cleanSpaces(str) {
  * @param {Object}  elementVal     Current class value
  */
 function addModifiers(
-	props,
+	setAttributes,
 	attributeKey,
 	attributeValue,
 	modifier,
@@ -26,7 +26,7 @@ function addModifiers(
 ) {
 	let arr = elementVal.split(' ');
 
-	props.setAttributes({ [attributeKey]: !attributeValue });
+	setAttributes({ [attributeKey]: !attributeValue });
 
 	if (attributeValue) {
 		arr = arr.filter((item) => item !== modifier);
@@ -34,7 +34,7 @@ function addModifiers(
 		arr.push(modifier);
 	}
 
-	props.setAttributes({ [elementName]: cleanSpaces(arr.join(' ')) });
+	setAttributes({ [elementName]: cleanSpaces(arr.join(' ')) });
 }
 
 export { addModifiers };

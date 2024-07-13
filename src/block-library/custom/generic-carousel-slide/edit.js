@@ -6,7 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inspector';
+import { InnerBlocksAppender } from '@components/inner-blocks';
 import './editor.css';
 
 /**
