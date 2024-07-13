@@ -13,30 +13,43 @@ import {
 /**
  * Internal dependencies
  */
+import { WidthControlsProps } from '@components/inspector';
 import { WidthFull, WidthContent, WidthNarrow } from '@icons';
+
+const width = {
+	full: 'var(--wp--custom--wide-size)',
+	content: 'var(--wp--custom--content-size)',
+	narrow: 'var(--wp--custom--narrow-size)',
+} as const;
 
 /**
  * Controllers for block width
- * @param {Object} props Component props
- * @param {Object} props.attributes Gutenberg block attributes
+ * Props style must be defined in block attributes
+ * @param {WidthControlsProps} props Component props
+ * @param {Object} props.style Block style
  * @param {Function} props.setAttributes Gutenberg setAttributes function
  * @return {JSX.Element} InspectorControl Element
  */
-const WidthControls = ({ attributes, setAttributes }) => {
-	const FULL_WIDTH = 'var(--wp--custom--wide-size)';
-	const CONTENT_WIDTH = 'var(--wp--custom--content-size)';
-	const NARROW_WIDTH = 'var(--wp--custom--narrow-size)';
-
-	/** @typedef {'width' | 'height'} SizeKey */
-	/** @typedef {'var(--wp--custom--wide-size)' | 'var(--wp--custom--content-size)' | 'var(--wp--custom--narrow-size)' | '100%'} SizeValue */
+const WidthControls = ({
+	style,
+	setAttributes,
+}: WidthControlsProps): JSX.Element => {
 	/**
 	 * Change block alignment attribute value to new one
-	 * @param {Object} currentStyles block current styles
+	 * @param {Record<string, any>} currentStyles block current styles
 	 * @param {SizeKey} key aligment style key
 	 * @param {SizeValue} newValue new aligment value based on selected key
 	 * @return {void}
 	 */
-	const onStyleChange = (currentStyles, key, newValue) => {
+	const onStyleChange = (
+		currentStyles: Record<string, string>,
+		key: 'width' | 'height',
+		newValue:
+			| 'var(--wp--custom--wide-size)'
+			| 'var(--wp--custom--content-size)'
+			| 'var(--wp--custom--narrow-size)'
+			| '100%'
+	): void => {
 		if (newValue === currentStyles?.[key]) {
 			setAttributes({
 				style: {
@@ -67,53 +80,35 @@ const WidthControls = ({ attributes, setAttributes }) => {
 									color: 'var(--wp--preset--color--black)',
 								}}
 							>
-								{attributes.style?.width}
+								{style?.width}
 							</span>
 						</p>
 						<ButtonGroup>
 							<Button
 								label="Set width as full"
-								showTooltip="true"
+								showTooltip={true}
 								icon={<WidthFull />}
-								isPressed={
-									attributes.style?.width === FULL_WIDTH
-								}
+								isPressed={style?.width === width.full}
 								onClick={() =>
-									onStyleChange(
-										attributes.style,
-										'width',
-										FULL_WIDTH
-									)
+									onStyleChange(style, 'width', width.full)
 								}
 							/>
 							<Button
 								label="Set width as content"
-								showTooltip="true"
+								showTooltip={true}
 								icon={<WidthContent />}
-								isPressed={
-									attributes.style?.width === CONTENT_WIDTH
-								}
+								isPressed={style?.width === width.content}
 								onClick={() =>
-									onStyleChange(
-										attributes.style,
-										'width',
-										CONTENT_WIDTH
-									)
+									onStyleChange(style, 'width', width.content)
 								}
 							/>
 							<Button
 								label="Set width as narrow"
-								showTooltip="true"
+								showTooltip={true}
 								icon={<WidthNarrow />}
-								isPressed={
-									attributes.style?.width === NARROW_WIDTH
-								}
+								isPressed={style?.width === width.narrow}
 								onClick={() =>
-									onStyleChange(
-										attributes.style,
-										'width',
-										NARROW_WIDTH
-									)
+									onStyleChange(style, 'width', width.narrow)
 								}
 							/>
 						</ButtonGroup>
@@ -122,10 +117,8 @@ const WidthControls = ({ attributes, setAttributes }) => {
 				<PanelRow>
 					<ToggleControl
 						label="Set as 100% height"
-						checked={attributes.style?.height === '100%'}
-						onChange={() =>
-							onStyleChange(attributes.style, 'height', '100%')
-						}
+						checked={style?.height === '100%'}
+						onChange={() => onStyleChange(style, 'height', '100%')}
 					/>
 				</PanelRow>
 			</PanelBody>

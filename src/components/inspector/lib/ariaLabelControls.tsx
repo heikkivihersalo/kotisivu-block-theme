@@ -1,18 +1,29 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 import { TextControl, PanelBody } from '@wordpress/components';
 
 /**
+ * Internal dependencies
+ */
+import type { AriaLabelControlsProps } from '@components/inspector';
+
+/**
  * Controllers for aria-label and aria-labelledby
  * Props ariaLabel and ariaLabelledBy must be defined in block attributes
- *
- * @param {Object} props Block props
+ * @param {AriaLabelControlsProps} props Component props
  * @param {Object} props.attributes Gutenberg block attributes
  * @param {Function} props.setAttributes Gutenberg setAttributes function
  * @return {JSX.Element} InspectorControl Element
  */
-const AriaLabelControls = ({ attributes, setAttributes }) => {
-	const { ariaLabel, ariaLabelledBy } = attributes;
-
+const AriaLabelControls = ({
+	attributes,
+	setAttributes,
+}: AriaLabelControlsProps): JSX.Element => {
+	/**
+	 * Render
+	 */
 	return (
 		<>
 			<PanelBody
@@ -25,7 +36,7 @@ const AriaLabelControls = ({ attributes, setAttributes }) => {
 						'Identifies the element (or elements) that labels the element it is applied to. Use the same ID as in the section heading.',
 						'kotisivu-block-theme'
 					)}
-					value={ariaLabelledBy}
+					value={attributes.ariaLabelledBy}
 					onChange={(newAriaLabelledBy) =>
 						setAttributes({ ariaLabelledBy: newAriaLabelledBy })
 					}
@@ -36,7 +47,7 @@ const AriaLabelControls = ({ attributes, setAttributes }) => {
 						'If section heading doesn`t match correct description, you can use aria-label. IMPORTANT! Use aria-labelledby by default.',
 						'kotisivu-block-theme'
 					)}
-					value={ariaLabel}
+					value={attributes.ariaLabel}
 					onChange={(newAriaLabel) =>
 						setAttributes({ ariaLabel: newAriaLabel })
 					}
