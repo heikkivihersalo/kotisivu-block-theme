@@ -37,30 +37,59 @@ import {
 } from '@icons';
 
 /**
+ * Types
+ */
+type GridAttribute =
+	| 'alignContent'
+	| 'alignItems'
+	| 'justifyContent'
+	| 'justifyItems';
+
+type AlignContent =
+	| 'center'
+	| 'space-between'
+	| 'space-around'
+	| 'space-evenly'
+	| 'stretch';
+
+type AlignItems = 'center' | 'start' | 'end' | 'stretch' | 'baseline';
+
+type JustifyContent =
+	| 'center'
+	| 'start'
+	| 'end'
+	| 'space-between'
+	| 'space-around'
+	| 'space-evenly';
+
+type JustifyItems = 'center' | 'start' | 'end' | 'stretch';
+
+import { GridAlignControlsProps } from '@components/inspector';
+
+/**
  * Controllers for grid aligment
- *
- * @param {Object} props Block props
+ * Props style must be defined in block attributes
+ * @param {GridAlignControlsProps} props Component props
+ * @param {Object} props.attributes Gutenberg block attributes
+ * @param {Function} props.setAttributes Gutenberg setAttributes function
  * @return {JSX.Element} InspectorControl Element
  */
-const GridAlignControls = (props) => {
-	const {
-		attributes: { style, isReversed },
-		setAttributes,
-	} = props;
-
-	/** @typedef {'alignContent' | 'alignItems' | 'justifyContent' | 'justifyItems'} GridAttribute */
-	/** @typedef {'center' | 'space-between' | 'space-around' | 'space-evenly' | 'stretch'} AlignContent */
-	/** @typedef {'center' | 'start' | 'end' | 'stretch' | 'baseline'} AlignItems */
-	/** @typedef {'center' | 'start' | 'end' | 'space-between' | 'space-around' | 'space-evenly'} JustifyContent */
-	/** @typedef {'center' | 'start' | 'end' | 'stretch'} JustifyItems */
+const GridAlignControls = ({
+	attributes,
+	setAttributes,
+}: GridAlignControlsProps): JSX.Element => {
 	/**
 	 * Change block alignment attribute value to new one
-	 * @param {Object} currentStyles block current styles
+	 * @param {Record<string, any>} currentStyles block current styles
 	 * @param {GridAttribute} key aligment style key
 	 * @param {AlignContent | AlignItems | JustifyContent | JustifyItems} newValue new aligment value based on selected key
 	 * @return {void}
 	 */
-	const onStyleChange = (currentStyles, key, newValue) => {
+	const onStyleChange = (
+		currentStyles: Record<string, any>,
+		key: GridAttribute,
+		newValue: AlignContent | AlignItems | JustifyContent | JustifyItems
+	) => {
 		if (newValue === currentStyles?.[key]) {
 			setAttributes({
 				style: {
@@ -94,18 +123,21 @@ const GridAlignControls = (props) => {
 							<p>
 								align-content:{' '}
 								<span style={currentStyleCSS}>
-									{style?.alignContent}
+									{attributes.style?.alignContent}
 								</span>
 							</p>
 							<ButtonGroup>
 								<Button
 									label="Add align-content: center"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignContentCenter />}
-									isPressed={style?.alignContent === 'center'}
+									isPressed={
+										attributes.style?.alignContent ===
+										'center'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignContent',
 											'center'
 										)
@@ -113,14 +145,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-content: space-between"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignContentSpaceBetween />}
 									isPressed={
-										style?.alignContent === 'space-between'
+										attributes.style?.alignContent ===
+										'space-between'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignContent',
 											'space-between'
 										)
@@ -128,14 +161,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-content: space-around"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignContentSpaceAround />}
 									isPressed={
-										style?.alignContent === 'space-around'
+										attributes.style?.alignContent ===
+										'space-around'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignContent',
 											'space-around'
 										)
@@ -143,14 +177,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-content: space-evenly"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignContentSpaceEvenly />}
 									isPressed={
-										style?.alignContent === 'space-evenly'
+										attributes.style?.alignContent ===
+										'space-evenly'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignContent',
 											'space-evenly'
 										)
@@ -158,14 +193,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-content: stretch"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignContentStretch />}
 									isPressed={
-										style?.alignContent === 'stretch'
+										attributes.style?.alignContent ===
+										'stretch'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignContent',
 											'stretch'
 										)
@@ -177,20 +213,21 @@ const GridAlignControls = (props) => {
 							<p>
 								justify-content:{' '}
 								<span style={currentStyleCSS}>
-									{style?.justifyContent}
+									{attributes.style?.justifyContent}
 								</span>
 							</p>
 							<ButtonGroup>
 								<Button
 									label="Add justify-content: center"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentCenter />}
 									isPressed={
-										style?.justifyContent === 'center'
+										attributes.style?.justifyContent ===
+										'center'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'center'
 										)
@@ -198,14 +235,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-content: start"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentStart />}
 									isPressed={
-										style?.justifyContent === 'start'
+										attributes.style?.justifyContent ===
+										'start'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'start'
 										)
@@ -213,12 +251,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-content: end"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentEnd />}
-									isPressed={style?.justifyContent === 'end'}
+									isPressed={
+										attributes.style?.justifyContent ===
+										'end'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'end'
 										)
@@ -226,15 +267,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-content: space-between"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentSpaceBetween />}
 									isPressed={
-										style?.justifyContent ===
+										attributes.style?.justifyContent ===
 										'space-between'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'space-between'
 										)
@@ -242,14 +283,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-content: space-around"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentSpaceAround />}
 									isPressed={
-										style?.justifyContent === 'space-around'
+										attributes.style?.justifyContent ===
+										'space-around'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'space-around'
 										)
@@ -257,14 +299,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-content: space-evenly"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyContentSpaceEvenly />}
 									isPressed={
-										style?.justifyContent === 'space-evenly'
+										attributes.style?.justifyContent ===
+										'space-evenly'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyContent',
 											'space-evenly'
 										)
@@ -276,18 +319,21 @@ const GridAlignControls = (props) => {
 							<p>
 								align-items:{' '}
 								<span style={currentStyleCSS}>
-									{style?.alignItems}
+									{attributes.style?.alignItems}
 								</span>
 							</p>
 							<ButtonGroup>
 								<Button
 									label="Add align-items: center"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignItemsCenter />}
-									isPressed={style?.alignItems === 'center'}
+									isPressed={
+										attributes.style?.alignItems ===
+										'center'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignItems',
 											'center'
 										)
@@ -295,12 +341,14 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-items: start"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignItemsStart />}
-									isPressed={style?.alignItems === 'start'}
+									isPressed={
+										attributes.style?.alignItems === 'start'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignItems',
 											'start'
 										)
@@ -308,12 +356,14 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-items: end"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignItemsEnd />}
-									isPressed={style?.alignItems === 'end'}
+									isPressed={
+										attributes.style?.alignItems === 'end'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignItems',
 											'end'
 										)
@@ -321,12 +371,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-items: stretch"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignItemsStretch />}
-									isPressed={style?.alignItems === 'stretch'}
+									isPressed={
+										attributes.style?.alignItems ===
+										'stretch'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignItems',
 											'stretch'
 										)
@@ -334,12 +387,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add align-items: baseline"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<AlignItemsBaseline />}
-									isPressed={style?.alignItems === 'baseline'}
+									isPressed={
+										attributes.style?.alignItems ===
+										'baseline'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'alignItems',
 											'baseline'
 										)
@@ -351,18 +407,21 @@ const GridAlignControls = (props) => {
 							<p>
 								justify-items:{' '}
 								<span style={currentStyleCSS}>
-									{style?.justifyItems}
+									{attributes.style?.justifyItems}
 								</span>
 							</p>
 							<ButtonGroup>
 								<Button
 									label="Add justify-items: center"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyItemsCenter />}
-									isPressed={style?.justifyItems === 'center'}
+									isPressed={
+										attributes.style?.justifyItems ===
+										'center'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyItems',
 											'center'
 										)
@@ -370,12 +429,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-items: start"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyItemsStart />}
-									isPressed={style?.justifyItems === 'start'}
+									isPressed={
+										attributes.style?.justifyItems ===
+										'start'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyItems',
 											'start'
 										)
@@ -383,12 +445,14 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-items: end"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyItemsEnd />}
-									isPressed={style?.justifyItems === 'end'}
+									isPressed={
+										attributes.style?.justifyItems === 'end'
+									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyItems',
 											'end'
 										)
@@ -396,14 +460,15 @@ const GridAlignControls = (props) => {
 								/>
 								<Button
 									label="Add justify-items: stretch"
-									showTooltip="true"
+									showTooltip={true}
 									icon={<JustifyItemsStretch />}
 									isPressed={
-										style?.justifyItems === 'stretch'
+										attributes.style?.justifyItems ===
+										'stretch'
 									}
 									onClick={() =>
 										onStyleChange(
-											style,
+											attributes.style,
 											'justifyItems',
 											'stretch'
 										)
@@ -416,9 +481,11 @@ const GridAlignControls = (props) => {
 				<PanelRow>
 					<ToggleControl
 						label={__('Reverse Order', 'kotisivu-block-theme')}
-						checked={isReversed}
+						checked={attributes.isReversed}
 						onChange={() =>
-							setAttributes({ isReversed: !isReversed })
+							setAttributes({
+								isReversed: !attributes.isReversed,
+							})
 						}
 					/>
 				</PanelRow>
