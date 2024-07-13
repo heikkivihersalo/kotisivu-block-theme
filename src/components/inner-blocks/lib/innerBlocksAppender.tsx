@@ -5,7 +5,6 @@ import {
 	InnerBlocks,
 	useInnerBlocksProps,
 	store as blockEditorStore,
-	EditorTemplateLock,
 } from '@wordpress/block-editor';
 
 /**
@@ -15,16 +14,15 @@ import {
 	Merged,
 	Reserved,
 } from '@wordpress/block-editor/components/use-block-props';
-import { TemplateArray } from '@wordpress/blocks';
 import { useSelect } from '@wordpress/data';
 
 /**
  * InnerBlocksAppender Component
- * @param {string} clientId Block client ID
- * @param {TemplateArray} template Block template
- * @param {EditorTemplateLock} templateLock Block template lock
- * @param {string[]} allowedBlocks Allowed blocks
- * @param {object} blockProps Block properties
+ * @param {Object} props Component properties
+ * @param {string} props.clientId Block client ID
+ * @param {Array<any>} props.template Template
+ * @param {string[]} props.allowedBlocks Allowed blocks
+ * @param {Object} props.blockProps Block properties
  * @return {Omit<{}, 'ref'> & Merged & Reserved & {children: React.ReactElement}} InnerBlocksAppender Component
  */
 const InnerBlocksAppender = ({
@@ -35,10 +33,10 @@ const InnerBlocksAppender = ({
 	blockProps,
 }: {
 	clientId: string;
-	template: TemplateArray | undefined;
-	templateLock: EditorTemplateLock | undefined;
+	template: Array<any> | undefined;
+	templateLock: false | 'contentOnly' | 'all' | 'insert' | undefined;
 	allowedBlocks: string[];
-	blockProps: object;
+	blockProps: Object;
 }): Omit<{}, 'ref'> &
 	Merged &
 	Reserved & {

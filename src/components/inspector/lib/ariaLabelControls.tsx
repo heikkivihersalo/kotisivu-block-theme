@@ -37,8 +37,14 @@ const AriaLabelControls = ({
 						'kotisivu-block-theme'
 					)}
 					value={attributes.ariaLabelledBy}
-					onChange={(newAriaLabelledBy) =>
-						setAttributes({ ariaLabelledBy: newAriaLabelledBy })
+					onChange={
+						/**
+						 * Change aria labelled by
+						 * @param {string} value New aria labelled by
+						 * @return {void}
+						 */
+						(value: string): void =>
+							setAttributes({ ariaLabelledBy: value })
 					}
 				/>
 				<TextControl
@@ -48,8 +54,14 @@ const AriaLabelControls = ({
 						'kotisivu-block-theme'
 					)}
 					value={attributes.ariaLabel}
-					onChange={(newAriaLabel) =>
-						setAttributes({ ariaLabel: newAriaLabel })
+					onChange={
+						/**
+						 * Change aria label
+						 * @param {string} value New aria label
+						 * @return {void}
+						 */
+						(value: string): void =>
+							setAttributes({ ariaLabel: value })
 					}
 				/>
 			</PanelBody>
