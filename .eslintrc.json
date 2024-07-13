@@ -37,5 +37,13 @@
 		],
 		"jsdoc/check-line-alignment": 0,
 		"import/no-unresolved": 0 // Turn off "Unable to resolve path to module ..." error
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"jsdoc/no-undefined-types": 0
+			}
+		}
+	]
 }
