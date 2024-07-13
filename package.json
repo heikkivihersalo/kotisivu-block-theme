@@ -19,11 +19,11 @@
 		"make-json": "wp i18n make-json languages/ --no-purge"
 	},
 	"dependencies": {
-		"@types/react": "^18.3.3",
-		"@types/react-dom": "^18.3.0",
 		"classnames": "^2.5.1"
 	},
 	"devDependencies": {
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
 		"@types/wordpress__block-editor": "^11.5.15",
 		"@types/wordpress__blocks": "^12.5.14",
 		"@wordpress/block-editor": "^12.19.1",
