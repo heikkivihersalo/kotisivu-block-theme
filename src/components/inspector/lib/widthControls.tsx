@@ -22,6 +22,13 @@ const width = {
 	narrow: 'var(--wp--custom--narrow-size)',
 } as const;
 
+type SizeKey = 'width' | 'height';
+type SizeValue =
+	| 'var(--wp--custom--wide-size)'
+	| 'var(--wp--custom--content-size)'
+	| 'var(--wp--custom--narrow-size)'
+	| '100%';
+
 /**
  * Controllers for block width
  * Props style must be defined in block attributes
