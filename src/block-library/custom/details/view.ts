@@ -11,10 +11,11 @@ domReady(() => {
 
 	details.forEach((detail) => {
 		detail.addEventListener('toggle', (event) => {
-			if (event.target.open) {
-				event.target.setAttribute('aria-expanded', 'true');
-			} else {
-				event.target.setAttribute('aria-expanded', 'false');
+			const target = event.target as HTMLDetailsElement;
+			if (target && target.open) {
+				target.setAttribute('aria-expanded', 'true');
+			} else if (target) {
+				target.setAttribute('aria-expanded', 'false');
 			}
 		});
 	});

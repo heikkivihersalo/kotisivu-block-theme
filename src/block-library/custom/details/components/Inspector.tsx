@@ -17,27 +17,33 @@ import { BackgroundColorControls } from '@components/inspector';
 
 /**
  * Inspector controls
- * @param {Object} props Component properties
+ * @param {Record<string, any>} props Component properties
  * @return {JSX.Element} Inspector controls
  */
-const Inspector = (props) => {
+const Inspector = ({
+	attributes,
+	setAttributes,
+}: {
+	attributes: Record<string, any>;
+	setAttributes: (newAttributes: Record<string, any>) => void;
+}): JSX.Element => {
 	const {
-		attributes: {
-			useSchema,
-			containerSchemaProp,
-			containerSchemaType,
-			headingSchemaProp,
-			contentSchemaProp,
-			contentSchemaType,
-			isOpenOnLoad,
-		},
-		setAttributes,
-	} = props;
+		useSchema,
+		containerSchemaProp,
+		containerSchemaType,
+		headingSchemaProp,
+		contentSchemaProp,
+		contentSchemaType,
+		isOpenOnLoad,
+	} = attributes;
 
 	return (
 		<>
 			<InspectorControls group="styles">
-				<BackgroundColorControls {...props} />
+				<BackgroundColorControls
+					style={attributes.style}
+					setAttributes={setAttributes}
+				/>
 			</InspectorControls>
 			<InspectorControls>
 				<PanelBody

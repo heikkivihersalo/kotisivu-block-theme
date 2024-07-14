@@ -16,32 +16,33 @@ import { getBlockStyles } from '@utils';
 /**
  * Block save function
  * @param {Object} props Properties
- * @return {JSX.Element} Block markup
+ * @param {Record<string, any>} props.attributes Block attributes
+ * @return {JSX.Element} Block innerBlocks markup
  */
-export default function Save(props) {
+export default function Save({ attributes }: Record<string, any>): JSX.Element {
 	const {
-		attributes: {
-			blockClass,
-			style,
-			headingContent,
-			useSchema,
-			containerSchemaProp,
-			containerSchemaType,
-			headingSchemaProp,
-			contentSchemaProp,
-			contentSchemaType,
-			isOpenOnLoad,
-		},
-	} = props;
+		blockClass,
+		style,
+		headingContent,
+		useSchema,
+		containerSchemaProp,
+		containerSchemaType,
+		headingSchemaProp,
+		contentSchemaProp,
+		contentSchemaType,
+		isOpenOnLoad,
+	} = attributes;
 
 	const { children, ...innerBlocksProps } = useInnerBlocksProps.save(
 		useBlockProps.save({
 			className: classnames(blockClass),
-			style: getBlockStyles({ style }),
+			style: getBlockStyles(style),
 			open: isOpenOnLoad,
 			'aria-expanded': isOpenOnLoad ? 'true' : 'false',
 		})
 	);
+
+	const childrenNode = children as React.ReactNode;
 
 	if (useSchema) {
 		return (
@@ -65,7 +66,7 @@ export default function Save(props) {
 					itemProp={contentSchemaProp}
 					itemType={contentSchemaType}
 				>
-					<div itemProp="text">{children}</div>
+					<div itemProp="text">{childrenNode}</div>
 				</div>
 			</details>
 		);
@@ -78,7 +79,7 @@ export default function Save(props) {
 				value={headingContent}
 			/>
 			<div className="details__wrapper details__wrapper--text">
-				{children}
+				{childrenNode}
 			</div>
 		</details>
 	);
