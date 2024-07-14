@@ -19,8 +19,13 @@ import {
  * @param {Record<string, any>} props Component properties
  * @return {JSX.Element} Inspector controls
  */
-const Inspector = (props: Record<string, any>): JSX.Element => {
-	const { attributes, setAttributes } = props;
+const Inspector = ({
+	attributes,
+	setAttributes,
+}: {
+	attributes: Record<string, any>;
+	setAttributes: (newAttributes: Record<string, any>) => void;
+}): JSX.Element => {
 	return (
 		<>
 			<InspectorControls>

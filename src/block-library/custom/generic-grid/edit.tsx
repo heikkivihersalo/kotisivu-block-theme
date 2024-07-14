@@ -14,20 +14,22 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Record<string, any>} props.attributes Block attributes
+ * @param {Function} props.setAttributes Block attributes setter
+ * @param {string} props.clientId Block client ID
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
-	const {
-		attributes: {
-			blockClass,
-			template,
-			templateLock,
-			allowedBlocks,
-			variationName,
-		},
-		clientId,
-		setAttributes,
-	} = props;
+export default function Edit({
+	attributes,
+	setAttributes,
+	clientId,
+}: {
+	attributes: Record<string, any>;
+	setAttributes: (newAttributes: Record<string, any>) => void;
+	clientId: string;
+}): JSX.Element {
+	const { blockClass, template, templateLock, allowedBlocks, variationName } =
+		attributes;
 
 	/**
 	 * Set block props

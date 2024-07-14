@@ -1,9 +1,10 @@
 import { __ } from '@wordpress/i18n';
+import type { Variation } from '@components/variations';
 
-const variations = [
+const variations: Array<Variation> = [
 	{
-		name: 'wrapper-100',
-		title: __('Wrapper | 100', 'kotisivu-theme-blocks'),
+		name: 'section-100',
+		title: __('Section | 100', 'kotisivu-theme-blocks'),
 		icon: 'button',
 		scope: 'block',
 		innerBlocks: [],
@@ -13,8 +14,8 @@ const variations = [
 		},
 	},
 	{
-		name: 'wrapper-50-50',
-		title: __('Wrapper | 50-50', 'kotisivu-theme-blocks'),
+		name: 'section-50-50',
+		title: __('Section | 50-50', 'kotisivu-theme-blocks'),
 		icon: 'button',
 		scope: 'block',
 		innerBlocks: [['ksd/wrapper'], ['ksd/wrapper']],
@@ -24,8 +25,8 @@ const variations = [
 		},
 	},
 	{
-		name: 'wrapper-33-33-33',
-		title: __('Wrapper | 33-33-33', 'kotisivu-theme-blocks'),
+		name: 'section-33-33-33',
+		title: __('Section | 33-33-33', 'kotisivu-theme-blocks'),
 		icon: 'button',
 		scope: 'block',
 		innerBlocks: [['ksd/wrapper'], ['ksd/wrapper'], ['ksd/wrapper']],
@@ -35,8 +36,8 @@ const variations = [
 		},
 	},
 	{
-		name: 'wrapper-25-25-25-25',
-		title: __('Wrapper | 25-25-25-25', 'kotisivu-theme-blocks'),
+		name: 'section-25-25-25-25',
+		title: __('Section | 25-25-25-25', 'kotisivu-theme-blocks'),
 		icon: 'button',
 		scope: 'block',
 		innerBlocks: [

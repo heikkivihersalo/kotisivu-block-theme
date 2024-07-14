@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
+import type { Variation } from '@components/variations';
 
-const variations = [
+const variations: Array<Variation> = [
 	{
 		name: 'hero-stacked',
 		title: __('Hero | Stacked', 'kotisivu-theme-blocks'),
