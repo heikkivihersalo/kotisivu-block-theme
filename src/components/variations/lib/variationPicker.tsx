@@ -10,6 +10,7 @@ import { __experimentalBlockVariationPicker as BlockVariationPicker } from '@wor
 /**
  * Internal dependencies
  */
+import type { VariationPickerProps } from '@components/variations';
 import { BlockAttributes, useBlockVariations } from '@hooks';
 import type { BlockVariation } from '@hooks';
 
@@ -38,10 +39,7 @@ function getAttributesFromProps(variation: BlockVariation): BlockAttributes {
 function VariationPicker({
 	blockName,
 	setAttributes,
-}: {
-	blockName: string;
-	setAttributes: Function;
-}): JSX.Element | null {
+}: VariationPickerProps): JSX.Element | null {
 	const blockVariations = useBlockVariations(blockName);
 
 	if (!blockVariations) {
