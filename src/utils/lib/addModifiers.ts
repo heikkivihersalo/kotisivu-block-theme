@@ -3,7 +3,7 @@
  * @param {string} str
  * @return {string} cleaned string
  */
-function cleanSpaces(str) {
+function cleanSpaces(str: string): string {
 	return str.replace(/\s+/g, ' ').trim();
 }
 
@@ -17,13 +17,13 @@ function cleanSpaces(str) {
  * @param {Object}  elementVal     Current class value
  */
 function addModifiers(
-	setAttributes,
-	attributeKey,
-	attributeValue,
-	modifier,
-	elementName,
-	elementVal
-) {
+	setAttributes: Function,
+	attributeKey: string,
+	attributeValue: boolean,
+	modifier: string,
+	elementName: string,
+	elementVal: string
+): void {
 	let arr = elementVal.split(' ');
 
 	setAttributes({ [attributeKey]: !attributeValue });
