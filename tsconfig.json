@@ -5,6 +5,7 @@
 		"strict": true,
 		"noImplicitReturns": true,
 		"noImplicitAny": true,
+		"noEmit": true,
 		"module": "es6",
 		"moduleResolution": "node",
 		"target": "es5",
@@ -12,10 +13,12 @@
 		"resolveJsonModule": true,
 		"jsx": "react-jsx",
 		"allowSyntheticDefaultImports": true,
+		"allowImportingTsExtensions": true,
 		"paths": {
 			"react": ["./node_modules/@types/react"]
-		}
+		},
+		"lib": ["ES2021.String"]
 	},
 	"typeRoots": ["node_modules/@types", "./types"],
-	"include": ["./src/**/*", "./types/**/*", "./types.d.ts"]
+	"include": ["./src/**/*", "./types/**/*"]
 }
