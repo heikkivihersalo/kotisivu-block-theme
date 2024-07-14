@@ -11,35 +11,43 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';
-import variations from './variations';
+import variations from './variations.ts';
 import './style.css';
+
+/**
+ * Block metadata
+ */
+const { name, title, category, attributes } = metadata;
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
-registerBlockType(metadata.name, {
+// @ts-ignore Let's ignore the error for now. We don't need to add block attributes two times.
+registerBlockType(name, {
 	/**
-	 * @see ./edit.js
+	 * @see ./block.json
+	 */
+	title,
+	/**
+	 * @see ./block.json
+	 */
+	category,
+	/**
+	 * @see ./block.json
+	 */
+	attributes,
+	/**
+	 * @see ./edit.tsx
 	 */
 	edit,
 	/**
-	 * @see ./save.js
+	 * @see ./save.tsx
 	 */
 	save,
 	/**
-	 * @see ./variations.js
+	 * @see variations.js
 	 */
 	variations,
-	/**
-	 * Sets alignment.
-	 *
-	 * @return {{'data-align': *}} Edit wrapper props
-	 */
-	getEditWrapperProps() {
-		return {
-			'data-align': 'full',
-		};
-	},
 });

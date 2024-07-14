@@ -12,18 +12,17 @@ import { getBlockStyles, getIsReversedClass } from '@utils';
 /**
  * Block save function
  * @param {Object} props Properties
+ * @param {Record<string, any>} props.attributes Block attributes
  * @return {JSX.Element} Block innerBlocks markup
  */
-export default function Save(props) {
-	const {
-		attributes: { blockClass, style, isReversed },
-	} = props;
+export default function Save({ attributes }: Record<string, any>): JSX.Element {
+	const { blockClass, style, isReversed } = attributes;
 
 	const innerBlocksProps = useInnerBlocksProps.save(
 		useBlockProps.save({
 			className: classnames(blockClass, getIsReversedClass(isReversed)),
-			style: getBlockStyles({ style }),
-		})
+			style: getBlockStyles(style),
+		} as Record<string, any>)
 	);
 
 	return <div {...innerBlocksProps} />;

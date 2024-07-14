@@ -12,14 +12,21 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Record<string, any>} props.attributes Block attributes
+ * @param {Record<string, any>} props.context Block context
+ * @param {string} props.clientId Block client ID
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
-	const {
-		attributes: { blockClass, templateLock },
-		context,
-		clientId,
-	} = props;
+export default function Edit({
+	attributes,
+	context,
+	clientId,
+}: {
+	attributes: Record<string, any>;
+	context: Record<string, any>;
+	clientId: string;
+}): JSX.Element {
+	const { blockClass, templateLock } = attributes;
 
 	/**
 	 * Set block props
@@ -30,7 +37,7 @@ export default function Edit(props) {
 
 	const innerBlocksProps = InnerBlocksAppender({
 		clientId,
-		template: context['generic-carousel/template'],
+		template: context['generic-grid/template'],
 		templateLock,
 		blockProps,
 	});
@@ -40,7 +47,7 @@ export default function Edit(props) {
 	 */
 	return (
 		<>
-			<li {...innerBlocksProps} />
+			<div {...innerBlocksProps} />
 		</>
 	);
 }

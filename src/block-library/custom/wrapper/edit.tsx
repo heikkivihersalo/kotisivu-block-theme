@@ -9,7 +9,7 @@ import classnames from 'classnames';
  */
 import { InnerBlocksAppender } from '@components/inner-blocks';
 import { VariationPicker } from '@components/variations';
-import { getBlockStyles } from '@utils';
+import { getBlockStyles, getIsReversedClass } from '@utils';
 
 import Inspector from './components/Inspector';
 
@@ -19,31 +19,35 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Record<string, any>} props.attributes Block attributes
+ * @param {Function} props.setAttributes Block attributes setter
+ * @param {string} props.clientId Block client ID
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
+export default function Edit({
+	attributes,
+	setAttributes,
+	clientId,
+}: {
+	attributes: Record<string, any>;
+	setAttributes: (newAttributes: Record<string, any>) => void;
+	clientId: string;
+}): JSX.Element {
 	const {
-		attributes: {
-			blockClass,
-			ariaLabel,
-			ariaLabelledBy,
-			template,
-			templateLock,
-			style,
-			variationName,
-		},
-		setAttributes,
-		clientId,
-	} = props;
+		blockClass,
+		template,
+		templateLock,
+		style,
+		variationName,
+		isReversed,
+	} = attributes;
 
 	/**
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: classnames(blockClass),
-		style: getBlockStyles({ style }),
-		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
+		className: classnames(blockClass, getIsReversedClass(isReversed)),
+		style: getBlockStyles(style),
 	});
 
 	const innerBlocksProps = InnerBlocksAppender({
@@ -68,8 +72,8 @@ export default function Edit(props) {
 	 */
 	return (
 		<>
-			<Inspector {...props} />
-			<section {...innerBlocksProps} />
+			<Inspector attributes={attributes} setAttributes={setAttributes} />
+			<div {...innerBlocksProps} />
 		</>
 	);
 }

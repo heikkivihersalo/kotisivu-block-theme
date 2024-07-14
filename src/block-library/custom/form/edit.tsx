@@ -15,30 +15,38 @@ import './editor.css';
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Record<string, any>} props.attributes Block attributes
+ * @param {Function} props.setAttributes Block attributes setter
+ * @param {string} props.clientId Block client ID
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
+export default function Edit({
+	attributes,
+	setAttributes,
+	clientId,
+}: {
+	attributes: Record<string, any>;
+	setAttributes: (newAttributes: Record<string, any>) => void;
+	clientId: string;
+}): JSX.Element {
 	const {
-		attributes: {
-			ariaLabel,
-			ariaLabelledBy,
-			blockClass,
-			template,
-			templateLock,
-			style,
-		},
-		clientId,
-	} = props;
+		ariaLabel,
+		ariaLabelledBy,
+		blockClass,
+		template,
+		templateLock,
+		style,
+	} = attributes;
 
 	/**
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
 		className: classnames(blockClass),
-		style: getBlockStyles({ style }),
-		'aria-label': ariaLabel ? ariaLabel : null,
-		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
-	});
+		style: getBlockStyles(style),
+		'aria-label': ariaLabel ? ariaLabel : undefined,
+		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : undefined,
+	} as Record<string, any>);
 
 	const innerBlocksProps = InnerBlocksAppender({
 		clientId,
@@ -49,7 +57,7 @@ export default function Edit(props) {
 
 	return (
 		<>
-			<Inspector {...props} />
+			<Inspector attributes={attributes} setAttributes={setAttributes} />
 			<section {...innerBlocksProps} />
 		</>
 	);
