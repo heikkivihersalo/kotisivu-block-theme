@@ -54,6 +54,12 @@ function useAdminForm({ path, nonce }) {
 					[e.target.name]: e.target.value,
 				});
 				break;
+			case 'textarea':
+				setFormData({
+					...formData,
+					[e.target.name]: e.target.value,
+				});
+				break;
 			default:
 				break;
 		}
