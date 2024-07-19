@@ -54,6 +54,7 @@
 		"build/page-templates",
 		"inc",
 		"languages",
+		"patterns",
 		"public",
 		"src",
 		"templates",
