@@ -1,6 +1,6 @@
-/* ==================== */
-/* == DEFAULT STYLES == */
-/* ==================== */
+/** ======================
+ ** DEFAULT OVERRIDES
+ ** ==================== */
 .wp-block-button__link {
 	--_text-size: calc(var(--wp--preset--font-size--medium));
 	--_text-family: var(--wp--preset--font-family--heading);
@@ -56,40 +56,34 @@
 	border-radius: var(--_border-radius) !important;
 }
 
-/* ==================== */
-/* === BLOCK STYLES === */
-/* ==================== */
+/** ======================
+ ** BLOCK STYLES (FILL, OUTLINE, TEXT)
+ ** ==================== */
 
 /* Fill Styles */
-.is-style-fill > :is(a, button).wp-block-button__link {
+.is-style-fill > :is(a, button, div).wp-block-button__link {
 	--_border-color: var(--wp--preset--color--primary);
 	--_background-color: var(--wp--preset--color--primary);
 	--_text-color: var(--wp--preset--color--white);
 }
 
-.is-style-secondary > :is(a, button).wp-block-button__link {
-	--_border-color: var(--wp--preset--color--black);
-	--_background-color: var(--wp--preset--color--black);
-	--_text-color: var(--wp--preset--color--white);
-}
-
 /* Outline Styles */
-.is-style-outline > :is(a, button).wp-block-button__link {
+.is-style-outline > :is(a, button, div).wp-block-button__link {
 	--_border-color: var(--wp--preset--color--white);
 	--_background-color: transparent;
 	--_text-color: var(--wp--preset--color--white);
 }
 
 /* Text Styles */
-.is-style-text > :is(a, button).wp-block-button__link {
+.is-style-text > :is(a, button, div).wp-block-button__link {
 	--_border-color: transparent;
 	--_background-color: transparent;
 	--_text-color: var(--wp--preset--color--primary);
 }
 
-/* ==================== */
-/* ====== STATES ====== */
-/* ==================== */
+/** ======================
+ ** BUTTON STATES
+ ** ==================== */
 
 /* Set hover state */
 .wp-block-button :is(a, button).wp-block-button__link:hover {
