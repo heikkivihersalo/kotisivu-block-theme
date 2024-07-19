@@ -29,6 +29,16 @@ if ( is_user_logged_in() && is_admin() ) {
 }
 
 /**
+ * Duplicate post
+ */
+require_once SITE_PATH . '/inc/theme/duplicate.php';
+add_filter( 'post_row_actions', __NAMESPACE__ . '\add_duplicate_post_link_to_admin', 10, 2 ); // Duplicate post
+add_filter( 'page_row_actions', __NAMESPACE__ . '\add_duplicate_post_link_to_admin', 10, 2 ); // Duplicate page
+add_action( 'admin_notices', __NAMESPACE__ . '\show_duplicate_admin_notice' );
+add_action( 'admin_action_create_duplicate_post_as_draft', __NAMESPACE__ . '\create_duplicate_post_as_draft' );
+
+
+/**
  * Custom Post Types
  */
 require_once SITE_PATH . '/inc/theme/custom-post-types/class-post-type.php';
