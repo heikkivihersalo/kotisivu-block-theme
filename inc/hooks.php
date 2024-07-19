@@ -70,6 +70,9 @@ add_action( 'wp_head', __NAMESPACE__ . '\inline_tag_manager', 0 );
 /* Enable Font Awesome */
 add_action( 'wp_head', __NAMESPACE__ . '\inline_fontawesome', 11 );
 
+/* Add global styles to top */
+add_filter( 'print_styles_array', __NAMESPACE__ . '\move_global_styles_to_top', 10, 1 );
+
 /**
  * Handle image sizes
  */
