@@ -296,7 +296,7 @@ define(
 		 * Set custom database tables (EXPERIMENTAL)
 		 */
 		'database_tables' => array(
-			'enabled' => true,
+			'enabled' => false,
 			'tables'  => array(
 				array(
 					'name'   => 'example',
