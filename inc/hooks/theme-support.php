@@ -31,10 +31,10 @@ function modify_theme_support(): void {
  * @return void
  */
 function add_editor_styles(): void {
-	add_editor_style( 'theme.css' );
-	add_editor_style( 'admin.css' );
-	add_editor_style( 'core.css' );
-	add_editor_style( 'inline.css' );
+	add_editor_style( SITE_URI . '/build/assets/theme.css' );
+	add_editor_style( SITE_URI . '/build/assets/admin.css' );
+	add_editor_style( SITE_URI . '/build/assets/core.css' );
+	add_editor_style( SITE_URI . '/build/assets/inline.css' );
 }
 
 /**
