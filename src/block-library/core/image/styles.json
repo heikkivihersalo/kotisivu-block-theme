@@ -9,6 +9,10 @@
 		"label": "Square"
 	},
 	{
+		"name": "rectangle",
+		"label": "Rectangle"
+	},
+	{
 		"name": "full",
 		"label": "Full"
 	}
