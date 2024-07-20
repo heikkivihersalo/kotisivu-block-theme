@@ -20,7 +20,9 @@ declare module '@components/variations' {
 			childTemplate?: Array<string | Record<string, any>>;
 			style?: Record<string, any>;
 			templateLock?: 'all';
-			width?: 'var(--wp--custom--wide-size)';
+			width?:
+				| 'var(--wp--custom--content-size)'
+				| 'var(--wp--custom--wide-size)';
 		};
 	};
 
