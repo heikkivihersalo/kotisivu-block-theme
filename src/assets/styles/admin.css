@@ -46,11 +46,18 @@
 /**
  * Add margins to direct child blocks of the root container
  */
-.is-root-container > *:not(:first-child) {
+.is-root-container
+	> :is(section, div):not(
+		:first-child,
+		:is(.post-type-post) .is-root-container > *
+	) {
 	margin-block: var(--wp--preset--spacing--60);
 }
 
-.is-root-container > *:first-child {
+.is-root-container
+	> :is(section, div):first-child:not(
+		:is(.post-type-post) .is-root-container > *
+	) {
 	margin-top: var(--wp--preset--spacing--40);
 }
 
