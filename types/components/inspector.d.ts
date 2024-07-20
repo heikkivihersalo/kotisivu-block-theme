@@ -29,6 +29,20 @@ declare module '@components/inspector' {
 		setAttributes: (newAttributes: Record<string, any>) => void;
 	};
 
+	type LinkAttributes = {
+		post: any | undefined;
+		linkUrl: string | undefined;
+		linkTarget: string | undefined;
+		linkRel: string | undefined;
+		linkTitle: string | undefined;
+	};
+
+	type LinkControlsProps = {
+		attributes: LinkAttributes;
+		isSelected: boolean;
+		setAttributes: (attributes: Partial<LinkAttributes>) => void;
+	};
+
 	type WidthControlsProps = {
 		style: Record<string, any>;
 		setAttributes: (newAttributes: Record<string, any>) => void;
@@ -40,6 +54,8 @@ declare module '@components/inspector' {
 		BackgroundImageControlsProps,
 		GapControlsProps,
 		GridAlignControlsProps,
+		LinkAttributes,
+		LinkControlsProps,
 		WidthControlsProps,
 	};
 
@@ -51,6 +67,7 @@ declare module '@components/inspector' {
 	const BackgroundImageControls: ComponentType<BackgroundImageControlsProps>;
 	const GapControls: ComponentType<GapControlsProps>;
 	const GridAlignControls: ComponentType<GridAlignControlsProps>;
+	const LinkControls: ComponentType<LinkControlsProps>;
 	const WidthControls: ComponentType<WidthControlsProps>;
 
 	export {
@@ -59,6 +76,7 @@ declare module '@components/inspector' {
 		BackgroundImageControls,
 		GapControls,
 		GridAlignControls,
+		LinkControls,
 		WidthControls,
 	};
 }
