@@ -52,6 +52,6 @@ $tags         = get_the_tags();
 		</div>
 	</div>
 	<div class="post-content">
-		<?php echo get_the_content(); ?>
+		<?php the_content(); ?>
 	</div>
 </article>
