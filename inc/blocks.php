@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || die();
 /**
  * Laod block base class
  */
-require_once SITE_PATH . '/inc/theme/blocks/class-block.php';
+require_once SITE_PATH . '/inc/blocks/class-block.php';
 
 /**
  * Check if dependencies and build files exist
@@ -56,26 +56,33 @@ add_filter( 'should_load_separate_core_block_assets', 'Kotisivu\BlockTheme\Utils
 /**
  * Register custom blocks
  */
-require_once SITE_PATH . '/inc/theme/blocks/block-types/class-block-custom.php';
+require_once SITE_PATH . '/inc/blocks/block-types/class-block-custom.php';
 $custom_blocks = new BlockCustom();
 $custom_blocks->init();
 
-require_once SITE_PATH . '/inc/theme/blocks/block-types/class-block-page-template.php';
+require_once SITE_PATH . '/inc/blocks/block-types/class-block-page-template.php';
 $template_blocks = new BlockPageTemplate();
 $template_blocks->init();
 
-require_once SITE_PATH . '/inc/theme/blocks/block-types/class-block-part.php';
+require_once SITE_PATH . '/inc/blocks/block-types/class-block-part.php';
 $part_blocks = new BlockPart();
 $part_blocks->init();
 
 /**
  * Register custom block categories
  */
-require_once SITE_PATH . '/inc/theme/blocks/block-categories.php';
+require_once SITE_PATH . '/inc/blocks/block-categories.php';
 add_filter( 'block_categories_all', __NAMESPACE__ . '\register_custom_block_categories', 10, 2 );
+
+/**
+ * Register block patterns
+ */
+require_once SITE_PATH . '/inc/blocks/block-patterns.php';
+add_action( 'init', __NAMESPACE__ . '\register_block_pattern_categories' );
+add_action( 'init', __NAMESPACE__ . '\register_block_patterns' );
 
 /**
  * Disallow blocks
  */
-require_once SITE_PATH . '/inc/theme/blocks/allowed-blocks.php';
+require_once SITE_PATH . '/inc/blocks/allowed-blocks.php';
 add_filter( 'allowed_block_types_all', __NAMESPACE__ . '\disallow_block_types', 10, 2 );
