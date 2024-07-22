@@ -23,7 +23,9 @@ class TextAreaField extends MetaboxField implements MetaboxFieldInterface {
 				<label for="<?php echo $this->id; ?>"><?php echo $this->label; ?></label>
 			</th>
 			<td>
-				<input id="<?php echo $this->id; ?>" type="textarea" class="regular-text" name="<?php echo $this->id; ?>" value="<?php echo $this->get_value(); ?>">
+				<textarea rows="6" id="<?php echo $this->id; ?>" class="regular-text" name="<?php echo $this->id; ?>" value="<?php echo $this->get_value(); ?>">
+					<?php echo $this->get_value(); ?>
+				</textarea>
 			</td>
 		</tr>
 
