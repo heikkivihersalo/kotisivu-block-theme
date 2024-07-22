@@ -93,6 +93,14 @@ function admin_enqueue_fontawesome() {
 }
 
 /**
+ * Enqueue media support
+ * @return void
+ */
+function add_wp_media_support(): void {
+	wp_enqueue_media();
+}
+
+/**
  * Inline Font Awesome
  *
  * @return void
@@ -250,10 +258,14 @@ function remove_scripts_and_styles() {
  * @return array Modified print styles array
  */
 function move_global_styles_to_top( $styles ): array {
+	if ( ! is_array( $styles ) ) {
+		return $styles;
+	}
+
 	$total = count( $styles );
 
 	for ( $i = 0; $i < $total; $i++ ) {
-		if ( 'global-styles' === $styles[ $i ] ) {
+		if ( isset( $styles[ $i ] ) && 'global-styles' === $styles[ $i ] ) {
 			unset( $styles[ $i ] );
 			array_unshift( $styles, 'global-styles' );
 			break;
