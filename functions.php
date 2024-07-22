@@ -42,12 +42,12 @@ define(
 		/**
 		 * Enable dark mode for the site
 		 */
-		'dark_mode'       => true,
+		'dark_mode'                => false,
 
 		/**
 		 * Set what FontAwesome icons to be loaded
 		 */
-		'icons'           => array(
+		'icons'                    => array(
 			'all'     => true,
 			'brands'  => false,
 			'solid'   => false,
@@ -58,14 +58,14 @@ define(
 		 * Set the theme color
 		 * - Will add a meta tag to the header with the color
 		 */
-		'theme_color'     => 'hsl(0, 0%, 20%)',
+		'theme_color'              => 'hsl(0, 0%, 20%)',
 
 		/**
 		 * Set behaviour for default loading of header and api junk
 		 * - There is a lot of "junk" that can be removed from the header
 		 * - HINT! This also acts as a security measure. Less information about your site is better
 		 */
-		'security'        => array(
+		'security'                 => array(
 			'author-pages'            => true,
 			'version'                 => true,
 			'rest-api-user-endpoints' => false,
@@ -73,13 +73,13 @@ define(
 			'json-api'                => true,
 			'xmlrpc'                  => true,
 		),
-		'performance'     => array(
+		'performance'              => array(
 			'duotone'        => true,
 			'emojis'         => true,
 			'jquery'         => 'footer', // Can be set to 'normal', 'footer' or 'disable'
 			'jquery-migrate' => true,
 		),
-		'junk'            => array(
+		'junk'                     => array(
 			'canonical'       => true,
 			'feed-links'      => true,
 			'gravatar'        => false,
@@ -93,7 +93,7 @@ define(
 		 * - This is a list of default styles that are loaded by WordPress
 		 * - I prefer Fluent Forms for forms, so it is disabled by default also
 		 */
-		'disabled_styles' => array(
+		'disabled_styles'          => array(
 			'block-library' => true,
 			'fluent-forms'  => true,
 			'global-styles' => false,
@@ -104,7 +104,7 @@ define(
 		 * - There are a lot unnecessary options for most users
 		 * - If you need something that is removed, you can always add it back
 		 */
-		'admin'           => array(
+		'admin'                    => array(
 			'bar'       => array(
 				'wp-logo'      => array(
 					'remove'   => true,
@@ -189,9 +189,68 @@ define(
 		),
 
 		/**
+		 * Set block categories
+		 */
+		'block_categories'         => array(
+			array(
+				'slug'  => 'blocks',
+				'label' => __( 'Blocks', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'child',
+				'label' => __( 'Child', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'containers',
+				'label' => __( 'Containers & Wrappers', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'dynamic-data',
+				'label' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+		),
+
+		/**
+		 * Set block patterns
+		 */
+		'block_patterns'           => array(
+			array(
+				'slug'       => 'generic-two-column',
+				'title'      => __( 'Generic Two Column', 'kotisivu-block-theme' ),
+				'categories' => array( 'columns', 'sections' ),
+			),
+		),
+
+		/**
+		 * Set block pattern categories
+		 */
+		'block_pattern_categories' => array(
+			array(
+				'slug'  => 'pages',
+				'label' => __( 'Pages', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'sections',
+				'label' => __( 'Sections', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'heros',
+				'label' => __( 'Heros', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'banners',
+				'label' => __( 'Banners', 'kotisivu-block-theme' ),
+			),
+		),
+
+		/**
 		 * Set site menu locations and names
 		 */
-		'menu_locations'  => array(
+		'menu_locations'           => array(
 			array(
 				'slug' => 'header-nav',
 				'name' => __( 'Header Navigation', 'kotisivu-block-theme' ),
@@ -213,7 +272,7 @@ define(
 		 * - To populate the page, you need to create new React page in the src/admin/pages folder
 		 * - If needed remember to create new REST Endpoints to the inc/theme/api folder
 		 */
-		'setting_pages'   => array(
+		'setting_pages'            => array(
 			array(
 				'slug' => 'general',
 				'name' => __( 'General', 'kotisivu-block-theme' ),
@@ -238,7 +297,7 @@ define(
 		 * - You can add as many as you want but remember that each size will be generated for each image
 		 * - For most sites the default sizes set here are enough
 		 */
-		'image_sizes'     => array(
+		'image_sizes'              => array(
 			'default' => array(
 				array(
 					'slug'   => 'large_size',
@@ -288,14 +347,14 @@ define(
 		 * Set custom post types
 		 * - Remember to add the post type file to the inc/post-types folder!
 		 */
-		'post_types'      => array(
+		'post_types'               => array(
 			'Example',
 		),
 
 		/**
 		 * Set custom database tables (EXPERIMENTAL)
 		 */
-		'database_tables' => array(
+		'database_tables'          => array(
 			'enabled' => false,
 			'tables'  => array(
 				array(
@@ -339,7 +398,7 @@ define(
 		/**
 		 * Enable custom API
 		 */
-		'api'             => true,
+		'api'                      => true,
 	)
 );
 
