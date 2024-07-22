@@ -69,12 +69,12 @@ class HeaderMenuWalker extends Walker_Nav_Menu {
 		/**
 		 * Build item (link) output
 		 */
-		$is_link = $item->url && '#' !== $item->url;
+		$has_submenu = $item->url && '#' !== $item->url && ! $args->walker->has_children;
 
 		$item_output  = $args->before;
-		$item_output .= $is_link ? '<a' . $attributes . '>' : '<a class="site-header__menu-title">';
+		$item_output .= $has_submenu ? '<a' . $attributes . '>' : '<a class="site-header__menu-title">';
 		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
-		$item_output .= $is_link ? '' : $caret;
+		$item_output .= $has_submenu ? '' : $caret;
 		$item_output .= '</a>';
 		$item_output .= $args->after;
 
