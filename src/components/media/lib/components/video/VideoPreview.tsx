@@ -53,6 +53,10 @@ const VideoPreview = ({
 					}}
 					className="image-placeholder"
 					src={placeholder}
+					alt={__(
+						'Placeholder image for video component',
+						'kotisivu-block-theme'
+					)}
 				/>
 			</div>
 		);

@@ -1,11 +1,6 @@
 /**
  * This script handles the image uploader for custom post types.
- *
- * @package kotisivu-block-theme
- * @since 1.0.0
- *
  * TODO: Refactor this to more modern React component using WP API if possible. Needs to be investigated.
- *
  */
 
 /**
@@ -18,7 +13,7 @@ import { __ } from '@wordpress/i18n';
  */
 declare const wp: any;
 
-const ImageUploaderElements = {
+const imageUploaderElements = {
 	uploadImage: document.querySelector(
 		'.image-uploader__button--choose'
 	) as HTMLButtonElement,
@@ -33,7 +28,7 @@ const ImageUploaderElements = {
 	) as HTMLImageElement,
 } as const;
 
-type ImageUploaderElements = typeof ImageUploaderElements;
+type ImageUploaderElements = typeof imageUploaderElements;
 
 const isHiddenSelector = 'hide-image-uploader' as const;
 
@@ -44,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	/**
 	 * Check if elements exist on the page (in other words, if the page has the image uploader)
 	 */
-	const elementsExist = Object.values(ImageUploaderElements).every(
-		(element) => element != null
+	const elementsExist = Object.values(imageUploaderElements).every(
+		(element) => element !== null
 	);
 
 	if (!elementsExist) {
@@ -55,32 +50,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	/**
 	 * Handle Select Image
 	 */
-	ImageUploaderElements.uploadImage.addEventListener('click', (e) => {
-		handleSelectImage(ImageUploaderElements, e, isHiddenSelector);
+	imageUploaderElements.uploadImage.addEventListener('click', (e) => {
+		handleSelectImage(e);
 	});
 
 	/**
 	 * Handle Remove Image
 	 */
-	ImageUploaderElements.removeImage.addEventListener('click', (e) => {
-		handleRemoveImage(ImageUploaderElements, e, isHiddenSelector);
+	imageUploaderElements.removeImage.addEventListener('click', (e) => {
+		handleRemoveImage(e);
 	});
 });
 
 /**
  * Handle select image
- * @param {ImageUploaderElements} elements Image uploader elements
  * @param {MouseEvent} e Current click event
  * @return {void}
  */
-function handleSelectImage(
-	elements: ImageUploaderElements,
-	e: MouseEvent,
-	isHiddenSelector: string
-): void {
+function handleSelectImage(e: MouseEvent): void {
 	e.preventDefault();
 	try {
-		var frame: any;
+		let frame: any; // eslint-disable-line
 
 		if (frame) {
 			frame.open();
@@ -99,20 +89,24 @@ function handleSelectImage(
 			const attachment = frame.state().get('selection').first();
 
 			/* Place ID to the input field */
-			elements.imageInput.value = attachment.id;
+			imageUploaderElements.imageInput.value = attachment.id;
 
 			/* Show image preview */
-			elements.imagePreview.setAttribute(
+			imageUploaderElements.imagePreview.setAttribute(
 				'src',
 				attachment.attributes.url
 			);
-			elements.imagePreview.classList.remove(isHiddenSelector);
+			imageUploaderElements.imagePreview.classList.remove(
+				isHiddenSelector
+			);
 
 			/* Show "Remove" button */
-			elements.removeImage.classList.remove(isHiddenSelector);
+			imageUploaderElements.removeImage.classList.remove(
+				isHiddenSelector
+			);
 
 			/* Hide "Choose" button */
-			elements.uploadImage.classList.add(isHiddenSelector);
+			imageUploaderElements.uploadImage.classList.add(isHiddenSelector);
 		});
 
 		frame.open();
@@ -123,27 +117,22 @@ function handleSelectImage(
 
 /**
  * Handle remove image
- * @param {ImageUploaderElements} elements Image uploader elements
  * @param {MouseEvent} e Current click event
  * @return {void}
  */
-function handleRemoveImage(
-	elements: ImageUploaderElements,
-	e: MouseEvent,
-	isHiddenSelector: string
-): void {
+function handleRemoveImage(e: MouseEvent): void {
 	e.preventDefault();
 
 	/* Remove ID from the input field */
-	elements.imageInput.value = '';
+	imageUploaderElements.imageInput.value = '';
 
 	/* Hide the preview image */
-	elements.imagePreview.setAttribute('src', '');
-	elements.imagePreview.classList.add(isHiddenSelector);
+	imageUploaderElements.imagePreview.setAttribute('src', '');
+	imageUploaderElements.imagePreview.classList.add(isHiddenSelector);
 
 	/* Show "Choose" button */
-	elements.uploadImage.classList.remove(isHiddenSelector);
+	imageUploaderElements.uploadImage.classList.remove(isHiddenSelector);
 
 	/* Hide "Remove" button */
-	elements.removeImage.classList.add(isHiddenSelector);
+	imageUploaderElements.removeImage.classList.add(isHiddenSelector);
 }

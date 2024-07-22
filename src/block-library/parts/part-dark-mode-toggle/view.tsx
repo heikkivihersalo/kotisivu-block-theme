@@ -89,6 +89,8 @@ function switchColorScheme({
 
 /**
  * Set document cookie with color scheme
+ * @param {ColorScheme} scheme Color scheme to set
+ * @param {string} cookie Cookie to set
  * @return {void}
  */
 function setSchemeCookie(scheme: ColorScheme, cookie: string): void {
@@ -111,7 +113,7 @@ function writeToDataLayer(value: ColorScheme): void {
 		event: 'button_click',
 		category: 'site_preferences',
 		action: 'switch_color_scheme',
-		value: value,
+		value,
 	});
 }
 
