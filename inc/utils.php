@@ -328,9 +328,9 @@ final class Utils {
 
 		return array(
 			'id'     => $id,
-			'url'    => $meta[0],
-			'width'  => $meta[1],
-			'height' => $meta[2],
+			'url'    => isset( $meta[0] ) ? $meta[0] : '',
+			'width'  => isset( $meta[1] ) ? $meta[1] : '',
+			'height' => isset( $meta[2] ) ? $meta[2] : '',
 			'alt'    => get_post_meta( $id, '_wp_attachment_image_alt', true ),
 			'title'  => get_the_title( $id ),
 		);
