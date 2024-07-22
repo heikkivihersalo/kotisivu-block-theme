@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { link, linkOff } from '@wordpress/icons';
 import {
 	BlockControls, // @ts-ignore
-	__experimentalLinkControl as LinkControl,
+	__experimentalLinkControl as LinkControl, // eslint-disable-line
 } from '@wordpress/block-editor';
 import { ToolbarButton, Popover } from '@wordpress/components';
 
@@ -19,7 +19,7 @@ import type { LinkControlsProps } from '@components/inspector';
  * Link controls component
  * @param {LinkControlsProps} props
  * @param {LinkAttributes} props.attributes Gutenberg block attributes
- * @param {Boolean} props.isSelected Block selected state
+ * @param {boolean} props.isSelected Block selected state
  * @return {JSX.Element} Link controls
  */
 const LinkControls = ({

@@ -13,13 +13,8 @@ import type { VideoAttributes } from '@components/media';
  * --_video-width (default: 100%)
  * --_video-height (default: auto)
  * --_video-max-width (default: 100%)
- * @param {Object} attributes Block attributes
- * @param {Object} attributes.mediaUrl Video URL
- * @param {Object} attributes.mediaWidth Video width
- * @param {Object} attributes.mediaHeight Video height
- * @param {Object} attributes.mediaMime Video MIME type
- * @param {Object} attributes.mediaThumbnail Video thumbnail
- * @param {Object} attributes.mediaAlt Video alt text
+ * @param {Object} props Block attributes
+ * @param {Omit<VideoAttributes, 'mediaId'>} props.attributes Video attributes
  * @return {JSX.Element} Video element
  */
 const VideoMarkup = ({

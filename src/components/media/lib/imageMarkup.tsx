@@ -4,9 +4,11 @@ import ImageSourceSet from './components/image/ImageSourceSet';
 import type { ImageAttributes } from '@components/media';
 
 /**
- *
- * @param {*} props
- * @returns
+ * Image component markup
+ * @param {Object} props - Image props
+ * @param {Object} props.attributes - Image attributes
+ * @param {boolean} props.img - Force image format
+ * @param {boolean} props.srcset - Force srcset format
  */
 const ImageMarkup = ({
 	attributes,
@@ -53,7 +55,7 @@ const ImageMarkup = ({
 	/**
 	 * load svg image
 	 */
-	if (attributes.mediaMime == 'image/svg+xml') {
+	if (attributes.mediaMime === 'image/svg+xml') {
 		return (
 			<ImageDefault
 				attributes={{

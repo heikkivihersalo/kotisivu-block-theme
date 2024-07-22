@@ -14,7 +14,7 @@ import placeholder from '../../assets/placeholder.png';
  * @param {Object} props
  * @param {ImageAttributes} props.attributes Block attributes
  * @param {Function} props.callbackFn Callback function
- * @returns
+ * @return {JSX.Element} Image preview element
  */
 const ImagePreview = ({
 	attributes,
@@ -50,6 +50,10 @@ const ImagePreview = ({
 					}}
 					className="image-placeholder"
 					src={placeholder}
+					alt={__(
+						'Placeholder image for image component',
+						'kotisivu-block-theme'
+					)}
 				/>
 			</div>
 		);
@@ -58,7 +62,7 @@ const ImagePreview = ({
 	/**
 	 * If image is svg, return correct markup for svg image
 	 */
-	if (attributes.mediaMime == 'image/svg+xml') {
+	if (attributes.mediaMime === 'image/svg+xml') {
 		return <img src={attributes.mediaUrl} alt={attributes.mediaAlt} />;
 	}
 

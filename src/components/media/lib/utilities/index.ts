@@ -19,9 +19,9 @@ function convertToSrcSetString(
 	return sizes
 		.slice(0)
 		.reverse()
-		.map((size, index) => {
-			let width = size.width;
-			let url = size.url;
+		.map((size) => {
+			const width = size.width;
+			const url = size.url;
 
 			return `${url} ${width}w`;
 		})
@@ -38,7 +38,7 @@ function convertToSizesString(sizes: Array<{ width: number }>): string {
 	const sizesReverse = sizes.slice(0).reverse();
 	return sizesReverse
 		.map((size, index) => {
-			return index == sizesReverse.length - 1
+			return index === sizesReverse.length - 1
 				? `${size.width}px`
 				: `(max-width: ${size.width}px) ${size.width}px`;
 		})
@@ -65,13 +65,13 @@ function getImageSizes(obj: Record<string, any>): {
 	});
 
 	/* Sort images from largest to smallest */
-	initialSizes[0].width >= initialSizes[0].height
-		? initialSizes.sort(
-				(a, b) => b.width - a.width
-			) /* Image orientation is horizontal */
-		: initialSizes.sort(
-				(a, b) => b.height - a.height
-			); /* Image orientation is vertical */
+	if (initialSizes[0].width >= initialSizes[0].height) {
+		/* Image orientation is horizontal */
+		initialSizes.sort((a, b) => b.width - a.width);
+	} else {
+		/* Image orientation is vertical */
+		initialSizes.sort((a, b) => b.height - a.height);
+	}
 
 	/**
 	 * Return the sizes and src set
@@ -113,7 +113,7 @@ function setImageAttributes(
 	setAttributes: (attributes: ImageAttributes) => void
 ): void {
 	/* If image is svg, set svg properties correctly */
-	if (media.mime == 'image/svg+xml') {
+	if (media.mime === 'image/svg+xml') {
 		setAttributes({
 			mediaUrl: media.url,
 			mediaId: media.id,
