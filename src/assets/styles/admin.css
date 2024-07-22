@@ -14,23 +14,56 @@
 /*--------------------------------------------------------------
   2.0 Metaboxes
 --------------------------------------------------------------*/
-.metabox__input-wrapper {
-	display: grid;
-	grid-template-columns: var(--wp--preset--spacing--60) 1fr;
-	gap: var(--wp--preset--spacing--20);
-	align-items: center;
+/**
+ * Image uploader
+ */
+.image-uploader__button {
+	background: none;
+	border: none;
+	margin: 0;
 
-	margin-bottom: var(--wp--preset--spacing--10);
+	cursor: pointer;
 }
 
-.metabox__input-wrapper label {
-	font-weight: bold;
+.image-uploader__button--choose {
+	display: inline-block;
+
+	color: #fff;
+	text-decoration: none;
+	text-shadow: none;
+	line-height: 2.71428571;
+	font-size: 14px;
+
+	background: #2271b1;
+
+	border-color: 1px solid #2271b1;
+	border-radius: 3px;
+
+	padding: 0 14px;
+	margin-bottom: 4px;
+
+	vertical-align: middle;
+	min-height: 40px;
+
+	white-space: nowrap;
+	box-sizing: border-box;
 }
 
-.metabox__input-wrapper input {
-	max-width: 30rem;
+.image-uploader__button--remove {
+	color: hsl(0, 100%, 50%);
+	text-decoration: underline;
+	margin-top: 0.25rem;
 }
 
+.hide-image-uploader {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
 /*--------------------------------------------------------------
   3.0 Edtior Overrides
 --------------------------------------------------------------*/
