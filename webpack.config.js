@@ -73,7 +73,7 @@ module.exports = {
 	entry: {
 		...getWebpackEntryPoints(),
 		'block-library/core/core': getCoreBlocks(),
-		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
+		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.ts'),
 		'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.ts'),
 		'assets/dark-mode': path.resolve(
 			__dirname,
@@ -81,15 +81,15 @@ module.exports = {
 		),
 		'assets/inline': path.resolve(
 			__dirname,
-			'src/assets/scripts/inline.js'
+			'src/assets/scripts/inline.ts'
 		),
 		'assets/sanitize': path.resolve(
 			__dirname,
-			'src/assets/scripts/sanitize.js'
+			'src/assets/scripts/sanitize.ts'
 		),
-		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.js'),
+		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.ts'),
 		'assets/store': path.resolve(__dirname, 'src/stores/index.js'),
-		'admin/index': path.resolve(__dirname, 'src/admin/index.js'),
+		'admin/index': path.resolve(__dirname, 'src/admin/index.tsx'),
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
