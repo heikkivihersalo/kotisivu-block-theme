@@ -72,9 +72,9 @@ function register_block_patterns(): void {
 			// If description is not set, use an empty string.
 			'description' => isset( $pattern['description'] ) ? $pattern['description'] : '',
 			// If categories is not set or not an array, use an empty array.
-			'categories'  => null !== $pattern['categories'] && is_array( $pattern['categories'] ) ? $pattern['categories'] : array(),
+			'categories'  => isset( $pattern['categories'] ) && null !== $pattern['categories'] && is_array( $pattern['categories'] ) ? $pattern['categories'] : array(),
 			// If keywords is not set or not an array, use an empty array.
-			'keywords'    => null !== $pattern['keywords'] && is_array( $pattern['keywords'] ) ? $pattern['keywords'] : array(),
+			'keywords'    => isset( $pattern['keywords'] ) && null !== $pattern['keywords'] && is_array( $pattern['keywords'] ) ? $pattern['keywords'] : array(),
 			'content'     => get_pattern_content( $pattern['slug'] ),
 		);
 
