@@ -17,10 +17,9 @@ require_once SITE_PATH . '/inc/hooks/general.php';
 add_filter( 'upload_mimes', __NAMESPACE__ . '\allow_svg_uploads' );
 add_filter( 'excerpt_length', __NAMESPACE__ . '\limit_excerpt_length', 999 );
 add_filter( 'http_request_args', __NAMESPACE__ . '\disable_theme_update', 10, 2 );
-// add_filter('styles_inline_size_limit', __NAMESPACE__ . '\set_inline_size_limit');
+add_action( 'admin_bar_menu', __NAMESPACE__ . '\remove_admin_bar_items', 999 );
 
 if ( is_admin() ) {
-	add_action( 'admin_bar_menu', __NAMESPACE__ . '\remove_admin_bar_items', 999 );
 	add_action( 'admin_init', __NAMESPACE__ . '\set_default_dashboard_metaboxes' );
 }
 
@@ -40,6 +39,7 @@ if ( file_exists( SITE_PATH . '/build/assets/theme.js' ) ) {
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_custom_post_type' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_admin' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_fontawesome' );
+		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\add_wp_media_support' );
 	}
 } else {
 	add_action(
@@ -69,6 +69,9 @@ add_action( 'wp_head', __NAMESPACE__ . '\inline_tag_manager', 0 );
 
 /* Enable Font Awesome */
 add_action( 'wp_head', __NAMESPACE__ . '\inline_fontawesome', 11 );
+
+/* Add global styles to top */
+add_filter( 'print_styles_array', __NAMESPACE__ . '\move_global_styles_to_top', 10, 1 );
 
 /**
  * Handle image sizes

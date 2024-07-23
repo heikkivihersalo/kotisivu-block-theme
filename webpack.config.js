@@ -74,10 +74,10 @@ module.exports = {
 		...getWebpackEntryPoints(),
 		'block-library/core/core': getCoreBlocks(),
 		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.js'),
-		'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.js'),
+		'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.ts'),
 		'assets/dark-mode': path.resolve(
 			__dirname,
-			'src/assets/scripts/dark-mode.js'
+			'src/assets/scripts/dark-mode.ts'
 		),
 		'assets/inline': path.resolve(
 			__dirname,

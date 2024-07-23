@@ -1,6 +1,6 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/theme.json",
-	"version": 2,
+	"version": 3,
 	"settings": {
 		"appearanceTools": false,
 		"useRootPaddingAwareAlignments": true,
@@ -124,6 +124,7 @@
 			"blockGap": null,
 			"margin": true,
 			"padding": true,
+			"defaultSpacingSizes": false,
 			"spacingSizes": [
 				{
 					"size": "clamp(0.618046971569839rem, calc(0.606683360484887rem + 0.0568180554247618vw), 0.674865026994601rem)",
@@ -246,6 +247,7 @@
 			"textTransform": false,
 			"dropCap": false,
 			"customFontSize": false,
+			"defaultFontSizes": false,
 			"fontSizes": [
 				{
 					"name": "Colossal",

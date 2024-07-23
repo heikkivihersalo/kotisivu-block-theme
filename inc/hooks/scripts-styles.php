@@ -93,6 +93,14 @@ function admin_enqueue_fontawesome() {
 }
 
 /**
+ * Enqueue media support
+ * @return void
+ */
+function add_wp_media_support(): void {
+	wp_enqueue_media();
+}
+
+/**
  * Inline Font Awesome
  *
  * @return void
@@ -240,4 +248,29 @@ function remove_scripts_and_styles() {
 	if ( SITE_SETTINGS['disabled_styles']['global-styles'] ) {
 		wp_dequeue_style( 'wp-global-styles' );
 	}
+}
+
+/**
+ * Move global styles to top of print styles
+ * - This is to ensure that global styles are loaded first
+ * - This is important so we can override the global styles with local styles if needed
+ * @param array $styles Print styles array
+ * @return array Modified print styles array
+ */
+function move_global_styles_to_top( $styles ): array {
+	if ( ! is_array( $styles ) ) {
+		return $styles;
+	}
+
+	$total = count( $styles );
+
+	for ( $i = 0; $i < $total; $i++ ) {
+		if ( isset( $styles[ $i ] ) && 'global-styles' === $styles[ $i ] ) {
+			unset( $styles[ $i ] );
+			array_unshift( $styles, 'global-styles' );
+			break;
+		}
+	}
+
+	return $styles;
 }
