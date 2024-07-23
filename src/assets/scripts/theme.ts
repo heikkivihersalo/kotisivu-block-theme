@@ -1,5 +1,11 @@
 import '../styles/theme.css';
 
+type LinkClickAnalyticsEvent = {
+	event: string;
+	event_category: string | undefined;
+	event_label: string | undefined;
+};
+
 (async function trackLinkClicks() {
 	/**
 	 * Get all links with the `data-track` attribute set to `true`
@@ -16,19 +22,17 @@ import '../styles/theme.css';
 	 */
 	links.forEach((link) => {
 		link.addEventListener('click', () => {
-			const eventName = 'link_click';
-			const eventType = link.dataset.type;
-			const eventLabel = link.dataset.label;
+			const event: LinkClickAnalyticsEvent = {
+				event: 'link_click',
+				event_category: (link as HTMLAnchorElement).dataset.type,
+				event_label: (link as HTMLAnchorElement).dataset.label,
+			};
 
 			/**
 			 * Push an event to the `dataLayer` array
 			 * See: https://developers.google.com/tag-manager/devguide
 			 */
-			window.dataLayer.push({
-				event: eventName,
-				event_category: eventType,
-				event_label: eventLabel,
-			});
+			(window.dataLayer as Record<string, unknown>[]).push(event);
 		});
 	});
 })();
