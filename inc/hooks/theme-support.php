@@ -21,8 +21,6 @@ function modify_theme_support(): void {
 	add_theme_support( 'custom-logo' );
 	add_theme_support( 'menus' );
 	add_theme_support( 'editor-styles' );
-
-	remove_theme_support( 'core-block-patterns' );
 }
 
 /**
