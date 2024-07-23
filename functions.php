@@ -124,6 +124,10 @@ define(
 						'menus'     => true,
 					),
 				),
+				'updates'      => array(
+					'remove'   => true,
+					'children' => array(),
+				),
 				'site-editor'  => array(
 					'remove'   => true,
 					'children' => array(),
