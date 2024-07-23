@@ -17,10 +17,9 @@ require_once SITE_PATH . '/inc/hooks/general.php';
 add_filter( 'upload_mimes', __NAMESPACE__ . '\allow_svg_uploads' );
 add_filter( 'excerpt_length', __NAMESPACE__ . '\limit_excerpt_length', 999 );
 add_filter( 'http_request_args', __NAMESPACE__ . '\disable_theme_update', 10, 2 );
-// add_filter('styles_inline_size_limit', __NAMESPACE__ . '\set_inline_size_limit');
+add_action( 'admin_bar_menu', __NAMESPACE__ . '\remove_admin_bar_items', 999 );
 
 if ( is_admin() ) {
-	add_action( 'admin_bar_menu', __NAMESPACE__ . '\remove_admin_bar_items', 999 );
 	add_action( 'admin_init', __NAMESPACE__ . '\set_default_dashboard_metaboxes' );
 }
 
