@@ -12,7 +12,7 @@ import styles from './FormButton.module.css';
  * Form Button Component
  * @return {JSX.Element} Form Button Component
  */
-const FormButton = () => {
+const FormButton = (): JSX.Element => {
 	return (
 		<button type="submit" className={styles.button}>
 			{__('Save Changes', 'kotisivu-block-theme')}

@@ -10,15 +10,16 @@ import { useAdminForm } from '@hooks';
 import { OptionBody, OptionGroup } from '@admin/containers';
 import { Form, FormHead, FormBody, FormButton } from '@admin/form';
 import { Input } from '@admin/inputs';
+import type { SocialAdminFormData } from '@hooks';
 
 /**
  * Social Settings Page
  * @return {JSX.Element} JSX for the social settings page
  */
-const Social = () => {
+const Social = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
 		path: 'kotisivu-block-theme/v1/options/social',
-		nonce: window.kotisivuSettings.nonce,
+		nonce: window.kotisivuSettings?.nonce,
 	});
 
 	/**
@@ -32,62 +33,62 @@ const Social = () => {
 		{
 			name: 'Facebook',
 			key: 'facebook',
-			value: formData.facebook,
+			value: (formData as SocialAdminFormData).facebook,
 		},
 		{
 			name: 'Twitter',
 			key: 'twitter',
-			value: formData.twitter,
+			value: (formData as SocialAdminFormData).twitter,
 		},
 		{
 			name: 'Instagram',
 			key: 'instagram',
-			value: formData.instagram,
+			value: (formData as SocialAdminFormData).instagram,
 		},
 		{
 			name: 'LinkedIn',
 			key: 'linkedin',
-			value: formData.linkedin,
+			value: (formData as SocialAdminFormData).linkedin,
 		},
 		{
 			name: 'YouTube',
 			key: 'youtube',
-			value: formData.youtube,
+			value: (formData as SocialAdminFormData).youtube,
 		},
 		{
 			name: 'Pinterest',
 			key: 'pinterest',
-			value: formData.pinterest,
+			value: (formData as SocialAdminFormData).pinterest,
 		},
 		{
 			name: 'Snapchat',
 			key: 'snapchat',
-			value: formData.snapchat,
+			value: (formData as SocialAdminFormData).snapchat,
 		},
 		{
 			name: 'TikTok',
 			key: 'tiktok',
-			value: formData.tiktok,
+			value: (formData as SocialAdminFormData).tiktok,
 		},
 		{
 			name: 'Twitch',
 			key: 'twitch',
-			value: formData.twitch,
+			value: (formData as SocialAdminFormData).twitch,
 		},
 		{
 			name: 'Reddit',
 			key: 'reddit',
-			value: formData.reddit,
+			value: (formData as SocialAdminFormData).reddit,
 		},
 		{
 			name: 'Discord',
 			key: 'discord',
-			value: formData.discord,
+			value: (formData as SocialAdminFormData).discord,
 		},
 		{
 			name: 'WhatsApp',
 			key: 'whatsapp',
-			value: formData.whatsapp,
+			value: (formData as SocialAdminFormData).whatsapp,
 		},
 	];
 

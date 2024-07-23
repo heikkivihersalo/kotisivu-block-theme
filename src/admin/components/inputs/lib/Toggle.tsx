@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import styles from './Toggle.module.css';
+import type { ToggleProps } from '@admin/inputs';
 
 /**
  * Toggle Component
@@ -13,7 +14,13 @@ import styles from './Toggle.module.css';
  * @param {boolean} props.hideLabel - Hide the label
  * @return {JSX.Element} Toggle component
  */
-const Toggle = ({ label, name, checked, onChange, hideLabel = false }) => {
+const Toggle = ({
+	label,
+	name,
+	checked,
+	onChange,
+	hideLabel = false,
+}: ToggleProps): JSX.Element => {
 	return (
 		<div className={styles.toggle}>
 			<label htmlFor={name}>

@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import { OptionBodyProps } from '@admin/containers';
 import styles from './OptionBody.module.css';
 
 /**
@@ -11,7 +12,11 @@ import styles from './OptionBody.module.css';
  * @param {string} props.description - Option description
  * @return {JSX.Element} OptionBody component
  */
-const OptionBody = ({ children, name = null, description = null }) => {
+const OptionBody = ({
+	children,
+	name = '',
+	description = '',
+}: OptionBodyProps): JSX.Element => {
 	return (
 		<div className={styles.body}>
 			{name && <h2>{name}</h2>}

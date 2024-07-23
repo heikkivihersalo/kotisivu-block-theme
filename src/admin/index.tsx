@@ -19,7 +19,7 @@ import './style.css';
  * Main component
  * @return {JSX.Element} Main component
  */
-const Main = () => {
+const Main = (): JSX.Element => {
 	/**
 	 * Get current page
 	 * - WordPress adds page query parameter to the URL when navigating between pages (e.g. page=kotisivu-settings-general)
@@ -39,7 +39,7 @@ const Main = () => {
 		analytics: <Analytics />,
 		contact: <Contact />,
 		'social-media': <Social />,
-	};
+	} as { [key: string]: JSX.Element };
 
 	/**
 	 * Render the component
@@ -58,5 +58,8 @@ const Main = () => {
  * Render app
  */
 domReady(() => {
-	createRoot(document.getElementById('ksd-settings')).render(<Main />);
+	const container = document.getElementById('ksd-settings');
+	if (container) {
+		createRoot(container).render(<Main />);
+	}
 });

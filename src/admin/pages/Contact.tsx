@@ -10,15 +10,16 @@ import { useAdminForm } from '@hooks';
 import { OptionBody, OptionGroup } from '@admin/containers';
 import { Form, FormHead, FormBody, FormButton } from '@admin/form';
 import { Input } from '@admin/inputs';
+import type { ContactAdminFormData } from '@hooks';
 
 /**
  * Contact Settings Page
  * @return {JSX.Element} JSX for the contact settings page
  */
-const Contact = () => {
+const Contact = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
 		path: 'kotisivu-block-theme/v1/options/contact',
-		nonce: window.kotisivuSettings.nonce,
+		nonce: window.kotisivuSettings?.nonce,
 	});
 
 	/**
@@ -49,63 +50,65 @@ const Contact = () => {
 							type="text"
 							label={__('Name', 'kotisivu-block-theme')}
 							name="name"
-							value={formData.name}
+							value={(formData as ContactAdminFormData).name}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Address', 'kotisivu-block-theme')}
 							name="address"
-							value={formData.address}
+							value={(formData as ContactAdminFormData).address}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Zip Code', 'kotisivu-block-theme')}
 							name="zip"
-							value={formData.zip}
+							value={(formData as ContactAdminFormData).zip}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('City', 'kotisivu-block-theme')}
 							name="city"
-							value={formData.city}
+							value={(formData as ContactAdminFormData).city}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Country', 'kotisivu-block-theme')}
 							name="country"
-							value={formData.country}
+							value={(formData as ContactAdminFormData).country}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('VAT Number', 'kotisivu-block-theme')}
 							name="vat"
-							value={formData.vat}
+							value={(formData as ContactAdminFormData).vat}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Business ID', 'kotisivu-block-theme')}
 							name="business_id"
-							value={formData.business_id}
+							value={
+								(formData as ContactAdminFormData).business_id
+							}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Email Address', 'kotisivu-block-theme')}
 							name="email"
-							value={formData.email}
+							value={(formData as ContactAdminFormData).email}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Phone Number', 'kotisivu-block-theme')}
 							name="phone"
-							value={formData.phone}
+							value={(formData as ContactAdminFormData).phone}
 							onChange={handleChange}
 						/>
 					</FormBody>

@@ -4,7 +4,7 @@
  * @param {string} id - Google Tag Manager ID
  * @return {boolean} - ID is valid
  */
-function validateTagManagerID(id) {
+function validateTagManagerID(id: string): boolean {
 	return /^GTM-[A-Z0-9]{7}$/.test(id);
 }
 
@@ -14,7 +14,7 @@ function validateTagManagerID(id) {
  * @param {string} url - Google Tag Manager URL
  * @return {boolean} - URL is valid
  */
-function validateTagManagerUrl(url) {
+function validateTagManagerUrl(url: string): boolean {
 	if ('' === url) {
 		return false;
 	}

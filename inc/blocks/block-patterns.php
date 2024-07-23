@@ -11,6 +11,35 @@ namespace Kotisivu\BlockTheme;
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Restricts block editor patterns in the editor by removing support for all patterns from:
+ *   - Dotcom and plugins like Jetpack
+ *   - Dotorg pattern directory except for theme patterns
+ * @param mixed $dispatch_result The result of the dispatch process. Default null.
+ * @param mixed $request The request data. Default null.
+ * @param mixed $route The route matched by the request. Default null.
+ * @return mixed
+ */
+function restrict_block_editor_patterns( $dispatch_result, $request, $route ) {
+		$is_patterns_request = preg_match( '/^\/wp\/v2\/block\-patterns\/patterns$/', $route );
+
+	if ( $is_patterns_request ) {
+		// For the request route /wp/v2/block-patterns/patterns
+		$patterns = WP_Block_Patterns_Registry::get_instance()->get_all_registered();
+
+		if ( ! empty( $patterns ) ) {
+			// Remove theme support for all patterns from Dotcom, and plugins. See https://developer.wordpress.org/themes/features/block-patterns/#unregistering-block-patterns
+			foreach ( $patterns as $pattern ) {
+				unregister_block_pattern( $pattern['name'] );
+			}
+			// Remove theme support for core patterns from the Dotorg pattern directory. See https://developer.wordpress.org/themes/features/block-patterns/#removing-core-patterns
+			remove_theme_support( 'core-block-patterns' );
+		}
+	}
+
+		return $dispatch_result;
+}
+
+/**
  * Get Pattern Content.
  *
  * @param string $name Pattern name.

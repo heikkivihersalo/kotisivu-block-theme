@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { Toggle } from '@admin/inputs';
 import styles from './FormHead.module.css';
+import { FormHeadProps } from '@admin/form';
 
 /**
  * Form Component
@@ -20,14 +21,14 @@ import styles from './FormHead.module.css';
  */
 const FormHead = ({
 	name,
-	toggleName = null,
-	toggleValue = null,
-	toggleCallback = null,
-}) => {
+	toggleName = '',
+	toggleValue = false,
+	toggleCallback = () => {},
+}: FormHeadProps): JSX.Element => {
 	return (
 		<div className={styles.head}>
 			<h3>{name}</h3>
-			{toggleName !== null && (
+			{toggleName !== '' && (
 				<Toggle
 					label={__('Enable', 'kotisivu-block-theme')}
 					name={toggleName}

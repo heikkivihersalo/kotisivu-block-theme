@@ -14,14 +14,14 @@ import { Button } from '@admin/misc';
  * General Settings Page
  * @return {JSX.Element} JSX for the general settings page
  */
-const General = () => {
-	const { nonce } = window.kotisivuSettings;
+const General = (): JSX.Element => {
+	const { nonce } = window.kotisivuSettings as KotisivuSettings;
 
 	/**
 	 * Handle clearing the cache
 	 * @return {void}
 	 */
-	const handleClearCache = () => {
+	const handleClearCache = (): void => {
 		apiFetch.use(apiFetch.createNonceMiddleware(nonce));
 
 		apiFetch({

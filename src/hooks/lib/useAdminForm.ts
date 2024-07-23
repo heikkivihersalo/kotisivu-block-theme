@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+import type { AdminFormData, AdminApiResponse, AdminFormProps } from '@hooks';
 
 /**
  * Handle form changes and updates
@@ -12,29 +13,45 @@ import apiFetch from '@wordpress/api-fetch';
  * @param {string} props.nonce Nonce
  * @return {Object} formData, setFormData, handleChange, handleSave
  */
-function useAdminForm({ path, nonce }) {
+function useAdminForm({ path, nonce }: AdminFormProps): {
+	formData: AdminFormData;
+	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	handleSave: ({ data }: { data: AdminFormData }) => void;
+} {
 	const [formData, setFormData] = useState({});
 
 	/**
 	 * Get initial values
 	 */
 	useEffect(() => {
-		apiFetch.use(apiFetch.createNonceMiddleware(nonce));
+		if (nonce) {
+			apiFetch.use(apiFetch.createNonceMiddleware(nonce));
+		} else {
+			console.error(
+				__(
+					'Nonce is missing for the admin form.',
+					'kotisivu-block-theme'
+				)
+			);
+		}
 
 		apiFetch({
 			method: 'GET',
 			path,
-		}).then((response) => {
-			setFormData(response.data);
+		}).then((response: unknown) => {
+			const adminResponse = response as AdminApiResponse;
+			if ('data' in adminResponse) {
+				setFormData(adminResponse.data);
+			}
 		});
 	}, [path, nonce]);
 
 	/**
 	 * Handle form changes
-	 * @param {Object} e Event
+	 * @param {React.ChangeEvent<HTMLInputElement>} e Event
 	 * @return {void}
 	 */
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		switch (e.target.type) {
 			case 'checkbox':
 				setFormData({
@@ -71,8 +88,17 @@ function useAdminForm({ path, nonce }) {
 	 * @param {Object} props.data Form data
 	 * @return {void}
 	 */
-	const handleSave = ({ data }) => {
-		apiFetch.use(apiFetch.createNonceMiddleware(nonce));
+	const handleSave = ({ data }: { data: AdminFormData }): void => {
+		if (nonce) {
+			apiFetch.use(apiFetch.createNonceMiddleware(nonce));
+		} else {
+			console.error(
+				__(
+					'Nonce is missing for the admin form.',
+					'kotisivu-block-theme'
+				)
+			);
+		}
 
 		apiFetch({
 			method: 'POST',

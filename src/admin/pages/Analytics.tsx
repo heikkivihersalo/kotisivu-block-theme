@@ -10,15 +10,16 @@ import { useAdminForm } from '@hooks';
 import { OptionBody, OptionGroup } from '@admin/containers';
 import { Form, FormHead, FormBody, FormButton } from '@admin/form';
 import { Input } from '@admin/inputs';
+import type { AnalyticsAdminFormData } from '@hooks';
 
 /**
  * Analytics Settings Page
  * @return {JSX.Element} JSX for the analytics settings page
  */
-const Analytics = () => {
+const Analytics = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
 		path: 'kotisivu-block-theme/v1/options/analytics',
-		nonce: window.kotisivuSettings.nonce,
+		nonce: window.kotisivuSettings?.nonce,
 	});
 
 	/**
@@ -44,7 +45,9 @@ const Analytics = () => {
 					<FormHead
 						name={__('Google Tag Manager', 'kotisivu-block-theme')}
 						toggleName="active"
-						toggleValue={formData.active}
+						toggleValue={
+							(formData as AnalyticsAdminFormData).active
+						}
 						toggleCallback={handleChange}
 					/>
 					<FormBody>
@@ -53,7 +56,7 @@ const Analytics = () => {
 							label={__('Container ID', 'kotisivu-block-theme')}
 							name="id"
 							placeholder="GTM-123456"
-							value={formData.id}
+							value={(formData as AnalyticsAdminFormData).id}
 							onChange={handleChange}
 						/>
 						<Input
@@ -61,15 +64,16 @@ const Analytics = () => {
 							label={__('Container URL', 'kotisivu-block-theme')}
 							name="url"
 							placeholder="www.googletagmanager.com"
-							value={formData.url}
+							value={(formData as AnalyticsAdminFormData).url}
 							onChange={handleChange}
 						/>
 						<Input
 							type="number"
 							label={__('Timeout', 'kotisivu-block-theme')}
 							name="timeout"
-							value={formData.timeout}
+							value={(formData as AnalyticsAdminFormData).timeout}
 							onChange={handleChange}
+							placeholder={'2000'}
 						/>
 					</FormBody>
 					<FormButton />

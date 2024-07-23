@@ -2,14 +2,7 @@
  * Internal dependencies
  */
 import styles from './Input.module.css';
-
-/**
- * @typedef InputType
- * @property {string} Text "text"
- * @property {string} TextArea "textarea"
- * @property {string} Number "number"
- * @property {string} Email "email"
- */
+import type { InputType, InputProps } from '@admin/inputs';
 
 /**
  * Component for number input
@@ -22,7 +15,21 @@ import styles from './Input.module.css';
  * @param {Function} props.onChange - Change handler for the input
  * @return {JSX.Element} Text input component
  */
-const Input = ({ type, label, name, value, placeholder, onChange }) => {
+const Input = ({
+	type,
+	label,
+	name,
+	value,
+	placeholder = '',
+	onChange,
+}: {
+	type: InputType;
+	label: string;
+	name: string;
+	value: string | number | readonly string[] | undefined;
+	placeholder?: string;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}): JSX.Element => {
 	return (
 		<div className={styles.input}>
 			<label htmlFor={name}>{label}</label>
