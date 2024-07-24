@@ -7,7 +7,8 @@ import domReady from '@wordpress/dom-ready';
 /**
  * Internal dependencies
  */
-import { updateBlockMarkup, initBlockStyles } from './utils';
+import updateBlockMarkup from './utils/updateBlockMarkup.tsx';
+import initBlockStyles from './utils/initBlockStyles.ts';
 import variations from './variations.ts';
 import './index.css';
 
