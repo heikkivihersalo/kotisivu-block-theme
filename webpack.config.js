@@ -49,12 +49,12 @@ const CopyPlugin = require('copy-webpack-plugin');
  * @return {string[]} List of core block paths
  */
 function getCoreBlocks() {
-	const src = glob.sync('./src/block-library/core/**/*.js');
+	const src = glob.sync('./src/block-library/core/**/*.ts');
 	const blocks = [];
 
 	src.forEach((entry) => {
 		switch (entry.split('/')[5]) {
-			case 'index.js':
+			case 'index.ts':
 				blocks.push(entry);
 				break;
 			default:
