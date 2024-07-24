@@ -1,16 +1,15 @@
 import { useState, useEffect } from '@wordpress/element';
 
-/**
- * @typedef {Object} Dimensions
- * @property {number} width  The width of the element
- * @property {number} height The height of the element
- */
+type Dimensions = {
+	width: number;
+	height: number;
+};
 
 /**
  * Get the dimensions of the window
  * @return {Dimensions} The dimensions of the window
  */
-function getWindowDimensions() {
+function getWindowDimensions(): Dimensions {
 	const { innerWidth: width, innerHeight: height } = window;
 	return { width, height };
 }
@@ -19,7 +18,7 @@ function getWindowDimensions() {
  * Get the dimensions of the window
  * @return {Dimensions} The dimensions of the window
  */
-function useWindowDimensions() {
+function useWindowDimensions(): Dimensions {
 	const [windowDimensions, setWindowDimensions] = useState(
 		getWindowDimensions()
 	);
