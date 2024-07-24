@@ -4,7 +4,7 @@ import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import styles from './styles.json';
+import variations from './variations';
 import './index.css';
 
 /**
@@ -21,7 +21,7 @@ domReady(function () {
 	/**
 	 * Register custom button styles
 	 */
-	styles.forEach((style) => {
+	variations.forEach((style) => {
 		registerBlockStyle('core/separator', style);
 	});
 });
