@@ -212,6 +212,16 @@ define(
 				'icon'  => null,
 			),
 			array(
+				'slug'  => 'sections',
+				'label' => __( 'Sections', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'templates',
+				'label' => __( 'Templates', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
 				'slug'  => 'dynamic-data',
 				'label' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
 				'icon'  => null,
