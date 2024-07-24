@@ -9,13 +9,18 @@ import { useSelect } from '@wordpress/data';
  * Original source:
  * {@link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/}
  */
-const useCustomPosts = (perPage = 6, postType) => {
+const useCustomPosts = (perPage: number = 6, postType: string): Array<any> => {
 	return useSelect((select) => {
 		const data = select('core').getEntityRecords('postType', postType, {
 			per_page: perPage,
 		});
+
 		return data || [];
 	});
 };
 
 export { useCustomPosts };
+
+declare module '@wordpress/data' {
+	function useSelect<T>(selector: (select: any) => T): T;
+}

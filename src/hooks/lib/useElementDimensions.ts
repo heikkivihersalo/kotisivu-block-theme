@@ -1,20 +1,21 @@
 import { useState, useLayoutEffect } from '@wordpress/element';
 
-/**
- * @typedef {Object} Dimensions
- * @property {number} width  The width of the element
- * @property {number} height The height of the element
- */
+type Dimensions = {
+	width: number;
+	height: number;
+};
 
 /**
  * Get the dimensions of a React ref object
  * @param {import('react').RefObject} ref A React ref object
  * @return {Dimensions} The dimensions of the element
  */
-const getElementDimensions = (ref) => {
+const getElementDimensions = (
+	ref: React.RefObject<HTMLElement>
+): Dimensions => {
 	return {
-		width: ref.current.offsetWidth,
-		height: ref.current.offsetHeight,
+		width: ref.current ? ref.current.offsetWidth : 0,
+		height: ref.current ? ref.current.offsetHeight : 0,
 	};
 };
 
@@ -23,8 +24,11 @@ const getElementDimensions = (ref) => {
  * @param {import('react').RefObject} ref A React ref object
  * @return {Dimensions} The dimensions of the element
  */
-function useElementDimensions(ref) {
-	const [elementDimensions, setElementDimensions] = useState();
+function useElementDimensions(ref: React.RefObject<HTMLElement>): Dimensions {
+	const [elementDimensions, setElementDimensions] = useState<Dimensions>({
+		width: 0,
+		height: 0,
+	});
 
 	useLayoutEffect(() => {
 		const handleResize = () => {
