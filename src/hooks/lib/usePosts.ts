@@ -20,5 +20,5 @@ const usePosts = (perPage: number = 6): Array<any> => {
 export { usePosts };
 
 declare module '@wordpress/data' {
-	function useSelect<T>(selector: (select: any) => T): T;
+	function useSelect<T>(selector: (select: any) => T): T; // eslint-disable-line
 }
