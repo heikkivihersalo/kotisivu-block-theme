@@ -1,10 +1,13 @@
+/**
+ * WordPress dependencies
+ */
 import domReady from '@wordpress/dom-ready';
 import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import styles from './styles.json';
+import variations from './variations.ts';
 import './index.css';
 
 /**
@@ -14,14 +17,12 @@ domReady(function () {
 	/**
 	 * Unregister default button styles
 	 */
-	unregisterBlockStyle('core/separator', 'default');
-	unregisterBlockStyle('core/separator', 'wide');
-	unregisterBlockStyle('core/separator', 'dots');
+	unregisterBlockStyle('core/button', 'fill');
 
 	/**
 	 * Register custom button styles
 	 */
-	styles.forEach((style) => {
-		registerBlockStyle('core/separator', style);
+	variations.forEach((style) => {
+		registerBlockStyle('core/button', style);
 	});
 });

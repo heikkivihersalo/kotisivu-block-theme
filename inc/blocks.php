@@ -68,6 +68,10 @@ require_once SITE_PATH . '/inc/blocks/block-types/class-block-part.php';
 $part_blocks = new BlockPart();
 $part_blocks->init();
 
+require_once SITE_PATH . '/inc/blocks/block-types/class-block-core.php';
+$core_blocks = new BlockCore();
+$core_blocks->init();
+
 /**
  * Register custom block categories
  */

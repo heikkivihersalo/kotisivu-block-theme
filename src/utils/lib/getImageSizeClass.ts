@@ -1,8 +1,9 @@
 /**
  * Returns the block size class name.
  * @param {string} slug
+ * @return {string} Block size class name.
  */
-function getBlockSizeClass(slug) {
+function getImageSizeClass(slug: string): string {
 	switch (slug) {
 		case 'full':
 			return 'size-full';
@@ -19,4 +20,4 @@ function getBlockSizeClass(slug) {
 	}
 }
 
-export { getBlockSizeClass };
+export { getImageSizeClass };
