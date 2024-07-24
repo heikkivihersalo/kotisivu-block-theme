@@ -4,11 +4,16 @@
 import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 
 /**
+ * Internal dependencies
+ */
+import type { BlockStyle } from 'core-blocks';
+
+/**
  * Init block styles, unregister default styles and register custom styles
- * @param {Array} styles Custom block styles
+ * @param {BlockStyle[]} styles - Custom block styles
  * @return {void}
  */
-function initBlockStyles(styles = []) {
+function initBlockStyles(styles: BlockStyle[] = []): void {
 	unregisterBlockStyle('core/image', 'default');
 	unregisterBlockStyle('core/image', 'rounded');
 

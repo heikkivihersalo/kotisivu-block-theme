@@ -8,17 +8,21 @@ import domReady from '@wordpress/dom-ready';
  * Internal dependencies
  */
 import { updateBlockMarkup, initBlockStyles } from './utils';
-import styles from './styles.json';
+import variations from './variations.ts';
 import './index.css';
 
 /**
  * Filters
  */
-addFilter('blocks.getSaveElement', 'ksd/image', updateBlockMarkup);
+addFilter(
+	'blocks.getSaveElement',
+	'kotisivu-block-theme/image',
+	updateBlockMarkup
+);
 
 /**
  * Run on DOM ready
  */
 domReady(function () {
-	initBlockStyles(styles);
+	initBlockStyles(variations);
 });
