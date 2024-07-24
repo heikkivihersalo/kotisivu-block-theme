@@ -7,7 +7,7 @@ import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import styles from './styles.json';
+import variations from './variations.ts';
 import './index.css';
 
 /**
@@ -22,7 +22,7 @@ domReady(function () {
 	/**
 	 * Register custom button styles
 	 */
-	styles.forEach((style) => {
+	variations.forEach((style) => {
 		registerBlockStyle('core/button', style);
 	});
 });
