@@ -52,7 +52,17 @@ declare module '@utils' {
 
 	const getBlockStyles: (style: StyleAttributes) => BlockStyles;
 
+	const getImageAlignmentClass: (align: string) => string | null;
+
+	const getImageSizeClass: (sizeSlug: string) => string;
+
 	const getIsReversedClass: (isReversed: boolean) => string;
 
-	export { addModifiers, getBlockStyles, getIsReversedClass };
+	export {
+		addModifiers,
+		getBlockStyles,
+		getImageAlignmentClass,
+		getImageSizeClass,
+		getIsReversedClass,
+	};
 }
