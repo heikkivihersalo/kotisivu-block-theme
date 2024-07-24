@@ -22,4 +22,4 @@ function initBlockStyles(styles: BlockStyle[] = []): void {
 	});
 }
 
-export { initBlockStyles };
+export default initBlockStyles;

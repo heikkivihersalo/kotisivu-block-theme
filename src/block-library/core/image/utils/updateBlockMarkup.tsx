@@ -36,7 +36,7 @@ type ImageProps = {
  * @param {Object} element Block element
  * @param {Object} blockType Block type
  * @param {Object} attributes Block attributes
- * @return {JSX.Element} Updated block element
+ * @return {JSX.Element | undefined} Updated block element
  */
 function updateBlockMarkup(
 	element: JSX.Element,
@@ -102,4 +102,4 @@ function updateBlockMarkup(
 	return imageBlock;
 }
 
-export { updateBlockMarkup };
+export default updateBlockMarkup;
