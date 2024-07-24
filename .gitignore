@@ -104,6 +104,7 @@ coverage-ts
 
 # Cache files
 .phpcs-cache
+.phpunit.cache
 
 # All plugins
 # Note: If you wish to whitelist plugins,
