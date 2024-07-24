@@ -1,5 +1,10 @@
 import { useSelect } from '@wordpress/data';
 
+type BlockEditSelector = {
+	getBlockHierarchyRootClientId: (clientId: string) => string;
+	getBlockAttributes: (clientId: string) => Object;
+};
+
 /**
  * Hook to get attributes of the parent block
  *
@@ -9,11 +14,11 @@ import { useSelect } from '@wordpress/data';
  * Original source:
  * {@link https://pluginmachine.com/creating-reusable-react-hooks-for-the-wordpress-block-editor-or-whatever/}
  */
-const useParentBlockAttributes = (clientId) => {
+const useParentBlockAttributes = (clientId: string): object => {
 	return useSelect(
 		(select) => {
 			const { getBlockHierarchyRootClientId, getBlockAttributes } =
-				select('core/block-editor');
+				select('core/block-editor') as BlockEditSelector;
 
 			const parentClientId = getBlockHierarchyRootClientId(clientId);
 
