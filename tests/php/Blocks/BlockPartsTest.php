@@ -7,16 +7,22 @@ require_once SITE_PATH . '/inc/blocks/block-types/class-block-part.php';
 
 use PHPUnit\Framework\TestCase;
 
+/** 
+ * @group custom-blocks
+ * @group custom-block-part
+ */
 final class BlockPartsTest extends TestCase {
-    #[Test]
-    #[Group('blocks')]
+    /**
+     * @test
+     */
     public function test_GetPath(): void {
         $block = new BlockPart();
         $this->assertEquals(SITE_PATH . '/build/block-library/parts', $block->get_path());
     }
 
-    #[Test]
-    #[Group('blocks')]
+    /**
+     * @test
+     */
     public function test_GetBlocks(): void {
         $block = new BlockPart();
         $this->assertIsArray($block->get_blocks());
