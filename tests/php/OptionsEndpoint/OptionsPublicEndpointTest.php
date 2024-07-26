@@ -21,7 +21,7 @@ final class OptionsPublicEndpointTest extends TestCase {
      */
     public function setUp(): void {
         $this->publicClient = new \GuzzleHttp\Client([
-            'base_uri' => $_ENV['APP_HOST'],
+            'base_uri' => 'host.docker.internal:8889',
         ]);
     }
 
@@ -36,7 +36,7 @@ final class OptionsPublicEndpointTest extends TestCase {
     public function test_Success_GetContact(): void {
         $response = $this->publicClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/contact',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
             ['verify' => false]
         );
 
@@ -66,7 +66,7 @@ final class OptionsPublicEndpointTest extends TestCase {
         try {
             $response = $this->publicClient->request(
                 'POST',
-                '/wp-json/kotisivu-block-theme/v1/options/contact',
+                '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
                 array(
                     'verify' => false,
                     'json' => []
@@ -90,7 +90,7 @@ final class OptionsPublicEndpointTest extends TestCase {
     public function test_Success_GetSocial(): void {
         $response = $this->publicClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/social',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
             ['verify' => false]
         );
 
@@ -123,7 +123,7 @@ final class OptionsPublicEndpointTest extends TestCase {
         try {
             $response = $this->publicClient->request(
                 'POST',
-                '/wp-json/kotisivu-block-theme/v1/options/social',
+                '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
                 array(
                     'verify' => false,
                     'json' => []
@@ -147,7 +147,7 @@ final class OptionsPublicEndpointTest extends TestCase {
     public function test_Success_GetAnalytics(): void {
         $response = $this->publicClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/analytics',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
             ['verify' => false]
         );
 
@@ -172,7 +172,7 @@ final class OptionsPublicEndpointTest extends TestCase {
         try {
             $response = $this->publicClient->request(
                 'POST',
-                '/wp-json/kotisivu-block-theme/v1/options/analytics',
+                '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
                 array(
                     'verify' => false,
                     'json' => []
