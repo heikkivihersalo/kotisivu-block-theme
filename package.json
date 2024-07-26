@@ -10,13 +10,22 @@
 		"start": "wp-scripts start",
 		"zip": "wp-scripts plugin-zip",
 		"format": "wp-scripts format",
-		"lint": "yarn lint:css && yarn lint:js",
+		"lint": "yarn lint:css && yarn lint:js && yarn lint:php",
 		"lint:css": "wp-scripts lint-style 'src/**/*.css'",
 		"lint:js": "wp-scripts lint-js",
+		"lint:php": "./vendor/bin/phpcs",
+		"test:php": "./vendor/bin/phpunit",
 		"ts-coverage": "typescript-coverage-report",
 		"build:prod": "yarn format && yarn lint:css && yarn lint:js && yarn build && yarn zip",
 		"make-pot": "wp i18n make-pot . languages/kotisivu-block-theme.pot --slug=kotisivu-block-theme --domain=kotisivu-block-theme --exclude=src/blocks/static,src/blocks/dynamic/*/*.js,src/features,src/utils,src/hooks,src/__template-library__",
-		"make-json": "wp i18n make-json languages/ --no-purge"
+		"make-json": "wp i18n make-json languages/ --no-purge",
+		"wp-env": "wp-env",
+		"wp-env:start": "wp-env start",
+		"wp-env:theme": "wp-env run cli --env-cwd=wp-content/themes/kotisivu-block-theme wp theme activate kotisivu-block-theme && wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme wp theme activate kotisivu-block-theme",
+		"wp-env:composer": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer",
+		"wp-env:composer-install": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer install",
+		"wp-env:phpunit": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme ./vendor/bin/phpunit",
+		"wp-env:init": "yarn wp-env:start && yarn wp-env:theme && yarn wp-env:composer-install"
 	},
 	"dependencies": {
 		"classnames": "^2.5.1"
@@ -29,6 +38,7 @@
 		"@types/wordpress__components": "^23.8.0",
 		"@wordpress/block-editor": "^12.19.1",
 		"@wordpress/blocks": "^12.28.1",
+		"@wordpress/env": "^10.4.0",
 		"@wordpress/eslint-plugin": "^17.11.0",
 		"@wordpress/i18n": "^4.51.0",
 		"@wordpress/icons": "^10.3.0",
