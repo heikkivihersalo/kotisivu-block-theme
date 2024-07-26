@@ -21,7 +21,7 @@ final class OptionsAuthEndpointTest extends TestCase {
      */
     public function setUp(): void {        
         $this->authClient = new \GuzzleHttp\Client([
-            'base_uri' => 'host.docker.internal:8888',
+            'base_uri' => SITE_URL,
             'auth' => [APP_USER, APP_PASS],
         ]);
     }

@@ -48,3 +48,8 @@ define( 'ADMIN_PASS', 'password' );
 if (!defined('SITE_PATH')) {
 	define('SITE_PATH', dirname(__DIR__, 1));
 }
+
+if (!defined('SITE_URL')) {
+	// For Docker http://host.docker.internal:8889
+	define('SITE_URL', 'http://localhost:8889');
+}
