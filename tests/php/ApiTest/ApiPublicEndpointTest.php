@@ -48,6 +48,8 @@ final class OptionsPublicEndpointTest extends TestCase {
         $server = rest_get_server();
         $data = $server->response_to_data( $response, false );
 
+        var_dump($data);
+
         // Request
         $this->assertEquals('success', $data['status']);
         $this->assertEquals('fetch_success', $data['type']);
