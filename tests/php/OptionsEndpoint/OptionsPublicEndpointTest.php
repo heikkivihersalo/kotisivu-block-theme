@@ -21,7 +21,7 @@ final class OptionsPublicEndpointTest extends TestCase {
      */
     public function setUp(): void {
         $this->publicClient = new \GuzzleHttp\Client([
-            'base_uri' => 'host.docker.internal:8889',
+            'base_uri' => SITE_URL,
         ]);
     }
 
