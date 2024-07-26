@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kotisivu\BlockTheme\Api\Test;
+namespace Kotisivu\BlockTheme;
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 
+/** 
+ * @group api-routes
+ * @group options-auth
+ */
 final class OptionsAuthEndpointTest extends TestCase {
     /**
      * GuzzleHttp Client instance.
@@ -34,13 +38,8 @@ final class OptionsAuthEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get contact information. (Read)
-     * - Set contact information. (Update)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
     public function test_Success_GetContact(): void {
         // Set current user to admin.
         $response = $this->authClient->request(
@@ -69,8 +68,9 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('email', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    /**
+     * @test
+     */
     public function test_Success_SetContact(): void {
         $random_name = $this->generate_random_string() . ' ' . $this->generate_random_string();
         $random_address = $this->generate_random_string() . ' ' . rand(10, 99);
@@ -122,13 +122,8 @@ final class OptionsAuthEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get social account information. (Read)
-     * - Set social account information. (Update)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
     public function test_Success_GetSocial(): void {
         $response = $this->authClient->request(
             'GET',
@@ -159,8 +154,9 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('whatsapp', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    /**
+     * @test
+     */
     public function test_Success_SetSocial(): void {
         $random_url = $this->generate_random_string() . '.test';
 
@@ -210,13 +206,8 @@ final class OptionsAuthEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get analytics information. (Read)
-     * - Set analytics information. (Update)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
     public function test_Success_GetAnalytics(): void {
         $response = $this->authClient->request(
             'GET',
@@ -238,9 +229,10 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('url', $data['data']);
         $this->assertArrayHasKey('timeout', $data['data']);
     }
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    
+    /**
+     * @test
+     */
     public function test_Success_SetAnalytics(): void {
         $random_bool = (bool)rand(0, 1);
         $random_id = $this->generate_random_string();

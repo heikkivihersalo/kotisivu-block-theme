@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kotisivu\BlockTheme\Api\Test;
+namespace Kotisivu\BlockTheme;
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 
+/** 
+ * @group api-routes
+ * @group options-public
+ */
 final class OptionsPublicEndpointTest extends TestCase {
     /**
      * GuzzleHttp Client instance.
@@ -24,15 +28,10 @@ final class OptionsPublicEndpointTest extends TestCase {
             'base_uri' => SITE_URL,
         ]);
     }
-
+    
     /**
-     * Test cases for public options endpoint.
-     * - Get contact information. (Read)
-     * - Set social information. This should fail. (Read)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-public')]
     public function test_Success_GetContact(): void {
         $response = $this->publicClient->request(
             'GET',
@@ -60,8 +59,9 @@ final class OptionsPublicEndpointTest extends TestCase {
         $this->assertArrayHasKey('email', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-public')]
+    /**
+     * @test
+     */
     public function test_Error_SetContact(): void {
         try {
             $response = $this->publicClient->request(
@@ -81,12 +81,8 @@ final class OptionsPublicEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for public options endpoint.
-     * - Get social information. (Read)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-public')]
     public function test_Success_GetSocial(): void {
         $response = $this->publicClient->request(
             'GET',
@@ -117,8 +113,9 @@ final class OptionsPublicEndpointTest extends TestCase {
         $this->assertArrayHasKey('whatsapp', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-public')]
+    /**
+     * @test
+     */
     public function test_Error_SetSocial(): void {
         try {
             $response = $this->publicClient->request(
@@ -138,12 +135,8 @@ final class OptionsPublicEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for public options endpoint.
-     * - Get analytics information. (Read)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-public')]
     public function test_Success_GetAnalytics(): void {
         $response = $this->publicClient->request(
             'GET',
@@ -166,8 +159,9 @@ final class OptionsPublicEndpointTest extends TestCase {
         $this->assertArrayHasKey('timeout', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-public')]
+    /**
+     * @test
+     */
     public function test_Error_SetAnalytics(): void {
         try {
             $response = $this->publicClient->request(
