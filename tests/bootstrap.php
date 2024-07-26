@@ -46,5 +46,5 @@ define( 'ADMIN_USER', 'admin' );
 define( 'ADMIN_PASS', 'password' );
 
 if (!defined('SITE_PATH')) {
-	define('SITE_PATH', dirname(__DIR__, 2));
+	define('SITE_PATH', dirname(__DIR__, 1));
 }
