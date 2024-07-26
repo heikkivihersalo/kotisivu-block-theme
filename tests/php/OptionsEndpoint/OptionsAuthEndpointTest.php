@@ -19,11 +19,18 @@ final class OptionsAuthEndpointTest extends TestCase {
     /**
      * @inheritDoc
      */
-    public function setUp(): void {
+    public function setUp(): void {        
         $this->authClient = new \GuzzleHttp\Client([
-            'base_uri' => $_ENV['APP_HOST'],
-            'auth' => [$_ENV['ADMIN_APP_USERNAME'], $_ENV['ADMIN_APP_PASSWORD']],
+            'base_uri' => 'host.docker.internal:8888',
+            'auth' => [APP_USER, APP_PASS],
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function tearDown(): void {
+        $this->authClient = null;
     }
 
     /**
@@ -35,9 +42,10 @@ final class OptionsAuthEndpointTest extends TestCase {
     #[Test]
     #[Group('api'), Group('options-auth')]
     public function test_Success_GetContact(): void {
+        // Set current user to admin.
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/contact',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
             ['verify' => false]
         );
 
@@ -76,7 +84,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/contact',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
             array(
                 'verify' => false,
                 'json' => [
@@ -124,7 +132,7 @@ final class OptionsAuthEndpointTest extends TestCase {
     public function test_Success_GetSocial(): void {
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/social',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
             ['verify' => false]
         );
 
@@ -158,7 +166,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/social',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
             array(
                 'verify' => false,
                 'json' => [
@@ -212,7 +220,7 @@ final class OptionsAuthEndpointTest extends TestCase {
     public function test_Success_GetAnalytics(): void {
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/analytics',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
             ['verify' => false]
         );
 
@@ -241,7 +249,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/analytics',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
             array(
                 'verify' => false,
                 'json' => [
@@ -275,12 +283,5 @@ final class OptionsAuthEndpointTest extends TestCase {
     private function generate_random_string(): string {
         $length = rand(5, 10);
         return substr(str_shuffle(implode(range('a', 'z'))), 0, $length);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function tearDown(): void {
-        $this->authClient = null;
     }
 }
