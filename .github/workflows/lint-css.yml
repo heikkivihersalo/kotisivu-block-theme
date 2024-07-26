@@ -1,4 +1,4 @@
-name: CSS
+name: Lint CSS
 
 on: [pull_request]
 
