@@ -3,17 +3,16 @@ name: PHP Tests
 on: [pull_request]
 
 jobs:
-    test-php:
-        name: PHP Tests
+    wp-env:
         runs-on: ubuntu-latest
-
+        name: PHP Tests
         steps:
             - name: Start wp-env
               uses: godaddy-wordpress/setup-wp-env@v1
               with:
                   core: 'WordPress/WordPress'
-                  phpVersion: '8.2'
-                  plugins: '["."]'
+                  phpVersion: '8.3'
+                  themes: '["."]'
             - name: Checkout
               uses: actions/checkout@v4
             - name: Activate theme
