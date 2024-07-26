@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd" 
-    bootstrap="bootstrap.php"
-    colors="true" 
-    displayDetailsOnTestsThatTriggerDeprecations="true"
-    displayDetailsOnTestsThatTriggerErrors="true"
-    displayDetailsOnTestsThatTriggerNotices="true"
-    displayDetailsOnTestsThatTriggerWarnings="true"
-    cacheDirectory=".phpunit.cache"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.0/phpunit.xsd" 
+    bootstrap="./tests/bootstrap.php"
+    colors="true"
     >
     <testsuites>
+        <testsuite name="Blocks">
+            <directory suffix="Test.php">./tests/php/Blocks/</directory>
+        </testsuite>
         <testsuite name="API | Options Endpoint">
             <directory suffix="Test.php">./tests/php/OptionsEndpoint/</directory>
         </testsuite>
@@ -18,5 +16,6 @@
     <php>
         <ini name="display_errors" value="On"/>
         <ini name="error_reporting" value="-1"/>
+        <env name="WORDPRESS_TABLE_PREFIX" value="wp_"/>
     </php>
 </phpunit>
