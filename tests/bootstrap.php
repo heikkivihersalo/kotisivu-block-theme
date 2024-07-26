@@ -50,6 +50,5 @@ if (!defined('SITE_PATH')) {
 }
 
 if (!defined('SITE_URL')) {
-	// For Docker http://host.docker.internal:8889
-	define('SITE_URL', 'http://localhost:8889');
+	define('SITE_URL', 'host.docker.internal:8889');
 }
