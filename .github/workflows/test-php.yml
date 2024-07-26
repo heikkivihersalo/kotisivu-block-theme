@@ -1,11 +1,11 @@
-name: PHP Tests
+name: PHPUnit
 
 on: [pull_request]
 
 jobs:
-    wp-env:
+    php-unit-tests:
         runs-on: ubuntu-latest
-        name: PHP Tests
+        name: PHPUnit Tests
         steps:
             - name: Checkout
               uses: actions/checkout@v4

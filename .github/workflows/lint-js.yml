@@ -1,10 +1,10 @@
-name: Lint JS
+name: JS
 
 on: [pull_request]
 
 jobs:
     lint-js:
-        name: Lint JS
+        name: JS
         runs-on: ubuntu-latest
 
         steps:

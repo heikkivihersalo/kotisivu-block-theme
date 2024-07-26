@@ -1,10 +1,10 @@
-name: Lint CSS
+name: CSS
 
 on: [pull_request]
 
 jobs:
     lint-css:
-        name: Lint CSS
+        name: CSS
         runs-on: ubuntu-latest
 
         steps:
