@@ -1,0 +1,26 @@
+name: PHP Tests
+
+on: [pull_request]
+
+jobs:
+    test-php:
+        name: PHP Tests
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Start wp-env
+              uses: godaddy-wordpress/setup-wp-env@v1
+              with:
+                  core: 'WordPress/WordPress'
+                  phpVersion: '8.2'
+                  plugins: '["."]'
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Activate theme
+              run: |
+                  wp-env run cli --env-cwd=wp-content/themes/kotisivu-block-theme wp theme activate kotisivu-block-theme
+                  wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme wp theme activate kotisivu-block-theme
+            - name: Install dependencies
+              run: wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer install
+            - name: Run tests and collect coverage
+              run: vendor/bin/phpunit
