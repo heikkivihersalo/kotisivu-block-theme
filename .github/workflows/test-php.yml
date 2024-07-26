@@ -1,0 +1,31 @@
+name: PHP Tests
+
+on: [pull_request]
+
+jobs:
+    wp-env:
+        runs-on: ubuntu-latest
+        name: PHP Tests
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20.x'
+            - name: Install dependencies
+              run: |
+                  yarn
+                  yarn build
+                  composer install
+            - name: Start wp-env
+              run: |
+                  yarn wp-env
+                  yarn wp-env:start
+                  yarn wp-env:theme
+            - name: Install test dependencies
+              run: |
+                  yarn wp-env:composer-install
+            - name: Run tests
+              run: |
+                  yarn wp-env:phpunit

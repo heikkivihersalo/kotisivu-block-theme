@@ -83,6 +83,7 @@ vendor
 
 # Configuration
 wp-config.php
+!tests/wp-config.php
 
 # Example themes
 /wp-content/themes/twenty*/
@@ -105,6 +106,7 @@ coverage-ts
 # Cache files
 .phpcs-cache
 .phpunit.cache
+.phpunit.result.cache
 
 # All plugins
 # Note: If you wish to whitelist plugins,

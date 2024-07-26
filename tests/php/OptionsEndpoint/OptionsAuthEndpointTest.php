@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Kotisivu\BlockTheme\Api\Test;
+namespace Kotisivu\BlockTheme;
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 
+/** 
+ * @group api-routes
+ * @group options-auth
+ */
 final class OptionsAuthEndpointTest extends TestCase {
     /**
      * GuzzleHttp Client instance.
@@ -19,25 +23,28 @@ final class OptionsAuthEndpointTest extends TestCase {
     /**
      * @inheritDoc
      */
-    public function setUp(): void {
+    public function setUp(): void {        
         $this->authClient = new \GuzzleHttp\Client([
-            'base_uri' => $_ENV['APP_HOST'],
-            'auth' => [$_ENV['ADMIN_APP_USERNAME'], $_ENV['ADMIN_APP_PASSWORD']],
+            'base_uri' => SITE_URL,
+            'auth' => [APP_USER, APP_PASS],
         ]);
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get contact information. (Read)
-     * - Set contact information. (Update)
+     * @inheritDoc
      */
+    public function tearDown(): void {
+        $this->authClient = null;
+    }
 
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    /**
+     * @test
+     */
     public function test_Success_GetContact(): void {
+        // Set current user to admin.
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/contact',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
             ['verify' => false]
         );
 
@@ -61,8 +68,9 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('email', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    /**
+     * @test
+     */
     public function test_Success_SetContact(): void {
         $random_name = $this->generate_random_string() . ' ' . $this->generate_random_string();
         $random_address = $this->generate_random_string() . ' ' . rand(10, 99);
@@ -76,7 +84,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/contact',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/contact',
             array(
                 'verify' => false,
                 'json' => [
@@ -114,17 +122,12 @@ final class OptionsAuthEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get social account information. (Read)
-     * - Set social account information. (Update)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
     public function test_Success_GetSocial(): void {
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/social',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
             ['verify' => false]
         );
 
@@ -151,14 +154,15 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('whatsapp', $data['data']);
     }
 
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    /**
+     * @test
+     */
     public function test_Success_SetSocial(): void {
         $random_url = $this->generate_random_string() . '.test';
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/social',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/social',
             array(
                 'verify' => false,
                 'json' => [
@@ -202,17 +206,12 @@ final class OptionsAuthEndpointTest extends TestCase {
     }
 
     /**
-     * Test cases for admin authenticated options endpoint.
-     * - Get analytics information. (Read)
-     * - Set analytics information. (Update)
+     * @test
      */
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
     public function test_Success_GetAnalytics(): void {
         $response = $this->authClient->request(
             'GET',
-            '/wp-json/kotisivu-block-theme/v1/options/analytics',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
             ['verify' => false]
         );
 
@@ -230,9 +229,10 @@ final class OptionsAuthEndpointTest extends TestCase {
         $this->assertArrayHasKey('url', $data['data']);
         $this->assertArrayHasKey('timeout', $data['data']);
     }
-
-    #[Test]
-    #[Group('api'), Group('options-auth')]
+    
+    /**
+     * @test
+     */
     public function test_Success_SetAnalytics(): void {
         $random_bool = (bool)rand(0, 1);
         $random_id = $this->generate_random_string();
@@ -241,7 +241,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 
         $response = $this->authClient->request(
             'POST',
-            '/wp-json/kotisivu-block-theme/v1/options/analytics',
+            '/index.php?rest_route=/kotisivu-block-theme/v1/options/analytics',
             array(
                 'verify' => false,
                 'json' => [
@@ -275,12 +275,5 @@ final class OptionsAuthEndpointTest extends TestCase {
     private function generate_random_string(): string {
         $length = rand(5, 10);
         return substr(str_shuffle(implode(range('a', 'z'))), 0, $length);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function tearDown(): void {
-        $this->authClient = null;
     }
 }
