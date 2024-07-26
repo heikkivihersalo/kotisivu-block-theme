@@ -1,4 +1,4 @@
-name: PHP
+name: Lint PHP
 
 on: [pull_request]
 
