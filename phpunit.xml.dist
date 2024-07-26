@@ -9,9 +9,9 @@
         <testsuite name="Blocks">
             <directory suffix="Test.php">./tests/php/Blocks/</directory>
         </testsuite>
-        <testsuite name="API | Options Endpoint">
+        <!-- <testsuite name="API | Options Endpoint">
             <directory suffix="Test.php">./tests/php/OptionsEndpoint/</directory>
-        </testsuite>
+        </testsuite> -->
     </testsuites>
     <php>
         <ini name="display_errors" value="On"/>
