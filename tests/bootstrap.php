@@ -44,3 +44,7 @@ define( 'APP_USER', 'admin' );
 define( 'APP_PASS', $app_pass[0] );
 define( 'ADMIN_USER', 'admin' );
 define( 'ADMIN_PASS', 'password' );
+
+if (!defined('SITE_PATH')) {
+	define('SITE_PATH', dirname(__DIR__, 2));
+}
