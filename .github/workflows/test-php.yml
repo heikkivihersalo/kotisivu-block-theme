@@ -13,16 +13,18 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '20.x'
-            - name: Start wp-env
-              run: |
-                  yarn wp-env
-                  yarn wp-env:start
-                  yarn wp-env:theme
             - name: Install dependencies
               run: |
                   yarn
                   yarn build
                   composer install
+            - name: Start wp-env
+              run: |
+                  yarn wp-env
+                  yarn wp-env:start
+                  yarn wp-env:theme
+            - name: Install test dependencies
+              run: |
                   yarn wp-env:composer-install
             - name: Run tests
               run: |
