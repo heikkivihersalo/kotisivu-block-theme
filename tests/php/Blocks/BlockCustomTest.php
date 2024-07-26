@@ -2,8 +2,8 @@
 
 namespace Kotisivu\BlockTheme;
 
-require_once \get_theme_file_path() . '/inc/blocks/class-block.php';
-require_once \get_theme_file_path() . '/inc/blocks/block-types/class-block-custom.php';
+require_once SITE_PATH . '/inc/blocks/class-block.php';
+require_once SITE_PATH . '/inc/blocks/block-types/class-block-custom.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +12,7 @@ final class BlockCustomTest extends TestCase {
     #[Group('blocks')]
     public function test_GetPath(): void {
         $block = new BlockCustom();
-        $this->assertEquals(\get_theme_file_path() . '/build/block-library/custom', $block->get_path());
+        $this->assertEquals(SITE_PATH . '/build/block-library/custom', $block->get_path());
     }
 
     #[Test]
