@@ -77,8 +77,9 @@ add_filter( 'print_styles_array', __NAMESPACE__ . '\move_global_styles_to_top', 
  * Handle image sizes
  */
 require_once SITE_PATH . '/inc/hooks/images.php';
-add_filter( 'image_size_names_choose', __NAMESPACE__ . '\add_custom_image_sizes' );
-add_action( 'after_setup_theme', __NAMESPACE__ . '\modify_default_image_sizes' );
+add_action( 'after_setup_theme', __NAMESPACE__ . '\register_image_sizes' );
+add_filter( 'intermediate_image_sizes', __NAMESPACE__ . '\remove_default_image_sizes' );
+add_filter( 'image_size_names_choose', __NAMESPACE__ . '\add_custom_image_sizes_to_admin' );
 
 /**
  * Add and remove theme support
