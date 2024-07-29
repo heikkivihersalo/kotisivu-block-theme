@@ -7,15 +7,19 @@
     >
     <testsuites>
         <testsuite name="custom-blocks">
-            <directory suffix="Test.php">./tests/php/Blocks/</directory>
+            <directory suffix="-test.php">./tests/php/blocks/</directory>
+        </testsuite>
+        <testsuite name="hooks">
+            <directory suffix="-test.php">./tests/php/hooks/</directory>
         </testsuite>
         <testsuite name="api-routes">
-            <directory suffix="Test.php">./tests/php/OptionsEndpoint/</directory>
+            <directory suffix="-test.php">./tests/php/options-endpoint/</directory>
         </testsuite>
     </testsuites>
     <groups>
         <include>
             <group>custom-blocks</group>
+            <group>hooks</group>
         </include>
 		<exclude>
 			<group>api-routes</group>

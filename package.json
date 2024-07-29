@@ -25,6 +25,7 @@
 		"wp-env:composer": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer",
 		"wp-env:composer-install": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer install",
 		"wp-env:phpunit": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme ./vendor/bin/phpunit",
+		"wp-env:permalinks": "wp-env run tests-cli wp rewrite structure '/%postname%'",
 		"wp-env:init": "yarn wp-env:start && yarn wp-env:theme && yarn wp-env:composer-install"
 	},
 	"dependencies": {

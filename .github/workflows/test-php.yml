@@ -23,6 +23,7 @@ jobs:
                   yarn wp-env
                   yarn wp-env:start
                   yarn wp-env:theme
+                  yarn wp-env:permalinks
             - name: Install test dependencies
               run: |
                   yarn wp-env:composer-install

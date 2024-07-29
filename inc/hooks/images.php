@@ -16,21 +16,30 @@ defined( 'ABSPATH' ) || die();
  * @param mixed $sizes Image sizes
  * @return void
  */
-function modify_default_image_sizes( mixed $sizes ): void {
-	if ( empty( $sizes ) ) {
-		return;
-	}
-
+function register_image_sizes(): void {
 	/* Update default core image sizes */
-	foreach ( $sizes as $size ) :
-		update_option( $size['slug'] . '_w', $size['width'] );
-		update_option( $size['slug'] . '_h', $size['height'] );
+	foreach ( SITE_SETTINGS['image_sizes']['default'] as $size ) :
+		update_option( $size['slug'] . '_size_w', $size['width'] );
+		update_option( $size['slug'] . '_size_h', $size['height'] );
 	endforeach;
 
 	/* Add new image sizes to core */
-	foreach ( $sizes as $size ) :
-		add_image_size( $size['slug'], $size['width'], $size['height'] );
+	foreach ( SITE_SETTINGS['image_sizes']['custom'] as $size ) :
+		add_image_size( $size['slug'], $size['width'], $size['height'], false );
 	endforeach;
+}
+
+/**
+ * Remove default image sizes from WordPress
+ *
+ * @param mixed $sizes Image sizes
+ * @return mixed
+ */
+function remove_default_image_sizes( mixed $sizes ): mixed {
+	unset( $sizes['1536x1536'] ); // remove 1536x1536 image size
+	unset( $sizes['2048x2048'] ); // remove 2048x2048 image size
+
+	return $sizes;
 }
 
 /**
@@ -39,7 +48,7 @@ function modify_default_image_sizes( mixed $sizes ): void {
  * @param mixed $sizes Image sizes
  * @return array
  */
-function add_custom_image_sizes( mixed $sizes ): array {
+function add_custom_image_sizes_to_admin( mixed $sizes ): array {
 	$custom_images = array();
 
 	foreach ( SITE_SETTINGS['image_sizes']['custom'] as $image ) :

@@ -314,14 +314,25 @@ define(
 		'image_sizes'              => array(
 			'default' => array(
 				array(
-					'slug'   => 'large_size',
+					'slug'   => 'large',
 					'width'  => 1600,
 					'height' => 1200,
 				),
 				array(
-					'slug'   => 'medium_size',
+					'slug'   => 'medium_large',
+					'name'   => 'Medium Large',
+					'width'  => 1366,
+					'height' => 1025,
+				),
+				array(
+					'slug'   => 'medium',
 					'width'  => 1024,
 					'height' => 768,
+				),
+				array(
+					'slug'   => 'thumbnail',
+					'width'  => 300,
+					'height' => 300,
 				),
 			),
 			'custom'  => array(
@@ -336,12 +347,6 @@ define(
 					'name'   => 'Huge',
 					'width'  => 1920,
 					'height' => 1440,
-				),
-				array(
-					'slug'   => 'medium_large',
-					'name'   => 'Medium Large',
-					'width'  => 1366,
-					'height' => 1025,
 				),
 				array(
 					'slug'   => 'small',
