@@ -3,6 +3,8 @@
  * PHPUnit bootstrap file.
  */
 
+namespace Kotisivu\BlockTheme;
+
 define( 'TEST_DIRECTORY', getenv( 'WP_TESTS_DIR' ) );
 define( 'POLYFILL_DIRECTORY', getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) );
 
