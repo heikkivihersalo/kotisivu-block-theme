@@ -2,6 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  */
+
 define( 'TEST_DIRECTORY', getenv( 'WP_TESTS_DIR' ) );
 define( 'POLYFILL_DIRECTORY', getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) );
 
@@ -37,11 +38,6 @@ $app_pass = \WP_Application_Passwords::create_new_application_password(
 	1,
 	array( 'name' => 'Test Application Password' )
 );
-
-/**
- * Load the theme functions file.
- */
-require_once dirname( __DIR__, 1 ) . '/functions.php';
 
 /**
  * Set application password and user for API testing.
