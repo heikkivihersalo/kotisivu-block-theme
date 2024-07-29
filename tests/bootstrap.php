@@ -5,31 +5,36 @@
 
 namespace Kotisivu\BlockTheme;
 
-define( 'TEST_DIRECTORY', getenv( 'WP_TESTS_DIR' ) );
-define( 'POLYFILL_DIRECTORY', getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) );
-
-if ( ! defined( 'WP_DEFAULT_THEME' ) ) {
-	define( 'WP_DEFAULT_THEME', 'kotisivu-block-theme' );
+if ( ! file_exists( '../../../wp-content' ) ) {
+	trigger_error( 'Unable to run the integration tests, as the wp-content folder does not exist.', E_USER_ERROR ); // phpcs:ignore
 }
+
+define( 'THEME_TESTS_DIR', __DIR__ );
+define( 'THEME_DIR', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
+define( 'WP_CONTENT_DIR', dirname( dirname( dirname( getcwd() ) ) ) . '/wp-content/' );
 
 /**
- * Get polyfills from the WP PHPUnit Polyfills repository.
+ * Load the Composer autoloader.
  */
-if ( false !== POLYFILL_DIRECTORY ) {
-	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', POLYFILL_DIRECTORY );
-}
-
-require 'vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php';
+require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/vendor/autoload.php';
 
 /**
  * Load the WordPress tests library.
  */
-require_once TEST_DIRECTORY . '/includes/functions.php';
+require_once getenv( 'WP_TESTS_DIR' ) . '/includes/functions.php';
+
+tests_add_filter(
+	'setup_theme',
+	function () {
+		register_theme_directory( WP_CONTENT_DIR . 'themes' );
+		switch_theme( basename( THEME_DIR ) );
+	}
+);
 
 /**
  * Start up the WP testing environment.
  */
-require TEST_DIRECTORY . '/includes/bootstrap.php';
+require getenv( 'WP_TESTS_DIR' ) . '/includes/bootstrap.php';
 
 /**
  * Create application password for API testing.
@@ -42,12 +47,13 @@ $app_pass = \WP_Application_Passwords::create_new_application_password(
 );
 
 /**
- * Set application password and user for API testing.
+ * Set theme constants
  */
-define( 'APP_USER', 'admin' );
-define( 'APP_PASS', $app_pass[0] );
 define( 'ADMIN_USER', 'admin' );
 define( 'ADMIN_PASS', 'password' );
+
+define( 'TESTS_APP_USER', 'admin' );
+define( 'TESTS_APP_PASS', $app_pass[0] );
 
 define( 'TESTS_API_BASE', 'host.docker.internal:8889' );
 define( 'TESTS_SITE_PATH', dirname( __DIR__ ) );
