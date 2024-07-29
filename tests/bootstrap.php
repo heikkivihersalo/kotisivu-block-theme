@@ -11,7 +11,7 @@ if ( ! file_exists( '../../../wp-content' ) ) {
 
 define( 'THEME_TESTS_DIR', __DIR__ );
 define( 'THEME_DIR', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
-define( 'WP_CONTENT_DIR', dirname( dirname( dirname( getcwd() ) ) ) . '/wp-content/' );
+define( 'WP_CONTENT_DIR', dirname( getcwd(), 3 ) . '/wp-content/' );
 
 /**
  * Load the Composer autoloader.
@@ -49,7 +49,7 @@ $app_pass = \WP_Application_Passwords::create_new_application_password(
 require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/functions.php';
 
 /**
- * Set theme constants
+ * Set custom constants for testing.
  */
 define( 'ADMIN_USER', 'admin' );
 define( 'ADMIN_PASS', 'password' );
@@ -57,11 +57,3 @@ define( 'ADMIN_PASS', 'password' );
 define( 'TESTS_APP_USER', 'admin' );
 define( 'TESTS_APP_PASS', $app_pass[0] );
 define( 'TESTS_API_BASE', 'host.docker.internal:8889' );
-
-// if ( ! defined( 'SITE_PATH' ) ) {
-// define( 'SITE_PATH', get_template_directory() );
-// }
-
-// if ( ! defined( 'SITE_URI' ) ) {
-// define( 'SITE_URI', get_template_directory_uri() );
-// }
