@@ -1,14 +1,23 @@
 <?php
 /**
  * PHPUnit bootstrap file.
+ *
+ * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
 
 namespace Kotisivu\BlockTheme;
 
+/**
+ * Check we are in the right directory
+ */
 if ( ! file_exists( '../../../wp-content' ) ) {
 	trigger_error( 'Error: wp-content folder does not exist.', E_USER_ERROR ); // phpcs:ignore
 }
 
+/**
+ * Set up the initial folder structure
+ */
 define( 'THEME_TESTS_DIR', __DIR__ );
 define( 'THEME_DIR', dirname( __DIR__ ) . DIRECTORY_SEPARATOR );
 define( 'WP_CONTENT_DIR', dirname( getcwd(), 3 ) . '/wp-content/' );
@@ -20,9 +29,14 @@ require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/vendor/autoload.php';
 
 /**
  * Load the WordPress tests library.
+ * - This is needed to access the WP testing functions
  */
 require_once getenv( 'WP_TESTS_DIR' ) . '/includes/functions.php';
 
+
+/**
+ * Set and start up the WP testing environment.
+ */
 tests_add_filter(
 	'setup_theme',
 	function () {
@@ -31,13 +45,18 @@ tests_add_filter(
 	}
 );
 
-/**
- * Start up the WP testing environment.
- */
 require getenv( 'WP_TESTS_DIR' ) . '/includes/bootstrap.php';
 
 /**
- * Create application password for API testing.
+ * Load theme functions file
+ * - This sets up the theme constants and loads all necessary files
+ */
+require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/functions.php';
+
+/**
+ * Set application password and paths for API testing.
+ * !NOTE - API testing currently only works in local environments
+ * - Run `yarn wp-env:phpunit --group api-routes` to test API routes
  */
 \WP_Application_Passwords::delete_all_application_passwords( 1 );
 
@@ -45,14 +64,6 @@ $app_pass = \WP_Application_Passwords::create_new_application_password(
 	1,
 	array( 'name' => 'Test Application Password' )
 );
-
-require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/functions.php';
-
-/**
- * Set custom constants for testing.
- */
-define( 'ADMIN_USER', 'admin' );
-define( 'ADMIN_PASS', 'password' );
 
 define( 'TESTS_APP_USER', 'admin' );
 define( 'TESTS_APP_PASS', $app_pass[0] );
