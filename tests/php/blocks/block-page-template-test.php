@@ -2,8 +2,8 @@
 
 namespace Kotisivu\BlockTheme;
 
-require_once SITE_PATH . '/inc/blocks/class-block.php';
-require_once SITE_PATH . '/inc/blocks/block-types/class-block-page-template.php';
+require_once TESTS_SITE_PATH . '/inc/blocks/class-block.php';
+require_once TESTS_SITE_PATH . '/inc/blocks/block-types/class-block-page-template.php';
 
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +17,7 @@ final class BlockPageTemplateTest extends TestCase {
 	 */
 	public function test_GetPath(): void {
 		$block = new BlockPageTemplate();
-		$this->assertEquals( SITE_PATH . '/build/page-templates', $block->get_path() );
+		$this->assertEquals( TESTS_SITE_PATH . '/build/page-templates', $block->get_path() );
 	}
 
 	/**

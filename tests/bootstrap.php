@@ -49,4 +49,5 @@ define( 'APP_PASS', $app_pass[0] );
 define( 'ADMIN_USER', 'admin' );
 define( 'ADMIN_PASS', 'password' );
 
-define( 'SITE_URL', 'host.docker.internal:8889' );
+define( 'TESTS_API_BASE', 'host.docker.internal:8889' );
+define( 'TESTS_SITE_PATH', dirname( __DIR__ ) );

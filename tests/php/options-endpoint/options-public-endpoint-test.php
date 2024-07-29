@@ -26,7 +26,7 @@ final class OptionsPublicEndpointTest extends TestCase {
 	public function setUp(): void {
 		$this->public_client = new \GuzzleHttp\Client(
 			array(
-				'base_uri' => SITE_URL,
+				'base_uri' => TESTS_API_BASE,
 			)
 		);
 	}

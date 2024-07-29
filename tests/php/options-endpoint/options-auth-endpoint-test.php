@@ -26,7 +26,7 @@ final class OptionsAuthEndpointTest extends TestCase {
 	public function setUp(): void {
 		$this->auth_client = new \GuzzleHttp\Client(
 			array(
-				'base_uri' => SITE_URL,
+				'base_uri' => TESTS_API_BASE,
 				'auth'     => array( APP_USER, APP_PASS ),
 			)
 		);
