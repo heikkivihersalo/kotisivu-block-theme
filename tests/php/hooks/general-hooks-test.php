@@ -4,6 +4,8 @@ namespace Kotisivu\BlockTheme;
 
 use PHPUnit\Framework\TestCase;
 
+require_once SITE_PATH . '/inc/hooks/images.php';
+
 /**
  * @group hooks
  * @group general-hooks
