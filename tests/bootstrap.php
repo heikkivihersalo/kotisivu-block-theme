@@ -6,7 +6,7 @@
 namespace Kotisivu\BlockTheme;
 
 if ( ! file_exists( '../../../wp-content' ) ) {
-	trigger_error( 'Unable to run the integration tests, as the wp-content folder does not exist.', E_USER_ERROR ); // phpcs:ignore
+	trigger_error( 'Error: wp-content folder does not exist.', E_USER_ERROR ); // phpcs:ignore
 }
 
 define( 'THEME_TESTS_DIR', __DIR__ );
@@ -46,6 +46,8 @@ $app_pass = \WP_Application_Passwords::create_new_application_password(
 	array( 'name' => 'Test Application Password' )
 );
 
+require_once WP_CONTENT_DIR . 'themes/kotisivu-block-theme/functions.php';
+
 /**
  * Set theme constants
  */
@@ -54,14 +56,12 @@ define( 'ADMIN_PASS', 'password' );
 
 define( 'TESTS_APP_USER', 'admin' );
 define( 'TESTS_APP_PASS', $app_pass[0] );
-
 define( 'TESTS_API_BASE', 'host.docker.internal:8889' );
-define( 'TESTS_SITE_PATH', dirname( __DIR__ ) );
 
-if ( ! defined( 'SITE_PATH' ) ) {
-	define( 'SITE_PATH', get_template_directory() );
-}
+// if ( ! defined( 'SITE_PATH' ) ) {
+// define( 'SITE_PATH', get_template_directory() );
+// }
 
-if ( ! defined( 'SITE_URI' ) ) {
-	define( 'SITE_URI', get_template_directory_uri() );
-}
+// if ( ! defined( 'SITE_URI' ) ) {
+// define( 'SITE_URI', get_template_directory_uri() );
+// }
