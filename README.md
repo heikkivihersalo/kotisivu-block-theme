@@ -4,6 +4,9 @@
 
 ![Hero Image](readme.jpg)
 
+> [!NOTE]
+> Please do note that readme isn't necessarily up-to-date. This is due to that Kotisivu Block Theme is coming close to version 2 that comes with a lot updates related to structure, code quality, testing and linting.
+
 Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
 
 Originally theme was based on [Brad's Boilerplate](https://github.com/LearnWebCode/brads-boilerplate-wordpress/tree/main/brads-boilerplate-theme) theme but has seen a lot of changes since then so I'm not quite sure if there is anything left from that. Most latest update borrows some ideas from [Dude's Air Light](https://github.com/digitoimistodude/air-light) theme.
