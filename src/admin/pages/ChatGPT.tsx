@@ -36,6 +36,7 @@ const ChatGPT = (): JSX.Element | null => {
 		<OptionBody
 			name={__('ChatGPT', 'kotisivu-block-theme')}
 			description={sprintf(
+				/* translators: %s: ChatGPT dashboard URL */
 				__(
 					'Configure the ChatGPT API settings. You can get the API key from the ChatGPT dashboard. Access the dashboard <a href="%s">here</a>.',
 					'kotisivu-block-theme'

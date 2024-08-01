@@ -19,7 +19,7 @@ import './editor.css';
  * Block edit function
  * @param {Object} props Properties
  * @param {Record<string, any>} props.attributes Block attributes
- * @param {Function} props.setAttributes Block attributes setter
+ * @param {string} props.clientId Block client ID
  * @return {JSX.Element} React component
  */
 export default function Edit({
@@ -54,6 +54,7 @@ export default function Edit({
 		 * TODO: window.alert is not recommended, use a proper validation method
 		 */
 		if (!prompt) {
+			// eslint-disable-next-line no-alert
 			window.alert(__('Please enter a prompt', 'kotisivu-block-theme'));
 			setIsLoading(false);
 			return;

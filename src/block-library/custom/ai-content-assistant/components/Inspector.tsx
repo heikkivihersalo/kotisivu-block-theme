@@ -30,7 +30,10 @@ const Inspector = ({
 				>
 					<div className="components-base-control">
 						<div className="components-base-control__field">
-							<label className="components-base-control__label">
+							<label
+								className="components-base-control__label"
+								htmlFor="prompt"
+							>
 								{__('Prompt', 'kotisivu-block-theme')}
 							</label>
 							<textarea

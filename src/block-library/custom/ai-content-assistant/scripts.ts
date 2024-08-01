@@ -1,4 +1,5 @@
-import { BlockInstance, createBlock } from '@wordpress/blocks';
+import { createBlock } from '@wordpress/blocks';
+import type { BlockInstance } from '@wordpress/blocks';
 
 /**
  * Parse markdown to blocks
@@ -18,12 +19,12 @@ async function parseMarkdownToBlocks(
 	 * Split the markdown string into blocks
 	 * @type {string[]}
 	 */
-	let list: string[] = markdown.split('\n') || [];
+	const list: string[] = markdown.split('\n') || [];
 
 	/**
 	 * Loop thorugh the blocks and add blocks based on the block type
 	 */
-	let blocks: BlockInstance[] = [];
+	const blocks: BlockInstance[] = [];
 
 	for (let i = 0; i < list.length; i++) {
 		// ChatGPT sometimes adds empty lines, skip them
@@ -108,7 +109,7 @@ function handleListItems(
 	 * Temporary list items array to store the list items
 	 * @type {BlockInstance[]}
 	 */
-	let listItems: BlockInstance[] = [];
+	const listItems: BlockInstance[] = [];
 
 	/**
 	 * Loop through the blocks and add list items as long as the current item is no longer a list item

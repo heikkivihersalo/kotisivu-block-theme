@@ -13,6 +13,7 @@ import type { InputType, InputProps } from '@admin/inputs';
  * @param {string} props.value - Value for the input
  * @param {string} props.placeholder - Placeholder for the input
  * @param {Function} props.onChange - Change handler for the input
+ * @param {boolean} props.disabled - Disabled state for the input
  * @return {JSX.Element} Text input component
  */
 const Input = ({
