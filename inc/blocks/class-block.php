@@ -104,7 +104,7 @@ abstract class Block {
 			'load_script_translation_file',
 			function ( string $file, string $handle, string $domain ) use ( $block_slug, $path ) {
 				if ( strpos( $handle, $block_slug ) !== false && SITE_TEXTDOMAIN === $domain ) {
-					$file = str_replace( WP_LANG_DIR . '/themes', $path . '/languages', $file );
+					$file = str_replace( WP_LANG_DIR . '/plugins', $path . '/languages', $file );
 				}
 
 				return $file;

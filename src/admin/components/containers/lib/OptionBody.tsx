@@ -20,7 +20,9 @@ const OptionBody = ({
 	return (
 		<div className={styles.body}>
 			{name && <h2>{name}</h2>}
-			{description && <p>{description}</p>}
+			{description && (
+				<p dangerouslySetInnerHTML={{ __html: description }} />
+			)}
 			{children}
 		</div>
 	);

@@ -44,6 +44,11 @@ declare module '@hooks' {
 		nonce: string | undefined;
 	};
 
+	type ChatGPTAdminFormProps = {
+		path: 'kotisivu-block-theme/v1/options/chatgpt';
+		nonce: string | undefined;
+	};
+
 	type PurgeCacheAdminFormProps = {
 		path: 'kotisivu-block-theme/v1/options/purge-cache';
 		nonce: string | undefined;
@@ -53,6 +58,7 @@ declare module '@hooks' {
 		| ContactAdminFormProps
 		| SocialAdminFormProps
 		| AnalyticsAdminFormProps
+		| ChatGPTAdminFormProps
 		| PurgeCacheAdminFormProps;
 
 	export type {
@@ -60,6 +66,7 @@ declare module '@hooks' {
 		ContactAdminFormProps,
 		SocialAdminFormProps,
 		AnalyticsAdminFormProps,
+		ChatGPTAdminFormProps,
 		PurgeCacheAdminFormProps,
 	};
 
@@ -112,6 +119,16 @@ declare module '@hooks' {
 		};
 	};
 
+	type ChatGPTAdminApiResponse = {
+		status: string;
+		type: string;
+		message: string;
+		data: {
+			model: string;
+			api_key: string;
+		};
+	};
+
 	type PurgeCacheAdminApiResponse = {
 		status: string;
 		type: string;
@@ -122,6 +139,7 @@ declare module '@hooks' {
 		| ContactAdminApiResponse
 		| SocialAdminApiResponse
 		| AnalyticsAdminApiResponse
+		| ChatGPTAdminApiResponse
 		| PurgeCacheAdminApiResponse;
 
 	export type {
@@ -129,6 +147,7 @@ declare module '@hooks' {
 		ContactAdminApiResponse,
 		SocialAdminApiResponse,
 		AnalyticsAdminApiResponse,
+		ChatGPTAdminApiResponse,
 		PurgeCacheAdminApiResponse,
 	};
 
@@ -166,12 +185,18 @@ declare module '@hooks' {
 		timeout: AnalyticsAdminApiResponse['data']['timeout'];
 	};
 
+	type ChatGPTAdminFormData = {
+		model: ChatGPTAdminApiResponse['data']['model'];
+		api_key: ChatGPTAdminApiResponse['data']['api_key'];
+	};
+
 	type PurgeCacheAdminFormData = {};
 
 	type AdminFormData =
 		| ContactAdminFormData
 		| SocialAdminFormData
 		| AnalyticsAdminFormData
+		| ChatGPTAdminFormData
 		| PurgeCacheAdminFormData;
 
 	export type {
@@ -179,6 +204,7 @@ declare module '@hooks' {
 		ContactAdminFormData,
 		SocialAdminFormData,
 		AnalyticsAdminFormData,
+		ChatGPTAdminFormData,
 		PurgeCacheAdminFormData,
 	};
 
