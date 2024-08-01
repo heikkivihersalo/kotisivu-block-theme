@@ -36,6 +36,53 @@ declare module '@icons' {
 	const WidthFull: ComponentType<SvgIcon>;
 	const WidthNarrow: ComponentType<SvgIcon>;
 
+	const BarsFade: ComponentType<SvgIcon>;
+	const BarsRotateFade: ComponentType<SvgIcon>;
+	const BarsScale: ComponentType<SvgIcon>;
+	const BarsScaleFade: ComponentType<SvgIcon>;
+	const BarsScaleMiddle: ComponentType<SvgIcon>;
+	const BlocksScale: ComponentType<SvgIcon>;
+	const BlocksShuffle2: ComponentType<SvgIcon>;
+	const BlocksShuffle3: ComponentType<SvgIcon>;
+	const BlocksWave: ComponentType<SvgIcon>;
+	const BouncingBall: ComponentType<SvgIcon>;
+	const Clock: ComponentType<SvgIcon>;
+	const DotRevolve: ComponentType<SvgIcon>;
+	const Dots3Bounce: ComponentType<SvgIcon>;
+	const Dots3Fade: ComponentType<SvgIcon>;
+	const Dots3Move: ComponentType<SvgIcon>;
+	const Dots3Rotate: ComponentType<SvgIcon>;
+	const Dots3Scale: ComponentType<SvgIcon>;
+	const Dots3ScaleMiddle: ComponentType<SvgIcon>;
+	const Dots6Rotate: ComponentType<SvgIcon>;
+	const Dots6Scale: ComponentType<SvgIcon>;
+	const Dots6ScaleMiddle: ComponentType<SvgIcon>;
+	const Dots8Rotate: ComponentType<SvgIcon>;
+	const Dots12ScaleRotate: ComponentType<SvgIcon>;
+	const Eclipse: ComponentType<SvgIcon>;
+	const EclipseHalf: ComponentType<SvgIcon>;
+	const GooeyBalls1: ComponentType<SvgIcon>;
+	const GooeyBalls2: ComponentType<SvgIcon>;
+	const Pulse: ComponentType<SvgIcon>;
+	const Pulse2: ComponentType<SvgIcon>;
+	const Pulse3: ComponentType<SvgIcon>;
+	const PulseMultiple: ComponentType<SvgIcon>;
+	const PulseRing: ComponentType<SvgIcon>;
+	const PulseRings2: ComponentType<SvgIcon>;
+	const PulseRings3: ComponentType<SvgIcon>;
+	const PulseRingsMultiple: ComponentType<SvgIcon>;
+	const Ring90: ComponentType<SvgIcon>;
+	const Ring90WithBg: ComponentType<SvgIcon>;
+	const Ring180: ComponentType<SvgIcon>;
+	const Ring180WithBg: ComponentType<SvgIcon>;
+	const Ring270: ComponentType<SvgIcon>;
+	const Ring270WithBg: ComponentType<SvgIcon>;
+	const RingResize: ComponentType<SvgIcon>;
+	const Tadpole: ComponentType<SvgIcon>;
+	const Wifi: ComponentType<SvgIcon>;
+	const WifiFade: ComponentType<SvgIcon>;
+	const WindToy: ComponentType<SvgIcon>;
+
 	export {
 		Email,
 		Phone,
@@ -62,5 +109,51 @@ declare module '@icons' {
 		WidthContent,
 		WidthFull,
 		WidthNarrow,
+		BarsFade,
+		BarsRotateFade,
+		BarsScale,
+		BarsScaleFade,
+		BarsScaleMiddle,
+		BlocksScale,
+		BlocksShuffle2,
+		BlocksShuffle3,
+		BlocksWave,
+		BouncingBall,
+		Clock,
+		DotRevolve,
+		Dots3Bounce,
+		Dots3Fade,
+		Dots3Move,
+		Dots3Rotate,
+		Dots3Scale,
+		Dots3ScaleMiddle,
+		Dots6Rotate,
+		Dots6Scale,
+		Dots6ScaleMiddle,
+		Dots8Rotate,
+		Dots12ScaleRotate,
+		Eclipse,
+		EclipseHalf,
+		GooeyBalls1,
+		GooeyBalls2,
+		Pulse,
+		Pulse2,
+		Pulse3,
+		PulseMultiple,
+		PulseRing,
+		PulseRings2,
+		PulseRings3,
+		PulseRingsMultiple,
+		Ring90,
+		Ring90WithBg,
+		Ring180,
+		Ring180WithBg,
+		Ring270,
+		Ring270WithBg,
+		RingResize,
+		Tadpole,
+		Wifi,
+		WifiFade,
+		WindToy,
 	};
 }
