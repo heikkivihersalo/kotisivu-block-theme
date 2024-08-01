@@ -21,7 +21,8 @@ const Input = ({
 	name,
 	value,
 	placeholder = '',
-	onChange,
+	onChange = () => {},
+	disabled = false,
 }: {
 	type: InputType;
 	label: string;
@@ -29,6 +30,7 @@ const Input = ({
 	value: string | number | readonly string[] | undefined;
 	placeholder?: string;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	disabled?: boolean;
 }): JSX.Element => {
 	return (
 		<div className={styles.input}>
@@ -40,6 +42,7 @@ const Input = ({
 				defaultValue={value}
 				placeholder={placeholder}
 				onChange={onChange}
+				disabled={disabled}
 			/>
 		</div>
 	);
