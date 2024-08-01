@@ -9,9 +9,10 @@ declare module '@admin/inputs' {
 		name: string;
 		value: string | number | readonly string[] | undefined;
 		placeholder?: string;
-		onChange: (
+		onChange?: (
 			event: React.MouseEvent<HTMLInputElement, MouseEvent>
 		) => void;
+		disabled?: boolean;
 	};
 
 	type ToggleProps = {
