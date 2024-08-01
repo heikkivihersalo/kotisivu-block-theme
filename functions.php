@@ -300,6 +300,10 @@ define(
 				'name' => __( 'Contact', 'kotisivu-block-theme' ),
 			),
 			array(
+				'slug' => 'chatgpt',
+				'name' => __( 'ChatGPT', 'kotisivu-block-theme' ),
+			),
+			array(
 				'slug' => 'social-media',
 				'name' => __( 'Social Media', 'kotisivu-block-theme' ),
 			),
