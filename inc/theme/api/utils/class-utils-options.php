@@ -4,6 +4,8 @@ namespace Kotisivu\BlockTheme\Api;
 
 defined( 'ABSPATH' ) || die();
 
+require_once dirname( __DIR__, 2 ) . '/class-data-encryption.php';
+
 /**
  *
  * @package Kotisivu\BlockTheme
@@ -219,6 +221,65 @@ final class UtilsOptions {
 			'id'      => $body['id'] ?? $current['id'] ?? '',
 			'url'     => $body['url'] ?? $current['url'] ?? 'www.googletagmanager.com',
 			'timeout' => $body['timeout'] ?? $current['timeout'] ?? 1500,
+		);
+	}
+
+	/**
+	 * Get ChatGPT settings from the database
+	 * @return array
+	 */
+	public static function get_chatgpt_settings(): array {
+		$settings = get_option(
+			'kotisivu_block_theme_chatgpt',
+			array(
+				'model'   => 'gpt-4o-mini',
+				'api_key' => '',
+			)
+		);
+
+		$encryptor         = new \Kotisivu\BlockTheme\Data_Encryption();
+		$decrypted_api_key = $encryptor->decrypt( $settings['api_key'] );
+
+		return array(
+			'model'   => $settings['model'],
+			'api_key' => $decrypted_api_key,
+		);
+	}
+
+	/**
+	 * Update ChatGPT settings in the database
+	 * @param \WP_REST_Request $request Request object.
+	 * @return array
+	 * @throws \Exception If failed to update ChatGPT settings.
+	 */
+	public static function update_chatgpt_settings( \WP_REST_Request $request ): array {
+		$body = json_decode( $request->get_body(), true );
+
+		$current = get_option( 'kotisivu_block_theme_chatgpt' );
+
+		if ( $body === $current ) {
+			return $current;
+		}
+
+		$encryptor         = new \Kotisivu\BlockTheme\Data_Encryption();
+		$encrypted_api_key = $encryptor->encrypt( $body['api_key'] ?? $current['api_key'] ?? '' );
+
+		$update = update_option(
+			'kotisivu_block_theme_chatgpt',
+			array(
+				'model'   => $body['model'] ?? $current['model'] ?? 'gpt-4o-mini',
+				'api_key' => $encrypted_api_key,
+			),
+			true
+		);
+
+		if ( ! $update ) {
+			throw new \Exception( 'Failed to update ChatGPT settings.', 500 );
+		}
+
+		return array(
+			'model'   => $body['model'] ?? $current['model'] ?? 'gpt-4o-mini',
+			'api_key' => $body['api_key'] ?? $current['api_key'] ?? '',
 		);
 	}
 }

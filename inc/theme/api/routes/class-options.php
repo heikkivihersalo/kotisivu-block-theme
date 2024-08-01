@@ -102,6 +102,34 @@ class RouteOptions extends RouteBase implements RouteInterface {
 		);
 
 		/**
+		 * Route for getting ChatGPT settings
+		 * @method GET
+		 */
+		register_rest_route(
+			RouteInterface::NAMESPACE . RouteInterface::VERSION,
+			'/' . $this->base . '/chatgpt',
+			array(
+				'methods'             => \WP_REST_Server::READABLE, // Alias for GET transport method.
+				'callback'            => array( $this, 'get_chatgpt_settings' ),
+				'permission_callback' => Permission::PUBLIC->get_callback(),
+			)
+		);
+
+		/**
+		 * Route for updating ChatGPT settings
+		 * @method POST
+		 */
+		register_rest_route(
+			RouteInterface::NAMESPACE . RouteInterface::VERSION,
+			'/' . $this->base . '/chatgpt',
+			array(
+				'methods'             => \WP_REST_Server::EDITABLE, // Alias for POST transport method.
+				'callback'            => array( $this, 'update_chatgpt_settings' ),
+				'permission_callback' => Permission::ADMIN->get_callback(),
+			)
+		);
+
+		/**
 		 * Route for purging transient cache
 		 * @method POST
 		 */
@@ -255,6 +283,58 @@ class RouteOptions extends RouteBase implements RouteInterface {
 	public function update_analytics_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
 			$result = UtilsOptions::update_analytics_settings( $request );
+		} catch ( \Exception $e ) {
+			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
+		}
+
+		/**
+		 * Return WP REST Response
+		 */
+		return new \WP_REST_Response(
+			array(
+				'status'  => 'success',
+				'type'    => HTTP_Success::UPDATED_SUCCESSFULLY->get_type(),
+				'message' => __( 'Updated succesfully', 'kotisivu-block-theme' ),
+				'data'    => $result,
+			),
+			HTTP_Success::UPDATED_SUCCESSFULLY->get_http_status()
+		);
+	}
+
+	/**
+	 * Get ChatGPT settings
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 */
+	public function get_chatgpt_settings(): \WP_REST_Response|\WP_Error {
+		try {
+			$result = UtilsOptions::get_chatgpt_settings();
+		} catch ( \Exception $e ) {
+			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
+		}
+
+		/**
+		 * Return WP REST Response
+		 */
+		return new \WP_REST_Response(
+			array(
+				'status'  => 'success',
+				'type'    => HTTP_Success::FETCHED_SUCCESSFULLY->get_type(),
+				'message' => __( 'Fetched succesfully', 'kotisivu-block-theme' ),
+				'data'    => $result,
+			),
+			HTTP_Success::FETCHED_SUCCESSFULLY->get_http_status()
+		);
+	}
+
+	/**
+	 * Update ChatGPT settings
+	 * @param \WP_REST_Request $request Request object
+	 * @return \WP_REST_Response|\WP_Error Response object
+	 * @throws \Exception If user does not have sufficient permissions.
+	 */
+	public function update_chatgpt_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
+		try {
+			$result = UtilsOptions::update_chatgpt_settings( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
