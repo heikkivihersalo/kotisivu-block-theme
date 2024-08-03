@@ -1,0 +1,71 @@
+.ai-popover {
+	padding: 1rem;
+}
+
+.ai-popover__control {
+	display: flex;
+	flex-direction: row;
+	gap: 0.375rem;
+	align-items: flex-end;
+}
+
+.ai-popover__field--selected {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin-top: 0.5rem;
+}
+
+.ai-popover__label--prompt,
+.ai-popover__field--selection {
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.4;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-bottom: 0.5rem;
+	padding: 0;
+}
+
+.ai-popover__field--selection {
+	margin-bottom: 0.25rem;
+}
+
+.ai-popover__input {
+	border-radius: 0;
+	min-width: 20rem;
+	height: 2rem;
+}
+
+.ai-popover__input--selected {
+	margin: 0 !important;
+}
+
+.ai-popover__button {
+	height: 2rem !important;
+	margin-bottom: 4px !important;
+	border-radius: 0 !important;
+}
+
+.ai-popover__help {
+	margin-top: 0.5rem;
+	margin-bottom: 0;
+	font-size: 0.75rem;
+	font-style: normal;
+	color: rgb(117, 117, 117);
+}
+
+.ai-popover__selection {
+	margin-top: 0.5rem;
+}
+
+.ai-popover__selection p {
+	color: #2c3338;
+
+	margin: 0;
+	padding: 0.5rem;
+
+	box-shadow: 0 0 0 transparent;
+	border: 1px solid #8c8f94;
+	background-color: #fff;
+}
