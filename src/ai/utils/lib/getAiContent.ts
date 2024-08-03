@@ -8,7 +8,7 @@ import type { Response } from '../../types.ts';
  * Internal dependencies
  */
 type Props = {
-	prompt: FormDataEntryValue;
+	prompt: FormDataEntryValue | null;
 	selection: string;
 };
 

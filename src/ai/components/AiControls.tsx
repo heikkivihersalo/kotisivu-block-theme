@@ -1,13 +1,15 @@
 /**
  * WordPress dependencies
  */
-declare const wp: any;
-
 import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useShortcut } from '@wordpress/keyboard-shortcuts';
 import { useState, useCallback } from '@wordpress/element';
 import type { BlockInstance } from '@wordpress/blocks';
+
+declare const wp: any;
+
+const { getSelectedBlock } = wp.data.select('core/block-editor');
 
 /**
  * Internal dependencies
@@ -22,6 +24,26 @@ import {
 import AiPopover from './AiPopover';
 
 /**
+ * Constants
+ */
+const ALLOWED_BLOCKS = [
+	'core/paragraph',
+	'core/heading',
+	'core/list',
+	'core/list-item',
+];
+
+/**
+ * Types
+ */
+type Selection = {
+	block: BlockInstance | null;
+	text: string;
+	start: number;
+	end: number;
+};
+
+/**
  * Higher order component to add AI controls to the paragraph block
  * @param {React.ComponentType<any>} BlockEdit - The block edit component
  * @return {JSX.Element}
@@ -29,34 +51,18 @@ import AiPopover from './AiPopover';
 const AiControls = createHigherOrderComponent(
 	(BlockEdit: React.ComponentType<any>) => (props: any) => {
 		/**
-		 * Set allowed blocks
-		 */
-		const allowedBlocks = [
-			'core/paragraph',
-			'core/heading',
-			'core/list',
-			'core/list-item',
-		];
-
-		/**
 		 * Check that we are in the correct block
 		 */
-		if (!allowedBlocks.includes(props.name)) {
+		if (!ALLOWED_BLOCKS.includes(props.name)) {
 			return <BlockEdit {...props} />;
 		}
 
 		/**
-		 * State
+		 * Handle state
 		 */
 		const [isVisible, setIsVisible] = useState<boolean>(false);
 		const [isLoading, setIsLoading] = useState<boolean>(false);
-
-		const [selection, setSelection] = useState<{
-			block: BlockInstance | null;
-			text: string;
-			start: number;
-			end: number;
-		}>({
+		const [selection, setSelection] = useState<Selection>({
 			block: null,
 			text: '',
 			start: 0,
@@ -77,14 +83,12 @@ const AiControls = createHigherOrderComponent(
 			 * Get forn data
 			 */
 			const formData = new FormData(event.currentTarget);
-			const prompt = formData.get('prompt');
-			const useSelectedText = formData.get('use-selected');
 
 			/**
 			 * Handle prompt validation
 			 * TODO: window.alert is not recommended, use a proper validation method
 			 */
-			if (!prompt) {
+			if (!formData.get('prompt')) {
 				// eslint-disable-next-line no-alert
 				window.alert(
 					__('Please enter a prompt', 'kotisivu-block-theme')
@@ -97,11 +101,11 @@ const AiControls = createHigherOrderComponent(
 			 * Fetch the block content
 			 */
 			const aiContent = await getAiContent({
-				prompt,
+				prompt: formData.get('prompt'),
 				selection: selection.text,
 			});
 
-			if (useSelectedText) {
+			if (formData.get('use-selected')) {
 				replateSelectedText({
 					selectedBlock: selection.block,
 					newContent: aiContent,
@@ -126,16 +130,14 @@ const AiControls = createHigherOrderComponent(
 				/**
 				 * Check that we are in the correct block and set the selected block
 				 */
-				const currentBlock = await wp.data
-					.select('core/block-editor')
-					.getSelectedBlock();
+				const currentBlock = await getSelectedBlock();
 
-				if (!allowedBlocks.includes(currentBlock.name)) {
+				if (!ALLOWED_BLOCKS.includes(currentBlock.name)) {
 					return;
 				}
 
 				/**
-				 * Get the selected text
+				 * Get the selected text and save it to the state
 				 */
 				const {
 					selection: selectedText,
@@ -145,9 +147,6 @@ const AiControls = createHigherOrderComponent(
 					text: currentBlock.attributes.content.text,
 				});
 
-				/**
-				 * Set the selection
-				 */
 				setSelection({
 					block: currentBlock,
 					text: selectedText,
