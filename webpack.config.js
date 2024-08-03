@@ -90,6 +90,7 @@ module.exports = {
 		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.ts'),
 		'assets/store': path.resolve(__dirname, 'src/stores/index.js'),
 		'admin/index': path.resolve(__dirname, 'src/admin/index.tsx'),
+		'ai/index': path.resolve(__dirname, 'src/ai/index.tsx'),
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
