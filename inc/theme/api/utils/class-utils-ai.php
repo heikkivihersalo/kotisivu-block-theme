@@ -29,7 +29,7 @@ final class UtilsAI {
 			'messages' => array(
 				(object) array(
 					'role'    => 'system',
-					'content' => 'You are a helpful assistant that returns text in markdown format.',
+					'content' => 'You are a helpful assistant that returns text in markdown format. Return only the result.',
 				),
 				(object) array(
 					'role'    => 'user',
