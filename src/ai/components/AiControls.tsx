@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useShortcut } from '@wordpress/keyboard-shortcuts';
 import { useState, useCallback } from '@wordpress/element';
-import type { BlockInstance } from '@wordpress/blocks';
 
 declare const wp: any;
 
@@ -22,6 +21,7 @@ import {
 	replateSelectedText,
 } from '../utils';
 import AiPopover from './AiPopover';
+import { Selection } from '../types';
 
 /**
  * Constants
@@ -32,16 +32,6 @@ const ALLOWED_BLOCKS = [
 	'core/list',
 	'core/list-item',
 ];
-
-/**
- * Types
- */
-type Selection = {
-	block: BlockInstance | null;
-	text: string;
-	start: number;
-	end: number;
-};
 
 /**
  * Higher order component to add AI controls to the paragraph block
@@ -107,14 +97,19 @@ const AiControls = createHigherOrderComponent(
 
 			if (formData.get('use-selected')) {
 				replateSelectedText({
-					selectedBlock: selection.block,
-					newContent: aiContent,
+					block: selection.block,
+					text: aiContent,
 					start: selection.start,
 					end: selection.end,
 				});
 			} else {
 				const blocks = await parseMarkdownToBlocks(aiContent);
-				addBlocksToEditor({ selectedBlock: selection.block, blocks });
+				if (selection.block) {
+					addBlocksToEditor({
+						currentBlock: selection.block,
+						blocks,
+					});
+				}
 			}
 
 			setIsLoading(false);
@@ -132,7 +127,14 @@ const AiControls = createHigherOrderComponent(
 				 */
 				const currentBlock = await getSelectedBlock();
 
-				if (!ALLOWED_BLOCKS.includes(currentBlock.name)) {
+				const {
+					name: blockName,
+					attributes: {
+						content: { text: blockTextContent },
+					},
+				} = currentBlock;
+
+				if (!ALLOWED_BLOCKS.includes(blockName)) {
 					return;
 				}
 
@@ -140,12 +142,10 @@ const AiControls = createHigherOrderComponent(
 				 * Get the selected text and save it to the state
 				 */
 				const {
-					selection: selectedText,
-					startIndex,
-					endIndex,
-				} = getSelectedText({
-					text: currentBlock.attributes.content.text,
-				});
+					text: selectedText,
+					start: startIndex,
+					end: endIndex,
+				} = getSelectedText(blockTextContent);
 
 				setSelection({
 					block: currentBlock,
