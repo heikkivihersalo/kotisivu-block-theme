@@ -1,0 +1,28 @@
+.textareaContainer {
+	display: flex;
+	flex-direction: row;
+	gap: 0.375rem;
+	align-items: flex-end;
+}
+
+.textareaLabel {
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.4;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-bottom: 0.5rem;
+	padding: 0;
+}
+
+.textareaInput {
+	border-radius: 0;
+	min-width: 20rem;
+	height: 2rem;
+}
+
+.promptButton {
+	height: 2rem !important;
+	margin-bottom: 4px !important;
+	border-radius: 0 !important;
+}

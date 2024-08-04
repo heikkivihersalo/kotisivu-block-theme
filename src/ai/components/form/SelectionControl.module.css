@@ -1,0 +1,35 @@
+.selectedContainer {
+	margin-top: 0.5rem;
+}
+
+.selectedLabel {
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.4;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-bottom: 0.25rem;
+	padding: 0;
+}
+
+.selectedText {
+	color: #2c3338;
+
+	margin: 0;
+	padding: 0.5rem;
+
+	box-shadow: 0 0 0 transparent;
+	border: 1px solid #8c8f94;
+	background-color: #fff;
+}
+
+.checkboxContainer {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	margin-top: 0.5rem;
+}
+
+.checkboxInput {
+	margin: 0 !important;
+}
