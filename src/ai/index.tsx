@@ -7,7 +7,6 @@ import { addFilter } from '@wordpress/hooks';
  * Internal dependencies
  */
 import AiControls from './components/AiControls.tsx';
-import './style.css';
 
 /**
  * Filters
