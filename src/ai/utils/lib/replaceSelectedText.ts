@@ -14,7 +14,7 @@ import type { Selection } from '../../types';
  * Replace selected content from rich text element
  * @param {Object} props
  * @param {BlockInstance|null} props.block Selected block
- * @param {string} props.newContent New content
+ * @param {string} props.text New content
  * @param {number} props.start Start index
  * @param {number} props.end End index
  * @return {void} void
