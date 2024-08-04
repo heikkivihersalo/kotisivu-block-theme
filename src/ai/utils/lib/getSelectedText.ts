@@ -8,30 +8,21 @@ const { getSelectionStart, getSelectionEnd } =
 /**
  * Internal dependencies
  */
-type Props = {
-	text: string;
-};
-
-type Selection = {
-	selection: string;
-	startIndex: number;
-	endIndex: number;
-};
+import type { Selection } from '../../types';
 
 /**
  * Get block text selection
- * @param {Props} props Block text
- * @param {string} props.text Block text
+ * @param {string} text Block text
  * @return {Selection} Block text selection
  */
-function getSelectedText({ text }: Props): Selection {
+function getSelectedText(text: string): Selection {
 	const { offset: startOffset } = getSelectionStart();
 	const { offset: endOffset } = getSelectionEnd();
 
 	return {
-		selection: text.substring(startOffset, endOffset),
-		startIndex: startOffset,
-		endIndex: endOffset,
+		text: text.substring(startOffset, endOffset),
+		start: startOffset,
+		end: endOffset,
 	};
 }
 

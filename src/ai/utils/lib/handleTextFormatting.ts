@@ -1,10 +1,10 @@
 /**
  * Handle text formatting
- * @param {string} originalText Original text
+ * @param {string} text Original text
  * @return {string} Formatted text
  */
-function handleTextFormatting(originalText: string): string {
-	return originalText
+function handleTextFormatting(text: string): string {
+	return text
 		.replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
 		.replace(/\*(.*)\*/gim, '<em>$1</em>');
 }

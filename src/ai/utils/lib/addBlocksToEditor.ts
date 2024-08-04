@@ -12,26 +12,26 @@ const { insertBlock } = wp.data.dispatch('core/editor');
  * Internal dependencies
  */
 type Props = {
-	selectedBlock: BlockInstance | null;
+	currentBlock: BlockInstance | null;
 	blocks: BlockInstance[];
 };
 
 /**
  * Add blocks to the editor
  * @param {Object} props
- * @param {BlockInstance|null} props.selectedBlock Selected block
+ * @param {BlockInstance|null} props.currentBlock Selected block
  * @param {BlockInstance[]} props.blocks Blocks to add
  * @return {void} void
  */
-function addBlocksToEditor({ selectedBlock, blocks }: Props): void {
-	if (!selectedBlock) {
+function addBlocksToEditor({ currentBlock, blocks }: Props): void {
+	if (!currentBlock) {
 		return;
 	}
 
 	/**
 	 * Check if we are in a nested block or not and insert the blocks accordingly
 	 */
-	const parentBlocks = getBlockParents(selectedBlock.clientId);
+	const parentBlocks = getBlockParents(currentBlock.clientId);
 
 	if (parentBlocks.length > 0) {
 		/**
@@ -46,7 +46,7 @@ function addBlocksToEditor({ selectedBlock, blocks }: Props): void {
 		/**
 		 * If the block is not nested, insert the blocks at the same level
 		 */
-		const currentIndex = getBlockOrder().indexOf(selectedBlock.clientId);
+		const currentIndex = getBlockOrder().indexOf(currentBlock.clientId);
 
 		blocks.forEach((block, index) => {
 			insertBlock(block, currentIndex + index);
