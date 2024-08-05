@@ -1,3 +1,4 @@
+import { STATUS } from './constants';
 import type { BlockInstance } from '@wordpress/blocks';
 
 type Response = {
@@ -24,17 +25,32 @@ type Response = {
 
 type Selection = {
 	block?: BlockInstance | null;
+	anchor?: Element | null;
 	text: string;
 	start: number;
 	end: number;
 };
 
+type SelectionContextType = {
+	selection: Selection;
+	setSelection: (selection: Selection) => void;
+};
+
 type PopoverProps = {
-	isVisible: boolean;
-	setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-	isLoading: boolean;
-	selectedText: string;
 	generateContentCallback: React.FormEventHandler<HTMLFormElement>;
 };
 
-export type { Response, Selection, PopoverProps };
+type Status = (typeof STATUS)[keyof typeof STATUS];
+type StatusContextType = {
+	status: Status;
+	setStatus: (status: Status) => void;
+};
+
+export type {
+	Response,
+	Selection,
+	SelectionContextType,
+	PopoverProps,
+	Status,
+	StatusContextType,
+};
