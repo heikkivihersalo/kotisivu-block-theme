@@ -3,5 +3,7 @@ export * from './lib/getAiContent';
 export * from './lib/getSelectedText';
 export * from './lib/handleListItems';
 export * from './lib/handleTextFormatting';
+export * from './lib/highlightTextSelection';
+export * from './lib/getCurrentSelection';
 export * from './lib/parseMarkdownToBlocks';
 export * from './lib/replaceSelectedText';
