@@ -7,15 +7,14 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { Ring180 } from '@icons';
+import { STATUS } from '../../constants';
 import styles from './PromptControl.module.css';
 
 /**
  * Form component
- * @param {Object} props - Component props
- * @param {boolean} props.isLoading - Form children
  * @return {JSX.Element} Form component
  */
-const PromptControl = ({ isLoading }: { isLoading: boolean }): JSX.Element => {
+const PromptControl = ({ status }: { status: string }): JSX.Element => {
 	return (
 		<div className={styles.textareaContainer}>
 			<div>
@@ -32,9 +31,9 @@ const PromptControl = ({ isLoading }: { isLoading: boolean }): JSX.Element => {
 			<button
 				type="submit"
 				className={`${styles.promptButton} components-button is-primary is-compact`}
-				disabled={isLoading}
+				disabled={status === STATUS.LOADING}
 			>
-				{isLoading ? (
+				{status === STATUS.LOADING ? (
 					<Ring180 />
 				) : (
 					__('Generate', 'kotisivu-block-theme')
