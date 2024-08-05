@@ -21,7 +21,7 @@ final class UtilsAI {
 	 * @return Object
 	 * @throws \Exception If failed to update contact information.
 	 */
-	public static function get_open_ai_content( \WP_REST_Request $request ): array {
+	public static function get_open_ai_text_content( \WP_REST_Request $request ): array {
 		$body = json_decode( $request->get_body(), true );
 		$api  = UtilsOptions::get_chatgpt_settings();
 		$data = array(

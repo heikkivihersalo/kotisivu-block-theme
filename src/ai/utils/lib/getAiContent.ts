@@ -20,7 +20,7 @@ type Props = {
 async function getAiContent({ prompt, selection }: Props): Promise<string> {
 	const response: Response = await apiFetch({
 		method: 'POST',
-		path: 'kotisivu-block-theme/v1/ai/generate',
+		path: 'kotisivu-block-theme/v1/ai/text/generate',
 		data: {
 			prompt: selection !== '' ? `${prompt}: ${selection}` : prompt,
 		},

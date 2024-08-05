@@ -23,10 +23,10 @@ class RouteAI extends RouteBase implements RouteInterface {
 		 */
 		register_rest_route(
 			RouteInterface::NAMESPACE . RouteInterface::VERSION,
-			'/' . $this->base . '/generate',
+			'/' . $this->base . '/text/generate',
 			array(
 				'methods'             => \WP_REST_Server::EDITABLE, // Alias for GET transport method.
-				'callback'            => array( $this, 'generate_open_ai_content' ),
+				'callback'            => array( $this, 'generate_ai_text_content' ),
 				'permission_callback' => Permission::ADMIN->get_callback(),
 			)
 		);
@@ -38,9 +38,9 @@ class RouteAI extends RouteBase implements RouteInterface {
 	 * @return \WP_REST_Response|\WP_Error Response object
 	 * @throws \Exception If user does not have sufficient permissions.
 	 */
-	public function generate_open_ai_content( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
+	public function generate_ai_text_content( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsAI::get_open_ai_content( $request );
+			$result = UtilsAI::get_open_ai_text_content( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
