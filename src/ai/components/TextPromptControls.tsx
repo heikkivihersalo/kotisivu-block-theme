@@ -86,6 +86,6 @@ const TextPromptControls = createHigherOrderComponent(function (
 			</>
 		);
 	};
-}, 'AiControls');
+}, 'TextPromptControls');
 
 export default TextPromptControls;

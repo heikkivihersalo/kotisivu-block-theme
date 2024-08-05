@@ -13,6 +13,6 @@ import TextPromptControls from './components/TextPromptControls.tsx';
  */
 addFilter(
 	'editor.BlockEdit',
-	'kotisivu-block-theme/ai-controls',
+	'kotisivu-block-theme/ai-text-prompt-controls',
 	TextPromptControls
 );
