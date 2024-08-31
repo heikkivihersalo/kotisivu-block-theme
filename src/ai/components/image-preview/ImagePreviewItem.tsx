@@ -9,6 +9,9 @@ declare const wp: any;
 
 const { insertBlock } = wp.data.dispatch('core/editor');
 
+/**
+ * Internal dependencies
+ */
 import styles from './ImagePreviewItem.module.css';
 
 type Attachment = {
@@ -16,14 +19,17 @@ type Attachment = {
 	url: string;
 };
 
+type Props = {
+	src: string;
+};
+
 /**
- * Form component
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Form children
- * @param {Function} props.onSubmit - Form submit handler
- * @return {JSX.Element} Form component
+ * Image preview item component
+ * @param {Object} props Component props
+ * @param {string} props.src Image source
+ * @return {JSX.Element} Image preview item
  */
-const ImagePreviewItem = ({ src }: { src: string }): JSX.Element | null => {
+const ImagePreviewItem = ({ src }: Props): JSX.Element | null => {
 	if (!src) {
 		return null;
 	}
