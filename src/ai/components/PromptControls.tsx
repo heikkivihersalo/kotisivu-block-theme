@@ -14,12 +14,14 @@ import TextPromptModal from './modals/TextPromptModal';
 import ImagePromptModal from './modals/ImagePromptModal';
 
 import StatusContext from '../contexts/StatusContext';
+import type { Status } from '../contexts/StatusContext';
 import SelectionContext from '../contexts/SelectionContext';
+import type { Selection } from '../contexts/SelectionContext';
 import SettingsContext from '../contexts/SettingsContext';
+import type { Settings } from '../contexts/SettingsContext';
 
 import { getCurrentSelection } from '../utils';
 import { ALLOWED_TEXT_BLOCKS, STATUS } from '../constants';
-import { Selection, Status, Settings } from '../types';
 
 /**
  * Higher order component to add AI controls to the paragraph block
