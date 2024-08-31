@@ -18,7 +18,7 @@ async function getAiImageContent({
 		method: 'POST',
 		path: 'kotisivu-block-theme/v1/ai/image/generate',
 		data: {
-			prompt: prompt,
+			prompt,
 		},
 	});
 
