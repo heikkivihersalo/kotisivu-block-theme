@@ -10,6 +10,10 @@ import QuickCommandsNavItem from './QuickCommandsNavItem';
 
 import style from './Settings.module.css';
 
+/**
+ * Quick commands navigation component
+ * @return {JSX.Element} Quick commands navigation component
+ */
 const QuickCommandsNav = () => {
 	return (
 		<div className={style.navContainer}>

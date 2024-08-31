@@ -12,6 +12,10 @@ import ModelNavItem from './ModelNavItem';
 
 import style from './Settings.module.css';
 
+/**
+ * Model navigation component
+ * @return {JSX.Element} Model navigation component
+ */
 const ModelNav = () => {
 	const { settings, setSettings } = useContext(SettingsContext);
 

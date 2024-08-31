@@ -10,6 +10,10 @@ import GeneralSettingsNavItem from './GeneralSettingsNavItem';
 
 import style from './Settings.module.css';
 
+/**
+ * General settings navigation component
+ * @return {JSX.Element} General settings navigation component
+ */
 const GeneralSettingsNav = () => {
 	return (
 		<div className={style.navContainer}>

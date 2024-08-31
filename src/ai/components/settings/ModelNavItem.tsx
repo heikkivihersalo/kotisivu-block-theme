@@ -11,7 +11,11 @@ type Props = {
 };
 
 /**
- * Model navigation component
+ * ModelNavItem component
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label
+ * @param {JSX.Element} props.icon - Icon
+ * @param {boolean} props.isActive - Is active
  * @return {JSX.Element} Model navigation component
  */
 const ModelNavItem = ({

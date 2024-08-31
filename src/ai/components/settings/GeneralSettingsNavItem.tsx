@@ -11,7 +11,11 @@ type Props = {
 };
 
 /**
- * Model navigation component
+ * GeneralSettingsNavItem component
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label
+ * @param {JSX.Element} props.icon - Icon
+ * @param {boolean} props.hasSubMenu - Has sub menu
  * @return {JSX.Element} Model navigation component
  */
 const GeneralSettingsNavItem = ({
