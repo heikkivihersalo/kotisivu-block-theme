@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
-import type { Image, ImageResponse } from '../../types.ts';
+import type { ChatGPTImage, ChatGPTImageResponse } from '@ai/api';
 
 /**
  * Get blocks from the AI
@@ -13,8 +13,8 @@ async function getAiImageContent({
 	prompt,
 }: {
 	prompt: FormDataEntryValue | null;
-}): Promise<Image[]> {
-	const response: ImageResponse = await apiFetch({
+}): Promise<ChatGPTImage[]> {
+	const response: ChatGPTImageResponse = await apiFetch({
 		method: 'POST',
 		path: 'kotisivu-block-theme/v1/ai/image/generate',
 		data: {
