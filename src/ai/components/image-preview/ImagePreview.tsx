@@ -7,19 +7,18 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ImagePreviewItem from './ImagePreviewItem';
-import type { Image } from '../../types';
+import { ChatGPTImage } from '@ai/api';
 
 /**
- * Form component
+ * Image preview component
  * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Form children
- * @param {Function} props.onSubmit - Form submit handler
- * @return {JSX.Element} Form component
+ * @param {ChatGPTImage[]} props.preview - Image preview
+ * @return {JSX.Element} Image preview component
  */
 const ImagePreview = ({
 	preview,
 }: {
-	preview: Image[] | null;
+	preview: ChatGPTImage[] | null;
 }): JSX.Element | null => {
 	if (!preview) {
 		return null;
