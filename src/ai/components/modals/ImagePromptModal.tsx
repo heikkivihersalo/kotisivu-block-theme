@@ -1,8 +1,13 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
 import { useState, useContext } from '@wordpress/element';
+
 /**
  * Internal dependencies
  */
+import { ChatGPTImage } from '@ai/api';
 import StatusContext from '../../contexts/StatusContext';
 
 import Form from '../form/Form';
@@ -11,22 +16,15 @@ import WarningText from '../form/WarningText';
 import ImagePreview from '../image-preview/ImagePreview';
 
 import { getAiImageContent } from '../../utils';
-import type { Image } from '../../types';
 import { STATUS } from '../../constants';
 
 /**
- * AiPopover component
- * @param {Object} props - Component props
- * @param {boolean} props.isVisible - Popover visibility
- * @param {Function} props.setIsVisible - Popover visibility setter
- * @param {boolean} props.isLoading - Loading state
- * @param {string} props.selectedText - Selected text
- * @param {Function} props.generateContentCallback - Generate content callback
+ * ImagePromptModal component
  * @return {JSX.Element} Popover component
  */
 const ImagePromptModal = (): JSX.Element | null => {
 	const { status, setStatus } = useContext(StatusContext);
-	const [preview, setPreview] = useState<Image[] | null>(null);
+	const [preview, setPreview] = useState<ChatGPTImage[] | null>(null);
 
 	const modalOpen = status === STATUS.VISIBLE || status === STATUS.LOADING;
 
