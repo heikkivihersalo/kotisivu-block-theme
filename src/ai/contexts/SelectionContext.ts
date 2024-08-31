@@ -1,5 +1,18 @@
 import { createContext } from '@wordpress/element';
-import type { Selection, SelectionContextType } from '../types';
+import type { BlockInstance } from '@wordpress/blocks';
+
+type Selection = {
+	block?: BlockInstance | null;
+	anchor?: Element | null;
+	text: string;
+	start: number;
+	end: number;
+};
+
+type SelectionContextType = {
+	selection: Selection;
+	setSelection: (selection: Selection) => void;
+};
 
 const SelectionContext = createContext<SelectionContextType>({
 	selection: {
@@ -11,4 +24,5 @@ const SelectionContext = createContext<SelectionContextType>({
 	setSelection: () => {},
 });
 
+export type { SelectionContextType, Selection };
 export default SelectionContext;

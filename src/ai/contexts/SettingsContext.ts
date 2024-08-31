@@ -1,5 +1,14 @@
 import { createContext } from '@wordpress/element';
-import type { SettingsContextType } from '../types';
+
+type Settings = {
+	model: 'text' | 'image';
+	[key: string]: any;
+};
+
+type SettingsContextType = {
+	settings: Settings;
+	setSettings: (settings: Settings) => void;
+};
 
 const SettingsContext = createContext<SettingsContextType>({
 	settings: {
@@ -8,4 +17,5 @@ const SettingsContext = createContext<SettingsContextType>({
 	setSettings: () => {},
 });
 
+export type { SettingsContextType, Settings };
 export default SettingsContext;
