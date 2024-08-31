@@ -1,5 +1,5 @@
 export * from './lib/addBlocksToEditor';
-export * from './lib/getAiContent';
+export * from './lib/getAiTextContent';
 export * from './lib/getAiImageContent';
 export * from './lib/getSelectedText';
 export * from './lib/handleListItems';
