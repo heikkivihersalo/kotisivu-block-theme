@@ -30,6 +30,9 @@
 	justify-content: space-between;
 
 	margin: 0;
+
+	background: none;
+	border: none;
 }
 
 .navListItemLabel {
