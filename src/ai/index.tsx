@@ -6,13 +6,13 @@ import { addFilter } from '@wordpress/hooks';
 /**
  * Internal dependencies
  */
-import TextPromptControls from './components/TextPromptControls.tsx';
+import PromptControls from './components/PromptControls.tsx';
 
 /**
  * Filters
  */
 addFilter(
 	'editor.BlockEdit',
-	'kotisivu-block-theme/ai-text-prompt-controls',
-	TextPromptControls
+	'kotisivu-block-theme/ai-prompt-controls',
+	PromptControls
 );

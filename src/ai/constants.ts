@@ -5,6 +5,8 @@ const ALLOWED_TEXT_BLOCKS = [
 	'core/list-item',
 ];
 
+const ALLOWED_IMAGE_BLOCKS = ['core/paragraph'];
+
 const STATUS = {
 	INITIAL: 'initial',
 	LOADING: 'loading',
@@ -12,4 +14,4 @@ const STATUS = {
 	ERROR: 'error',
 } as const;
 
-export { ALLOWED_TEXT_BLOCKS, STATUS };
+export { ALLOWED_TEXT_BLOCKS, ALLOWED_IMAGE_BLOCKS, STATUS };

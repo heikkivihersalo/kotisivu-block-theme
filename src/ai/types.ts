@@ -23,6 +23,17 @@ type Response = {
 	system_fingerprint: string;
 };
 
+type Image = {
+	b64_json?: string;
+	url: string;
+	revised_prompt?: string;
+};
+
+type ImageResponse = {
+	created: number;
+	data: Array<Image>;
+};
+
 type Selection = {
 	block?: BlockInstance | null;
 	anchor?: Element | null;
@@ -46,11 +57,25 @@ type StatusContextType = {
 	setStatus: (status: Status) => void;
 };
 
+type Settings = {
+	model: 'text' | 'image';
+	[key: string]: any;
+};
+
+type SettingsContextType = {
+	settings: Settings;
+	setSettings: (settings: Settings) => void;
+};
+
 export type {
 	Response,
+	Image,
+	ImageResponse,
 	Selection,
 	SelectionContextType,
 	PopoverProps,
 	Status,
 	StatusContextType,
+	Settings,
+	SettingsContextType,
 };

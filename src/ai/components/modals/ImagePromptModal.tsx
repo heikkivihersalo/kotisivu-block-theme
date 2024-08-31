@@ -1,24 +1,17 @@
 import { __ } from '@wordpress/i18n';
-import { Popover } from '@wordpress/components';
-import { useContext } from '@wordpress/element';
+import { useState, useContext } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectionContext from '../../contexts/SelectionContext';
 import StatusContext from '../../contexts/StatusContext';
 
 import Form from '../form/Form';
 import PromptControl from '../form/PromptControl';
-import SelectionControl from '../form/SelectionControl';
 import WarningText from '../form/WarningText';
+import ImagePreview from '../image-preview/ImagePreview';
 
-import {
-	getAiContent,
-	addBlocksToEditor,
-	parseMarkdownToBlocks,
-	replateSelectedText,
-} from '../../utils';
-
+import { getAiImageContent } from '../../utils';
+import type { Image } from '../../types';
 import { STATUS } from '../../constants';
 
 /**
@@ -31,30 +24,15 @@ import { STATUS } from '../../constants';
  * @param {Function} props.generateContentCallback - Generate content callback
  * @return {JSX.Element} Popover component
  */
-const TextPromptPopover = (): JSX.Element | null => {
-	const { selection, setSelection } = useContext(SelectionContext);
+const ImagePromptModal = (): JSX.Element | null => {
 	const { status, setStatus } = useContext(StatusContext);
+	const [preview, setPreview] = useState<Image[] | null>(null);
 
 	const modalOpen = status === STATUS.VISIBLE || status === STATUS.LOADING;
 
-	if (!selection || !modalOpen) {
+	if (!modalOpen) {
 		return null;
 	}
-
-	/**
-	 * Close popover window
-	 * @return {void}
-	 */
-	const closePopover = (): void => {
-		setStatus(STATUS.INITIAL);
-		setSelection({
-			block: null,
-			anchor: null,
-			text: '',
-			start: 0,
-			end: 0,
-		});
-	};
 
 	/**
 	 * Handle generate content
@@ -83,44 +61,26 @@ const TextPromptPopover = (): JSX.Element | null => {
 		/**
 		 * Fetch the block content
 		 */
-		const aiContent = await getAiContent({
+		const images = await getAiImageContent({
 			prompt: formData.get('prompt'),
-			selection: selection.text,
 		});
 
-		if (formData.get('use-selected')) {
-			replateSelectedText({
-				block: selection.block,
-				text: aiContent,
-				start: selection.start,
-				end: selection.end,
-			});
-		} else {
-			const blocks = await parseMarkdownToBlocks(aiContent);
-			if (selection.block) {
-				addBlocksToEditor({
-					currentBlock: selection.block,
-					blocks,
-				});
-			}
-		}
-
-		closePopover();
+		setPreview(images);
 	};
 
 	return (
-		<Popover
-			placement="bottom"
-			onClose={closePopover}
-			anchor={selection.anchor}
-		>
-			<Form onSubmit={generateContent}>
-				<PromptControl status={status} />
-				<SelectionControl selectedText={selection.text} />
-				<WarningText />
-			</Form>
-		</Popover>
+		<Form onSubmit={generateContent}>
+			<PromptControl
+				status={status}
+				placeholder={__(
+					'What kind of image you want to generate?',
+					'kotisivu-block-theme'
+				)}
+			/>
+			<ImagePreview preview={preview} />
+			<WarningText />
+		</Form>
 	);
 };
 
-export default TextPromptPopover;
+export default ImagePromptModal;

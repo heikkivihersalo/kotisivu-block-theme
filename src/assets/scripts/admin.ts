@@ -6,21 +6,13 @@ import '../styles/admin.css';
 declare const wp: any;
 
 /**
- * Register the AI open shortcut
+ * Register the AI shortcuts
  */
 wp.data.dispatch('core/keyboard-shortcuts').registerShortcut({
-	// Shortcut name (identifier)
-	name: 'kotisivu-block-theme/shortcut-ai-open',
-
-	// Catergory (global, block or selection)
-	category: 'block',
-
-	// Description
-	description: 'Generate AI content',
-
-	// The key combination used to trigger the shortcut
-	// Could be just a single character or a character with
-	// a modifier.
+	name: 'kotisivu-block-theme/shortcut-ai-open' /* unique identifier */,
+	category: 'block' /* global, block, selection */,
+	description:
+		'Shortcut to open the open-ai popover' /* human-readable description */,
 	keyCombination: {
 		modifier: 'primary',
 		character: '.',

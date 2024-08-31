@@ -5,27 +5,28 @@ import { __ } from '@wordpress/i18n';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useShortcut } from '@wordpress/keyboard-shortcuts';
 import { useState, useCallback } from '@wordpress/element';
+import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import TextPromptPopover from './popover/TextPromptPopover';
+import TextPromptModal from './modals/TextPromptModal';
+import ImagePromptModal from './modals/ImagePromptModal';
 
 import StatusContext from '../contexts/StatusContext';
 import SelectionContext from '../contexts/SelectionContext';
+import SettingsContext from '../contexts/SettingsContext';
 
 import { getCurrentSelection } from '../utils';
-
 import { ALLOWED_TEXT_BLOCKS, STATUS } from '../constants';
-
-import { Selection, Status } from '../types';
+import { Selection, Status, Settings } from '../types';
 
 /**
  * Higher order component to add AI controls to the paragraph block
  * @param {React.ComponentType<any>} BlockEdit - The block edit component
  * @return {JSX.Element}
  */
-const TextPromptControls = createHigherOrderComponent(function (
+const PromptControls = createHigherOrderComponent(function (
 	BlockEdit: React.ComponentType<any>
 ) {
 	return (props: any) => {
@@ -40,6 +41,9 @@ const TextPromptControls = createHigherOrderComponent(function (
 		 * Handle state
 		 */
 		const [status, setStatus] = useState<Status>(STATUS.INITIAL);
+		const [settings, setSettings] = useState<Settings>({
+			model: 'text',
+		});
 		const [selection, setSelection] = useState<Selection>({
 			block: null,
 			anchor: null,
@@ -47,6 +51,21 @@ const TextPromptControls = createHigherOrderComponent(function (
 			start: 0,
 			end: 0,
 		});
+
+		/**
+		 * Close popover window
+		 * @return {void}
+		 */
+		const closePopover = (): void => {
+			setStatus(STATUS.INITIAL);
+			setSelection({
+				block: null,
+				anchor: null,
+				text: '',
+				start: 0,
+				end: 0,
+			});
+		};
 
 		/**
 		 * Handle keyboard shortcut to open the popover
@@ -76,16 +95,29 @@ const TextPromptControls = createHigherOrderComponent(function (
 		return (
 			<>
 				<BlockEdit {...props} />
-				<StatusContext.Provider value={{ status, setStatus }}>
-					<SelectionContext.Provider
-						value={{ selection, setSelection }}
-					>
-						<TextPromptPopover />
-					</SelectionContext.Provider>
-				</StatusContext.Provider>
+				<SettingsContext.Provider value={{ settings, setSettings }}>
+					<StatusContext.Provider value={{ status, setStatus }}>
+						<SelectionContext.Provider
+							value={{ selection, setSelection }}
+						>
+							<Popover
+								placement="bottom"
+								onClose={closePopover}
+								anchor={selection.anchor}
+							>
+								{settings.model === 'text' && (
+									<TextPromptModal />
+								)}
+								{settings.model === 'image' && (
+									<ImagePromptModal />
+								)}
+							</Popover>
+						</SelectionContext.Provider>
+					</StatusContext.Provider>
+				</SettingsContext.Provider>
 			</>
 		);
 	};
-}, 'TextPromptControls');
+}, 'PromptControls');
 
-export default TextPromptControls;
+export default PromptControls;
