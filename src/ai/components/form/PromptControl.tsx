@@ -20,6 +20,9 @@ type Props = {
 
 /**
  * Form component
+ * @param {Props} props - Component props
+ * @param {string} props.status - Form status
+ * @param {string} props.placeholder - Form placeholder
  * @return {JSX.Element} Form component
  */
 const PromptControl = ({ status, placeholder }: Props): JSX.Element => {
