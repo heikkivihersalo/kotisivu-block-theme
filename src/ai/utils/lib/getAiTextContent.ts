@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
-import type { Response } from '../../types.ts';
+import type { ChatGPTTextResponse } from '@ai/api';
 
 /**
  * Internal dependencies
@@ -17,10 +17,10 @@ type Props = {
  * @param {string} prompt Prompt
  * @return {Promise<BlockInstance[]>} Array of block instances
  */
-async function getAiContent({ prompt, selection }: Props): Promise<string> {
-	const response: Response = await apiFetch({
+async function getAiTextContent({ prompt, selection }: Props): Promise<string> {
+	const response: ChatGPTTextResponse = await apiFetch({
 		method: 'POST',
-		path: 'kotisivu-block-theme/v1/ai/generate',
+		path: 'kotisivu-block-theme/v1/ai/text/generate',
 		data: {
 			prompt: selection !== '' ? `${prompt}: ${selection}` : prompt,
 		},
@@ -29,4 +29,4 @@ async function getAiContent({ prompt, selection }: Props): Promise<string> {
 	return response.choices[0].message.content;
 }
 
-export { getAiContent };
+export { getAiTextContent };

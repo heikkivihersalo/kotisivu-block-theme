@@ -132,7 +132,7 @@ abstract class Block {
 
 			$this->set_block_translation(
 				'ksd-' . explode( '/', $block )[1],
-				$this->path
+				SITE_PATH
 			);
 		endforeach;
 	}
