@@ -11,7 +11,7 @@ import PromptControl from '../form/PromptControl';
 import WarningText from '../form/WarningText';
 
 import {
-	getAiContent,
+	getAiTextContent,
 	addBlocksToEditor,
 	parseMarkdownToBlocks,
 	replateSelectedText,
@@ -21,12 +21,6 @@ import { STATUS } from '../../constants';
 
 /**
  * TextPromptModal component
- * @param {Object} props - Component props
- * @param {boolean} props.isVisible - Popover visibility
- * @param {Function} props.setIsVisible - Popover visibility setter
- * @param {boolean} props.isLoading - Loading state
- * @param {string} props.selectedText - Selected text
- * @param {Function} props.generateContentCallback - Generate content callback
  * @return {JSX.Element} Popover component
  */
 const TextPromptModal = (): JSX.Element | null => {
@@ -66,7 +60,7 @@ const TextPromptModal = (): JSX.Element | null => {
 		/**
 		 * Fetch the block content
 		 */
-		const aiContent = await getAiContent({
+		const aiContent = await getAiTextContent({
 			prompt: formData.get('prompt'),
 			selection: selection.text,
 		});
