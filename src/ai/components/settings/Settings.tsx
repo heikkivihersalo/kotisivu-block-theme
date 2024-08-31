@@ -2,14 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useContext } from '@wordpress/element';
 import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import SettingsContext from '../../contexts/SettingsContext';
-
 import ModelNav from './ModelNav';
 import GeneralSettingsNav from './GeneralSettingsNav';
 import QuickCommandsNav from './QuickCommandsNav';
@@ -17,11 +14,11 @@ import QuickCommandsNav from './QuickCommandsNav';
 import style from './Settings.module.css';
 
 /**
- * Form component
+ * Settings component
  * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Form children
- * @param {Function} props.onSubmit - Form submit handler
- * @return {JSX.Element} Form component
+ * @param {boolean} props.settingsVisible - Settings visibility
+ * @param {HTMLElement} props.anchor - Anchor element
+ * @return {JSX.Element} Popover component
  */
 const Settings = ({
 	settingsVisible,
