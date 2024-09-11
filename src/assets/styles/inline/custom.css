@@ -8,7 +8,7 @@
 	scroll-padding-top: 2em;
 }
 
-:where(section) {
+:where(section, aside) {
 	width: var(--wp--custom--content-size);
 	margin-inline: auto;
 }
