@@ -80,15 +80,15 @@
  * Add margins to direct child blocks of the root container
  */
 .is-root-container
-	> :is(section, div):not(
+	> :is(div, section, aside):not(
 		:first-child,
 		:is(.post-type-post) .is-root-container > *
 	) {
-	margin-block: var(--wp--preset--spacing--60);
+	margin-block: var(--wp--preset--spacing--40);
 }
 
 .is-root-container
-	> :is(section, div):first-child:not(
+	> :is(div, section, aside):first-child:not(
 		:is(.post-type-post) .is-root-container > *
 	) {
 	margin-top: var(--wp--preset--spacing--40);

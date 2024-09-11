@@ -22,6 +22,7 @@
 		},
 		"align": ["full"]
 	},
+	"ancestor": ["ksd/section"],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
