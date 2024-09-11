@@ -13,43 +13,32 @@ import edit from './edit';
 import save from './save';
 import './style.css';
 
-/**
- * Block metadata
- */
-const { name, title, category, attributes } = metadata;
+import type { BlockConfig } from '@custom-blocks';
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
-registerBlockType(name, {
+registerBlockType(metadata.name, {
 	/**
-	 * @see ./block.json
+	 * @see block.json
 	 */
-	title,
+	...metadata,
 	/**
-	 * @see ./block.json
-	 */
-	category,
-	/**
-	 * @see ./block.json
-	 */
-	attributes,
-	/**
-	 * @see ./edit.tsx
+	 * @see edit.tsx
 	 */
 	edit,
 	/**
-	 * @see ./save.tsx
+	 * @see save.tsx
 	 */
 	save,
 	/**
 	 * Sets alignment.
 	 */
-	getEditWrapperProps(): { 'data-align': string } {
+	getEditWrapperProps() {
 		return {
 			'data-align': 'full',
 		};
 	},
-});
+} as BlockConfig);

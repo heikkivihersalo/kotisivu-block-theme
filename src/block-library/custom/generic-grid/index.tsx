@@ -11,43 +11,31 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';
-import variations from './variations.ts';
+import variations from './variations';
 import './style.css';
 
-/**
- * Block metadata
- */
-const { name, title, category, attributes } = metadata;
+import type { BlockConfig } from '@custom-blocks';
 
 /**
  * Every block starts by registering a new block type definition.
  *
  * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
  */
-// @ts-ignore Let's ignore the error for now. We don't need to add block attributes two times.
-registerBlockType(name, {
+registerBlockType(metadata.name, {
 	/**
-	 * @see ./block.json
+	 * @see block.json
 	 */
-	title,
+	...metadata,
 	/**
-	 * @see ./block.json
-	 */
-	category,
-	/**
-	 * @see ./block.json
-	 */
-	attributes,
-	/**
-	 * @see ./edit.tsx
+	 * @see edit.tsx
 	 */
 	edit,
 	/**
-	 * @see ./save.tsx
+	 * @see save.tsx
 	 */
 	save,
 	/**
-	 * @see variations.js
+	 * @see variations.ts
 	 */
 	variations,
-});
+} as unknown as BlockConfig);
