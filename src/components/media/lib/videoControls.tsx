@@ -27,21 +27,18 @@ const VideoControls = ({
 	setAttributes: (attributes: VideoAttributes) => void;
 }): JSX.Element => {
 	return (
-		<PanelBody
-			title={__('Select background video', 'kotisivu-block-theme')}
-			initialOpen={true}
-		>
+		<div>
 			<VideoSelector
 				attributes={attributes}
 				setAttributes={setAttributes}
 			/>
-			{attributes.mediaUrl && (
+			{attributes?.mediaUrl && (
 				<VideoControlButtons
 					attributes={attributes}
 					setAttributes={setAttributes}
 				/>
 			)}
-		</PanelBody>
+		</div>
 	);
 };
 

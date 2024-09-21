@@ -30,7 +30,7 @@ const VideoSelector = ({
 		<div className="editor-post-featured-image">
 			<MediaUploadCheck>
 				<MediaUpload
-					onSelect={(media) =>
+					onSelect={(media) => {
 						setAttributes({
 							mediaId: media.id,
 							mediaUrl: media.url,
@@ -38,9 +38,8 @@ const VideoSelector = ({
 							mediaMime: media.mime,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-							mediaThumbnail: media.thumb.src,
-						})
-					}
+						});
+					}}
 					allowedTypes={['video']}
 					value={mediaId}
 					render={({ open }) => (

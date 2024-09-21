@@ -57,3 +57,28 @@ function add_custom_image_sizes_to_admin( mixed $sizes ): array {
 
 	return array_merge( $sizes, $custom_images );
 }
+
+/**
+ * Replace image block markup with custom image markup
+ *
+ * @param string $block_content Block content
+ * @param array  $block Block data
+ * @return string
+ */
+function replace_image_markup( string $block_content, array $block ): string {
+	if ( 'core/image' !== $block['blockName'] ) {
+		return $block_content;
+	}
+
+	$classes   = $block['attrs']['className'] ?? '';
+	$size_slug = $block['attrs']['sizeSlug'] ?? 'full';
+
+	return wp_get_attachment_image(
+		$block['attrs']['id'],
+		$size_slug,
+		false,
+		array(
+			'class' => 'wp-block-image size-' . $size_slug . ' ' . $classes,
+		)
+	);
+}
