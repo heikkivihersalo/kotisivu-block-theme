@@ -70,15 +70,15 @@ function replace_image_markup( string $block_content, array $block ): string {
 		return $block_content;
 	}
 
-	$classes  = $block['attrs']['className'] ?? '';
-	$sizeSlug = $block['attrs']['sizeSlug'] ?? 'full';
+	$classes   = $block['attrs']['className'] ?? '';
+	$size_slug = $block['attrs']['sizeSlug'] ?? 'full';
 
 	return wp_get_attachment_image(
 		$block['attrs']['id'],
-		$sizeSlug,
+		$size_slug,
 		false,
 		array(
-			'class' => 'wp-block-image' . ' size-' . $sizeSlug . ' ' . $classes,
+			'class' => 'wp-block-image size-' . $size_slug . ' ' . $classes,
 		)
 	);
 }
