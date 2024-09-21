@@ -13,6 +13,7 @@ import './editor.css';
  * Block edit function
  * @param {Object} props Properties
  * @param {Record<string, any>} props.attributes Block attributes
+ * @param {Function} props.setAttributes Callback function
  * @return {JSX.Element} React component
  */
 export default function Edit({

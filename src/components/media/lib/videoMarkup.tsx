@@ -15,6 +15,7 @@ import type { VideoAttributes } from '@components/media';
  * --_video-max-width (default: 100%)
  * @param {Object} props Block attributes
  * @param {Omit<VideoAttributes, 'mediaId'>} props.attributes Video attributes
+ * @param {Record<string, any>} props.blockProps Block properties
  * @return {JSX.Element} Video element
  */
 const VideoMarkup = ({
