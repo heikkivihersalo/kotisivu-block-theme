@@ -19,14 +19,16 @@ import type { VideoAttributes } from '@components/media';
  */
 const VideoMarkup = ({
 	attributes,
+	blockProps = {},
 }: {
-	attributes: Omit<VideoAttributes, 'mediaId'>;
+	attributes: Omit<VideoAttributes, 'mediaId' | 'mediaAlt'>;
+	blockProps?: Record<string, any>;
 }): JSX.Element => {
-	const { mediaUrl, mediaWidth, mediaHeight, mediaMime, mediaThumbnail } =
-		attributes;
+	const { mediaUrl, mediaWidth, mediaHeight, mediaMime } = attributes;
 
 	return (
 		<video
+			{...blockProps}
 			style={{
 				width: 'var(--_video-width, 100%)',
 				height: 'var(--_video-height, auto)',
@@ -41,7 +43,6 @@ const VideoMarkup = ({
 			autoPlay
 			muted
 			loop
-			poster={mediaThumbnail}
 		>
 			<source src={mediaUrl} type={mediaMime} />
 			{__(

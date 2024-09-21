@@ -46,7 +46,6 @@ const VideoControlButtons = ({
 							mediaMime: media.mime,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-							mediaThumbnail: media.thumb.src,
 						})
 					}
 					allowedTypes={['video']}
@@ -68,7 +67,6 @@ const VideoControlButtons = ({
 							mediaMime: '',
 							mediaWidth: undefined,
 							mediaHeight: undefined,
-							mediaThumbnail: '',
 						})
 					}
 					isLink

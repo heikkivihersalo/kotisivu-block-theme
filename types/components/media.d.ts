@@ -7,7 +7,7 @@ declare module '@components/media' {
 	type MediaAttributes = {
 		mediaId: number;
 		mediaUrl: string;
-		mediaAlt: string;
+		mediaAlt?: string;
 		mediaMime?: string;
 		mediaWidth: number | undefined;
 		mediaHeight: number | undefined;
@@ -19,9 +19,7 @@ declare module '@components/media' {
 		lazyLoad?: boolean;
 	};
 
-	type VideoAttributes = MediaAttributes & {
-		mediaThumbnail: string;
-	};
+	type VideoAttributes = MediaAttributes;
 
 	export type { ImageAttributes, VideoAttributes };
 
@@ -40,7 +38,8 @@ declare module '@components/media' {
 	}>;
 
 	const VideoMarkup: ComponentType<{
-		attributes: Omit<VideoAttributes, 'mediaId'>;
+		attributes: Omit<VideoAttributes, 'mediaId' | 'mediaAlt'>;
+		blockProps?: Record<string, any>;
 	}>;
 
 	const VideoControls: ComponentType<{
