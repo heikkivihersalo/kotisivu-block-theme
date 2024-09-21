@@ -57,3 +57,21 @@ function add_custom_image_sizes_to_admin( mixed $sizes ): array {
 
 	return array_merge( $sizes, $custom_images );
 }
+
+function replace_image_markup( $block_content, $block ) {
+	if ( 'core/image' !== $block['blockName'] ) {
+		return $block_content;
+	}
+
+	$classes  = $block['attrs']['className'] ?? '';
+	$sizeSlug = $block['attrs']['sizeSlug'] ?? 'full';
+
+	return wp_get_attachment_image(
+		$block['attrs']['id'],
+		$sizeSlug,
+		false,
+		array(
+			'class' => 'wp-block-image' . ' size-' . $sizeSlug . ' ' . $classes,
+		)
+	);
+}
