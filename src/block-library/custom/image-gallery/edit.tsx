@@ -20,9 +20,9 @@ type Props = {
 
 /**
  * Block edit function
- * @param {Object} props Properties
- * @param {Object} props.attributes Block attributes
- * @param {Function} props.setAttributes Set attributes
+ * @param {Props} props Properties
+ * @param {BlockAttributes} props.attributes Block attributes
+ * @param {BlockSetAttributes} props.setAttributes Set attributes
  * @return {JSX.Element} React component
  */
 export default function Edit({

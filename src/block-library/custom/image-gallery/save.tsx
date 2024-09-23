@@ -15,8 +15,8 @@ type Props = {
 
 /**
  * Block save function
- * @param {Object} props Properties
- * @param {Object} props.attributes Block attributes
+ * @param {Props} props Properties
+ * @param {BlockAttributes} props.attributes Block attributes
  * @return {JSX.Element} Block innerBlocks markup
  */
 export default function Save({ attributes }: Props): JSX.Element {
