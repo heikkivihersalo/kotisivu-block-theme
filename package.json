@@ -32,6 +32,8 @@
 		"classnames": "^2.5.1"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.11.0",
+		"@types/eslint__js": "^8.42.3",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"@types/wordpress__block-editor": "^11.5.15",
@@ -53,7 +55,8 @@
 		"prettier": "3.2.5",
 		"stylelint-config-prettier": "^9.0.5",
 		"ts-loader": "^9.5.1",
-		"typescript": "^5.5.3",
+		"typescript": "^5.6.2",
+		"typescript-eslint": "^8.6.0",
 		"typescript-coverage-report": "^1.0.0"
 	},
 	"resolutions": {
