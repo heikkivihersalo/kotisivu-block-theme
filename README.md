@@ -1,22 +1,45 @@
-# Kotisivu Block Theme
+<p align="center">
+  <img src="readme.jpg" width="100%" align="center" alt="Hero image" />
+  <h1 align="center">Kotisivu Block Theme</h1>
+  <p align="center">
+    React & PHP Framework and boilerplate for WordPress development. Great starting point for WordPress based apps and sites.
+  </p>
+</p>
 
-![Static Badge](https://img.shields.io/badge/Block_Theme-blue?logo=wordpress) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/heikkivihersalo/kotisivu-block-theme/main) [![PHP](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-php.yml/badge.svg)](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-php.yml) [![JS](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-js.yml/badge.svg)](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-js.yml) [![CSS](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-css.yml/badge.svg)](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-css.yml) [![PHPUnit](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/test-php.yml/badge.svg)](https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/test-php.yml) ![GitHub](https://img.shields.io/github/license/heikkivihersalo/kotisivu-block-theme)
+<br/>
 
-![Hero Image](readme.jpg)
+<p align="center">
+	<a href="https://wordpress.org/documentation/article/block-themes/" target=”_blank” rel="nofollow"><img src="https://img.shields.io/badge/Block_Theme-blue?logo=wordpress" alt="Kotisivu Block Theme Badge" /></a>
+	<a href="https://github.com/heikkivihersalo/kotisivu-block-theme/commits/main/" rel="nofollow"><img src="https://img.shields.io/github/last-commit/heikkivihersalo/kotisivu-block-theme/main" alt="Kotisivu Block Theme last commit"></a>
+	<a href="https://www.linkedin.com/in/vihersalo/" rel="nofollow"><img src="https://img.shields.io/badge/created%20by-@heikkivihersalo-AD0048.svg" alt="Created by Heikki Vihersalo"></a>
+	<a href="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-php.yml" rel="nofollow"><img src="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-php.yml/badge.svg" alt="PHP Linting badge"></a>
+	<a href="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-js.yml" rel="nofollow"><img src="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-js.yml/badge.svg" alt="JS Linting badge"></a>
+	<a href="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-css.yml" rel="nofollow"><img src="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/lint-css.yml/badge.svg" alt="CSS Linting badge"></a>
+	<a href="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/test-php.yml" rel="nofollow"><img src="https://github.com/heikkivihersalo/kotisivu-block-theme/actions/workflows/test-php.yml/badge.svg" alt="PHP Unit Tests"></a>
+	<a href="https://lmo.wordpress.org/about/license/" rel="nofollow"><img src="https://img.shields.io/github/license/heikkivihersalo/kotisivu-block-theme" alt="License"></a>
+</p>
 
-> [!NOTE]
-> Please do note that readme isn't necessarily up-to-date. This is due to that Kotisivu Block Theme is coming close to version 2 that comes with a lot updates related to structure, code quality, testing and linting.
+<div align="center">
+  <a href="https://developer.wordpress.org/themes/getting-started/what-is-a-theme/">What is a block theme?</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://developer.wordpress.org/block-editor/getting-started/tutorial/">Build your first block</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://react.dev/">React</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://www.typescriptlang.org/">TypeScript</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://www.php.net/">PHP</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://www.linkedin.com/in/vihersalo/">@heikkivihersalo</a>
+  <br />
+</div>
 
-Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
-
-Originally theme was based on [Brad's Boilerplate](https://github.com/LearnWebCode/brads-boilerplate-wordpress/tree/main/brads-boilerplate-theme) theme but has seen a lot of changes since then so I'm not quite sure if there is anything left from that. Most latest update borrows some ideas from [Dude's Air Light](https://github.com/digitoimistodude/air-light) theme.
-
-For most sites, theme offers everything you need including **Custom Post Types**, **Custom Fields**, **Custom Database Tables** and **Custom API Endpoints**. This effectively replaces the need for a plugins like _Advanced Custom Fields_ or _Custom Post Type UI_. Please do note that for customizability reasons, some features are only boilerplate code and might require some modifications to work properly in your context.
-
----
+<br/>
+<br/>
 
 ## Table of Contents
 
+-	[Summary](#summary)
 -   [Get Started](#get-started)
 -   [Basic Structure](#basic-structure)
 -   [CSS Styles](#css-styles)
@@ -46,6 +69,17 @@ For most sites, theme offers everything you need including **Custom Post Types**
 -   [Admin Settings and Options](#admin-settings-and-options)
 
 ---
+
+## Summary
+
+> [!NOTE]
+> Please do note that readme isn't necessarily up-to-date. This is due to that Kotisivu Block Theme is coming close to version 2 that comes with a lot updates related to structure, code quality, testing and linting.
+
+Kotisivu Block Theme is a WordPress boilerplate theme that is designed to be as developer friendly while maintaining user-friendly interface for customers to maintain content. Main idea is to use WordPress purely as a CMS (Content Management System) and let the theme handle all styling and other things. Currently theme uses functions from both post and pre blocks era.
+
+Originally theme was based on [Brad's Boilerplate](https://github.com/LearnWebCode/brads-boilerplate-wordpress/tree/main/brads-boilerplate-theme) theme but has seen a lot of changes since then so I'm not quite sure if there is anything left from that. Most latest update borrows some ideas from [Dude's Air Light](https://github.com/digitoimistodude/air-light) theme.
+
+For most sites, theme offers everything you need including **Custom Post Types**, **Custom Fields**, **Custom Database Tables** and **Custom API Endpoints**. This effectively replaces the need for a plugins like _Advanced Custom Fields_ or _Custom Post Type UI_. Please do note that for customizability reasons, some features are only boilerplate code and might require some modifications to work properly in your context.
 
 ## Get Started
 
