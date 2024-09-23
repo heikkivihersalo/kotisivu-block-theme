@@ -8,41 +8,46 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import MediaUploader from './components/MediaUploader';
-import Img from './components/Img';
+import Image from './components/Image';
+import type { BlockAttributes, BlockSetAttributes } from './types';
+
 import './editor.css';
+
+type Props = {
+	attributes: BlockAttributes;
+	setAttributes: BlockSetAttributes;
+};
 
 /**
  * Block edit function
  * @param {Object} props Properties
+ * @param {Object} props.attributes Block attributes
+ * @param {Function} props.setAttributes Set attributes
  * @return {JSX.Element} React component
  */
-export default function Edit(props) {
-	const {
-		attributes: { images },
-		setAttributes,
-	} = props;
+export default function Edit({
+	attributes,
+	setAttributes,
+}: Props): JSX.Element {
+	const { images, blockClass } = attributes;
 
 	/**
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: 'image-gallery image-gallery-editor__images',
+		className: `image-gallery ${blockClass}`,
 	});
 
 	return (
-		<div className="image-gallery-editor">
+		<div className="editor-image-gallery">
 			{images.length >= 1 ? (
 				<div {...blockProps}>
 					{images.map((image) => (
-						<Img
-							key={image.mediaID}
-							image={image}
-							imageClass={'image-gallery__item'}
-						/>
+						<Image key={image.mediaId} image={image} />
 					))}
 				</div>
 			) : (
-				<div className="image-gallery-editor__help">
+				<div className="editor-image-gallery__help">
 					{__(
 						'Selected images will be shown here',
 						'kotisivu-block-theme'
@@ -50,7 +55,7 @@ export default function Edit(props) {
 				</div>
 			)}
 			<MediaUploader
-				mediaIDs={images.map((image) => image.mediaID)}
+				mediaIds={images.map((image) => image.mediaId)}
 				setAttributes={setAttributes}
 			/>
 		</div>

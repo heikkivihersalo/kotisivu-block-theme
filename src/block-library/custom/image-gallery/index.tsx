@@ -13,6 +13,8 @@ import edit from './edit';
 import save from './save';
 import './style.css';
 
+import type { BlockConfig } from './types';
+
 /**
  * Every block starts by registering a new block type definition.
  *
@@ -20,11 +22,15 @@ import './style.css';
  */
 registerBlockType(metadata.name, {
 	/**
-	 * @see ./edit.js
+	 * @see block.json
+	 */
+	...metadata,
+	/**
+	 * @see edit.tsx
 	 */
 	edit,
 	/**
-	 * @see ./save.js
+	 * @see save.tsx
 	 */
 	save,
-});
+} as unknown as BlockConfig);
