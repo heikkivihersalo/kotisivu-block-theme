@@ -4,7 +4,7 @@ declare module '@components/media' {
 	/**
 	 * Set types for video and image attributes
 	 */
-	type MediaAttributes = {
+	type BlockJSON_MediaAttributes = {
 		mediaId: number;
 		mediaUrl: string;
 		mediaAlt?: string;
@@ -13,38 +13,59 @@ declare module '@components/media' {
 		mediaHeight: number | undefined;
 	};
 
-	type ImageAttributes = MediaAttributes & {
+	type BlockJSON_ImageAttributes = BlockJSON_MediaAttributes & {
 		mediaSrcSet?: string;
 		mediaSrcSizes?: string;
 		lazyLoad?: boolean;
 	};
 
-	type VideoAttributes = MediaAttributes;
+	type BlockJSON_VideoAttributes = BlockJSON_MediaAttributes;
 
-	export type { ImageAttributes, VideoAttributes };
+	type MediaUploader_Image = {
+		id: number;
+		url: string;
+		alt: string;
+		mime: string;
+		type: string;
+		subtype: string;
+		caption: string;
+		link: string;
+		sizes: {
+			[key in string]: MediaUploader_ImageSize;
+		};
+	};
+
+	type MediaUploader_ImageSize = {
+		width: number;
+		height: number;
+		url: string;
+		orientation: string;
+	};
+
+	export type { BlockJSON_ImageAttributes, BlockJSON_VideoAttributes, MediaUploader_Image };
 
 	/**
 	 * Set types for components
 	 */
 	const ImageMarkup: ComponentType<{
-		attributes: ImageAttributes;
+		attributes: BlockJSON_ImageAttributes;
 		img?: boolean;
 		srcset?: boolean;
 	}>;
 
 	const ImageControls: ComponentType<{
-		attributes: ImageAttributes;
-		setAttributes: (attributes: ImageAttributes) => void;
+		attributes: BlockJSON_ImageAttributes;
+		setAttributes: (attributes: BlockJSON_ImageAttributes) => void;
 	}>;
 
 	const VideoMarkup: ComponentType<{
-		attributes: Omit<VideoAttributes, 'mediaId' | 'mediaAlt'>;
+		attributes: Omit<BlockJSON_VideoAttributes, 'mediaId' | 'mediaAlt'>;
 		blockProps?: Record<string, any>;
 	}>;
 
 	const VideoControls: ComponentType<{
-		attributes: VideoAttributes;
-		setAttributes: (attributes: VideoAttributes) => void;
+		attributes: BlockJSON_VideoAttributes;
+		setAttributes: (attributes: BlockJSON_VideoAttributes) => void;
 	}>;
 
 	export { ImageMarkup, ImageControls, VideoMarkup, VideoControls };

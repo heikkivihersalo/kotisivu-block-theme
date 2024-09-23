@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "ksd/image-gallery",
 	"title": "Image Gallery",
 	"category": "media",
@@ -15,13 +15,17 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"attributes": {
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
 		"images": {
 			"type": "array",
 			"source": "query",
 			"selector": "img",
 			"default": [],
 			"query": {
-				"mediaID": {
+				"mediaId": {
 					"type": "number",
 					"source": "attribute",
 					"attribute": "data-id"
