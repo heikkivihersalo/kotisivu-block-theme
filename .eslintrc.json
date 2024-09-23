@@ -42,7 +42,8 @@
 		{
 			"files": ["*.ts", "*.tsx"],
 			"rules": {
-				"jsdoc/no-undefined-types": 0
+				"jsdoc/no-undefined-types": 0,
+				"camelcase": "warn"
 			}
 		}
 	]
