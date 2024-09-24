@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"baseUrl": "./src",
 		"outDir": "./build/",
 		"sourceMap": true,
 		"strict": true,
@@ -15,7 +16,13 @@
 		"allowSyntheticDefaultImports": true,
 		"allowImportingTsExtensions": true,
 		"paths": {
-			"react": ["./node_modules/@types/react"]
+			"react": ["./node_modules/@types/react"],
+			"@components/*": ["components/*"],
+			"@hooks/*": ["hooks/*"],
+			"@icons/*": ["icons/*"],
+			"@stores/*": ["stores/*"],
+			"@utils/*": ["utils/*"],
+			"@admin/*": ["admin/components/*"]
 		},
 		"lib": ["ES2021.String"]
 	},
