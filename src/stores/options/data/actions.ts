@@ -1,22 +1,28 @@
 /**
  * Internal dependencies
  */
-import TYPES from '../types';
-const { SET_SOCIAL, SET_CONTACT, GET_SOCIAL, GET_CONTACT } = TYPES;
+import type { OptionAction } from '../types';
+
+type Actions = {
+	setContact: (options: object) => { type: OptionAction; options: object };
+	setSocial: (options: object) => { type: OptionAction; options: object };
+	getContact: (path: string) => { type: string; path: string };
+	getSocial: (path: string) => { type: string; path: string };
+};
 
 /**
  * Actions for the options store.
  * Used to dispatch data to the store.
  */
-const actions = {
+const actions: Actions = {
 	/**
 	 * Set contact info.
 	 * @param {Object} options Options object.
 	 * @return {Object} Action object.
 	 */
-	setContact(options) {
+	setContact(options: object) {
 		return {
-			type: SET_CONTACT,
+			type: 'SET_CONTACT',
 			options,
 		};
 	},
@@ -25,9 +31,9 @@ const actions = {
 	 * @param {Object} options Options object.
 	 * @return {Object} Action object.
 	 */
-	setSocial(options) {
+	setSocial(options: object) {
 		return {
-			type: SET_SOCIAL,
+			type: 'SET_SOCIAL',
 			options,
 		};
 	},
@@ -36,9 +42,9 @@ const actions = {
 	 * @param {string} path Path to the REST API endpoint.
 	 * @return {Object} Action object.
 	 */
-	getContact(path) {
+	getContact(path: string) {
 		return {
-			type: GET_CONTACT,
+			type: 'GET_CONTACT',
 			path,
 		};
 	},
@@ -47,9 +53,9 @@ const actions = {
 	 * @param {string} path Path to the REST API endpoint.
 	 * @return {Object} Action object.
 	 */
-	getSocial(path) {
+	getSocial(path: string) {
 		return {
-			type: GET_SOCIAL,
+			type: 'GET_SOCIAL',
 			path,
 		};
 	},

@@ -1,7 +1,12 @@
+type Selectors = {
+	getContact: (state: { contact: object }) => object;
+	getSocial: (state: { social: object }) => object;
+};
+
 /**
  * Selectors for the options store
  */
-const selectors = {
+const selectors: Selectors = {
 	/**
 	 * Get contact info
 	 * @param {Object} state Store state

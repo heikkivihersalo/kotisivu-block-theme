@@ -3,6 +3,8 @@ const TYPES = {
 	SET_CONTACT: 'SET_CONTACT',
 	GET_SOCIAL: 'GET_SOCIAL',
 	GET_CONTACT: 'GET_CONTACT',
-};
+} as const;
 
-export default TYPES;
+type OptionAction = (typeof TYPES)[keyof typeof TYPES];
+
+export { OptionAction };

@@ -3,10 +3,15 @@
  */
 import apiFetch from '@wordpress/api-fetch';
 
+type Controls = {
+	GET_CONTACT: (action: { path: string }) => Promise<any>;
+	GET_SOCIAL: (action: { path: string }) => Promise<any>;
+};
+
 /**
  * Controls for the options store
  */
-const controls = {
+const controls: Controls = {
 	/**
 	 * Get contact info
 	 * @param {Object} action Action object
