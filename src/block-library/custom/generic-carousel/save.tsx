@@ -2,7 +2,11 @@
  * WordPress dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import classnames from 'classnames';
+
+/**
+ * Internal dependencies
+ */
+import { classnames } from '@utils';
 
 /**
  * Block save function
