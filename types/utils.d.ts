@@ -58,8 +58,11 @@ declare module '@utils' {
 
 	const getIsReversedClass: (isReversed: boolean) => string;
 
+	const classnames: (...classes: (string | undefined)[]) => string;
+
 	export {
 		addModifiers,
+		classnames,
 		getBlockStyles,
 		getImageAlignmentClass,
 		getImageSizeClass,
