@@ -20,7 +20,7 @@
 			"@components/*": ["components/*"],
 			"@hooks/*": ["hooks/*"],
 			"@icons/*": ["icons/*"],
-			"@stores/*": ["stores/*"],
+			"@stores/*": ["data-stores/*"],
 			"@utils/*": ["utils/*"],
 			"@admin/*": ["admin/components/*"]
 		},
