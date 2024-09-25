@@ -88,7 +88,7 @@ module.exports = {
 			'src/assets/scripts/sanitize.ts'
 		),
 		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.ts'),
-		'assets/store': path.resolve(__dirname, 'src/stores/index.js'),
+		'assets/store': path.resolve(__dirname, 'src/data-stores/index.ts'),
 		'admin/index': path.resolve(__dirname, 'src/admin/index.tsx'),
 		'ai/index': path.resolve(__dirname, 'src/ai/index.tsx'),
 	},
@@ -98,7 +98,7 @@ module.exports = {
 			'@components': path.resolve(__dirname, 'src', 'components'),
 			'@hooks': path.resolve(__dirname, 'src', 'hooks'),
 			'@icons': path.resolve(__dirname, 'src', 'icons'),
-			'@stores': path.resolve(__dirname, 'src', 'stores'),
+			'@stores': path.resolve(__dirname, 'src', 'data-stores'),
 			'@utils': path.resolve(__dirname, 'src', 'utils'),
 			'@admin': path.resolve(__dirname, 'src', 'admin', 'components'),
 		},
