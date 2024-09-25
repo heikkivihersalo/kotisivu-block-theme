@@ -2,12 +2,11 @@
  * WordPress dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyles, getIsReversedClass } from '@utils';
+import { getBlockStyles, getIsReversedClass, classnames } from '@utils';
 
 /**
  * Block save function

@@ -2,14 +2,13 @@
  * WordPress dependencies
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
 import { InnerBlocksAppender } from '@components/inner-blocks';
 import { VariationPicker } from '@components/variations';
-import { getBlockStyles } from '@utils';
+import { getBlockStyles, classnames } from '@utils';
 
 import Inspector from './components/Inspector';
 

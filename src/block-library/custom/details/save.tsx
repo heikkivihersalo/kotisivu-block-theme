@@ -6,12 +6,11 @@ import {
 	useInnerBlocksProps,
 	RichText,
 } from '@wordpress/block-editor';
-import classnames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyles } from '@utils';
+import { getBlockStyles, classnames } from '@utils';
 
 /**
  * Block save function
