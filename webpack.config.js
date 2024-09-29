@@ -74,6 +74,7 @@ module.exports = {
 		...getWebpackEntryPoints(),
 		'block-library/core/core': getCoreBlocks(),
 		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.ts'),
+		'assets/ai': path.resolve(__dirname, 'src/ai/index.tsx'),
 		'assets/cpt': path.resolve(__dirname, 'src/assets/scripts/cpt.ts'),
 		'assets/dark-mode': path.resolve(
 			__dirname,
@@ -89,8 +90,7 @@ module.exports = {
 		),
 		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.ts'),
 		'assets/store': path.resolve(__dirname, 'src/data-stores/index.ts'),
-		'admin/index': path.resolve(__dirname, 'src/admin/index.tsx'),
-		'ai/index': path.resolve(__dirname, 'src/ai/index.tsx'),
+		'options/index': path.resolve(__dirname, 'src/admin/index.tsx'),
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
@@ -109,7 +109,12 @@ module.exports = {
 			patterns: [
 				{
 					from: path.resolve(__dirname, 'src', 'admin', 'render.php'),
-					to: path.resolve(__dirname, 'build', 'admin', 'render.php'),
+					to: path.resolve(
+						__dirname,
+						'build',
+						'options',
+						'render.php'
+					),
 				},
 			],
 		}),
