@@ -64,6 +64,8 @@
 		".vscode",
 		"build/assets",
 		"build/block-library",
+		"build/images",
+		"build/options",
 		"build/page-templates",
 		"inc",
 		"languages",
