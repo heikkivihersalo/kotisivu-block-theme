@@ -84,8 +84,8 @@ function admin_enqueue_admin() {
  * @return void
  */
 function admin_enqueue_ai() {
-	wp_register_script( 'ksd-editor-ai', SITE_URI . '/build/ai/index.js', '', filemtime( SITE_PATH . '/build/ai/index.js' ), true );
-	wp_register_style( 'ksd-editor-ai', SITE_URI . '/build/ai/index.css', '', filemtime( SITE_PATH . '/build/ai/index.css' ), 'all' );
+	wp_register_script( 'ksd-editor-ai', SITE_URI . '/build/assets/ai.js', '', filemtime( SITE_PATH . '/build/assets/ai.js' ), true );
+	wp_register_style( 'ksd-editor-ai', SITE_URI . '/build/assets/ai.css', '', filemtime( SITE_PATH . '/build/assets/ai.css' ), 'all' );
 	wp_enqueue_script( 'ksd-editor-ai' );
 	wp_enqueue_style( 'ksd-editor-ai' );
 }
