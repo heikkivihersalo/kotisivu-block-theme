@@ -20,7 +20,7 @@ function get_html() {
 	}
 
 	ob_start();
-	require SITE_PATH . '/build/admin/render.php';
+	require SITE_PATH . '/build/options/render.php';
 	echo ob_get_clean();
 }
 
@@ -34,14 +34,14 @@ function enqueue_theme_options( $hook ) {
 		return;
 	}
 
-	$assets = include SITE_PATH . '/build/admin/index.asset.php';
+	$assets = include SITE_PATH . '/build/options/index.asset.php';
 
 	/**
 	 * Enqueue CSS modules for the admin page
 	 */
 	wp_enqueue_style(
-		'ksd-admin-index',
-		SITE_URI . '/build/admin/index.css',
+		'ksd-options-index',
+		SITE_URI . '/build/options/index.css',
 		array(),
 		$assets['version'],
 	);
@@ -50,8 +50,8 @@ function enqueue_theme_options( $hook ) {
 	 * Enqueue custom styles
 	 */
 	wp_enqueue_style(
-		'ksd-admin-style-index',
-		SITE_URI . '/build/admin/style-index.css',
+		'ksd-options-style-index',
+		SITE_URI . '/build/options/style-index.css',
 		array(),
 		$assets['version'],
 	);
@@ -60,8 +60,8 @@ function enqueue_theme_options( $hook ) {
 	 * Enqueue JS for the admin page
 	 */
 	wp_enqueue_script(
-		'ksd-admin-index',
-		SITE_URI . '/build/admin/index.js',
+		'ksd-options-index',
+		SITE_URI . '/build/options/index.js',
 		$assets['dependencies'],
 		$assets['version'],
 		true
@@ -71,7 +71,7 @@ function enqueue_theme_options( $hook ) {
 	 * Localize the script with the data needed for the REST API
 	 */
 	wp_localize_script(
-		'ksd-admin-index',
+		'ksd-options-index',
 		'kotisivuSettings',
 		array(
 			'nonce' => wp_create_nonce( 'wp_rest' ), // Nonce for REST API authentication (must be used in all REST API requests)
