@@ -198,32 +198,32 @@ define(
 		'block_categories'         => array(
 			array(
 				'slug'  => 'blocks',
-				'label' => __( 'Blocks', 'kotisivu-block-theme' ),
+				'title' => __( 'Blocks', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 			array(
 				'slug'  => 'child',
-				'label' => __( 'Child', 'kotisivu-block-theme' ),
+				'title' => __( 'Child', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 			array(
 				'slug'  => 'containers',
-				'label' => __( 'Containers & Wrappers', 'kotisivu-block-theme' ),
+				'title' => __( 'Containers & Wrappers', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 			array(
 				'slug'  => 'sections',
-				'label' => __( 'Sections', 'kotisivu-block-theme' ),
+				'title' => __( 'Sections', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 			array(
 				'slug'  => 'templates',
-				'label' => __( 'Templates', 'kotisivu-block-theme' ),
+				'title' => __( 'Templates', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 			array(
 				'slug'  => 'dynamic-data',
-				'label' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
+				'title' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
 				'icon'  => null,
 			),
 		),
@@ -301,7 +301,7 @@ define(
 			),
 			array(
 				'slug' => 'chatgpt',
-				'name' => __( 'ChatGPT', 'kotisivu-block-theme' ),
+				'name' => __( 'ChatGPT (Beta)', 'kotisivu-block-theme' ),
 			),
 			array(
 				'slug' => 'social-media',
