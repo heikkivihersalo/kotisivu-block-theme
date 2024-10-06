@@ -14,7 +14,7 @@ import save from './save';
 import variations from './variations';
 import './style.css';
 
-import type { BlockConfig } from '@custom-blocks';
+import type { SectionBlockConfig } from './types';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -46,4 +46,4 @@ registerBlockType(metadata.name, {
 			'data-align': 'full',
 		};
 	},
-} as BlockConfig);
+} as unknown as SectionBlockConfig);

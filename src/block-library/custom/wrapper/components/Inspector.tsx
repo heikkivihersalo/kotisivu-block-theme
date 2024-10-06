@@ -14,6 +14,8 @@ import {
 	GapControls,
 } from '@components/inspector';
 
+import type { WrapperBlockAttributes } from '../types';
+
 /**
  * Inspector controls
  * @param {Record<string, any>} props Component properties
@@ -23,7 +25,7 @@ const Inspector = ({
 	attributes,
 	setAttributes,
 }: {
-	attributes: Record<string, any>;
+	attributes: WrapperBlockAttributes;
 	setAttributes: (newAttributes: Record<string, any>) => void;
 }): JSX.Element => {
 	return (

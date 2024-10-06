@@ -9,8 +9,9 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { InnerBlocksAppender } from '@components/inner-blocks';
 import { VariationPicker } from '@components/variations';
 import { getBlockStyles, getIsReversedClass, classnames } from '@utils';
-
 import Inspector from './components/Inspector';
+
+import type { WrapperBlockProps } from './types';
 
 import metadata from './block.json';
 import './editor.css';
@@ -27,11 +28,7 @@ export default function Edit({
 	attributes,
 	setAttributes,
 	clientId,
-}: {
-	attributes: Record<string, any>;
-	setAttributes: (newAttributes: Record<string, any>) => void;
-	clientId: string;
-}): JSX.Element {
+}: WrapperBlockProps): JSX.Element {
 	const {
 		blockClass,
 		template,

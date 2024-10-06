@@ -14,7 +14,7 @@ import save from './save';
 import variations from './variations';
 import './style.css';
 
-import type { BlockConfig } from '@custom-blocks';
+import type { WrapperBlockConfig } from './types';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -38,12 +38,4 @@ registerBlockType(metadata.name, {
 	 * @see variations.ts
 	 */
 	variations,
-	/**
-	 * Sets alignment.
-	 */
-	getEditWrapperProps() {
-		return {
-			'data-align': 'full',
-		};
-	},
-} as BlockConfig);
+} as unknown as WrapperBlockConfig);
