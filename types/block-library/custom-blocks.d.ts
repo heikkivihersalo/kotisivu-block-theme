@@ -1,26 +1,42 @@
-declare module '@custom-blocks' {
-	import type {
-		BlockEditProps,
-		BlockSaveProps,
-		BlockConfiguration,
-	} from '@wordpress/blocks';
+declare module '@block-library/custom' {
+	import type { BlockConfiguration } from '@wordpress/blocks';
 	import { Variation } from '@components/variations';
 
-	type BlockEdit = ({
+	type Template = Array<Array<string | Record<string, any>>>;
+	type TemplateLock = 'all' | 'insert' | false;
+	type AllowedBlocks = Array<string>;
+
+	type BlockEdit<A, S> = ({
 		attributes,
 		setAttributes,
-	}: BlockEditProps<Record<string, any>>) => JSX.Element;
+		clientId,
+		context,
+	}: {
+		attributes: A;
+		setAttributes?: S;
+		clientId?: string;
+		context?: Record<string, any>;
+	}) => JSX.Element;
 
-	type BlockSave = ({
+	type BlockSave<A> = ({
 		attributes,
-	}: BlockSaveProps<Record<string, any>>) => JSX.Element | null;
+	}: {
+		attributes?: A;
+	}) => JSX.Element | null;
 
-	type BlockConfig = BlockConfiguration & {
-		save: BlockSave;
-		edit: BlockEdit;
+	type BlockConfig<A, S> = BlockConfiguration & {
+		edit: BlockEdit<A, S>;
+		save: BlockSave<A>;
 		variations?: Array<Variation>;
 		getEditWrapperProps?: () => { 'data-align': string };
 	};
 
-	export type { BlockEdit, BlockSave, BlockConfig };
+	export type {
+		BlockEdit,
+		BlockSave,
+		BlockConfig,
+		Template,
+		TemplateLock,
+		AllowedBlocks,
+	};
 }

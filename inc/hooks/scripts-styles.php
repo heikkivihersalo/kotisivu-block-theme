@@ -40,10 +40,12 @@ function enqueue_theme() {
  * @return void
  */
 function enqueue_dark_mode() {
+	if ( ! SITE_SETTINGS['dark_mode'] ) {
+		return;
+	}
+
 	wp_register_script( 'ksd-dark-mode', SITE_URI . '/build/assets/dark-mode.js', '', filemtime( SITE_PATH . '/build/assets/dark-mode.js' ), true );
-	wp_register_style( 'ksd-dark-mode', SITE_URI . '/build/assets/dark-mode.css', '', filemtime( SITE_PATH . '/build/assets/dark-mode.css' ), 'all' );
 	wp_enqueue_script( 'ksd-dark-mode' );
-	wp_enqueue_style( 'ksd-dark-mode' );
 }
 
 /**
@@ -121,6 +123,7 @@ function inline_fontawesome(): void {
 	if ( null === SITE_SETTINGS['icons'] ) {
 		return;
 	}
+
 	if ( SITE_SETTINGS['icons']['all'] || SITE_SETTINGS['icons']['brands'] || SITE_SETTINGS['icons']['solid'] || SITE_SETTINGS['icons']['regular'] ) {
 		$folder = SITE_URI . '/public/icons/fontawesome/css/';
 
