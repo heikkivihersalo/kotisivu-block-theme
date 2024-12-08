@@ -38,7 +38,6 @@ if ( file_exists( SITE_PATH . '/build/assets/theme.js' ) ) {
 	if ( is_admin() ) {
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_custom_post_type' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_admin' );
-		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_ai' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_fontawesome' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\add_wp_media_support' );
 		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_redux_store' );
