@@ -20,7 +20,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"PostTypes\\": "inc/custom-post-types/"
+			"Kotisivu\\BlockTheme\\": "inc"
 		}
 	},
 	"scripts": {},
