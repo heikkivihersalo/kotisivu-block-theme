@@ -49,6 +49,15 @@ class Api {
 	 */
 	protected $version;
 
+    /**
+     * The current version of the API.
+     *
+     * @since    2.0.0
+     * @access   protected
+     * @var      string    $api_version    The current version of the API.
+     */
+    protected $api_version;
+
 	/**
 	 * Define the core functionality of the theme.
 	 *
@@ -58,10 +67,11 @@ class Api {
 	 *
 	 * @since    2.0.0
 	 */
-	public function __construct( Loader $loader, string $theme_name, string $version ) {
+	public function __construct( Loader $loader, string $theme_name, string $version, string $api_version ) {
 		$this->loader     = $loader;
 		$this->theme_name = $theme_name;
 		$this->version    = $version;
+        $this->api_version = $api_version;
 	}
 
 	/**
