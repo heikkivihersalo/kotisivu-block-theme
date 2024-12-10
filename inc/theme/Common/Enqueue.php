@@ -38,15 +38,6 @@ abstract class Enqueue implements EnqueueInterface {
 	private $version;
 
 	/**
-	 * The asset path.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @var      string    $asset    The asset path.
-	 */
-	private $asset_path;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since 2.0.0
@@ -55,10 +46,9 @@ abstract class Enqueue implements EnqueueInterface {
 	 * @param string $version The version of this plugin.
 	 * @return void
 	 */
-	public function __construct( $plugin_name, $version, $asset_path ) {
+	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		$this->asset_path  = $asset_path;
 	}
 
 	/**
@@ -86,11 +76,11 @@ abstract class Enqueue implements EnqueueInterface {
 	 * @inheritDoc
 	 */
 	public function enqueue_style( string $asset_path, string $style_url, string $handle = '' ): void {
-		if ( ! $this->asset_exists( $this->asset_path ) ) {
+		if ( ! $this->asset_exists( $asset_path ) ) {
 			return;
 		}
 
-		$assets = include $this->asset_path;
+		$assets = include $asset_path;
 		wp_enqueue_style( $handle, $style_url, array(), $assets['version'], 'all' );
 	}
 
@@ -98,11 +88,11 @@ abstract class Enqueue implements EnqueueInterface {
 	 * @inheritDoc
 	 */
 	public function enqueue_script( string $asset_path, string $script_url, string $handle = '' ): void {
-		if ( ! $this->asset_exists( $this->asset_path ) ) {
+		if ( ! $this->asset_exists( $asset_path ) ) {
 			return;
 		}
 
-		$assets = include $this->asset_path;
+		$assets = include $asset_path;
 		wp_enqueue_script( $handle, $script_url, $assets['dependencies'], $assets['version'], true );
 	}
 
