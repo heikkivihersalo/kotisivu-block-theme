@@ -61,6 +61,40 @@ class Dequeue {
 	}
 
 	/**
+	 * Dequeue block library styles
+	 *
+	 * @return void
+	 */
+	public function dequeue_block_library_styles() {
+		wp_dequeue_style( 'wp-block-library' );
+		wp_dequeue_style( 'wp-block-library-theme' );
+		wp_dequeue_style( 'wc-blocks-style' );
+	}
+
+	/**
+	 * Dequeue Fluent Form styles
+	 *
+	 * @return void
+	 */
+	public function dequeue_fluent_form_styles() {
+		if ( in_array( 'fluentform/fluentform.php', (array) get_option( 'active_plugins', array() ), true ) ) :
+			wp_deregister_style( 'fluentform-public-default' );
+			wp_dequeue_style( 'fluentform-public-default' );
+			wp_deregister_style( 'fluent-form-styles' );
+			wp_dequeue_style( 'fluent-form-styles' );
+		endif;
+	}
+
+	/**
+	 * Dequeue global styles
+	 *
+	 * @return void
+	 */
+	public function dequeue_global_styles() {
+		wp_dequeue_style( 'wp-global-styles' );
+	}
+
+	/**
 	 * Registers hooks for the loader
 	 *
 	 * @since 2.0.0
