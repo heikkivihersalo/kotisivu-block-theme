@@ -8,7 +8,7 @@
  * @package    Gutenberg_Native_Ai
  */
 
- namespace Kotisivu\BlockTheme\Theme\Admin\Scripts;
+namespace Kotisivu\BlockTheme\Theme\Admin\Scripts;
 
 use Kotisivu\BlockTheme\Theme\Admin\Traits\AdminPage;
 use Kotisivu\BlockTheme\Theme\Common\Enqueue;
@@ -67,11 +67,9 @@ class CustomPostTypes extends Enqueue implements EnqueueInterface {
 			return;
 		}
 
-		$asset_path = SITE_PATH . 'build/assets/cpt.asset.php';
-		$script_url = SITE_URL . 'build/assets/cpt.js';
-		$style_url  = SITE_URL . 'build/assets/cpt.css';
+		$asset_path = SITE_PATH . '/build/assets/cpt.asset.php';
+		$script_url = SITE_URI . '/build/assets/cpt.js';
 
-		$this->enqueue_style( $asset_path, $style_url );
 		$this->enqueue_script( $asset_path, $script_url );
 	}
 }

@@ -67,9 +67,9 @@ class Editor extends Enqueue implements EnqueueInterface {
 			return;
 		}
 
-		$asset_path = SITE_PATH . 'build/assets/admin.asset.php';
-		$script_url = SITE_URL . 'build/assets/admin.js';
-		$style_url  = SITE_URL . 'build/assets/admin.css';
+		$asset_path = SITE_PATH . '/build/assets/admin.asset.php';
+		$script_url = SITE_URI . '/build/assets/admin.js';
+		$style_url  = SITE_URI . '/build/assets/admin.css';
 
 		$this->enqueue_style( $asset_path, $style_url );
 		$this->enqueue_script( $asset_path, $script_url );
