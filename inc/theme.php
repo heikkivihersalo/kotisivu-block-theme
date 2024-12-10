@@ -1,73 +1,286 @@
 <?php
 /**
- * Load theme feature related files from `inc/theme` -folder
+ * The core theme class.
  *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme
  */
 
 namespace Kotisivu\BlockTheme;
 
-defined( 'ABSPATH' ) || die();
+use Kotisivu\BlockTheme\Theme\Common\Loader;
+
+use Kotisivu\BlockTheme\Theme\Admin;
+use Kotisivu\BlockTheme\Theme\Api;
+use Kotisivu\BlockTheme\Theme\Cleanup;
+use Kotisivu\BlockTheme\Theme\Dequeue;
+use Kotisivu\BlockTheme\Theme\Enqueue;
+use Kotisivu\BlockTheme\Theme\Excerpt;
+use Kotisivu\BlockTheme\Theme\i18n;
+use Kotisivu\BlockTheme\Theme\Image;
+use Kotisivu\BlockTheme\Theme\Meta;
+use Kotisivu\BlockTheme\Theme\Security;
+use Kotisivu\BlockTheme\Theme\Uploads;
 
 /**
- * Menu Walker
+ * The core theme class.
+ *
+ * This is used to define internationalization, admin-specific hooks, and
+ * public-facing site hooks.
+ *
+ * Also maintains the unique identifier of this theme as well as the current
+ * version of the theme.
+ *
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-require_once SITE_PATH . '/inc/theme/class-menu-walker.php';
-
-/**
- * Options
- */
-if ( is_user_logged_in() && is_admin() ) {
-	require_once SITE_PATH . '/inc/theme/options.php';
+class Theme {
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
+	 */
+	protected $loader;
 
 	/**
-	 * Create primary option page
+	 * The unique identifier of this theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $theme_name    The string used to uniquely identify this theme.
 	 */
-	add_action( 'admin_menu', __NAMESPACE__ . '\setup_theme_options' );
-	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue_theme_options' );
-}
+	protected $theme_name;
 
-/**
- * Duplicate post
- */
-require_once SITE_PATH . '/inc/theme/duplicate.php';
-add_filter( 'post_row_actions', __NAMESPACE__ . '\add_duplicate_post_link_to_admin', 10, 2 ); // Duplicate post
-add_filter( 'page_row_actions', __NAMESPACE__ . '\add_duplicate_post_link_to_admin', 10, 2 ); // Duplicate page
-add_action( 'admin_notices', __NAMESPACE__ . '\show_duplicate_admin_notice' );
-add_action( 'admin_action_create_duplicate_post_as_draft', __NAMESPACE__ . '\create_duplicate_post_as_draft' );
+	/**
+	 * The current version of the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the theme.
+	 */
+	protected $version;
 
+	/**
+	 * The current version of the API.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $api_version    The current version of the API.
+	 */
+	protected $api_version;
 
-/**
- * Custom Post Types
- */
-require_once SITE_PATH . '/inc/theme/custom-post-types/class-post-type.php';
+	/**
+	 * Define the core functionality of the theme.
+	 *
+	 * Set the theme name and the theme version that can be used throughout the theme.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    2.0.0
+	 */
+	public function __construct() {
+		$this->version     = defined( 'KOTISIVU_BLOCK_THEME_VERSION' ) ? KOTISIVU_BLOCK_THEME_VERSION : '2.0.0';
+		$this->api_version = defined( 'KOTISIVU_BLOCK_THEME_API_VERSION' ) ? KOTISIVU_BLOCK_THEME_API_VERSION : '2';
+		$this->theme_name  = 'kotisivu-block-theme';
 
-add_action(
-	'after_setup_theme',
-	function () {
-		Utils::build_post_types( SITE_SETTINGS['post_types'], SITE_PATH );
+		$this->create_loader();
 	}
-);
 
-/**
- * Custom Database Tables
- *
- * !WARNING EXPERIMENTAL FEATURE!
- */
-if ( SITE_SETTINGS['database_tables']['enabled'] ) {
-	require_once SITE_PATH . '/inc/theme/databases/class-database.php';
-	$tables = new Database(
-		SITE_SETTINGS['database_tables']['tables']
-	);
-	$tables->init();
-}
+	/**
+	 * Initialize the loader to execute all hooks with WordPress.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function create_loader() {
+		$this->loader = new Loader();
+	}
 
-/**
- * Custom API
- */
-if ( SITE_SETTINGS['api'] ) {
-	require_once SITE_PATH . '/inc/theme/api/class-api.php';
-	$api = new \Kotisivu\BlockTheme\Api\Api();
-	$api->init();
+	/**
+	 * Register all of the hooks related to the admin area
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_admin() {
+		$admin = new Admin( $this->loader, $this->theme_name, $this->version );
+		$admin->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to the API for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_api() {
+		$api = new Api( $this->loader, $this->theme_name, $this->version );
+		$api->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to junk cleanup for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_cleanup() {
+		$cleanup = new Cleanup( $this->loader, $this->theme_name, $this->version );
+		$cleanup->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to dequeeing scripts and styles for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_dequeue() {
+		$dequeue = new Dequeue( $this->loader, $this->theme_name, $this->version );
+		$dequeue->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to the scripts and styles.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 */
+	private function set_enqueue() {
+		$enqueue = new Enqueue( $this->loader, $this->theme_name, $this->version );
+		$enqueue->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to the custom excerpt
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_custom_excerpt() {
+		$excerpt = new Excerpt( $this->loader, $this->theme_name, $this->version );
+		$excerpt->register_hooks();
+	}
+
+	/**
+	 * Define the locale for this theme for internationalization.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_i18n() {
+		$i18n = new i18n();
+		$this->loader->add_action( 'themes_loaded', $i18n, 'load_textdomain' );
+	}
+
+	/**
+	 * Register all of the hooks related to the custom image sizes for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_custom_image() {
+		$image = new Image( $this->loader, $this->theme_name, $this->version );
+		$image->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to the meta for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_meta() {
+		$meta = new Meta( $this->loader, $this->theme_name, $this->version );
+		$meta->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to security enhancements for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_security() {
+		$security = new Security( $this->loader, $this->theme_name, $this->version );
+		$security->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to uploads for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_uploads() {
+		$uploads = new Uploads( $this->loader, $this->theme_name, $this->version );
+		$uploads->register_hooks();
+	}
+
+	/**
+	 * Run the loader to execute all of the hooks with WordPress.
+	 *
+	 * @since    2.0.0
+	 */
+	public function run() {
+		$this->loader->run();
+	}
+
+	/**
+	 * The name of the theme used to uniquely identify it within the context of
+	 * WordPress and to define internationalization functionality.
+	 *
+	 * @since     2.0.0
+	 * @return    string    The name of the theme.
+	 */
+	public function get_theme_name() {
+		return $this->theme_name;
+	}
+
+	/**
+	 * The reference to the class that orchestrates the hooks with the theme.
+	 *
+	 * @since     2.0.0
+	 * @return    Loader    Orchestrates the hooks of the theme.
+	 */
+	public function get_loader() {
+		return $this->loader;
+	}
+
+	/**
+	 * Retrieve the version number of the theme.
+	 *
+	 * @since     2.0.0
+	 * @return    string    The version number of the theme.
+	 */
+	public function get_version() {
+		return $this->version;
+	}
+
+	/**
+	 * Retrieve the version number of the API.
+	 *
+	 * @since     2.0.0
+	 * @return    string    The version number of the API.
+	 */
+	public function get_api_version() {
+		return $this->api_version;
+	}
 }
