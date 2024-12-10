@@ -8,7 +8,7 @@
  * @package    Kotisivu\BlockTheme\Admin\Traits
  */
 
-namespace Kotisivu\BlockTheme\Admin\Traits;
+namespace Kotisivu\BlockTheme\Theme\Admin\Traits;
 
 /**
  * Checks if the current page is the plugin's editor page

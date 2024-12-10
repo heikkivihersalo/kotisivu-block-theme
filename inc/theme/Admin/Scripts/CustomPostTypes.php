@@ -8,11 +8,11 @@
  * @package    Gutenberg_Native_Ai
  */
 
-namespace Kotisivu\BlockTheme\Admin\Scripts;
+ namespace Kotisivu\BlockTheme\Theme\Admin\Scripts;
 
-use Kotisivu\BlockTheme\Admin\Traits\AdminPage;
-use Kotisivu\BlockTheme\Common\Enqueue;
-use Kotisivu\BlockTheme\Common\Interfaces\EnqueueInterface;
+use Kotisivu\BlockTheme\Theme\Admin\Traits\AdminPage;
+use Kotisivu\BlockTheme\Theme\Common\Enqueue;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
 
 /**
  * The enqueued scripts functionality of the plugin.

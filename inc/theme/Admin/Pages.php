@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-namespace Kotisivu\BlockTheme\Admin;
+namespace Kotisivu\BlockTheme\Theme\Admin;
 
 defined( 'ABSPATH' ) || die();
 

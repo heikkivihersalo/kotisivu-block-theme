@@ -9,8 +9,9 @@
 
 namespace Kotisivu\BlockTheme\Theme;
 
-use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
+use Kotisivu\BlockTheme\Theme\Admin\Pages;
+use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 
 /**
@@ -89,7 +90,7 @@ class Admin {
 	 * @return   void
 	 */
 	private function add_admin_pages() {
-		$admin = new Admin\Pages( $this->theme_name, $this->version );
+		$admin = new Pages( $this->theme_name, $this->version );
 
 		$this->loader->add_action( 'admin_menu', $admin, 'setup_theme_options' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_theme_options' );

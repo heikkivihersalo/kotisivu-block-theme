@@ -9,6 +9,9 @@
 
 namespace Kotisivu\BlockTheme\Theme;
 
+use Kotisivu\BlockTheme\Theme\Api\Routes;
+use Kotisivu\BlockTheme\Theme\Api\Ajax;
+use Kotisivu\BlockTheme\Theme\Api\RestFields;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
@@ -61,7 +64,7 @@ class Api {
 		$this->version    = $version;
 	}
 
-    /**
+	/**
 	 * Register the API routes for the theme.
 	 *
 	 * @since    2.0.0
@@ -105,8 +108,8 @@ class Api {
 	 * @return void
 	 */
 	public function register_hooks() {
-        $this->set_api_routes();
-        $this->set_ajax_hooks();
-        $this->set_api_rest_fields();
+		$this->set_api_routes();
+		$this->set_ajax_hooks();
+		$this->set_api_rest_fields();
 	}
 }
