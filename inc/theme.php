@@ -135,7 +135,7 @@ class Theme {
 	 * @return   void
 	 */
 	private function set_api() {
-		$api = new Api( $this->loader, $this->theme_name, $this->version );
+		$api = new Api( $this->loader, $this->theme_name, $this->version, $this->api_version );
 		$api->register_hooks();
 	}
 
