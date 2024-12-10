@@ -32,6 +32,8 @@ define( 'SITE_VERSION', $theme->get( 'Version' ) );
 define( 'SITE_PATH', get_template_directory() );
 define( 'SITE_URI', get_template_directory_uri() );
 
+require SITE_PATH . '/inc/Theme.php';
+
 /**
  * Theme settings
  */
@@ -59,45 +61,6 @@ define(
 		 * - Will add a meta tag to the header with the color
 		 */
 		'theme_color'              => 'hsl(0, 0%, 20%)',
-
-		/**
-		 * Set behaviour for default loading of header and api junk
-		 * - There is a lot of "junk" that can be removed from the header
-		 * - HINT! This also acts as a security measure. Less information about your site is better
-		 */
-		'security'                 => array(
-			'author-pages'            => true,
-			'version'                 => true,
-			'rest-api-user-endpoints' => false,
-			'unauthorized-rest-api'   => false,
-			'json-api'                => true,
-			'xmlrpc'                  => true,
-		),
-		'performance'              => array(
-			'duotone'        => true,
-			'emojis'         => true,
-			'jquery'         => 'footer', // Can be set to 'normal', 'footer' or 'disable'
-			'jquery-migrate' => true,
-		),
-		'junk'                     => array(
-			'canonical'       => true,
-			'feed-links'      => true,
-			'gravatar'        => false,
-			'next-prev-links' => true,
-			'rsd'             => true,
-			'shortlink'       => true,
-		),
-
-		/**
-		 * Set behaviour for default style enqueues
-		 * - This is a list of default styles that are loaded by WordPress
-		 * - I prefer Fluent Forms for forms, so it is disabled by default also
-		 */
-		'disabled_styles'          => array(
-			'block-library' => true,
-			'fluent-forms'  => true,
-			'global-styles' => false,
-		),
 
 		/**
 		 * Set items that you want to remove from the admin menu
@@ -425,10 +388,39 @@ define(
 	)
 );
 
+// /**
+// * The code that runs during plugin activation.
+// * This action is documented in includes/class-gutenberg-native-ai-activator.php
+// */
+// function activate_gutenberg_native_ai() {
+// require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
+// Activator::activate();
+// }
+
+// /**
+// * The code that runs during plugin deactivation.
+// * This action is documented in includes/class-gutenberg-native-ai-deactivator.php
+// */
+// function deactivate_gutenberg_native_ai() {
+// require_once plugin_dir_path( __FILE__ ) . 'includes/class-deactivator.php';
+// Deactivator::deactivate();
+// }
+
+// register_activation_hook( __FILE__, __NAMESPACE__ . '\activate_gutenberg_native_ai' );
+// register_deactivation_hook( __FILE__, __NAMESPACE__ . '\deactivate_gutenberg_native_ai' );
+
 /**
- * Require theme files
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
  */
-require_once __DIR__ . '/inc/utils.php';
-require_once __DIR__ . '/inc/hooks.php';
-require_once __DIR__ . '/inc/theme.php';
-require_once __DIR__ . '/inc/blocks.php';
+function run_kotisivu_block_theme() {
+	$theme = new Theme();
+	$theme->run();
+}
+
+run_kotisivu_block_theme();
