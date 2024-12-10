@@ -11,6 +11,7 @@
 namespace Kotisivu\BlockTheme\Theme;
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 
 /**
  *
@@ -19,6 +20,8 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Uploads {
+	use ExtendedMediaSupport;
+
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the theme.
