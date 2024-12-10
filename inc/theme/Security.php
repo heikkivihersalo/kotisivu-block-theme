@@ -75,10 +75,10 @@ class Security {
 		/**
 		 * Remove JSON API
 		 */
-		$this->loader->add_filter( 'json_enabled', $this, '__return_false' );
-		$this->loader->add_filter( 'json_jsonp_enabled', $this, '__return_false' );
-		$this->loader->add_filter( 'rest_jsonp_enabled', $this, '__return_false' );
-		$this->loader->add_filter( 'embed_oembed_discover', $this, '__return_false' );
+		$this->loader->add_filter( 'json_enabled', null, '__return_false' );
+		$this->loader->add_filter( 'json_jsonp_enabled', null, '__return_false' );
+		$this->loader->add_filter( 'rest_jsonp_enabled', null, '__return_false' );
+		$this->loader->add_filter( 'embed_oembed_discover', null, '__return_false' );
 
 		$this->loader->remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
 		$this->loader->remove_action( 'wp_head', 'wp_oembed_add_discovery_links', 10 );
@@ -109,7 +109,6 @@ class Security {
 	 * @return   void
 	 */
 	private function set_security_enhancements() {
-		$this->loader->add_action( 'init', $this, 'remove_wp_version' );
 		$this->loader->add_action( 'wp_default_scripts', $this, 'disable_xmlrpc', 9999 );
 		$this->loader->add_action( 'template_redirect', $this, 'disable_author_pages' );
 		$this->loader->add_filter( 'http_request_args', $this, 'disable_theme_update', 10, 2 );
@@ -134,8 +133,8 @@ class Security {
 	 * @access private
 	 * @return void
 	 */
-	private function disable_xmlrpc() {
-		$this->loader->add_filter( 'xmlrpc_enabled', $this, '__return_false' );
+	public function disable_xmlrpc() {
+		$this->loader->add_filter( 'xmlrpc_enabled', null, '__return_false' );
 	}
 
 

@@ -23,7 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
 class Cleanup {
 	use CleanAdminUI;
 	use DisableEmoji;
-    use OptimizedJquery;
+	use OptimizedJquery;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -98,6 +98,18 @@ class Cleanup {
 	}
 
 	/**
+	 * Remove WP duotone filters
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	public function remove_duotone_filters() {
+		remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+		remove_action( 'in_admin_header', 'wp_global_styles_render_svg_filters' );
+	}
+
+	/**
 	 * Remove WP default junk
 	 *
 	 * @since    2.0.0
@@ -105,21 +117,12 @@ class Cleanup {
 	 * @return   void
 	 */
 	private function remove_wp_default_junk() {
-		$this->loader->add_action( 'init', $this, 'remove_canonical_links' );
-		$this->loader->add_action( 'init', $this, 'remove_feed_links' );
-		$this->loader->add_action( 'init', $this, 'remove_gravatar' );
-		$this->loader->add_action( 'init', $this, 'remove_next_prev_links' );
-		$this->loader->add_action( 'init', $this, 'remove_rsd_link' );
-		$this->loader->add_action( 'init', $this, 'remove_shortlink' );
-		$this->loader->add_action( 'init', $this, 'remove_duotone_filters' );
-		$this->loader->add_action( 'init', $this, 'remove_wp_emojis' );
-
 		/**
 		 * Remove canonical links
 		 */
 		$this->loader->remove_action( 'embed_head', 'rel_canonical' );
 		$this->loader->remove_action( 'wp_head', 'rel_canonical' );
-		$this->loader->add_filter( 'wpseo_canonical', $this, '__return_false' );
+		$this->loader->add_filter( 'wpseo_canonical', null, '__return_false' );
 
 		/**
 		 * Remove feed links
@@ -130,8 +133,8 @@ class Cleanup {
 		/**
 		 * Remove gravatar
 		 */
-		$this->loader->add_filter( 'get_avatar', $this, '__return_false' );
-		$this->loader->add_filter( 'option_show_avatars', $this, '__return_false' );
+		$this->loader->add_filter( 'get_avatar', null, '__return_false' );
+		$this->loader->add_filter( 'option_show_avatars', null, '__return_false' );
 
 		/**
 		 * Remove next and previous links
@@ -149,11 +152,6 @@ class Cleanup {
 		 */
 		$this->loader->remove_action( 'wp_head', 'wp_shortlink_wp_head', 10 );
 		$this->loader->remove_action( 'template_redirect', 'wp_shortlink_header', 11 );
-
-		/**
-		 * Remove duotone filters
-		 */
-		$this->loader->add_action( 'wp_body_open', $this, 'remove_duotone_filters' );
 	}
 
 	/**
@@ -174,7 +172,7 @@ class Cleanup {
 		$this->loader->remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 
 		$this->loader->add_filter( 'tiny_mce_plugins', $this, 'disable_emojis_tinymce' );
-		$this->loader->add_filter( 'emoji_svg_url', $this, '__return_false' );
+		$this->loader->add_filter( 'emoji_svg_url', null, '__return_false' );
 		$this->loader->add_filter( 'wp_resource_hints', $this, 'disable_emojis_remove_dns_prefetch', 1, 2 );
 	}
 
@@ -190,6 +188,7 @@ class Cleanup {
 		$this->remove_wp_default_junk();
 		$this->clean_wp_admin_ui();
 		$this->remove_wp_emojis();
+		$this->loader->add_action( 'after_setup_theme', $this, 'remove_duotone_filters' );
 	}
 
 	/**
