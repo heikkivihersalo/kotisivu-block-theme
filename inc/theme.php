@@ -90,6 +90,18 @@ class Theme {
 		$this->theme_name  = 'kotisivu-block-theme';
 
 		$this->create_loader();
+
+		$this->set_admin();
+		$this->set_api();
+		$this->set_cleanup();
+		$this->set_dequeue();
+		$this->set_enqueue();
+		$this->set_custom_excerpt();
+		$this->set_i18n();
+		$this->set_custom_image();
+		$this->set_meta();
+		$this->set_security();
+		$this->set_uploads();
 	}
 
 	/**
