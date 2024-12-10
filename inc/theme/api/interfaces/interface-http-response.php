@@ -1,6 +1,6 @@
 <?php
 
-namespace Kotisivu\BlockTheme\Api;
+namespace Kotisivu\BlockTheme\Theme\Api\Interfaces;
 
 defined( 'ABSPATH' ) || die();
 

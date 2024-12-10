@@ -1,0 +1,124 @@
+<?php
+/**
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme
+ */
+
+namespace Kotisivu\BlockTheme\Theme;
+
+use Kotisivu\BlockTheme\Theme\Common\Loader;
+
+/**
+ *
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
+ */
+class Image {
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
+	 */
+	protected $loader;
+
+	/**
+	 * The unique identifier of this theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $theme_name    The string used to uniquely identify this theme.
+	 */
+	protected $theme_name;
+
+	/**
+	 * The current version of the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the theme.
+	 */
+	protected $version;
+
+	/**
+	 * Define the core functionality of the theme.
+	 *
+	 * Set the theme name and the theme version that can be used throughout the theme.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    2.0.0
+	 */
+	public function __construct( Loader $loader, string $theme_name, string $version ) {
+		$this->loader     = $loader;
+		$this->theme_name = $theme_name;
+		$this->version    = $version;
+	}
+
+	/**
+	 * Add custom image options for WordPress
+	 *
+	 * @param mixed $sizes Image sizes
+	 * @return void
+	 */
+	public function register_image_sizes(): void {
+		/* Update default core image sizes */
+		foreach ( SITE_SETTINGS['image_sizes']['default'] as $size ) :
+			update_option( $size['slug'] . '_size_w', $size['width'] );
+			update_option( $size['slug'] . '_size_h', $size['height'] );
+		endforeach;
+
+		/* Add new image sizes to core */
+		foreach ( SITE_SETTINGS['image_sizes']['custom'] as $size ) :
+			add_image_size( $size['slug'], $size['width'], $size['height'], false );
+		endforeach;
+	}
+
+	/**
+	 * Remove default image sizes from WordPress
+	 *
+	 * @param mixed $sizes Image sizes
+	 * @return mixed
+	 */
+	public function remove_default_image_sizes( mixed $sizes ): mixed {
+		unset( $sizes['1536x1536'] ); // remove 1536x1536 image size
+		unset( $sizes['2048x2048'] ); // remove 2048x2048 image size
+
+		return $sizes;
+	}
+
+	/**
+	 * Add custom image options to admin interface
+	 *
+	 * @param mixed $sizes Image sizes
+	 * @return array
+	 */
+	public function add_custom_image_sizes_to_admin( mixed $sizes ): array {
+		$custom_images = array();
+
+		foreach ( SITE_SETTINGS['image_sizes']['custom'] as $image ) :
+			$custom_images[ $image['slug'] ] = $image['name'];
+		endforeach;
+
+		return array_merge( $sizes, $custom_images );
+	}
+
+	/**
+	 * Registers hooks for the loader
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function register_hooks() {
+		$this->loader->add_action( 'after_setup_theme', $this, 'register_image_sizes' );
+		$this->loader->add_filter( 'intermediate_image_sizes', $this, 'remove_default_image_sizes' );
+		$this->loader->add_filter( 'image_size_names_choose', $this, 'add_custom_image_sizes_to_admin' );
+	}
+}
