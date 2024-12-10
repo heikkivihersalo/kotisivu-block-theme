@@ -108,38 +108,6 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 	}
 
 	/**
-	 * Inline sanitize CSS styles
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function inline_sanitize_css(): void {
-		$filesystem = new \WP_Filesystem_Direct( true );
-		?>
-		<style id="ksd-sanitize-inline-css">
-			<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/sanitize.css' ); ?>
-		</style>
-		<?php
-	}
-
-	/**
-	 * Inline CSS styles
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function inline_custom_css(): void {
-		$filesystem = new \WP_Filesystem_Direct( true );
-		?>
-		<style id="ksd-custom-inline-css">
-			<?php echo $filesystem->get_contents( SITE_PATH . '/build/assets/inline.css' ); ?>
-		</style>
-		<?php
-	}
-
-	/**
 	 * Registers hooks for the loader
 	 *
 	 * @since 2.0.0
@@ -147,8 +115,6 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 	 * @return void
 	 */
 	public function register_hooks() {
-		$this->loader->add_action( 'wp_head', $this, 'inline_sanitize_css', 0 );
-		$this->loader->add_action( 'wp_head', $this, 'inline_custom_css', 11 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts_and_styles' );
 		$this->loader->add_filter( 'print_styles_array', $this, 'move_global_styles_to_top', 10, 1 );
 	}
