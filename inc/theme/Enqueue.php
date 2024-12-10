@@ -72,9 +72,9 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 	 * @return void
 	 */
 	public function enqueue_scripts_and_styles( string $hook = '' ): void {
-		$asset_path = SITE_PATH . 'build/assets/theme.asset.php';
-		$script_url = SITE_URL . 'build/assets/theme.js';
-		$style_url  = SITE_URL . 'build/assets/theme.css';
+		$asset_path = SITE_PATH . '/build/assets/theme.asset.php';
+		$script_url = SITE_URI . '/build/assets/theme.js';
+		$style_url  = SITE_URI . '/build/assets/theme.css';
 
 		$this->enqueue_style( $asset_path, $style_url );
 		$this->enqueue_script( $asset_path, $script_url );
