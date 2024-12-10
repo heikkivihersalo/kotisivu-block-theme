@@ -63,4 +63,18 @@ trait DisableUnsecureEndpoints {
 		// on logged-in requests
 		return $result;
 	}
+
+	/**
+	 * Disable author pages
+	 *
+	 * @return void
+	 */
+	public function disable_author_pages(): void {
+		global $wp_query;
+
+		if ( is_author() ) {
+			wp_safe_redirect( get_option( 'home' ), 301 );
+			exit();
+		}
+	}
 }
