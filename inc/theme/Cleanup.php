@@ -12,6 +12,7 @@ namespace Kotisivu\BlockTheme\Theme;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\CleanAdminUI;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableEmoji;
+use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
 
 /**
  *
@@ -22,6 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\DisableEmoji;
 class Cleanup {
 	use CleanAdminUI;
 	use DisableEmoji;
+    use OptimizedJquery;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
