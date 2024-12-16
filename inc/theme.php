@@ -15,12 +15,14 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Admin;
 use Kotisivu\BlockTheme\Theme\Api;
 use Kotisivu\BlockTheme\Theme\Cleanup;
+use Kotisivu\BlockTheme\Theme\CustomPostTypes;
 use Kotisivu\BlockTheme\Theme\Dequeue;
 use Kotisivu\BlockTheme\Theme\Enqueue;
 use Kotisivu\BlockTheme\Theme\Excerpt;
 use Kotisivu\BlockTheme\Theme\i18n;
 use Kotisivu\BlockTheme\Theme\Image;
 use Kotisivu\BlockTheme\Theme\Meta;
+use Kotisivu\BlockTheme\Theme\Navigation;
 use Kotisivu\BlockTheme\Theme\Security;
 use Kotisivu\BlockTheme\Theme\Uploads;
 
@@ -85,15 +87,16 @@ class Theme {
 	 * @since    2.0.0
 	 */
 	public function __construct() {
-		$this->version     = defined( 'KOTISIVU_BLOCK_THEME_VERSION' ) ? KOTISIVU_BLOCK_THEME_VERSION : '2.0.0';
-		$this->api_version = defined( 'KOTISIVU_BLOCK_THEME_API_VERSION' ) ? KOTISIVU_BLOCK_THEME_API_VERSION : '2';
-		$this->theme_name  = 'kotisivu-block-theme';
+		$this->theme_name  = defined( 'SITE_NAME' ) ? SITE_NAME : 'kotisivu-block-theme';
+		$this->version     = defined( 'SITE_VERSION' ) ? SITE_VERSION : '2.0.0';
+		$this->api_version = defined( 'SITE_API_VERSION' ) ? SITE_API_VERSION : '2';
 
 		$this->create_loader();
 
 		$this->set_admin();
 		$this->set_api();
 		$this->set_cleanup();
+		$this->set_custom_post_types();
 		$this->set_dequeue();
 		$this->set_enqueue();
 		$this->set_custom_excerpt();
@@ -101,6 +104,7 @@ class Theme {
 		$this->set_custom_image();
 		$this->set_meta();
 		$this->set_security();
+		$this->set_navigation();
 		$this->set_uploads();
 	}
 
@@ -149,6 +153,18 @@ class Theme {
 	private function set_cleanup() {
 		$cleanup = new Cleanup( $this->loader, $this->theme_name, $this->version );
 		$cleanup->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to custom post types for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_custom_post_types() {
+		$cpt = new CustomPostTypes( $this->loader, $this->theme_name, $this->version );
+		$cpt->register_hooks();
 	}
 
 	/**
@@ -232,6 +248,18 @@ class Theme {
 	private function set_security() {
 		$security = new Security( $this->loader, $this->theme_name, $this->version );
 		$security->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to navigation menus for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_navigation() {
+		$navigation = new Navigation( $this->loader, $this->theme_name, $this->version );
+		$navigation->register_hooks();
 	}
 
 	/**
