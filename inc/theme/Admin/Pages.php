@@ -1,9 +1,11 @@
 <?php
 /**
- * Admin pages
+ * Class for setting up the theme options
  *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
  */
 
 namespace Kotisivu\BlockTheme\Theme\Admin;
@@ -11,10 +13,11 @@ namespace Kotisivu\BlockTheme\Theme\Admin;
 defined( 'ABSPATH' ) || die();
 
 /**
- * Class Pages
+ * Class for setting up the theme options
  *
- * @package Kotisivu\BlockTheme
- * @since 2.0.0
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Pages {
 	/**
