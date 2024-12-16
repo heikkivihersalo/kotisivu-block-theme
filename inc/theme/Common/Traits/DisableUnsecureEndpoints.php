@@ -10,6 +10,8 @@
 
 namespace Kotisivu\BlockTheme\Theme\Common\Traits;
 
+use WP_Error;
+
 /**
  * Set extended security measures for the theme
  *
@@ -33,35 +35,6 @@ trait DisableUnsecureEndpoints {
 		}
 
 		return $endpoints;
-	}
-
-	/**
-	 * Disable REST API for non logged in users
-	 *
-	 * @param mixed $result The result of the authentication check.
-	 * @return mixed
-	 * @link https://developer.wordpress.org/rest-api/using-the-rest-api/frequently-asked-questions/#require-authentication-for-all-requests
-	 */
-	public function disable_rest_api_for_non_logged_in_users( $result ): mixed {
-		// If a previous authentication check was applied,
-		// pass that result along without modification.
-		if ( true === $result || is_wp_error( $result ) ) {
-			return $result;
-		}
-
-		// No authentication has been performed yet.
-		// Return an error if user is not logged in.
-		if ( ! is_user_logged_in() ) {
-			return new WP_Error(
-				'rest_not_logged_in',
-				'You are not currently logged in.',
-				array( 'status' => 401 )
-			);
-		}
-
-		// Our custom authentication check should have no effect
-		// on logged-in requests
-		return $result;
 	}
 
 	/**
