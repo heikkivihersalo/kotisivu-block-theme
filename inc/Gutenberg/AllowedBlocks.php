@@ -1,32 +1,62 @@
 <?php
 /**
- * Allowed blocks
  *
- * @link       https://www.kotisivu.dev
- * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Gutenberg\Traits
+ * @package Kotisivu\BlockTheme
+ * @since 1.0.0
  */
 
-namespace Kotisivu\BlockTheme\Gutenberg\Traits;
+namespace Kotisivu\BlockTheme\Gutenberg;
+
+defined( 'ABSPATH' ) || die();
+
+use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
- * Allowed blocks
  *
- * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Gutenberg\Traits
- * @author     Heikki Vihersalo <heikki@vihersalo.fi>
+ * @package Kotisivu\BlockTheme
  */
-trait AllowedBlocks {
+class AllowedBlocks {
+
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
+	 */
+	protected $loader;
+
+	/**
+	 * The unique identifier of this theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $theme_name    The string used to uniquely identify this theme.
+	 */
+	protected $theme_name;
+
+	/**
+	 * The current version of the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the theme.
+	 */
+	protected $version;
+
 	/**
 	 * The list of block types that should not be loaded.
 	 *
+	 * @since    2.0.0
+	 * @access   private
 	 * @var array
 	 */
 	protected $blacklist = array(
 		/**
-		 * WordPress Core Blocks
-		 */
+		* WordPress Core Blocks
+		*/
 		'core/archives',
 		'core/audio',
 		'core/avatar',
@@ -122,14 +152,14 @@ trait AllowedBlocks {
 		'core/widget-group',
 
 		/**
-		 * Custom Blocks
-		 */
+		* Custom Blocks
+		*/
 		'ksd/part-header',
 		'ksd/part-footer',
 
 		/**
-		 * Page Templates
-		 */
+		* Page Templates
+		*/
 		'ksd/template-404',
 		'ksd/template-archive',
 		'ksd/template-home',
@@ -142,7 +172,26 @@ trait AllowedBlocks {
 	);
 
 	/**
+	 * Define the core functionality of the theme.
+	 *
+	 * Set the theme name and the theme version that can be used throughout the theme.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    2.0.0
+	 */
+	public function __construct( Loader $loader, string $theme_name, string $version ) {
+		$this->loader     = $loader;
+		$this->theme_name = $theme_name;
+		$this->version    = $version;
+	}
+
+	/**
 	 * Filters the list of allowed block types.
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 * @param array $allowed_block_types The list of allowed block types.
 	 * @return array The filtered list of allowed block types.
 	 */
 	public function set_allowed_blocks( $allowed_block_types ) {
@@ -168,5 +217,16 @@ trait AllowedBlocks {
 
 		// Return the filtered list of allowed blocks
 		return $filtered_blocks;
+	}
+
+	/**
+	 * Register hooks
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function register_hooks() {
+		$this->loader->add_filter( 'allowed_block_types_all', $this, 'filter_allowed_blocks', 10, 2 );
 	}
 }
