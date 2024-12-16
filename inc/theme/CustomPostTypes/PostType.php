@@ -24,6 +24,8 @@ abstract class PostType {
 	/**
 	 * Post type slug.
 	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @var string
 	 */
 	public $slug;
@@ -31,6 +33,8 @@ abstract class PostType {
 	/**
 	 * Post type name.
 	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @var string
 	 */
 	public $name;
@@ -47,6 +51,9 @@ abstract class PostType {
 
 	/**
 	 * Register post type
+	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @return void
 	 */
 	public function register_custom_post_type(): void {
@@ -94,26 +101,28 @@ abstract class PostType {
 	 */
 	public function labels() {
 		return array(
-			'name'               => _x( $this->slug, 'post type general name', 'kotisivu-block-theme' ),
-			'singular_name'      => _x( $this->slug, 'post type singular name', 'kotisivu-block-theme' ),
-			'menu_name'          => _x( $this->slug, 'admin menu', 'kotisivu-block-theme' ),
-			'name_admin_bar'     => _x( $this->slug, 'add new on admin bar', 'kotisivu-block-theme' ),
-			'add_new'            => _x( 'Add New', $this->slug, 'kotisivu-block-theme' ),
-			'add_new_item'       => __( 'Add New ' . $this->slug, 'kotisivu-block-theme' ),
-			'new_item'           => __( 'New ' . $this->slug, 'kotisivu-block-theme' ),
-			'edit_item'          => __( 'Edit ' . $this->slug, 'kotisivu-block-theme' ),
-			'view_item'          => __( 'View ' . $this->slug, 'kotisivu-block-theme' ),
-			'all_items'          => __( 'All ' . $this->slug, 'kotisivu-block-theme' ),
-			'search_items'       => __( 'Search ' . $this->slug, 'kotisivu-block-theme' ),
-			'parent_item_colon'  => __( 'Parent ' . $this->slug . ':', 'kotisivu-block-theme' ),
-			'not_found'          => __( 'No ' . $this->slug . ' found.', 'kotisivu-block-theme' ),
-			'not_found_in_trash' => __( 'No ' . $this->slug . ' found in Trash.', 'kotisivu-block-theme' ),
+			'name'               => $this->name,
+			'singular_name'      => $this->name,
+			'menu_name'          => $this->name,
+			'name_admin_bar'     => $this->name,
+			'add_new'            => 'Add New' . $this->name,
+			'add_new_item'       => 'Add New' . $this->name,
+			'new_item'           => 'New ' . $this->slug,
+			'edit_item'          => 'Edit ' . $this->slug,
+			'view_item'          => 'View ' . $this->slug,
+			'all_items'          => 'All ' . $this->slug,
+			'search_items'       => 'Search ' . $this->slug,
+			'parent_item_colon'  => 'Parent ' . $this->slug . ':',
+			'not_found'          => 'No ' . $this->slug . ' found.',
+			'not_found_in_trash' => 'No ' . $this->slug . ' found in Trash.',
 		);
 	}
 
 	/**
 	 * Add support for post type
 	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @return array
 	 */
 	public function supports() {
@@ -127,9 +136,11 @@ abstract class PostType {
 	/**
 	 * Add metaboxes
 	 *
-	 * @return void
+	 * @since 2.0.0
+	 * @access public
+	 * @return array
 	 */
-	public function metaboxes() {
+	public function metaboxes(): array {
 		return array(
 			array(
 				'id'    => 'text_input_1',
@@ -231,6 +242,13 @@ abstract class PostType {
 		);
 	}
 
+	/**
+	 * Icon for post type
+	 *
+	 * @since 2.0.0
+	 * @access public
+	 * @return string
+	 */
 	public function icon() {
 		return 'dashicons-pressthis';
 	}
@@ -238,6 +256,8 @@ abstract class PostType {
 	/**
 	 * Register post type
 	 *
+	 * @since 2.0.0
+	 * @access protected
 	 * @return void
 	 */
 	abstract protected function register();
