@@ -158,7 +158,7 @@ class Loader {
 		foreach ( $this->remove_filters as $hook ) {
 			remove_filter(
 				$hook['hook'],
-				$hook['component'] !== null ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
+				null !== $hook['component'] ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
 				$hook['priority']
 			);
 		}
@@ -166,7 +166,7 @@ class Loader {
 		foreach ( $this->remove_actions as $hook ) {
 			remove_action(
 				$hook['hook'],
-				$hook['component'] !== null ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
+				null !== $hook['component'] ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
 				$hook['priority']
 			);
 		}
@@ -174,7 +174,7 @@ class Loader {
 		foreach ( $this->filters as $hook ) {
 			add_filter(
 				$hook['hook'],
-				$hook['component'] !== null ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
+				null !== $hook['component'] ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
 				$hook['priority'],
 				$hook['accepted_args']
 			);
@@ -183,7 +183,7 @@ class Loader {
 		foreach ( $this->actions as $hook ) {
 			add_action(
 				$hook['hook'],
-				$hook['component'] !== null ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
+				null !== $hook['component'] ? array( $hook['component'], $hook['callback'] ) : $hook['callback'],
 				$hook['priority'],
 				$hook['accepted_args']
 			);
