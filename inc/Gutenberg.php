@@ -10,17 +10,19 @@
 
 namespace Kotisivu\BlockTheme;
 
-use Kotisivu\BlockTheme\Blocks\Types\BlockCustom;
-use Kotisivu\BlockTheme\Blocks\Types\BlockPageTemplate;
-use Kotisivu\BlockTheme\Blocks\Types\BlockPart;
 use Kotisivu\BlockTheme\Common\Loader;
-use Kotisivu\BlockTheme\Gutenberg\DataStore;
-use Kotisivu\BlockTheme\Gutenberg\Scripts\Core;
-use Kotisivu\BlockTheme\Gutenberg\Traits\AllowedBlocks;
-use Kotisivu\BlockTheme\Gutenberg\Traits\BlockPatterns;
-use Kotisivu\BlockTheme\Gutenberg\Traits\BlockCategories;
+
+use Kotisivu\BlockTheme\Gutenberg\AllowedBlocks;
+use Kotisivu\BlockTheme\Gutenberg\Categories;
+use Kotisivu\BlockTheme\Gutenberg\Enqueue\Core as CoreEnqueue;
+use Kotisivu\BlockTheme\Gutenberg\Enqueue\Store as StoreEnqueue;
+use Kotisivu\BlockTheme\Gutenberg\Patterns;
+
+use Kotisivu\BlockTheme\Gutenberg\BlockTypes\BlockCustom;
+use Kotisivu\BlockTheme\Gutenberg\BlockTypes\BlockPageTemplate;
+use Kotisivu\BlockTheme\Gutenberg\BlockTypes\BlockPart;
+
 use Kotisivu\BlockTheme\Gutenberg\Traits\FilePathFix;
-use Kotisivu\BlockTheme\Gutenberg\Traits\RemoveDefaultPatterns;
 
 /**
  * The core theme class.
@@ -36,11 +38,7 @@ use Kotisivu\BlockTheme\Gutenberg\Traits\RemoveDefaultPatterns;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Gutenberg {
-	use AllowedBlocks;
-	use RemoveDefaultPatterns;
-	use BlockPatterns;
 	use FilePathFix;
-	use BlockCategories;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -95,16 +93,13 @@ class Gutenberg {
 
 		$this->set_loader();
 
-		$this->set_scripts_and_styles();
-		$this->set_separate_core_block_assets();
-
-		$this->remove_default_block_patterns_and_categories();
-
-		$this->set_block_patterns_and_categories();
-
-		$this->fix_file_paths();
-
 		$this->set_allowed_blocks();
+		$this->set_scripts_and_styles();
+		$this->set_block_categories();
+		$this->set_block_patterns();
+
+		$this->set_separate_core_block_assets();
+		$this->fix_file_paths();
 	}
 
 	/**
@@ -118,6 +113,11 @@ class Gutenberg {
 		$this->loader = new Loader();
 	}
 
+	private function set_allowed_blocks() {
+		$allowed_blocks = new AllowedBlocks( $this->loader, $this->theme_name, $this->version );
+		$allowed_blocks->register_hooks();
+	}
+
 	/**
 	 * Register all of the hooks related to the scripts and styles.
 	 *
@@ -125,10 +125,10 @@ class Gutenberg {
 	 * @access   private
 	 */
 	private function set_scripts_and_styles() {
-		$store = new DataStore( $this->theme_name, $this->version );
+		$store = new StoreEnqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'wp_enqueue_scripts', $store, 'enqueue_scripts_and_styles' );
 
-		$core = new Core( $this->theme_name, $this->version );
+		$core = new CoreEnqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'wp_enqueue_scripts', $core, 'enqueue_scripts_and_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $core, 'enqueue_scripts_and_styles' );
 
@@ -142,6 +142,29 @@ class Gutenberg {
 		$this->loader->add_action( 'init', $part, 'register_block' );
 	}
 
+	/**
+	 * Register all of the hooks related to the block categories.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_block_categories() {
+		$categories = new Categories( $this->loader, $this->theme_name, $this->version );
+		$categories->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to the block patterns.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_block_patterns() {
+		$patterns = new Patterns( $this->loader, $this->theme_name, $this->version );
+		$patterns->register_hooks();
+	}
 
 	/**
 	 * Sets separate core block assets.
@@ -154,43 +177,11 @@ class Gutenberg {
 	}
 
 	/**
-	 * Remove default block categories.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 */
-	private function remove_default_block_patterns_and_categories() {
-		$this->loader->add_filter( 'block_pattern_categories_all', $this, '__return_empty_array' );
-		$this->loader->add_filter( 'should_load_remote_block_patterns', $this, '__return_false' );
-		$this->loader->add_filter( 'rest_dispatch_request', $this, 'remove_default_block_patterns', 12, 3 );
-	}
-
-	/**
-	 * Register block patterns and categories.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 */
-	private function set_block_patterns_and_categories() {
-		$this->loader->add_action( 'init', $this, 'register_block_pattern_categories' );
-		$this->loader->add_action( 'init', $this, 'register_block_patterns' );
-		$this->loader->add_action( 'init', $this, 'register_custom_block_categories' );
-	}
-
-	/**
 	 * Fix file paths to get blocks working in theme context
 	 * @return void
 	 */
 	private function fix_file_paths() {
 		$this->loader->add_filter( 'plugins_url', $this, 'fix_block_file_path', 10, 3 );
-	}
-
-	/**
-	 * Set allowed blocks
-	 * @return void
-	 */
-	private function set_allowed_blocks() {
-		$this->loader->add_filter( 'allowed_block_types_all', $this, 'filter_allowed_blocks', 10, 2 );
 	}
 
 	/**
