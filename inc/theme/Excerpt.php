@@ -75,7 +75,7 @@ class Excerpt {
 	 *
 	 * @return string
 	 */
-	public function custom_excerpt_more( $more ): string {
+	public function custom_excerpt_more(): string {
 		return '&hellip;';
 	}
 
