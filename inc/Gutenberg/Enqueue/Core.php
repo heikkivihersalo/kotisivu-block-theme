@@ -8,10 +8,10 @@
  * @package    Gutenberg_Native_Ai
  */
 
-namespace Kotisivu\BlockTheme\Gutenberg\Scripts;
+namespace Kotisivu\BlockTheme\Gutenberg\Enqueue;
 
-use Kotisivu\BlockTheme\Common\Enqueue;
-use Kotisivu\BlockTheme\Common\Interfaces\EnqueueInterface;
+use Kotisivu\BlockTheme\Theme\Common\Enqueue as CommonEnqueue;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
 
 /**
  * The enqueued scripts functionality of the plugin.
@@ -19,7 +19,7 @@ use Kotisivu\BlockTheme\Common\Interfaces\EnqueueInterface;
  * @package    Gutenberg_Native_Ai
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Core extends Enqueue implements EnqueueInterface {
+class Core extends CommonEnqueue implements EnqueueInterface {
 	/**
 	 * The ID of this plugin.
 	 *
