@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Admin pages
  *
  * @package Kotisivu\BlockTheme
  * @since 1.0.0
@@ -10,6 +10,12 @@ namespace Kotisivu\BlockTheme\Theme\Admin;
 
 defined( 'ABSPATH' ) || die();
 
+/**
+ * Class Pages
+ *
+ * @package Kotisivu\BlockTheme
+ * @since 2.0.0
+ */
 class Pages {
 	/**
 	 * Admin pages
