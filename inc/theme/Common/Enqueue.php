@@ -58,7 +58,7 @@ abstract class Enqueue implements EnqueueInterface {
 		if ( ! file_exists( $path ) ) :
 			$message = sprintf(
 				/* translators: %1$s is the type of the asset, %2$s is the path to the asset */
-				__( 'Plugin%1$s assets in a path "%2$s" are missing. Run `yarn` and/or `yarn build` to generate them.', 'gutenberg-native-ai' ),
+				__( 'Plugin%1$s assets in a path "%2$s" are missing. Run `yarn` and/or `yarn build` to generate them.', 'kotisivu-block-theme' ),
 				$type ? ' ' . $type : '',
 				$path
 			);
