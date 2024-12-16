@@ -13,6 +13,7 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\CustomPostTypes\Enqueue;
 
 /**
  * Functionality for registering and handling custom post types for the theme.
@@ -74,6 +75,19 @@ class CustomPostTypes {
 	}
 
 	/**
+	 * Register all of the hooks related to the admin area functionality
+	 * of the theme.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_cpt_scripts_and_styles() {
+		$cpt = new Enqueue( $this->theme_name, $this->version );
+		$this->loader->add_action( 'admin_enqueue_scripts', $cpt, 'enqueue_scripts_and_styles' );
+	}
+
+	/**
 	 * Build custom post types from array
 	 *
 	 * @since 2.0.0
@@ -115,5 +129,6 @@ class CustomPostTypes {
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'after_setup_theme', $this, 'build_post_types' );
+		$this->set_cpt_scripts_and_styles();
 	}
 }
