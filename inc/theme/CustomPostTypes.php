@@ -61,6 +61,7 @@ class CustomPostTypes {
 	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct( Loader $loader, string $theme_name, string $version ) {
 		$this->loader     = $loader;

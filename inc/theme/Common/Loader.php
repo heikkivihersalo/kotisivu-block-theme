@@ -58,9 +58,10 @@ class Loader {
 	protected $remove_filters;
 
 	/**
-	 * Initialize the collections used to maintain the actions and filters.
+	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct() {
 		$this->actions        = array();

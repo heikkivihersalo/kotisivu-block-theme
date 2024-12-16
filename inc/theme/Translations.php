@@ -19,9 +19,10 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
  */
 class Translations {
 	/**
-	 * Load the plugin text domain for translation.
+	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function load_textdomain() {
 		load_theme_textdomain( 'kotisivu-block-theme', SITE_PATH . '/languages' );

@@ -42,7 +42,8 @@ abstract class PostType {
 	/**
 	 * Constructor
 	 *
-	 * @return void
+	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct( string $slug, string $name ) {
 		$this->slug = $slug;

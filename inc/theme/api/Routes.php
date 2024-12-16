@@ -46,13 +46,10 @@ class Routes {
 	private $api_version;
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Constructor
 	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 * @return void
+	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct( $plugin_name, $version, $api_version ) {
 		$this->plugin_name = $plugin_name;

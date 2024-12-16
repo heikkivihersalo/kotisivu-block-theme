@@ -46,13 +46,10 @@ class Dequeue {
 	protected $version;
 
 	/**
-	 * Define the core functionality of the theme.
-	 *
-	 * Set the theme name and the theme version that can be used throughout the theme.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct( Loader $loader, string $theme_name, string $version ) {
 		$this->loader     = $loader;

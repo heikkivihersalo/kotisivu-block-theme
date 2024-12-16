@@ -75,6 +75,8 @@ class CustomFields {
 	/**
 	 * Constructor
 	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @param array  $fields Fields to display in metabox
 	 * @param string $title Title of metabox
 	 * @param array  $post_types Post types to display metabox on (default: post, page)

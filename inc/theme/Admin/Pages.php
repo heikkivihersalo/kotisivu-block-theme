@@ -30,6 +30,7 @@ class Pages {
 	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct() {
 		$this->pages = array(

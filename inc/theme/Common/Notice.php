@@ -30,10 +30,10 @@ class Notice {
 	protected $message;
 
 	/**
-	 * Define the plugin notice
+	 * Constructor
 	 *
 	 * @since    2.0.0
-	 * @param string $message The message
+	 * @access   public
 	 */
 	public function __construct( string $message ) {
 		$this->message = $message;
