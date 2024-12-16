@@ -20,6 +20,5 @@ class REST_Response extends WP_HTTP_Response {
 	}
 
 	public function get_type() {
-
 	}
 }

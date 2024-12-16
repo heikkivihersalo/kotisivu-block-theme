@@ -2,6 +2,10 @@
 
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
 
+use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
+use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
+use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
+
 /**
  *
  *

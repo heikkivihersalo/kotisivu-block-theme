@@ -9,6 +9,8 @@
 
 namespace Kotisivu\BlockTheme\Theme\Api;
 
+use Kotisivu\BlockTheme\Theme\Api\Routes\OptionsRoute;
+
 /**
  *
  * @since      2.0.0
@@ -36,12 +38,12 @@ class Routes {
 
 	/**
 	 * API version number
-     * 
-     * @since 2.0.0
-     * @access private
-     * @var string $api_version The version of the API
-     */
-    private $api_version;
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 * @var string $api_version The version of the API
+	 */
+	private $api_version;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -55,7 +57,7 @@ class Routes {
 	public function __construct( $plugin_name, $version, $api_version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-        $this->api_version = $api_version;
+		$this->api_version = $api_version;
 	}
 
 	/**
@@ -64,7 +66,7 @@ class Routes {
 	 * @return void
 	 */
 	public function register() {
-		$options = new RouteOptions( 'options' );
+		$options = new OptionsRoute( 'options' );
 		$options->register_crud_endpoints();
 		$options->register_custom_endpoints();
 	}
