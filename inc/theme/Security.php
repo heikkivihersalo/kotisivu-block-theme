@@ -99,7 +99,6 @@ class Security {
 	 * @return   void
 	 */
 	private function remove_unsecure_endpoints() {
-		$this->loader->add_filter( 'rest_authentication_errors', $this, 'disable_rest_api_for_non_logged_in_users' );
 		$this->loader->add_filter( 'rest_endpoints', $this, 'disable_rest_api_user_endpoints' );
 	}
 
