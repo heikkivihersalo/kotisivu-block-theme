@@ -11,7 +11,7 @@ trait CustomPermalink {
 	 * @param string $name Name of the post type
 	 * @return void
 	 */
-	public function add_permalink_setting( $slug, $name ) {
+	public function add_permalink_setting( string $slug, string $name ): void {
 		add_action(
 			'admin_init',
 			function () use ( $slug, $name ) {
@@ -47,7 +47,7 @@ trait CustomPermalink {
 
 	/**
 	 * Generate setting output for permalink settings
-	 * @param string $slug
+	 * @param string $slug Slug of the post type
 	 * @return void
 	 */
 	public function generate_setting_output( string $slug ): void {
