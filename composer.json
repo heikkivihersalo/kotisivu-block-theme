@@ -25,7 +25,6 @@
 	},
 	"scripts": {},
 	"require": {
-		"jjgrainger/posttypes": "^2.2",
 		"vlucas/phpdotenv": "*"
 	},
 	"require-dev": {
