@@ -22,19 +22,27 @@ abstract class PostType {
 	use CustomPermalink;
 
 	/**
-	 * Post type slug or name.
+	 * Post type slug.
 	 *
 	 * @var string
 	 */
 	public $slug;
 
 	/**
+	 * Post type name.
+	 *
+	 * @var string
+	 */
+	public $name;
+
+	/**
 	 * Constructor
 	 *
 	 * @return void
 	 */
-	public function __construct( string $slug ) {
+	public function __construct( string $slug, string $name ) {
 		$this->slug = $slug;
+		$this->name = $name;
 	}
 
 	/**
@@ -74,8 +82,7 @@ abstract class PostType {
 		/**
 		 * Add permalink settings
 		 */
-		$this->add_permalink_setting( $this->slug, $this->slug );
-		$this->generate_setting_output( $this->slug );
+		$this->add_permalink_setting( $this->slug, $this->name );
 	}
 
 	/**

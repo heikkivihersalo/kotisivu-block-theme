@@ -96,7 +96,7 @@ class CustomPostTypes {
 				throw new \WP_Error( 'invalid-cpt', __( 'The custom post type you attempting to create does not have a class to instance. Possible problems: your configuration does not match the class file name; the class file name does not exist.', 'kotisivu-block-theme' ), $classname );
 			}
 
-			$post_type_class = new $classname( $slug );
+			$post_type_class = new $classname( $slug, $post_type );
 			$post_type_class->register();
 		}
 	}
