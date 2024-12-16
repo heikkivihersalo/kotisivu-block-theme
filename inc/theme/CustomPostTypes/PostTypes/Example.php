@@ -26,10 +26,10 @@ class Example extends PostType {
 	 * Register post type
 	 *
 	 * @since 2.0.0
-	 * @access protected
+	 * @access public
 	 * @return void
 	 */
-	protected function register(): void {
+	public function register(): void {
 		$this->register_custom_post_type();
 	}
 }
