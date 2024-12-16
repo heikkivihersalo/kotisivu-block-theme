@@ -6,7 +6,7 @@
  * @since 1.0.0
  */
 
-namespace Kotisivu\BlockTheme\Gutenberg\Types;
+namespace Kotisivu\BlockTheme\Gutenberg\BlockTypes;
 
 defined( 'ABSPATH' ) || die();
 
