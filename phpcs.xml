@@ -42,6 +42,7 @@
 
         <!-- General WordPress stuff we like to overrule -->
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 
         <!-- Very strict VIP/discouraged rules that are not needed -->
         <exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
