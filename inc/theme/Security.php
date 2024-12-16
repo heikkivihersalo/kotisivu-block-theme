@@ -11,6 +11,7 @@ namespace Kotisivu\BlockTheme\Theme;
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableUnsecureEndpoints;
+use Kotisivu\BlockTheme\Theme\Common\Traits\DisableThemeUpdate;
 
 /**
  *
@@ -20,6 +21,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\DisableUnsecureEndpoints;
  */
 class Security {
 	use DisableUnsecureEndpoints;
+	use DisableThemeUpdate;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -136,7 +138,6 @@ class Security {
 	public function disable_xmlrpc() {
 		$this->loader->add_filter( 'xmlrpc_enabled', null, '__return_false' );
 	}
-
 
 	/**
 	 * Registers hooks for the loader
