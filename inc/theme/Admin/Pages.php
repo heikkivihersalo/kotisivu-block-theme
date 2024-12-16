@@ -12,6 +12,45 @@ defined( 'ABSPATH' ) || die();
 
 class Pages {
 	/**
+	 * Admin pages
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 * @var array $admin_pages Array of admin pages
+	 */
+	private array $pages;
+
+	/**
+	 * Constructor
+	 *
+	 * @since    2.0.0
+	 */
+	public function __construct() {
+		$this->pages = array(
+			array(
+				'slug' => 'general',
+				'name' => __( 'General', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'analytics',
+				'name' => __( 'Analytics', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'contact',
+				'name' => __( 'Contact', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'chatgpt',
+				'name' => __( 'ChatGPT (Beta)', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug' => 'social-media',
+				'name' => __( 'Social Media', 'kotisivu-block-theme' ),
+			),
+		);
+	}
+
+	/**
 	 * Get the HTML for the theme options
 	 * @return void
 	 */
@@ -102,7 +141,7 @@ class Pages {
 		/**
 		 * Create sub menu pages
 		 */
-		foreach ( SITE_SETTINGS['setting_pages'] as $page ) {
+		foreach ( $this->pages as $page ) {
 			add_submenu_page(
 				'kotisivu-settings-general', // Parent Slug
 				$page['name'], // Page Title
