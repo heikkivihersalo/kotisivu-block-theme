@@ -9,8 +9,9 @@
 
 namespace Kotisivu\BlockTheme\Theme;
 
-use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
 use Kotisivu\BlockTheme\Theme\Admin\Pages;
+use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
+use Kotisivu\BlockTheme\Theme\Admin\Traits\CleanAdminUI;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 
@@ -23,6 +24,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 class Admin {
 	use DuplicatePosts;
 	use ExtendedMediaSupport;
+	use CleanAdminUI;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -111,10 +113,19 @@ class Admin {
 		$cpt = new Admin\Scripts\CustomPostTypes( $this->theme_name, $this->version );
 		$this->loader->add_action( 'admin_enqueue_scripts', $cpt, 'enqueue_scripts_and_styles' );
 
-		$fa_admin = new Admin\Scripts\FontAwesome( $this->theme_name, $this->version );
-		$this->loader->add_action( 'admin_enqueue_scripts', $fa_admin, 'enqueue_scripts_and_styles' );
-
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'add_wp_media_support' );
+	}
+
+	/**
+	 * Remove WP admin bar items
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function clean_wp_admin_ui() {
+		$this->loader->add_action( 'admin_bar_menu', $this, 'remove_admin_bar_items' );
+		$this->loader->add_action( 'admin_menu', $this, 'set_default_dashboard_metaboxes' );
 	}
 
 	/**
@@ -152,6 +163,7 @@ class Admin {
 		$this->add_admin_pages();
 		$this->set_admin_scripts_and_styles();
 		$this->enable_customizer();
+		$this->clean_wp_admin_ui();
 		$this->loader->add_action( 'admin_init', $this, 'set_editor_styles' );
 	}
 }
