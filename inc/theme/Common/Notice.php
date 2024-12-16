@@ -8,7 +8,7 @@
  * @package    Kotisivu\BlockTheme\Common
  */
 
- namespace Kotisivu\BlockTheme\Theme\Common;
+namespace Kotisivu\BlockTheme\Theme\Common;
 
 /**
  * The notice class.

@@ -50,7 +50,7 @@ trait CustomPermalink {
 	 * @param string $slug
 	 * @return void
 	 */
-	public function generate_setting_output($slug) {
+	public function generate_setting_output( string $slug ): void {
 		printf(
 			'<input name="%s" type="text" class="regular-text code" value="%s" placeholder="%s" />',
 			'kotisivu_block_theme_' . $slug,

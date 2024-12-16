@@ -8,7 +8,7 @@
  * @package    Kotisivu\BlockTheme\Common
  */
 
- namespace Kotisivu\BlockTheme\Gutenberg\Traits;
+namespace Kotisivu\BlockTheme\Gutenberg\Traits;
 
 /**
  * Modify image markup for default image block

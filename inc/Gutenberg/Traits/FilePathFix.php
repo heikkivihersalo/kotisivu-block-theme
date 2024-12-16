@@ -18,15 +18,15 @@ namespace Kotisivu\BlockTheme\Gutenberg\Traits;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 trait FilePathFix {
-    	/**
+	/**
 	 * Fix file paths to get blocks working in theme context
-	 * @return void
+	 * @return string $url The fixed file path
 	 */
-	public function fix_block_file_path( string $url) {
-        if ( strpos( $url, SITE_PATH ) !== false ) {
-            $url = str_replace( 'wp-content/plugins' . ABSPATH, '', $url );
-        }
+	public function fix_block_file_path( string $url ): string {
+		if ( strpos( $url, SITE_PATH ) !== false ) {
+			$url = str_replace( 'wp-content/plugins' . ABSPATH, '', $url );
+		}
 
-        return $url;
+		return $url;
 	}
 }
