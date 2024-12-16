@@ -17,7 +17,7 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
  * @package    Kotisivu\BlockTheme\i18n
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class i18n {
+class Translations {
 	/**
 	 * Load the plugin text domain for translation.
 	 *

@@ -19,7 +19,7 @@ use Kotisivu\BlockTheme\Theme\CustomPostTypes;
 use Kotisivu\BlockTheme\Theme\Dequeue;
 use Kotisivu\BlockTheme\Theme\Enqueue;
 use Kotisivu\BlockTheme\Theme\Excerpt;
-use Kotisivu\BlockTheme\Theme\i18n;
+use Kotisivu\BlockTheme\Theme\Translations;
 use Kotisivu\BlockTheme\Theme\Image;
 use Kotisivu\BlockTheme\Theme\Meta;
 use Kotisivu\BlockTheme\Theme\Navigation;
@@ -210,7 +210,7 @@ class Theme {
 	 * @return   void
 	 */
 	private function set_i18n() {
-		$i18n = new i18n();
+		$i18n = new Translations();
 		$this->loader->add_action( 'themes_loaded', $i18n, 'load_textdomain' );
 	}
 
