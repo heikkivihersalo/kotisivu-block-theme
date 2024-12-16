@@ -40,10 +40,6 @@ class Pages {
 				'name' => __( 'Contact', 'kotisivu-block-theme' ),
 			),
 			array(
-				'slug' => 'chatgpt',
-				'name' => __( 'ChatGPT (Beta)', 'kotisivu-block-theme' ),
-			),
-			array(
 				'slug' => 'social-media',
 				'name' => __( 'Social Media', 'kotisivu-block-theme' ),
 			),
