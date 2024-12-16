@@ -31,7 +31,7 @@ trait DisableThemeUpdate {
 	 * @param string $url   URL
 	 * @return array response
 	 */
-	function disable_theme_update( array $response, string $url ): array {
+	public function disable_theme_update( array $response, string $url ): array {
 		if ( 0 === strpos( $url, 'https://api.wordpress.org/themes/update-check' ) ) {
 			$themes = json_decode( $response['body']['themes'] );
 			unset( $themes->themes->{'kotisivu-block-theme'} );
