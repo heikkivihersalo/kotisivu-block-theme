@@ -1,19 +1,24 @@
 <?php
 /**
+ * Dequeue styles and scripts
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Dequeue
  */
 
 namespace Kotisivu\BlockTheme\Theme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+
 /**
+ * Functions for dequeueing styles and scripts
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Dequeue
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Dequeue {

@@ -1,20 +1,24 @@
 <?php
 /**
+ * Custom Post Types
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes
  */
 
 namespace Kotisivu\BlockTheme\Theme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
+ * Functionality for registering and handling custom post types for the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class CustomPostTypes {

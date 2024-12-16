@@ -10,6 +10,8 @@
 
 namespace Kotisivu\BlockTheme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Common\Loader;
 
 use Kotisivu\BlockTheme\Gutenberg\AllowedBlocks;

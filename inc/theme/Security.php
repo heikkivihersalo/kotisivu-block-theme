@@ -1,22 +1,26 @@
 <?php
 /**
+ * The security-specific functionality of the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Security
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableUnsecureEndpoints;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableThemeUpdate;
 
 /**
+ * The security-specific functionality of the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Security
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Security {

@@ -1,13 +1,16 @@
 <?php
 /**
+ * The API functionality of the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Api\Routes;
 use Kotisivu\BlockTheme\Theme\Api\Ajax;
@@ -15,9 +18,10 @@ use Kotisivu\BlockTheme\Theme\Api\RestFields;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
+ * The API functionality of the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Api {

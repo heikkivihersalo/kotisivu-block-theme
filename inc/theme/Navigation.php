@@ -1,20 +1,24 @@
 <?php
 /**
+ * Navigation functionality of the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Navigation
  */
 
 namespace Kotisivu\BlockTheme\Theme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
+ * Navigation functionality of the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Navigation
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Navigation {

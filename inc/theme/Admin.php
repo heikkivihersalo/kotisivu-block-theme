@@ -1,13 +1,16 @@
 <?php
 /**
+ * The admin-specific functionality of the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Admin
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Admin\Pages;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
@@ -16,9 +19,10 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 
 /**
+ * The admin-specific functionality of the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Admin
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Admin {

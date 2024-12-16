@@ -1,21 +1,25 @@
 <?php
 /**
+ * Meta tags
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Meta
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
 
 /**
+ * Class for adding meta tags to the site head
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Meta
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Meta {

@@ -1,22 +1,26 @@
 <?php
 /**
+ * Functions to clean up the theme from unnecessary WordPress junk
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Cleanup
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableEmoji;
 use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
 
 /**
+ * Functions to clean up the theme from unnecessary WordPress junk
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Cleanup
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Cleanup {

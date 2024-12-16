@@ -1,15 +1,25 @@
 <?php
+/**
+ * Custom walker for header menu
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Navigation\Walkers\MenuWalker
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Navigation\Walkers;
 
-use Walker_Nav_Menu;
-
 defined( 'ABSPATH' ) || die();
 
+use Walker_Nav_Menu;
+
 /**
- * Add custom walker to header menu
+ * Custom walker for header menu
  *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Navigation\Walkers\MenuWalker
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class MenuWalker extends Walker_Nav_Menu {
 	/**

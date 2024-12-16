@@ -1,26 +1,30 @@
 <?php
 /**
- * Set nav menus
+ * Navigation functionality of the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Theme\Navigation\Menu
  */
 
 namespace Kotisivu\BlockTheme\Theme\Navigation;
 
+defined( 'ABSPATH' ) || die();
+
 /**
- * Set nav menus
+ * Navigation functionality of the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Theme\Navigation\Menu
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Menu {
 	/**
 	 * Register navigation menus to theme
 	 *
+	 * @since 2.0.0
+	 * @access public
 	 * @return void
 	 */
 	public function register_navigation_menus(): void {

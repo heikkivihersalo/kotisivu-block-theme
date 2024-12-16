@@ -1,20 +1,24 @@
 <?php
 /**
+ * Image class for handling image customizations
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Image
  */
 
 namespace Kotisivu\BlockTheme\Theme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 
 /**
+ * Class for handling image customizations
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Image
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Image {

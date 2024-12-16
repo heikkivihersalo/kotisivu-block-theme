@@ -1,5 +1,6 @@
 <?php
 /**
+ * Functions for enqueuing scripts and styles
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
@@ -9,14 +10,17 @@
 
 namespace Kotisivu\BlockTheme\Theme;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Enqueue as CommonEnqueue;
 use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
 
 /**
+ * Functions for enqueuing scripts and styles
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Enqueue
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Enqueue extends CommonEnqueue implements EnqueueInterface {

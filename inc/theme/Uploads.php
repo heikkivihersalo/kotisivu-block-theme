@@ -1,22 +1,25 @@
 <?php
 /**
- *
+ * Class for handling customizations for file uploads
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Uploads
  */
 
 namespace Kotisivu\BlockTheme\Theme;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 
 /**
+ * Class for handling customizations for file uploads
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme
+ * @package    Kotisivu\BlockTheme\Theme\Uploads
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Uploads {
