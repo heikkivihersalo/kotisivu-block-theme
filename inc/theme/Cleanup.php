@@ -10,7 +10,6 @@
 namespace Kotisivu\BlockTheme\Theme;
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Traits\CleanAdminUI;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableEmoji;
 use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
 
@@ -21,7 +20,6 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Cleanup {
-	use CleanAdminUI;
 	use DisableEmoji;
 	use OptimizedJquery;
 
@@ -66,11 +64,6 @@ class Cleanup {
 		$this->loader     = $loader;
 		$this->theme_name = $theme_name;
 		$this->version    = $version;
-
-		$this->set_jquery_optimizations();
-		$this->remove_wp_default_junk();
-		$this->clean_wp_admin_ui();
-		$this->remove_wp_emojis();
 	}
 
 	/**
@@ -83,18 +76,6 @@ class Cleanup {
 	private function set_jquery_optimizations() {
 		$this->loader->add_action( 'wp_default_scripts', $this, 'remove_jquery_migrate' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'move_jquery_to_footer' );
-	}
-
-	/**
-	 * Remove WP admin bar items
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @return   void
-	 */
-	private function clean_wp_admin_ui() {
-		$this->loader->add_action( 'admin_bar_menu', $this, 'remove_admin_bar_items' );
-		$this->loader->add_action( 'admin_menu', $this, 'set_default_dashboard_metaboxes' );
 	}
 
 	/**
@@ -186,7 +167,6 @@ class Cleanup {
 	public function register_hooks() {
 		$this->set_jquery_optimizations();
 		$this->remove_wp_default_junk();
-		$this->clean_wp_admin_ui();
 		$this->remove_wp_emojis();
 		$this->loader->add_action( 'after_setup_theme', $this, 'remove_duotone_filters' );
 	}
