@@ -47,6 +47,71 @@ class Image {
 	protected $version;
 
 	/**
+	 * Default image sizes
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 * @var array $custom_image_sizes Array of custom image sizes
+	 */
+	private array $default_image_sizes = array(
+		array(
+			'slug'   => 'large',
+			'width'  => 1600,
+			'height' => 1200,
+		),
+		array(
+			'slug'   => 'medium_large',
+			'name'   => 'Medium Large',
+			'width'  => 1366,
+			'height' => 1025,
+		),
+		array(
+			'slug'   => 'medium',
+			'width'  => 1024,
+			'height' => 768,
+		),
+		array(
+			'slug'   => 'thumbnail',
+			'width'  => 300,
+			'height' => 300,
+		),
+	);
+
+	/**
+	 * Custom image sizes
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 * @var array $custom_image_sizes Array of custom image sizes
+	 */
+	private array $custom_image_sizes = array(
+		array(
+			'slug'   => 'retina',
+			'name'   => 'Retina',
+			'width'  => 2880,
+			'height' => 1800,
+		),
+		array(
+			'slug'   => 'huge',
+			'name'   => 'Huge',
+			'width'  => 1920,
+			'height' => 1440,
+		),
+		array(
+			'slug'   => 'small',
+			'name'   => 'Small',
+			'width'  => 768,
+			'height' => 576,
+		),
+		array(
+			'slug'   => 'extra_small',
+			'name'   => 'Extra Small',
+			'width'  => 640,
+			'height' => 480,
+		),
+	);
+
+	/**
 	 * Define the core functionality of the theme.
 	 *
 	 * Set the theme name and the theme version that can be used throughout the theme.
@@ -69,13 +134,13 @@ class Image {
 	 */
 	public function register_image_sizes(): void {
 		/* Update default core image sizes */
-		foreach ( SITE_SETTINGS['image_sizes']['default'] as $size ) :
+		foreach ( $this->default_image_sizes as $size ) :
 			update_option( $size['slug'] . '_size_w', $size['width'] );
 			update_option( $size['slug'] . '_size_h', $size['height'] );
 		endforeach;
 
 		/* Add new image sizes to core */
-		foreach ( SITE_SETTINGS['image_sizes']['custom'] as $size ) :
+		foreach ( $this->custom_image_sizes as $size ) :
 			add_image_size( $size['slug'], $size['width'], $size['height'], false );
 		endforeach;
 	}
@@ -102,7 +167,7 @@ class Image {
 	public function add_custom_image_sizes_to_admin( mixed $sizes ): array {
 		$custom_images = array();
 
-		foreach ( SITE_SETTINGS['image_sizes']['custom'] as $image ) :
+		foreach ( $this->custom_image_sizes as $image ) :
 			$custom_images[ $image['slug'] ] = $image['name'];
 		endforeach;
 
