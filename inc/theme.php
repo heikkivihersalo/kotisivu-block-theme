@@ -29,12 +29,6 @@ use Kotisivu\BlockTheme\Theme\Uploads;
 /**
  * The core theme class.
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this theme as well as the current
- * version of the theme.
- *
  * @since      2.0.0
  * @package    Kotisivu\BlockTheme
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
@@ -78,13 +72,10 @@ class Theme {
 	protected $api_version;
 
 	/**
-	 * Define the core functionality of the theme.
-	 *
-	 * Set the theme name and the theme version that can be used throughout the theme.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct() {
 		$this->theme_name  = defined( 'SITE_NAME' ) ? SITE_NAME : 'kotisivu-block-theme';
@@ -275,11 +266,13 @@ class Theme {
 	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Run the loader to execute all of the custom hooks related to the theme.
 	 *
 	 * @since    2.0.0
+	 * @access   public
+	 * @return   void
 	 */
-	public function run() {
+	public function run(): void {
 		$this->loader->run();
 	}
 
@@ -288,9 +281,10 @@ class Theme {
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The name of the theme.
 	 */
-	public function get_theme_name() {
+	public function get_theme_name(): string {
 		return $this->theme_name;
 	}
 
@@ -298,9 +292,10 @@ class Theme {
 	 * The reference to the class that orchestrates the hooks with the theme.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    Loader    Orchestrates the hooks of the theme.
 	 */
-	public function get_loader() {
+	public function get_loader(): Loader {
 		return $this->loader;
 	}
 
@@ -308,9 +303,10 @@ class Theme {
 	 * Retrieve the version number of the theme.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The version number of the theme.
 	 */
-	public function get_version() {
+	public function get_version(): string {
 		return $this->version;
 	}
 
@@ -318,9 +314,10 @@ class Theme {
 	 * Retrieve the version number of the API.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The version number of the API.
 	 */
-	public function get_api_version() {
+	public function get_api_version(): string {
 		return $this->api_version;
 	}
 }

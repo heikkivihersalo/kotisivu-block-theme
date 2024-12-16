@@ -1,6 +1,6 @@
 <?php
 /**
- * The core block class.
+ * The Gutenberg class.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
@@ -25,13 +25,10 @@ use Kotisivu\BlockTheme\Gutenberg\BlockTypes\BlockPart;
 use Kotisivu\BlockTheme\Gutenberg\Traits\FilePathFix;
 
 /**
- * The core theme class.
+ * The Gutenberg class.
  *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this theme as well as the current
- * version of the theme.
+ * This class defines all code necessary to register custom blocks
+ * and customizations for the Gutenberg editor.
  *
  * @since      2.0.0
  * @package    Kotisivu\BlockTheme
@@ -78,13 +75,10 @@ class Gutenberg {
 	protected $api_version;
 
 	/**
-	 * Define the core functionality of the theme.
-	 *
-	 * Set the theme name and the theme version that can be used throughout the theme.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
+	 * Constructor
 	 *
 	 * @since    2.0.0
+	 * @access   public
 	 */
 	public function __construct() {
 		$this->version     = defined( 'KOTISIVU_BLOCK_THEME_VERSION' ) ? KOTISIVU_BLOCK_THEME_VERSION : '2.0.0';
@@ -113,7 +107,14 @@ class Gutenberg {
 		$this->loader = new Loader();
 	}
 
-	private function set_allowed_blocks() {
+	/**
+	 * Register all of the hooks related to the allowed blocks.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_allowed_blocks(): void {
 		$allowed_blocks = new AllowedBlocks( $this->loader, $this->theme_name, $this->version );
 		$allowed_blocks->register_hooks();
 	}
@@ -123,8 +124,9 @@ class Gutenberg {
 	 *
 	 * @since    2.0.0
 	 * @access   private
+	 * @return   void
 	 */
-	private function set_scripts_and_styles() {
+	private function set_scripts_and_styles(): void {
 		$store = new StoreEnqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'wp_enqueue_scripts', $store, 'enqueue_scripts_and_styles' );
 
@@ -149,7 +151,7 @@ class Gutenberg {
 	 * @access   private
 	 * @return   void
 	 */
-	private function set_block_categories() {
+	private function set_block_categories(): void {
 		$categories = new Categories( $this->loader, $this->theme_name, $this->version );
 		$categories->register_hooks();
 	}
@@ -161,35 +163,41 @@ class Gutenberg {
 	 * @access   private
 	 * @return   void
 	 */
-	private function set_block_patterns() {
+	private function set_block_patterns(): void {
 		$patterns = new Patterns( $this->loader, $this->theme_name, $this->version );
 		$patterns->register_hooks();
 	}
 
 	/**
-	 * Sets separate core block assets.
+	 * Sets editor to load separate core block assets
 	 *
 	 * @since    2.0.0
 	 * @access   private
+	 * @return   void
 	 */
-	private function set_separate_core_block_assets() {
+	private function set_separate_core_block_assets(): void {
 		$this->loader->add_action( 'should_load_separate_core_block_assets', $this, '__return_true' );
 	}
 
 	/**
 	 * Fix file paths to get blocks working in theme context
-	 * @return void
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
 	 */
-	private function fix_file_paths() {
+	private function fix_file_paths(): void {
 		$this->loader->add_filter( 'plugins_url', $this, 'fix_block_file_path', 10, 3 );
 	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Run the loader to execute all of the custom hooks related to Gutenberg.
 	 *
 	 * @since    2.0.0
+	 * @access   public
+	 * @return   void
 	 */
-	public function run() {
+	public function run(): void {
 		$this->loader->run();
 	}
 
@@ -198,9 +206,10 @@ class Gutenberg {
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The name of the theme.
 	 */
-	public function get_theme_name() {
+	public function get_theme_name(): string {
 		return $this->theme_name;
 	}
 
@@ -208,9 +217,10 @@ class Gutenberg {
 	 * The reference to the class that orchestrates the hooks with the theme.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    Loader    Orchestrates the hooks of the theme.
 	 */
-	public function get_loader() {
+	public function get_loader(): Loader {
 		return $this->loader;
 	}
 
@@ -218,9 +228,10 @@ class Gutenberg {
 	 * Retrieve the version number of the theme.
 	 *
 	 * @since     2.0.0
+	 * @access    public
 	 * @return    string    The version number of the theme.
 	 */
-	public function get_version() {
+	public function get_version(): string {
 		return $this->version;
 	}
 }
