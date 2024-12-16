@@ -12,6 +12,7 @@ namespace Kotisivu\BlockTheme\Theme;
 
 defined( 'ABSPATH' ) || die();
 
+use Kotisivu\BlockTheme\Theme\Admin\Enqueue;
 use Kotisivu\BlockTheme\Theme\Admin\Pages;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\CleanAdminUI;
@@ -108,11 +109,8 @@ class Admin {
 	 * @return   void
 	 */
 	private function set_admin_scripts_and_styles() {
-		$admin = new Admin\Scripts\Editor( $this->theme_name, $this->version );
+		$admin = new Enqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts_and_styles' );
-
-		$cpt = new Admin\Scripts\CustomPostTypes( $this->theme_name, $this->version );
-		$this->loader->add_action( 'admin_enqueue_scripts', $cpt, 'enqueue_scripts_and_styles' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'add_wp_media_support' );
 	}
