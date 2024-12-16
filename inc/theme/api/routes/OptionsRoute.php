@@ -3,11 +3,10 @@
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
 
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
+use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Success;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
-
-use Kotisivu\BlockTheme\Theme\Utils;
-
+use Kotisivu\BlockTheme\Theme\Api\Utils\OptionsUtils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
 
 /**
@@ -157,7 +156,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function get_contact_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::get_contact_information();
+			$result = OptionsUtils::get_contact_information();
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -184,7 +183,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function update_contact_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::update_contact_information( $request );
+			$result = OptionsUtils::update_contact_information( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -209,7 +208,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function get_social_settings(): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::get_social_media_links();
+			$result = OptionsUtils::get_social_media_links();
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -236,7 +235,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function update_social_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::update_social_media_links( $request );
+			$result = OptionsUtils::update_social_media_links( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -261,7 +260,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function get_analytics_settings(): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::get_analytics_settings();
+			$result = OptionsUtils::get_analytics_settings();
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -288,7 +287,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function update_analytics_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::update_analytics_settings( $request );
+			$result = OptionsUtils::update_analytics_settings( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -313,7 +312,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function get_chatgpt_settings(): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::get_chatgpt_settings();
+			$result = OptionsUtils::get_chatgpt_settings();
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
@@ -340,7 +339,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function update_chatgpt_settings( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$result = UtilsOptions::update_chatgpt_settings( $request );
+			$result = OptionsUtils::update_chatgpt_settings( $request );
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}

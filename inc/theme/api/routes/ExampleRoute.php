@@ -3,8 +3,16 @@
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
 
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
+use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Success;
+use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Not_Found;
+use Kotisivu\BlockTheme\Theme\Api\Responses\PaginationInvalidParametersException;
+use Kotisivu\BlockTheme\Theme\Api\Responses\PaginationOutOfRangeException;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
+
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_Error;
 
 /**
  *
@@ -37,11 +45,11 @@ class ExampleRoute extends BaseRoute implements RouteInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function get_all_items( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
+	public function get_all_items( WP_REST_Request $request ): WP_REST_Response|WP_Error {
 		try {
 			$result = ''; // Get items from database.
 		} catch ( PaginationInvalidParametersException | PaginationOutOfRangeException $e ) {
-			return new \WP_REST_Response(
+			return new WP_REST_Response(
 				array(
 					'status'  => 'error',
 					'type'    => $e->get_type(),
@@ -51,7 +59,7 @@ class ExampleRoute extends BaseRoute implements RouteInterface {
 				$e->get_http_status()
 			);
 		} catch ( \Exception $e ) {
-			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
+			return new WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
 
 		$data       = $result['data']; // Data to return
@@ -60,7 +68,7 @@ class ExampleRoute extends BaseRoute implements RouteInterface {
 		/**
 		 * Return WP REST Response
 		 */
-		return new \WP_REST_Response(
+		return new WP_REST_Response(
 			array(
 				'status'     => 'success',
 				'type'       => HTTP_Success::FETCHED_SUCCESSFULLY->get_type(),
@@ -75,15 +83,15 @@ class ExampleRoute extends BaseRoute implements RouteInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function get_item_by_id( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
+	public function get_item_by_id( WP_REST_Request $request ): WP_REST_Response|WP_Error {
 		try {
 			$result = ''; // Get item from database.
 		} catch ( \Exception $e ) {
-			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
+			return new WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}
 
 		if ( $result ) :
-			return new \WP_REST_Response(
+			return new WP_REST_Response(
 				array(
 					'status'  => 'success',
 					'type'    => HTTP_Success::FETCHED_SUCCESSFULLY->get_type(),
@@ -93,7 +101,7 @@ class ExampleRoute extends BaseRoute implements RouteInterface {
 				HTTP_Success::FETCHED_SUCCESSFULLY->get_http_status()
 			);
 		else :
-			return new \WP_REST_Response(
+			return new WP_REST_Response(
 				array(
 					'status'  => 'error',
 					'type'    => HTTP_Error_Not_Found::GENERIC->get_type(),
