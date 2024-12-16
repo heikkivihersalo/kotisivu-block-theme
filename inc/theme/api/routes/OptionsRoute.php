@@ -1,6 +1,16 @@
 <?php
+/**
+ * OptionsRoute class
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\OptionsRoute
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Success;
@@ -10,9 +20,11 @@ use Kotisivu\BlockTheme\Theme\Api\Utils\OptionsUtils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
 
 /**
- * RouteOptions class
+ * OptionsRoute class
  *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\OptionsRoute
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class OptionsRoute extends BaseRoute implements RouteInterface {
 	use Options;

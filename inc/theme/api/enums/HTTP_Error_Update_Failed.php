@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
 
@@ -7,11 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\HTTP_Response_Interface;
 
 /**
- * HTTP Response enum for errors
- * Can be used as a base class for exceptions.
  *
- * @since 1.0.0
- * @package Kotisivu\BlockTheme\Api
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum HTTP_Error_Update_Failed implements HTTP_Response_Interface {
 	case GENERIC;

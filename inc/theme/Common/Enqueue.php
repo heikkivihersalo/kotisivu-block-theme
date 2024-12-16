@@ -5,17 +5,20 @@
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Enqueue
  */
 
 namespace Kotisivu\BlockTheme\Theme\Common;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
 
 /**
  * The enqueued scripts functionality of the plugin.
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Common\Enqueue
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 abstract class Enqueue implements EnqueueInterface {

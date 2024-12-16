@@ -1,15 +1,27 @@
 <?php
+/**
+ * Abstract base class for API routes
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\BaseRoute
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
 
 /**
+ * Abstract base class for API routes
  *
- *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\BaseRoute
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 abstract class BaseRoute implements RouteInterface {
 	/**

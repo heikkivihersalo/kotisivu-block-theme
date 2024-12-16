@@ -1,20 +1,24 @@
 <?php
 /**
+ * Class for setting the API routes for the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Theme\Api\Routes\OptionsRoute;
 
 /**
+ * Class for setting the API routes for the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Routes {

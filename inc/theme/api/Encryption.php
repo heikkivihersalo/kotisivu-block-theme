@@ -10,6 +10,8 @@
 
 namespace Kotisivu\BlockTheme\Theme\Api;
 
+defined( 'ABSPATH' ) || die();
+
 /**
  * Class responsible for encrypting and decrypting data.
  *

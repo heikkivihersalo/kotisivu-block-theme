@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
 
@@ -8,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Not_Implemented;
 
 /**
- * Used when pagination parameters are invalid
  *
- * @since 1.0.0
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class NotImplementedException extends \Exception implements ExceptionInterface {
 	/**

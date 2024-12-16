@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
 
@@ -8,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Parameters_Missing;
 
 /**
- * Used when parameters are missing (required parameters missing)
  *
- * @since 1.0.0
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class ParametersMissingException extends \Exception implements ExceptionInterface {
 	/**

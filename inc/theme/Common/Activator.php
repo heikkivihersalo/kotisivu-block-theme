@@ -5,10 +5,12 @@
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Activator
  */
 
 namespace Kotisivu\BlockTheme\Theme\Common;
+
+defined( 'ABSPATH' ) || die();
 
 /**
  * Fired during plugin activation.
@@ -16,7 +18,7 @@ namespace Kotisivu\BlockTheme\Theme\Common;
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Activator
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Activator {

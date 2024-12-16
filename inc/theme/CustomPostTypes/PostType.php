@@ -1,9 +1,11 @@
 <?php
 /**
+ * Abstract class for registering custom post types
  *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
  *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes\PostType
  */
 
 namespace Kotisivu\BlockTheme\Theme\CustomPostTypes;
@@ -14,9 +16,11 @@ use Kotisivu\BlockTheme\Theme\CustomPostTypes\CustomFields;
 use Kotisivu\BlockTheme\Theme\CustomPostTypes\Traits\CustomPermalink;
 
 /**
- * Create new custom post type
+ * Abstract class for registering custom post types
  *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes\PostType
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 abstract class PostType {
 	use CustomPermalink;
@@ -261,5 +265,5 @@ abstract class PostType {
 	 * @access protected
 	 * @return void
 	 */
-	abstract protected function register();
+	abstract protected function register(): void;
 }

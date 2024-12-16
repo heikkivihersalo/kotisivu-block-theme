@@ -1,21 +1,25 @@
 <?php
 /**
+ * Class for registering custom fields for the rest API
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\RestFields
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Api\Traits\CustomRestField;
 use Kotisivu\BlockTheme\Theme\Api\Traits\FormatImageMeta;
 
 /**
+ * Class for registering custom fields for the rest API
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\RestFields
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class RestFields {

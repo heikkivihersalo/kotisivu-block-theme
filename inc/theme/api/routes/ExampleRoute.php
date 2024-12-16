@@ -1,6 +1,16 @@
 <?php
+/**
+ * Example custom route
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\ExampleRoute
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Routes;
+
+defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Success;
@@ -15,9 +25,11 @@ use WP_REST_Response;
 use WP_Error;
 
 /**
+ * Example custom route
  *
- *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Routes\ExampleRoute
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class ExampleRoute extends BaseRoute implements RouteInterface {
 	/**

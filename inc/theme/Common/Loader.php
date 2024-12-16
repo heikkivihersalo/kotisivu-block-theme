@@ -5,10 +5,12 @@
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Loader
  */
 
 namespace Kotisivu\BlockTheme\Theme\Common;
+
+defined( 'ABSPATH' ) || die();
 
 /**
  * Register all actions and filters for the theme.
@@ -17,7 +19,8 @@ namespace Kotisivu\BlockTheme\Theme\Common;
  * the theme, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Common\Loader
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Loader {

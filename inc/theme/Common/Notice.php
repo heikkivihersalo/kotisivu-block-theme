@@ -5,10 +5,12 @@
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Notice
  */
 
 namespace Kotisivu\BlockTheme\Theme\Common;
+
+defined( 'ABSPATH' ) || die();
 
 /**
  * The notice class.
@@ -16,7 +18,7 @@ namespace Kotisivu\BlockTheme\Theme\Common;
  * This class defines all code necessary to display a notice in admin area.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Common\Notice
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Notice {

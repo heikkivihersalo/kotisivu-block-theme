@@ -1,19 +1,30 @@
 <?php
+/**
+ * Class for handling custom database tables
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      1.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\CustomDatabaseTables\Database
+ */
 
-namespace Kotisivu\BlockTheme\CustomDatabaseTables;
+namespace Kotisivu\BlockTheme\Theme\CustomDatabaseTables;
 
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Class for handling custom database tables
  *
- *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @since      1.0.0
+ * @package    Kotisivu\BlockTheme\Theme\CustomDatabaseTables\Database
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Database {
 	/**
 	 * Tables
 	 *
+	 * @since 1.0.0
+	 * @access protected
 	 * @var array
 	 */
 	protected $tables;
@@ -21,6 +32,8 @@ class Database {
 	/**
 	 * Constructor
 	 *
+	 * @since 1.0.0
+	 * @access public
 	 * @return void
 	 */
 	public function __construct() {

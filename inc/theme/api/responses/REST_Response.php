@@ -1,11 +1,23 @@
 <?php
+/**
+ * REST_Response class
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\REST_Response
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
 
 defined( 'ABSPATH' ) || die();
+
 /**
- * REST response
- * @package Kotisivu\BlockTheme
+ * REST_Response class
+ *
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\REST_Response
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class REST_Response extends WP_HTTP_Response {
 	/**

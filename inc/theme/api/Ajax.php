@@ -1,20 +1,24 @@
 <?php
 /**
+ * Class for handling AJAX functionality in the theme.
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\Ajax
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api;
 
+defined( 'ABSPATH' ) || die();
+
 use Kotisivu\BlockTheme\Api\Ajax\BlogAjax;
 
 /**
+ * Class for handling AJAX functionality in the theme.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme
+ * @package    Kotisivu\BlockTheme\Theme\Api\Ajax
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Ajax {

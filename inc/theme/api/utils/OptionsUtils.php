@@ -1,4 +1,12 @@
 <?php
+/**
+ * 
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\Api\Utils\
+ */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Utils;
 
@@ -8,7 +16,9 @@ use Kotisivu\BlockTheme\Api\Encryption;
 
 /**
  *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Api\
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 final class OptionsUtils {
 	/**

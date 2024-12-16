@@ -1,9 +1,11 @@
 <?php
 /**
+ * Utility functions
  *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
  *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Common\Utils
  */
 
 namespace Kotisivu\BlockTheme\Theme\Common;
@@ -11,8 +13,11 @@ namespace Kotisivu\BlockTheme\Theme\Common;
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Utility functions
  *
- * @package Kotisivu\BlockTheme
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\Common\Utils
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 final class Utils {
 	/**

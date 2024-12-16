@@ -1,4 +1,12 @@
 <?php
+/**
+ * Class responsible for adding custom fields to post types
+ *
+ * @link       https://www.kotisivu.dev
+ * @since      2.0.0
+ *
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes\CustomFields
+ */
 
 namespace Kotisivu\BlockTheme\Theme\CustomPostTypes;
 
@@ -17,10 +25,11 @@ use Kotisivu\BlockTheme\Theme\CustomPostTypes\CustomFields\Fields\TextAreaField;
 use Kotisivu\BlockTheme\Theme\CustomPostTypes\CustomFields\Fields\UrlField;
 
 /**
- * Metabox class for adding custom fields to post types
+ * Class responsible for adding custom fields to post types
  *
- * @package Kotisivu\BlockTheme
- * @since 1.0.0
+ * @since      2.0.0
+ * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes\CustomFields
+ * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class CustomFields {
 	/**

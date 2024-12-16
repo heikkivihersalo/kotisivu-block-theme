@@ -10,6 +10,8 @@
 
 namespace Kotisivu\BlockTheme\Theme\Api\Ajax;
 
+defined( 'ABSPATH' ) || die();
+
 /**
  * The blog ajax class
  *
