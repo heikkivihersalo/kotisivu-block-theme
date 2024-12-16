@@ -23,13 +23,49 @@ class Database {
 	 *
 	 * @return void
 	 */
-	public function __construct( $tables ) {
+	public function __construct() {
 		global $wpdb;
 
 		/**
 		 * Set attributes
 		 */
-		$this->tables = $tables;
+		$this->tables = array(
+			array(
+				'name'   => 'example',
+				'schema' => array(
+					array(
+						'name'           => 'id',
+						'type'           => 'int',
+						'length'         => 20,
+						'unsigned'       => true,
+						'not_null'       => true,
+						'auto_increment' => true,
+						'primary_key'    => true,
+					),
+					array(
+						'name'    => 'longtext_example',
+						'type'    => 'longtext',
+						'default' => "''",
+					),
+					array(
+						'name' => 'boolean_example',
+						'type' => 'boolean',
+					),
+					array(
+						'name'    => 'varchar_example',
+						'type'    => 'varchar',
+						'length'  => 255,
+						'default' => "''",
+					),
+					array(
+						'name'     => 'time_example',
+						'type'     => 'datetime',
+						'default'  => "'0000-00-00 00:00:00'",
+						'not_null' => true,
+					),
+				),
+			),
+		);
 	}
 
 	/**
