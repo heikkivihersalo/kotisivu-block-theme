@@ -97,35 +97,6 @@ class Meta {
 	}
 
 	/**
-	 * Inline Font Awesome
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
-	 */
-	public function inline_fontawesome(): void {
-		if ( null === SITE_SETTINGS['icons'] ) {
-			return;
-		}
-
-		if ( SITE_SETTINGS['icons']['all'] || SITE_SETTINGS['icons']['brands'] || SITE_SETTINGS['icons']['solid'] || SITE_SETTINGS['icons']['regular'] ) {
-			$folder = SITE_URI . '/public/icons/fontawesome/css/';
-
-			foreach ( SITE_SETTINGS['icons'] as $slug => $is_enabled ) :
-				if ( ! $is_enabled ) {
-					continue;
-				}
-
-				$path = $folder . $slug . '.min.css';
-				$rel  = 'stylesheet';
-				?>
-			<link rel="preload" href="<?php echo $path; ?>" as="style" onload='this.onload=null,this.rel="<?php echo $rel; ?>"'>
-				<?php
-			endforeach;
-		}
-	}
-
-	/**
 	 * Inline theme color
 	 *
 	 * @since 2.0.0
@@ -134,9 +105,9 @@ class Meta {
 	 */
 	public function inline_theme_color(): void {
 		?>
-		<meta name="theme-color" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
-		<meta name="msapplication-navbutton-color" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
-		<meta name="apple-mobile-web-app-status-bar-style" content="<?php echo SITE_SETTINGS['theme_color']; ?>">
+		<meta name="theme-color" content="<?php echo SITE_COLOR; ?>">
+		<meta name="msapplication-navbutton-color" content="<?php echo SITE_COLOR; ?>">
+		<meta name="apple-mobile-web-app-status-bar-style" content="<?php echo SITE_COLOR; ?>">
 		<?php
 	}
 
@@ -210,6 +181,5 @@ class Meta {
 		$this->loader->add_action( 'wp_head', $this, 'inline_dark_mode', 0 );
 		$this->loader->add_action( 'wp_head', $this, 'inline_tag_manager', 0 );
 		$this->loader->add_action( 'wp_head', $this, 'inline_custom_css', 11 );
-		$this->loader->add_action( 'wp_head', $this, 'inline_fontawesome', 11 );
 	}
 }
