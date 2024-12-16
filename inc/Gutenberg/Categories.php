@@ -53,38 +53,7 @@ class Categories {
 	 * @access   private
 	 * @var      array     $categories Array of categories
 	 */
-	private array $categories = array(
-		array(
-			'slug'  => 'blocks',
-			'title' => __( 'Blocks', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-		array(
-			'slug'  => 'child',
-			'title' => __( 'Child', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-		array(
-			'slug'  => 'containers',
-			'title' => __( 'Containers & Wrappers', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-		array(
-			'slug'  => 'sections',
-			'title' => __( 'Sections', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-		array(
-			'slug'  => 'templates',
-			'title' => __( 'Templates', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-		array(
-			'slug'  => 'dynamic-data',
-			'title' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
-			'icon'  => null,
-		),
-	),
+	private array $categories;
 
 	/**
 	 * Define the core functionality of the theme.
@@ -99,12 +68,47 @@ class Categories {
 		$this->loader     = $loader;
 		$this->theme_name = $theme_name;
 		$this->version    = $version;
+
+		$this->categories = array(
+			array(
+				'slug'  => 'blocks',
+				'title' => __( 'Blocks', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'child',
+				'title' => __( 'Child', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'containers',
+				'title' => __( 'Containers & Wrappers', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'sections',
+				'title' => __( 'Sections', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'templates',
+				'title' => __( 'Templates', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+			array(
+				'slug'  => 'dynamic-data',
+				'title' => __( 'Dynamic Data', 'kotisivu-block-theme' ),
+				'icon'  => null,
+			),
+		);
 	}
 
 	/**
 	 * Register custom block categories
 	 *
-	 * @return void
+	 * @since 2.0.0
+	 * @access public
+	 * @param array $categories Array of categories
 	 */
 	public function register_custom_block_categories( $categories, $editor_context ) {
 		if ( ! empty( $editor_context->post ) ) {

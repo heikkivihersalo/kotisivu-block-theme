@@ -52,14 +52,7 @@ class Patterns {
 	 * @access   private
 	 * @var      array     $patterns Array of patterns
 	 */
-	private array $patterns = array(
-		array(
-			'slug'       => 'generic-two-column',
-			'title'      => __( 'Generic Two Column', 'kotisivu-block-theme' ),
-			'categories' => array( 'columns', 'sections' ),
-		),
-	);
-
+	private array $patterns;
 
 	/**
 	 * Categories
@@ -68,24 +61,7 @@ class Patterns {
 	 * @access   private
 	 * @var      array     $categories Array of categories
 	 */
-	private array $categories = array(
-		array(
-			'slug'  => 'pages',
-			'label' => __( 'Pages', 'kotisivu-block-theme' ),
-		),
-		array(
-			'slug'  => 'sections',
-			'label' => __( 'Sections', 'kotisivu-block-theme' ),
-		),
-		array(
-			'slug'  => 'heros',
-			'label' => __( 'Heros', 'kotisivu-block-theme' ),
-		),
-		array(
-			'slug'  => 'banners',
-			'label' => __( 'Banners', 'kotisivu-block-theme' ),
-		),
-	);
+	private array $categories;
 
 	/**
 	 * Define the core functionality of the theme.
@@ -100,6 +76,33 @@ class Patterns {
 		$this->loader     = $loader;
 		$this->theme_name = $theme_name;
 		$this->version    = $version;
+
+		$this->patterns = array(
+			array(
+				'slug'       => 'generic-two-column',
+				'title'      => __( 'Generic Two Column', 'kotisivu-block-theme' ),
+				'categories' => array( 'columns', 'sections' ),
+			),
+		);
+
+		$this->categories = array(
+			array(
+				'slug'  => 'pages',
+				'label' => __( 'Pages', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'sections',
+				'label' => __( 'Sections', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'heros',
+				'label' => __( 'Heros', 'kotisivu-block-theme' ),
+			),
+			array(
+				'slug'  => 'banners',
+				'label' => __( 'Banners', 'kotisivu-block-theme' ),
+			),
+		);
 	}
 
 	/**
