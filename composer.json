@@ -20,12 +20,11 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"PostTypes\\": "inc/custom-post-types/"
+			"Kotisivu\\BlockTheme\\": "inc"
 		}
 	},
 	"scripts": {},
 	"require": {
-		"jjgrainger/posttypes": "^2.2",
 		"vlucas/phpdotenv": "*"
 	},
 	"require-dev": {
