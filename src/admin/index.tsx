@@ -10,7 +10,6 @@ import domReady from '@wordpress/dom-ready';
  */
 import General from './pages/General';
 import Analytics from './pages/Analytics';
-import ChatGPT from './pages/ChatGPT';
 import Contact from './pages/Contact';
 import Social from './pages/Social';
 
@@ -40,7 +39,6 @@ const Main = (): JSX.Element => {
 		analytics: <Analytics />,
 		contact: <Contact />,
 		'social-media': <Social />,
-		chatgpt: <ChatGPT />,
 	} as { [key: string]: JSX.Element };
 
 	/**
