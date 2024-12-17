@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * HTTP Error Parameters Invalid
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Parameters_Invalid
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\HTTP_Response_Interface;
 
 /**
+ * HTTP Error Parameters Invalid
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Parameters_Invalid
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum HTTP_Error_Parameters_Invalid implements HTTP_Response_Interface {

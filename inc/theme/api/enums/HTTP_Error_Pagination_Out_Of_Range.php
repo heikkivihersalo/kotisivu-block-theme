@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * HTTP Error Pagination Out Of Range
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Pagination_Out_Of_Range
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\HTTP_Response_Interface;
 
 /**
+ * HTTP Error Pagination Out Of Range
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Pagination_Out_Of_Range
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum HTTP_Error_Pagination_Out_Of_Range implements HTTP_Response_Interface {

@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Options Route Utility Functions
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Utils\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Utils\OptionsUtils
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Utils;
@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Api\Encryption;
 
 /**
+ * Options Route Utility Functions
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\
+ * @package    Kotisivu\BlockTheme\Theme\Api\OptionsUtils
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 final class OptionsUtils {

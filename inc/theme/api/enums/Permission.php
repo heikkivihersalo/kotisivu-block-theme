@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Permission
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\Permission
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -13,9 +13,10 @@ namespace Kotisivu\BlockTheme\Theme\Api\Enums;
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Permission
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\Permission
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum Permission {

@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * NotImplementedException
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\NotImplementedException
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
@@ -16,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Not_Implemented;
 
 /**
+ * NotImplementedException
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\NotImplementedException
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class NotImplementedException extends \Exception implements ExceptionInterface {

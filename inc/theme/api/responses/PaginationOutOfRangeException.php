@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Pagination Out Of Range Exception
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\PaginationOutOfRangeException
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
@@ -16,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Pagination_Out_Of_Range;
 
 /**
+ * Pagination Out Of Range Exception
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\PaginationOutOfRangeException
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class PaginationOutOfRangeException extends \Exception implements ExceptionInterface {

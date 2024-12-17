@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * HTTP Error Pagination Invalid Parameters
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Pagination_Invalid_Parameters
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\HTTP_Response_Interface;
 
 /**
+ * HTTP Error Pagination Invalid Parameters
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Pagination_Invalid_Parameters
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum HTTP_Error_Pagination_Invalid_Parameters implements HTTP_Response_Interface {

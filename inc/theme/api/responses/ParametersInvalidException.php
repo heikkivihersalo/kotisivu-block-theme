@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Parameters Invalid Exception
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\ParametersInvalidException
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
@@ -16,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Parameters_Invalid;
 
 /**
+ * Parameters Invalid Exception
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\ParametersInvalidException
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class ParametersInvalidException extends \Exception implements ExceptionInterface {

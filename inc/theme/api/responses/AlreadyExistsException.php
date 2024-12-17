@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Already Exists Exception
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\AlreadyExistsException
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
@@ -16,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Already_Exists;
 
 /**
+ * Already Exists Exception
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\AlreadyExistsException
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class AlreadyExistsException extends \Exception implements ExceptionInterface {

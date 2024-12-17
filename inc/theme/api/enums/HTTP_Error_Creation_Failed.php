@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * HTTP Error Creation Failed
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Creation_Failed
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -15,9 +15,10 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Api\Interfaces\HTTP_Response_Interface;
 
 /**
+ * HTTP Error Creation Failed
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Creation_Failed
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum HTTP_Error_Creation_Failed implements HTTP_Response_Interface {

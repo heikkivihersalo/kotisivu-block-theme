@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Fetch Failed Exception
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\FetchFailedException
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Responses;
@@ -16,9 +16,10 @@ use Kotisivu\BlockTheme\Theme\Api\Interfaces\ExceptionInterface;
 use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Error_Fetch_Failed;
 
 /**
+ * Fetch Failed Exception
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Responses
+ * @package    Kotisivu\BlockTheme\Theme\Api\Responses\FetchFailedException
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class FetchFailedException extends \Exception implements ExceptionInterface {

@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Route Interface
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Interfaces\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Interfaces;
@@ -13,9 +13,10 @@ namespace Kotisivu\BlockTheme\Theme\Api\Interfaces;
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Route Interface
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Interfaces\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Interfaces\RouteInterface
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 interface RouteInterface {

@@ -1,11 +1,11 @@
 <?php
 /**
- * 
+ * Regex
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\Regex
  */
 
 namespace Kotisivu\BlockTheme\Theme\Api\Enums;
@@ -13,9 +13,10 @@ namespace Kotisivu\BlockTheme\Theme\Api\Enums;
 defined( 'ABSPATH' ) || die();
 
 /**
+ * Regex
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Api\Enums\
+ * @package    Kotisivu\BlockTheme\Theme\Api\Enums\Regex
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 enum Regex {
