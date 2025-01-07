@@ -13,9 +13,9 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Traits\DisableUnsecureEndpoints;
-use Kotisivu\BlockTheme\Theme\Common\Traits\DisableThemeUpdate;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Security as SecurityUtils;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * The security-specific functionality of the theme.
@@ -24,9 +24,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Security
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Security {
-	use DisableUnsecureEndpoints;
-	use DisableThemeUpdate;
+class Security implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -74,7 +72,7 @@ class Security {
 	 * @return   void
 	 */
 	private function remove_unsecure_endpoints() {
-		$this->loader->add_filter( 'rest_endpoints', $this, 'disable_rest_api_user_endpoints' );
+		$this->loader->add_filter( 'rest_endpoints', SecurityUtils::class, 'disable_rest_api_user_endpoints' );
 	}
 
 	/**
@@ -86,8 +84,8 @@ class Security {
 	 */
 	private function set_security_enhancements() {
 		$this->loader->add_action( 'wp_default_scripts', $this, 'disable_xmlrpc', 9999 );
-		$this->loader->add_action( 'template_redirect', $this, 'disable_author_pages' );
-		$this->loader->add_filter( 'http_request_args', $this, 'disable_theme_update', 10, 2 );
+		$this->loader->add_action( 'template_redirect', SecurityUtils::class, 'disable_author_pages' );
+		$this->loader->add_filter( 'http_request_args', SecurityUtils::class, 'disable_theme_update', 10, 2 );
 	}
 
 	/**
@@ -114,11 +112,7 @@ class Security {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->remove_json_api();

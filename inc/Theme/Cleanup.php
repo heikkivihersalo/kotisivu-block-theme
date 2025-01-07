@@ -13,9 +13,10 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Traits\DisableEmoji;
-use Kotisivu\BlockTheme\Theme\Common\Traits\OptimizedJquery;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as HelpersUtils;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Performance as PerformanceUtils;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Functions to clean up the theme from unnecessary WordPress junk
@@ -24,9 +25,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Cleanup
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Cleanup {
-	use DisableEmoji;
-	use OptimizedJquery;
+class Cleanup implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -49,8 +48,8 @@ class Cleanup {
 	 * @return   void
 	 */
 	private function set_jquery_optimizations() {
-		$this->loader->add_action( 'wp_default_scripts', $this, 'remove_jquery_migrate' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'move_jquery_to_footer' );
+		$this->loader->add_action( 'wp_default_scripts', PerformanceUtils::class, 'remove_jquery_migrate' );
+		$this->loader->add_action( 'wp_enqueue_scripts', PerformanceUtils::class, 'move_jquery_to_footer' );
 	}
 
 	/**
@@ -127,17 +126,13 @@ class Cleanup {
 		$this->loader->remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
 		$this->loader->remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 
-		$this->loader->add_filter( 'tiny_mce_plugins', $this, 'disable_emojis_tinymce' );
-		$this->loader->add_filter( 'emoji_svg_url', null, '__return_false' );
-		$this->loader->add_filter( 'wp_resource_hints', $this, 'disable_emojis_remove_dns_prefetch', 1, 2 );
+		$this->loader->add_filter( 'tiny_mce_plugins', PerformanceUtils::class, 'disable_emojis_tinymce' );
+		$this->loader->add_filter( 'emoji_svg_url', HelpersUtils::class, 'return_false' );
+		$this->loader->add_filter( 'wp_resource_hints', PerformanceUtils::class, 'disable_emojis_remove_dns_prefetch', 1, 2 );
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->set_jquery_optimizations();
