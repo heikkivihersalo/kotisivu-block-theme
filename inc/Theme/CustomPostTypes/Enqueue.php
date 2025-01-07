@@ -67,6 +67,6 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 		$asset_path = SITE_PATH . '/build/assets/cpt.asset.php';
 		$script_url = SITE_URI . '/build/assets/cpt.js';
 
-		$this->enqueue_script( $asset_path, $script_url );
+		$this->enqueue_script( $asset_path, $script_url, 'ksd-cpt' );
 	}
 }
