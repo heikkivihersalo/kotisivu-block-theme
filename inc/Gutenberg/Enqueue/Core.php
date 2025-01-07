@@ -60,11 +60,11 @@ class Core extends CommonEnqueue implements EnqueueInterface {
 	 * @return void
 	 */
 	public function enqueue_scripts_and_styles( string $hook = '' ): void {
-		$asset_path = SITE_PATH . 'build/block-library/core.asset.php';
-		$script_url = SITE_URL . 'build/block-library/core.js';
-		$style_url  = SITE_URL . 'build/block-library/core.css';
+		$asset_path = SITE_PATH . '/build/block-library/core/core.asset.php';
+		$script_url = SITE_URI . '/build/block-library/core/core.js';
+		$style_url  = SITE_URI . '/build/block-library/core/core.css';
 
-		$this->enqueue_style( $asset_path, $style_url );
-		$this->enqueue_script( $asset_path, $script_url );
+		$this->enqueue_style( $asset_path, $style_url, 'ksd-core' );
+		$this->enqueue_script( $asset_path, $script_url, 'ksd-core' );
 	}
 }
