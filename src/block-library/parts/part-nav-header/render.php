@@ -10,7 +10,7 @@
  * @see https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/block-api/block-metadata.md#render
  */
 
-use Kotisivu\BlockTheme\HeaderMenuWalker;
+use Kotisivu\BlockTheme\Theme\Navigation\Walkers\MenuWalker;
 
 ?>
 <nav id="header-menu" class="site-header__nav">
@@ -33,7 +33,7 @@ use Kotisivu\BlockTheme\HeaderMenuWalker;
 					'container'      => '',
 					'menu_class'     => 'site-header__menu',
 					'menu_id'        => 'header-nav',
-					'walker'         => new HeaderMenuWalker(),
+					'walker'         => new MenuWalker(),
 				)
 			);
 			?>
