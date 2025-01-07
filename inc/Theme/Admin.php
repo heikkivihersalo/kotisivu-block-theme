@@ -17,7 +17,7 @@ use Kotisivu\BlockTheme\Theme\Admin\Pages;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\CleanAdminUI;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Utils;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as Utils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
