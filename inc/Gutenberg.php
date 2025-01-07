@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as Utils;
+use Kotisivu\BlockTheme\Theme\Common\Traits\CreateLoader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 use Kotisivu\BlockTheme\Gutenberg\AllowedBlocks;
@@ -39,6 +40,7 @@ use Kotisivu\BlockTheme\Gutenberg\Traits\FilePathFix;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Gutenberg {
+	use CreateLoader;
 	use FilePathFix;
 	use ThemeDefaults;
 
@@ -53,7 +55,7 @@ class Gutenberg {
 		$this->api_version = defined( 'KOTISIVU_BLOCK_THEME_API_VERSION' ) ? KOTISIVU_BLOCK_THEME_API_VERSION : '2';
 		$this->theme_name  = 'kotisivu-block-theme';
 
-		$this->set_loader();
+		$this->create_loader();
 
 		$this->set_allowed_blocks();
 		$this->set_scripts_and_styles();
@@ -62,17 +64,6 @@ class Gutenberg {
 
 		$this->set_separate_core_block_assets();
 		$this->fix_file_paths();
-	}
-
-	/**
-	 * Initialize the loader to execute all hooks with WordPress.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @return   void
-	 */
-	private function set_loader() {
-		$this->loader = new Loader();
 	}
 
 	/**
@@ -157,16 +148,5 @@ class Gutenberg {
 	 */
 	private function fix_file_paths(): void {
 		$this->loader->add_filter( 'plugins_url', $this, 'fix_block_file_path', 10, 3 );
-	}
-
-	/**
-	 * Run the loader to execute all of the custom hooks related to Gutenberg.
-	 *
-	 * @since    2.0.0
-	 * @access   public
-	 * @return   void
-	 */
-	public function run(): void {
-		$this->loader->run();
 	}
 }
