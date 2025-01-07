@@ -13,7 +13,7 @@ namespace Kotisivu\BlockTheme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Utils;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as Utils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 use Kotisivu\BlockTheme\Gutenberg\AllowedBlocks;
