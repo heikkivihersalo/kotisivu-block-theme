@@ -68,7 +68,7 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 		$script_url = SITE_URI . '/build/assets/admin.js';
 		$style_url  = SITE_URI . '/build/assets/admin.css';
 
-		$this->enqueue_style( $asset_path, $style_url );
-		$this->enqueue_script( $asset_path, $script_url );
+		$this->enqueue_style( $asset_path, $style_url, 'ksd-admin' );
+		$this->enqueue_script( $asset_path, $script_url, 'ksd-admin' );
 	}
 }
