@@ -28,10 +28,33 @@ final class Helpers {
 
 	/**
 	 * Return true
+	 *
+	 * @since 2.0.0
 	 * @return bool
 	 */
 	public static function return_true(): bool {
 		return true;
+	}
+
+	/**
+	 * Return false
+	 *
+	 * @since 2.0.0
+	 * @return bool
+	 */
+	public static function return_false(): bool {
+		return false;
+	}
+
+	/**
+	 * Check if the current page is the plugin's editor page
+	 *
+	 * @since    2.0.0
+	 * @param string $hook The current admin page
+	 * @return bool
+	 */
+	public static function is_editor_page( string $hook ): bool {
+		return str_contains( $hook, 'post-new.php' ) || str_contains( $hook, 'post.php' );
 	}
 
 	/**
