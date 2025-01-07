@@ -27,6 +27,14 @@ final class Utils {
 	}
 
 	/**
+	 * Return true
+	 * @return bool
+	 */
+	public static function return_true(): bool {
+		return true;
+	}
+
+	/**
 	 * Check if string starts with another string
 	 * @param string $str String that is checked against
 	 * @param string $str_to_check String to check
