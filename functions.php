@@ -73,3 +73,10 @@ function run_theme() {
 }
 
 run_theme();
+
+function run_gutenberg() {
+	$gutenberg = new Gutenberg();
+	$gutenberg->run();
+}
+
+run_gutenberg();
