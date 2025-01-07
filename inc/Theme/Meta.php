@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Options as Utils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
@@ -24,7 +25,6 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Meta {
-	use Options;
 	use ThemeDefaults;
 
 	/**
@@ -94,7 +94,7 @@ class Meta {
 	 * @return void
 	 */
 	public function inline_tag_manager(): void {
-		$config = $this->get_options_file( 'site-analytics' );
+		$config = Utils::get_options_file( 'site-analytics' );
 
 		if ( ! $config || ! $config['tagmanager-active'] ) {
 			return;
