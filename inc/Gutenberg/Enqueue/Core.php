@@ -21,38 +21,6 @@ use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
  */
 class Core extends CommonEnqueue implements EnqueueInterface {
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 * @return void
-	 */
-	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
-	}
-
-	/**
 	 * Run the editor scripts and styles
 	 *
 	 * @since    0.2.0
