@@ -60,9 +60,9 @@ class Store extends CommonEnqueue implements EnqueueInterface {
 	 * @return void
 	 */
 	public function enqueue_scripts_and_styles( string $hook = '' ): void {
-		$asset_path = SITE_PATH . 'build/assets/store.asset.php';
-		$script_url = SITE_URL . 'build/assets/store.js';
+		$asset_path = SITE_PATH . '/build/assets/store.asset.php';
+		$script_url = SITE_URI . '/build/assets/store.js';
 
-		$this->enqueue_script( $asset_path, $script_url );
+		$this->enqueue_script( $asset_path, $script_url, 'ksd-store' );
 	}
 }
