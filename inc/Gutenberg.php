@@ -12,7 +12,9 @@ namespace Kotisivu\BlockTheme;
 
 defined( 'ABSPATH' ) || die();
 
-use Kotisivu\BlockTheme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as Utils;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 use Kotisivu\BlockTheme\Gutenberg\AllowedBlocks;
 use Kotisivu\BlockTheme\Gutenberg\Categories;
@@ -38,43 +40,7 @@ use Kotisivu\BlockTheme\Gutenberg\Traits\FilePathFix;
  */
 class Gutenberg {
 	use FilePathFix;
-
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
-
-	/**
-	 * The current version of the API.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $api_version    The current version of the API.
-	 */
-	protected $api_version;
+	use ThemeDefaults;
 
 	/**
 	 * Constructor
@@ -131,19 +97,20 @@ class Gutenberg {
 	private function set_scripts_and_styles(): void {
 		$store = new StoreEnqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'wp_enqueue_scripts', $store, 'enqueue_scripts_and_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $store, 'enqueue_scripts_and_styles' );
 
 		$core = new CoreEnqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'wp_enqueue_scripts', $core, 'enqueue_scripts_and_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $core, 'enqueue_scripts_and_styles' );
 
 		$custom = new BlockCustom( $this->theme_name, $this->version );
-		$this->loader->add_action( 'init', $custom, 'register_block' );
+		$this->loader->add_action( 'init', $custom, 'register_blocks' );
 
 		$page_template = new BlockPageTemplate( $this->theme_name, $this->version );
-		$this->loader->add_action( 'init', $page_template, 'register_block' );
+		$this->loader->add_action( 'init', $page_template, 'register_blocks' );
 
 		$part = new BlockPart( $this->theme_name, $this->version );
-		$this->loader->add_action( 'init', $part, 'register_block' );
+		$this->loader->add_action( 'init', $part, 'register_blocks' );
 	}
 
 	/**
@@ -178,7 +145,7 @@ class Gutenberg {
 	 * @return   void
 	 */
 	private function set_separate_core_block_assets(): void {
-		$this->loader->add_action( 'should_load_separate_core_block_assets', $this, '__return_true' );
+		$this->loader->add_action( 'should_load_separate_core_block_assets', Utils::class, 'return_true' );
 	}
 
 	/**
@@ -201,39 +168,5 @@ class Gutenberg {
 	 */
 	public function run(): void {
 		$this->loader->run();
-	}
-
-	/**
-	 * The name of the theme used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     2.0.0
-	 * @access    public
-	 * @return    string    The name of the theme.
-	 */
-	public function get_theme_name(): string {
-		return $this->theme_name;
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the theme.
-	 *
-	 * @since     2.0.0
-	 * @access    public
-	 * @return    Loader    Orchestrates the hooks of the theme.
-	 */
-	public function get_loader(): Loader {
-		return $this->loader;
-	}
-
-	/**
-	 * Retrieve the version number of the theme.
-	 *
-	 * @since     2.0.0
-	 * @access    public
-	 * @return    string    The version number of the theme.
-	 */
-	public function get_version(): string {
-		return $this->version;
 	}
 }

@@ -14,6 +14,8 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Options as Utils;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * Class for adding meta tags to the site head
@@ -23,35 +25,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Meta {
-	use Options;
-
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
+	use ThemeDefaults;
 
 	/**
 	 * Constructor
@@ -120,7 +94,7 @@ class Meta {
 	 * @return void
 	 */
 	public function inline_tag_manager(): void {
-		$config = $this->get_options_file( 'site-analytics' );
+		$config = Utils::get_options_file( 'site-analytics' );
 
 		if ( ! $config || ! $config['tagmanager-active'] ) {
 			return;

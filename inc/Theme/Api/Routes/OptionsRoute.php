@@ -18,6 +18,7 @@ use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
 use Kotisivu\BlockTheme\Theme\Api\Utils\OptionsUtils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Options as Utils;
 
 /**
  * OptionsRoute class
@@ -27,8 +28,6 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class OptionsRoute extends BaseRoute implements RouteInterface {
-	use Options;
-
 	/**
 	 * Register custom domain related rest routes
 	 * @return void
@@ -378,7 +377,7 @@ class OptionsRoute extends BaseRoute implements RouteInterface {
 	 */
 	public function clean_transient_cache( \WP_REST_Request $request ): \WP_REST_Response|\WP_Error {
 		try {
-			$this->purge_transient_cache();
+			Utils::purge_transient_cache();
 		} catch ( \Exception $e ) {
 			return new \WP_Error( 'error_' . $e->getCode(), $e->getMessage() );
 		}

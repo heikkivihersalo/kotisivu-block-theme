@@ -13,6 +13,7 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * Class for handling translations
@@ -22,8 +23,10 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Translations {
+	use ThemeDefaults;
+
 	/**
-	 * Constructor
+	 * Load the text domain for the theme
 	 *
 	 * @since    2.0.0
 	 * @access   public
