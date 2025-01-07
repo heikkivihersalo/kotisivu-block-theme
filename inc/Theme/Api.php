@@ -17,6 +17,7 @@ use Kotisivu\BlockTheme\Theme\Api\Ajax;
 use Kotisivu\BlockTheme\Theme\Api\RestFields;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * The API functionality of the theme.
@@ -25,7 +26,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Api
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Api {
+class Api implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -78,11 +79,7 @@ class Api {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->set_api_routes();

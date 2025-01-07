@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\CustomPostTypes\Enqueue;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Functionality for registering and handling custom post types for the theme.
@@ -23,7 +24,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\CustomPostTypes
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class CustomPostTypes {
+class CustomPostTypes implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -96,11 +97,7 @@ class CustomPostTypes {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'after_setup_theme', $this, 'build_post_types' );

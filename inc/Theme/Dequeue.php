@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Functions for dequeueing styles and scripts
@@ -22,7 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Dequeue
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Dequeue {
+class Dequeue implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -72,11 +73,7 @@ class Dequeue {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'dequeue_block_library_styles' );

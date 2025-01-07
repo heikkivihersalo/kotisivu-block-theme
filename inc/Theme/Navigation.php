@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Navigation functionality of the theme.
@@ -22,7 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Navigation
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Navigation {
+class Navigation implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -77,11 +78,7 @@ class Navigation {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'init', $this, 'register_navigation_menus' );

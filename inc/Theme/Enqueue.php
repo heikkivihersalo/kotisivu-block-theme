@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Enqueue as CommonEnqueue;
 use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
@@ -24,7 +25,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Enqueue
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Enqueue extends CommonEnqueue implements EnqueueInterface {
+class Enqueue extends CommonEnqueue implements EnqueueInterface, RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -84,11 +85,7 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_scripts_and_styles' );
