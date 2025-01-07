@@ -17,7 +17,9 @@ use Kotisivu\BlockTheme\Theme\Admin\Pages;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
 use Kotisivu\BlockTheme\Theme\Admin\Traits\CleanAdminUI;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Utils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * The admin-specific functionality of the theme.
@@ -30,34 +32,7 @@ class Admin {
 	use DuplicatePosts;
 	use ExtendedMediaSupport;
 	use CleanAdminUI;
-
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
+	use ThemeDefaults;
 
 	/**
 	 * Constructor
@@ -147,7 +122,7 @@ class Admin {
 	 * @return   void
 	 */
 	private function enable_customizer() {
-		$this->loader->add_action( 'customize_register', $this, '__return_true' );
+		$this->loader->add_action( 'customize_register', Utils::class, 'return_true' );
 	}
 
 	/**

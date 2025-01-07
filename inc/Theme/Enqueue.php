@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Enqueue as CommonEnqueue;
 use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * Functions for enqueuing scripts and styles
@@ -24,33 +25,7 @@ use Kotisivu\BlockTheme\Theme\Common\Interfaces\EnqueueInterface;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Enqueue extends CommonEnqueue implements EnqueueInterface {
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
+	use ThemeDefaults;
 
 	/**
 	 * Constructor
@@ -77,8 +52,8 @@ class Enqueue extends CommonEnqueue implements EnqueueInterface {
 		$script_url = SITE_URI . '/build/assets/theme.js';
 		$style_url  = SITE_URI . '/build/assets/theme.css';
 
-		$this->enqueue_style( $asset_path, $style_url );
-		$this->enqueue_script( $asset_path, $script_url );
+		$this->enqueue_style( $asset_path, $style_url, 'ksd-theme' );
+		$this->enqueue_script( $asset_path, $script_url, 'ksd-theme' );
 	}
 
 	/**

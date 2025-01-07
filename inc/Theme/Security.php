@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die();
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableUnsecureEndpoints;
 use Kotisivu\BlockTheme\Theme\Common\Traits\DisableThemeUpdate;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * The security-specific functionality of the theme.
@@ -26,34 +27,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\DisableThemeUpdate;
 class Security {
 	use DisableUnsecureEndpoints;
 	use DisableThemeUpdate;
-
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
+	use ThemeDefaults;
 
 	/**
 	 * Constructor
@@ -152,36 +126,5 @@ class Security {
 		$this->set_security_enhancements();
 		$this->remove_wp_versions();
 		$this->disable_xmlrpc();
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the theme.
-	 *
-	 * @since     2.0.0
-	 * @return    Loader    Orchestrates the hooks of the theme.
-	 */
-	public function get_loader() {
-		return $this->loader;
-	}
-
-	/**
-	 * The name of the theme used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     2.0.0
-	 * @return    string    The name of the theme.
-	 */
-	public function get_theme_name() {
-		return $this->theme_name;
-	}
-
-	/**
-	 * Retrieve the version number of the theme.
-	 *
-	 * @since     2.0.0
-	 * @return    string    The version number of the theme.
-	 */
-	public function get_version() {
-		return $this->version;
 	}
 }

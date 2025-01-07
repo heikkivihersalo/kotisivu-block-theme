@@ -13,6 +13,7 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
  * Navigation functionality of the theme.
@@ -22,33 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Navigation {
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      Loader    $loader    Maintains and registers all hooks for the theme.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $theme_name    The string used to uniquely identify this theme.
-	 */
-	protected $theme_name;
-
-	/**
-	 * The current version of the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the theme.
-	 */
-	protected $version;
+	use ThemeDefaults;
 
 	/**
 	 * Default image sizes
