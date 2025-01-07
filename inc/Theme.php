@@ -13,6 +13,8 @@ namespace Kotisivu\BlockTheme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
+use Kotisivu\BlockTheme\Theme\Common\Traits\CreateLoader;
+use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 use Kotisivu\BlockTheme\Theme\Admin;
 use Kotisivu\BlockTheme\Theme\Api;
@@ -28,8 +30,6 @@ use Kotisivu\BlockTheme\Theme\Navigation;
 use Kotisivu\BlockTheme\Theme\Security;
 use Kotisivu\BlockTheme\Theme\Uploads;
 
-use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
-
 /**
  * The core theme class.
  *
@@ -38,6 +38,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
 class Theme {
+	use CreateLoader;
 	use ThemeDefaults;
 
 	/**
@@ -66,17 +67,6 @@ class Theme {
 		$this->set_security();
 		$this->set_navigation();
 		$this->set_uploads();
-	}
-
-	/**
-	 * Initialize the loader to execute all hooks with WordPress.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 * @return   void
-	 */
-	private function create_loader() {
-		$this->loader = new Loader();
 	}
 
 	/**
@@ -232,16 +222,5 @@ class Theme {
 	private function set_uploads() {
 		$uploads = new Uploads( $this->loader, $this->theme_name, $this->version );
 		$uploads->register_hooks();
-	}
-
-	/**
-	 * Run the loader to execute all of the custom hooks related to the theme.
-	 *
-	 * @since    2.0.0
-	 * @access   public
-	 * @return   void
-	 */
-	public function run(): void {
-		$this->loader->run();
 	}
 }

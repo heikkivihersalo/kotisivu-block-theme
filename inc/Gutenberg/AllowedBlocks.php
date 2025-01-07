@@ -12,12 +12,13 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  *
  * @package Kotisivu\BlockTheme
  */
-class AllowedBlocks {
+class AllowedBlocks implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -194,11 +195,7 @@ class AllowedBlocks {
 	}
 
 	/**
-	 * Register hooks
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_filter( 'allowed_block_types_all', $this, 'filter_allowed_blocks', 10, 2 );

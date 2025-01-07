@@ -12,12 +12,13 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  *
  * @package Kotisivu\BlockTheme
  */
-class Patterns {
+class Patterns implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -197,11 +198,7 @@ class Patterns {
 	}
 
 	/**
-	 * Register hooks
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'init', $this, 'register_block_pattern_categories' );

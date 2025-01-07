@@ -16,6 +16,7 @@ use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
 use Kotisivu\BlockTheme\Theme\Common\Utils\Options as Utils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Class for adding meta tags to the site head
@@ -24,7 +25,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Meta
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Meta {
+class Meta implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -144,11 +145,7 @@ class Meta {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'wp_head', $this, 'inline_sanitize_css', 0 );

@@ -1,30 +1,39 @@
 <?php
 /**
- * Add duplicate post functionality
+ * Class for duplicate post feature
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Theme\Admin
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
  */
 
-namespace Kotisivu\BlockTheme\Theme\Admin\Traits;
+namespace Kotisivu\BlockTheme\Theme\Admin;
+
+defined( 'ABSPATH' ) || die();
 
 /**
- * Add duplicate post functionality
+ * Class for duplicate post feature
+ * TODO: This is copy paste from old theme and based on https://rudrastyh.com/wordpress/duplicate-post.html. Needs to be refactored.
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Theme\Admin
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-trait DuplicatePosts {
+final class Duplicate {
+	/**
+	 * This utility class should never be instantiated.
+	 */
+	private function __construct() {
+	}
+
 	/**
 	 * Add duplicate post feature to admin
 	 * @param array    $actions The post actions
 	 * @param \WP_Post $post The post object
 	 * @return array The post actions
 	 */
-	public function add_duplicate_post_link_to_admin( array $actions, \WP_Post $post ): array {
+	public static function add_duplicate_post_link_to_admin( array $actions, \WP_Post $post ): array {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			return $actions;
 		}
@@ -50,7 +59,7 @@ trait DuplicatePosts {
 	 * Function creates post duplicate as a draft and redirects then to the edit post screen
 	 * @return void
 	 */
-	public function create_duplicate_post_as_draft(): void {
+	public static function create_duplicate_post_as_draft(): void {
 		// check if post ID has been provided and action
 		if ( empty( $_GET['post'] ) ) {
 			wp_die( 'No post to duplicate has been provided!' );
@@ -144,7 +153,7 @@ trait DuplicatePosts {
 	 * Admin notice
 	 * @return void
 	 */
-	public function show_duplicate_admin_notice(): void {
+	public static function show_duplicate_admin_notice(): void {
 		// Get the current screen
 		$screen = get_current_screen();
 

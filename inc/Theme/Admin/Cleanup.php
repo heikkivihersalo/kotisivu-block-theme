@@ -1,30 +1,38 @@
 <?php
 /**
- * Remove unnecessary items from admin UI
+ * Class for cleaning up the theme admin panel
  *
  * @link       https://www.kotisivu.dev
  * @since      2.0.0
  *
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
  */
 
-namespace Kotisivu\BlockTheme\Theme\Admin\Traits;
+namespace Kotisivu\BlockTheme\Theme\Admin;
+
+defined( 'ABSPATH' ) || die();
 
 /**
- * Remove unnecessary items from admin UI
+ * Class for cleaning up the theme admin panel
  *
  * @since      2.0.0
- * @package    Kotisivu\BlockTheme\Common
+ * @package    Kotisivu\BlockTheme\Theme\Admin\Pages
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-trait CleanAdminUI {
+final class Cleanup {
+	/**
+	 * This utility class should never be instantiated.
+	 */
+	private function __construct() {
+	}
+
 	/**
 	 * Set default dashboard metaboxes
 	 *
 	 * @param int $user_id User ID
 	 * @return void
 	 */
-	public function set_default_dashboard_metaboxes( $user_id = null ) {
+	public static function set_default_dashboard_metaboxes( $user_id = null ) {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
@@ -54,7 +62,7 @@ trait CleanAdminUI {
 	 *
 	 * @return void
 	 */
-	public function remove_admin_bar_items() {
+	public static function remove_admin_bar_items() {
 		global $wp_admin_bar;
 
 		$options = array(

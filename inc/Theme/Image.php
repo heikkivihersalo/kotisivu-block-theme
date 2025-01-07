@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Class for handling image customizations
@@ -22,7 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Image
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Image {
+class Image implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -151,11 +152,7 @@ class Image {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_action( 'after_setup_theme', $this, 'register_image_sizes' );

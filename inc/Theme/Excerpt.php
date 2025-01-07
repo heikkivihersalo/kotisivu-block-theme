@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Class for handling excerpt customizations
@@ -22,7 +23,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Excerpt
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Excerpt {
+class Excerpt implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -56,11 +57,7 @@ class Excerpt {
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->loader->add_filter( 'excerpt_length', $this, 'custom_excerpt_length', 999 );

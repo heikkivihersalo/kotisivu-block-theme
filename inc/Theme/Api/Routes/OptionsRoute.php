@@ -17,7 +17,6 @@ use Kotisivu\BlockTheme\Theme\Api\Enums\HTTP_Success;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Permission;
 use Kotisivu\BlockTheme\Theme\Api\Enums\Regex;
 use Kotisivu\BlockTheme\Theme\Api\Utils\OptionsUtils;
-use Kotisivu\BlockTheme\Theme\Common\Traits\Options;
 use Kotisivu\BlockTheme\Theme\Common\Utils\Options as Utils;
 
 /**

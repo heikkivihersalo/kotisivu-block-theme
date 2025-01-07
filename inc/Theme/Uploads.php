@@ -13,8 +13,9 @@ namespace Kotisivu\BlockTheme\Theme;
 defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Media as MediaUtils;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 
 /**
  * Class for handling customizations for file uploads
@@ -23,8 +24,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Uploads
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Uploads {
-	use ExtendedMediaSupport;
+class Uploads implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -47,15 +47,11 @@ class Uploads {
 	 * @return   void
 	 */
 	private function set_file_uploads() {
-		$this->loader->add_filter( 'upload_mimes', $this, 'allow_svg_uploads' );
+		$this->loader->add_filter( 'upload_mimes', MediaUtils::class, 'allow_svg_uploads' );
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
 		$this->set_file_uploads();

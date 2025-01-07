@@ -14,11 +14,12 @@ defined( 'ABSPATH' ) || die();
 
 use Kotisivu\BlockTheme\Theme\Admin\Enqueue;
 use Kotisivu\BlockTheme\Theme\Admin\Pages;
-use Kotisivu\BlockTheme\Theme\Admin\Traits\DuplicatePosts;
-use Kotisivu\BlockTheme\Theme\Admin\Traits\CleanAdminUI;
+use Kotisivu\BlockTheme\Theme\Admin\Cleanup;
+use Kotisivu\BlockTheme\Theme\Admin\Duplicate;
+use Kotisivu\BlockTheme\Theme\Common\Interfaces\RegisterHooksInterface;
 use Kotisivu\BlockTheme\Theme\Common\Loader;
-use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as Utils;
-use Kotisivu\BlockTheme\Theme\Common\Traits\ExtendedMediaSupport;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Helpers as HelperUtils;
+use Kotisivu\BlockTheme\Theme\Common\Utils\Media as MediaUtils;
 use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
 
 /**
@@ -28,10 +29,7 @@ use Kotisivu\BlockTheme\Theme\Common\Traits\ThemeDefaults;
  * @package    Kotisivu\BlockTheme\Theme\Admin
  * @author     Heikki Vihersalo <heikki@vihersalo.fi>
  */
-class Admin {
-	use DuplicatePosts;
-	use ExtendedMediaSupport;
-	use CleanAdminUI;
+class Admin implements RegisterHooksInterface {
 	use ThemeDefaults;
 
 	/**
@@ -44,20 +42,6 @@ class Admin {
 		$this->loader     = $loader;
 		$this->theme_name = $theme_name;
 		$this->version    = $version;
-	}
-
-	/**
-	 * Add the duplicate posts feature.
-	 *
-	 * @since 2.0.0
-	 * @access private
-	 * @return void
-	 */
-	private function add_duplicate_posts_feature() {
-		$this->loader->add_action( 'admin_action_create_duplicate_post_as_draft', $this, 'create_duplicate_post_as_draft' );
-		$this->loader->add_filter( 'post_row_actions', $this, 'add_duplicate_post_link_to_admin', 10, 2 );
-		$this->loader->add_filter( 'page_row_actions', $this, 'add_duplicate_post_link_to_admin', 10, 2 );
-		$this->loader->add_action( 'admin_notices', $this, 'show_duplicate_admin_notice' );
 	}
 
 	/**
@@ -86,8 +70,8 @@ class Admin {
 	private function set_admin_scripts_and_styles() {
 		$admin = new Enqueue( $this->theme_name, $this->version );
 		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts_and_styles' );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $this, 'add_wp_media_support' );
+		$this->loader->add_action( 'wp_enqueue_scripts', MediaUtils::class, 'add_wp_media_support' );
+		$this->loader->add_action( 'admin_init', $admin, 'set_editor_styles' );
 	}
 
 	/**
@@ -97,21 +81,23 @@ class Admin {
 	 * @access   private
 	 * @return   void
 	 */
-	private function clean_wp_admin_ui() {
-		$this->loader->add_action( 'admin_bar_menu', $this, 'remove_admin_bar_items' );
-		$this->loader->add_action( 'admin_menu', $this, 'set_default_dashboard_metaboxes' );
+	private function set_cleanup() {
+		$this->loader->add_action( 'admin_bar_menu', Cleanup::class, 'remove_admin_bar_items' );
+		$this->loader->add_action( 'admin_menu', Cleanup::class, 'set_default_dashboard_metaboxes' );
 	}
 
 	/**
-	 * Add editor styles
+	 * Setup for post duplication feature
 	 *
-	 * @return void
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
 	 */
-	public function set_editor_styles(): void {
-		add_editor_style( SITE_URI . '/build/assets/theme.css' );
-		add_editor_style( SITE_URI . '/build/assets/admin.css' );
-		add_editor_style( SITE_URI . '/build/assets/core.css' );
-		add_editor_style( SITE_URI . '/build/assets/inline.css' );
+	private function set_duplicate() {
+		$this->loader->add_action( 'admin_action_create_duplicate_post_as_draft', Duplicate::class, 'create_duplicate_post_as_draft' );
+		$this->loader->add_filter( 'post_row_actions', Duplicate::class, 'add_duplicate_post_link_to_admin', 10, 2 );
+		$this->loader->add_filter( 'page_row_actions', Duplicate::class, 'add_duplicate_post_link_to_admin', 10, 2 );
+		$this->loader->add_action( 'admin_notices', Duplicate::class, 'show_duplicate_admin_notice' );
 	}
 
 	/**
@@ -122,22 +108,17 @@ class Admin {
 	 * @return   void
 	 */
 	private function enable_customizer() {
-		$this->loader->add_action( 'customize_register', Utils::class, 'return_true' );
+		$this->loader->add_action( 'customize_register', HelperUtils::class, 'return_true' );
 	}
 
 	/**
-	 * Registers hooks for the loader
-	 *
-	 * @since 2.0.0
-	 * @access public
-	 * @return void
+	 * @inheritDoc
 	 */
 	public function register_hooks() {
-		$this->add_duplicate_posts_feature();
+		$this->set_cleanup();
+		$this->enable_customizer();
+		$this->set_duplicate();
 		$this->add_admin_pages();
 		$this->set_admin_scripts_and_styles();
-		$this->enable_customizer();
-		$this->clean_wp_admin_ui();
-		$this->loader->add_action( 'admin_init', $this, 'set_editor_styles' );
 	}
 }
