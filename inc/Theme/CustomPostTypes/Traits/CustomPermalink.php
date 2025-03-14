@@ -21,7 +21,7 @@ trait CustomPermalink {
 						__( '%s Base', 'kotisivu-block-theme' ),
 						$name
 					),
-					array( $this, 'generate_setting_output' ),
+					fn() => $this->generate_setting_output( $slug ),
 					'permalink',
 					'optional'
 				);

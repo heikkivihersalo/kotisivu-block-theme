@@ -88,7 +88,7 @@ class Patterns implements RegisterHooksInterface {
 	 * @return string
 	 */
 	public function get_pattern_content( string $name ): string {
-		$path = SITE_PATH . '/inc/Blocks/BlockPatterns/' . $name . '.php';
+		$path = SITE_PATH . '/inc/Gutenberg/BlockPatterns/' . $name . '.php';
 		if ( file_exists( $path ) ) {
 			ob_start();
 			require $path;
