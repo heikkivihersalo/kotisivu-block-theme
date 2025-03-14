@@ -56,7 +56,7 @@ final class Security {
 	 * @param array $endpoints The current REST api endpoints
 	 * @return array
 	 */
-	public function disable_rest_api_user_endpoints( $endpoints ): array {
+	public static function disable_rest_api_user_endpoints( $endpoints ): array {
 		if ( isset( $endpoints['/wp/v2/users'] ) ) {
 			unset( $endpoints['/wp/v2/users'] );
 		}
@@ -72,7 +72,7 @@ final class Security {
 	 *
 	 * @return void
 	 */
-	public function disable_author_pages(): void {
+	public static function disable_author_pages(): void {
 		global $wp_query;
 
 		if ( is_author() ) {
