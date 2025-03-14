@@ -28,6 +28,7 @@ use Kotisivu\BlockTheme\Theme\Image;
 use Kotisivu\BlockTheme\Theme\Meta;
 use Kotisivu\BlockTheme\Theme\Navigation;
 use Kotisivu\BlockTheme\Theme\Security;
+use Kotisivu\BlockTheme\Theme\Supports;
 use Kotisivu\BlockTheme\Theme\Uploads;
 
 /**
@@ -65,6 +66,7 @@ class Theme {
 		$this->set_custom_image();
 		$this->set_meta();
 		$this->set_security();
+		$this->set_supports();
 		$this->set_navigation();
 		$this->set_uploads();
 	}
@@ -198,6 +200,18 @@ class Theme {
 	private function set_security() {
 		$security = new Security( $this->loader, $this->theme_name, $this->version );
 		$security->register_hooks();
+	}
+
+	/**
+	 * Register all of the hooks related to theme supports for the theme
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @return   void
+	 */
+	private function set_supports() {
+		$supports = new Supports( $this->loader, $this->theme_name, $this->version );
+		$supports->register_hooks();
 	}
 
 	/**
