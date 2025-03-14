@@ -198,6 +198,6 @@ class AllowedBlocks implements RegisterHooksInterface {
 	 * @inheritDoc
 	 */
 	public function register_hooks() {
-		$this->loader->add_filter( 'allowed_block_types_all', $this, 'filter_allowed_blocks', 10, 2 );
+		$this->loader->add_filter( 'allowed_block_types_all', $this, 'set_allowed_blocks', 10, 2 );
 	}
 }
