@@ -24,9 +24,7 @@
 		}
 	},
 	"scripts": {},
-	"require": {
-		"vlucas/phpdotenv": "*"
-	},
+	"require": {},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
 		"guzzlehttp/guzzle": "^7.8",
