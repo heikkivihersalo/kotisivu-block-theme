@@ -20,11 +20,24 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Kotisivu\\BlockTheme\\": "inc"
+			"Kotisivu\\BlockTheme\\": "app"
 		}
 	},
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/heikkivihersalo/block-theme-core"
+        },
+		{
+            "type": "vcs",
+            "url": "https://github.com/heikkivihersalo/custom-post-types"
+        }
+    ],
 	"scripts": {},
-	"require": {},
+	"require": {
+		"heikkivihersalo/block-theme-core": "dev-main",
+		"heikkivihersalo/custom-post-types": "dev-main"
+	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7",
 		"guzzlehttp/guzzle": "^7.8",

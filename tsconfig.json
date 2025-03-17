@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"baseUrl": "resources",
 		"outDir": "./build/",
 		"sourceMap": true,
 		"strict": true,
@@ -27,5 +27,5 @@
 		"lib": ["ES2021.String"]
 	},
 	"typeRoots": ["node_modules/@types", "./types"],
-	"include": ["./src/**/*", "./types/**/*"]
+	"include": ["resources/**/*", "./types/**/*"]
 }

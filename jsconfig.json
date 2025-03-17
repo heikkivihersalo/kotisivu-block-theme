@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "ES6",
-		"baseUrl": "./src",
+		"baseUrl": "resources",
 		"paths": {
 			"@components/*": ["components/*"],
 			"@hooks/*": ["hooks/*"],
@@ -11,6 +11,6 @@
 			"@admin/*": ["admin/components/*"]
 		}
 	},
-	"include": ["src"],
+	"include": ["resources"],
 	"exclude": ["node_modules"]
 }

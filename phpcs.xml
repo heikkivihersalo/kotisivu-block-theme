@@ -44,6 +44,10 @@
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 
+        <!-- We like to use short array syntax -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+
         <!-- Very strict VIP/discouraged rules that are not needed -->
         <exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
         <exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction" />
@@ -69,6 +73,9 @@
         <exclude name="Squiz.PHP.CommentedOutCode.Found" />
     </rule>
 
+    <!-- Optionally enforce short arrays: -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    
     <!-- Verify that the text_domain is set to the desired text-domain.
     Multiple valid text domains can be provided as a comma-delimited list. -->
     <rule ref="WordPress.WP.I18n">

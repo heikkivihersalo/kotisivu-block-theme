@@ -4,8 +4,107 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf83c2476b72b1eeb0f32bb57b35543d",
-    "packages": [],
+    "content-hash": "8dc5a2b92307f9f943903983f2a9348d",
+    "packages": [
+        {
+            "name": "heikkivihersalo/block-theme-core",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heikkivihersalo/block-theme-core.git",
+                "reference": "eb3c64b80aff3725a2aa2392409da05a8494ed72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/eb3c64b80aff3725a2aa2392409da05a8494ed72",
+                "reference": "eb3c64b80aff3725a2aa2392409da05a8494ed72",
+                "shasum": ""
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+                "phpcompatibility/php-compatibility": "dev-develop as 9.3.5",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "phpcsstandards/phpcsextra": "^1.2.0",
+                "phpcsstandards/phpcsutils": "^1.0",
+                "phpunit/phpunit": "9.*",
+                "squizlabs/php_codesniffer": "*",
+                "wp-coding-standards/wpcs": "^3.0",
+                "wp-phpunit/wp-phpunit": "^6.0",
+                "yoast/phpunit-polyfills": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HeikkiVihersalo\\BlockThemeCore\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Heikki Vihersalo",
+                    "email": "heikki@vihersalo.fi"
+                }
+            ],
+            "description": "Opionated WordPress block theme core feature library",
+            "support": {
+                "source": "https://github.com/heikkivihersalo/block-theme-core/tree/main",
+                "issues": "https://github.com/heikkivihersalo/block-theme-core/issues"
+            },
+            "time": "2025-03-17T17:28:26+00:00"
+        },
+        {
+            "name": "heikkivihersalo/custom-post-types",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heikkivihersalo/custom-post-types.git",
+                "reference": "2dbcfe0b870eb228b52df20249225dc94e5b3607"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heikkivihersalo/custom-post-types/zipball/2dbcfe0b870eb228b52df20249225dc94e5b3607",
+                "reference": "2dbcfe0b870eb228b52df20249225dc94e5b3607",
+                "shasum": ""
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+                "phpcompatibility/php-compatibility": "dev-develop as 9.3.5",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "phpcsstandards/phpcsextra": "^1.2.0",
+                "phpcsstandards/phpcsutils": "^1.0",
+                "phpunit/phpunit": "9.*",
+                "squizlabs/php_codesniffer": "*",
+                "wp-coding-standards/wpcs": "^3.0",
+                "wp-phpunit/wp-phpunit": "^6.0",
+                "yoast/phpunit-polyfills": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HeikkiVihersalo\\CustomPostTypes\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Heikki Vihersalo",
+                    "email": "heikki@vihersalo.fi"
+                }
+            ],
+            "description": "Flexible Laravel style custom post types for WordPress",
+            "support": {
+                "source": "https://github.com/heikkivihersalo/custom-post-types/tree/main",
+                "issues": "https://github.com/heikkivihersalo/custom-post-types/issues"
+            },
+            "time": "2025-03-16T14:28:51+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -479,16 +578,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.12.1",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "123267b2c49fbf30d78a7b2d333f6be754b94845"
+                "reference": "024473a478be9df5fdaca2c793f2232fe788e414"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/123267b2c49fbf30d78a7b2d333f6be754b94845",
-                "reference": "123267b2c49fbf30d78a7b2d333f6be754b94845",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/024473a478be9df5fdaca2c793f2232fe788e414",
+                "reference": "024473a478be9df5fdaca2c793f2232fe788e414",
                 "shasum": ""
             },
             "require": {
@@ -527,7 +626,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.12.1"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.0"
             },
             "funding": [
                 {
@@ -535,7 +634,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-08T17:47:46+00:00"
+            "time": "2025-02-12T12:17:51+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -801,7 +900,7 @@
                     "type": "open_collective"
                 },
                 {
-                    "url": "https://thanks.dev/phpcompatibility",
+                    "url": "https://thanks.dev/u/gh/phpcompatibility",
                     "type": "thanks_dev"
                 }
             ],
@@ -2973,16 +3072,16 @@
         },
         {
             "name": "wp-phpunit/wp-phpunit",
-            "version": "6.7.1",
+            "version": "6.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-phpunit/wp-phpunit.git",
-                "reference": "e63eb1c0980839853c569d3f04ff70263b7795e3"
+                "reference": "e2bb06bacc92a8e9e405e83f56989e8ed9359db1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/e63eb1c0980839853c569d3f04ff70263b7795e3",
-                "reference": "e63eb1c0980839853c569d3f04ff70263b7795e3",
+                "url": "https://api.github.com/repos/wp-phpunit/wp-phpunit/zipball/e2bb06bacc92a8e9e405e83f56989e8ed9359db1",
+                "reference": "e2bb06bacc92a8e9e405e83f56989e8ed9359db1",
                 "shasum": ""
             },
             "type": "library",
@@ -3017,20 +3116,20 @@
                 "issues": "https://github.com/wp-phpunit/issues",
                 "source": "https://github.com/wp-phpunit/wp-phpunit"
             },
-            "time": "2024-11-22T01:27:46+00:00"
+            "time": "2025-02-12T01:22:52+00:00"
         },
         {
             "name": "yoast/phpunit-polyfills",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Yoast/PHPUnit-Polyfills.git",
-                "reference": "0b31ce834facf03b8b44b6587e65b3cf1d7cfb94"
+                "reference": "e6faedf5e34cea4438e341f660e2f719760c531d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/0b31ce834facf03b8b44b6587e65b3cf1d7cfb94",
-                "reference": "0b31ce834facf03b8b44b6587e65b3cf1d7cfb94",
+                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/e6faedf5e34cea4438e341f660e2f719760c531d",
+                "reference": "e6faedf5e34cea4438e341f660e2f719760c531d",
                 "shasum": ""
             },
             "require": {
@@ -3045,7 +3144,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.x-dev"
+                    "dev-main": "4.x-dev"
                 }
             },
             "autoload": {
@@ -3080,7 +3179,7 @@
                 "security": "https://github.com/Yoast/PHPUnit-Polyfills/security/policy",
                 "source": "https://github.com/Yoast/PHPUnit-Polyfills"
             },
-            "time": "2025-01-08T16:58:34+00:00"
+            "time": "2025-02-09T18:13:44+00:00"
         }
     ],
     "aliases": [
@@ -3093,6 +3192,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "heikkivihersalo/block-theme-core": 20,
+        "heikkivihersalo/custom-post-types": 20,
         "phpcompatibility/php-compatibility": 20
     },
     "prefer-stable": false,
