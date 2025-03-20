@@ -9,6 +9,7 @@ use Vihersalo\BlockThemeCore\Support\Assets\Script;
 use Vihersalo\BlockThemeCore\Support\Assets\Style;
 use Vihersalo\BlockThemeCore\Support\Assets\Inline;
 use Vihersalo\BlockThemeCore\Support\Media\ImageSize;
+use Vihersalo\BlockThemeCore\Support\Pages\Page;
 
 return [
 
@@ -99,12 +100,10 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Theme scripts and styles
+	| Media settings
 	|--------------------------------------------------------------------------
 	|
-	| All the scripts and styles that are enqueued in the theme are defined here.
-	|
-	| Note that block scripts are enqueued in different way.
+	| All the media settings like images, excerpts etc are defined here.
 	|
 	*/
 
