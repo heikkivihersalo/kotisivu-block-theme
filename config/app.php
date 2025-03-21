@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Vihersalo\BlockThemeCore\Admin\Pages\AdminPagesProvider;
 use Vihersalo\BlockThemeCore\Media\MediaProvider;
 use Vihersalo\BlockThemeCore\Admin\CustomizerProvider;
 use Vihersalo\BlockThemeCore\Navigation\Menu;
@@ -91,11 +92,12 @@ return [
 	*/
 
 	'assets'         => [
+		Inline::create( 'ksd-sanitize', 'build/assets/sanitize.css', 0 ),
+		Inline::create( 'ksd-inline', 'build/assets/inline.css', 11 ),
 		Script::create( 'ksd-theme', 'build/assets/theme.js', 'build/assets/theme.asset.php' ),
 		Style::create( 'ksd-theme', 'build/assets/theme.css', 'build/assets/theme.asset.php' ),
 		Script::create( 'ksd-admin', 'build/assets/admin.js', 'build/assets/admin.asset.php', 10, true ),
 		Style::create( 'ksd-admin', 'build/assets/admin.css', 'build/assets/admin.asset.php', 10, true ),
-		Inline::create( 'ksd-inline', 'build/assets/inline.css', 11 ),
 	],
 
 	/*
@@ -140,6 +142,7 @@ return [
 	*/
 
 	'providers'      => [
+		AdminPagesProvider::class,
 		CustomizerProvider::class,
 		MediaProvider::class,
 	],
