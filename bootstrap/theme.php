@@ -2,15 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kotisivu\BlockTheme;
-
-use Vihersalo\BlockThemeCore\Application;
-
-require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
-require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
-
-/**
- * Bind the loader to the application.
- */
-return Application::configure()
-	->boot();
+return Vihersalo\Core\Foundation\Application::configure()
+    ->withApi(
+        routePath: __DIR__ . '/../routes/api.php',
+        routeNamespace: 'api/v1',
+    )
+    ->boot();
