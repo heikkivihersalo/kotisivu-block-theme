@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/heikkivihersalo/block-theme-core.git",
-                "reference": "47df36a0b2bd480ec3b5cd88d163aae37f40e783"
+                "reference": "efd9f5664cfb9536432d7594a5424272e68fbc81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/47df36a0b2bd480ec3b5cd88d163aae37f40e783",
-                "reference": "47df36a0b2bd480ec3b5cd88d163aae37f40e783",
+                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/efd9f5664cfb9536432d7594a5424272e68fbc81",
+                "reference": "efd9f5664cfb9536432d7594a5424272e68fbc81",
                 "shasum": ""
             },
             "require": {
@@ -60,7 +60,7 @@
                 "source": "https://github.com/heikkivihersalo/block-theme-core/tree/main",
                 "issues": "https://github.com/heikkivihersalo/block-theme-core/issues"
             },
-            "time": "2025-03-26T18:01:52+00:00"
+            "time": "2025-03-26T18:42:34+00:00"
         },
         {
             "name": "heikkivihersalo/custom-post-types",
