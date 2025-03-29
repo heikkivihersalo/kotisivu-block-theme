@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use App\Providers\AppServiceProvider;
+use App\Providers\AssetServiceProvider;
+use Vihersalo\Core\Admin\Providers\SettingsMenuServiceProvider;
+use Vihersalo\Core\Admin\Providers\CustomizerServiceProvider;
 use Vihersalo\Core\Analytics\AnalyticsServiceProvider;
-use Vihersalo\Core\Admin\Settings\Providers\SettingsMenuServiceProvider;
 use Vihersalo\Core\Styles\StylesServiceProvider;
-use Vihersalo\Core\Admin\CustomizerServiceProvider;
 use Vihersalo\Core\Media\MediaServiceProvider;
-use Vihersalo\Core\Junk\JunkServiceProvider;
 
 return [
 
@@ -20,6 +20,7 @@ return [
     */
 
     AppServiceProvider::class,
+    AssetServiceProvider::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -32,11 +33,10 @@ return [
     */
 
     AnalyticsServiceProvider::class,
-    SettingsMenuServiceProvider::class,
-    StylesServiceProvider::class,
     CustomizerServiceProvider::class,
     MediaServiceProvider::class,
-    JunkServiceProvider::class,
+    SettingsMenuServiceProvider::class,
+    StylesServiceProvider::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -46,5 +46,4 @@ return [
     | Add your custom providers here.
     |
     */
-
 ];
