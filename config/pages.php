@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Vihersalo\Core\Support\Assets\Script;
-use Vihersalo\Core\Support\Assets\Style;
 use Vihersalo\Core\Support\Assets\Localize;
 use Vihersalo\Core\Support\Collections\AssetCollection;
 use Vihersalo\Core\Support\Collections\MenuCollection;
@@ -42,35 +40,35 @@ return [
             );
         }
     )
-    ->withAssets(
-        function (AssetCollection $assets) {
-            $assets->add(
-                [
-                    Script::create(
-                        'ksd-options-index',
-                        'build/options/index.js',
-                        'build/options/index.asset.php',
-                        10,
-                        true
-                    ),
-                    Style::create(
-                        'ksd-options-index',
-                        'build/options/index.css',
-                        'build/options/index.asset.php',
-                        10,
-                        true
-                    ),
-                    Style::create(
-                        'ksd-options-style-index',
-                        'build/options/style-index.css',
-                        'build/options/index.asset.php',
-                        10,
-                        true
-                    ),
-                ]
-            );
-        }
-    )
+    // ->withAssets(
+    //     function (AssetCollection $assets) {
+    //         $assets->add(
+    //             [
+    //                 Script::create(
+    //                     'ksd-options-index',
+    //                     'build/options/index.js',
+    //                     'build/options/index.asset.php',
+    //                     10,
+    //                     true
+    //                 ),
+    //                 Style::create(
+    //                     'ksd-options-index',
+    //                     'build/options/index.css',
+    //                     'build/options/index.asset.php',
+    //                     10,
+    //                     true
+    //                 ),
+    //                 Style::create(
+    //                     'ksd-options-style-index',
+    //                     'build/options/style-index.css',
+    //                     'build/options/index.asset.php',
+    //                     10,
+    //                     true
+    //                 ),
+    //             ]
+    //         );
+    //     }
+    // )
     ->withLocalize(
         handle: 'ksd-options-index', // This is the script handle we enqueued earlier
         objectName: 'kotisivuSettings',
