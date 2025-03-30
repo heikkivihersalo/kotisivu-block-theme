@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Providers;
+namespace App\Handlers;
 
-use Vihersalo\Core\Support\ServiceProvider;
 use Vihersalo\Core\Foundation\HooksStore;
+use Vihersalo\Core\Foundation\Application;
+use Vihersalo\Core\Support\Handler;
 
-class RenderBlockServiceProvider extends ServiceProvider {
-    /**
-     * Register any application services.
-     */
-    public function register(): void {
-        $this->app->make(HooksStore::class)->addFilter('render_block', $this, 'replaceImageMarkup', 10, 2);
-    }
-
+class RenderBlockHandler extends Handler {
     /**
      * Replace image block markup with custom image markup
      * @param string $block_content Block content
@@ -40,8 +34,10 @@ class RenderBlockServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Bootstrap any application services.
+     * Handle
+     * @return void
      */
-    public function boot(): void {
+    public function handle(): void {
+        $this->store->addFilter('render_block', $this, 'replaceImageMarkup', 10, 2);
     }
 }
