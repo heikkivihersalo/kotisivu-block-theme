@@ -51,30 +51,28 @@ class SettingsServiceProvider extends ServiceProvider {
                 );
             }
         )->withAssets(
-            function (Collection $assets) {
-                $assets->add(Asset::script(
+            function () {
+                Asset::script(
                     'ksd-options-index',
                     'build/options/index.js',
                     'build/options/index.asset.php',
                     10,
                     true
-                ));
-
-                $assets->add(Asset::style(
-                    'ksd-options-index',
-                    'build/options/index.css',
-                    'build/options/index.asset.php',
-                    10,
-                    true
-                ));
-
-                $assets->add(Asset::style(
+                );
+                Asset::script(
                     'ksd-options-style-index',
-                    'build/options/style-index.css',
+                    'build/options/style-index.js',
                     'build/options/index.asset.php',
                     10,
                     true
-                ));
+                );
+                Asset::script(
+                    'ksd-options-style',
+                    'build/options/style.js',
+                    'build/options/index.asset.php',
+                    10,
+                    true
+                );
             }
         )->withLocalize(
             handle: 'ksd-options-index', // This is the script handle we enqueued earlier
