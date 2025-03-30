@@ -2,16 +2,7 @@
 
 declare(strict_types=1);
 
-use Vihersalo\Core\Admin\Settings\Providers\SettingsMenuProvider;
-use Vihersalo\Core\Media\MediaProvider;
-use Vihersalo\Core\Admin\CustomizerProvider;
-use Vihersalo\Core\Analytics\AnalyticsProvider;
-use Vihersalo\Core\Styles\StylesProvider;
 use Vihersalo\Core\Navigation\Menu;
-use Vihersalo\Core\Support\Assets\Script;
-use Vihersalo\Core\Support\Assets\Style;
-use Vihersalo\Core\Support\Assets\Inline;
-use Vihersalo\Core\Support\Facades\Asset;
 use Vihersalo\Core\Support\Media\ImageSize;
 use Vihersalo\Core\Support\Facades\Facade;
 
