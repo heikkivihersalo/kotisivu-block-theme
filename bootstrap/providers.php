@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Providers\AppServiceProvider;
 use App\Providers\AssetServiceProvider;
-use Vihersalo\Core\Admin\Providers\SettingsMenuServiceProvider;
+use App\Providers\SettingsServiceProvider;
 use Vihersalo\Core\Admin\Providers\CustomizerServiceProvider;
 use Vihersalo\Core\Analytics\AnalyticsServiceProvider;
 use Vihersalo\Core\Styles\StylesServiceProvider;
@@ -35,7 +35,7 @@ return [
     AnalyticsServiceProvider::class,
     CustomizerServiceProvider::class,
     MediaServiceProvider::class,
-    SettingsMenuServiceProvider::class,
+    SettingsServiceProvider::class,
     StylesServiceProvider::class,
 
     /*
