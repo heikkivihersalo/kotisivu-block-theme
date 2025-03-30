@@ -39,13 +39,6 @@ class AssetServiceProvider extends ServiceProvider {
         Asset::style('kotisivu-core', 'build/block-library/core/core.css', 'build/block-library/core/core.asset.php');
 
         Asset::script('kotisivu-store', 'build/assets/store.js', 'build/assets/store.asset.php');
-
-        /**
-         * Finally we register the assets so they get enqueued to the theme
-         * This is done by calling the register method on the asset loader
-         * The register method will loop through all the assets and enqueue them
-         */
-        $this->app->make('assets')->register();
     }
 
     /**
@@ -53,5 +46,11 @@ class AssetServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot(): void {
+        /**
+         * Finally we register the assets so they get enqueued to the theme
+         * We do this in boot method so we can use the asset loader elsewhere
+         * in the application
+         */
+        $this->app->make('assets')->register();
     }
 }
