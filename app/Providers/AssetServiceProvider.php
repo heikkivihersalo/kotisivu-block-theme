@@ -4,30 +4,18 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Vihersalo\Core\Enqueue\AssetLoader;
 use Vihersalo\Core\Support\Facades\Asset;
 use Vihersalo\Core\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider {
     /**
      * Register the application assets
+     * You can add your own here or modify the paths as needed.
+     * Actual loader is registered in the core under the key 'assets' and booted automatically.
+     *
      * @return void
      */
     public function register(): void {
-        /**
-         * First we register the asset loader
-         * This is used as an central container for all assets
-         */
-        $this->app->singleton('assets', function ($app) {
-            return new AssetLoader($app);
-        });
-
-        /**
-         * Then we register the assets
-         * We use the Asset facade to register the assets
-         * The facade is a helper class that allows us to access the asset loader
-         * from anywhere in the application
-         */
         Asset::inline('kotisivu-sanitize-css', 'build/assets/sanitize.css', 0);
         Asset::inline('kotisivu-inline-css', 'build/assets/inline.css', 11);
         Asset::script('kotisivu-theme', 'build/assets/theme.js', 'build/assets/theme.asset.php');
@@ -46,11 +34,5 @@ class AssetServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot(): void {
-        /**
-         * Finally we register the assets so they get enqueued to the theme
-         * We do this in boot method so we can use the asset loader elsewhere
-         * in the application
-         */
-        $this->app->make('assets')->register();
     }
 }

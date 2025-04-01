@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use Vihersalo\Core\Collections\Collection;
-use Vihersalo\Core\Admin\Settings\SettingsMenuLoader;
+use Vihersalo\Core\Support\Collection;
+use Vihersalo\Core\Support\Facades\Asset;
 use Vihersalo\Core\Support\Facades\Settings;
 use Vihersalo\Core\Support\ServiceProvider;
-use Vihersalo\Core\Admin\Settings\Submenu;
-use Vihersalo\Core\Support\Facades\Asset;
+use Vihersalo\Core\Support\Submenu;
 
 class SettingsServiceProvider extends ServiceProvider {
     /**
@@ -17,10 +16,6 @@ class SettingsServiceProvider extends ServiceProvider {
      * @return void
      */
     public function register(): void {
-        $this->app->singleton('settings', function ($app) {
-            return new SettingsMenuLoader($app);
-        });
-
         Settings::create(
             slug: 'ksd-settings-general',
             pageTitle: __('Kotisivu Theme Options', 'kotisivu-block-theme'),
@@ -82,9 +77,6 @@ class SettingsServiceProvider extends ServiceProvider {
                 'nonce' => wp_create_nonce('wp_rest'),
             ]
         );
-
-        // Register the settings menu
-        $this->app->make('settings')->register();
     }
 
     /**
