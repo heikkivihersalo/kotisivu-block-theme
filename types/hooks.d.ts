@@ -30,17 +30,17 @@ declare module '@hooks' {
 	 * Set types for admin form props
 	 */
 	type ContactAdminFormProps = {
-		path: 'kotisivu-block-theme/v1/options/contact';
+		path: 'api/v1/settings/contact';
 		nonce: string | undefined;
 	};
 
 	type SocialAdminFormProps = {
-		path: 'kotisivu-block-theme/v1/options/social';
+		path: 'api/v1/settings/socials';
 		nonce: string | undefined;
 	};
 
 	type AnalyticsAdminFormProps = {
-		path: 'kotisivu-block-theme/v1/options/analytics';
+		path: 'api/v1/settings/tagmanager';
 		nonce: string | undefined;
 	};
 
@@ -50,7 +50,7 @@ declare module '@hooks' {
 	};
 
 	type PurgeCacheAdminFormProps = {
-		path: 'kotisivu-block-theme/v1/options/purge-cache';
+		path: 'api/v1/settings/cache/purge';
 		nonce: string | undefined;
 	};
 
