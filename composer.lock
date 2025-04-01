@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/heikkivihersalo/block-theme-core.git",
-                "reference": "8ed9cb5d94ba68b8e5de1e39f663725f5f09b77d"
+                "reference": "e991bbc8af539b14342aea8a601e5201d2f58593"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/8ed9cb5d94ba68b8e5de1e39f663725f5f09b77d",
-                "reference": "8ed9cb5d94ba68b8e5de1e39f663725f5f09b77d",
+                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/e991bbc8af539b14342aea8a601e5201d2f58593",
+                "reference": "e991bbc8af539b14342aea8a601e5201d2f58593",
                 "shasum": ""
             },
             "require": {
@@ -32,7 +32,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Vihersalo\\Core\\": "src/"
+                    "Vihersalo\\Core\\": "src/",
+                    "Vihersalo\\Core\\Support\\": [
+                        "src/Collections/"
+                    ]
                 }
             },
             "scripts": {
@@ -60,7 +63,7 @@
                 "source": "https://github.com/heikkivihersalo/block-theme-core/tree/main",
                 "issues": "https://github.com/heikkivihersalo/block-theme-core/issues"
             },
-            "time": "2025-03-29T11:59:28+00:00"
+            "time": "2025-04-01T08:32:57+00:00"
         },
         {
             "name": "heikkivihersalo/custom-post-types",
@@ -113,16 +116,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v12.3.0",
+            "version": "v12.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "57d786330a14a792bd9bb8183a799893d3f15caa"
+                "reference": "cdd99204b29acf795a02f778542df5a5244361fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/57d786330a14a792bd9bb8183a799893d3f15caa",
-                "reference": "57d786330a14a792bd9bb8183a799893d3f15caa",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/cdd99204b29acf795a02f778542df5a5244361fd",
+                "reference": "cdd99204b29acf795a02f778542df5a5244361fd",
                 "shasum": ""
             },
             "require": {
@@ -160,20 +163,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-12T14:22:47+00:00"
+            "time": "2025-03-22T17:41:27+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v12.3.0",
+            "version": "v12.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "88962e0a73fb837e048ebdbbc67afd2f6b30e8e6"
+                "reference": "bbaec083da240396f2186f4c3a9952da207f28a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/88962e0a73fb837e048ebdbbc67afd2f6b30e8e6",
-                "reference": "88962e0a73fb837e048ebdbbc67afd2f6b30e8e6",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/bbaec083da240396f2186f4c3a9952da207f28a0",
+                "reference": "bbaec083da240396f2186f4c3a9952da207f28a0",
                 "shasum": ""
             },
             "require": {
@@ -208,7 +211,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-16T23:56:53+00:00"
+            "time": "2025-03-19T20:10:05+00:00"
         },
         {
             "name": "psr/container",
