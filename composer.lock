@@ -4,116 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7777f178ad095052d76f2cb7a2cb5e0",
+    "content-hash": "32fea6bd3214c799ba54e62b4154da88",
     "packages": [
-        {
-            "name": "heikkivihersalo/block-theme-core",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/heikkivihersalo/block-theme-core.git",
-                "reference": "c16032882c781d57c9beaf052c049a689a7c1a45"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/c16032882c781d57c9beaf052c049a689a7c1a45",
-                "reference": "c16032882c781d57c9beaf052c049a689a7c1a45",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/container": "^12.3"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.21",
-                "phpunit/phpunit": "^11.5",
-                "squizlabs/php_codesniffer": "^3.12"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Vihersalo\\Core\\": "src/",
-                    "Vihersalo\\Core\\Support\\": [
-                        "src/Collections/"
-                    ]
-                }
-            },
-            "scripts": {
-                "lint": [
-                    "vendor/bin/parallel-lint --exclude .git --exclude .vscode --exclude vendor ."
-                ],
-                "cs": [
-                    "vendor/bin/phpcs"
-                ],
-                "cs-fix": [
-                    "vendor/bin/phpcbf"
-                ]
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Heikki Vihersalo",
-                    "email": "heikki@vihersalo.fi"
-                }
-            ],
-            "description": "Opionated WordPress block theme core feature library",
-            "support": {
-                "source": "https://github.com/heikkivihersalo/block-theme-core/tree/main",
-                "issues": "https://github.com/heikkivihersalo/block-theme-core/issues"
-            },
-            "time": "2025-04-01T10:03:43+00:00"
-        },
-        {
-            "name": "heikkivihersalo/custom-post-types",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/heikkivihersalo/custom-post-types.git",
-                "reference": "2dbcfe0b870eb228b52df20249225dc94e5b3607"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/heikkivihersalo/custom-post-types/zipball/2dbcfe0b870eb228b52df20249225dc94e5b3607",
-                "reference": "2dbcfe0b870eb228b52df20249225dc94e5b3607",
-                "shasum": ""
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-                "phpcompatibility/php-compatibility": "dev-develop as 9.3.5",
-                "phpcompatibility/phpcompatibility-wp": "*",
-                "phpcsstandards/phpcsextra": "^1.2.0",
-                "phpcsstandards/phpcsutils": "^1.0",
-                "phpunit/phpunit": "9.*",
-                "squizlabs/php_codesniffer": "*",
-                "wp-coding-standards/wpcs": "^3.0",
-                "wp-phpunit/wp-phpunit": "^6.0",
-                "yoast/phpunit-polyfills": "^1.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "HeikkiVihersalo\\CustomPostTypes\\": "src/"
-                }
-            },
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Heikki Vihersalo",
-                    "email": "heikki@vihersalo.fi"
-                }
-            ],
-            "description": "Flexible Laravel style custom post types for WordPress",
-            "support": {
-                "source": "https://github.com/heikkivihersalo/custom-post-types/tree/main",
-                "issues": "https://github.com/heikkivihersalo/custom-post-types/issues"
-            },
-            "time": "2025-03-16T14:28:51+00:00"
-        },
         {
             "name": "illuminate/container",
             "version": "v12.4.1",
@@ -316,6 +208,54 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00"
+        },
+        {
+            "name": "vihersalo/block-theme-core",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/heikkivihersalo/block-theme-core.git",
+                "reference": "eda0fc8c304d27f291e337dd5900ff9ed92b91c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/heikkivihersalo/block-theme-core/zipball/eda0fc8c304d27f291e337dd5900ff9ed92b91c0",
+                "reference": "eda0fc8c304d27f291e337dd5900ff9ed92b91c0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "^12.3"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.21",
+                "phpunit/phpunit": "^11.5",
+                "squizlabs/php_codesniffer": "^3.12"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vihersalo\\Core\\": "src/",
+                    "Vihersalo\\Core\\Support\\": [
+                        "src/Collections/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Heikki Vihersalo",
+                    "email": "heikki@vihersalo.fi"
+                }
+            ],
+            "description": "Opionated WordPress block theme core feature library",
+            "support": {
+                "issues": "https://github.com/heikkivihersalo/block-theme-core/issues",
+                "source": "https://github.com/heikkivihersalo/block-theme-core/tree/v0.1.0"
+            },
+            "time": "2025-04-01T10:54:56+00:00"
         }
     ],
     "packages-dev": [
@@ -2160,10 +2100,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "heikkivihersalo/block-theme-core": 20,
-        "heikkivihersalo/custom-post-types": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

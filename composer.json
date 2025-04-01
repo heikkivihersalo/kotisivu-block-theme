@@ -23,20 +23,9 @@
 			"App\\": "app/"
 		}
 	},
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/heikkivihersalo/block-theme-core"
-		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/heikkivihersalo/custom-post-types"
-		}
-	],
 	"scripts": {},
 	"require": {
-		"heikkivihersalo/block-theme-core": "dev-main",
-		"heikkivihersalo/custom-post-types": "dev-main"
+		"vihersalo/block-theme-core": "0.1.0"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "^3.12",
