@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handlers;
 
-use Vihersalo\Core\Foundation\HooksStore;
-use Vihersalo\Core\Foundation\Application;
+use Vihersalo\Core\Support\Facades\Store;
 use Vihersalo\Core\Support\Handler;
 
 class RenderBlockHandler extends Handler {
@@ -38,6 +37,6 @@ class RenderBlockHandler extends Handler {
      * @return void
      */
     public function handle(): void {
-        $this->store->addFilter('render_block', $this, 'replaceImageMarkup', 10, 2);
+        Store::addFilter('render_block', $this, 'replaceImageMarkup', 10, 2);
     }
 }
