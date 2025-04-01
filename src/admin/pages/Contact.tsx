@@ -18,7 +18,7 @@ import type { ContactAdminFormData } from '@hooks';
  */
 const Contact = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
-		path: 'kotisivu-block-theme/v1/options/contact',
+		path: 'api/v1/settings/contact',
 		nonce: window.kotisivuSettings?.nonce,
 	});
 

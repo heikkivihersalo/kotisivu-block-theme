@@ -26,7 +26,7 @@ const General = (): JSX.Element => {
 
 		apiFetch({
 			method: 'POST',
-			path: 'kotisivu-block-theme/v1/options/purge-cache',
+			path: 'api/v1/settings/cache/purge',
 			data: {},
 		}).then(() => {
 			// eslint-disable-next-line no-alert

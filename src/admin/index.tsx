@@ -25,9 +25,7 @@ const Main = (): JSX.Element => {
 	 * - WordPress adds page query parameter to the URL when navigating between pages (e.g. page=kotisivu-settings-general)
 	 * - We can use this to determine which page to display
 	 */
-	const currentPage = window.location.search.split(
-		'page=kotisivu-settings-'
-	)[1];
+	const currentPage = window.location.search.split('page=ksd-settings-')[1];
 
 	/**
 	 * Admin pages

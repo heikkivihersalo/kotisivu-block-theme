@@ -18,7 +18,7 @@ import type { SocialAdminFormData } from '@hooks';
  */
 const Social = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
-		path: 'kotisivu-block-theme/v1/options/social',
+		path: 'api/v1/settings/socials',
 		nonce: window.kotisivuSettings?.nonce,
 	});
 
