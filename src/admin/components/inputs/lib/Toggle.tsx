@@ -33,7 +33,7 @@ const Toggle = ({
 					type="checkbox"
 					id={name}
 					name={name}
-					defaultChecked={checked}
+					checked={checked}
 					onClick={(e) => onChange(e)}
 				/>
 			</label>

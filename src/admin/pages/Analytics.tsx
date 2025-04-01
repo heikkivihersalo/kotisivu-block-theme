@@ -18,7 +18,7 @@ import type { AnalyticsAdminFormData } from '@hooks';
  */
 const Analytics = (): JSX.Element | null => {
 	const { formData, handleChange, handleSave } = useAdminForm({
-		path: 'kotisivu-block-theme/v1/options/analytics',
+		path: 'api/v1/settings/tagmanager',
 		nonce: window.kotisivuSettings?.nonce,
 	});
 

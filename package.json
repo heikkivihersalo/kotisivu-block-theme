@@ -15,9 +15,10 @@
 		"lint:js": "wp-scripts lint-js",
 		"lint:php": "./vendor/bin/phpcs",
 		"test:php": "./vendor/bin/phpunit",
+		"fix:php": "./vendor/bin/phpcbf",
 		"ts-coverage": "typescript-coverage-report",
 		"build:prod": "yarn format && yarn lint:css && yarn lint:js && yarn build && yarn zip",
-		"make-pot": "wp i18n make-pot . languages/kotisivu-block-theme.pot --slug=kotisivu-block-theme --domain=kotisivu-block-theme --exclude=src/blocks/static,src/blocks/dynamic/*/*.js,src/features,src/utils,src/hooks,src/__template-library__",
+		"make-pot": "wp i18n make-pot . languages/kotisivu-block-theme.pot --slug=kotisivu-block-theme --domain=kotisivu-block-theme",
 		"make-json": "wp i18n make-json languages/ --no-purge",
 		"wp-env": "wp-env",
 		"wp-env:start": "wp-env start",
@@ -54,8 +55,9 @@
 		"stylelint-config-prettier": "^9.0.5",
 		"ts-loader": "^9.5.1",
 		"typescript": "^5.6.2",
+		"typescript-coverage-report": "^1.0.0",
 		"typescript-eslint": "^8.6.0",
-		"typescript-coverage-report": "^1.0.0"
+		"vite-tsconfig-paths": "^5.1.4"
 	},
 	"resolutions": {
 		"@typescript-eslint/typescript-estree": "^7.16.0"
@@ -77,6 +79,9 @@
 		"types",
 		"vendor",
 		"vendor/composer",
+		"vendor/illuminate",
+		"vendor/psr",
+		"vendor/vihersalo",
 		"vendor/autoload.php",
 		".editorconfig",
 		".eslintrc.json",
