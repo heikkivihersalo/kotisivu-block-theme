@@ -8,6 +8,13 @@ use Vihersalo\Core\Support\Models\Settings;
 
 class Tagmanager extends Settings {
     /**
+     * The settings identifier.
+     *
+     * @var string
+     */
+    protected string $id = 'app-settings-tagmanager';
+
+    /**
      * Get the analytics settings.
      *
      * @return array The analytics settings.
@@ -15,7 +22,7 @@ class Tagmanager extends Settings {
     public function default(): array {
         return [
             'active'  => false,
-            'id'      => $this->id(),
+            'id'      => '',
             'url'     => 'www.googletagmanager.com',
             'timeout' => 1500,
         ];

@@ -55,7 +55,8 @@ class TagmanagerController {
      */
     public function update(WP_REST_Request $request) {
         try {
-            $result = $this->tagmanager->save($request->get_body());
+            $values = json_decode($request->get_body(), true) ?: [];
+            $result = $this->tagmanager->save($values);
         } catch (Exception $e) {
             return new WP_Error('error_' . $e->getCode(), $e->getMessage());
         }

@@ -8,6 +8,13 @@ use Vihersalo\Core\Support\Models\Settings;
 
 class SocialAccount extends Settings {
     /**
+     * The settings identifier.
+     *
+     * @var string
+     */
+    protected string $id = 'app-settings-socials';
+
+    /**
      * Get the analytics settings.
      *
      * @return array The analytics settings.

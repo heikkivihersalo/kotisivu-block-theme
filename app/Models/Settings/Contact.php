@@ -8,6 +8,13 @@ use Vihersalo\Core\Support\Models\Settings;
 
 class Contact extends Settings {
     /**
+     * The settings identifier.
+     *
+     * @var string
+     */
+    protected string $id = 'app-settings-contact';
+
+    /**
      * Get the contact settings.
      *
      * @return array The contact settings.
