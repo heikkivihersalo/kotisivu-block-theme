@@ -12,7 +12,10 @@ use Vihersalo\Core\Support\Submenu;
 
 class SettingsServiceProvider extends ServiceProvider {
     /**
-     * Register the settings service provider.
+     * Register the application settings.
+     * You can add your own here or modify the paths as needed.
+     * Actual loader is registered in the core under the key 'settings' and booted automatically.
+     *
      * @return void
      */
     public function register(): void {
@@ -44,6 +47,15 @@ class SettingsServiceProvider extends ServiceProvider {
                         capability: 'manage_options'
                     )
                 );
+
+                $menu->add(
+                    Submenu::create(
+                        slug: 'ksd-settings-contact',
+                        pageTitle: __('Contact', 'kotisivu-block-theme'),
+                        menuTitle: __('Contact', 'kotisivu-block-theme'),
+                        capability: 'manage_options'
+                    )
+                );
             }
         )->withAssets(
             function () {
@@ -54,16 +66,16 @@ class SettingsServiceProvider extends ServiceProvider {
                     10,
                     true
                 );
-                Asset::script(
+                Asset::style(
                     'ksd-options-style-index',
-                    'build/options/style-index.js',
+                    'build/options/style-index.css',
                     'build/options/index.asset.php',
                     10,
                     true
                 );
-                Asset::script(
+                Asset::style(
                     'ksd-options-style',
-                    'build/options/style.js',
+                    'build/options/index.css',
                     'build/options/index.asset.php',
                     10,
                     true
