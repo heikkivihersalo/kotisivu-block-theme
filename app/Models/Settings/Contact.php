@@ -4,39 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models\Settings;
 
-use Vihersalo\Core\Support\Traits\CanConnectDatabase;
+use Vihersalo\Core\Support\Models\Settings;
 
-class Contact {
-    use CanConnectDatabase;
-
+class Contact extends Settings {
     /**
-     * The database ID for the analytics settings.
+     * Get the contact settings.
      *
-     * @var string
-     */
-    protected string $id = 'app-contact';
-
-    /**
-     * The keys for the analytics settings
-     *
-     * @var string
-     */
-    protected array $keys = [
-        'name',
-        'address',
-        'zip',
-        'city',
-        'country',
-        'vat',
-        'business_id',
-        'phone',
-        'email',
-    ];
-
-    /**
-     * Get the analytics settings.
-     *
-     * @return array The analytics settings.
+     * @return array The contact settings.
      */
     public function default(): array {
         return [

@@ -4,38 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Settings;
 
-use Vihersalo\Core\Support\Traits\CanConnectDatabase;
+use Vihersalo\Core\Support\Models\Settings;
 
-class SocialAccount {
-    use CanConnectDatabase;
-
-    /**
-     * The database ID for the analytics settings.
-     *
-     * @var string
-     */
-    protected string $id = 'app-social-account';
-
-    /**
-     * The keys for the analytics settings
-     *
-     * @var string
-     */
-    protected array $keys = [
-        'facebook',
-        'twitter',
-        'instagram',
-        'linkedin',
-        'youtube',
-        'pinterest',
-        'snapchat',
-        'tiktok' ,
-        'twitch',
-        'reddit',
-        'discord',
-        'whatsapp',
-    ];
-
+class SocialAccount extends Settings {
     /**
      * Get the analytics settings.
      *

@@ -4,30 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Settings;
 
-use Vihersalo\Core\Support\Traits\CanConnectDatabase;
+use Vihersalo\Core\Support\Models\Settings;
 
-class Tagmanager {
-    use CanConnectDatabase;
-
-    /**
-     * The database ID for the analytics settings.
-     *
-     * @var string
-     */
-    protected string $id = 'app-analytics';
-
-    /**
-     * The keys for the analytics settings
-     *
-     * @var string
-     */
-    protected array $keys = [
-        'active',
-        'id',
-        'url',
-        'timeout',
-    ];
-
+class Tagmanager extends Settings {
     /**
      * Get the analytics settings.
      *
@@ -36,7 +15,7 @@ class Tagmanager {
     public function default(): array {
         return [
             'active'  => false,
-            'id'      => '',
+            'id'      => $this->id(),
             'url'     => 'www.googletagmanager.com',
             'timeout' => 1500,
         ];
