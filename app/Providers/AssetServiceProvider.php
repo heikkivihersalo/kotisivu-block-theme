@@ -9,7 +9,7 @@ use Vihersalo\Core\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider {
     /**
-     * Register the application assets
+     * Register the application scripts, styles and inline assets.
      * You can add your own here or modify the paths as needed.
      * Actual loader is registered in the core under the key 'assets' and booted automatically.
      *
@@ -22,10 +22,8 @@ class AssetServiceProvider extends ServiceProvider {
         Asset::style('kotisivu-theme', 'build/assets/theme.css', 'build/assets/theme.asset.php');
         Asset::script('kotisivu-admin', 'build/assets/admin.js', 'build/assets/admin.asset.php', 10, true);
         Asset::style('kotisivu-admin', 'build/assets/admin.css', 'build/assets/admin.asset.php', 10, true);
-
         Asset::script('kotisivu-core', 'build/block-library/core/core.js', 'build/block-library/core/core.asset.php');
         Asset::style('kotisivu-core', 'build/block-library/core/core.css', 'build/block-library/core/core.asset.php');
-
         Asset::script('kotisivu-store', 'build/assets/store.js', 'build/assets/store.asset.php');
     }
 
