@@ -7,7 +7,7 @@ namespace App\Enums;
 use Closure;
 use Vihersalo\Core\Contracts\Enums\Permission as PermissionContract;
 
-enum Permission implements PermissionContract {
+enum Auth implements PermissionContract {
     case ADMIN;
     case PUBLIC;
 
