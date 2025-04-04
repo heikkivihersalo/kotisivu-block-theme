@@ -4,7 +4,7 @@
 	"name": "ksd/video",
 	"title": "Video",
 	"category": "media",
-	"icon": "block-default",
+	"icon": "format-video",
 	"description": "",
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",

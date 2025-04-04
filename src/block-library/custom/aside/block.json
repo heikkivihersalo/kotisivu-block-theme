@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "ksd/aside",
 	"title": "Aside",
-	"category": "containers",
+	"category": "design",
 	"icon": "layout",
 	"description": "",
 	"keywords": ["container, columns, column, aside"],
