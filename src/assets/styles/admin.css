@@ -94,6 +94,28 @@
 	margin-top: var(--wp--preset--spacing--40);
 }
 
+:is(.editor-alignment-controls, .editor-width-controls)
+	.components-button-group
+	.components-button.has-icon {
+	padding: 10px;
+}
+
+.editor-width-controls > p,
+.editor-alignment-controls > div > p {
+	margin: 0;
+}
+
+.editor-width-controls > .components-button-group,
+.editor-alignment-controls > div > .components-button-group {
+	margin-bottom: 0.5em;
+}
+
+:is(.editor-alignment-controls, .editor-width-controls)
+	.components-button-group {
+	display: flex;
+	flex-direction: row;
+}
+
 /*--------------------------------------------------------------
   4.0 Modifiers
 --------------------------------------------------------------*/
