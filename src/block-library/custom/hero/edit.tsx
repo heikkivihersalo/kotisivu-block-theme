@@ -12,6 +12,8 @@ import { getBlockStyles, classnames } from '@utils';
 
 import Inspector from './components/Inspector';
 
+import type { BlockProps } from './types';
+
 import metadata from './block.json';
 import './editor.css';
 
@@ -27,11 +29,7 @@ export default function Edit({
 	attributes,
 	setAttributes,
 	clientId,
-}: {
-	attributes: Record<string, any>;
-	setAttributes: (newAttributes: Record<string, any>) => void;
-	clientId: string;
-}): JSX.Element {
+}: BlockProps): JSX.Element {
 	const {
 		blockClass,
 		ariaLabel,

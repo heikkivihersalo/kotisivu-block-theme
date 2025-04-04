@@ -7,7 +7,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { getBlockStyles, getIsReversedClass, classnames } from '@utils';
-import type { SectionBlockProps } from './types';
+import type { BlockProps } from './types';
 
 /**
  * Block save function
@@ -15,7 +15,7 @@ import type { SectionBlockProps } from './types';
  * @param {Record<string, any>} props.attributes Block attributes
  * @return {JSX.Element} Block innerBlocks markup
  */
-export default function Save({ attributes }: SectionBlockProps): JSX.Element {
+export default function Save({ attributes }: BlockProps): JSX.Element {
 	const { blockClass, ariaLabel, ariaLabelledBy, style, isReversed } =
 		attributes;
 

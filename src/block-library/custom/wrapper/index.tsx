@@ -14,7 +14,7 @@ import save from './save';
 import variations from './variations';
 import './style.css';
 
-import type { WrapperBlockConfig } from './types';
+import type { BlockConfig } from './types';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -38,4 +38,4 @@ registerBlockType(metadata.name, {
 	 * @see variations.ts
 	 */
 	variations,
-} as unknown as WrapperBlockConfig);
+} as unknown as BlockConfig);
