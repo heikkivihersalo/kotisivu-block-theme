@@ -7,6 +7,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { getBlockStyles, classnames } from '@utils';
+import type { BlockProps } from './types';
 
 /**
  * Block save function
@@ -14,7 +15,7 @@ import { getBlockStyles, classnames } from '@utils';
  * @param {Record<string, any>} props.attributes Block attributes
  * @return {JSX.Element} Block innerBlocks markup
  */
-export default function Save({ attributes }: Record<string, any>): JSX.Element {
+export default function Save({ attributes }: BlockProps): JSX.Element {
 	const { blockClass, ariaLabel, ariaLabelledBy, style } = attributes;
 
 	const innerBlocksProps = useInnerBlocksProps.save(
@@ -23,7 +24,7 @@ export default function Save({ attributes }: Record<string, any>): JSX.Element {
 			style: getBlockStyles(style),
 			'aria-label': ariaLabel ? ariaLabel : null,
 			'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,
-		} as Record<string, any>)
+		})
 	);
 
 	return <section {...innerBlocksProps} />;

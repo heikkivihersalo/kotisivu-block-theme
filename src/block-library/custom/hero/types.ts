@@ -18,11 +18,12 @@ import { StyleAttributes } from '@utils';
 export type BlockAttributes = {
 	blockClass: string;
 	style: StyleAttributes;
+	ariaLabel: string;
+	ariaLabelledBy: string;
 	template: Template;
 	templateLock: TemplateLock;
 	allowedBlocks: AllowedBlocks;
 	variationName: string;
-	isReversed: boolean;
 };
 
 export type BlockProps = {

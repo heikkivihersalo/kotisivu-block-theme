@@ -5,9 +5,9 @@ import {
 	Template,
 	TemplateLock,
 	AllowedBlocks,
-	BlockSave,
-	BlockEdit,
-	BlockConfig,
+	BlockSave as DefaultSave,
+	BlockEdit as DefaultEdit,
+	BlockConfig as DefaultConfig,
 } from '@block-library/custom';
 
 import { StyleAttributes } from '@utils';
@@ -15,7 +15,7 @@ import { StyleAttributes } from '@utils';
 /**
  * Block attributes and props
  */
-type SectionBlockAttributes = {
+export type BlockAttributes = {
 	blockClass: string;
 	style: StyleAttributes;
 	ariaLabel: string;
@@ -27,26 +27,12 @@ type SectionBlockAttributes = {
 	isReversed: boolean;
 };
 
-type SectionBlockProps = {
-	attributes: SectionBlockAttributes;
+export type BlockProps = {
+	attributes: BlockAttributes;
 	setAttributes: (newAttributes: Record<string, any>) => void;
 	clientId: string;
 };
 
-/**
- * Export types
- */
-type SectionBlockEdit = BlockEdit<SectionBlockAttributes, SectionBlockProps>;
-type SectionBlockSave = BlockSave<SectionBlockAttributes>;
-type SectionBlockConfig = BlockConfig<
-	SectionBlockAttributes,
-	SectionBlockProps
->;
-
-export type {
-	SectionBlockAttributes,
-	SectionBlockProps,
-	SectionBlockEdit,
-	SectionBlockSave,
-	SectionBlockConfig,
-};
+export type BlockEdit = DefaultEdit<BlockAttributes, BlockProps>;
+export type BlockSave = DefaultSave<BlockAttributes>;
+export type BlockConfig = DefaultConfig<BlockAttributes, BlockProps>;

@@ -14,7 +14,7 @@ import save from './save';
 import variations from './variations';
 import './style.css';
 
-import type { SectionBlockConfig } from './types';
+import type { BlockConfig } from './types';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -38,12 +38,4 @@ registerBlockType(metadata.name, {
 	 * @see variations.ts
 	 */
 	variations,
-	/**
-	 * Sets alignment.
-	 */
-	getEditWrapperProps() {
-		return {
-			'data-align': 'full',
-		};
-	},
-} as unknown as SectionBlockConfig);
+} as unknown as BlockConfig);

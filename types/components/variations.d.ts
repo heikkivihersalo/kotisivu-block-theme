@@ -12,7 +12,7 @@ declare module '@components/variations' {
 	type Variation = {
 		name: string;
 		title: string;
-		icon: string;
+		icon: string | object;
 		scope: string;
 		innerBlocks: Array<Array<string | Record<string, any>>>;
 		attributes: {

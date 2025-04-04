@@ -3,9 +3,9 @@
 	"apiVersion": 3,
 	"name": "ksd/hero",
 	"title": "Hero",
-	"icon": "screenoptions",
+	"icon": "layout",
 	"description": "",
-	"category": "sections",
+	"category": "design",
 	"keywords": [""],
 	"textdomain": "kotisivu-block-theme",
 	"supports": {

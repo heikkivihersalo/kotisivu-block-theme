@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "ksd/section",
 	"title": "Section",
-	"category": "containers",
+	"category": "design",
 	"icon": "layout",
 	"description": "",
 	"keywords": ["container, columns, column, wrapper"],

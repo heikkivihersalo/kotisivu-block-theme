@@ -117,6 +117,12 @@ const GridAlignControls = ({
 	return (
 		<>
 			<PanelBody title={__('Alignment Controls', 'kotisivu-block-theme')}>
+				<p>
+					Similar to browser dev tools, you can set the CSS properties
+					for the grid container and items. This sets element to
+					`display: grid;` and adds proper rules according to the
+					settings below.
+				</p>
 				<PanelRow>
 					<div className="editor-alignment-controls">
 						<div>

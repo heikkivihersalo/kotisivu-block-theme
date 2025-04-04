@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import type { Variation } from '@components/variations';
+import { columnFull, columnTwoHalfs } from '@icons/index';
 
 const variations: Array<Variation> = [
 	{
 		name: 'hero-stacked',
 		title: __('Hero | Stacked', 'kotisivu-theme-blocks'),
-		icon: 'button',
+		icon: columnFull,
 		scope: 'block',
 		innerBlocks: [
 			[
@@ -61,7 +62,7 @@ const variations: Array<Variation> = [
 	{
 		name: 'hero-two-column',
 		title: __('Hero | Two Columns', 'kotisivu-theme-blocks'),
-		icon: 'button',
+		icon: columnTwoHalfs,
 		scope: 'block',
 		innerBlocks: [
 			[

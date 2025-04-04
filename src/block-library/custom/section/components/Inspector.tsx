@@ -14,7 +14,7 @@ import {
 	GapControls,
 } from '@components/inspector';
 
-import { SectionBlockAttributes } from '../types';
+import { BlockAttributes } from '../types';
 
 /**
  * Inspector controls
@@ -25,7 +25,7 @@ const Inspector = ({
 	attributes,
 	setAttributes,
 }: {
-	attributes: SectionBlockAttributes;
+	attributes: BlockAttributes;
 	setAttributes: (newAttributes: Record<string, any>) => void;
 }): JSX.Element => {
 	return (

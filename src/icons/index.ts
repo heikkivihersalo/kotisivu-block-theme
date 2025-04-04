@@ -1,3 +1,9 @@
+export * from './columns/column-four-halfs.ts';
+export * from './columns/column-full.ts';
+export * from './columns/column-three-halfs-big-middle.ts';
+export * from './columns/column-three-halfs.ts';
+export * from './columns/column-two-halfs.ts';
+
 export * from './contact/Email.tsx';
 export * from './contact/Phone.tsx';
 
