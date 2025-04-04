@@ -21,8 +21,8 @@ class SettingsServiceProvider extends ServiceProvider {
     public function register(): void {
         Settings::create(
             slug: 'ksd-settings-general',
-            pageTitle: __('Kotisivu Theme Options', 'joros-block-theme'),
-            menuTitle: __('Kotisivu Theme', 'joros-block-theme'),
+            pageTitle: __('Kotisivu Theme Options', 'kotisivu-block-theme'),
+            menuTitle: __('Kotisivu Theme', 'kotisivu-block-theme'),
             path: 'build/options/render.php',
             capability: 'manage_options',
             // phpcs:ignore
@@ -33,8 +33,8 @@ class SettingsServiceProvider extends ServiceProvider {
                 $menu->add(
                     Submenu::create(
                         slug: 'ksd-settings-general',
-                        pageTitle: __('General', 'joros-block-theme'),
-                        menuTitle: __('General', 'joros-block-theme'),
+                        pageTitle: __('General', 'kotisivu-block-theme'),
+                        menuTitle: __('General', 'kotisivu-block-theme'),
                         capability: 'manage_options'
                     )
                 );
@@ -42,8 +42,8 @@ class SettingsServiceProvider extends ServiceProvider {
                 $menu->add(
                     Submenu::create(
                         slug: 'ksd-settings-analytics',
-                        pageTitle: __('Analytics', 'joros-block-theme'),
-                        menuTitle: __('Analytics', 'joros-block-theme'),
+                        pageTitle: __('Analytics', 'kotisivu-block-theme'),
+                        menuTitle: __('Analytics', 'kotisivu-block-theme'),
                         capability: 'manage_options'
                     )
                 );
@@ -51,8 +51,8 @@ class SettingsServiceProvider extends ServiceProvider {
                 $menu->add(
                     Submenu::create(
                         slug: 'ksd-settings-contact',
-                        pageTitle: __('Contact', 'joros-block-theme'),
-                        menuTitle: __('Contact', 'joros-block-theme'),
+                        pageTitle: __('Contact', 'kotisivu-block-theme'),
+                        menuTitle: __('Contact', 'kotisivu-block-theme'),
                         capability: 'manage_options'
                     )
                 );
@@ -60,8 +60,8 @@ class SettingsServiceProvider extends ServiceProvider {
                 $menu->add(
                     Submenu::create(
                         slug: 'ksd-settings-social-media',
-                        pageTitle: __('Social Media', 'joros-block-theme'),
-                        menuTitle: __('Social Media', 'joros-block-theme'),
+                        pageTitle: __('Social Media', 'kotisivu-block-theme'),
+                        menuTitle: __('Social Media', 'kotisivu-block-theme'),
                         capability: 'manage_options'
                     )
                 );
