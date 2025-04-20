@@ -11,7 +11,6 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';
-import variations from './variations';
 import './style.css';
 
 import type { BlockConfig } from './types';
@@ -34,8 +33,4 @@ registerBlockType(metadata.name, {
 	 * @see save.tsx
 	 */
 	save,
-	/**
-	 * @see variations.ts
-	 */
-	variations,
 } as unknown as BlockConfig);

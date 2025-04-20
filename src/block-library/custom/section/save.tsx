@@ -6,7 +6,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { getBlockStyles, getIsReversedClass, classnames } from '@utils';
+import { getBlockStyles, classnames } from '@utils';
 import type { BlockProps } from './types';
 
 /**
@@ -16,12 +16,11 @@ import type { BlockProps } from './types';
  * @return {JSX.Element} Block innerBlocks markup
  */
 export default function Save({ attributes }: BlockProps): JSX.Element {
-	const { blockClass, ariaLabel, ariaLabelledBy, style, isReversed } =
-		attributes;
+	const { ariaLabel, ariaLabelledBy, style, cn } = attributes;
 
 	const innerBlocksProps = useInnerBlocksProps.save(
 		useBlockProps.save({
-			className: classnames(blockClass, getIsReversedClass(isReversed)),
+			className: classnames(...cn),
 			style: getBlockStyles(style),
 			'aria-label': ariaLabel ? ariaLabel : null,
 			'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : null,

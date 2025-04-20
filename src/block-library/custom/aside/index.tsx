@@ -11,10 +11,9 @@ import { registerBlockType } from '@wordpress/blocks';
 import metadata from './block.json';
 import edit from './edit';
 import save from './save';
-import variations from './variations';
 import './style.css';
 
-import type { BlockConfig } from '@custom-blocks';
+import type { BlockConfig } from './types';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -34,16 +33,4 @@ registerBlockType(metadata.name, {
 	 * @see save.tsx
 	 */
 	save,
-	/**
-	 * @see variations.ts
-	 */
-	variations,
-	/**
-	 * Sets alignment.
-	 */
-	getEditWrapperProps() {
-		return {
-			'data-align': 'full',
-		};
-	},
-} as BlockConfig);
+} as unknown as BlockConfig);

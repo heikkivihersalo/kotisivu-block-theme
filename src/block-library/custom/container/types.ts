@@ -18,8 +18,6 @@ import { StyleAttributes } from '@utils';
 export type BlockAttributes = {
 	cn: string[];
 	style: StyleAttributes;
-	ariaLabel: string;
-	ariaLabelledBy: string;
 	template: Template;
 	templateLock: TemplateLock;
 	allowedBlocks: AllowedBlocks;

@@ -1,8 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 3,
-	"name": "ksd/wrapper",
-	"title": "Wrapper",
+	"name": "ksd/container",
+	"title": "Container",
 	"category": "design",
 	"icon": "layout",
 	"description": "",
@@ -14,26 +14,31 @@
 		"html": true,
 		"color": {
 			"text": false,
-			"background": true
+			"background": true,
+			"enableContrastChecker": false
 		},
 		"spacing": {
 			"margin": ["top", "bottom"],
 			"padding": true
 		},
-		"align": ["full"]
+		"ariaLabel": true
 	},
-	"ancestor": ["ksd/section"],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
 	"attributes": {
-		"blockClass": {
-			"type": "string",
-			"default": ""
-		},
 		"style": {
 			"type": "object",
-			"default": {}
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"cn": {
+			"type": "array",
+			"default": []
 		},
 		"template": {
 			"type": "array",
@@ -45,14 +50,6 @@
 		"templateLock": {
 			"type": ["string", "boolean"],
 			"enum": ["all", "insert", false]
-		},
-		"isReversed": {
-			"type": "boolean",
-			"default": false
-		},
-		"variationName": {
-			"type": "string",
-			"default": ""
 		}
 	}
 }

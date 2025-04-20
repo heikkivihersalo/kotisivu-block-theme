@@ -10,10 +10,7 @@ import { FormTokenField } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import {
-	AriaLabelControls,
-	BackgroundColorControls,
-} from '@components/inspector';
+import { BackgroundColorControls } from '@components/inspector';
 
 import { TAILWIND_UTILITIES } from '@shared/constants/tailwind-utilities';
 
@@ -33,12 +30,6 @@ const Inspector = ({
 }): JSX.Element => {
 	return (
 		<>
-			<InspectorControls>
-				<AriaLabelControls
-					attributes={attributes}
-					setAttributes={setAttributes}
-				/>
-			</InspectorControls>
 			<InspectorAdvancedControls>
 				<FormTokenField
 					label="Utility Classes"

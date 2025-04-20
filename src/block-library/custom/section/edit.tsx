@@ -7,14 +7,12 @@ import { useBlockProps } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { InnerBlocksAppender } from '@components/inner-blocks';
-import { VariationPicker } from '@components/variations';
-import { getBlockStyles, getIsReversedClass, classnames } from '@utils';
+import { getBlockStyles, classnames } from '@utils';
 
 import Inspector from './components/Inspector';
 
 import type { BlockProps } from './types';
 
-import metadata from './block.json';
 import './editor.css';
 
 /**
@@ -30,22 +28,14 @@ export default function Edit({
 	setAttributes,
 	clientId,
 }: BlockProps): JSX.Element {
-	const {
-		blockClass,
-		ariaLabel,
-		ariaLabelledBy,
-		template,
-		templateLock,
-		style,
-		variationName,
-		isReversed,
-	} = attributes;
+	const { ariaLabel, ariaLabelledBy, template, templateLock, style, cn } =
+		attributes;
 
 	/**
 	 * Set block props
 	 */
 	const blockProps = useBlockProps({
-		className: classnames(blockClass, getIsReversedClass(isReversed)),
+		className: classnames(...cn),
 		style: getBlockStyles(style),
 		'aria-label': ariaLabel ? ariaLabel : undefined,
 		'aria-labelledby': ariaLabelledBy ? ariaLabelledBy : undefined,
@@ -57,16 +47,6 @@ export default function Edit({
 		templateLock,
 		blockProps,
 	});
-
-	/* If variation isn't selected, render variation select screen */
-	if (!variationName) {
-		return (
-			<VariationPicker
-				blockName={metadata.name}
-				setAttributes={setAttributes}
-			/>
-		);
-	}
 
 	/**
 	 * Return block edit view

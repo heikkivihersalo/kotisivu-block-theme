@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	InspectorAdvancedControls,
+} from '@wordpress/block-editor';
+import { FormTokenField } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -9,10 +13,9 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AriaLabelControls,
 	BackgroundColorControls,
-	WidthControls,
-	GridAlignControls,
-	GapControls,
 } from '@components/inspector';
+
+import { TAILWIND_UTILITIES } from '@shared/constants/tailwind-utilities';
 
 import { BlockAttributes } from '../types';
 
@@ -36,20 +39,20 @@ const Inspector = ({
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
+			<InspectorAdvancedControls>
+				<FormTokenField
+					label="Utility Classes"
+					value={attributes.cn}
+					suggestions={TAILWIND_UTILITIES}
+					onChange={(tokens) => {
+						setAttributes({
+							cn: tokens,
+						});
+					}}
+				/>
+			</InspectorAdvancedControls>
 			<InspectorControls group="styles">
 				<BackgroundColorControls
-					style={attributes.style}
-					setAttributes={setAttributes}
-				/>
-				<GridAlignControls
-					attributes={attributes}
-					setAttributes={setAttributes}
-				/>
-				<GapControls
-					attributes={attributes}
-					setAttributes={setAttributes}
-				/>
-				<WidthControls
 					style={attributes.style}
 					setAttributes={setAttributes}
 				/>

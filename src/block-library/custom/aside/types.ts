@@ -16,13 +16,13 @@ import { StyleAttributes } from '@utils';
  * Block attributes and props
  */
 export type BlockAttributes = {
-	blockClass: string;
+	cn: string[];
 	style: StyleAttributes;
+	ariaLabel: string;
+	ariaLabelledBy: string;
 	template: Template;
 	templateLock: TemplateLock;
 	allowedBlocks: AllowedBlocks;
-	variationName: string;
-	isReversed: boolean;
 };
 
 export type BlockProps = {
