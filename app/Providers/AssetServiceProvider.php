@@ -19,6 +19,7 @@ class AssetServiceProvider extends ServiceProvider {
         // Inline assets like sanitize and custom CSS variables
         Asset::inline('kotisivu-sanitize-css', 'build/assets/sanitize.css', 0);
         Asset::inline('kotisivu-inline-css', 'build/assets/inline.css', 11);
+        Asset::inline('kotisivu-tailwind-utility-css', 'build/assets/tailwind-utilities.css', 11);
 
         // Frontend assets
         Asset::script('kotisivu-theme', 'build/assets/theme.js', 'build/assets/theme.asset.php');
@@ -37,6 +38,7 @@ class AssetServiceProvider extends ServiceProvider {
 
         // Some assets needs to also be loaded in the block editor, so we add them here
         Asset::style('kotisivu-inline-css', 'build/assets/inline.css', 'build/assets/admin.asset.php', 11, true, true);
+        Asset::style('kotisivu-tailwind-utility-css', 'build/assets/tailwind-utilities.css', 'build/assets/admin.asset.php', 11, true, true);
         Asset::script('kotisivu-core-admin', 'build/block-library/core/core.js', 'build/block-library/core/core.asset.php', 10, true);
     }
 
