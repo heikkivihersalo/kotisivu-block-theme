@@ -12,7 +12,7 @@ import { FormTokenField } from '@wordpress/components';
  */
 import { BackgroundColorControls } from '@components/inspector';
 
-import { TAILWIND_UTILITIES } from '@shared/constants/tailwind-utilities';
+import { TAILWIND_UTILITIES } from '@/shared/constants/tailwind-utilities';
 
 import { BlockAttributes } from '../types';
 
