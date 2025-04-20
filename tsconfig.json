@@ -19,10 +19,9 @@
 			"react": ["./node_modules/@types/react"],
 			"@components/*": ["components/*"],
 			"@hooks/*": ["hooks/*"],
-			"@icons/*": ["icons/*"],
 			"@stores/*": ["data-stores/*"],
 			"@utils/*": ["utils/*"],
-			"@shared/*": ["shared/*"],
+			"@/shared/*": ["shared/*"],
 			"@admin/*": ["admin/components/*"]
 		},
 		"lib": ["ES2021.String"]
