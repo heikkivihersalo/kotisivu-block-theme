@@ -98,6 +98,7 @@ module.exports = {
 			'@icons': path.resolve(__dirname, 'src', 'icons'),
 			'@stores': path.resolve(__dirname, 'src', 'data-stores'),
 			'@utils': path.resolve(__dirname, 'src', 'utils'),
+			'@shared': path.resolve(__dirname, 'src', 'shared'),
 			'@admin': path.resolve(__dirname, 'src', 'admin', 'components'),
 		},
 	},
