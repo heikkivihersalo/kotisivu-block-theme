@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import type { Variation } from '@components/variations';
-import { columnFull, columnTwoHalfs } from '@icons/index';
+import { columnFull, columnTwoHalfs } from '@/shared/icons/index';
 
 const variations: Array<Variation> = [
 	{
