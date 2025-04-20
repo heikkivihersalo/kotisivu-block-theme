@@ -95,10 +95,9 @@ module.exports = {
 		alias: {
 			'@components': path.resolve(__dirname, 'src', 'components'),
 			'@hooks': path.resolve(__dirname, 'src', 'hooks'),
-			'@icons': path.resolve(__dirname, 'src', 'icons'),
 			'@stores': path.resolve(__dirname, 'src', 'data-stores'),
 			'@utils': path.resolve(__dirname, 'src', 'utils'),
-			'@shared': path.resolve(__dirname, 'src', 'shared'),
+			'@/shared': path.resolve(__dirname, 'src', 'shared'),
 			'@admin': path.resolve(__dirname, 'src', 'admin', 'components'),
 		},
 	},
