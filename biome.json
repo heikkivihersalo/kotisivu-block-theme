@@ -47,7 +47,7 @@
 				"useAltText": "error",
 				"useAnchorContent": "error",
 				"useAriaActivedescendantWithTabindex": "error",
-				"useAriaPropsForRole": "off",
+				"useAriaPropsForRole": "warn",
 				"useFocusableInteractive": "error",
 				"useHeadingContent": "error",
 				"useHtmlLang": "error",
