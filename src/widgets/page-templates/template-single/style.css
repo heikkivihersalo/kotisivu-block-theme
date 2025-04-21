@@ -1,7 +1,10 @@
 .post-container {
 	--_container-width: 80ch;
 
-	width: min(calc(100% - calc(var(--wp--preset--spacing--40)) * 2), var(--_container-width));
+	width: min(
+		calc(100% - calc(var(--wp--preset--spacing--40)) * 2),
+		var(--_container-width)
+	);
 	margin-inline: auto;
 }
 
@@ -27,7 +30,7 @@
 	width: 100%;
 	height: auto;
 
-	aspect-ratio: 16/ 8;
+	aspect-ratio: 16 / 8;
 	object-fit: cover;
 	object-position: center center;
 

@@ -1,40 +1,40 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 3,
-	"name": "ksd/accessible-tabs",
-	"title": "Accessible Tabs",
-	"icon": "editor-kitchensink",
-	"description": "",
-	"category": "widgets",
-	"keywords": [""],
-	"textdomain": "kotisivu-block-theme",
-	"supports": {
-		"className": false
-	},
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php",
-	"viewScript": "file:./view.js",
-	"attributes": {
-		"template": {
-			"type": "array",
-			"default": [
-				["ksd/accessible-tabs-list"],
-				["ksd/accessible-tabs-panel-container"]
-			]
-		},
-		"allowedBlocks": {
-			"type": "array",
-			"default": [
-				"ksd/accessible-tabs-list",
-				"ksd/accessible-tabs-panel-container"
-			]
-		},
-		"templateLock": {
-			"type": ["string", "boolean"],
-			"enum": ["all", "insert", false],
-			"default": "all"
-		}
-	}
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "ksd/accessible-tabs",
+  "title": "Accessible Tabs",
+  "icon": "editor-kitchensink",
+  "description": "",
+  "category": "widgets",
+  "keywords": [""],
+  "textdomain": "kotisivu-block-theme",
+  "supports": {
+    "className": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js",
+  "attributes": {
+    "template": {
+      "type": "array",
+      "default": [
+        ["ksd/accessible-tabs-list"],
+        ["ksd/accessible-tabs-panel-container"]
+      ]
+    },
+    "allowedBlocks": {
+      "type": "array",
+      "default": [
+        "ksd/accessible-tabs-list",
+        "ksd/accessible-tabs-panel-container"
+      ]
+    },
+    "templateLock": {
+      "type": ["string", "boolean"],
+      "enum": ["all", "insert", false],
+      "default": "all"
+    }
+  }
 }

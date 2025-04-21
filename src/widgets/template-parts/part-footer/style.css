@@ -1,6 +1,6 @@
 .site-footer {
 	--_gap: var(--wp--preset--spacing--40);
-	--_columns: 1fr padding-block: var(--wp--preset--spacing--40);
+	--_columns: 1fr var(--wp--preset--spacing--40);
 
 	padding-block: var(--wp--preset--spacing--50);
 

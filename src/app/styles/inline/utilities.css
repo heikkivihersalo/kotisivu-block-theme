@@ -1,6 +1,6 @@
 /**
-* WORDPRESS DEFAULT ALIGNMENT
-*/
+ * WORDPRESS DEFAULT ALIGNMENT
+ */
 :where(.has-text-align-left) {
 	text-align: left;
 }
@@ -129,15 +129,15 @@
 }
 
 /**
-* FLEX
-*/
+ * FLEX
+ */
 :where(.is-layout-flex) {
 	display: flex;
 }
 
 /**
-* GRID
-*/
+ * GRID
+ */
 :where(.is-layout-grid) {
 	display: grid;
 }
@@ -152,8 +152,8 @@
 }
 
 /**
-* GRID COLUMNS
-*/
+ * GRID COLUMNS
+ */
 :where(.cols-1, .cols-2, .cols-3, .cols-4, .cols-5, .cols-6) {
 	--_gap-desktop: var(--wp--preset--spacing--50);
 	--_gap-mobile: var(--wp--preset--spacing--40);
@@ -240,8 +240,8 @@
 }
 
 /**
-* VISIBILITY
-*/
+ * VISIBILITY
+ */
 :where(.is-visually-hidden:not(:focus):not(:active)) {
 	clip: rect(0 0 0 0);
 	clip-path: inset(50%);

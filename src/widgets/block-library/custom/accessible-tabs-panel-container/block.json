@@ -1,50 +1,38 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 3,
-	"name": "ksd/accessible-tabs-panel-container",
-	"title": "Panel Container",
-	"icon": "block-default",
-	"description": "",
-	"category": "widgets",
-	"keywords": [""],
-	"textdomain": "kotisivu-block-theme",
-	"supports": {
-		"className": false
-	},
-	"parent": ["ksd/accessible-tabs"],
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"attributes": {
-		"template": {
-			"type": "array",
-			"default": [
-				[
-					"ksd/accessible-tabs-panel",
-					{ "panelId": 1, "labelledBy": "tab-1" }
-				],
-				[
-					"ksd/accessible-tabs-panel",
-					{ "panelId": 2, "labelledBy": "tab-2" }
-				],
-				[
-					"ksd/accessible-tabs-panel",
-					{ "panelId": 3, "labelledBy": "tab-3" }
-				],
-				[
-					"ksd/accessible-tabs-panel",
-					{ "panelId": 4, "labelledBy": "tab-4" }
-				]
-			]
-		},
-		"allowedBlocks": {
-			"type": "array",
-			"default": ["ksd/accessible-tabs-panel"]
-		},
-		"templateLock": {
-			"type": ["string", "boolean"],
-			"enum": ["all", "insert", false],
-			"default": false
-		}
-	}
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "ksd/accessible-tabs-panel-container",
+  "title": "Panel Container",
+  "icon": "block-default",
+  "description": "",
+  "category": "widgets",
+  "keywords": [""],
+  "textdomain": "kotisivu-block-theme",
+  "supports": {
+    "className": false
+  },
+  "parent": ["ksd/accessible-tabs"],
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "attributes": {
+    "template": {
+      "type": "array",
+      "default": [
+        ["ksd/accessible-tabs-panel", { "panelId": 1, "labelledBy": "tab-1" }],
+        ["ksd/accessible-tabs-panel", { "panelId": 2, "labelledBy": "tab-2" }],
+        ["ksd/accessible-tabs-panel", { "panelId": 3, "labelledBy": "tab-3" }],
+        ["ksd/accessible-tabs-panel", { "panelId": 4, "labelledBy": "tab-4" }]
+      ]
+    },
+    "allowedBlocks": {
+      "type": "array",
+      "default": ["ksd/accessible-tabs-panel"]
+    },
+    "templateLock": {
+      "type": ["string", "boolean"],
+      "enum": ["all", "insert", false],
+      "default": false
+    }
+  }
 }

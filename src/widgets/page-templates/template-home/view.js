@@ -23,10 +23,10 @@ domReady(function () {
 	};
 
 	const request = {
-		url: AJAX.url, // eslint-disable-line no-undef
+		url: window.AJAX.url, // eslint-disable-line no-undef
 		data: {
 			action: 'get_next_page',
-			security: AJAX.nonce, // eslint-disable-line no-undef
+			security: window.AJAX.nonce, // eslint-disable-line no-undef
 			paged: 2, // Init to 2 because first page is already loaded.
 		},
 		headers: {

@@ -1,25 +1,25 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 3,
-	"name": "ksd/template-main",
-	"title": "Template | Home",
-	"category": "templates",
-	"icon": "block-default",
-	"description": "",
-	"keywords": [""],
-	"textdomain": "kotisivu-block-theme",
-	"supports": {
-		"className": false,
-		"multiple": false
-	},
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"render": "file:./render.php",
-	"attributes": {
-		"templateSlug": {
-			"type": "string",
-			"default": "template-index"
-		}
-	}
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "ksd/template-main",
+  "title": "Template | Home",
+  "category": "templates",
+  "icon": "block-default",
+  "description": "",
+  "keywords": [""],
+  "textdomain": "kotisivu-block-theme",
+  "supports": {
+    "className": false,
+    "multiple": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "attributes": {
+    "templateSlug": {
+      "type": "string",
+      "default": "template-index"
+    }
+  }
 }

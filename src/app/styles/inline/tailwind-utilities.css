@@ -27,7 +27,7 @@
 /** ====================
  ** TEXT
  ** ==================== */
-/** 
+/**
  * color
  */
 .text-inherit {
@@ -66,7 +66,7 @@
 	color: var(--wp--preset--color--white);
 }
 
-/** 
+/**
  * text-align
  */
 .text-left {
@@ -93,7 +93,7 @@
 	text-align: end;
 }
 
-/** 
+/**
  * font-family
  */
 .font-heading {
@@ -104,7 +104,7 @@
 	font-family: var(--wp--preset--font-family--body);
 }
 
-/** 
+/**
  * font-size
  */
 .text-xs {
@@ -147,7 +147,7 @@
 	font-size: var(--wp--preset--font-size--6xl);
 }
 
-/** 
+/**
  * Font smoothing
  */
 .antialiased {
@@ -160,7 +160,7 @@
 	-moz-osx-font-smoothing: auto;
 }
 
-/** 
+/**
  * font-style
  */
 .italic {
@@ -171,7 +171,7 @@
 	font-style: normal;
 }
 
-/** 
+/**
  * font-weight
  */
 .font-thin {
@@ -213,7 +213,7 @@
 /** ====================
  ** MARGIN & PADDING
  ** ==================== */
-/** 
+/**
  * Margins
  */
 .m-10 {
@@ -448,7 +448,7 @@
 	margin-inline-end: var(--wp--preset--spacing--80);
 }
 
-/** 
+/**
  * Paddings
  */
 .p-10 {
@@ -694,7 +694,7 @@
 	display: flex;
 }
 
-/** 
+/**
  * Columns
  */
 .grid-cols-none {
@@ -729,7 +729,7 @@
 	grid-template-rows: none;
 }
 
-/** 
+/**
  * Rows
  */
 .grid-rows-1 {
@@ -756,14 +756,14 @@
 	grid-template-rows: repeat(6, minmax(0, 1fr));
 }
 
-/** 
+/**
  * Subgrid
  */
 .grid-cols-subgrid {
 	grid-template-columns: subgrid;
 }
 
-/** 
+/**
  * Order
  */
 .order-none {
@@ -801,7 +801,7 @@
 	order: 6;
 }
 
-/** 
+/**
  * Gap
  */
 .gap-1 {
@@ -840,7 +840,7 @@
 	gap: var(--wp--preset--spacing--80);
 }
 
-/** 
+/**
  * Gap X
  */
 .gap-x-1 {
@@ -875,7 +875,7 @@
 	column-gap: var(--wp--preset--spacing--80);
 }
 
-/** 
+/**
  * Gap Y
  */
 .gap-y-1 {
@@ -910,7 +910,7 @@
 	row-gap: var(--wp--preset--spacing--80);
 }
 
-/** 
+/**
  * justify-content
  */
 .justify-start {
@@ -949,7 +949,7 @@
 	justify-content: normal;
 }
 
-/** 
+/**
  * justify-items
  */
 .justify-items-start {
@@ -972,7 +972,7 @@
 	justify-items: normal;
 }
 
-/** 
+/**
  * justify-self
  */
 .justify-self-auto {
@@ -995,7 +995,7 @@
 	justify-self: stretch;
 }
 
-/** 
+/**
  * align-content
  */
 .content-normal {
@@ -1034,7 +1034,7 @@
 	align-content: stretch;
 }
 
-/** 
+/**
  * align-items
  */
 .items-start {
@@ -1057,7 +1057,7 @@
 	align-items: stretch;
 }
 
-/** 
+/**
  * align-self
  */
 .self-auto {
@@ -1084,7 +1084,7 @@
 	align-self: baseline;
 }
 
-/** 
+/**
  * place-content
  */
 .place-content-center {
@@ -1119,7 +1119,7 @@
 	place-content: baseline;
 }
 
-/** 
+/**
  * place-items
  */
 .place-items-start {
@@ -1142,7 +1142,7 @@
 	place-items: baseline;
 }
 
-/** 
+/**
  * place-self
  */
 .place-self-auto {
