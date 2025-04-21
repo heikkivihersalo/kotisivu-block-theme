@@ -1,189 +1,185 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-  "files": { "ignoreUnknown": false, "ignore": [] },
-  "formatter": {
-    "enabled": true,
-    "useEditorconfig": true,
-    "formatWithErrors": false,
-    "indentStyle": "tab",
-    "indentWidth": 4,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "attributePosition": "auto",
-    "bracketSpacing": true,
-    "ignore": [
-      "**/build",
-      "**/coverage",
-      "**/vendor",
-      "**/.gitignore",
-      "**/.gitmodules",
-      "**/node_modules",
-      "**/*.log",
-      "**/languages",
-      "**/public",
-      "inc/lib"
-    ]
-  },
-  "organizeImports": { "enabled": true },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": false,
-      "a11y": {
-        "noAccessKey": "error",
-        "noAriaUnsupportedElements": "error",
-        "noAutofocus": "error",
-        "noBlankTarget": "error",
-        "noDistractingElements": "error",
-        "noHeaderScope": "error",
-        "noInteractiveElementToNoninteractiveRole": "error",
-        "noLabelWithoutControl": "error",
-        "noNoninteractiveElementToInteractiveRole": "error",
-        "noNoninteractiveTabindex": "off",
-        "noPositiveTabindex": "error",
-        "noRedundantAlt": "error",
-        "noRedundantRoles": "error",
-        "useAltText": "error",
-        "useAnchorContent": "error",
-        "useAriaActivedescendantWithTabindex": "error",
-        "useAriaPropsForRole": "off",
-        "useFocusableInteractive": "error",
-        "useHeadingContent": "error",
-        "useHtmlLang": "error",
-        "useIframeTitle": "error",
-        "useKeyWithClickEvents": "error",
-        "useKeyWithMouseEvents": "error",
-        "useMediaCaption": "off",
-        "useValidAnchor": "error",
-        "useValidAriaProps": "error",
-        "useValidAriaRole": "error",
-        "useValidAriaValues": "error"
-      },
-      "complexity": {
-        "noUselessConstructor": "error",
-        "noUselessUndefinedInitialization": "error",
-        "noWith": "error",
-        "useLiteralKeys": "error"
-      },
-      "correctness": {
-        "noChildrenProp": "off",
-        "noConstAssign": "error",
-        "noInvalidConstructorSuper": "error",
-        "noUndeclaredVariables": "error",
-        "noUnreachable": "error",
-        "noUnusedVariables": "error",
-        "useExhaustiveDependencies": "warn",
-        "useHookAtTopLevel": "error",
-        "useJsxKeyInIterable": "error"
-      },
-      "security": {
-        "noDangerouslySetInnerHtmlWithChildren": "error",
-        "noGlobalEval": "error"
-      },
-      "style": {
-        "noVar": "error",
-        "useBlockStatements": "off",
-        "useCollapsedElseIf": "error",
-        "useConst": "error"
-      },
-      "suspicious": {
-        "noCommentText": "error",
-        "noConsole": {
-          "level": "error",
-          "options": { "allow": ["warn", "error"] }
-        },
-        "noDebugger": "error",
-        "noDoubleEquals": "error",
-        "noDuplicateCase": "error",
-        "noDuplicateClassMembers": "error",
-        "noDuplicateJsxProps": "error",
-        "noDuplicateObjectKeys": "error",
-        "noDuplicateParameters": "error",
-        "noFallthroughSwitchClause": "error",
-        "noRedeclare": "error",
-        "noUnsafeNegation": "error",
-        "useValidTypeof": "error"
-      }
-    },
-    "ignore": [
-      "**/node_modules/**",
-      "**/build/**",
-      "**/dist/**",
-      "**/public/**",
-      "**/vendor/**"
-    ]
-  },
-  "javascript": {
-    "formatter": {
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "trailingCommas": "es5",
-      "semicolons": "always",
-      "arrowParentheses": "always",
-      "bracketSameLine": false,
-      "quoteStyle": "single",
-      "attributePosition": "auto",
-      "bracketSpacing": true
-    },
-    "globals": ["SCRIPT_DEBUG", "wp", "document", "window"]
-  },
-  "json": {
-    "formatter": {
-      "indentWidth": 4,
-      "indentStyle": "tab"
-    }
-  },
-  "overrides": [
-    { "include": ["*.ts", "*.tsx"], "linter": { "rules": {} } },
-    {
-      "include": ["**/*.ts", "**/*.tsx"],
-      "linter": { "rules": { "correctness": { "noUnusedVariables": "off" } } }
-    },
-    {
-      "include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noConstAssign": "off",
-            "noGlobalObjectCalls": "off",
-            "noInvalidConstructorSuper": "off",
-            "noNewSymbol": "off",
-            "noSetterReturn": "off",
-            "noUndeclaredVariables": "off",
-            "noUnreachable": "off",
-            "noUnreachableSuper": "off"
-          },
-          "style": {
-            "noArguments": "error",
-            "noVar": "error",
-            "useConst": "error"
-          },
-          "suspicious": {
-            "noDuplicateClassMembers": "off",
-            "noDuplicateObjectKeys": "off",
-            "noDuplicateParameters": "off",
-            "noFunctionAssign": "off",
-            "noImportAssign": "off",
-            "noRedeclare": "off",
-            "noUnsafeNegation": "off",
-            "useGetterReturn": "off"
-          }
-        }
-      }
-    },
-    { "include": ["*.native.js"], "linter": { "rules": {} } },
-    {
-      "include": [
-        "*.test.js",
-        "**/test/*.js",
-        "packages/e2e-test-utils/**/*.js"
-      ],
-      "linter": { "rules": {} }
-    },
-    {
-      "include": ["*.{css,sass,scss}"],
-      "javascript": { "formatter": { "quoteStyle": "double" } }
-    }
-  ]
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+	"files": { "ignoreUnknown": false, "ignore": [] },
+	"formatter": {
+		"enabled": true,
+		"useEditorconfig": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 80,
+		"attributePosition": "auto",
+		"bracketSpacing": true,
+		"ignore": [
+			"**/build",
+			"**/coverage",
+			"**/vendor",
+			"**/.gitignore",
+			"**/.gitmodules",
+			"**/node_modules",
+			"**/*.log",
+			"**/languages",
+			"**/public",
+			"inc/lib"
+		]
+	},
+	"organizeImports": { "enabled": true },
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": false,
+			"a11y": {
+				"noAccessKey": "error",
+				"noAriaUnsupportedElements": "error",
+				"noAutofocus": "error",
+				"noBlankTarget": "error",
+				"noDistractingElements": "error",
+				"noHeaderScope": "error",
+				"noInteractiveElementToNoninteractiveRole": "error",
+				"noLabelWithoutControl": "error",
+				"noNoninteractiveElementToInteractiveRole": "error",
+				"noNoninteractiveTabindex": "off",
+				"noPositiveTabindex": "error",
+				"noRedundantAlt": "error",
+				"noRedundantRoles": "error",
+				"useAltText": "error",
+				"useAnchorContent": "error",
+				"useAriaActivedescendantWithTabindex": "error",
+				"useAriaPropsForRole": "off",
+				"useFocusableInteractive": "error",
+				"useHeadingContent": "error",
+				"useHtmlLang": "error",
+				"useIframeTitle": "error",
+				"useKeyWithClickEvents": "error",
+				"useKeyWithMouseEvents": "error",
+				"useMediaCaption": "off",
+				"useValidAnchor": "error",
+				"useValidAriaProps": "error",
+				"useValidAriaRole": "error",
+				"useValidAriaValues": "error"
+			},
+			"complexity": {
+				"noUselessConstructor": "error",
+				"noUselessUndefinedInitialization": "error",
+				"noWith": "error",
+				"useLiteralKeys": "error"
+			},
+			"correctness": {
+				"noChildrenProp": "off",
+				"noConstAssign": "error",
+				"noInvalidConstructorSuper": "error",
+				"noUndeclaredVariables": "error",
+				"noUnreachable": "error",
+				"noUnusedVariables": "error",
+				"useExhaustiveDependencies": "warn",
+				"useHookAtTopLevel": "error",
+				"useJsxKeyInIterable": "error"
+			},
+			"security": {
+				"noDangerouslySetInnerHtmlWithChildren": "error",
+				"noGlobalEval": "error"
+			},
+			"style": {
+				"noVar": "error",
+				"useBlockStatements": "off",
+				"useCollapsedElseIf": "error",
+				"useConst": "error"
+			},
+			"suspicious": {
+				"noCommentText": "error",
+				"noConsole": {
+					"level": "error",
+					"options": { "allow": ["warn", "error"] }
+				},
+				"noDebugger": "error",
+				"noDoubleEquals": "error",
+				"noDuplicateCase": "error",
+				"noDuplicateClassMembers": "error",
+				"noDuplicateJsxProps": "error",
+				"noDuplicateObjectKeys": "error",
+				"noDuplicateParameters": "error",
+				"noFallthroughSwitchClause": "error",
+				"noRedeclare": "error",
+				"noUnsafeNegation": "error",
+				"useValidTypeof": "error"
+			}
+		},
+		"ignore": [
+			"**/node_modules/**",
+			"**/build/**",
+			"**/dist/**",
+			"**/public/**",
+			"**/vendor/**"
+		]
+	},
+	"javascript": {
+		"formatter": {
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "es5",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "single",
+			"attributePosition": "auto",
+			"bracketSpacing": true
+		},
+		"globals": ["SCRIPT_DEBUG", "wp", "document", "window"]
+	},
+	"overrides": [
+		{ "include": ["*.ts", "*.tsx"], "linter": { "rules": {} } },
+		{
+			"include": ["**/*.ts", "**/*.tsx"],
+			"linter": {
+				"rules": { "correctness": { "noUnusedVariables": "off" } }
+			}
+		},
+		{
+			"include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noConstAssign": "off",
+						"noGlobalObjectCalls": "off",
+						"noInvalidConstructorSuper": "off",
+						"noNewSymbol": "off",
+						"noSetterReturn": "off",
+						"noUndeclaredVariables": "off",
+						"noUnreachable": "off",
+						"noUnreachableSuper": "off"
+					},
+					"style": {
+						"noArguments": "error",
+						"noVar": "error",
+						"useConst": "error"
+					},
+					"suspicious": {
+						"noDuplicateClassMembers": "off",
+						"noDuplicateObjectKeys": "off",
+						"noDuplicateParameters": "off",
+						"noFunctionAssign": "off",
+						"noImportAssign": "off",
+						"noRedeclare": "off",
+						"noUnsafeNegation": "off",
+						"useGetterReturn": "off"
+					}
+				}
+			}
+		},
+		{ "include": ["*.native.js"], "linter": { "rules": {} } },
+		{
+			"include": [
+				"*.test.js",
+				"**/test/*.js",
+				"packages/e2e-test-utils/**/*.js"
+			],
+			"linter": { "rules": {} }
+		},
+		{
+			"include": ["*.{css,sass,scss}"],
+			"javascript": { "formatter": { "quoteStyle": "double" } }
+		}
+	]
 }
