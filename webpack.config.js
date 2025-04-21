@@ -73,32 +73,29 @@ module.exports = {
 	entry: {
 		...getWebpackEntryPoints(),
 		'block-library/core/core': getCoreBlocks(),
-		'assets/admin': path.resolve(__dirname, 'src/assets/scripts/admin.ts'),
+		'assets/admin': path.resolve(__dirname, 'src/app/scripts/admin.ts'),
 		'assets/dark-mode': path.resolve(
 			__dirname,
-			'src/assets/scripts/dark-mode.ts'
+			'src/app/scripts/dark-mode.ts'
 		),
 		'assets/inline': path.resolve(
 			__dirname,
-			'src/assets/scripts/inline.ts'
+			'src/app/scripts/inline.ts'
 		),
 		'assets/sanitize': path.resolve(
 			__dirname,
-			'src/assets/scripts/sanitize.ts'
+			'src/app/scripts/sanitize.ts'
 		),
-		'assets/theme': path.resolve(__dirname, 'src/assets/scripts/theme.ts'),
-		'assets/store': path.resolve(__dirname, 'src/data-stores/index.ts'),
-		'options/index': path.resolve(__dirname, 'src/admin/index.tsx'),
+		'assets/theme': path.resolve(__dirname, 'src/app/scripts/theme.ts'),
+		'assets/store': path.resolve(__dirname, 'src/app/data-stores/index.ts'),
+		'options/index': path.resolve(__dirname, 'src/widgets/admin-pages/index.tsx'),
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
 		alias: {
-			'@components': path.resolve(__dirname, 'src', 'components'),
-			'@hooks': path.resolve(__dirname, 'src', 'hooks'),
-			'@stores': path.resolve(__dirname, 'src', 'data-stores'),
-			'@utils': path.resolve(__dirname, 'src', 'utils'),
+			'@/app': path.resolve(__dirname, 'src', 'app'),
 			'@/shared': path.resolve(__dirname, 'src', 'shared'),
-			'@admin': path.resolve(__dirname, 'src', 'admin', 'components'),
+			'@/widgets': path.resolve(__dirname, 'src', 'widgets'),
 		},
 	},
 	plugins: [
@@ -106,7 +103,7 @@ module.exports = {
 		new CopyPlugin({
 			patterns: [
 				{
-					from: path.resolve(__dirname, 'src', 'admin', 'render.php'),
+					from: path.resolve(__dirname, 'src', 'widgets', 'admin-pages', 'render.php'),
 					to: path.resolve(
 						__dirname,
 						'build',
