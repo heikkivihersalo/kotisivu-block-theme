@@ -80,7 +80,7 @@ module.exports = {
 		'app/inline': path.resolve(__dirname, 'src/app/scripts/inline.ts'),
 		'app/sanitize': path.resolve(__dirname, 'src/app/scripts/sanitize.ts'),
 		'app/theme': path.resolve(__dirname, 'src/app/scripts/theme.ts'),
-		'app/store': path.resolve(__dirname, 'src/app/data-stores/index.ts'),
+		'app/store': path.resolve(__dirname, 'src/app/stores/index.ts'),
 		'widgets/block-library/core/core': getCoreBlocks(),
 		'options/index': path.resolve(
 			__dirname,

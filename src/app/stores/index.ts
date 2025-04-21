@@ -9,7 +9,7 @@ import { createReduxStore, register } from '@wordpress/data';
 import {
 	STORE_NAME as SOCIAL_MEDIA_STORE_NAME,
 	STORE_CONFIG as socialMediaConfig,
-} from './stores/social-media';
+} from './social-media';
 
 const socialMediaStore = createReduxStore(
 	SOCIAL_MEDIA_STORE_NAME,
@@ -24,7 +24,7 @@ register(socialMediaStore);
 import {
 	STORE_NAME as CONTACT_STORE_NAME,
 	STORE_CONFIG as contactConfig,
-} from './stores/contact';
+} from './contact';
 
 const contactStore = createReduxStore(CONTACT_STORE_NAME, contactConfig);
 
