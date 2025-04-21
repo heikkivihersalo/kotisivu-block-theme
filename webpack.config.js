@@ -49,11 +49,11 @@ const CopyPlugin = require('copy-webpack-plugin');
  * @return {string[]} List of core block paths
  */
 function getCoreBlocks() {
-	const src = glob.sync('./src/block-library/core/**/*.ts');
+	const src = glob.sync('./src/widgets/block-library/core/**/*.ts');
 	const blocks = [];
 
 	src.forEach((entry) => {
-		switch (entry.split('/')[5]) {
+		switch (entry.split('/')[6]) {
 			case 'index.ts':
 				blocks.push(entry);
 				break;
@@ -72,23 +72,20 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		...getWebpackEntryPoints(),
-		'block-library/core/core': getCoreBlocks(),
-		'assets/admin': path.resolve(__dirname, 'src/app/scripts/admin.ts'),
-		'assets/dark-mode': path.resolve(
+		'app/admin': path.resolve(__dirname, 'src/app/scripts/admin.ts'),
+		'app/dark-mode': path.resolve(
 			__dirname,
 			'src/app/scripts/dark-mode.ts'
 		),
-		'assets/inline': path.resolve(
+		'app/inline': path.resolve(__dirname, 'src/app/scripts/inline.ts'),
+		'app/sanitize': path.resolve(__dirname, 'src/app/scripts/sanitize.ts'),
+		'app/theme': path.resolve(__dirname, 'src/app/scripts/theme.ts'),
+		'app/store': path.resolve(__dirname, 'src/app/data-stores/index.ts'),
+		'widgets/block-library/core/core': getCoreBlocks(),
+		'options/index': path.resolve(
 			__dirname,
-			'src/app/scripts/inline.ts'
+			'src/widgets/admin-pages/index.tsx'
 		),
-		'assets/sanitize': path.resolve(
-			__dirname,
-			'src/app/scripts/sanitize.ts'
-		),
-		'assets/theme': path.resolve(__dirname, 'src/app/scripts/theme.ts'),
-		'assets/store': path.resolve(__dirname, 'src/app/data-stores/index.ts'),
-		'options/index': path.resolve(__dirname, 'src/widgets/admin-pages/index.tsx'),
 	},
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
@@ -103,7 +100,13 @@ module.exports = {
 		new CopyPlugin({
 			patterns: [
 				{
-					from: path.resolve(__dirname, 'src', 'widgets', 'admin-pages', 'render.php'),
+					from: path.resolve(
+						__dirname,
+						'src',
+						'widgets',
+						'admin-pages',
+						'render.php'
+					),
 					to: path.resolve(
 						__dirname,
 						'build',

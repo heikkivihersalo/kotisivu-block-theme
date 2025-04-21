@@ -10,8 +10,8 @@ import { __ } from '@wordpress/i18n';
 import {
 	ThemeColorSchemes,
 	ColorSchemeCookie,
-} from '../../../../types/dark-mode';
-import type { ColorScheme } from '../../../../types/dark-mode';
+} from '../../../../../types/dark-mode';
+import type { ColorScheme } from '../../../../../types/dark-mode';
 
 interface DarkModeToggleProps {
 	scheme: ColorScheme;
