@@ -23,6 +23,7 @@ return [
         BlockGroup::create('src/block-library/parts', 'build/block-library/parts'),
         BlockGroup::create('src/block-library/custom', 'build/block-library/custom'),
         BlockGroup::create('src/page-templates', 'build/page-templates'),
+        BlockGroup::create('src/template-parts', 'build/template-parts'),
     ],
 
     /*
@@ -94,9 +95,9 @@ return [
         'core/media-text',
         'core/missing',
         'core/more',
-        'core/navigation-link',
-        'core/navigation-submenu',
-        'core/navigation',
+        // 'core/navigation-link',
+        // 'core/navigation-submenu',
+        // 'core/navigation',
         'core/nextpage',
         'core/page-list-item',
         'core/page-list',
