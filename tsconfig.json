@@ -17,12 +17,9 @@
 		"allowImportingTsExtensions": true,
 		"paths": {
 			"react": ["./node_modules/@types/react"],
-			"@components/*": ["components/*"],
-			"@hooks/*": ["hooks/*"],
-			"@icons/*": ["icons/*"],
-			"@stores/*": ["data-stores/*"],
-			"@utils/*": ["utils/*"],
-			"@admin/*": ["admin/components/*"]
+			"@/app/*": ["app/*"],
+			"@/shared/*": ["shared/*"],
+			"@/widgets/*": ["widgets/*"]
 		},
 		"lib": ["ES2021.String"]
 	},

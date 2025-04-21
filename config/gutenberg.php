@@ -20,9 +20,10 @@ return [
     */
 
     'groups'       => [
-        BlockGroup::create('src/block-library/parts', 'build/block-library/parts'),
-        BlockGroup::create('src/block-library/custom', 'build/block-library/custom'),
-        BlockGroup::create('src/page-templates', 'build/page-templates'),
+        BlockGroup::create('src/widgets/block-library/parts', 'build/widgets/block-library/parts'),
+        BlockGroup::create('src/widgets/block-library/custom', 'build/widgets/block-library/custom'),
+        BlockGroup::create('src/widgets/page-templates', 'build/widgets/page-templates'),
+        BlockGroup::create('src/widgets/template-parts', 'build/widgets/template-parts'),
     ],
 
     /*
@@ -94,9 +95,9 @@ return [
         'core/media-text',
         'core/missing',
         'core/more',
-        'core/navigation-link',
-        'core/navigation-submenu',
-        'core/navigation',
+        // 'core/navigation-link',
+        // 'core/navigation-submenu',
+        // 'core/navigation',
         'core/nextpage',
         'core/page-list-item',
         'core/page-list',

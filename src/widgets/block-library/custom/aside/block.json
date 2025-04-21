@@ -1,0 +1,61 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/aside",
+	"title": "Aside",
+	"category": "design",
+	"icon": "layout",
+	"description": "",
+	"keywords": ["container, columns, column, wrapper"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true,
+			"enableContrastChecker": false
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		},
+		"ariaLabel": true
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"attributes": {
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"cn": {
+			"type": "array",
+			"default": []
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		}
+	}
+}
