@@ -1,4 +1,4 @@
-type SvgIconProps = {
+type CustomSVGProps = {
 	className?: string;
 	fill?: string;
 	width?: number;
