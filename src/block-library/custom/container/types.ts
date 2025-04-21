@@ -10,7 +10,7 @@ import {
 	BlockConfig as DefaultConfig,
 } from '@block-library/custom';
 
-import { StyleAttributes } from '@utils';
+import { StyleAttributes } from '@/shared/utils';
 
 /**
  * Block attributes and props

@@ -13,7 +13,7 @@ import {
 /**
  * Internal dependencies
  */
-import { BackgroundColorControls } from '@components/inspector';
+import { BackgroundColorControls } from '@/shared/components/inspector';
 
 /**
  * Inspector controls

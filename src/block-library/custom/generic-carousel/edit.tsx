@@ -6,9 +6,9 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inner-blocks';
+import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
 import { VariationPicker } from '@components/variations';
-import { classnames } from '@utils';
+import { classnames } from '@/shared/utils';
 import metadata from './block.json';
 import './editor.css';
 

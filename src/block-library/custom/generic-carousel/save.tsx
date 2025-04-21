@@ -6,7 +6,7 @@ import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { classnames } from '@utils';
+import { classnames } from '@/shared/utils';
 
 /**
  * Block save function

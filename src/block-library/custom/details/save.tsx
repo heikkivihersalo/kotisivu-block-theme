@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockStyles, classnames } from '@utils';
+import { getBlockStyles, classnames } from '@/shared/utils';
 
 /**
  * Block save function

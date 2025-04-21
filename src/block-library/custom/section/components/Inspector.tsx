@@ -13,7 +13,7 @@ import { FormTokenField } from '@wordpress/components';
 import {
 	AriaLabelControls,
 	BackgroundColorControls,
-} from '@components/inspector';
+} from '@/shared/components/inspector';
 
 import { TAILWIND_UTILITIES } from '@/shared/constants/tailwind-utilities';
 

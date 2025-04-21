@@ -6,7 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { VideoControls } from '@components/media';
+import { VideoControls } from '@/shared/components/media';
 import './editor.css';
 
 /**

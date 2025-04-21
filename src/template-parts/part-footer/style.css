@@ -1,0 +1,62 @@
+.site-footer {
+	--_gap: var(--wp--preset--spacing--40);
+	--_columns: 1fr padding-block: var(--wp--preset--spacing--40);
+
+	padding-block: var(--wp--preset--spacing--50);
+
+	background-color: var(--wp--preset--color--grey-extra-light);
+
+	@media screen and (min-width: 800px) {
+		--_columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.site-footer > * {
+	width: min(calc(100% - calc(var(--_gap)) * 2), 1000px);
+	margin-inline: auto;
+}
+
+.site-footer__top {
+	display: grid;
+	grid-template-columns: var(--_columns);
+	gap: var(--_gap);
+}
+
+.site-footer__top h2 {
+	font-size: var(--wp--preset--font-size--huge);
+	color: var(--wp--preset--color--secondary-light);
+	font-weight: 600;
+	line-height: 0.875;
+	margin-top: 0;
+}
+
+.site-footer__description {
+	grid-column: 2 / -1;
+}
+
+.site-footer__bottom {
+	display: grid;
+	grid-template-columns: var(--_columns);
+	gap: var(--_gap);
+
+	margin-block-start: var(--wp--preset--spacing--10);
+}
+
+.site-footer__menu h3 {
+	font-size: var(--wp--preset--font-size--medium);
+	color: var(--wp--preset--color--black);
+	font-weight: 500;
+	line-height: 1.2;
+
+	/* Handle border styles and padding */
+	padding-block-end: 2px;
+	border-bottom: 1px solid hsla(0, 0%, 83%, 1);
+}
+
+.site-footer__menu nav {
+	margin-block-start: var(--wp--preset--spacing--20);
+}
+
+.site-footer__menu ul {
+	gap: 0.375em;
+}

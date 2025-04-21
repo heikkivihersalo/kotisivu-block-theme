@@ -11,7 +11,7 @@ import {
 	BackgroundColorControls,
 	WidthControls,
 	GridAlignControls,
-} from '@components/inspector';
+} from '@/shared/components/inspector';
 
 /**
  * Inspector controls

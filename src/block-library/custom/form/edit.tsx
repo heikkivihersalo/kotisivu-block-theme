@@ -6,9 +6,9 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { InnerBlocksAppender } from '@components/inner-blocks';
+import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
 import Inspector from './components/Inspector.tsx';
-import { getBlockStyles, classnames } from '@utils';
+import { getBlockStyles, classnames } from '@/shared/utils';
 import './editor.css';
 
 /**

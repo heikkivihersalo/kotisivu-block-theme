@@ -6,7 +6,7 @@ import { useBlockProps } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { VideoMarkup } from '@components/media';
+import { VideoMarkup } from '@/shared/components/media';
 
 /**
  * Block save function

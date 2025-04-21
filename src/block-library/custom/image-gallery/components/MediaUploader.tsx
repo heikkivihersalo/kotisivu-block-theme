@@ -8,7 +8,7 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { Button } from '@wordpress/components';
-import type { MediaUploader_Image } from '@components/media';
+import type { MediaUploader_Image } from '@/shared/components/media';
 import type { BlockSetAttributes } from '../types';
 
 type Props = {

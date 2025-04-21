@@ -10,7 +10,7 @@ import { FormTokenField } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { BackgroundColorControls } from '@components/inspector';
+import { BackgroundColorControls } from '@/shared/components/inspector';
 
 import { TAILWIND_UTILITIES } from '@/shared/constants/tailwind-utilities';
 

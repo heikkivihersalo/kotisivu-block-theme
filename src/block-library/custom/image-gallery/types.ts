@@ -6,7 +6,7 @@ import type { BlockConfiguration } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import type { BlockJSON_ImageAttributes } from '@components/media';
+import type { BlockJSON_ImageAttributes } from '@/shared/components/media';
 
 /**
  * Lets define the BlockAttributes here
