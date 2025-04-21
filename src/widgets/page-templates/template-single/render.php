@@ -4,11 +4,11 @@
  * @param string $content The content of the post
  * @return string $reading_time The reading time of the post
  */
-function get_reading_time( $content ) {
-	$word_count   = str_word_count( wp_strip_all_tags( $content ) );
-	$reading_time = ceil( $word_count / 200 ) === 0 ? 1 : ceil( $word_count / 200 );
+function get_reading_time($content) {
+    $word_count   = str_word_count(wp_strip_all_tags($content));
+    $reading_time = ceil($word_count / 200) === 0 ? 1 : ceil($word_count / 200);
 
-	return $reading_time . ' ' . __( 'min read', 'kotisivu-block-theme' );
+    return $reading_time . ' ' . __('min read', 'kotisivu-block-theme');
 }
 
 /**
@@ -24,8 +24,8 @@ function get_reading_time( $content ) {
 
 global $post;
 $author_id    = $post->post_author;
-$author_name  = get_the_author_meta( 'display_name', $author_id );
-$author_image = get_avatar_url( $author_id );
+$author_name  = get_the_author_meta('display_name', $author_id);
+$author_image = get_avatar_url($author_id);
 $tags         = get_the_tags();
 
 ?>
@@ -40,13 +40,13 @@ $tags         = get_the_tags();
 			</div>
 			<div>
 				<p class="post-hero__author"><?php echo $author_name; ?></p>
-				<div class="post-hero__date"><span class="post-hero__reading-time"><?php echo get_reading_time( $content ); ?></span><time class="post-hero__published-date" datetime="<?php echo the_time( 'c' ); ?>"><?php echo get_the_date( get_option( 'date_format' ) ); ?></time></div>
+				<div class="post-hero__date"><span class="post-hero__reading-time"><?php echo get_reading_time($content); ?></span><time class="post-hero__published-date" datetime="<?php echo the_time('c'); ?>"><?php echo get_the_date(get_option('date_format')); ?></time></div>
 			</div>
 		</div>
 		<div class="post-hero__tags">
-			<?php if ( $tags ) : ?>
-				<?php foreach ( $tags as $tag ) { ?>
-					<a href="<?php echo get_tag_link( $tag->term_id ); ?>">#<?php echo $tag->name; ?></a>
+			<?php if ($tags) : ?>
+				<?php foreach ($tags as $tag) { ?>
+					<a href="<?php echo get_tag_link($tag->term_id); ?>">#<?php echo $tag->name; ?></a>
 				<?php } ?>
 			<?php endif; ?>
 		</div>

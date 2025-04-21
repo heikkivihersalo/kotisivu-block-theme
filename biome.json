@@ -132,7 +132,9 @@
 		{ "include": ["*.ts", "*.tsx"], "linter": { "rules": {} } },
 		{
 			"include": ["**/*.ts", "**/*.tsx"],
-			"linter": { "rules": { "correctness": { "noUnusedVariables": "off" } } }
+			"linter": {
+				"rules": { "correctness": { "noUnusedVariables": "off" } }
+			}
 		},
 		{
 			"include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
