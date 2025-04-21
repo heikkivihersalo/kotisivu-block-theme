@@ -1,9 +1,13 @@
 /**
+ * Shared dependencies
+ */
+import { ThemeColorSchemes, ColorSchemeCookie } from '@/shared/types/dark-mode';
+import type { ColorScheme } from '@/shared/types/dark-mode';
+
+/**
  * Internal dependencies
  */
 import '../styles/inline/dark-mode.css';
-import { ThemeColorSchemes, ColorSchemeCookie } from '../../../types/dark-mode';
-import type { ColorScheme } from '../../../types/dark-mode';
 
 /**
  * Get cookies

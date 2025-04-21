@@ -5,14 +5,14 @@ import domReady from '@wordpress/dom-ready';
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Shared dependencies
+ */
+import { ColorSchemeCookie, ThemeColorSchemes } from '@/shared/types/dark-mode';
+import type { ColorScheme } from '@/shared/types/dark-mode';
+
+/**
  * Internal dependencies
  */
-import {
-	ThemeColorSchemes,
-	ColorSchemeCookie,
-} from '../../../../../types/dark-mode';
-import type { ColorScheme } from '../../../../../types/dark-mode';
-
 interface DarkModeToggleProps {
 	scheme: ColorScheme;
 	cookie: string;
