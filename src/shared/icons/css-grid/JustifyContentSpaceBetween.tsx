@@ -5,7 +5,7 @@
  * @param {string} props.fill Fill color
  * @return {JSX.Element} SVG icon
  */
-function JustifyContentSpaceBetween(props: SvgIconProps): JSX.Element {
+function JustifyContentSpaceBetween(props: CustomSVGProps): JSX.Element {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

@@ -5,7 +5,7 @@
  * @param {string} props.fill Fill color
  * @return {JSX.Element} SVG icon
  */
-export const WidthFull = (props: SvgIconProps): JSX.Element => {
+export const WidthFull = (props: CustomSVGProps): JSX.Element => {
 	return (
 		<>
 			<svg

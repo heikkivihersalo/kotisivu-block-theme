@@ -6,7 +6,7 @@
  * {@link https://github.com/n3r4zzurr0/svg-spinners SVG Spinners on Github}
  * @return {JSX.Element} SVG Loader
  */
-export const Dots6Rotate = (props: SvgIconProps): JSX.Element => (
+export const Dots6Rotate = (props: CustomSVGProps): JSX.Element => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={props.width || 24}

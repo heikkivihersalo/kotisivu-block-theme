@@ -5,7 +5,7 @@
  * @param {string} props.fill Fill color
  * @return {JSX.Element} SVG icon SVG icon
  */
-function AlignContentCenter(props: SvgIconProps): JSX.Element {
+function AlignContentCenter(props: CustomSVGProps): JSX.Element {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

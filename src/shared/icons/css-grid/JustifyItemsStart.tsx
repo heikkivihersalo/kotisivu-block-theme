@@ -5,7 +5,7 @@
  * @param {string} props.fill Fill color
  * @return {JSX.Element} SVG icon
  */
-function JustifyItemsStart(props: SvgIconProps): JSX.Element {
+function JustifyItemsStart(props: CustomSVGProps): JSX.Element {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

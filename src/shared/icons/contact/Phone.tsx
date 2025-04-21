@@ -5,7 +5,7 @@
  * @param {string} props.fill Fill color
  * @return {JSX.Element} SVG icon
  */
-function Phone(props: SvgIconProps): JSX.Element {
+function Phone(props: CustomSVGProps): JSX.Element {
 	return (
 		<div
 			className="is-square-icon"
