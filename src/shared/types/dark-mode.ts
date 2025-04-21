@@ -5,8 +5,8 @@ const ThemeColorSchemes = {
 
 const ColorSchemeCookie = 'color-scheme';
 
-type ColorScheme =
+export type ColorScheme =
 	| (typeof ThemeColorSchemes)[keyof typeof ThemeColorSchemes]
 	| null;
 
-export { ThemeColorSchemes, ColorSchemeCookie, ColorScheme };
+export { ThemeColorSchemes, ColorSchemeCookie };
