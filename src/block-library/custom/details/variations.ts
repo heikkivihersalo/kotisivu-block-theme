@@ -1,12 +1,12 @@
 import { __ } from '@wordpress/i18n';
-import type { Variation } from '@components/variations';
+import type { BlockVariation } from '@wordpress/blocks';
 
-const variations: Array<Variation> = [
+const variations: Array<BlockVariation> = [
 	{
 		name: 'details-default',
 		title: __('Details | Default', 'kotisivu-theme-blocks'),
 		icon: 'button',
-		scope: 'block',
+		scope: ['block'],
 		innerBlocks: [],
 		attributes: {
 			blockClass: 'details',

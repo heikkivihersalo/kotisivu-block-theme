@@ -4,11 +4,15 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
-import { VariationPicker } from '@components/variations';
+import { VariationPicker } from '@/shared/components/variations';
 import { classnames } from '@/shared/utils';
+
+/**
+ * Internal dependencies
+ */
 import metadata from './block.json';
 import './editor.css';
 

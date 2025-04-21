@@ -5,12 +5,15 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
-import { VariationPicker } from '@components/variations';
+import { VariationPicker } from '@/shared/components/variations';
 import { getBlockStyles, getIsReversedClass, classnames } from '@/shared/utils';
 
+/**
+ * Internal dependencies
+ */
 import Inspector from './components/Inspector';
 
 import metadata from './block.json';

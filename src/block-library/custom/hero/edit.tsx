@@ -4,12 +4,15 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
-import { VariationPicker } from '@components/variations';
+import { VariationPicker } from '@/shared/components/variations';
 import { getBlockStyles, classnames } from '@/shared/utils';
 
+/**
+ * Internal dependencies
+ */
 import Inspector from './components/Inspector';
 
 import type { BlockProps } from './types';
