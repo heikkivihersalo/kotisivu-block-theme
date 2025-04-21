@@ -1,18 +1,30 @@
 {
-	"prettier.requireConfig": true,
-	"prettier.trailingComma": "es5",
-	"prettier.bracketSpacing": true,
-	"eslint.useFlatConfig": true,
-	"eslint.format.enable": true,
-	"eslint.workingDirectories": [],
-	"[php]": {
-		"editor.defaultFormatter": "valeryanm.vscode-phpsab",
-		"editor.formatOnSave": true
-	},
-	"phpsab.standard": "WordPress",
-	"phpsab.snifferEnable": true,
-	"phpsab.snifferMode": "onSave",
-	"phpsab.snifferArguments": [
-		"--ignore=*/wp-admin/*,*/wp-includes/*,*/vendor/*,**/inc/lib/**"
-	]
+  "laravel-pint.enable": true,
+  "[php]": {
+    "editor.defaultFormatter": "open-southeners.laravel-pint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit"
+  }
 }
