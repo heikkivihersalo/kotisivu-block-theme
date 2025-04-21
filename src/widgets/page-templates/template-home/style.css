@@ -71,8 +71,8 @@ main > section:last-of-type {
  ** POST ITEM
  ** ==================== */
 /**
-  * Container
-  */
+ * Container
+ */
 .posts__list-item {
 	display: flex;
 	flex-direction: column;

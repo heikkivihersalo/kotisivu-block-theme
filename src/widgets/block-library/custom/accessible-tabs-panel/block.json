@@ -1,45 +1,43 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
-	"apiVersion": 3,
-	"name": "ksd/accessible-tabs-panel",
-	"title": "Panel",
-	"icon": "block-default",
-	"description": "",
-	"category": "widgets",
-	"keywords": [""],
-	"textdomain": "kotisivu-block-theme",
-	"supports": {
-		"className": false
-	},
-	"parent": ["ksd/accessible-tabs-panel-container"],
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"attributes": {
-		"panelId": {
-			"type": "number"
-		},
-		"template": {
-			"type": "array",
-			"default": [
-				["core/paragraph", { "placeholder": "Write panel content…" }]
-			]
-		},
-		"allowedBlocks": {
-			"type": "array",
-			"default": [
-				"core/heading",
-				"core/paragraph",
-				"core/image",
-				"core/list",
-				"ksd/details",
-				"ksd/time-schedule"
-			]
-		},
-		"templateLock": {
-			"type": ["string", "boolean"],
-			"enum": ["all", "insert", false],
-			"default": false
-		}
-	}
+  "$schema": "https://json.schemastore.org/block.json",
+  "apiVersion": 3,
+  "name": "ksd/accessible-tabs-panel",
+  "title": "Panel",
+  "icon": "block-default",
+  "description": "",
+  "category": "widgets",
+  "keywords": [""],
+  "textdomain": "kotisivu-block-theme",
+  "supports": {
+    "className": false
+  },
+  "parent": ["ksd/accessible-tabs-panel-container"],
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "attributes": {
+    "panelId": {
+      "type": "number"
+    },
+    "template": {
+      "type": "array",
+      "default": [["core/paragraph", { "placeholder": "Write panel content…" }]]
+    },
+    "allowedBlocks": {
+      "type": "array",
+      "default": [
+        "core/heading",
+        "core/paragraph",
+        "core/image",
+        "core/list",
+        "ksd/details",
+        "ksd/time-schedule"
+      ]
+    },
+    "templateLock": {
+      "type": ["string", "boolean"],
+      "enum": ["all", "insert", false],
+      "default": false
+    }
+  }
 }

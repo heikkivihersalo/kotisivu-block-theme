@@ -58,9 +58,8 @@
 
 	transform: translateX(var(--_thumb-position));
 
-	transition:
-		transform var(--_thumb-transition-duration) ease,
-		box-shadow 0.25s ease;
+	transition: transform var(--_thumb-transition-duration) ease, box-shadow
+		0.25s ease;
 }
 
 /* positioned at the end of the track: track length - 100% (thumb width) */
