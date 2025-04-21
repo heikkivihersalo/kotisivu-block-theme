@@ -1,17 +1,26 @@
-type ResponseBody<T> = {
+import type {
+	ContactAdminSettingsData,
+	SocialAccountsAdminSettingsData,
+	AnalyticsAdminSettingsData,
+	CacheAdminSettingsData,
+} from './data';
+
+export type ResponseBody<T> = {
 	status: string;
 	type: string;
 	message: string;
 	data: T;
 };
 
-type AdminSettingsContactResponse = ResponseBody<ContactAdminSettingsData>;
-type AdminSettingsSocialResponse =
+export type AdminSettingsContactResponse =
+	ResponseBody<ContactAdminSettingsData>;
+export type AdminSettingsSocialResponse =
 	ResponseBody<SocialAccountsAdminSettingsData>;
-type AdminSettingsAnalyticsResponse = ResponseBody<AnalyticsAdminSettingsData>;
-type AdminSettingsCacheResponse = ResponseBody<CacheAdminSettingsData>;
+export type AdminSettingsAnalyticsResponse =
+	ResponseBody<AnalyticsAdminSettingsData>;
+export type AdminSettingsCacheResponse = ResponseBody<CacheAdminSettingsData>;
 
-type AdminSettingsApiResponse =
+export type AdminSettingsApiResponse =
 	| AdminSettingsContactResponse
 	| AdminSettingsSocialResponse
 	| AdminSettingsAnalyticsResponse

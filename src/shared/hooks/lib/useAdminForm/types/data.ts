@@ -1,4 +1,4 @@
-type ContactAdminSettingsData = {
+export type ContactAdminSettingsData = {
 	name: string;
 	address: string;
 	zip: number;
@@ -10,7 +10,7 @@ type ContactAdminSettingsData = {
 	email: string;
 };
 
-type SocialAccountsAdminSettingsData = {
+export type SocialAccountsAdminSettingsData = {
 	facebook?: string;
 	twitter?: string;
 	instagram?: string;
@@ -25,19 +25,19 @@ type SocialAccountsAdminSettingsData = {
 	whatsapp?: string;
 };
 
-type AnalyticsAdminSettingsData = {
+export type AnalyticsAdminSettingsData = {
 	active: boolean;
 	id: string;
 	url: string;
 	timeout: string;
 };
 
-type CacheAdminSettingsData = {
+export type CacheAdminSettingsData = {
 	[key: string]: string;
 };
 
-type AdminSettingsData =
-	| AdminSettingsContactResponse
-	| AdminSettingsSocialResponse
-	| AdminSettingsAnalyticsResponse
-	| AdminSettingsCacheResponse;
+export type AdminSettingsData =
+	| ContactAdminSettingsData
+	| SocialAccountsAdminSettingsData
+	| AnalyticsAdminSettingsData
+	| CacheAdminSettingsData;

@@ -8,6 +8,10 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
+import type { AdminSettingsApiPath } from './types/paths';
+import type { AdminSettingsApiResponse } from './types/response';
+import type { AdminSettingsData } from './types/data';
+
 type Props = {
 	path: AdminSettingsApiPath;
 	nonce: string | undefined;
