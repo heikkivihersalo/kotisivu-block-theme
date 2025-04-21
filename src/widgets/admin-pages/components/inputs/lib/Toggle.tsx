@@ -2,7 +2,14 @@
  * Internal dependencies
  */
 import styles from './Toggle.module.css';
-import type { ToggleProps } from '@admin/inputs';
+
+type Props = {
+	label: string;
+	name: string;
+	checked: boolean;
+	onChange: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+	hideLabel?: boolean;
+};
 
 /**
  * Toggle Component
@@ -20,7 +27,7 @@ const Toggle = ({
 	checked,
 	onChange,
 	hideLabel = false,
-}: ToggleProps): JSX.Element => {
+}: Props): JSX.Element => {
 	return (
 		<div className={styles.toggle}>
 			<label htmlFor={name}>

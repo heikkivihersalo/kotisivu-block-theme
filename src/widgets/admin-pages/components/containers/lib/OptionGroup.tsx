@@ -1,8 +1,11 @@
 /**
  * Internal dependencies
  */
-import { OptionGroupProps } from '@admin/containers';
 import styles from './OptionGroup.module.css';
+
+type Props = {
+	children: React.ReactNode;
+};
 
 /**
  * OptionGroup Component
@@ -10,7 +13,7 @@ import styles from './OptionGroup.module.css';
  * @param {JSX.Element} props.children - Child components
  * @return {JSX.Element} OptionGroup component
  */
-const OptionGroup = ({ children }: OptionGroupProps): JSX.Element => {
+const OptionGroup = ({ children }: Props): JSX.Element => {
 	return <div className={styles.group}>{children}</div>;
 };
 

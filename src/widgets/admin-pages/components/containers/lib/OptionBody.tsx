@@ -1,8 +1,13 @@
 /**
  * Internal dependencies
  */
-import { OptionBodyProps } from '@admin/containers';
 import styles from './OptionBody.module.css';
+
+type Props = {
+	children: React.ReactNode;
+	name?: string;
+	description?: string;
+};
 
 /**
  * OptionBody Component
@@ -16,7 +21,7 @@ const OptionBody = ({
 	children,
 	name = '',
 	description = '',
-}: OptionBodyProps): JSX.Element => {
+}: Props): JSX.Element => {
 	return (
 		<div className={styles.body}>
 			{name && <h2>{name}</h2>}

@@ -1,8 +1,11 @@
 /**
  * Internal dependencies
  */
-import { FormBodyProps } from '@admin/form';
 import styles from './FormBody.module.css';
+
+type Props = {
+	children: React.ReactNode;
+};
 
 /**
  * Form Component
@@ -10,7 +13,7 @@ import styles from './FormBody.module.css';
  * @param {JSX.Element} props.children - Child components
  * @return {JSX.Element} Form component
  */
-const FormBody = ({ children }: FormBodyProps): JSX.Element => {
+const FormBody = ({ children }: Props): JSX.Element => {
 	return <div className={styles.body}>{children}</div>;
 };
 

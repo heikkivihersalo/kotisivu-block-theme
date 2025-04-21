@@ -2,7 +2,11 @@
  * Internal dependencies
  */
 import styles from './Form.module.css';
-import { FormProps } from '@admin/form';
+
+type Props = {
+	children: React.ReactNode;
+	onSave: () => void;
+};
 
 /**
  * Form Component
@@ -11,7 +15,7 @@ import { FormProps } from '@admin/form';
  * @param {Function} props.onSave - Save handler
  * @return {JSX.Element} Form component
  */
-const Form = ({ children, onSave }: FormProps): JSX.Element => {
+const Form = ({ children, onSave }: Props): JSX.Element => {
 	return (
 		<form
 			className={styles.form}

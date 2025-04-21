@@ -1,8 +1,13 @@
 /**
  * Internal dependencies
  */
-import { OptionProps } from '@admin/containers';
 import styles from './Option.module.css';
+
+type Props = {
+	children: React.ReactNode;
+	name?: string;
+	description?: string;
+};
 
 /**
  * Option Component
@@ -16,7 +21,7 @@ const Option = ({
 	children,
 	name = '',
 	description = '',
-}: OptionProps): JSX.Element => {
+}: Props): JSX.Element => {
 	return (
 		<div className={styles.option}>
 			{name && <h3>{name}</h3>}

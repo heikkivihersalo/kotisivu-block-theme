@@ -6,9 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { Toggle } from '@admin/inputs';
+import { Toggle } from '../../inputs';
 import styles from './FormHead.module.css';
-import { FormHeadProps } from '@admin/form';
+
+type Props = {
+	name: string;
+	toggleName?: string;
+	toggleValue?: boolean;
+	toggleCallback?: (
+		event: React.MouseEvent<HTMLInputElement, MouseEvent>
+	) => void;
+};
 
 /**
  * Form Component
@@ -24,7 +32,7 @@ const FormHead = ({
 	toggleName = '',
 	toggleValue = false,
 	toggleCallback = () => {},
-}: FormHeadProps): JSX.Element => {
+}: Props): JSX.Element => {
 	return (
 		<div className={styles.head}>
 			<h3>{name}</h3>

@@ -2,7 +2,12 @@
  * Internal dependencies
  */
 import styles from './Button.module.css';
-import type { ButtonProps } from '@admin/misc';
+
+type Props = {
+	name: string;
+	disabled?: boolean;
+	onClick?: () => void;
+};
 
 /**
  * Form Button Component
@@ -12,7 +17,7 @@ import type { ButtonProps } from '@admin/misc';
  * @param {Function} props.onClick - Button on click function
  * @return {JSX.Element} Form Button Component
  */
-const Button = ({ name, disabled, onClick }: ButtonProps): JSX.Element => {
+const Button = ({ name, disabled, onClick }: Props): JSX.Element => {
 	return (
 		<button className={styles.button} onClick={onClick} disabled={disabled}>
 			{name}
