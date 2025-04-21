@@ -1,28 +1,35 @@
 {
+	"include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+	"exclude": ["node_modules", "dist", "build", "out", "coverage", "public"],
 	"compilerOptions": {
-		"baseUrl": "./src",
-		"outDir": "./build/",
-		"sourceMap": true,
-		"strict": true,
-		"noImplicitReturns": true,
-		"noImplicitAny": true,
-		"noEmit": true,
-		"module": "es6",
-		"moduleResolution": "node",
-		"target": "es5",
-		"allowJs": true,
-		"resolveJsonModule": true,
+		"target": "ES2022",
 		"jsx": "react-jsx",
-		"allowSyntheticDefaultImports": true,
+		"module": "ESNext",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+		/* Bundler mode */
+		"moduleResolution": "node",
 		"allowImportingTsExtensions": true,
+		"allowSyntheticDefaultImports": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		"allowJs": true,
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true,
+
+		/* Paths */
+		"baseUrl": ".",
 		"paths": {
-			"react": ["./node_modules/@types/react"],
-			"@/app/*": ["app/*"],
-			"@/shared/*": ["shared/*"],
-			"@/widgets/*": ["widgets/*"]
-		},
-		"lib": ["ES2021.String"]
-	},
-	"typeRoots": ["node_modules/@types", "./types"],
-	"include": ["./src/**/*"]
+			"@/app/*": ["src/app/*"],
+			"@/shared/*": ["src/shared/*"],
+			"@/widgets/*": ["src/widgets/*"]
+		}
+	}
 }

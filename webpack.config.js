@@ -30,14 +30,8 @@ const glob = require('glob');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 
 /**
- * Import the getWebpackEntryPoints function from WordPress scripts
- * @type {import('@wordpress/scripts').WebpackUtils}
- */
-const { getWebpackEntryPoints } = require('@wordpress/scripts/utils/config');
-
-/**
  * Import custom Webpack packages
- *
+ * @type {import('webpack').Configuration}
  */
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -65,13 +59,30 @@ function getCoreBlocks() {
 	return blocks;
 }
 
+/**
+ * Merge the file extensions with the default WordPress extensions
+ * @return {string[]} Merged list of file extensions
+ */
+function mergeFileExtensions() {
+	// Merge the extensions setting with whatever WordPress has in their config
+	const defaultExtensions = defaultConfig.resolve.extensions || [
+		'.js',
+		'.jsx',
+	];
+
+	// Add TypeScript extensions to the default extensions
+	const mergedExtensions = ['.ts', '.tsx'];
+
+	return [...mergedExtensions, ...defaultExtensions];
+}
+
 /*--------------------------------------------------------------
   3.0 Webpack configurations
 --------------------------------------------------------------*/
 module.exports = {
 	...defaultConfig,
 	entry: {
-		...getWebpackEntryPoints(),
+		...defaultConfig.entry(),
 		'app/admin': path.resolve(__dirname, 'src/app/scripts/admin.ts'),
 		'app/dark-mode': path.resolve(
 			__dirname,
@@ -87,8 +98,26 @@ module.exports = {
 			'src/widgets/admin-pages/index.tsx'
 		),
 	},
+	module: {
+		...defaultConfig.module,
+		rules: [
+			...defaultConfig.module.rules,
+			{
+				test: /\.tsx?$/, // Match both `.ts` and `.tsx`
+				use: [
+					{
+						loader: 'ts-loader',
+						options: {
+							configFile: 'tsconfig.json',
+							transpileOnly: true, // Speeds up by skipping type-checking.
+						},
+					},
+				],
+			},
+		],
+	},
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
+		extensions: mergeFileExtensions(),
 		alias: {
 			'@/app': path.resolve(__dirname, 'src', 'app'),
 			'@/shared': path.resolve(__dirname, 'src', 'shared'),
