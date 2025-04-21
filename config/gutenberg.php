@@ -19,7 +19,7 @@ return [
     | Default and very opionated groups are `custom`, `parts` and `page_templates`.
     */
 
-    'groups'       => [
+    'groups' => [
         BlockGroup::create('src/widgets/block-library/parts', 'build/widgets/block-library/parts'),
         BlockGroup::create('src/widgets/block-library/custom', 'build/widgets/block-library/custom'),
         BlockGroup::create('src/widgets/page-templates', 'build/widgets/page-templates'),
@@ -35,7 +35,7 @@ return [
 
     'options' => [
         'should_load_separate_core_block_assets' => true,
-        'disable_core_patterns' => true,
+        'disable_core_patterns'                  => true,
     ],
 
     /*

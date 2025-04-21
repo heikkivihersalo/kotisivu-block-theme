@@ -7,8 +7,8 @@ use App\Providers\AssetServiceProvider;
 use App\Providers\SettingsServiceProvider;
 use Vihersalo\Core\Admin\Providers\CustomizerServiceProvider;
 use Vihersalo\Core\Analytics\AnalyticsServiceProvider;
-use Vihersalo\Core\Styles\StylesServiceProvider;
 use Vihersalo\Core\Media\MediaServiceProvider;
+use Vihersalo\Core\Styles\StylesServiceProvider;
 
 return [
 

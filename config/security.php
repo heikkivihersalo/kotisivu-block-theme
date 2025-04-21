@@ -159,7 +159,7 @@ return [
     */
 
     'jquery_to_footer' => true, // Move jQuery to footer
-    'jquery_migrate' => false,
+    'jquery_migrate'   => false,
 
 
     /*

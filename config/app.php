@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Vihersalo\Core\Navigation\Menu;
-use Vihersalo\Core\Support\Media\ImageSize;
 use Vihersalo\Core\Support\Facades\Facade;
+use Vihersalo\Core\Support\Media\ImageSize;
 
 return [
 
@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'theme'      => [
+    'theme' => [
         'meta'      => 'hsl(0, 0%, 20%)', // This sets the color of the meta tags in the header.
         'default'   => 'light',
         'available' => [
@@ -59,7 +59,7 @@ return [
     |
     */
 
-    'supports'   => [
+    'supports' => [
         'wp-block-styles',
         'align-wide',
         'custom-logo',
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'dequeue'    => [
+    'dequeue' => [
         'fluentform-public-default',
         'fluent-form-styles',
         'wc-blocks-style',
@@ -96,15 +96,15 @@ return [
     |
     */
 
-    'media'      => [
-        'sizes'   => [
+    'media' => [
+        'sizes' => [
             'default' => [
                 ImageSize::create('large', 'Large', 1600, 1200),
                 ImageSize::create('medium_large', 'Medium Large', 1366, 1025),
                 ImageSize::create('medium', 'Medium', 1024, 768),
                 ImageSize::create('thumbnail', 'Thumbnail', 300, 300),
             ],
-            'custom'  => [
+            'custom' => [
                 ImageSize::create('retina', 'Retina', 2880, 1800),
                 ImageSize::create('huge', 'Huge', 1920, 1440),
                 ImageSize::create('small', 'Small', 768, 576),

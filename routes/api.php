@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\Auth;
-use App\Http\Controllers\Settings\TagmanagerController;
+use App\Http\Controllers\Settings\CacheController;
 use App\Http\Controllers\Settings\ContactController;
 use App\Http\Controllers\Settings\SocialAccountController;
-use App\Http\Controllers\Settings\CacheController;
+use App\Http\Controllers\Settings\TagmanagerController;
 use Vihersalo\Core\Support\Facades\Route;
 
 Route::controller(TagmanagerController::class)->group(function () {

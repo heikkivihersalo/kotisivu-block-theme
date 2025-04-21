@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Settings;
 
+use Exception;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_Error;
-use Exception;
 
 class CacheController {
     /**
@@ -38,11 +40,11 @@ class CacheController {
         }
 
         return new WP_REST_Response(
-            array(
+            [
                 'status'  => 'success',
                 'type'    => 'fetch',
                 'message' => __('Cache purged succesfully', 'kotisivu-block-theme'),
-            ),
+            ],
             200
         );
     }

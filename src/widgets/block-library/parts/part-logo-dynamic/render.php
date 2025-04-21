@@ -12,7 +12,7 @@
 
 ?>
 <div class="site-header__logo">
-	<a class="site-header__logo__link" href="<?php echo get_home_url(); ?>" aria-roledescription="logo" aria-label="<?php _e( 'Return back to homepage', 'kotisivu-block-theme' ); ?>">
+	<a class="site-header__logo__link" href="<?php echo get_home_url(); ?>" aria-roledescription="logo" aria-label="<?php _e('Return back to homepage', 'kotisivu-block-theme'); ?>">
 		<svg width="100%" height="100%" viewBox="0 0 565 83" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
 			<g transform="matrix(1,0,0,1,-948,-2512)">
 				<g id="vihersalo-color" transform="matrix(1.00033,0,0,0.99982,-0.439064,0.520368)">
@@ -32,7 +32,7 @@
 			</g>
 		</svg>
 		<span class="is-visually-hidden">
-			<?php echo isset( $attributes['options']['contact-company-name'] ) ? $attributes['options']['contact-company-name'] : get_bloginfo( 'name' ); ?>
+			<?php echo $attributes['options']['contact-company-name'] ?? get_bloginfo('name'); ?>
 		</span>
 	</a>
 </div>
