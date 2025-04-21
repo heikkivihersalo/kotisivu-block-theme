@@ -7,8 +7,8 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * Internal dependencies
  */
-import { OptionBody, OptionGroup, Option } from '@admin/containers';
-import { Button } from '@admin/misc';
+import { OptionBody, OptionGroup, Option } from '../components/containers';
+import { Button } from '../components/misc';
 
 /**
  * General Settings Page

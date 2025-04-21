@@ -4,13 +4,17 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { useAdminForm } from '@/shared/hooks';
-import { OptionBody, OptionGroup } from '@admin/containers';
-import { Form, FormHead, FormBody, FormButton } from '@admin/form';
-import { Input } from '@admin/inputs';
-import type { AnalyticsAdminFormData } from '@/shared/hooks';
+import type { AnalyticsAdminSettingsData } from '@/shared/hooks/lib/useAdminForm/types/data';
+
+/**
+ * Internal dependencies
+ */
+import { OptionBody, OptionGroup } from '../components/containers';
+import { Form, FormHead, FormBody, FormButton } from '../components/form';
+import { Input } from '../components/inputs';
 
 /**
  * Analytics Settings Page
@@ -46,7 +50,7 @@ const Analytics = (): JSX.Element | null => {
 						name={__('Google Tag Manager', 'kotisivu-block-theme')}
 						toggleName="active"
 						toggleValue={
-							(formData as AnalyticsAdminFormData).active
+							(formData as AnalyticsAdminSettingsData).active
 						}
 						toggleCallback={handleChange}
 					/>
@@ -56,7 +60,7 @@ const Analytics = (): JSX.Element | null => {
 							label={__('Container ID', 'kotisivu-block-theme')}
 							name="id"
 							placeholder="GTM-123456"
-							value={(formData as AnalyticsAdminFormData).id}
+							value={(formData as AnalyticsAdminSettingsData).id}
 							onChange={handleChange}
 						/>
 						<Input
@@ -64,14 +68,16 @@ const Analytics = (): JSX.Element | null => {
 							label={__('Container URL', 'kotisivu-block-theme')}
 							name="url"
 							placeholder="www.googletagmanager.com"
-							value={(formData as AnalyticsAdminFormData).url}
+							value={(formData as AnalyticsAdminSettingsData).url}
 							onChange={handleChange}
 						/>
 						<Input
 							type="number"
 							label={__('Timeout', 'kotisivu-block-theme')}
 							name="timeout"
-							value={(formData as AnalyticsAdminFormData).timeout}
+							value={
+								(formData as AnalyticsAdminSettingsData).timeout
+							}
 							onChange={handleChange}
 							placeholder={'2000'}
 						/>

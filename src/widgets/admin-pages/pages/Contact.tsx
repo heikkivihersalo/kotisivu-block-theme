@@ -4,13 +4,17 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { useAdminForm } from '@/shared/hooks';
-import { OptionBody, OptionGroup } from '@admin/containers';
-import { Form, FormHead, FormBody, FormButton } from '@admin/form';
-import { Input } from '@admin/inputs';
-import type { ContactAdminFormData } from '@/shared/hooks';
+import type { ContactAdminSettingsData } from '@/shared/hooks/lib/useAdminForm/types/data';
+
+/**
+ * Internal dependencies
+ */
+import { OptionBody, OptionGroup } from '../components/containers';
+import { Form, FormHead, FormBody, FormButton } from '../components/form';
+import { Input } from '../components/inputs';
 
 /**
  * Contact Settings Page
@@ -50,42 +54,46 @@ const Contact = (): JSX.Element | null => {
 							type="text"
 							label={__('Name', 'kotisivu-block-theme')}
 							name="name"
-							value={(formData as ContactAdminFormData).name}
+							value={(formData as ContactAdminSettingsData).name}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Address', 'kotisivu-block-theme')}
 							name="address"
-							value={(formData as ContactAdminFormData).address}
+							value={
+								(formData as ContactAdminSettingsData).address
+							}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Zip Code', 'kotisivu-block-theme')}
 							name="zip"
-							value={(formData as ContactAdminFormData).zip}
+							value={(formData as ContactAdminSettingsData).zip}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('City', 'kotisivu-block-theme')}
 							name="city"
-							value={(formData as ContactAdminFormData).city}
+							value={(formData as ContactAdminSettingsData).city}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Country', 'kotisivu-block-theme')}
 							name="country"
-							value={(formData as ContactAdminFormData).country}
+							value={
+								(formData as ContactAdminSettingsData).country
+							}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('VAT Number', 'kotisivu-block-theme')}
 							name="vat"
-							value={(formData as ContactAdminFormData).vat}
+							value={(formData as ContactAdminSettingsData).vat}
 							onChange={handleChange}
 						/>
 						<Input
@@ -93,7 +101,8 @@ const Contact = (): JSX.Element | null => {
 							label={__('Business ID', 'kotisivu-block-theme')}
 							name="business_id"
 							value={
-								(formData as ContactAdminFormData).business_id
+								(formData as ContactAdminSettingsData)
+									.business_id
 							}
 							onChange={handleChange}
 						/>
@@ -101,14 +110,14 @@ const Contact = (): JSX.Element | null => {
 							type="text"
 							label={__('Email Address', 'kotisivu-block-theme')}
 							name="email"
-							value={(formData as ContactAdminFormData).email}
+							value={(formData as ContactAdminSettingsData).email}
 							onChange={handleChange}
 						/>
 						<Input
 							type="text"
 							label={__('Phone Number', 'kotisivu-block-theme')}
 							name="phone"
-							value={(formData as ContactAdminFormData).phone}
+							value={(formData as ContactAdminSettingsData).phone}
 							onChange={handleChange}
 						/>
 					</FormBody>

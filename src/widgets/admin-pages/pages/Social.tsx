@@ -4,13 +4,17 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
 import { useAdminForm } from '@/shared/hooks';
-import { OptionBody, OptionGroup } from '@admin/containers';
-import { Form, FormHead, FormBody, FormButton } from '@admin/form';
-import { Input } from '@admin/inputs';
-import type { SocialAdminFormData } from '@/shared/hooks';
+import type { SocialAccountsAdminSettingsData } from '@/shared/hooks/lib/useAdminForm/types/data';
+
+/**
+ * Internal dependencies
+ */
+import { OptionBody, OptionGroup } from '../components/containers';
+import { Form, FormHead, FormBody, FormButton } from '../components/form';
+import { Input } from '../components/inputs';
 
 /**
  * Social Settings Page
@@ -33,62 +37,62 @@ const Social = (): JSX.Element | null => {
 		{
 			name: 'Facebook',
 			key: 'facebook',
-			value: (formData as SocialAdminFormData).facebook,
+			value: (formData as SocialAccountsAdminSettingsData).facebook,
 		},
 		{
 			name: 'Twitter',
 			key: 'twitter',
-			value: (formData as SocialAdminFormData).twitter,
+			value: (formData as SocialAccountsAdminSettingsData).twitter,
 		},
 		{
 			name: 'Instagram',
 			key: 'instagram',
-			value: (formData as SocialAdminFormData).instagram,
+			value: (formData as SocialAccountsAdminSettingsData).instagram,
 		},
 		{
 			name: 'LinkedIn',
 			key: 'linkedin',
-			value: (formData as SocialAdminFormData).linkedin,
+			value: (formData as SocialAccountsAdminSettingsData).linkedin,
 		},
 		{
 			name: 'YouTube',
 			key: 'youtube',
-			value: (formData as SocialAdminFormData).youtube,
+			value: (formData as SocialAccountsAdminSettingsData).youtube,
 		},
 		{
 			name: 'Pinterest',
 			key: 'pinterest',
-			value: (formData as SocialAdminFormData).pinterest,
+			value: (formData as SocialAccountsAdminSettingsData).pinterest,
 		},
 		{
 			name: 'Snapchat',
 			key: 'snapchat',
-			value: (formData as SocialAdminFormData).snapchat,
+			value: (formData as SocialAccountsAdminSettingsData).snapchat,
 		},
 		{
 			name: 'TikTok',
 			key: 'tiktok',
-			value: (formData as SocialAdminFormData).tiktok,
+			value: (formData as SocialAccountsAdminSettingsData).tiktok,
 		},
 		{
 			name: 'Twitch',
 			key: 'twitch',
-			value: (formData as SocialAdminFormData).twitch,
+			value: (formData as SocialAccountsAdminSettingsData).twitch,
 		},
 		{
 			name: 'Reddit',
 			key: 'reddit',
-			value: (formData as SocialAdminFormData).reddit,
+			value: (formData as SocialAccountsAdminSettingsData).reddit,
 		},
 		{
 			name: 'Discord',
 			key: 'discord',
-			value: (formData as SocialAdminFormData).discord,
+			value: (formData as SocialAccountsAdminSettingsData).discord,
 		},
 		{
 			name: 'WhatsApp',
 			key: 'whatsapp',
-			value: (formData as SocialAdminFormData).whatsapp,
+			value: (formData as SocialAccountsAdminSettingsData).whatsapp,
 		},
 	];
 
