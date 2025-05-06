@@ -23,9 +23,15 @@
 			"App\\": "app/"
 		}
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/heikkivihersalo/block-theme-core.git"
+		}
+	],
 	"scripts": {},
 	"require": {
-		"vihersalo/block-theme-core": "0.1.1"
+		"vihersalo/block-theme-core": "dev-main"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "^3.12",
