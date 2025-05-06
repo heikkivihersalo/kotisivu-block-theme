@@ -17,7 +17,23 @@ return [
 
     'name'       => 'kotisivu-block-theme',
     'textdomain' => 'kotisivu-block-theme',
-    'version'    => '2.0.0',
+    'version'    => '1.0.0',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Post Types & Taxonomies
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'cpt' => [
+        'namespace' => 'App\Models\PostTypes',
+        'path'      => 'app/Models/PostTypes',
+    ],
+    'taxonomy' => [
+        'namespace' => 'App\Models\Taxonomies',
+        'path'      => 'app/Models/Taxonomies',
+    ],
 
     /*
     |--------------------------------------------------------------------------
