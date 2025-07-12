@@ -48,6 +48,15 @@ export function createBlockInputs(blocksDir) {
 			input[`${blockName}/editor`] = editorFiles;
 		}
 
+		// Check for view files (view.ts, view.js, etc.)
+		const viewFiles = ['view.ts', 'view.tsx', 'view.js', 'view.jsx']
+			.map((filename) => resolve(blockDir, filename))
+			.find((filepath) => existsSync(filepath));
+
+		if (viewFiles) {
+			input[`${blockName}/view`] = viewFiles;
+		}
+
 		// Check for editor styles (editor.css)
 		const editorCssFile = resolve(blockDir, 'editor.css');
 		if (existsSync(editorCssFile)) {
