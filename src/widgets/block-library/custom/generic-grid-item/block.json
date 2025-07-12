@@ -1,36 +1,36 @@
 {
-  "$schema": "https://json.schemastore.org/block.json",
-  "apiVersion": 3,
-  "name": "ksd/generic-grid-item",
-  "title": "Grid Item",
-  "category": "theme",
-  "icon": "block-default",
-  "description": "",
-  "keywords": [""],
-  "textdomain": "kotisivu-block-theme",
-  "supports": {
-    "className": false
-  },
-  "parent": ["ksd/generic-grid"],
-  "usesContext": ["generic-grid/template"],
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "attributes": {
-    "blockClass": {
-      "type": "string",
-      "default": ""
-    },
-    "template": {
-      "type": "array",
-      "default": []
-    },
-    "allowedBlocks": {
-      "type": "array"
-    },
-    "templateLock": {
-      "type": ["string", "boolean"],
-      "enum": ["all", "insert", false]
-    }
-  }
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/generic-grid-item",
+	"title": "Grid Item",
+	"category": "theme",
+	"icon": "block-default",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/generic-grid"],
+	"usesContext": ["generic-grid/template"],
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"attributes": {
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		}
+	}
 }

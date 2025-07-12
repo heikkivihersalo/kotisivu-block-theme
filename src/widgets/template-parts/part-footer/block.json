@@ -1,143 +1,143 @@
 {
-  "$schema": "https://json.schemastore.org/block.json",
-  "apiVersion": 3,
-  "name": "ksd/part-footer",
-  "title": "Part | Footer",
-  "category": "theme",
-  "icon": "block-default",
-  "description": "",
-  "keywords": ["menu, header"],
-  "textdomain": "ilmajoen-lampo-block-theme",
-  "supports": {
-    "className": false,
-    "multiple": false
-  },
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php",
-  "attributes": {
-    "template": {
-      "type": "array",
-      "default": [
-        [
-          "ksd/wrapper",
-          {
-            "blockClass": "site-footer__top",
-            "variationName": "wrapper-100",
-            "templateLock": "all",
-            "template": [
-              ["core/site-logo"],
-              [
-                "ksd/wrapper",
-                {
-                  "blockClass": "site-footer__description",
-                  "variationName": "wrapper-100",
-                  "templateLock": "all",
-                  "template": [
-                    [
-                      "core/heading",
-                      {
-                        "level": 2
-                      }
-                    ],
-                    ["core/paragraph"]
-                  ]
-                }
-              ]
-            ]
-          }
-        ],
-        [
-          "ksd/wrapper",
-          {
-            "blockClass": "site-footer__bottom",
-            "variationName": "wrapper-100",
-            "templateLock": "all",
-            "template": [
-              [
-                "ksd/wrapper",
-                {
-                  "blockClass": "site-footer__menu",
-                  "variationName": "wrapper-100",
-                  "templateLock": "all",
-                  "template": [
-                    [
-                      "core/heading",
-                      {
-                        "level": 3
-                      }
-                    ],
-                    ["core/navigation"]
-                  ]
-                }
-              ],
-              [
-                "ksd/wrapper",
-                {
-                  "blockClass": "site-footer__menu",
-                  "variationName": "wrapper-100",
-                  "templateLock": "all",
-                  "template": [
-                    [
-                      "core/heading",
-                      {
-                        "level": 3
-                      }
-                    ],
-                    ["core/navigation"]
-                  ]
-                }
-              ],
-              [
-                "ksd/wrapper",
-                {
-                  "blockClass": "site-footer__menu",
-                  "variationName": "wrapper-100",
-                  "templateLock": "all",
-                  "template": [
-                    [
-                      "core/heading",
-                      {
-                        "level": 3
-                      }
-                    ],
-                    ["core/navigation"]
-                  ]
-                }
-              ],
-              [
-                "ksd/wrapper",
-                {
-                  "blockClass": "site-footer__menu",
-                  "variationName": "wrapper-100",
-                  "templateLock": "all",
-                  "template": [
-                    [
-                      "core/heading",
-                      {
-                        "level": 3
-                      }
-                    ],
-                    ["core/navigation"]
-                  ]
-                }
-              ]
-            ]
-          }
-        ]
-      ]
-    },
-    "allowedBlocks": {
-      "type": "array",
-      "default": [
-        "core/site-logo",
-        "core/heading",
-        "core/paragraph",
-        "core/navigation",
-        "core/navigation",
-        "ksd/wrapper"
-      ]
-    }
-  }
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/part-footer",
+	"title": "Part | Footer",
+	"category": "theme",
+	"icon": "block-default",
+	"description": "",
+	"keywords": ["menu, header"],
+	"textdomain": "ilmajoen-lampo-block-theme",
+	"supports": {
+		"className": false,
+		"multiple": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": [
+				[
+					"ksd/wrapper",
+					{
+						"blockClass": "site-footer__top",
+						"variationName": "wrapper-100",
+						"templateLock": "all",
+						"template": [
+							["core/site-logo"],
+							[
+								"ksd/wrapper",
+								{
+									"blockClass": "site-footer__description",
+									"variationName": "wrapper-100",
+									"templateLock": "all",
+									"template": [
+										[
+											"core/heading",
+											{
+												"level": 2
+											}
+										],
+										["core/paragraph"]
+									]
+								}
+							]
+						]
+					}
+				],
+				[
+					"ksd/wrapper",
+					{
+						"blockClass": "site-footer__bottom",
+						"variationName": "wrapper-100",
+						"templateLock": "all",
+						"template": [
+							[
+								"ksd/wrapper",
+								{
+									"blockClass": "site-footer__menu",
+									"variationName": "wrapper-100",
+									"templateLock": "all",
+									"template": [
+										[
+											"core/heading",
+											{
+												"level": 3
+											}
+										],
+										["core/navigation"]
+									]
+								}
+							],
+							[
+								"ksd/wrapper",
+								{
+									"blockClass": "site-footer__menu",
+									"variationName": "wrapper-100",
+									"templateLock": "all",
+									"template": [
+										[
+											"core/heading",
+											{
+												"level": 3
+											}
+										],
+										["core/navigation"]
+									]
+								}
+							],
+							[
+								"ksd/wrapper",
+								{
+									"blockClass": "site-footer__menu",
+									"variationName": "wrapper-100",
+									"templateLock": "all",
+									"template": [
+										[
+											"core/heading",
+											{
+												"level": 3
+											}
+										],
+										["core/navigation"]
+									]
+								}
+							],
+							[
+								"ksd/wrapper",
+								{
+									"blockClass": "site-footer__menu",
+									"variationName": "wrapper-100",
+									"templateLock": "all",
+									"template": [
+										[
+											"core/heading",
+											{
+												"level": 3
+											}
+										],
+										["core/navigation"]
+									]
+								}
+							]
+						]
+					}
+				]
+			]
+		},
+		"allowedBlocks": {
+			"type": "array",
+			"default": [
+				"core/site-logo",
+				"core/heading",
+				"core/paragraph",
+				"core/navigation",
+				"core/navigation",
+				"ksd/wrapper"
+			]
+		}
+	}
 }
