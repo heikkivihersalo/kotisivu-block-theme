@@ -1,3 +1,3 @@
-// Bundle feature - handles generateBundle and writeBundle phases
-export { createBundleGenerator } from './generators.js';
-export { createDirectOutputOrganizer } from './organizers.js';
+// Bundle feature exports
+export { createBundleGenerator } from './lib/generators.js';
+export { createDirectOutputOrganizer } from './lib/organizers.js';

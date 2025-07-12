@@ -10,9 +10,27 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 ├── GutenbergBlocksPlugin.js # Main plugin entry point
 ├── features/                # Feature-based modules
 │   ├── blocks/             # Input configuration (config.build.rollupOptions.input)
+│   │   ├── lib/            # Feature-specific functions
+│   │   │   ├── createBlockInputs.js
+│   │   │   └── getBlockJsonFiles.js
+│   │   └── index.js        # Feature exports
 │   ├── chunks/             # Chunking strategy (config.build.rollupOptions.output.manualChunks)
+│   │   ├── lib/            # Feature-specific functions
+│   │   │   ├── createManualChunks.js
+│   │   │   └── createChunkFileNames.js
+│   │   ├── helpers.js      # Shared chunk helper functions
+│   │   └── index.js        # Feature exports
 │   ├── externals/          # External deps (config.build.rollupOptions.external + globals)
+│   │   ├── lib/            # Feature-specific functions
+│   │   │   ├── createExternalFunction.js
+│   │   │   └── createGlobalsMapping.js
+│   │   └── index.js        # Feature exports
 │   └── bundle/             # Bundle phases (generateBundle + writeBundle)
+│       ├── lib/            # Feature-specific functions
+│       │   ├── generators.js
+│       │   ├── organizers.js
+│       │   └── css-utils.js
+│       └── index.js        # Feature exports
 └── shared/                 # Common utilities used across features
     ├── fileSystem.js       # File operations
     ├── wordpress.js        # WordPress-specific utilities
@@ -25,7 +43,10 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 **Vite Config**: `config.build.rollupOptions.input`
 
 - **Purpose**: Block discovery and input configuration
-- **Files**: `index.js`
+- **Files**: 
+  - `index.js` - Feature exports
+  - `lib/createBlockInputs.js` - Block discovery and input configuration
+  - `lib/getBlockJsonFiles.js` - Block.json file discovery
 - **Exports**: `createBlockInputs()`, `getBlockJsonFiles()`
 - **Responsibility**: Scans for block.json files and creates Vite input entries
 
@@ -33,7 +54,11 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 **Vite Config**: `config.build.rollupOptions.output.manualChunks` + `chunkFileNames`
 
 - **Purpose**: Rollup chunking strategy and file naming
-- **Files**: `index.js`
+- **Files**: 
+  - `index.js` - Feature exports
+  - `lib/createManualChunks.js` - Manual chunking logic
+  - `lib/createChunkFileNames.js` - Chunk file naming strategy
+  - `helpers.js` - Shared helper functions for chunk operations
 - **Exports**: `createManualChunks()`, `createChunkFileNames()`, `isModuleUsedByEditor()`
 - **Responsibility**: Dynamic chunking logic, editor dependency detection
 
@@ -41,7 +66,10 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 **Vite Config**: `config.build.rollupOptions.external` + `output.globals`
 
 - **Purpose**: External dependencies and globals mapping
-- **Files**: `index.js`
+- **Files**: 
+  - `index.js` - Feature exports
+  - `lib/createExternalFunction.js` - External dependency detection
+  - `lib/createGlobalsMapping.js` - WordPress globals mapping
 - **Exports**: `createExternalFunction()`, `createGlobalsMapping()`
 - **Responsibility**: WordPress and React externalization, globals mapping
 
@@ -50,12 +78,22 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 
 - **Purpose**: Bundle generation and output organization
 - **Files**: 
-  - `index.js` - Main exports
-  - `generators.js` - Block.json and render.php copying
-  - `organizers.js` - File organization and asset generation
-  - `css-utils.js` - CSS processing utilities
+  - `index.js` - Feature exports
+  - `lib/generators.js` - Block.json and render.php copying
+  - `lib/organizers.js` - File organization and asset generation
+  - `lib/css-utils.js` - CSS processing utilities
 - **Exports**: `createBundleGenerator()`, `createDirectOutputOrganizer()`
 - **Responsibility**: WordPress asset files, CSS processing, file organization
+
+## 📂 Feature Structure Pattern
+
+Each feature follows a consistent structure:
+- **`lib/`** folder contains individual function files
+- **`index.js`** at feature root exports all functions from lib
+- Each exported function has its own file in `lib/`
+- Function-specific helpers stay in the same file as the main function
+- Shared helpers within a feature go into a `helpers.js` file at the feature root
+- Only shared/common utilities across all features are placed in the `shared/` folder
 
 ## 🔄 Plugin Flow
 

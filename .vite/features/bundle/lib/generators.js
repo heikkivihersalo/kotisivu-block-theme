@@ -1,6 +1,6 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
-import { getBlockJsonFiles } from '../blocks/index.js';
+import { getBlockJsonFiles } from '../../blocks/index.js';
 
 /**
  * Generates bundle files for blocks including block.json and render.php
