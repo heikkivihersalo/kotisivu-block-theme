@@ -115,10 +115,11 @@ export default function gutenbergBlocksPlugin(options = {}) {
 							'@wordpress/primitives': 'wp.primitives',
 							'@wordpress/icons': 'wp.icons',
 
-							// React - provided by WordPress
-							react: 'wp.element.React',
-							'react-dom': 'wp.element.ReactDOM',
-							'react/jsx-runtime': 'wp.element.React',
+							// React - provided by WordPress via wp.element
+							react: 'wp.element',
+							'react-dom': 'wp.element',
+							'react/jsx-runtime': 'wp.element',
+							'react/jsx-dev-runtime': 'wp.element',
 
 							// Third-party libraries
 							lodash: 'lodash',
@@ -308,6 +309,11 @@ export default function gutenbergBlocksPlugin(options = {}) {
 
 							// Dynamically detect any dependency used by editor files (anywhere: node_modules or project)
 							if (isUsedByEditor(id)) {
+								// Skip React dependencies - they should be externalized
+								if (id.includes('react')) {
+									return null;
+								}
+
 								// Categorize WordPress editor-specific packages
 								if (
 									id.includes('@wordpress/block-editor') ||
@@ -319,9 +325,9 @@ export default function gutenbergBlocksPlugin(options = {}) {
 									return 'editor-deps/wp-editor';
 								}
 
-								// Categorize React DOM utilities used by editor
+								// Categorize React DOM utilities used by editor - but only if not externalized
 								if (id.includes('react-dom')) {
-									return 'editor-deps/react-dom';
+									return null; // Should be externalized
 								}
 
 								// Categorize known utility libraries (both node_modules and project)
@@ -367,56 +373,81 @@ export default function gutenbergBlocksPlugin(options = {}) {
 								}
 							}
 
-							// Group common WordPress dependencies
+							// Group common WordPress dependencies (only if NOT externalized)
 							if (id.includes('@wordpress/')) {
 								return 'wp-deps';
 							}
 
-							// Group React dependencies
-							if (
-								id.includes('react') &&
-								!id.includes('react-dom')
-							) {
-								return 'react-deps';
+							// React dependencies should be externalized, not bundled
+							// If React somehow gets here, it means externalization failed
+							if (id.includes('react')) {
+								console.warn(
+									`React dependency ${id} should be externalized but is being bundled. Check externals config.`
+								);
+								return null; // Let it be externalized instead of bundled
 							}
 
 							return null;
 						},
 					},
-					external: [
+					external: (id) => {
 						// WordPress packages - accessed via global wp object
-						'@wordpress/blocks',
-						'@wordpress/block-editor',
-						'@wordpress/components',
-						'@wordpress/compose',
-						'@wordpress/core-data',
-						'@wordpress/data',
-						'@wordpress/element',
-						'@wordpress/i18n',
-						'@wordpress/notices',
-						'@wordpress/server-side-render',
-						'@wordpress/api-fetch',
-						'@wordpress/url',
-						'@wordpress/html-entities',
-						'@wordpress/rich-text',
-						'@wordpress/editor',
-						'@wordpress/plugins',
-						'@wordpress/edit-post',
-						'@wordpress/date',
-						'@wordpress/keycodes',
-						'@wordpress/primitives',
-						'@wordpress/icons',
+						const wpPackages = [
+							'@wordpress/blocks',
+							'@wordpress/block-editor',
+							'@wordpress/components',
+							'@wordpress/compose',
+							'@wordpress/core-data',
+							'@wordpress/data',
+							'@wordpress/element',
+							'@wordpress/i18n',
+							'@wordpress/notices',
+							'@wordpress/server-side-render',
+							'@wordpress/api-fetch',
+							'@wordpress/url',
+							'@wordpress/html-entities',
+							'@wordpress/rich-text',
+							'@wordpress/editor',
+							'@wordpress/plugins',
+							'@wordpress/edit-post',
+							'@wordpress/date',
+							'@wordpress/keycodes',
+							'@wordpress/primitives',
+							'@wordpress/icons',
+						];
 
-						// React - provided by WordPress via wp.element
-						'react',
-						'react-dom',
-						'react/jsx-runtime',
+						// Check for WordPress packages
+						if (
+							wpPackages.some(
+								(pkg) => id === pkg || id.startsWith(pkg + '/')
+							)
+						) {
+							return true;
+						}
+
+						// React packages - provided by WordPress via wp.element
+						if (
+							id === 'react' ||
+							id === 'react-dom' ||
+							id.startsWith('react/') ||
+							id.includes('react/jsx-runtime') ||
+							id.includes('react/jsx-dev-runtime') ||
+							id.includes('node_modules/react/')
+						) {
+							return true;
+						}
 
 						// Third-party libraries provided by WordPress
-						'lodash',
-						'moment',
-						'jquery',
-					],
+						if (
+							id === 'lodash' ||
+							id === 'moment' ||
+							id === 'jquery'
+						) {
+							return true;
+						}
+
+						return false;
+					},
 				},
 			};
 		},
