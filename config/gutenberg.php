@@ -101,7 +101,7 @@ return [
         'core/nextpage',
         'core/page-list-item',
         'core/page-list',
-        // 'core/paragraph',
+        'core/paragraph',
         'core/pattern',
         'core/post-author-biography',
         'core/post-author-name',
