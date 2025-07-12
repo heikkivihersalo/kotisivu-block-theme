@@ -50,7 +50,6 @@ registerBlockType(metadata.name, {
 		}
 	},
 	transforms,
-	deprecated,
 	merge(attributes, attributesToMerge) {
 		return {
 			content:
