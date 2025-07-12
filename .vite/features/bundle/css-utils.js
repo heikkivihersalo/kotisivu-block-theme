@@ -1,6 +1,10 @@
 import { join, dirname, basename } from 'path';
 import { renameSync, unlinkSync } from 'fs';
-import { getAllFiles, safeReadFile, safeWriteFile } from './fileSystem.js';
+import {
+	getAllFiles,
+	safeReadFile,
+	safeWriteFile,
+} from '../../shared/fileSystem.js';
 
 /**
  * Fix CSS file extensions and rename editor-styles to index

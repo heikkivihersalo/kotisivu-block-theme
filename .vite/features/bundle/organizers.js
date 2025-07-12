@@ -13,12 +13,13 @@ import {
 	generateAssetFileContent,
 	generateFileHash,
 	extractWordPressDependencies,
-	moveFile,
-	getAllFiles,
+} from '../../shared/wordpress.js';
+import { moveFile, getAllFiles } from '../../shared/fileSystem.js';
+import {
 	fixCssFiles,
 	cleanupCssComments,
 	removeCSSImportComments,
-} from '../utils/index.js';
+} from './css-utils.js';
 
 /**
  * Updates import paths in files based on a mapping
