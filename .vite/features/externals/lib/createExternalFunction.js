@@ -1,44 +1,17 @@
-/**
- * WordPress packages that should be externalized
- */
-const WORDPRESS_PACKAGES = [
-	'@wordpress/blocks',
-	'@wordpress/block-editor',
-	'@wordpress/components',
-	'@wordpress/compose',
-	'@wordpress/core-data',
-	'@wordpress/data',
-	'@wordpress/element',
-	'@wordpress/i18n',
-	'@wordpress/notices',
-	'@wordpress/server-side-render',
-	'@wordpress/api-fetch',
-	'@wordpress/url',
-	'@wordpress/html-entities',
-	'@wordpress/rich-text',
-	'@wordpress/editor',
-	'@wordpress/plugins',
-	'@wordpress/edit-post',
-	'@wordpress/date',
-	'@wordpress/keycodes',
-	'@wordpress/primitives',
-	'@wordpress/icons',
-];
-
-/**
- * Third-party libraries provided by WordPress
- */
-const THIRD_PARTY_LIBRARIES = ['lodash', 'moment', 'jquery'];
+import { getWordPressPackages, getThirdPartyLibraries } from '../constants.js';
 
 /**
  * Create external dependencies function for Rollup
  * @returns {Function} External function for Rollup configuration
  */
 export function createExternalFunction() {
+	const wordpressPackages = getWordPressPackages();
+	const thirdPartyLibraries = getThirdPartyLibraries();
+
 	return (id) => {
 		// Check for WordPress packages
 		if (
-			WORDPRESS_PACKAGES.some(
+			wordpressPackages.some(
 				(pkg) => id === pkg || id.startsWith(pkg + '/')
 			)
 		) {
@@ -65,7 +38,7 @@ export function createExternalFunction() {
 		}
 
 		// Third-party libraries provided by WordPress
-		if (THIRD_PARTY_LIBRARIES.includes(id)) {
+		if (thirdPartyLibraries.includes(id)) {
 			return true;
 		}
 
