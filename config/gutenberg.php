@@ -82,7 +82,7 @@ return [
         'core/freeform',
         'core/gallery',
         'core/group',
-        // 'core/heading',
+        'core/heading',
         'core/home-link',
         // 'core/html',
         // 'core/image',
