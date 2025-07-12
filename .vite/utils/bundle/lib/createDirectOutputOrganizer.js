@@ -21,6 +21,7 @@ import {
 	cleanupCssComments,
 	removeCSSImportComments,
 } from '../utils/index.js';
+import { CHUNK_PATTERNS, WORDPRESS_FILES } from '../../constants.js';
 
 /**
  * Updates import paths in files based on a mapping
@@ -197,16 +198,16 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 			const fileName = basename(filePath);
 
 			// Handle files marked for ROOT
-			if (fileName.includes('__ROOT__.js')) {
-				const cleanName = fileName.replace('__ROOT__', '');
+			if (fileName.includes(`${CHUNK_PATTERNS.ROOT_SUFFIX}.js`)) {
+				const cleanName = fileName.replace(CHUNK_PATTERNS.ROOT_SUFFIX, '');
 				const newPath = join(buildRoot, cleanName);
 				filesToMove.push({ from: filePath, to: newPath });
 				importPathMappings[filePath] = newPath;
 			}
 
 			// Handle files marked for EDITOR
-			if (fileName.includes('__EDITOR__.js')) {
-				const cleanName = fileName.replace('__EDITOR__', '');
+			if (fileName.includes(`${CHUNK_PATTERNS.EDITOR_SUFFIX}.js`)) {
+				const cleanName = fileName.replace(CHUNK_PATTERNS.EDITOR_SUFFIX, '');
 				const newPath = join(editorDir, cleanName);
 				filesToMove.push({ from: filePath, to: newPath });
 				importPathMappings[filePath] = newPath;

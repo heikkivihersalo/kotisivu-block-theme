@@ -1,4 +1,5 @@
 import { glob } from 'glob';
+import { BLOCK_PATTERNS } from '../../../constants.js';
 
 /**
  * Get all block.json files for bundle generation
@@ -6,5 +7,5 @@ import { glob } from 'glob';
  * @returns {Array} Array of block.json file paths
  */
 export function getBlockJsonFiles(blocksDir) {
-	return glob.sync(`${blocksDir}/**/block.json`);
+	return glob.sync(`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`);
 }

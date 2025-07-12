@@ -7,7 +7,6 @@ export { createBlockInputs } from './input/index.js';
 export {
 	createManualChunks,
 	createChunkFileNames,
-	isModuleUsedByEditor,
 } from './chunks/index.js';
 
 // Externals feature - external dependencies and globals

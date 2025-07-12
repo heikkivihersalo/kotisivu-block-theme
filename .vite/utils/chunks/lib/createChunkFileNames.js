@@ -5,6 +5,7 @@ import {
 	isEditorUtilityChunk,
 	isRootAssetChunk,
 } from '../helpers.js';
+import { CHUNK_PATTERNS } from '../../constants.js';
 
 /**
  * Creates chunk file names configuration for Rollup with direct output logic
@@ -15,19 +16,19 @@ import {
 export function createChunkFileNames(outputDir, editorOutputDir) {
 	return (chunkInfo) => {
 		// Store chunk destination info in the chunk name for later processing
-		if (chunkInfo.name === 'react-runtime' || isRootAssetChunk(chunkInfo)) {
+		if (chunkInfo.name === CHUNK_PATTERNS.REACT_RUNTIME || isRootAssetChunk(chunkInfo)) {
 			// Mark as root chunk
-			return '[name]__ROOT__.js';
+			return `[name]${CHUNK_PATTERNS.ROOT_SUFFIX}.js`;
 		}
 
 		if (
-			chunkInfo.name === 'editor-dependencies' ||
-			chunkInfo.name === 'wp-editor' ||
+			chunkInfo.name === CHUNK_PATTERNS.EDITOR_DEPENDENCIES ||
+			chunkInfo.name === CHUNK_PATTERNS.WP_EDITOR ||
 			isEditorRelatedChunk(chunkInfo) ||
 			isEditorUtilityChunk(chunkInfo)
 		) {
 			// Mark as editor chunk
-			return '[name]__EDITOR__.js';
+			return `[name]${CHUNK_PATTERNS.EDITOR_SUFFIX}.js`;
 		}
 
 		// Default to blocks directory

@@ -1,6 +1,7 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { glob } from 'glob';
+import { BLOCK_PATTERNS } from '../../constants.js';
 
 /**
  * Discover all block.json files and create build entries
@@ -9,7 +10,7 @@ import { glob } from 'glob';
  */
 export function createBlockInputs(blocksDir) {
 	// Find all block.json files
-	const blockJsonFiles = glob.sync(`${blocksDir}/**/block.json`);
+	const blockJsonFiles = glob.sync(`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`);
 
 	if (blockJsonFiles.length === 0) {
 		console.warn('No block.json files found in', blocksDir);
@@ -26,7 +27,7 @@ export function createBlockInputs(blocksDir) {
 		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
 		// Check for main script file (index.ts, index.js, index.tsx, index.jsx)
-		const indexFile = ['index.ts', 'index.tsx', 'index.js', 'index.jsx']
+		const indexFile = BLOCK_PATTERNS.SCRIPT_EXTENSIONS
 			.map((filename) => resolve(blockDir, filename))
 			.find((filepath) => existsSync(filepath));
 

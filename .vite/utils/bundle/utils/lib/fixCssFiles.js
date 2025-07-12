@@ -3,6 +3,7 @@ import { renameSync, unlinkSync } from 'fs';
 import { getAllFiles } from './getAllFiles.js';
 import { safeReadFile } from './safeReadFile.js';
 import { safeWriteFile } from './safeWriteFile.js';
+import { OUTPUT_PATTERNS } from '../../../constants.js';
 
 /**
  * Fix CSS file extensions and rename editor-styles to index
@@ -21,7 +22,7 @@ export function fixCssFiles(outputDir) {
 		// Collect .js files that should be .css (for empty CSS files processed by Vite)
 		if (
 			fileName.endsWith('.js') &&
-			(fileName.includes('index-css') || fileName.includes('style-index'))
+			(fileName.includes(OUTPUT_PATTERNS.INDEX_CSS) || fileName.includes(OUTPUT_PATTERNS.STYLE_INDEX))
 		) {
 			// Check if this is actually a CSS file by reading content
 			try {
@@ -63,7 +64,7 @@ export function fixCssFiles(outputDir) {
 	// Second pass: Refresh file list and rename all index-css.css to index.css
 	allFiles = getAllFiles(outputDir);
 	const filesToRename = allFiles.filter(
-		(filePath) => basename(filePath) === 'index-css.css'
+		(filePath) => basename(filePath) === `${OUTPUT_PATTERNS.INDEX_CSS}.css`
 	);
 
 	for (const filePath of filesToRename) {

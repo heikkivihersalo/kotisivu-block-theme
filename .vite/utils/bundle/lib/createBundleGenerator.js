@@ -1,6 +1,7 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { getBlockJsonFiles } from '../utils/index.js';
+import { WORDPRESS_FILES } from '../../constants.js';
 
 /**
  * Generates bundle files for blocks including block.json and render.php
@@ -23,12 +24,12 @@ export function createBundleGenerator(blocksDir, copyBlockJson = true) {
 			// Add block.json to bundle
 			this.emitFile({
 				type: 'asset',
-				fileName: `${blockName}/block.json`,
+				fileName: `${blockName}/${WORDPRESS_FILES.BLOCK_JSON}`,
 				source: blockJsonContent,
 			});
 
 			// Copy render.php if it exists
-			const renderPhpPath = resolve(blockDir, 'render.php');
+			const renderPhpPath = resolve(blockDir, WORDPRESS_FILES.RENDER_PHP);
 			if (existsSync(renderPhpPath)) {
 				const renderPhpContent = readFileSync(renderPhpPath, 'utf8');
 				this.emitFile({
