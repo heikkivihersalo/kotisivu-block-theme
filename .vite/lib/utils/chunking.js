@@ -226,11 +226,13 @@ export function createChunkFileNames(outputDir, editorOutputDir) {
 			// Mark as root chunk
 			return '[name]__ROOT__.js';
 		}
-		
-		if (chunkInfo.name === 'editor-dependencies' || 
-			chunkInfo.name === 'wp-editor' || 
-			isEditorRelatedChunk(chunkInfo) || 
-			isEditorUtilityChunk(chunkInfo)) {
+
+		if (
+			chunkInfo.name === 'editor-dependencies' ||
+			chunkInfo.name === 'wp-editor' ||
+			isEditorRelatedChunk(chunkInfo) ||
+			isEditorUtilityChunk(chunkInfo)
+		) {
 			// Mark as editor chunk
 			return '[name]__EDITOR__.js';
 		}

@@ -1,21 +1,19 @@
-import { createBlockInputs } from './scripts/blockDiscovery.js';
 import {
+	createBlockInputs,
 	createExternalFunction,
 	createGlobalsMapping,
-} from './scripts/externals.js';
-import {
 	createManualChunks,
 	createChunkFileNames,
-} from './scripts/chunking.js';
-import { createBundleGenerator } from './scripts/bundleGeneration.js';
-import { createDirectOutputOrganizer } from './scripts/directOutputOrganizer.js';
+	createBundleGenerator,
+	createDirectOutputOrganizer,
+} from './lib/index.js';
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin
  *
  * This plugin scans for block.json files and creates appropriate build entries
  * for WordPress Gutenberg blocks with the correct file naming conventions.
- * 
+ *
  * Uses a custom approach to output files directly to the correct folders
  * without requiring post-build moves.
  */
@@ -44,7 +42,10 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						assetFileNames: '[name].[ext]',
 						format: 'es',
 						globals: createGlobalsMapping(),
-						chunkFileNames: createChunkFileNames(outputDir, editorOutputDir),
+						chunkFileNames: createChunkFileNames(
+							outputDir,
+							editorOutputDir
+						),
 						manualChunks: createManualChunks(),
 					},
 					external: createExternalFunction(),
