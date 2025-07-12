@@ -53,10 +53,25 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		// Check for editor styles (editor.css, editor.scss) - output as index.css to match WordPress convention
 		const editorCssFile = WORDPRESS_FILES.EDITOR_CSS.input
 			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => existsSync(filepath));
+			.find((filepath) => {
+				if (!existsSync(filepath)) return false;
+				
+				// Always include CSS files, but mark empty ones for later processing
+				return true;
+			});
 
 		if (editorCssFile) {
-			input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
+			// Check if the file has content
+			try {
+				const fs = require('fs');
+				const content = fs.readFileSync(editorCssFile, 'utf8').trim();
+				if (content.length > 0) {
+					// Only create entries for blocks with actual CSS content
+					input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
+				}
+			} catch {
+				// If we can't read the file, skip it
+			}
 		}
 
 		// Check for frontend styles (style.css, style.scss)

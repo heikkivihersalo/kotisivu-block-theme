@@ -68,12 +68,22 @@ export default function gutenbergBlocksPlugin(options = {}) {
 			// Update Vite config with direct output configuration
 			config.build = {
 				...config.build,
+				cssCodeSplit: true, // Enable CSS code splitting per entry
 				rollupOptions: {
 					input: allInputs,
 					output: {
 						dir: finalOutputDir,
 						entryFileNames: '[name].js',
-						assetFileNames: '[name].[ext]',
+						assetFileNames: (assetInfo) => {
+							// Handle CSS files from index-css entries
+							if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+								// Check if this is an index-css file that should be renamed to index.css
+								if (assetInfo.name.includes('/index-css.css')) {
+									return assetInfo.name.replace('/index-css.css', '/index.css');
+								}
+							}
+							return '[name].[ext]';
+						},
 						format: 'es',
 						globals: createGlobalsMapping(),
 						chunkFileNames: createChunkFileNames(

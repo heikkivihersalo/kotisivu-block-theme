@@ -232,49 +232,30 @@ export function createDirectOutputOrganizer(
 				importPathMappings[filePath] = newPath;
 			}
 
-			// Handle ALL index-css.js files - these should be removed or moved to editor
+			// Handle index-css.js files (legacy from previous builds) - remove them as they should now be .css files
 			if (fileName === 'index-css.js' && existsSync(filePath)) {
-				try {
-					const fileStats = statSync(filePath);
-					const content = readFileSync(filePath, 'utf8');
-
-					// Check if it's a large file with significant editor dependencies
-					if (
-						fileStats.size > 10 * 1024 &&
-						(content.includes('Inspector') ||
-							content.includes('PanelBody') ||
-							content.includes('useBlockProps') ||
-							content.includes('InspectorControls') ||
-							content.includes('@wordpress/block-editor') ||
-							content.includes('gridAlignControls') ||
-							content.includes('backgroundColorControls'))
-					) {
-						// Move large editor dependency files to editor directory with generic name
-						const relativePath = relative(baseOutputDir, filePath);
-						const editorFileName = 'editor-dependency.js';
-						const newPath = join(editorDir, editorFileName);
-						filesToMove.push({ from: filePath, to: newPath });
-						importPathMappings[filePath] = newPath;
-						console.log(
-							`📦 Moving large editor dependency file: ${relativePath} → ${relative(baseOutputDir, newPath)} (${Math.round(fileStats.size / 1024)}KB)`
-						);
-					} else {
-						// Remove small index-css.js files that just contain imports to editor dependencies
-						// These are redundant since index.js should handle all imports
-						const relativePath = relative(baseOutputDir, filePath);
-						filesToRemove.push(filePath);
-						// Only log the first few to avoid spam
-						if (filesToRemove.length <= 5) {
-							console.log(
-								`🗑️  Removing redundant index-css.js: ${relativePath} (${Math.round(fileStats.size / 1024)}KB)`
-							);
-						}
-					}
-				} catch (error) {
-					console.warn(
-						`⚠️  Failed to analyze file ${filePath}:`,
-						error.message
+				const relativePath = relative(baseOutputDir, filePath);
+				filesToRemove.push(filePath);
+				// Only log the first few to avoid spam
+				if (filesToRemove.length <= 5) {
+					console.log(
+						`�️  Removing legacy index-css.js: ${relativePath} (now handled as index.css)`
 					);
+				}
+			}
+
+			// Handle editor-dependencies.css - split it into individual block index.css files
+			if (fileName === 'editor-dependencies.css') {
+				const relativePath = relative(baseOutputDir, filePath);
+				console.log(`🎨 Processing editor dependencies: ${relativePath}`);
+				
+				try {
+					const cssContent = readFileSync(filePath, 'utf8');
+					// For now, just ensure the file exists
+					// TODO: Implement CSS splitting logic here when needed
+					console.log(`📊 Editor dependencies size: ${Math.round(statSync(filePath).size / 1024)}KB`);
+				} catch (error) {
+					console.warn(`⚠️  Failed to process editor dependencies:`, error.message);
 				}
 			}
 
