@@ -89,6 +89,42 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						dir: outputDir,
 						entryFileNames: '[name].js',
 						assetFileNames: '[name].[ext]',
+						format: 'es',
+						globals: {
+							// WordPress packages
+							'@wordpress/blocks': 'wp.blocks',
+							'@wordpress/block-editor': 'wp.blockEditor',
+							'@wordpress/components': 'wp.components',
+							'@wordpress/compose': 'wp.compose',
+							'@wordpress/core-data': 'wp.coreData',
+							'@wordpress/data': 'wp.data',
+							'@wordpress/element': 'wp.element',
+							'@wordpress/i18n': 'wp.i18n',
+							'@wordpress/notices': 'wp.notices',
+							'@wordpress/server-side-render':
+								'wp.serverSideRender',
+							'@wordpress/api-fetch': 'wp.apiFetch',
+							'@wordpress/url': 'wp.url',
+							'@wordpress/html-entities': 'wp.htmlEntities',
+							'@wordpress/rich-text': 'wp.richText',
+							'@wordpress/editor': 'wp.editor',
+							'@wordpress/plugins': 'wp.plugins',
+							'@wordpress/edit-post': 'wp.editPost',
+							'@wordpress/date': 'wp.date',
+							'@wordpress/keycodes': 'wp.keycodes',
+							'@wordpress/primitives': 'wp.primitives',
+							'@wordpress/icons': 'wp.icons',
+
+							// React - provided by WordPress
+							react: 'wp.element.React',
+							'react-dom': 'wp.element.ReactDOM',
+							'react/jsx-runtime': 'wp.element.React',
+
+							// Third-party libraries
+							lodash: 'lodash',
+							moment: 'moment',
+							jquery: 'jQuery',
+						},
 						chunkFileNames: (chunkInfo) => {
 							// Helper function to check if a module is used by editor files (same logic as manualChunks)
 							const isModuleUsedByEditor = (
@@ -348,7 +384,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						},
 					},
 					external: [
-						// WordPress externals
+						// WordPress packages - accessed via global wp object
 						'@wordpress/blocks',
 						'@wordpress/block-editor',
 						'@wordpress/components',
@@ -370,8 +406,13 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						'@wordpress/keycodes',
 						'@wordpress/primitives',
 						'@wordpress/icons',
+
+						// React - provided by WordPress via wp.element
 						'react',
 						'react-dom',
+						'react/jsx-runtime',
+
+						// Third-party libraries provided by WordPress
 						'lodash',
 						'moment',
 						'jquery',
