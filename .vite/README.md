@@ -1,6 +1,6 @@
-# Gutenberg Blocks Vite Plugin - Feature-Based Architecture
+# Gutenberg Blocks Vite Plugin - Utils-Based Architecture
 
-This plugin has been reorganized using a **feature-based design pattern** that maps directly to Vite configuration objects. Each feature corresponds to a specific aspect of the Vite build configuration.
+This plugin has been reorganized using a **utils-based design pattern** that maps directly to Vite configuration objects. Each util corresponds to a specific aspect of the Vite build configuration.
 
 ## 🏗️ Architecture Overview
 
@@ -26,15 +26,17 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 │   │   │   └── createGlobalsMapping.js
 │   │   └── index.js        # Feature exports
 │   └── bundle/             # Bundle phases (generateBundle + writeBundle)
+│       ├── helpers.js      # Shared utilities for bundle feature
 │       ├── lib/            # Feature-specific functions
-│       │   ├── generators.js
-│       │   ├── organizers.js
-│       │   └── css-utils.js
+│       │   ├── createBundleGenerator.js
+│       │   └── createDirectOutputOrganizer.js
+│       ├── utils/          # CSS utilities sub-feature
+│       │   ├── lib/        # Individual CSS utility functions
+│       │   │   ├── fixCssFiles.js
+│       │   │   ├── cleanupCssComments.js
+│       │   │   └── removeCSSImportComments.js
+│       │   └── index.js    # CSS utilities exports
 │       └── index.js        # Feature exports
-└── shared/                 # Common utilities used across features
-    ├── fileSystem.js       # File operations
-    ├── wordpress.js        # WordPress-specific utilities
-    └── pathUtils.js        # Path manipulation helpers
 ```
 
 ## 🎯 Features
@@ -46,101 +48,111 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 - **Files**: 
   - `index.js` - Feature exports
   - `lib/createBlockInputs.js` - Block discovery and input configuration
-  - `lib/getBlockJsonFiles.js` - Block.json file discovery
-- **Exports**: `createBlockInputs()`, `getBlockJsonFiles()`
+- **Exports**: `createBlockInputs()`
 - **Responsibility**: Scans for block.json files and creates Vite input entries
 
-### 2. **Chunks Feature** (`features/chunks/`)
+### 2. **Chunks Util** (`utils/chunks/`)
 **Vite Config**: `config.build.rollupOptions.output.manualChunks` + `chunkFileNames`
 
 - **Purpose**: Rollup chunking strategy and file naming
 - **Files**: 
-  - `index.js` - Feature exports
+  - `index.js` - Util exports
   - `lib/createManualChunks.js` - Manual chunking logic
   - `lib/createChunkFileNames.js` - Chunk file naming strategy
   - `helpers.js` - Shared helper functions for chunk operations
-- **Exports**: `createManualChunks()`, `createChunkFileNames()`, `isModuleUsedByEditor()`
+- **Exports**: `createManualChunks()`, `createChunkFileNames()`
 - **Responsibility**: Dynamic chunking logic, editor dependency detection
 
-### 3. **Externals Feature** (`features/externals/`)
+### 3. **Externals Util** (`utils/externals/`)
 **Vite Config**: `config.build.rollupOptions.external` + `output.globals`
 
 - **Purpose**: External dependencies and globals mapping
 - **Files**: 
-  - `index.js` - Feature exports
+  - `index.js` - Util exports
+  - `constants.js` - WordPress and third-party dependency constants
   - `lib/createExternalFunction.js` - External dependency detection
   - `lib/createGlobalsMapping.js` - WordPress globals mapping
 - **Exports**: `createExternalFunction()`, `createGlobalsMapping()`
 - **Responsibility**: WordPress and React externalization, globals mapping
 
-### 4. **Bundle Feature** (`features/bundle/`)
+### 4. **Bundle Util** (`utils/bundle/`)
 **Vite Config**: `generateBundle` + `writeBundle` plugin hooks
 
 - **Purpose**: Bundle generation and output organization
 - **Files**: 
-  - `index.js` - Feature exports
-  - `lib/generators.js` - Block.json and render.php copying
-  - `lib/organizers.js` - File organization and asset generation
-  - `lib/css-utils.js` - CSS processing utilities
+  - `index.js` - Util exports
+  - `lib/createBundleGenerator.js` - Block.json and render.php copying
+  - `lib/createDirectOutputOrganizer.js` - File organization and asset generation
+  - `utils/` - CSS utilities and helpers sub-util
+    - `index.js` - CSS utilities and helpers exports
+    - `lib/` - Individual function files
+      - `fixCssFiles.js` - CSS file extension fixing and renaming
+      - `cleanupCssComments.js` - CSS comment cleanup from JS files
+      - `removeCSSImportComments.js` - Single file CSS comment removal
+      - `getBlockJsonFiles.js` - Block.json file discovery
+      - `moveFile.js` - File moving utilities
+      - `getAllFiles.js` - Recursive file discovery
+      - `safeReadFile.js` - Safe file reading
+      - `safeWriteFile.js` - Safe file writing
+      - `generateAssetFileContent.js` - WordPress asset file generation
+      - `generateFileHash.js` - File hash generation for versioning
+      - `extractWordPressDependencies.js` - WordPress dependency analysis
+    - `lib/removeCSSImportComments.js` - Single file CSS comment removal
 - **Exports**: `createBundleGenerator()`, `createDirectOutputOrganizer()`
 - **Responsibility**: WordPress asset files, CSS processing, file organization
 
-## 📂 Feature Structure Pattern
+## 📂 Util Structure Pattern
 
-Each feature follows a consistent structure:
+Each util follows a consistent structure:
 - **`lib/`** folder contains individual function files
-- **`index.js`** at feature root exports all functions from lib
+- **`index.js`** at util root exports all functions from lib
 - Each exported function has its own file in `lib/`
 - Function-specific helpers stay in the same file as the main function
-- Shared helpers within a feature go into a `helpers.js` file at the feature root
-- Only shared/common utilities across all features are placed in the `shared/` folder
+- Shared helpers within a util go into a `helpers.js` file at the util root
+- Utils can have sub-utils (like `bundle/utils/`) with their own `lib/` and `index.js`
 
 ## 🔄 Plugin Flow
 
-1. **Config Phase**: Features configure Vite build options
+1. **Config Phase**: Utils configure Vite build options
    ```javascript
    config.build.rollupOptions = {
-     input: createBlockInputs(blocksDir),           // input feature
-     external: createExternalFunction(),            // externals feature
+     input: createBlockInputs(blocksDir),           // input util
+     external: createExternalFunction(),            // externals util
      output: {
-       globals: createGlobalsMapping(),             // externals feature  
-       manualChunks: createManualChunks(),          // chunks feature
-       chunkFileNames: createChunkFileNames(),      // chunks feature
+       globals: createGlobalsMapping(),             // externals util  
+       manualChunks: createManualChunks(),          // chunks util
+       chunkFileNames: createChunkFileNames(),      // chunks util
      }
    }
    ```
 
 2. **Bundle Phase**: Generate additional assets
    ```javascript
-   generateBundle: createBundleGenerator()          // bundle feature
+   generateBundle: createBundleGenerator()          // bundle util
    ```
 
 3. **Write Phase**: Organize output and process files
    ```javascript
-   writeBundle: createDirectOutputOrganizer()      // bundle feature
+   writeBundle: createDirectOutputOrganizer()      // bundle util
    ```
 
-## 🧩 Shared Utilities
+## 🧩 Utilities
 
-### `shared/fileSystem.js`
-- File operations used across multiple features
-- Functions: `moveFile()`, `getAllFiles()`, `safeReadFile()`, `safeWriteFile()`
+### Bundle Util Functions (`utils/bundle/utils/lib/`)
+- All helper and CSS utility functions are at the same level in the lib folder
+- Each function has its own file for better modularity and maintainability
+- CSS utilities: `fixCssFiles()`, `cleanupCssComments()`, `removeCSSImportComments()`
+- Helper functions: `getBlockJsonFiles()`, `moveFile()`, `getAllFiles()`, `safeReadFile()`, `safeWriteFile()`
+- WordPress functions: `generateAssetFileContent()`, `extractWordPressDependencies()`, `generateFileHash()`
+- `removeCSSImportComments()` - Single file CSS comment removal
 
-### `shared/wordpress.js`
-- WordPress-specific functionality
-- Functions: `generateAssetFileContent()`, `extractWordPressDependencies()`, `generateFileHash()`
+## ✅ Benefits of Utils-Based Design
 
-### `shared/pathUtils.js`
-- Path manipulation helpers
-- Functions: `updateImportPathsWithMappings()`, `updateImportPathsForFinalLocation()`
-
-## ✅ Benefits of Feature-Based Design
-
-1. **Clear Separation**: Each feature maps to specific Vite configuration
-2. **Single Responsibility**: Features handle one aspect of the build process
+1. **Clear Separation**: Each util maps to specific Vite configuration
+2. **Single Responsibility**: Utils handle one aspect of the build process
 3. **Easy Navigation**: Find code by thinking about Vite config structure
-4. **Modular**: Features can be developed/tested independently
-5. **Scalable**: Easy to add new Vite configuration features
+4. **Modular**: Utils can be developed/tested independently
+5. **Scalable**: Easy to add new Vite configuration utils
 6. **Clean Imports**: Single entry point with feature-based organization
 
 ## 🚀 Usage

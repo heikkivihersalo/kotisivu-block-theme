@@ -6,7 +6,7 @@ import {
 	createChunkFileNames,
 	createBundleGenerator,
 	createDirectOutputOrganizer,
-} from './features/index.js';
+} from './utils/index.js';
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin

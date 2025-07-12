@@ -15,12 +15,12 @@ import {
 	extractWordPressDependencies,
 	moveFile,
 	getAllFiles,
-} from '../helpers.js';
+} from '../utils/index.js';
 import {
 	fixCssFiles,
 	cleanupCssComments,
 	removeCSSImportComments,
-} from './css-utils.js';
+} from '../utils/index.js';
 
 /**
  * Updates import paths in files based on a mapping
