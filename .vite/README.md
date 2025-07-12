@@ -22,12 +22,15 @@ This directory contains a modular Vite plugin architecture for building WordPres
 
 ### Dynamic Chunking Logic (`chunking.js`)
 
-The chunking system uses **dynamic detection** instead of hardcoded patterns:
+The chunking system uses **truly dynamic detection** instead of hardcoded patterns:
 
-- **Pattern-based Detection**: Uses configurable arrays for editor patterns, WordPress packages, React packages, and utility libraries
-- **Flexible Configuration**: Easy to modify patterns without changing core logic
-- **Smart Categorization**: Automatically groups related dependencies into appropriate chunks
-- **Editor-aware**: Detects which modules are used by editor files and organizes them accordingly
+- **Runtime Detection**: Uses Rollup's `getModuleInfo()` to analyze actual module dependencies and imports
+- **Three-Tier Categorization**: 
+  - **React packages**: Goes to build root (`root-assets/react-runtime`)
+  - **WordPress editor packages**: Goes to editor deps (`editor-deps/wp-editor`)  
+  - **Everything else used by editors**: Goes to general editor dependencies (`editor-deps/editor-dependencies`)
+- **Zero Hardcoding**: No predefined arrays of library names - everything is detected based on actual usage
+- **Recursive Analysis**: Follows the import chain to detect which modules are actually used by editor files
 
 ### Post-build Organization (`postBuildOrganizer.js`)
 

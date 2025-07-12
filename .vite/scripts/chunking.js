@@ -1,74 +1,43 @@
 /**
- * Common patterns that indicate editor-related files
- */
-const EDITOR_PATTERNS = [
-	'editor.',
-	'/editor/',
-	'editor-styles',
-	'Editor',
-	'inspector',
-	'Inspector',
-	'controls',
-	'Controls',
-];
-
-/**
- * WordPress packages that are editor-specific
- */
-const WP_EDITOR_PACKAGES = [
-	'@wordpress/block-editor',
-	'@wordpress/components',
-	'@wordpress/compose',
-	'@wordpress/rich-text',
-	'@wordpress/editor',
-];
-
-/**
- * React-related packages that should go to root
- */
-const REACT_PACKAGES = [
-	'jsx-dev-runtime',
-	'jsx-runtime',
-	'react/index',
-	'react-dom',
-];
-
-/**
- * Common utility libraries that might be used by editors
- */
-const COMMON_UTILITIES = [
-	'classnames',
-	'clsx',
-	'lodash',
-	'uuid',
-	'prop-types',
-	'react-transition-group',
-	'react-modal',
-	'react-select',
-	'downshift',
-	'reakit',
-	'framer-motion',
-	'use-', // React hooks pattern
-];
-
-/**
- * Project paths that contain shared utilities
- */
-const PROJECT_SHARED_PATHS = [
-	'resources/shared',
-	'resources/app',
-	'/shared/',
-	'/app/',
-];
-
-/**
- * Checks if a module ID matches any pattern in an array
+ * Checks if a module is React-related
  * @param {string} moduleId - Module ID to check
- * @param {string[]} patterns - Array of patterns to match against
- * @returns {boolean} True if module matches any pattern
+ * @returns {boolean} True if module is React-related
  */
-function matchesAnyPattern(moduleId, patterns) {
-	return patterns.some((pattern) => moduleId.includes(pattern));
+function isReactModule(moduleId) {
+	return (
+		moduleId.includes('jsx-dev-runtime') ||
+		moduleId.includes('jsx-runtime') ||
+		moduleId.includes('react/index') ||
+		moduleId.includes('react-dom')
+	);
+}
+
+/**
+ * Checks if a module is a WordPress editor package
+ * @param {string} moduleId - Module ID to check
+ * @returns {boolean} True if module is a WordPress editor package
+ */
+function isWordPressEditorModule(moduleId) {
+	return (
+		moduleId.includes('@wordpress/block-editor') ||
+		moduleId.includes('@wordpress/components') ||
+		moduleId.includes('@wordpress/compose') ||
+		moduleId.includes('@wordpress/rich-text') ||
+		moduleId.includes('@wordpress/editor')
+	);
+}
+
+/**
+ * Checks if a module is an editor file based on file patterns
+ * @param {string} moduleId - Module ID to check
+ * @returns {boolean} True if module appears to be editor-related
+ */
+function isEditorFile(moduleId) {
+	return (
+		moduleId.includes('editor.') ||
+		moduleId.includes('/editor/') ||
+		moduleId.includes('editor-styles')
+	);
 }
 
 /**
@@ -91,7 +60,7 @@ export function isModuleUsedByEditor(
 
 	// Direct check - is this directly imported by an editor file?
 	const hasDirectEditorImporter = moduleInfo.importers?.some((importer) =>
-		matchesAnyPattern(importer, EDITOR_PATTERNS)
+		isEditorFile(importer)
 	);
 
 	if (hasDirectEditorImporter) return true;
@@ -115,13 +84,13 @@ export function createManualChunks() {
 			return isModuleUsedByEditor(moduleId, getModuleInfo, visited);
 		};
 
-		// Special handling for React and root files - these should go to build root
-		if (matchesAnyPattern(id, REACT_PACKAGES)) {
+		// Handle React packages - these should go to build root
+		if (isReactModule(id)) {
 			return 'root-assets/react-runtime';
 		}
 
-		// Group editor-specific WordPress dependencies
-		if (matchesAnyPattern(id, WP_EDITOR_PACKAGES)) {
+		// Handle WordPress editor packages
+		if (isWordPressEditorModule(id)) {
 			return 'editor-deps/wp-editor';
 		}
 
@@ -132,34 +101,13 @@ export function createManualChunks() {
 				return 'root-assets/react-runtime';
 			}
 
-			// Categorize WordPress editor-specific packages
-			if (matchesAnyPattern(id, WP_EDITOR_PACKAGES)) {
+			// WordPress editor packages
+			if (isWordPressEditorModule(id)) {
 				return 'editor-deps/wp-editor';
 			}
 
-			// Categorize known utility libraries (both node_modules and project)
-			if (matchesAnyPattern(id, COMMON_UTILITIES)) {
-				return 'editor-deps/editor-utils';
-			}
-
-			// Group project-specific shared utilities used by editor
-			if (matchesAnyPattern(id, PROJECT_SHARED_PATHS)) {
-				return 'editor-deps/project-utils';
-			}
-
-			// Group any node_modules dependency used by editor (catch-all)
-			if (
-				id.includes('/node_modules/') &&
-				!id.includes('@wordpress/') &&
-				!id.includes('react')
-			) {
-				return 'editor-deps/misc';
-			}
-
-			// Group any other project dependency used by editor
-			if (!id.includes('/node_modules/')) {
-				return 'editor-deps/project-misc';
-			}
+			// Everything else used by editors goes into a general editor dependencies chunk
+			return 'editor-deps/editor-dependencies';
 		}
 
 		// Group common WordPress dependencies (only if NOT externalized)
@@ -194,31 +142,8 @@ function isEditorRelatedChunk(chunkInfo) {
 
 	return chunkInfo.moduleIds.some((moduleId) => {
 		try {
-			// Check if this module is directly editor-related
-			if (matchesAnyPattern(moduleId, EDITOR_PATTERNS)) {
-				return true;
-			}
-
-			// Check if this module contains editor-specific patterns in widgets
-			if (
-				moduleId.includes('resources/widgets') &&
-				matchesAnyPattern(moduleId, EDITOR_PATTERNS)
-			) {
-				return true;
-			}
-
-			// Check for shared utilities that are commonly used by editors
-			if (
-				moduleId.includes('resources/shared') &&
-				(moduleId.includes('components') ||
-					moduleId.includes('utils') ||
-					moduleId.includes('hooks') ||
-					moduleId.includes('lib'))
-			) {
-				return true;
-			}
-
-			return false;
+			// Check if this module is directly an editor file
+			return isEditorFile(moduleId);
 		} catch (e) {
 			return false;
 		}
@@ -236,29 +161,14 @@ function isEditorUtilityChunk(chunkInfo) {
 	return chunkInfo.moduleIds.some((moduleId) => {
 		try {
 			// Check for WordPress editor packages
-			if (matchesAnyPattern(moduleId, WP_EDITOR_PACKAGES)) {
+			if (isWordPressEditorModule(moduleId)) {
 				return true;
 			}
 
-			// Check for common editor utilities
-			if (matchesAnyPattern(moduleId, COMMON_UTILITIES)) {
-				return true;
-			}
-
-			// Check for project files that might be editor-related
-			if (matchesAnyPattern(moduleId, PROJECT_SHARED_PATHS)) {
-				return true;
-			}
-
-			// Check for any file that contains editor-specific patterns
-			if (
-				moduleId.includes('resources/widgets') &&
-				matchesAnyPattern(moduleId, EDITOR_PATTERNS)
-			) {
-				return true;
-			}
-
-			return false;
+			// Check if this is any module used by editor files
+			// (Note: We can't use getModuleInfo here, so we do basic heuristics)
+			// This will catch utility libraries and project files used by editors
+			return false; // Will be handled by dynamic chunk naming from manualChunks
 		} catch (e) {
 			return false;
 		}
@@ -273,14 +183,12 @@ function isEditorUtilityChunk(chunkInfo) {
 function isRootAssetChunk(chunkInfo) {
 	if (!chunkInfo.name) return false;
 
-	const rootAssetPatterns = [
-		'root-assets',
-		'react-runtime',
-		'jsx-dev-runtime',
-		'jsx-runtime',
-	];
-
-	return matchesAnyPattern(chunkInfo.name, rootAssetPatterns);
+	return (
+		chunkInfo.name.includes('root-assets') ||
+		chunkInfo.name.includes('react-runtime') ||
+		chunkInfo.name.includes('jsx-dev-runtime') ||
+		chunkInfo.name.includes('jsx-runtime')
+	);
 }
 
 /**
@@ -294,25 +202,22 @@ export function createChunkFileNames() {
 			return '[name].js';
 		}
 
-		// Check if chunk name already suggests it should remain as-is
-		// (covers dynamically generated chunk names from manualChunks)
-		if (
-			chunkInfo.name &&
-			(chunkInfo.name.includes('wp-editor') ||
-				chunkInfo.name.includes('editor-utils') ||
-				chunkInfo.name.includes('project-utils') ||
-				chunkInfo.name.includes('project-misc') ||
-				chunkInfo.name.includes('misc'))
-		) {
+		// Check if chunk name already suggests it's an editor dependency
+		// (This covers chunks created by manualChunks that start with 'editor-deps/')
+		if (chunkInfo.name && chunkInfo.name.includes('editor-deps/')) {
 			return '[name].js';
 		}
 
-		// Use dynamic detection to determine if this chunk is editor-related
-		// Note: getModuleInfo is not available in chunkFileNames, so we rely on simpler heuristics
+		// Check if chunk name suggests it's a WordPress dependency
+		if (chunkInfo.name && chunkInfo.name.includes('wp-deps')) {
+			return '[name].js';
+		}
+
+		// Use simple heuristics for any remaining chunks
 		const isEditorChunk = isEditorRelatedChunk(chunkInfo);
 		const isEditorUtility = isEditorUtilityChunk(chunkInfo);
 
-		// Move editor-related chunks to editor-deps folder
+		// Move editor-related chunks to editor-deps folder if not already handled
 		if (isEditorChunk || isEditorUtility) {
 			return 'editor-deps/[name].js';
 		}
