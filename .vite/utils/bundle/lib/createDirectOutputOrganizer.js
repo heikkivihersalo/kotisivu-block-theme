@@ -140,7 +140,8 @@ function generateAssetFiles(allFiles, outputDir, buildRoot) {
 			!fileName.includes('linkControls') &&
 			!fileName.includes('editor-dependencies') &&
 			!fileName.includes('style-index') &&
-			!fileName.includes('editor-styles')
+			!fileName.includes('editor-styles') &&
+			!fileName.includes('index-css')
 		) {
 			const assetFileName = fileName.replace('.js', '.asset.php');
 			const assetFilePath = join(dirname(filePath), assetFileName);
