@@ -7,6 +7,9 @@
 	"description": "Start with the basic building block of all narrative.",
 	"keywords": ["text"],
 	"textdomain": "kotisivu-block-theme",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
 	"attributes": {
 		"align": {
 			"type": "string"
@@ -33,22 +36,6 @@
 		"splitting": true,
 		"anchor": true,
 		"className": false,
-		"color": {
-			"gradients": true,
-			"link": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
-		},
-		"spacing": {
-			"margin": true,
-			"padding": true,
-			"__experimentalDefaultControls": {
-				"margin": false,
-				"padding": false
-			}
-		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
@@ -68,8 +55,5 @@
 		"interactivity": {
 			"clientNavigation": true
 		}
-	},
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	}
 }
