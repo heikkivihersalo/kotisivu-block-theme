@@ -1,5 +1,5 @@
 import { join, dirname, basename, relative } from 'path';
-import { existsSync, mkdirSync, renameSync, readdirSync, statSync } from 'fs';
+import { existsSync, mkdirSync, renameSync, readdirSync, statSync, readFileSync, writeFileSync } from 'fs';
 
 /**
  * Moves files from source to destination directory
@@ -34,6 +34,56 @@ function getAllFiles(dir, files = []) {
 }
 
 /**
+ * Updates import paths in a JavaScript file
+ * @param {string} filePath - Path to the JS file
+ * @param {Object} pathMap - Map of old paths to new paths
+ */
+function updateImportPaths(filePath, pathMap) {
+	try {
+		let content = readFileSync(filePath, 'utf8');
+		let hasChanges = false;
+
+		// Update import paths for each mapping
+		for (const [oldPath, newPath] of Object.entries(pathMap)) {
+			// Escape special regex characters in the filename
+			const escapedOldPath = oldPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+			
+			// Create patterns to match imports in both minified and regular JS
+			// Pattern 1: Match imports like import{...}from"../gapControls.js"
+			// Pattern 2: Match imports like import ... from "../gapControls.js"
+			// Pattern 3: Match require statements
+			const patterns = [
+				// Minified imports with double quotes
+				new RegExp(`(from")(\\./)?(${escapedOldPath})(")`, 'g'),
+				// Minified imports with single quotes  
+				new RegExp(`(from')(\\./)?(${escapedOldPath})(')`, 'g'),
+				// Regular imports with double quotes
+				new RegExp(`(from\\s+")(\\./)?(${escapedOldPath})(")`, 'g'),
+				// Regular imports with single quotes
+				new RegExp(`(from\\s+')(\\./)?(${escapedOldPath})(')`, 'g'),
+				// Require statements
+				new RegExp(`(require\\s*\\(\\s*")(\\./)?(${escapedOldPath})(")`, 'g'),
+				new RegExp(`(require\\s*\\(\\s*')(\\./)?(${escapedOldPath})(')`, 'g')
+			];
+
+			for (const pattern of patterns) {
+				if (pattern.test(content)) {
+					content = content.replace(pattern, `$1${newPath}$4`);
+					hasChanges = true;
+				}
+			}
+		}
+
+		if (hasChanges) {
+			writeFileSync(filePath, content, 'utf8');
+			console.log(`📝 Updated import paths in ${basename(filePath)}`);
+		}
+	} catch (error) {
+		console.warn(`⚠️  Failed to update imports in ${filePath}:`, error.message);
+	}
+}
+
+/**
  * Organizes build output files according to the specified structure
  * @param {string} outputDir - Main output directory for blocks
  * @param {string} editorOutputDir - Output directory for editor dependencies
@@ -51,53 +101,13 @@ export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 		const allFiles = getAllFiles(outputDir);
 
 		for (const filePath of allFiles) {
-			const relativePath = relative(outputDir, filePath);
 			const fileName = basename(filePath);
 
-			// Move React runtime files to build root
-			if (
-				fileName.includes('jsx-dev-runtime') ||
-				fileName.includes('jsx-runtime') ||
-				fileName.includes('react-runtime') ||
-				relativePath.includes('root-assets/')
-			) {
-				const newPath = join(buildRoot, fileName);
-				console.log(`📦 Moving ${fileName} to build root`);
-				moveFile(filePath, newPath);
-				continue;
-			}
-
-			// Move editor dependencies to editor output directory
-			if (
-				relativePath.includes('editor-deps/') ||
-				fileName.includes('wp-editor') ||
-				fileName.includes('editor-utils') ||
-				fileName.includes('project-utils') ||
-				fileName.includes('project-misc') ||
-				fileName.includes('gapControls') ||
-				fileName.includes('variationPicker') ||
-				fileName.includes('innerBlocksAppender') ||
-				fileName.includes('getTransformedMetadata') ||
-				fileName.includes('tailwind-utilities') ||
-				fileName.includes('classnames') ||
-				fileName.includes('clsx')
-			) {
-				const cleanFileName = fileName.replace(/^editor-deps[-_]/, '');
-				const newPath = join(editorOutputDir, cleanFileName);
-				console.log(`📁 Moving ${fileName} to editor directory`);
-				moveFile(filePath, newPath);
-				continue;
-			}
-
 			// Move manifest.json and editor.deps.json to build root
-			if (
-				fileName === 'manifest.json' ||
-				fileName === 'editor.deps.json'
-			) {
+			if (fileName === 'manifest.json' || fileName === 'editor.deps.json') {
 				const newPath = join(buildRoot, fileName);
 				console.log(`📋 Moving ${fileName} to build root`);
 				moveFile(filePath, newPath);
-				continue;
 			}
 		}
 

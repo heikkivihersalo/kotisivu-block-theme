@@ -8,13 +8,16 @@ import {
 	createChunkFileNames,
 } from './scripts/chunking.js';
 import { createBundleGenerator } from './scripts/bundleGeneration.js';
-import { createPostBuildOrganizer } from './scripts/postBuildOrganizer.js';
+import { createDirectOutputOrganizer } from './scripts/directOutputOrganizer.js';
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin
  *
  * This plugin scans for block.json files and creates appropriate build entries
  * for WordPress Gutenberg blocks with the correct file naming conventions.
+ * 
+ * Uses a custom approach to output files directly to the correct folders
+ * without requiring post-build moves.
  */
 export default function gutenbergBlocksPlugin(options = {}) {
 	const {
@@ -30,7 +33,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 			// Create build entries for each block
 			const input = createBlockInputs(blocksDir);
 
-			// Update Vite config
+			// Update Vite config with direct output configuration
 			config.build = {
 				...config.build,
 				rollupOptions: {
@@ -41,7 +44,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						assetFileNames: '[name].[ext]',
 						format: 'es',
 						globals: createGlobalsMapping(),
-						chunkFileNames: createChunkFileNames(),
+						chunkFileNames: createChunkFileNames(outputDir, editorOutputDir),
 						manualChunks: createManualChunks(),
 					},
 					external: createExternalFunction(),
@@ -51,6 +54,6 @@ export default function gutenbergBlocksPlugin(options = {}) {
 
 		generateBundle: createBundleGenerator(blocksDir, copyBlockJson),
 
-		closeBundle: createPostBuildOrganizer(outputDir, editorOutputDir),
+		writeBundle: createDirectOutputOrganizer(outputDir, editorOutputDir),
 	};
 }

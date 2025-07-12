@@ -74,6 +74,23 @@ export function isModuleUsedByEditor(
 }
 
 /**
+ * Checks if a module is a shared editor utility based on file patterns
+ * @param {string} moduleId - Module ID to check
+ * @returns {boolean} True if module is a shared editor utility
+ */
+function isSharedEditorUtility(moduleId) {
+	return (
+		moduleId.includes('gapControls') ||
+		moduleId.includes('variationPicker') ||
+		moduleId.includes('getTransformedMetadata') ||
+		moduleId.includes('innerBlocksAppender') ||
+		moduleId.includes('tailwind-utilities') ||
+		moduleId.includes('classnames') ||
+		moduleId.includes('clsx')
+	);
+}
+
+/**
  * Creates manual chunks configuration for Rollup
  * @returns {Function} Manual chunks function for Rollup configuration
  */
@@ -86,28 +103,33 @@ export function createManualChunks() {
 
 		// Handle React packages - these should go to build root
 		if (isReactModule(id)) {
-			return 'root-assets/react-runtime';
+			return 'react-runtime';
+		}
+
+		// Handle shared editor utilities - these should go to editor directory
+		if (isSharedEditorUtility(id)) {
+			return 'editor-dependencies';
 		}
 
 		// Handle WordPress editor packages
 		if (isWordPressEditorModule(id)) {
-			return 'editor-deps/wp-editor';
+			return 'wp-editor';
 		}
 
 		// Dynamically detect any dependency used by editor files
 		if (isUsedByEditor(id)) {
 			// Skip React dependencies - they should be externalized, but if bundled put in root
 			if (id.includes('react')) {
-				return 'root-assets/react-runtime';
+				return 'react-runtime';
 			}
 
 			// WordPress editor packages
 			if (isWordPressEditorModule(id)) {
-				return 'editor-deps/wp-editor';
+				return 'wp-editor';
 			}
 
 			// Everything else used by editors goes into a general editor dependencies chunk
-			return 'editor-deps/editor-dependencies';
+			return 'editor-dependencies';
 		}
 
 		// Group common WordPress dependencies (only if NOT externalized)
@@ -121,7 +143,7 @@ export function createManualChunks() {
 			console.warn(
 				`React dependency ${id} should be externalized but is being bundled. Check externals config.`
 			);
-			return 'root-assets/react-runtime';
+			return 'react-runtime';
 		}
 
 		return null;
@@ -192,36 +214,28 @@ function isRootAssetChunk(chunkInfo) {
 }
 
 /**
- * Creates chunk file names configuration for Rollup
+ * Creates chunk file names configuration for Rollup with direct output logic
+ * @param {string} outputDir - Main output directory for blocks
+ * @param {string} editorOutputDir - Output directory for editor dependencies
  * @returns {Function} Chunk file names function for Rollup configuration
  */
-export function createChunkFileNames() {
+export function createChunkFileNames(outputDir, editorOutputDir) {
 	return (chunkInfo) => {
-		// Check if this is a root asset that should go to build root
-		if (isRootAssetChunk(chunkInfo)) {
-			return '[name].js';
+		// Store chunk destination info in the chunk name for later processing
+		if (chunkInfo.name === 'react-runtime' || isRootAssetChunk(chunkInfo)) {
+			// Mark as root chunk
+			return '[name]__ROOT__.js';
+		}
+		
+		if (chunkInfo.name === 'editor-dependencies' || 
+			chunkInfo.name === 'wp-editor' || 
+			isEditorRelatedChunk(chunkInfo) || 
+			isEditorUtilityChunk(chunkInfo)) {
+			// Mark as editor chunk
+			return '[name]__EDITOR__.js';
 		}
 
-		// Check if chunk name already suggests it's an editor dependency
-		// (This covers chunks created by manualChunks that start with 'editor-deps/')
-		if (chunkInfo.name && chunkInfo.name.includes('editor-deps/')) {
-			return '[name].js';
-		}
-
-		// Check if chunk name suggests it's a WordPress dependency
-		if (chunkInfo.name && chunkInfo.name.includes('wp-deps')) {
-			return '[name].js';
-		}
-
-		// Use simple heuristics for any remaining chunks
-		const isEditorChunk = isEditorRelatedChunk(chunkInfo);
-		const isEditorUtility = isEditorUtilityChunk(chunkInfo);
-
-		// Move editor-related chunks to editor-deps folder if not already handled
-		if (isEditorChunk || isEditorUtility) {
-			return 'editor-deps/[name].js';
-		}
-
+		// Default to blocks directory
 		return '[name].js';
 	};
 }
