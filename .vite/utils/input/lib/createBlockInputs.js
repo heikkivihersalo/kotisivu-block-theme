@@ -37,15 +37,6 @@ export function createBlockInputs(blocksDir) {
 			input[`${blockName}/index`] = indexFile;
 		}
 
-		// Check for editor-specific files
-		const editorFiles = WORDPRESS_FILES.EDITOR_JS.input
-			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => existsSync(filepath));
-
-		if (editorFiles) {
-			input[`${blockName}/editor`] = editorFiles;
-		}
-
 		// Check for view files (view.ts, view.js, etc.)
 		const viewFiles = WORDPRESS_FILES.VIEW_JS.input
 			.map((filename) => resolve(blockDir, filename))

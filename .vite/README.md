@@ -111,8 +111,8 @@ The `utils/constants.js` file contains shared constants used across multiple uti
   - `STYLE_CSS`: `['style.css', 'style.scss']` → `'style-index.css'`
   - `EDITOR_CSS`: `['editor.css', 'editor.scss']` → `'index.css'`
   - `INDEX_JS`: `['index.js', 'index.ts', 'index.tsx', 'index.jsx']` → `'index.js'`
-  - `EDITOR_JS`: `['editor.js', 'editor.ts', 'editor.tsx', 'editor.jsx']` → `'editor.js'`
   - `VIEW_JS`: `['view.js', 'view.ts', 'view.tsx', 'view.jsx']` → `'view.js'`
+  - Note: `editor.js` files are imported into `index.js` and not generated separately
 - **`OUTPUT_PATTERNS`**: Build output conventions (index-css, style-index, etc.)
 - **`CHUNK_PATTERNS`**: Chunk naming patterns for file organization (__ROOT__, __EDITOR__)
 

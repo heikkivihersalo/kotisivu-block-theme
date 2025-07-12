@@ -22,10 +22,10 @@ export const BLOCK_PATTERNS = {
  *  - style.css / style.scss
  *  - editor.css / editor.scss
  *  - index.js / index.ts / index.tsx / index.jsx
- *  - editor.js / editor.ts / editor.tsx / editor.jsx
  *  - view.js / view.ts / view.tsx / view.jsx
  *
- *  edit.js and save.js are imported as index.js so it is not included here.
+ *  editor.js files are imported into index.js and not generated separately.
+ *  edit.js and save.js are also imported as index.js so they are not included here.
  */
 export const WORDPRESS_FILES = {
 	BLOCK_JSON: {
@@ -47,10 +47,6 @@ export const WORDPRESS_FILES = {
 	INDEX_JS: {
 		input: ['index.js', 'index.ts', 'index.tsx', 'index.jsx'],
 		output: 'index.js',
-	},
-	EDITOR_JS: {
-		input: ['editor.js', 'editor.ts', 'editor.tsx', 'editor.jsx'],
-		output: 'editor.js',
 	},
 	VIEW_JS: {
 		input: ['view.js', 'view.ts', 'view.tsx', 'view.jsx'],
