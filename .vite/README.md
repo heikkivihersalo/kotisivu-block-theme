@@ -104,8 +104,15 @@ This plugin has been reorganized using a **utils-based design pattern** that map
 ## 🌍 Shared Constants
 
 The `utils/constants.js` file contains shared constants used across multiple utils:
-- **`BLOCK_PATTERNS`**: File patterns for block discovery (*.json, script extensions)
-- **`WORDPRESS_FILES`**: WordPress file naming conventions (block.json, render.php, etc.)
+- **`BLOCK_PATTERNS`**: File patterns for block discovery (`**/block.json`, script extensions like `.ts`, `.tsx`, `.js`, `.jsx`)
+- **`WORDPRESS_FILES`**: WordPress file naming conventions with input/output mappings (supports multiple input file types):
+  - `BLOCK_JSON`: `['block.json']` → `'block.json'`
+  - `RENDER_PHP`: `['render.php']` → `'render.php'`
+  - `STYLE_CSS`: `['style.css', 'style.scss']` → `'style-index.css'`
+  - `EDITOR_CSS`: `['editor.css', 'editor.scss']` → `'index.css'`
+  - `INDEX_JS`: `['index.js', 'index.ts', 'index.tsx', 'index.jsx']` → `'index.js'`
+  - `EDITOR_JS`: `['editor.js', 'editor.ts', 'editor.tsx', 'editor.jsx']` → `'editor.js'`
+  - `VIEW_JS`: `['view.js', 'view.ts', 'view.tsx', 'view.jsx']` → `'view.js'`
 - **`OUTPUT_PATTERNS`**: Build output conventions (index-css, style-index, etc.)
 - **`CHUNK_PATTERNS`**: Chunk naming patterns for file organization (__ROOT__, __EDITOR__)
 

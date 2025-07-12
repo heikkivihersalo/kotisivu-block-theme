@@ -199,7 +199,10 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 
 			// Handle files marked for ROOT
 			if (fileName.includes(`${CHUNK_PATTERNS.ROOT_SUFFIX}.js`)) {
-				const cleanName = fileName.replace(CHUNK_PATTERNS.ROOT_SUFFIX, '');
+				const cleanName = fileName.replace(
+					CHUNK_PATTERNS.ROOT_SUFFIX,
+					''
+				);
 				const newPath = join(buildRoot, cleanName);
 				filesToMove.push({ from: filePath, to: newPath });
 				importPathMappings[filePath] = newPath;
@@ -207,7 +210,10 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 
 			// Handle files marked for EDITOR
 			if (fileName.includes(`${CHUNK_PATTERNS.EDITOR_SUFFIX}.js`)) {
-				const cleanName = fileName.replace(CHUNK_PATTERNS.EDITOR_SUFFIX, '');
+				const cleanName = fileName.replace(
+					CHUNK_PATTERNS.EDITOR_SUFFIX,
+					''
+				);
 				const newPath = join(editorDir, cleanName);
 				filesToMove.push({ from: filePath, to: newPath });
 				importPathMappings[filePath] = newPath;

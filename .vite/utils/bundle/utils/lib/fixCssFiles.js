@@ -22,7 +22,8 @@ export function fixCssFiles(outputDir) {
 		// Collect .js files that should be .css (for empty CSS files processed by Vite)
 		if (
 			fileName.endsWith('.js') &&
-			(fileName.includes(OUTPUT_PATTERNS.INDEX_CSS) || fileName.includes(OUTPUT_PATTERNS.STYLE_INDEX))
+			(fileName.includes(OUTPUT_PATTERNS.INDEX_CSS) ||
+				fileName.includes(OUTPUT_PATTERNS.STYLE_INDEX))
 		) {
 			// Check if this is actually a CSS file by reading content
 			try {

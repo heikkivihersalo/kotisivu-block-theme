@@ -24,17 +24,20 @@ export function createBundleGenerator(blocksDir, copyBlockJson = true) {
 			// Add block.json to bundle
 			this.emitFile({
 				type: 'asset',
-				fileName: `${blockName}/${WORDPRESS_FILES.BLOCK_JSON}`,
+				fileName: `${blockName}/${WORDPRESS_FILES.BLOCK_JSON.output}`,
 				source: blockJsonContent,
 			});
 
 			// Copy render.php if it exists
-			const renderPhpPath = resolve(blockDir, WORDPRESS_FILES.RENDER_PHP);
+			const renderPhpPath = resolve(
+				blockDir,
+				WORDPRESS_FILES.RENDER_PHP.input
+			);
 			if (existsSync(renderPhpPath)) {
 				const renderPhpContent = readFileSync(renderPhpPath, 'utf8');
 				this.emitFile({
 					type: 'asset',
-					fileName: `${blockName}/render.php`,
+					fileName: `${blockName}/${WORDPRESS_FILES.RENDER_PHP.output}`,
 					source: renderPhpContent,
 				});
 			}

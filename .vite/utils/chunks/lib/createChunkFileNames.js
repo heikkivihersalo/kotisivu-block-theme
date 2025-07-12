@@ -16,7 +16,10 @@ import { CHUNK_PATTERNS } from '../../constants.js';
 export function createChunkFileNames(outputDir, editorOutputDir) {
 	return (chunkInfo) => {
 		// Store chunk destination info in the chunk name for later processing
-		if (chunkInfo.name === CHUNK_PATTERNS.REACT_RUNTIME || isRootAssetChunk(chunkInfo)) {
+		if (
+			chunkInfo.name === CHUNK_PATTERNS.REACT_RUNTIME ||
+			isRootAssetChunk(chunkInfo)
+		) {
 			// Mark as root chunk
 			return `[name]${CHUNK_PATTERNS.ROOT_SUFFIX}.js`;
 		}

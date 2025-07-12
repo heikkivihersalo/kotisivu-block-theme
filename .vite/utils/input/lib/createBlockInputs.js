@@ -1,7 +1,7 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { glob } from 'glob';
-import { BLOCK_PATTERNS } from '../../constants.js';
+import { BLOCK_PATTERNS, WORDPRESS_FILES } from '../../constants.js';
 
 /**
  * Discover all block.json files and create build entries
@@ -10,7 +10,9 @@ import { BLOCK_PATTERNS } from '../../constants.js';
  */
 export function createBlockInputs(blocksDir) {
 	// Find all block.json files
-	const blockJsonFiles = glob.sync(`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`);
+	const blockJsonFiles = glob.sync(
+		`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`
+	);
 
 	if (blockJsonFiles.length === 0) {
 		console.warn('No block.json files found in', blocksDir);
@@ -27,7 +29,7 @@ export function createBlockInputs(blocksDir) {
 		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
 		// Check for main script file (index.ts, index.js, index.tsx, index.jsx)
-		const indexFile = BLOCK_PATTERNS.SCRIPT_EXTENSIONS
+		const indexFile = WORDPRESS_FILES.INDEX_JS.input
 			.map((filename) => resolve(blockDir, filename))
 			.find((filepath) => existsSync(filepath));
 
@@ -36,12 +38,7 @@ export function createBlockInputs(blocksDir) {
 		}
 
 		// Check for editor-specific files
-		const editorFiles = [
-			'editor.ts',
-			'editor.tsx',
-			'editor.js',
-			'editor.jsx',
-		]
+		const editorFiles = WORDPRESS_FILES.EDITOR_JS.input
 			.map((filename) => resolve(blockDir, filename))
 			.find((filepath) => existsSync(filepath));
 
@@ -50,7 +47,7 @@ export function createBlockInputs(blocksDir) {
 		}
 
 		// Check for view files (view.ts, view.js, etc.)
-		const viewFiles = ['view.ts', 'view.tsx', 'view.js', 'view.jsx']
+		const viewFiles = WORDPRESS_FILES.VIEW_JS.input
 			.map((filename) => resolve(blockDir, filename))
 			.find((filepath) => existsSync(filepath));
 
@@ -58,15 +55,21 @@ export function createBlockInputs(blocksDir) {
 			input[`${blockName}/view`] = viewFiles;
 		}
 
-		// Check for editor styles (editor.css) - output as index.css to match WordPress convention
-		const editorCssFile = resolve(blockDir, 'editor.css');
-		if (existsSync(editorCssFile)) {
+		// Check for editor styles (editor.css, editor.scss) - output as index.css to match WordPress convention
+		const editorCssFile = WORDPRESS_FILES.EDITOR_CSS.input
+			.map((filename) => resolve(blockDir, filename))
+			.find((filepath) => existsSync(filepath));
+
+		if (editorCssFile) {
 			input[`${blockName}/index-css`] = editorCssFile;
 		}
 
-		// Check for frontend styles (style.css)
-		const styleCssFile = resolve(blockDir, 'style.css');
-		if (existsSync(styleCssFile)) {
+		// Check for frontend styles (style.css, style.scss)
+		const styleCssFile = WORDPRESS_FILES.STYLE_CSS.input
+			.map((filename) => resolve(blockDir, filename))
+			.find((filepath) => existsSync(filepath));
+
+		if (styleCssFile) {
 			input[`${blockName}/style-index`] = styleCssFile;
 		}
 	});
