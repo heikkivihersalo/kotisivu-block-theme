@@ -1,7 +1,0 @@
-.accessible-tabs__panel {
-	width: 100%;
-}
-
-[hidden].accessible-tabs__panel {
-	display: none !important;
-}
