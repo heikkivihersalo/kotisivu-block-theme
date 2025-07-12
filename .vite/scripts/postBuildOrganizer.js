@@ -1,5 +1,13 @@
 import { join, dirname, basename } from 'path';
-import { existsSync, mkdirSync, renameSync, readdirSync, statSync, writeFileSync, readFileSync } from 'fs';
+import {
+	existsSync,
+	mkdirSync,
+	renameSync,
+	readdirSync,
+	statSync,
+	writeFileSync,
+	readFileSync,
+} from 'fs';
 import { createHash } from 'crypto';
 
 /**
@@ -22,7 +30,7 @@ function moveFile(source, destination) {
  * @returns {string} PHP asset file content
  */
 function generateAssetFileContent(dependencies, version) {
-	const depsString = dependencies.map(dep => `'${dep}'`).join(', ');
+	const depsString = dependencies.map((dep) => `'${dep}'`).join(', ');
 	return `<?php return array('dependencies' => array(${depsString}), 'version' => '${version}');`;
 }
 
@@ -37,7 +45,10 @@ function generateFileHash(filePath) {
 		return createHash('md5').update(content).digest('hex').substring(0, 16);
 	} catch (error) {
 		// Fallback to timestamp-based hash if file reading fails
-		return createHash('md5').update(Date.now().toString()).digest('hex').substring(0, 16);
+		return createHash('md5')
+			.update(Date.now().toString())
+			.digest('hex')
+			.substring(0, 16);
 	}
 }
 
@@ -49,7 +60,7 @@ function generateFileHash(filePath) {
 function extractWordPressDependencies(filePath) {
 	const commonWordPressDeps = [
 		'wp-blocks',
-		'wp-block-editor', 
+		'wp-block-editor',
 		'wp-components',
 		'wp-compose',
 		'wp-data',
@@ -64,7 +75,7 @@ function extractWordPressDependencies(filePath) {
 		'wp-html-entities',
 		'wp-keycodes',
 		'wp-notices',
-		'wp-viewport'
+		'wp-viewport',
 	];
 
 	try {
@@ -76,11 +87,16 @@ function extractWordPressDependencies(filePath) {
 			// Extract wp.* usage patterns
 			const wpMatches = content.match(/wp\.([a-zA-Z][a-zA-Z0-9]*)/g);
 			if (wpMatches) {
-				wpMatches.forEach(match => {
+				wpMatches.forEach((match) => {
 					const wpModule = match.replace('wp.', 'wp-');
 					// Convert camelCase to kebab-case
-					const kebabCase = wpModule.replace(/([A-Z])/g, '-$1').toLowerCase();
-					if (commonWordPressDeps.includes(kebabCase) && !foundDeps.includes(kebabCase)) {
+					const kebabCase = wpModule
+						.replace(/([A-Z])/g, '-$1')
+						.toLowerCase();
+					if (
+						commonWordPressDeps.includes(kebabCase) &&
+						!foundDeps.includes(kebabCase)
+					) {
 						foundDeps.push(kebabCase);
 					}
 				});
@@ -90,16 +106,23 @@ function extractWordPressDependencies(filePath) {
 		// Check for @wordpress/ imports
 		const wpImportMatches = content.match(/@wordpress\/([a-z-]+)/g);
 		if (wpImportMatches) {
-			wpImportMatches.forEach(match => {
+			wpImportMatches.forEach((match) => {
 				const wpDep = match.replace('@wordpress/', 'wp-');
-				if (commonWordPressDeps.includes(wpDep) && !foundDeps.includes(wpDep)) {
+				if (
+					commonWordPressDeps.includes(wpDep) &&
+					!foundDeps.includes(wpDep)
+				) {
 					foundDeps.push(wpDep);
 				}
 			});
 		}
 
 		// Add React if JSX is detected
-		if (content.includes('jsxDEV') || content.includes('jsx') || content.includes('React')) {
+		if (
+			content.includes('jsxDEV') ||
+			content.includes('jsx') ||
+			content.includes('React')
+		) {
 			if (!foundDeps.includes('react')) {
 				foundDeps.unshift('react');
 			}
@@ -107,7 +130,7 @@ function extractWordPressDependencies(filePath) {
 
 		// Ensure essential WordPress dependencies are included for blocks
 		const essentialDeps = ['wp-blocks', 'wp-block-editor', 'wp-i18n'];
-		essentialDeps.forEach(dep => {
+		essentialDeps.forEach((dep) => {
 			if (!foundDeps.includes(dep)) {
 				foundDeps.push(dep);
 			}
@@ -115,11 +138,15 @@ function extractWordPressDependencies(filePath) {
 
 		return foundDeps.sort();
 	} catch (error) {
-		console.warn(`⚠️  Could not analyze dependencies for ${filePath}:`, error.message);
+		console.warn(
+			`⚠️  Could not analyze dependencies for ${filePath}:`,
+			error.message
+		);
 		// Return default WordPress block dependencies
 		return ['react', 'wp-block-editor', 'wp-blocks', 'wp-i18n'];
 	}
 }
+/**
  * @param {string} dir - Directory to search
  * @param {string[]} files - Array to collect file paths
  * @returns {string[]} Array of file paths
@@ -168,28 +195,37 @@ export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 			}
 
 			// Generate .asset.php files for JavaScript files (excluding certain files)
-			if (fileName.endsWith('.js') && 
+			if (
+				fileName.endsWith('.js') &&
 				!fileName.includes('runtime') &&
 				!fileName.includes('linkControls') &&
 				!fileName.includes('editor-dependencies') &&
 				!fileName.includes('style-index') &&
-				!fileName.includes('editor-styles')) {
-				
+				!fileName.includes('editor-styles')
+			) {
 				const assetFileName = fileName.replace('.js', '.asset.php');
 				const assetFilePath = join(dirname(filePath), assetFileName);
-				
+
 				// Extract dependencies and generate hash
 				const dependencies = extractWordPressDependencies(filePath);
 				const version = generateFileHash(filePath);
-				
+
 				// Generate asset file content
-				const assetContent = generateAssetFileContent(dependencies, version);
-				
+				const assetContent = generateAssetFileContent(
+					dependencies,
+					version
+				);
+
 				try {
 					writeFileSync(assetFilePath, assetContent, 'utf8');
-					console.log(`📝 Generated ${assetFileName} with ${dependencies.length} dependencies`);
+					console.log(
+						`📝 Generated ${assetFileName} with ${dependencies.length} dependencies`
+					);
 				} catch (error) {
-					console.warn(`⚠️  Failed to create asset file ${assetFileName}:`, error.message);
+					console.warn(
+						`⚠️  Failed to create asset file ${assetFileName}:`,
+						error.message
+					);
 				}
 			}
 		}
