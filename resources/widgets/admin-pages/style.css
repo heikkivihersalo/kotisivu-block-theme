@@ -1,0 +1,45 @@
+/**
+ * Resets
+ */
+#wpwrap {
+	background-color: #fff !important;
+}
+
+#wpcontent {
+	padding-right: 20px !important;
+}
+
+/**
+ * Header
+ */
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	border-bottom: 1px solid #e5e5e5;
+
+	padding-block: 1rem;
+}
+
+header > h1 {
+	font-size: 1.25rem;
+	text-transform: uppercase;
+	font-weight: 700;
+
+	margin-top: 1rem;
+}
+
+/**
+ * Utilities
+ */
+.sr-text {
+	position: absolute;
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	white-space: nowrap;
+}

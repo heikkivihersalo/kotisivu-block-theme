@@ -1,0 +1,9 @@
+.body > h2 {
+	font-size: 1.675rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.body > p {
+	max-width: 120ch;
+}

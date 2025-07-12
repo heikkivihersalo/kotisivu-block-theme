@@ -1,0 +1,9 @@
+.option {
+	border: 1px solid #e5e5e5;
+	padding: 1rem;
+	max-width: 25rem;
+}
+
+.option > h3 {
+	margin-top: 0;
+}

@@ -1,0 +1,34 @@
+.wp-block-image {
+	max-width: 100%;
+	height: auto;
+
+	margin: 0;
+}
+
+:is(img, figure).is-style-square,
+figure.is-style-square img {
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	object-position: center center;
+
+	width: 100%;
+	height: auto;
+}
+
+:is(img, figure).is-style-rectangle,
+figure.is-style-rectangle img {
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+	object-position: center center;
+
+	width: 100%;
+	height: auto;
+}
+
+:is(img, figure).is-style-full,
+figure.is-style-full img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center center;
+}

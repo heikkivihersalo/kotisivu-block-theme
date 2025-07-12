@@ -1,0 +1,146 @@
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 Theme Settings
+2.0 Metaboxes
+3.0 Edtior Overrides
+4.0 Modifiers
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  1.0 Theme Settings
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+  2.0 Metaboxes
+--------------------------------------------------------------*/
+/**
+ * Image uploader
+ */
+.image-uploader__button {
+	background: none;
+	border: none;
+	margin: 0;
+
+	cursor: pointer;
+}
+
+.image-uploader__button--choose {
+	display: inline-block;
+
+	color: #fff;
+	text-decoration: none;
+	text-shadow: none;
+	line-height: 2.71428571;
+	font-size: 14px;
+
+	background: #2271b1;
+
+	border-color: 1px solid #2271b1;
+	border-radius: 3px;
+
+	padding: 0 14px;
+	margin-bottom: 4px;
+
+	vertical-align: middle;
+	min-height: 40px;
+
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+
+.image-uploader__button--remove {
+	color: hsl(0, 100%, 50%);
+	text-decoration: underline;
+	margin-top: 0.25rem;
+}
+
+.hide-image-uploader {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+/*--------------------------------------------------------------
+  3.0 Edtior Overrides
+--------------------------------------------------------------*/
+/**
+ * Fix the block editor button block appender color
+ * TODO: Find out why WordPress is not applying the correct color and trying to apply dark theme
+ */
+.is-dark-theme .block-editor-button-block-appender {
+	box-shadow: inset 0 0 0 1px #000;
+	color: #000;
+}
+
+/**
+ * Add margins to direct child blocks of the root container
+ */
+.is-root-container
+	> :is(div, section, aside):not(
+		:first-child,
+		:is(.post-type-post) .is-root-container > *
+	) {
+	margin-block: var(--wp--preset--spacing--40);
+}
+
+.is-root-container
+	> :is(div, section, aside):first-child:not(
+		:is(.post-type-post) .is-root-container > *
+	) {
+	margin-top: var(--wp--preset--spacing--40);
+}
+
+:is(.editor-alignment-controls, .editor-width-controls)
+	.components-button-group
+	.components-button.has-icon {
+	padding: 10px;
+}
+
+.editor-width-controls > p,
+.editor-alignment-controls > div > p {
+	margin: 0;
+}
+
+.editor-width-controls > .components-button-group,
+.editor-alignment-controls > div > .components-button-group {
+	margin-bottom: 0.5em;
+}
+
+:is(.editor-alignment-controls, .editor-width-controls)
+	.components-button-group {
+	display: flex;
+	flex-direction: row;
+}
+
+/*--------------------------------------------------------------
+  4.0 Modifiers
+--------------------------------------------------------------*/
+.is-visually-hidden {
+	position: relative;
+	width: fit-content;
+}
+
+.is-visually-hidden::after {
+	--_color: var(--wp--preset--color--white);
+	--_background: rgba(255, 0, 0, 0.75);
+
+	content: "Hidden visually";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	display: grid;
+	place-items: center;
+
+	font-size: 0.5rem;
+	background-color: var(--_background);
+	color: var(--_color);
+
+	padding: 1em 2em;
+
+	z-index: 9999;
+}

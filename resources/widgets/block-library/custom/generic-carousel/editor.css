@@ -1,0 +1,7 @@
+.wp-block-ksd-generic-carousel {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1em;
+}

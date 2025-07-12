@@ -1,0 +1,34 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/part-header",
+	"title": "Header",
+	"version": "1.0.1",
+	"category": "theme",
+	"icon": "block-default",
+	"description": "",
+	"keywords": ["menu, header"],
+	"textdomain": "ilmajoen-lampo-block-theme",
+	"supports": {
+		"className": false,
+		"multiple": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": [["core/site-logo"], ["core/navigation"]]
+		},
+		"allowedBlocks": {
+			"type": "array",
+			"default": ["core/site-logo", "core/navigation"]
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		}
+	}
+}

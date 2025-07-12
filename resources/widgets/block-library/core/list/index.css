@@ -1,0 +1,64 @@
+/**
+ * List Default Styles
+ */
+:where(.wp-site-blocks ul) {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+
+:where(.wp-site-blocks li) {
+	line-height: 1.4;
+}
+
+/**
+ * List overrides
+ */
+ul:is(.is-style-custom-icon, .is-style-colored-checkmark) {
+	list-style: none;
+	padding: 0;
+}
+
+ul.is-style-centered {
+	list-style: none;
+	text-align: center;
+	width: fit-content;
+	margin-inline: auto;
+}
+
+ul.is-style-centered li::before {
+	content: "•";
+	margin-inline-end: 0.5rem;
+}
+
+:is(.is-style-custom-icon, .is-style-colored-checkmark) li {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+/**
+ * Font Awesome Icon Globals
+ */
+:is(.is-style-custom-icon, .is-style-colored-checkmark) li::before {
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+}
+
+/* Arrow */
+ul.is-style-custom-icon li::before {
+	content: "\f061";
+	margin-right: 0.5em;
+}
+
+/* Checkmark */
+ul.is-style-colored-checkmark li::before {
+	content: "\f00c";
+	color: var(--wp--preset--color--primary);
+	margin-right: 0.5em;
+}

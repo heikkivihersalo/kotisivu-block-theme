@@ -1,0 +1,42 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/generic-grid",
+	"title": "Generic Grid",
+	"category": "design",
+	"icon": "layout",
+	"description": "",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"providesContext": {
+		"generic-grid/template": "childTemplate"
+	},
+	"ancestor": ["ksd/section"],
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": []
+		},
+		"childTemplate": {
+			"type": "array",
+			"default": []
+		},
+		"allowedBlocks": {
+			"type": "array"
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		},
+		"variationName": {
+			"type": "string",
+			"default": ""
+		}
+	}
+}
