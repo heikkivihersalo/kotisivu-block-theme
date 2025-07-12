@@ -1,3 +1,3 @@
 // Bundle feature exports
-export { createBundleGenerator } from './lib/generators.js';
-export { createDirectOutputOrganizer } from './lib/organizers.js';
+export { createBundleGenerator } from './lib/createBundleGenerator.js';
+export { createDirectOutputOrganizer } from './lib/createDirectOutputOrganizer.js';

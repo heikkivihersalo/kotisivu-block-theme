@@ -1,10 +1,7 @@
 // Feature-based exports for Vite configuration
 
-// Blocks feature - input configuration
-export {
-	createBlockInputs,
-	getBlockJsonFiles,
-} from './features/blocks/index.js';
+// Input feature - block input configuration
+export { createBlockInputs } from './features/input/index.js';
 
 // Chunks feature - rollup chunking and file naming
 export {

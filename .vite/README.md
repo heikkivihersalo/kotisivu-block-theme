@@ -39,7 +39,7 @@ This plugin has been reorganized using a **feature-based design pattern** that m
 
 ## 🎯 Features
 
-### 1. **Blocks Feature** (`features/blocks/`)
+### 1. **Input Feature** (`features/input/`)
 **Vite Config**: `config.build.rollupOptions.input`
 
 - **Purpose**: Block discovery and input configuration
@@ -100,7 +100,7 @@ Each feature follows a consistent structure:
 1. **Config Phase**: Features configure Vite build options
    ```javascript
    config.build.rollupOptions = {
-     input: createBlockInputs(blocksDir),           // blocks feature
+     input: createBlockInputs(blocksDir),           // input feature
      external: createExternalFunction(),            // externals feature
      output: {
        globals: createGlobalsMapping(),             // externals feature  
@@ -147,7 +147,7 @@ Each feature follows a consistent structure:
 
 ```javascript
 import {
-  // Blocks feature
+  // Input feature
   createBlockInputs,
   
   // Chunks feature  
