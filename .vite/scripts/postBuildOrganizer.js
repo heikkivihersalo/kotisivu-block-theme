@@ -42,18 +42,18 @@ function getAllFiles(dir, files = []) {
 export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 	return function organizeFiles() {
 		console.log('🔧 Organizing build output files...');
-		
+
 		// Get the actual build root (where we want manifest.json, etc.)
 		// From "build/test/block-library/custom" we want "build/"
 		const buildRoot = outputDir.split('/')[0]; // Just get 'build'
-		
+
 		// Get all files in the output directory
 		const allFiles = getAllFiles(outputDir);
-		
+
 		for (const filePath of allFiles) {
 			const relativePath = relative(outputDir, filePath);
 			const fileName = basename(filePath);
-			
+
 			// Move React runtime files to build root
 			if (
 				fileName.includes('jsx-dev-runtime') ||
@@ -66,7 +66,7 @@ export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 				moveFile(filePath, newPath);
 				continue;
 			}
-			
+
 			// Move editor dependencies to editor output directory
 			if (
 				relativePath.includes('editor-deps/') ||
@@ -88,7 +88,7 @@ export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 				moveFile(filePath, newPath);
 				continue;
 			}
-			
+
 			// Move manifest.json and editor.deps.json to build root
 			if (
 				fileName === 'manifest.json' ||
@@ -100,7 +100,7 @@ export function createPostBuildOrganizer(outputDir, editorOutputDir) {
 				continue;
 			}
 		}
-		
+
 		console.log('✅ Build output organization complete!');
 	};
 }
