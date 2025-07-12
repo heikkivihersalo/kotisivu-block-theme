@@ -7,7 +7,9 @@ import gutenbergBlocksPlugin from './.vite/GutenbergBlocksPlugin.js';
 export default defineConfig({
 	base: '/build/',
 	plugins: [
-		react(),
+		react({
+			jsxRuntime: 'classic',
+		}),
 		laravel({
 			input: ['resources/app/scripts/theme.ts'],
 		}),
