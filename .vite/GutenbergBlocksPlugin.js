@@ -8,6 +8,7 @@ import {
 	createChunkFileNames,
 } from './scripts/chunking.js';
 import { createBundleGenerator } from './scripts/bundleGeneration.js';
+import { createPostBuildOrganizer } from './scripts/postBuildOrganizer.js';
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin
@@ -49,5 +50,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 		},
 
 		generateBundle: createBundleGenerator(blocksDir, copyBlockJson),
+
+		closeBundle: createPostBuildOrganizer(outputDir, editorOutputDir),
 	};
 }

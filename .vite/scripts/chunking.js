@@ -36,6 +36,12 @@ export function isModuleUsedByEditor(
 
 /**
  * Creates manual chunks configuration for Rollup
+ * @param {string} outputDir - Main output directory for blocks
+ * @param {string} editorOutputDir - Output directory for editor dependencies
+ * @returns {Function} Manual chunks function for Rollup configuration
+ */
+/**
+ * Creates manual chunks configuration for Rollup
  * @returns {Function} Manual chunks function for Rollup configuration
  */
 export function createManualChunks() {
@@ -44,6 +50,15 @@ export function createManualChunks() {
 		const isUsedByEditor = (moduleId, visited = new Set()) => {
 			return isModuleUsedByEditor(moduleId, getModuleInfo, visited);
 		};
+
+		// Special handling for React and root files - these should go to build root
+		if (
+			id.includes('jsx-dev-runtime') ||
+			id.includes('jsx-runtime') ||
+			id.includes('react/index')
+		) {
+			return 'root-assets/react-runtime';
+		}
 
 		// Group editor-specific WordPress dependencies
 		if (
@@ -58,9 +73,9 @@ export function createManualChunks() {
 
 		// Dynamically detect any dependency used by editor files (anywhere: node_modules or project)
 		if (isUsedByEditor(id)) {
-			// Skip React dependencies - they should be externalized
+			// Skip React dependencies - they should be externalized, but if bundled put in root
 			if (id.includes('react')) {
-				return null;
+				return 'root-assets/react-runtime';
 			}
 
 			// Categorize WordPress editor-specific packages
@@ -76,7 +91,7 @@ export function createManualChunks() {
 
 			// Categorize React DOM utilities used by editor - but only if not externalized
 			if (id.includes('react-dom')) {
-				return null; // Should be externalized
+				return 'root-assets/react-runtime';
 			}
 
 			// Categorize known utility libraries (both node_modules and project)
@@ -133,7 +148,7 @@ export function createManualChunks() {
 			console.warn(
 				`React dependency ${id} should be externalized but is being bundled. Check externals config.`
 			);
-			return null; // Let it be externalized instead of bundled
+			return 'root-assets/react-runtime';
 		}
 
 		return null;
@@ -233,14 +248,32 @@ export function createChunkFileNames() {
 				chunkInfo.name.includes('block') ||
 				chunkInfo.name.includes('Block'));
 
-		// Check if chunk name already includes editor-deps
-		if (chunkInfo.name && chunkInfo.name.includes('editor-deps/')) {
+		// Check if this is a root asset that should go to build root
+		if (
+			chunkInfo.name &&
+			(chunkInfo.name.includes('root-assets') ||
+				chunkInfo.name.includes('react-runtime') ||
+				chunkInfo.name.includes('jsx-dev-runtime') ||
+				chunkInfo.name.includes('jsx-runtime'))
+		) {
+			return '[name].js';
+		}
+
+		// Check if chunk name already includes editor paths
+		if (
+			chunkInfo.name &&
+			(chunkInfo.name.includes('wp-editor') ||
+				chunkInfo.name.includes('editor-utils') ||
+				chunkInfo.name.includes('project-utils') ||
+				chunkInfo.name.includes('project-misc') ||
+				chunkInfo.name.includes('misc'))
+		) {
 			return '[name].js';
 		}
 
 		// Move editor-related chunks to editor-deps folder
 		if (isEditorChunk || isEditorUtilityChunk) {
-			return `editor-deps/[name].js`;
+			return 'editor-deps/[name].js';
 		}
 
 		return '[name].js';
