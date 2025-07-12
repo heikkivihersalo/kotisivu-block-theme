@@ -1,3 +1,7 @@
+// Quick fix for missing Sass variables
+$block-bg-padding--v: 0.5rem !default;
+$block-bg-padding--h: 1rem !default;
+
 .is-small-text {
 	font-size: 0.875em;
 }
