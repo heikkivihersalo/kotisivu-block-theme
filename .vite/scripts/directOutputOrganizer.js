@@ -440,7 +440,7 @@ function generateAssetFiles(allFiles, outputDir, buildRoot) {
 			!fileName.includes('linkControls') &&
 			!fileName.includes('editor-dependencies') &&
 			!fileName.includes('style-index') &&
-			!fileName.includes('editor-styles')
+			!fileName.includes('index-css')
 		);
 	});
 
@@ -495,8 +495,7 @@ function fixCssFiles(outputDir) {
 		// Collect .js files that should be .css (for empty CSS files processed by Vite)
 		if (
 			fileName.endsWith('.js') &&
-			(fileName.includes('editor-styles') ||
-				fileName.includes('style-index'))
+			(fileName.includes('index-css') || fileName.includes('style-index'))
 		) {
 			// Check if this is actually a CSS file by reading content
 			try {
@@ -535,10 +534,10 @@ function fixCssFiles(outputDir) {
 		}
 	}
 
-	// Second pass: Refresh file list and rename all editor-styles.css to index.css
+	// Second pass: Refresh file list and rename all index-css.css to index.css
 	allFiles = getAllFiles(outputDir);
 	const filesToRename = allFiles.filter(
-		(filePath) => basename(filePath) === 'editor-styles.css'
+		(filePath) => basename(filePath) === 'index-css.css'
 	);
 
 	for (const filePath of filesToRename) {
@@ -547,7 +546,7 @@ function fixCssFiles(outputDir) {
 		try {
 			renameSync(filePath, newPath);
 			console.log(
-				`📝 Renamed editor-styles.css → index.css in ${basename(dirName)}`
+				`📝 Renamed index-css.css → index.css in ${basename(dirName)}`
 			);
 		} catch (error) {
 			console.warn(

@@ -57,10 +57,10 @@ export function createBlockInputs(blocksDir) {
 			input[`${blockName}/view`] = viewFiles;
 		}
 
-		// Check for editor styles (editor.css)
+		// Check for editor styles (editor.css) - output as index.css to match WordPress convention
 		const editorCssFile = resolve(blockDir, 'editor.css');
 		if (existsSync(editorCssFile)) {
-			input[`${blockName}/editor-styles`] = editorCssFile;
+			input[`${blockName}/index-css`] = editorCssFile;
 		}
 
 		// Check for frontend styles (style.css)
