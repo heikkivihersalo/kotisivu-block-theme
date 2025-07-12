@@ -13,8 +13,9 @@ import {
 	generateAssetFileContent,
 	generateFileHash,
 	extractWordPressDependencies,
-} from '../../../shared/wordpress.js';
-import { moveFile, getAllFiles } from '../../../shared/fileSystem.js';
+	moveFile,
+	getAllFiles,
+} from '../helpers.js';
 import {
 	fixCssFiles,
 	cleanupCssComments,
