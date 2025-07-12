@@ -1,6 +1,28 @@
 import { getWordPressPackages, getThirdPartyLibraries } from '../constants.js';
 
 /**
+ * Check if a module ID is a React-related package
+ * @param {string} id - Module ID to check
+ * @returns {boolean} True if the ID is a React package
+ */
+function isReactPackage(id) {
+	return (
+		id === 'react' ||
+		id === 'react-dom' ||
+		id === 'react/jsx-runtime' ||
+		id === 'react/jsx-dev-runtime' ||
+		id.includes('node_modules/react/') ||
+		id.includes('/react/cjs/') ||
+		id.includes('react.development.js') ||
+		id.includes('react.production') ||
+		id.includes('?commonjs-module') ||
+		/\/node_modules\/react\//.test(id) ||
+		/react\.development\.js/.test(id) ||
+		/react\.production\.min\.js/.test(id)
+	);
+}
+
+/**
  * Create external dependencies function for Rollup
  * @returns {Function} External function for Rollup configuration
  */
@@ -9,30 +31,16 @@ export function createExternalFunction() {
 	const thirdPartyLibraries = getThirdPartyLibraries();
 
 	return (id) => {
+		// Check for React-related modules
+		if (isReactPackage(id)) {
+			return true;
+		}
+
 		// Check for WordPress packages
 		if (
 			wordpressPackages.some(
 				(pkg) => id === pkg || id.startsWith(pkg + '/')
 			)
-		) {
-			return true;
-		}
-
-		// React packages - provided by WordPress via wp.element
-		// More comprehensive React detection to catch all variants
-		if (
-			id === 'react' ||
-			id === 'react-dom' ||
-			id.startsWith('react/') ||
-			id.includes('react/jsx-runtime') ||
-			id.includes('react/jsx-dev-runtime') ||
-			id.includes('node_modules/react/') ||
-			id.includes('/react/') ||
-			id.includes('react.development.js') ||
-			id.includes('react-jsx-dev-runtime') ||
-			id.includes('react.js') ||
-			id.endsWith('react/index.js') ||
-			id.includes('commonjs-') // Catch commonjs variants
 		) {
 			return true;
 		}
