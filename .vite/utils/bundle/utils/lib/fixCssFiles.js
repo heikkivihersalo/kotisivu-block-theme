@@ -10,8 +10,6 @@ import { OUTPUT_PATTERNS } from '../../../constants.js';
  * @param {string} outputDir - Main output directory for blocks
  */
 export function fixCssFiles(outputDir) {
-	console.log('🎨 Fixing CSS file extensions and names...');
-
 	// First pass: Get all files and convert JS to CSS
 	let allFiles = getAllFiles(outputDir);
 	const filesToConvert = [];
@@ -56,7 +54,6 @@ export function fixCssFiles(outputDir) {
 			safeWriteFile(newPath, '');
 			// Remove the JS file
 			unlinkSync(filePath);
-			console.log(`🔄 Converted ${fileName} → ${cssFileName}`);
 		} catch (error) {
 			console.warn(`⚠️  Could not convert ${fileName}:`, error.message);
 		}
@@ -73,9 +70,6 @@ export function fixCssFiles(outputDir) {
 		const newPath = join(dirName, 'index.css');
 		try {
 			renameSync(filePath, newPath);
-			console.log(
-				`📝 Renamed index-css.css → index.css in ${basename(dirName)}`
-			);
 		} catch (error) {
 			console.warn(
 				`⚠️  Could not rename ${basename(filePath)} in ${basename(dirName)}:`,

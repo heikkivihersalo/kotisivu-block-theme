@@ -8,8 +8,6 @@ import { safeWriteFile } from './safeWriteFile.js';
  * @param {string} outputDir - Main output directory for blocks
  */
 export function cleanupCssComments(outputDir) {
-	console.log('🧹 Cleaning up CSS import comments from JavaScript files...');
-
 	// Get all JS files in the output directory
 	const allFiles = getAllFiles(outputDir);
 	const jsFiles = allFiles.filter((file) => file.endsWith('.js'));
@@ -37,9 +35,6 @@ export function cleanupCssComments(outputDir) {
 			if (hasChanges) {
 				content = content.replace(/\s{2,}/g, ' ').trim();
 				safeWriteFile(filePath, content);
-				console.log(
-					`🧹 Cleaned CSS comments from ${basename(filePath)}`
-				);
 			}
 		} catch (error) {
 			console.warn(

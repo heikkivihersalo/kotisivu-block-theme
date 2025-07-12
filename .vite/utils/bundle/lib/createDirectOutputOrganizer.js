@@ -60,7 +60,6 @@ function updateImportPathsWithMappings(filePath, mappings) {
 
 		if (updatedContent !== content) {
 			writeFileSync(filePath, updatedContent, 'utf8');
-			console.log(`📝 Updated import paths in ${basename(filePath)}`);
 		}
 	} catch (error) {
 		console.warn(
@@ -109,9 +108,6 @@ function updateImportPathsForFinalLocation(filePath, buildRoot, editorDir) {
 
 		if (updatedContent !== content) {
 			writeFileSync(filePath, updatedContent, 'utf8');
-			console.log(
-				`📝 Updated final import paths in ${basename(filePath)}`
-			);
 		}
 	} catch (error) {
 		console.warn(
@@ -128,8 +124,6 @@ function updateImportPathsForFinalLocation(filePath, buildRoot, editorDir) {
  * @param {string} buildRoot - Build root directory
  */
 function generateAssetFiles(allFiles, outputDir, buildRoot) {
-	console.log('📝 Generating WordPress asset files...');
-
 	for (const filePath of allFiles) {
 		const fileName = basename(filePath);
 
@@ -158,9 +152,6 @@ function generateAssetFiles(allFiles, outputDir, buildRoot) {
 
 			try {
 				writeFileSync(assetFilePath, assetContent, 'utf8');
-				console.log(
-					`📝 Generated ${assetFileName} with ${dependencies.length} dependencies`
-				);
 			} catch (error) {
 				console.warn(
 					`⚠️  Failed to create asset file ${assetFileName}:`,
@@ -179,8 +170,6 @@ function generateAssetFiles(allFiles, outputDir, buildRoot) {
  */
 export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 	return function organizeDirectOutput(options, bundle) {
-		console.log('🔧 Organizing direct output files...');
-
 		// Get the build root directory
 		const buildRoot = outputDir.split('/')[0]; // 'build' from 'build/test/block-library/custom'
 		const editorDir = join(buildRoot, 'editor');
@@ -234,9 +223,6 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 		for (const { from, to } of filesToMove) {
 			try {
 				moveFile(from, to);
-				console.log(
-					`📁 Moved ${basename(from)} to ${relative(process.cwd(), to)}`
-				);
 			} catch (error) {
 				console.warn(
 					`⚠️  Failed to move ${basename(from)}:`,
@@ -273,7 +259,5 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 
 		// Step 6: Clean up CSS comments
 		cleanupCssComments(outputDir);
-
-		console.log('✅ Direct output organization complete!');
 	};
 }
