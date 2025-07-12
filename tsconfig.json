@@ -28,9 +28,12 @@
 		/* Paths */
 		"baseUrl": ".",
 		"paths": {
-			"@/app/*": ["src/app/*"],
-			"@/shared/*": ["src/shared/*"],
-			"@/widgets/*": ["src/widgets/*"]
-		}
+			"@/app/*": ["resources/app/*"],
+			"@/shared/*": ["resources/shared/*"],
+			"@/widgets/*": ["resources/widgets/*"]
+		},
+
+		/* Types */
+		"types": ["node", "vite/client"]
 	}
 }
