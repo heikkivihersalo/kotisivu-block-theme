@@ -28,7 +28,10 @@ export function createChunkFileNames(outputDir, editorOutputDir) {
 			chunkInfo.name === CHUNK_PATTERNS.EDITOR_DEPENDENCIES ||
 			chunkInfo.name === CHUNK_PATTERNS.WP_EDITOR ||
 			isEditorRelatedChunk(chunkInfo) ||
-			isEditorUtilityChunk(chunkInfo)
+			isEditorUtilityChunk(chunkInfo) ||
+			// Include CSS-related files that contain editor dependencies
+			chunkInfo.name.includes('index-css') ||
+			chunkInfo.name.includes('editor')
 		) {
 			// Mark as editor chunk
 			return `[name]${CHUNK_PATTERNS.EDITOR_SUFFIX}.js`;

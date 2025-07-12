@@ -6,43 +6,59 @@
 /**
  * Checks if a module is React-related
  * @param {string} moduleId - Module ID to check
+ * @param {string[]} customPatterns - Custom patterns to check (optional)
  * @returns {boolean} True if module is React-related
  */
-export function isReactModule(moduleId) {
-	return (
-		moduleId.includes('jsx-dev-runtime') ||
-		moduleId.includes('jsx-runtime') ||
-		moduleId.includes('react/index') ||
-		moduleId.includes('react-dom')
-	);
+export function isReactModule(moduleId, customPatterns = null) {
+	const defaultPatterns = [
+		'jsx-dev-runtime',
+		'jsx-runtime',
+		'react/index',
+		'react-dom',
+	];
+
+	const patterns = customPatterns || defaultPatterns;
+	return patterns.some((pattern) => moduleId.includes(pattern));
 }
 
 /**
  * Checks if a module is a WordPress editor package
  * @param {string} moduleId - Module ID to check
+ * @param {string[]} customPatterns - Custom patterns to check (optional)
  * @returns {boolean} True if module is a WordPress editor package
  */
-export function isWordPressEditorModule(moduleId) {
-	return (
-		moduleId.includes('@wordpress/block-editor') ||
-		moduleId.includes('@wordpress/components') ||
-		moduleId.includes('@wordpress/compose') ||
-		moduleId.includes('@wordpress/rich-text') ||
-		moduleId.includes('@wordpress/editor')
-	);
+export function isWordPressEditorModule(moduleId, customPatterns = null) {
+	const defaultPatterns = [
+		'@wordpress/block-editor',
+		'@wordpress/components',
+		'@wordpress/compose',
+		'@wordpress/rich-text',
+		'@wordpress/editor',
+	];
+
+	const patterns = customPatterns || defaultPatterns;
+	return patterns.some((pattern) => moduleId.includes(pattern));
 }
 
 /**
  * Checks if a module is an editor file based on file patterns
  * @param {string} moduleId - Module ID to check
+ * @param {string[]} customPatterns - Custom patterns to check (optional)
  * @returns {boolean} True if module appears to be editor-related
  */
-export function isEditorFile(moduleId) {
-	return (
-		moduleId.includes('editor.') ||
-		moduleId.includes('/editor/') ||
-		moduleId.includes('editor-styles')
-	);
+export function isEditorFile(moduleId, customPatterns = null) {
+	const defaultPatterns = [
+		'editor.',
+		'/editor/',
+		'editor-styles',
+		'edit.jsx',
+		'edit.tsx',
+		'edit.js',
+		'edit.ts',
+	];
+
+	const patterns = customPatterns || defaultPatterns;
+	return patterns.some((pattern) => moduleId.includes(pattern));
 }
 
 /**
@@ -79,34 +95,143 @@ export function isModuleUsedByEditor(
 }
 
 /**
+ * Checks if a module is used by both editor and frontend (save) components
+ * @param {string} moduleId - Module ID to check
+ * @param {Function} getModuleInfo - Function to get module information
+ * @param {Object} patterns - Custom patterns to check (optional)
+ * @param {string[]} patterns.editor - Editor file patterns
+ * @param {string[]} patterns.frontend - Frontend file patterns
+ * @returns {boolean} True if module is used by both editor and frontend
+ */
+export function isSharedEditorFrontendUtility(
+	moduleId,
+	getModuleInfo,
+	patterns = null
+) {
+	const defaultPatterns = {
+		editor: [
+			'edit.tsx',
+			'edit.jsx',
+			'edit.js',
+			'edit.ts',
+			'editor.',
+			'/editor/',
+			'Inspector.tsx',
+		],
+		frontend: [
+			'save.tsx',
+			'save.jsx',
+			'save.js',
+			'save.ts',
+			'view.',
+			'/view/',
+			'render.php',
+		],
+	};
+
+	const checkPatterns = patterns || defaultPatterns;
+
+	try {
+		const moduleInfo = getModuleInfo(moduleId);
+		if (!moduleInfo || !moduleInfo.importers) return false;
+
+		const hasEditorImporter = moduleInfo.importers.some((importer) =>
+			checkPatterns.editor.some((pattern) => importer.includes(pattern))
+		);
+
+		const hasFrontendImporter = moduleInfo.importers.some((importer) =>
+			checkPatterns.frontend.some((pattern) => importer.includes(pattern))
+		);
+
+		return hasEditorImporter && hasFrontendImporter;
+	} catch (e) {
+		return false;
+	}
+}
+
+/**
  * Checks if a module is a shared editor utility based on file patterns
  * @param {string} moduleId - Module ID to check
+ * @param {Function} getModuleInfo - Function to get module information (optional)
+ * @param {Object} patterns - Custom patterns to check (optional)
+ * @param {string[]} patterns.editor - Editor file patterns
+ * @param {string[]} patterns.frontend - Frontend file patterns
+ * @param {string[]} patterns.fallback - Fallback patterns for basic detection
  * @returns {boolean} True if module is a shared editor utility
  */
-export function isSharedEditorUtility(moduleId) {
-	return (
-		moduleId.includes('gapControls') ||
-		moduleId.includes('variationPicker') ||
-		moduleId.includes('getTransformedMetadata') ||
-		moduleId.includes('innerBlocksAppender') ||
-		moduleId.includes('tailwind-utilities') ||
-		moduleId.includes('classnames') ||
-		moduleId.includes('clsx')
-	);
+export function isSharedEditorUtility(
+	moduleId,
+	getModuleInfo = null,
+	patterns = null
+) {
+	const defaultPatterns = {
+		editor: [
+			'edit.tsx',
+			'edit.jsx',
+			'edit.js',
+			'edit.ts',
+			'editor.',
+			'/editor/',
+			'Inspector.tsx',
+		],
+		frontend: [
+			'save.tsx',
+			'save.jsx',
+			'save.js',
+			'save.ts',
+			'view.',
+			'/view/',
+			'render.php',
+		],
+		fallback: ['/inspector/', 'components/inspector'],
+	};
+
+	const checkPatterns = patterns || defaultPatterns;
+
+	// Use dynamic analysis if getModuleInfo is available
+	if (getModuleInfo) {
+		try {
+			const moduleInfo = getModuleInfo(moduleId);
+			if (!moduleInfo || !moduleInfo.importers) return false;
+
+			// Check if this module is imported only by editor files
+			const isUsedByEditor = moduleInfo.importers.some((importer) =>
+				checkPatterns.editor.some((pattern) =>
+					importer.includes(pattern)
+				)
+			);
+
+			// Check if it's NOT used by frontend files
+			const isUsedByFrontend = moduleInfo.importers.some((importer) =>
+				checkPatterns.frontend.some((pattern) =>
+					importer.includes(pattern)
+				)
+			);
+
+			// Return true if used by editor but not frontend
+			return isUsedByEditor && !isUsedByFrontend;
+		} catch (e) {
+			// Fall back to pattern-based detection if dynamic analysis fails
+		}
+	}
+
+	// Fallback: basic pattern detection for common editor-only patterns
+	return checkPatterns.fallback.some((pattern) => moduleId.includes(pattern));
 }
 
 /**
  * Checks if a chunk contains modules that are used by editor files
  * @param {Object} chunkInfo - Chunk information from Rollup
+ * @param {string[]} customPatterns - Custom patterns to check for editor files (optional)
  * @returns {boolean} True if chunk is editor-related
  */
-export function isEditorRelatedChunk(chunkInfo) {
+export function isEditorRelatedChunk(chunkInfo, customPatterns = null) {
 	if (!chunkInfo.moduleIds) return false;
 
 	return chunkInfo.moduleIds.some((moduleId) => {
 		try {
 			// Check if this module is directly an editor file
-			return isEditorFile(moduleId);
+			return isEditorFile(moduleId, customPatterns);
 		} catch (e) {
 			return false;
 		}
@@ -141,15 +266,19 @@ export function isEditorUtilityChunk(chunkInfo) {
 /**
  * Checks if a chunk should be placed in the build root
  * @param {Object} chunkInfo - Chunk information from Rollup
+ * @param {string[]} customPatterns - Custom patterns to check (optional)
  * @returns {boolean} True if chunk should go to build root
  */
-export function isRootAssetChunk(chunkInfo) {
+export function isRootAssetChunk(chunkInfo, customPatterns = null) {
 	if (!chunkInfo.name) return false;
 
-	return (
-		chunkInfo.name.includes('root-assets') ||
-		chunkInfo.name.includes('react-runtime') ||
-		chunkInfo.name.includes('jsx-dev-runtime') ||
-		chunkInfo.name.includes('jsx-runtime')
-	);
+	const defaultPatterns = [
+		'root-assets',
+		'react-runtime',
+		'jsx-dev-runtime',
+		'jsx-runtime',
+	];
+
+	const patterns = customPatterns || defaultPatterns;
+	return patterns.some((pattern) => chunkInfo.name.includes(pattern));
 }

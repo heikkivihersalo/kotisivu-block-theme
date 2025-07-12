@@ -204,6 +204,7 @@ export function createDirectOutputOrganizer(
 		}
 
 		const filesToMove = [];
+		const filesToRemove = [];
 		const importPathMappings = {};
 
 		for (const filePath of allFiles) {
@@ -231,6 +232,52 @@ export function createDirectOutputOrganizer(
 				importPathMappings[filePath] = newPath;
 			}
 
+			// Handle ALL index-css.js files - these should be removed or moved to editor
+			if (fileName === 'index-css.js' && existsSync(filePath)) {
+				try {
+					const fileStats = statSync(filePath);
+					const content = readFileSync(filePath, 'utf8');
+
+					// Check if it's a large file with significant editor dependencies
+					if (
+						fileStats.size > 10 * 1024 &&
+						(content.includes('Inspector') ||
+							content.includes('PanelBody') ||
+							content.includes('useBlockProps') ||
+							content.includes('InspectorControls') ||
+							content.includes('@wordpress/block-editor') ||
+							content.includes('gridAlignControls') ||
+							content.includes('backgroundColorControls'))
+					) {
+						// Move large editor dependency files to editor directory with generic name
+						const relativePath = relative(baseOutputDir, filePath);
+						const editorFileName = 'editor-dependency.js';
+						const newPath = join(editorDir, editorFileName);
+						filesToMove.push({ from: filePath, to: newPath });
+						importPathMappings[filePath] = newPath;
+						console.log(
+							`📦 Moving large editor dependency file: ${relativePath} → ${relative(baseOutputDir, newPath)} (${Math.round(fileStats.size / 1024)}KB)`
+						);
+					} else {
+						// Remove small index-css.js files that just contain imports to editor dependencies
+						// These are redundant since index.js should handle all imports
+						const relativePath = relative(baseOutputDir, filePath);
+						filesToRemove.push(filePath);
+						// Only log the first few to avoid spam
+						if (filesToRemove.length <= 5) {
+							console.log(
+								`🗑️  Removing redundant index-css.js: ${relativePath} (${Math.round(fileStats.size / 1024)}KB)`
+							);
+						}
+					}
+				} catch (error) {
+					console.warn(
+						`⚠️  Failed to analyze file ${filePath}:`,
+						error.message
+					);
+				}
+			}
+
 			// Move manifest.json and editor.deps.json to build root
 			if (
 				fileName === 'manifest.json' ||
@@ -241,13 +288,58 @@ export function createDirectOutputOrganizer(
 			}
 		}
 
+		// Remove duplicate entries from filesToMove and filesToRemove arrays
+		const seenMovePaths = new Set();
+		const seenRemovePaths = new Set();
+
+		const uniqueFilesToMove = filesToMove.filter((fileMove) => {
+			const key = `${fileMove.from}→${fileMove.to}`;
+			if (!seenMovePaths.has(key)) {
+				seenMovePaths.add(key);
+				return true;
+			}
+			return false;
+		});
+
+		const uniqueFilesToRemove = filesToRemove.filter((filePath) => {
+			if (!seenRemovePaths.has(filePath)) {
+				seenRemovePaths.add(filePath);
+				return true;
+			}
+			return false;
+		});
+
+		console.log(
+			`📋 Files to move: ${uniqueFilesToMove.length}, Files to remove: ${uniqueFilesToRemove.length}`
+		);
+
 		// Step 1: Move files to their correct locations
-		for (const { from, to } of filesToMove) {
+		for (const { from, to } of uniqueFilesToMove) {
 			try {
 				moveFile(from, to);
+				console.log(
+					`✅ Moved: ${basename(from)} → ${relative(baseOutputDir, dirname(to))}/`
+				);
 			} catch (error) {
 				console.warn(
 					`⚠️  Failed to move ${basename(from)}:`,
+					error.message
+				);
+			}
+		}
+
+		// Step 1.5: Remove redundant files
+		for (const filePath of uniqueFilesToRemove) {
+			try {
+				if (existsSync(filePath)) {
+					unlinkSync(filePath);
+					console.log(
+						`🗑️  Removed: ${relative(baseOutputDir, filePath)}`
+					);
+				}
+			} catch (error) {
+				console.warn(
+					`⚠️  Failed to remove ${basename(filePath)}:`,
 					error.message
 				);
 			}
@@ -269,7 +361,7 @@ export function createDirectOutputOrganizer(
 		}
 
 		// Step 3: Update import paths for moved files in their new locations
-		for (const { to } of filesToMove) {
+		for (const { to } of uniqueFilesToMove) {
 			if (existsSync(to) && basename(to).endsWith('.js')) {
 				updateImportPathsForFinalLocation(to, buildRoot, editorDir);
 			}

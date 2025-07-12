@@ -4,6 +4,7 @@ import {
 	isEditorFile,
 	isSharedEditorUtility,
 	isModuleUsedByEditor,
+	isSharedEditorFrontendUtility,
 } from '../helpers.js';
 
 /**
@@ -22,8 +23,13 @@ export function createManualChunks() {
 			return 'react-runtime';
 		}
 
+		// Check if this is used by both editor and frontend - keep in main blocks directory
+		if (isSharedEditorFrontendUtility(id, getModuleInfo)) {
+			return null; // Let Rollup handle this naturally, will stay in main directory
+		}
+
 		// Handle shared editor utilities - these should go to editor directory
-		if (isSharedEditorUtility(id)) {
+		if (isSharedEditorUtility(id, getModuleInfo)) {
 			return 'editor-dependencies';
 		}
 

@@ -81,6 +81,8 @@ export default function gutenbergBlocksPlugin(options = {}) {
 							editorDir
 						),
 						manualChunks: createManualChunks(),
+						// Force chunk creation even for small modules
+						experimentalMinChunkSize: 0,
 					},
 					external: createExternalFunction(),
 				},
