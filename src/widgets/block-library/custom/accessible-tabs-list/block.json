@@ -1,66 +1,66 @@
 {
-  "$schema": "https://json.schemastore.org/block.json",
-  "apiVersion": 3,
-  "name": "ksd/accessible-tabs-list",
-  "title": "Tabs List",
-  "icon": "block-default",
-  "description": "",
-  "category": "widgets",
-  "keywords": [""],
-  "textdomain": "kotisivu-block-theme",
-  "supports": {
-    "className": false
-  },
-  "parent": ["ksd/accessible-tabs"],
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "attributes": {
-    "template": {
-      "type": "array",
-      "default": [
-        [
-          "ksd/accessible-tabs-list-item",
-          {
-            "tabName": "Tab 1",
-            "tabId": 1,
-            "tabRef": "#panel-1"
-          }
-        ],
-        [
-          "ksd/accessible-tabs-list-item",
-          {
-            "tabName": "Tab 2",
-            "tabId": 2,
-            "tabRef": "#panel-2"
-          }
-        ],
-        [
-          "ksd/accessible-tabs-list-item",
-          {
-            "tabName": "Tab 3",
-            "tabId": 3,
-            "tabRef": "#panel-3"
-          }
-        ],
-        [
-          "ksd/accessible-tabs-list-item",
-          {
-            "tabName": "Tab 4",
-            "tabId": 4,
-            "tabRef": "#panel-4"
-          }
-        ]
-      ]
-    },
-    "allowedBlocks": {
-      "type": "array",
-      "default": ["ksd/accessible-tabs-list-item"]
-    },
-    "templateLock": {
-      "type": ["string", "boolean"],
-      "enum": ["all", "insert", false],
-      "default": false
-    }
-  }
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/accessible-tabs-list",
+	"title": "Tabs List",
+	"icon": "block-default",
+	"description": "",
+	"category": "widgets",
+	"keywords": [""],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false
+	},
+	"parent": ["ksd/accessible-tabs"],
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"attributes": {
+		"template": {
+			"type": "array",
+			"default": [
+				[
+					"ksd/accessible-tabs-list-item",
+					{
+						"tabName": "Tab 1",
+						"tabId": 1,
+						"tabRef": "#panel-1"
+					}
+				],
+				[
+					"ksd/accessible-tabs-list-item",
+					{
+						"tabName": "Tab 2",
+						"tabId": 2,
+						"tabRef": "#panel-2"
+					}
+				],
+				[
+					"ksd/accessible-tabs-list-item",
+					{
+						"tabName": "Tab 3",
+						"tabId": 3,
+						"tabRef": "#panel-3"
+					}
+				],
+				[
+					"ksd/accessible-tabs-list-item",
+					{
+						"tabName": "Tab 4",
+						"tabId": 4,
+						"tabRef": "#panel-4"
+					}
+				]
+			]
+		},
+		"allowedBlocks": {
+			"type": "array",
+			"default": ["ksd/accessible-tabs-list-item"]
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false],
+			"default": false
+		}
+	}
 }

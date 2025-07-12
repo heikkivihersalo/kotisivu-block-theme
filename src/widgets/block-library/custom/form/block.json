@@ -1,59 +1,59 @@
 {
-  "$schema": "https://json.schemastore.org/block.json",
-  "apiVersion": 3,
-  "name": "ksd/form",
-  "title": "Form",
-  "category": "design",
-  "icon": "layout",
-  "description": "Form",
-  "keywords": ["form, contact form"],
-  "textdomain": "kotisivu-block-theme",
-  "supports": {
-    "className": false,
-    "anchor": true,
-    "html": true,
-    "color": {
-      "text": false,
-      "background": true
-    },
-    "spacing": {
-      "margin": ["top", "bottom"],
-      "padding": true
-    }
-  },
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "attributes": {
-    "blockClass": {
-      "type": "string",
-      "default": "contact-us"
-    },
-    "style": {
-      "type": "object",
-      "default": {
-        "margin": {
-          "top": "var(--wp--preset--spacing--50)",
-          "bottom": "var(--wp--preset--spacing--50)"
-        }
-      }
-    },
-    "ariaLabel": {
-      "type": "string"
-    },
-    "ariaLabelledBy": {
-      "type": "string"
-    },
-    "template": {
-      "type": "array",
-      "default": [
-        ["core/heading", { "placeholder": "Otsikko", "level": 2 }],
-        ["core/shortcode", { "text": "[fluentform id='3']" }]
-      ]
-    },
-    "templateLock": {
-      "type": ["string", "boolean"],
-      "enum": ["all", "insert", false]
-    }
-  }
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 3,
+	"name": "ksd/form",
+	"title": "Form",
+	"category": "design",
+	"icon": "layout",
+	"description": "Form",
+	"keywords": ["form, contact form"],
+	"textdomain": "kotisivu-block-theme",
+	"supports": {
+		"className": false,
+		"anchor": true,
+		"html": true,
+		"color": {
+			"text": false,
+			"background": true
+		},
+		"spacing": {
+			"margin": ["top", "bottom"],
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"attributes": {
+		"blockClass": {
+			"type": "string",
+			"default": "contact-us"
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"margin": {
+					"top": "var(--wp--preset--spacing--50)",
+					"bottom": "var(--wp--preset--spacing--50)"
+				}
+			}
+		},
+		"ariaLabel": {
+			"type": "string"
+		},
+		"ariaLabelledBy": {
+			"type": "string"
+		},
+		"template": {
+			"type": "array",
+			"default": [
+				["core/heading", { "placeholder": "Otsikko", "level": 2 }],
+				["core/shortcode", { "text": "[fluentform id='3']" }]
+			]
+		},
+		"templateLock": {
+			"type": ["string", "boolean"],
+			"enum": ["all", "insert", false]
+		}
+	}
 }
