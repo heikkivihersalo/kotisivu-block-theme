@@ -26,9 +26,15 @@ export default defineConfig({
 			},
 		}),
 		gutenbergBlocksPlugin({
-			blocksDir: 'resources/widgets/block-library/custom',
-			outputDir: 'build/test/block-library/custom',
-			editorOutputDir: 'build/test/editor',
+			input: {
+				'block-library': 'resources/widgets/block-library/custom',
+				'page-templates': 'resources/widgets/page-templates',
+				'template-parts': 'resources/widgets/template-parts',
+			},
+			output: 'build/blocks',
+			dependencies: {
+				editorOutput: 'build/blocks/editor',
+			},
 			copyBlockJson: true,
 		}),
 	],

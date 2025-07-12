@@ -6,9 +6,10 @@ import { BLOCK_PATTERNS, WORDPRESS_FILES } from '../../constants.js';
 /**
  * Discover all block.json files and create build entries
  * @param {string} blocksDir - Directory to search for blocks
+ * @param {string} outputSubDir - Output subdirectory for this input (optional)
  * @returns {Object} Input configuration for Vite
  */
-export function createBlockInputs(blocksDir) {
+export function createBlockInputs(blocksDir, outputSubDir = '') {
 	// Find all block.json files
 	const blockJsonFiles = glob.sync(
 		`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`
@@ -25,6 +26,9 @@ export function createBlockInputs(blocksDir) {
 		const blockDir = dirname(blockJsonPath);
 		const blockName = basename(blockDir);
 
+		// Create entry key with optional subdirectory prefix
+		const entryPrefix = outputSubDir ? `${outputSubDir}/` : '';
+
 		// Read block.json to understand the structure
 		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
@@ -34,7 +38,7 @@ export function createBlockInputs(blocksDir) {
 			.find((filepath) => existsSync(filepath));
 
 		if (indexFile) {
-			input[`${blockName}/index`] = indexFile;
+			input[`${entryPrefix}${blockName}/index`] = indexFile;
 		}
 
 		// Check for view files (view.ts, view.js, etc.)
@@ -43,7 +47,7 @@ export function createBlockInputs(blocksDir) {
 			.find((filepath) => existsSync(filepath));
 
 		if (viewFiles) {
-			input[`${blockName}/view`] = viewFiles;
+			input[`${entryPrefix}${blockName}/view`] = viewFiles;
 		}
 
 		// Check for editor styles (editor.css, editor.scss) - output as index.css to match WordPress convention
@@ -52,7 +56,7 @@ export function createBlockInputs(blocksDir) {
 			.find((filepath) => existsSync(filepath));
 
 		if (editorCssFile) {
-			input[`${blockName}/index-css`] = editorCssFile;
+			input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
 		}
 
 		// Check for frontend styles (style.css, style.scss)
@@ -61,7 +65,7 @@ export function createBlockInputs(blocksDir) {
 			.find((filepath) => existsSync(filepath));
 
 		if (styleCssFile) {
-			input[`${blockName}/style-index`] = styleCssFile;
+			input[`${entryPrefix}${blockName}/style-index`] = styleCssFile;
 		}
 	});
 

@@ -164,23 +164,45 @@ function generateAssetFiles(allFiles, outputDir, buildRoot) {
 
 /**
  * Creates a direct output organizer that handles writeBundle phase
- * @param {string} outputDir - Main output directory for blocks
+ * @param {string} baseOutputDir - Base output directory for blocks
  * @param {string} editorOutputDir - Output directory for editor dependencies
+ * @param {Object} inputDirs - Object of input directories (optional, for compatibility)
  * @returns {Function} Function to organize files during writeBundle
  */
-export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
+export function createDirectOutputOrganizer(
+	baseOutputDir,
+	editorOutputDir,
+	inputDirs = {}
+) {
 	return function organizeDirectOutput(options, bundle) {
 		// Get the build root directory
-		const buildRoot = outputDir.split('/')[0]; // 'build' from 'build/test/block-library/custom'
-		const editorDir = join(buildRoot, 'editor');
+		const buildRoot = baseOutputDir.split('/')[0]; // 'build' from 'build/blocks'
+		const editorDir = editorOutputDir; // Use the provided editor output directory
 
 		// Ensure editor directory exists
 		if (!existsSync(editorDir)) {
 			mkdirSync(editorDir, { recursive: true });
 		}
 
-		// Get all files in the output directory
-		const allFiles = getAllFiles(outputDir);
+		// For multi-input setup, we need to process each subdirectory
+		const outputDirs =
+			Object.keys(inputDirs).length > 0
+				? [
+						baseOutputDir,
+						...Object.keys(inputDirs).map((subDir) =>
+							subDir ? join(baseOutputDir, subDir) : baseOutputDir
+						),
+					]
+				: [baseOutputDir];
+
+		// Get all files from all output directories
+		const allFiles = [];
+		for (const outputDir of outputDirs) {
+			if (existsSync(outputDir)) {
+				allFiles.push(...getAllFiles(outputDir));
+			}
+		}
+
 		const filesToMove = [];
 		const importPathMappings = {};
 
@@ -232,10 +254,17 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 		}
 
 		// Step 2: Update import paths in remaining files
-		const remainingFiles = getAllFiles(outputDir);
-		for (const filePath of remainingFiles) {
-			if (basename(filePath).endsWith('.js')) {
-				updateImportPathsWithMappings(filePath, importPathMappings);
+		for (const outputDir of outputDirs) {
+			if (existsSync(outputDir)) {
+				const remainingFiles = getAllFiles(outputDir);
+				for (const filePath of remainingFiles) {
+					if (basename(filePath).endsWith('.js')) {
+						updateImportPathsWithMappings(
+							filePath,
+							importPathMappings
+						);
+					}
+				}
 			}
 		}
 
@@ -247,17 +276,30 @@ export function createDirectOutputOrganizer(outputDir, editorOutputDir) {
 		}
 
 		// Step 4: Generate WordPress asset files
-		const finalFiles = [
-			...getAllFiles(outputDir),
+		const finalFiles = [];
+		for (const outputDir of outputDirs) {
+			if (existsSync(outputDir)) {
+				finalFiles.push(...getAllFiles(outputDir));
+			}
+		}
+		finalFiles.push(
 			...getAllFiles(buildRoot).filter((f) => f.endsWith('.js')),
-			...getAllFiles(editorDir).filter((f) => f.endsWith('.js')),
-		];
-		generateAssetFiles(finalFiles, outputDir, buildRoot);
+			...getAllFiles(editorDir).filter((f) => f.endsWith('.js'))
+		);
+		generateAssetFiles(finalFiles, baseOutputDir, buildRoot);
 
-		// Step 5: Fix CSS files
-		fixCssFiles(outputDir);
+		// Step 5: Fix CSS files in all output directories
+		for (const outputDir of outputDirs) {
+			if (existsSync(outputDir)) {
+				fixCssFiles(outputDir);
+			}
+		}
 
-		// Step 6: Clean up CSS comments
-		cleanupCssComments(outputDir);
+		// Step 6: Clean up CSS comments in all output directories
+		for (const outputDir of outputDirs) {
+			if (existsSync(outputDir)) {
+				cleanupCssComments(outputDir);
+			}
+		}
 	};
 }
