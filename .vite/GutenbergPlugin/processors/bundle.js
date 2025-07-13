@@ -120,14 +120,28 @@ export function createBundleGenerator(inputDirs) {
 					manifest[outputSubDir][blockName].scripts.editor =
 						`${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
 
-					// Track valid dependencies (filter out non-existent files)
+					// Track valid dependencies (filter out phantom dependencies)
 					const chunk = bundle[indexKey + '.js'];
 					if (chunk.imports && chunk.imports.length > 0) {
 						const validDependencies = chunk.imports.filter(
-							(imp) =>
-								bundle[imp] ||
-								imp.startsWith('@wordpress') ||
-								imp.includes('assets/')
+							(imp) => {
+								// Filter out phantom dependencies first
+								if (
+									imp.includes('editor-styles.js') ||
+									imp.includes('style-index.js') ||
+									imp.includes('/editor-styles') ||
+									imp.includes('/style-index')
+								) {
+									return false;
+								}
+
+								// Include valid dependencies
+								return (
+									bundle[imp] ||
+									imp.startsWith('@wordpress') ||
+									imp.includes('assets/')
+								);
+							}
 						);
 						if (validDependencies.length > 0) {
 							manifest[outputSubDir][blockName].dependencies =
