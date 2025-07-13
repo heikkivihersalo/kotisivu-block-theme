@@ -19,6 +19,7 @@ describe('Block Structure Tests', () => {
 		const items = readdirSync(BUILD_DIR, { withFileTypes: true });
 		const allowedItems = [
 			'manifest.json',
+			'manifest.php',
 			'editor.deps.json',
 			'block-library',
 			'page-templates',
@@ -29,7 +30,7 @@ describe('Block Structure Tests', () => {
 		items.forEach((item) => {
 			expect(
 				allowedItems.includes(item.name),
-				`Unexpected item "${item.name}" found in blocks root folder. Only manifest.json, editor.deps.json, and block/asset folders should be present.`
+				`Unexpected item "${item.name}" found in blocks root folder. Only manifest.json, manifest.php, editor.deps.json, and block/asset folders should be present.`
 			).toBe(true);
 		});
 
@@ -45,7 +46,9 @@ describe('Block Structure Tests', () => {
 		const looseFiles = items.filter(
 			(item) =>
 				item.isFile() &&
-				!['manifest.json', 'editor.deps.json'].includes(item.name)
+				!['manifest.json', 'manifest.php', 'editor.deps.json'].includes(
+					item.name
+				)
 		);
 
 		expect(
