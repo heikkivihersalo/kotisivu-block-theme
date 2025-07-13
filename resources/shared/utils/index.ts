@@ -5,4 +5,6 @@ export * from './lib/getImageSizeClass';
 export * from './lib/addModifiers';
 export * from './lib/classnames';
 export * from './lib/getTransformedMetadata';
+export * from './lib/getUrlParamValue';
 export * from './lib/removeAnchorTag';
+export * from './lib/updateUrlParamValue';
