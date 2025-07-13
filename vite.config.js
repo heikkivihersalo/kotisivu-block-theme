@@ -33,6 +33,18 @@ export default defineConfig({
 			},
 			output: 'build/blocks',
 			copyBlockJson: true,
+			chunks: {
+				frontend: [
+					// Frontend-only utilities that should be in frontend-assets
+					// 'resources/shared/utils/frontend',
+					// 'resources/widgets/block-library/custom/product-grid/utils/frontend'
+				],
+				editor: [
+					// Editor-only utilities that should be in editor-assets
+					// 'resources/shared/components/inspector',
+					// 'resources/shared/utils/editor'
+				],
+			},
 		}),
 	],
 	resolve: {

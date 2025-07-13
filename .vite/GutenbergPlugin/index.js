@@ -18,9 +18,22 @@ import { ASSET_FOLDERS } from './config/constants.js';
  * for WordPress Gutenberg blocks with the correct file naming conventions.
  *
  * Supports multiple input directories with organized output structure.
+ *
+ * @param {Object} options - Plugin configuration options
+ * @param {Object} options.input - Input directories mapping (required)
+ * @param {string} options.output - Output directory (default: 'build/blocks')
+ * @param {boolean} options.copyBlockJson - Copy block.json files (default: true)
+ * @param {Object} options.chunks - Chunk organization configuration
+ * @param {string[]} options.chunks.frontend - Array of folder paths for frontend-only chunks
+ * @param {string[]} options.chunks.editor - Array of folder paths for editor-only chunks
  */
 export default function gutenbergBlocksPlugin(options = {}) {
-	const { input, output = 'build/blocks', copyBlockJson = true } = options;
+	const {
+		input,
+		output = 'build/blocks',
+		copyBlockJson = true,
+		chunks = { frontend: [], editor: [] },
+	} = options;
 
 	// Determine configuration format and set up directories
 	let inputDirs, baseOutputDir;
@@ -88,26 +101,31 @@ export default function gutenbergBlocksPlugin(options = {}) {
 								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
 							}
 
-							// Check if this chunk is a utility that was detected as frontend-only
-							// These are dynamically detected by the manual chunking logic
-							// Common patterns for frontend-only utilities
-							const frontendUtilityPatterns = [
-								/^use[A-Z]/, // useParamHandler, useProducts, etc.
-								/^get[A-Z]/, // getUrlParamValue, etc.
-								/^update[A-Z]/, // updateUrlParamValue, etc.
-								/^(constants|helpers|utils)$/, // common utility chunk names
-							];
+							// Check if this chunk matches any frontend folder paths
+							const isFrontendChunk = chunks.frontend.some(
+								(folderPath) =>
+									chunkInfo.moduleIds?.some((moduleId) =>
+										moduleId.includes(folderPath)
+									)
+							);
 
-							const isFrontendUtility =
-								frontendUtilityPatterns.some((pattern) =>
-									pattern.test(chunkInfo.name)
-								);
-
-							if (isFrontendUtility) {
+							if (isFrontendChunk) {
 								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
 							}
 
-							// All other chunks go to editor-assets
+							// Check if this chunk matches any editor folder paths
+							const isEditorChunk = chunks.editor.some(
+								(folderPath) =>
+									chunkInfo.moduleIds?.some((moduleId) =>
+										moduleId.includes(folderPath)
+									)
+							);
+
+							if (isEditorChunk) {
+								return `${ASSET_FOLDERS.EDITOR}/[name].js`;
+							}
+
+							// All other chunks go to editor-assets by default
 							return `${ASSET_FOLDERS.EDITOR}/[name].js`;
 						},
 						format: 'es',
