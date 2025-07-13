@@ -6,22 +6,23 @@ This directory contains both unit and integration tests for the Gutenberg Plugin
 
 ```
 tests/
-├── config/                          # Unit tests for configuration modules
-│   ├── chunks/                      # Chunking logic tests
-│   │   ├── createManualChunks.test.js
-│   │   └── createChunkFileNames.test.js
-│   ├── constants/                   # Constants tests (.gitkeep)
-│   ├── externals/                   # External dependencies tests (.gitkeep)
-│   └── input/                       # Input discovery tests (.gitkeep)
-├── processors/                      # Unit tests for build processors
-│   ├── bundle/                      # Bundle generation tests (.gitkeep)
-│   └── css/                         # CSS processing tests (.gitkeep)
-└── integration/                     # Integration tests
-    └── build-output/                # Build output validation tests
-        ├── helpers.js               # Shared test utilities
-        ├── structure/               # File structure tests
-        ├── assets/                  # Asset organization tests
-        └── content/                 # Content validation tests
+├── unit/                           # Unit tests for individual modules
+│   ├── config/                     # Configuration module tests
+│   │   ├── chunks/                 # Chunking logic tests
+│   │   │   ├── createManualChunks.test.js
+│   │   │   └── createChunkFileNames.test.js
+│   │   ├── constants/              # Constants tests (.gitkeep)
+│   │   ├── externals/              # External dependencies tests (.gitkeep)
+│   │   └── input/                  # Input discovery tests (.gitkeep)
+│   └── processors/                 # Build processor tests
+│       ├── bundle/                 # Bundle generation tests (.gitkeep)
+│       └── css/                    # CSS processing tests (.gitkeep)
+└── integration/                    # Integration tests
+    └── build-output/               # Build output validation tests
+        ├── helpers.js              # Shared test utilities
+        ├── structure/              # File structure tests
+        ├── assets/                 # Asset organization tests
+        └── content/                # Content validation tests
 ```
 
 ## Running Tests
@@ -33,8 +34,7 @@ npm test
 
 To run only plugin unit tests:
 ```bash
-npx vitest run .vite/GutenbergPlugin/tests/config/
-npx vitest run .vite/GutenbergPlugin/tests/processors/
+npx vitest run .vite/GutenbergPlugin/tests/unit/
 ```
 
 To run only integration tests:
@@ -44,7 +44,7 @@ npx vitest run .vite/GutenbergPlugin/tests/integration/
 
 To run a specific test file:
 ```bash
-npx vitest run .vite/GutenbergPlugin/tests/config/chunks/createManualChunks.test.js
+npx vitest run .vite/GutenbergPlugin/tests/unit/config/chunks/createManualChunks.test.js
 ```
 
 ## Test Coverage
