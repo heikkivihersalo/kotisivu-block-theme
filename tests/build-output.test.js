@@ -303,5 +303,45 @@ describe('Block Build Output Tests', () => {
 				).toBe(false);
 			});
 		});
+
+		it('should not generate style-index.js files (only style-index.css)', () => {
+			const blockDirs = getBlockDirectories();
+
+			blockDirs.forEach((blockDir) => {
+				const blockName = getBlockName(blockDir);
+
+				// Should NOT have style-index.js files (frontend styles should only generate CSS)
+				expect(
+					hasFile(blockDir, 'style-index.js'),
+					`${blockName} should not have style-index.js (frontend styles should only generate CSS)`
+				).toBe(false);
+			});
+		});
+
+		it('should only have style-index.css if there are meaningful frontend styles', () => {
+			const blockDirs = getBlockDirectories();
+
+			blockDirs.forEach((blockDir) => {
+				const blockName = getBlockName(blockDir);
+
+				if (hasFile(blockDir, 'style-index.css')) {
+					const styleIndexCssContent = readFileSync(
+						join(blockDir, 'style-index.css'),
+						'utf-8'
+					);
+
+					// Remove comments and whitespace to check for meaningful content
+					const cleanedContent = styleIndexCssContent
+						.replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+						.replace(/\s+/g, '') // Remove whitespace
+						.trim();
+
+					expect(
+						cleanedContent.length,
+						`${blockName} style-index.css exists but has no meaningful content`
+					).toBeGreaterThan(0);
+				}
+			});
+		});
 	});
 });
