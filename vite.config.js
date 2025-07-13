@@ -34,17 +34,15 @@ export default defineConfig({
 			output: 'build/blocks',
 			chunks: {
 				// Explicit chunking configuration:
-				// - Empty arrays (default): All dependencies bundled with entry files
-				// - Specified paths: Only those paths are split into chunks
+				// - Empty arrays (default): Dependencies bundled with entries, shared files in assets/common
+				// - Specified paths: Only those paths are split into chunks in their designated folders
 				frontend: [
 					// Example: Split frontend-only utilities into chunks
-					// 'resources/shared/utils/frontend',
-					// 'resources/widgets/block-library/custom/product-grid/utils/frontend'
+					// 'resources/shared/utils',
 				],
 				editor: [
 					// Example: Split editor-only utilities into chunks
-					// 'resources/shared/components/inspector',
-					// 'resources/shared/utils/editor'
+					// 'resources/shared/components',
 				],
 			},
 		}),
