@@ -75,16 +75,17 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 		console.log(`✅ Created editor CSS files for ${createdCount} blocks`);
 	}
 
-	// Clean up any unwanted root-level CSS files in editor-assets
-	await cleanupUnwantedCSSFiles(editorAssetsDir);
+	// Clean up any unwanted CSS files in editor-assets
+	await cleanupUnwantedCSSFiles(editorAssetsDir, outputDir);
 }
 
 /**
  * Clean up unwanted CSS files from the editor-assets directory
  * @param {string} editorAssetsDir - Editor assets directory path
+ * @param {string} outputDir - Output directory path
  */
-async function cleanupUnwantedCSSFiles(editorAssetsDir) {
-	console.log('🧹 Cleaning up unwanted root-level CSS files...');
+async function cleanupUnwantedCSSFiles(editorAssetsDir, outputDir) {
+	console.log('🧹 Cleaning up unwanted CSS files...');
 
 	if (!existsSync(editorAssetsDir)) {
 		return;
@@ -93,16 +94,49 @@ async function cleanupUnwantedCSSFiles(editorAssetsDir) {
 	let cleanedCount = 0;
 
 	try {
-		const files = readdirSync(editorAssetsDir);
-		const unwantedCssFiles = files.filter(
+		// Recursively find and remove editor-styles.css files
+		const findEditorStylesFiles = (dir) => {
+			const files = [];
+			const items = readdirSync(dir, { withFileTypes: true });
+
+			for (const item of items) {
+				const fullPath = join(dir, item.name);
+				if (item.isDirectory()) {
+					files.push(...findEditorStylesFiles(fullPath));
+				} else if (item.name === 'editor-styles.css') {
+					files.push(fullPath);
+				}
+			}
+			return files;
+		};
+
+		const editorStylesFiles = findEditorStylesFiles(editorAssetsDir);
+
+		editorStylesFiles.forEach((filePath) => {
+			try {
+				unlinkSync(filePath);
+				const relativePath = filePath.replace(
+					editorAssetsDir + '/',
+					''
+				);
+				console.log(`🗑️  Removed: ${relativePath}`);
+				cleanedCount++;
+			} catch (error) {
+				console.warn(`⚠️  Failed to remove ${filePath}:`, error.message);
+			}
+		});
+
+		// Also clean up any unwanted root-level CSS files in editor-assets
+		const rootFiles = readdirSync(editorAssetsDir);
+		const unwantedRootCssFiles = rootFiles.filter(
 			(file) => file.endsWith('.css') && file.match(/^index\d*\.css$/)
 		);
 
-		unwantedCssFiles.forEach((file) => {
+		unwantedRootCssFiles.forEach((file) => {
 			try {
 				const filePath = join(editorAssetsDir, file);
 				unlinkSync(filePath);
-				console.log(`🗑️  Removed unwanted CSS file: ${file}`);
+				console.log(`🗑️  Removed unwanted root CSS file: ${file}`);
 				cleanedCount++;
 			} catch (error) {
 				console.warn(`⚠️  Failed to remove ${file}:`, error.message);
