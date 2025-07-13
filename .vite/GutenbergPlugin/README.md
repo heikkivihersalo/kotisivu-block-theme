@@ -1,14 +1,8 @@
 # Gutenberg Blocks Plugin
 
-A Vite plugin for building WordPress Gutenberg blocks with optimal chunking and asset organization# Run only plugin unit tests
-npx vitest run .vite/GutenbergPlugin/tests/config/
-npx vitest run .vite/GutenbergPlugin/tests/processors/
+A Vite plugin for building WordPress Gutenberg blocks with optimal chunking and asset organization.
 
-# Run only integration tests
-npx vitest run .vite/GutenbergPlugin/tests/integration/
-
-# Run specific test file
-npx vitest run .vite/GutenbergPlugin/tests/config/chunks/createManualChunks.test.js Directory Structure
+## Directory Structure
 
 ```
 GutenbergPlugin/
@@ -45,16 +39,17 @@ GutenbergPlugin/
 - **CSS Validation**: Only generates `style-index.css` for blocks with meaningful frontend styles
 - **Smart Chunking**: Explicit chunking configuration - dependencies only split when explicitly configured
 - **Asset Organization**: 
-  - `editor-assets/` - Shared editor dependencies and editor CSS (when chunking enabled)
-  - `frontend-assets/` - Shared frontend dependencies (when chunking enabled)
+  - `assets/common/` - Shared dependencies and common chunks
+  - `assets/frontend/` - Frontend-specific chunks (when chunking enabled)
+  - `assets/editor/` - Editor-specific chunks (when chunking enabled)
   - Block directories - Block-specific files (`index.js`, `style-index.css`, etc.)
 
 ## Chunking Behavior
 
 The plugin follows an explicit chunking strategy:
 
-- **No Chunking (Default)**: When `chunks.frontend` and `chunks.editor` arrays are empty, all dependencies stay bundled with their entry files. This results in simpler builds with fewer files.
-- **Explicit Chunking**: When paths are specified in chunk configuration, only those specific paths are split into chunks.
+- **No Chunking (Default)**: When `chunks.frontend`, `chunks.editor`, and `chunks.common` arrays are empty, all dependencies stay bundled with their entry files. Shared dependencies are placed in `assets/common/` for better organization.
+- **Explicit Chunking**: When paths are specified in chunk configuration, only those specific paths are split into chunks in their designated folders.
 
 ### Example: No Chunking (Recommended for most projects)
 ```javascript
@@ -63,7 +58,8 @@ gutenbergBlocksPlugin({
   output: 'build/blocks',
   chunks: {
     frontend: [], // Empty - dependencies bundled with entries
-    editor: [],   // Empty - shared files in editor-assets folder
+    editor: [],   // Empty - dependencies bundled with entries
+    common: [],   // Empty - shared dependencies in assets/common/
   },
 })
 ```
@@ -74,8 +70,9 @@ gutenbergBlocksPlugin({
   input: { 'block-library': 'resources/widgets/block-library/custom' },
   output: 'build/blocks',
   chunks: {
-    frontend: ['resources/shared/utils/frontend'], // Only split this specific path
-    editor: ['resources/shared/components/inspector'], // Only split this specific path
+    frontend: ['resources/shared/utils'], // Split utils to assets/frontend/
+    editor: ['resources/shared/components'], // Split components to assets/editor/
+    common: ['resources/shared/constants'], // Split constants to assets/common/
   },
 })
 
@@ -96,6 +93,7 @@ export default defineConfig({
       chunks: {
         frontend: [], // No chunking (default) - all dependencies bundled with entry files
         editor: [],   // No chunking (default) - all dependencies bundled with entry files
+        common: [],   // No chunking (default) - shared dependencies in assets/common/
       },
     }),
   ],

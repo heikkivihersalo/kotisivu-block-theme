@@ -50,10 +50,10 @@ npx vitest run .vite/GutenbergPlugin/tests/unit/config/chunks/createManualChunks
 ## Test Coverage
 
 ### Unit Tests Cover:
-- **Chunking Logic**: Manual chunks and file naming behavior
-- Default behavior when no chunking is configured
-- Explicit chunking configuration
-- Correct chunk naming and path handling
+- **Chunking Logic**: Manual chunks and file naming behavior with support for explicit chunking paths
+- Default behavior when no chunking is configured (all shared dependencies go to `assets/common`)
+- Explicit chunking configuration with `frontend`, `editor`, and `common` paths
+- Correct chunk naming and path handling for all asset types
 - Edge cases and error conditions
 
 ### Integration Tests Cover:

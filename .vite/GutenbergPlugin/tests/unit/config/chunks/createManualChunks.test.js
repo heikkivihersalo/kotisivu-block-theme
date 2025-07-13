@@ -8,7 +8,11 @@ describe('createManualChunks', () => {
 	});
 
 	it('should return a function when chunk arrays are empty', () => {
-		const chunks = createManualChunks({ frontend: [], editor: [] });
+		const chunks = createManualChunks({
+			frontend: [],
+			editor: [],
+			common: [],
+		});
 		expect(chunks).toBeInstanceOf(Function);
 	});
 
@@ -26,6 +30,15 @@ describe('createManualChunks', () => {
 			editor: ['resources/shared/components/inspector'],
 		});
 		expect(typeof chunks).toBe('function');
+	});
+
+	it('should return a function when common paths are configured', () => {
+		const chunks = createManualChunks({
+			frontend: [],
+			editor: [],
+			common: ['resources/shared/constants'],
+		});
+		expect(chunks).toBeInstanceOf(Function);
 	});
 
 	it('should correctly chunk modules matching frontend paths', () => {
@@ -50,6 +63,17 @@ describe('createManualChunks', () => {
 			'some/path/resources/shared/components/inspector/control.js'
 		);
 		expect(result).toBe('assets/editor/inspector');
+	});
+
+	it('should correctly chunk modules matching common paths', () => {
+		const chunks = createManualChunks({
+			frontend: [],
+			editor: [],
+			common: ['resources/shared/constants'],
+		});
+
+		const result = chunks('some/path/resources/shared/constants/config.js');
+		expect(result).toBe('assets/common/constants');
 	});
 
 	it('should return undefined for modules not matching any configured paths', () => {
@@ -100,5 +124,45 @@ describe('createManualChunks', () => {
 
 		expect(result1).toBe('assets/editor/inspector');
 		expect(result2).toBe('assets/editor/editor');
+	});
+
+	it('should handle multiple common paths correctly', () => {
+		const chunks = createManualChunks({
+			frontend: [],
+			editor: [],
+			common: ['resources/shared/constants', 'resources/shared/types'],
+		});
+
+		const result1 = chunks(
+			'some/path/resources/shared/constants/config.js'
+		);
+		const result2 = chunks(
+			'some/path/resources/shared/types/interfaces.ts'
+		);
+
+		expect(result1).toBe('assets/common/constants');
+		expect(result2).toBe('assets/common/types');
+	});
+
+	it('should handle mixed chunk configurations correctly', () => {
+		const chunks = createManualChunks({
+			frontend: ['resources/shared/utils'],
+			editor: ['resources/shared/components'],
+			common: ['resources/shared/constants'],
+		});
+
+		const frontendResult = chunks(
+			'some/path/resources/shared/utils/helper.js'
+		);
+		const editorResult = chunks(
+			'some/path/resources/shared/components/button.tsx'
+		);
+		const commonResult = chunks(
+			'some/path/resources/shared/constants/config.js'
+		);
+
+		expect(frontendResult).toBe('assets/frontend/utils');
+		expect(editorResult).toBe('assets/editor/components');
+		expect(commonResult).toBe('assets/common/constants');
 	});
 });

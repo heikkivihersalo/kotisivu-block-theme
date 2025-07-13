@@ -3,7 +3,11 @@ import { createChunkFileNames } from '../../../../config/chunks.js';
 
 describe('createChunkFileNames', () => {
 	it('should return a function when no chunking is configured', () => {
-		const naming = createChunkFileNames({ frontend: [], editor: [] });
+		const naming = createChunkFileNames({
+			frontend: [],
+			editor: [],
+			common: [],
+		});
 		expect(naming).toBeInstanceOf(Function);
 	});
 
@@ -28,6 +32,15 @@ describe('createChunkFileNames', () => {
 		expect(typeof naming).toBe('function');
 	});
 
+	it('should return a function when common chunking is configured', () => {
+		const naming = createChunkFileNames({
+			frontend: [],
+			editor: [],
+			common: ['resources/shared/constants'],
+		});
+		expect(naming).toBeInstanceOf(Function);
+	});
+
 	it('should generate correct chunk names for frontend assets', () => {
 		const naming = createChunkFileNames({
 			frontend: ['resources/shared/utils/frontend'],
@@ -46,6 +59,17 @@ describe('createChunkFileNames', () => {
 
 		const result = naming({ name: 'editor-assets/inspector' });
 		expect(result).toBe('editor-assets/inspector-[hash].js');
+	});
+
+	it('should generate correct chunk names for common assets', () => {
+		const naming = createChunkFileNames({
+			frontend: [],
+			editor: [],
+			common: ['resources/shared/constants'],
+		});
+
+		const result = naming({ name: 'assets/common/constants' });
+		expect(result).toBe('assets/common/constants-[hash].js');
 	});
 
 	it('should generate correct chunk names for complex asset paths', () => {

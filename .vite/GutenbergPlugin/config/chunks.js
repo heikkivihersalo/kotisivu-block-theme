@@ -12,25 +12,28 @@ function isChunkingEnabled(chunksConfig = {}) {
 		chunksConfig.frontend.length > 0;
 	const hasEditorChunks =
 		Array.isArray(chunksConfig.editor) && chunksConfig.editor.length > 0;
+	const hasCommonChunks =
+		Array.isArray(chunksConfig.common) && chunksConfig.common.length > 0;
 
-	return hasFrontendChunks || hasEditorChunks;
+	return hasFrontendChunks || hasEditorChunks || hasCommonChunks;
 }
 
 /**
  * Create manual chunks configuration for Rollup
  * This function implements organized chunking logic:
  * - When no chunking is configured: all shared deps go to assets/common
- * - When chunking is configured: specific paths go to assets/frontend or assets/editor
+ * - When chunking is configured: specific paths go to assets/frontend, assets/editor, or assets/common
  * - Unconfigured dependencies go to assets/common as fallback
  *
- * @param {Object} chunksConfig - Chunk configuration object with frontend and editor arrays
+ * @param {Object} chunksConfig - Chunk configuration object with frontend, editor, and common arrays
  * @returns {Function} Manual chunks function for Rollup
  */
 export function createManualChunks(
-	chunksConfig = { frontend: [], editor: [] }
+	chunksConfig = { frontend: [], editor: [], common: [] }
 ) {
 	const frontendPaths = chunksConfig.frontend || [];
 	const editorPaths = chunksConfig.editor || [];
+	const commonPaths = chunksConfig.common || [];
 	const isExplicitChunkingEnabled = isChunkingEnabled(chunksConfig);
 
 	return (id) => {
@@ -62,6 +65,17 @@ export function createManualChunks(
 					return `assets/editor/${chunkName}`;
 				}
 			}
+
+			// Check if this module matches any configured common chunk paths
+			for (const commonPath of commonPaths) {
+				if (id.includes(commonPath)) {
+					// Extract a meaningful chunk name from the path
+					const segments = commonPath.split('/');
+					const chunkName =
+						segments[segments.length - 1] || 'common-chunk';
+					return `assets/common/${chunkName}`;
+				}
+			}
 		}
 
 		// For shared dependencies: only chunk substantial shared modules
@@ -73,18 +87,39 @@ export function createManualChunks(
 				id.includes('/hooks/') ||
 				id.includes('/constants/')
 			) {
-				// Group by category for better organization
-				if (id.includes('/components/')) {
-					return 'assets/common/components';
-				}
-				if (id.includes('/utils/')) {
-					return 'assets/common/utils';
-				}
-				if (id.includes('/hooks/')) {
-					return 'assets/common/hooks';
-				}
-				if (id.includes('/constants/')) {
-					return 'assets/common/constants';
+				// When explicit chunking is enabled, organize by category and context
+				if (isExplicitChunkingEnabled) {
+					// Group by category and context for better organization
+					if (id.includes('/components/')) {
+						// Components typically used in editor contexts
+						return 'assets/editor/components';
+					}
+					if (id.includes('/utils/')) {
+						// Utils typically used in frontend contexts
+						return 'assets/frontend/utils';
+					}
+					if (id.includes('/hooks/')) {
+						// Hooks are often shared between contexts
+						return 'assets/common/hooks';
+					}
+					if (id.includes('/constants/')) {
+						// Constants are typically shared
+						return 'assets/common/constants';
+					}
+				} else {
+					// When explicit chunking is disabled, put everything in common
+					if (id.includes('/components/')) {
+						return 'assets/common/components';
+					}
+					if (id.includes('/utils/')) {
+						return 'assets/common/utils';
+					}
+					if (id.includes('/hooks/')) {
+						return 'assets/common/hooks';
+					}
+					if (id.includes('/constants/')) {
+						return 'assets/common/constants';
+					}
 				}
 			}
 		}
@@ -119,7 +154,7 @@ export function createManualChunks(
  * @returns {Function} Chunk file naming function
  */
 export function createChunkFileNames(
-	chunksConfig = { frontend: [], editor: [] }
+	chunksConfig = { frontend: [], editor: [], common: [] }
 ) {
 	return (chunkInfo) => {
 		// The chunk name already includes the assets subfolder from createManualChunks
