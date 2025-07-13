@@ -32,7 +32,6 @@ export default defineConfig({
 				'template-parts': 'resources/widgets/template-parts',
 			},
 			output: 'build/blocks',
-			copyBlockJson: true,
 			chunks: {
 				frontend: [
 					// Frontend-only utilities that should be in frontend-assets
