@@ -33,31 +33,43 @@ export function createBundleGenerator(inputDirs) {
 			if (key.includes('assets/')) {
 				const assetPath = key.replace(/\.js$/, '');
 				const [, folder, name] = assetPath.split('/');
-				
+
 				if (!assets.chunks[folder]) {
 					assets.chunks[folder] = [];
 				}
-				
+
 				// Clean up module paths to be relative
 				const cleanModules = Object.keys(chunk.modules || {})
-					.filter(mod => !mod.includes('node_modules') || mod.includes('commonjsHelpers'))
-					.map(mod => {
+					.filter(
+						(mod) =>
+							!mod.includes('node_modules') ||
+							mod.includes('commonjsHelpers')
+					)
+					.map((mod) => {
 						// Make paths relative to resources directory
 						if (mod.includes('/resources/')) {
-							return mod.substring(mod.indexOf('/resources/') + 1);
+							return mod.substring(
+								mod.indexOf('/resources/') + 1
+							);
 						}
 						// Clean node_modules paths
 						if (mod.includes('node_modules/')) {
-							const packageMatch = mod.match(/node_modules\/([^\/]+)/);
-							return packageMatch ? `node_modules/${packageMatch[1]}` : mod;
+							const packageMatch = mod.match(
+								/node_modules\/([^\/]+)/
+							);
+							return packageMatch
+								? `node_modules/${packageMatch[1]}`
+								: mod;
 						}
 						return mod;
 					});
-				
+
 				assets.chunks[folder].push({
 					name: name,
 					fileName: chunk.fileName,
-					imports: (chunk.imports || []).filter(imp => !imp.includes('.css')),
+					imports: (chunk.imports || []).filter(
+						(imp) => !imp.includes('.css')
+					),
 					modules: cleanModules,
 				});
 			}
@@ -105,16 +117,21 @@ export function createBundleGenerator(inputDirs) {
 					if (!manifest[outputSubDir][blockName].scripts) {
 						manifest[outputSubDir][blockName].scripts = {};
 					}
-					manifest[outputSubDir][blockName].scripts.editor = `${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
-					
+					manifest[outputSubDir][blockName].scripts.editor =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
+
 					// Track valid dependencies (filter out non-existent files)
 					const chunk = bundle[indexKey + '.js'];
 					if (chunk.imports && chunk.imports.length > 0) {
-						const validDependencies = chunk.imports.filter(imp => 
-							bundle[imp] || imp.startsWith('@wordpress') || imp.includes('assets/')
+						const validDependencies = chunk.imports.filter(
+							(imp) =>
+								bundle[imp] ||
+								imp.startsWith('@wordpress') ||
+								imp.includes('assets/')
 						);
 						if (validDependencies.length > 0) {
-							manifest[outputSubDir][blockName].dependencies = validDependencies;
+							manifest[outputSubDir][blockName].dependencies =
+								validDependencies;
 						}
 					}
 				}
@@ -123,14 +140,16 @@ export function createBundleGenerator(inputDirs) {
 					if (!manifest[outputSubDir][blockName].scripts) {
 						manifest[outputSubDir][blockName].scripts = {};
 					}
-					manifest[outputSubDir][blockName].scripts.frontend = `${blockKey}/${WORDPRESS_FILE_OUTPUT.VIEW_SCRIPT}`;
+					manifest[outputSubDir][blockName].scripts.frontend =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.VIEW_SCRIPT}`;
 				}
 
 				if (bundle[styleKey + '.css']) {
 					if (!manifest[outputSubDir][blockName].styles) {
 						manifest[outputSubDir][blockName].styles = {};
 					}
-					manifest[outputSubDir][blockName].styles.frontend = `${blockKey}/${WORDPRESS_FILE_OUTPUT.STYLE}`;
+					manifest[outputSubDir][blockName].styles.frontend =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.STYLE}`;
 				}
 			});
 		}
@@ -147,14 +166,14 @@ export function createBundleGenerator(inputDirs) {
 
 		// Keep JSON for backward compatibility - flatten structure for JSON
 		const jsonManifest = {};
-		Object.keys(manifest).forEach(dir => {
-			Object.keys(manifest[dir]).forEach(block => {
+		Object.keys(manifest).forEach((dir) => {
+			Object.keys(manifest[dir]).forEach((block) => {
 				const blockData = manifest[dir][block];
 				const key = `${dir}/${block}`;
 				jsonManifest[key] = {
 					blockJson: blockData.blockJson,
 				};
-				
+
 				if (blockData.scripts?.editor) {
 					jsonManifest[key].editorScript = blockData.scripts.editor;
 				}
@@ -189,24 +208,26 @@ function generatePhpArray(data) {
 		if (typeof value === 'boolean') return value ? 'true' : 'false';
 		if (typeof value === 'number') return value.toString();
 		if (typeof value === 'string') return `'${value.replace(/'/g, "\\'")}'`;
-		
+
 		if (Array.isArray(value)) {
 			if (value.length === 0) return '[]';
-			const items = value.map(item => `${nextSpaces}${convertValue(item, indent + 1)}`);
+			const items = value.map(
+				(item) => `${nextSpaces}${convertValue(item, indent + 1)}`
+			);
 			return `[\n${items.join(',\n')}\n${spaces}]`;
 		}
-		
+
 		if (typeof value === 'object') {
 			const entries = Object.entries(value);
 			if (entries.length === 0) return '[]';
-			
+
 			const items = entries.map(([key, val]) => {
 				const phpKey = `'${key.replace(/'/g, "\\'")}'`;
 				return `${nextSpaces}${phpKey} => ${convertValue(val, indent + 1)}`;
 			});
 			return `[\n${items.join(',\n')}\n${spaces}]`;
 		}
-		
+
 		return 'null';
 	}
 
