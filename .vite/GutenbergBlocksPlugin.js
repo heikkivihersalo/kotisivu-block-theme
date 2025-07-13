@@ -3,9 +3,7 @@ import {
 	createExternalFunction,
 	createGlobalsMapping,
 	createManualChunks,
-	createChunkFileNames,
 	createBundleGenerator,
-	createDirectOutputOrganizer,
 	splitEditorCSS,
 } from './utils/index.js';
 
@@ -18,33 +16,18 @@ import {
  * Supports multiple input directories with organized output structure.
  */
 export default function gutenbergBlocksPlugin(options = {}) {
-	// Support both old and new configuration formats
-	const {
-		// New multi-input format
-		input,
-		output = 'build/blocks',
-		dependencies = {},
-		// Legacy format (for backward compatibility)
-		blocksDir,
-		outputDir,
-		editorOutputDir,
-		copyBlockJson = true,
-	} = options;
+	const { input, output = 'build/blocks', copyBlockJson = true } = options;
 
 	// Determine configuration format and set up directories
-	let inputDirs, baseOutputDir, editorDir;
+	let inputDirs, baseOutputDir;
 
 	if (input && typeof input === 'object') {
-		// New multi-input format
 		inputDirs = input;
 		baseOutputDir = output;
-		editorDir =
-			dependencies.editorOutput || `${output.split('/')[0]}/editor`; // Use dependencies.editorOutput or fallback
 	} else {
-		// Legacy format - maintain backward compatibility
-		inputDirs = { '': blocksDir || 'resources/widgets/block-library' };
-		baseOutputDir = outputDir || 'blocks';
-		editorDir = editorOutputDir || 'editor';
+		throw new Error(
+			'Input configuration is required and must be an object'
+		);
 	}
 
 	return {
@@ -74,29 +57,11 @@ export default function gutenbergBlocksPlugin(options = {}) {
 					input: allInputs,
 					output: {
 						dir: finalOutputDir,
-						entryFileNames: '[name].js',					assetFileNames: (assetInfo) => {
-						// Handle CSS files from edit entries and index-css entries
-						if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-							// Check if this is CSS from an edit entry that should be renamed to index.css
-							if (assetInfo.name.includes('/edit.css')) {
-								return assetInfo.name.replace('/edit.css', '/index.css');
-							}
-							// Check if this is an index-css file that should be renamed to index.css
-							if (assetInfo.name.includes('/index-css.css')) {
-								return assetInfo.name.replace('/index-css.css', '/index.css');
-							}
-						}
-						return '[name].[ext]';
-					},
+						entryFileNames: '[name].js',
+						assetFileNames: '[name].[ext]',
 						format: 'es',
 						globals: createGlobalsMapping(),
-						chunkFileNames: createChunkFileNames(
-							finalOutputDir,
-							editorDir
-						),
 						manualChunks: createManualChunks(),
-						// Force chunk creation even for small modules
-						experimentalMinChunkSize: 0,
 					},
 					external: createExternalFunction(),
 				},
@@ -108,24 +73,22 @@ export default function gutenbergBlocksPlugin(options = {}) {
 		writeBundle: {
 			sequential: true,
 			async handler(options, bundle) {
-				// First, handle direct output organization (move editor files, etc.)
-				const directOutputOrganizer = createDirectOutputOrganizer(
-					baseOutputDir,
-					editorDir,
-					inputDirs
-				);
-				await directOutputOrganizer.call(this, options, bundle);
-				
-				// Then, split the consolidated editor CSS into individual block files
+				// Split the consolidated editor CSS into individual block-specific files
 				// Use the same output directory calculation as in config
-				const outputDirForCSS = Object.keys(inputDirs).length > 1
-					? baseOutputDir
-					: Object.keys(inputDirs)[0]
-						? `${baseOutputDir}/${Object.keys(inputDirs)[0]}`
-						: baseOutputDir;
-				
-				await splitEditorCSS.call(this, options, bundle, outputDirForCSS);
-			}
+				const outputDirForCSS =
+					Object.keys(inputDirs).length > 1
+						? baseOutputDir
+						: Object.keys(inputDirs)[0]
+							? `${baseOutputDir}/${Object.keys(inputDirs)[0]}`
+							: baseOutputDir;
+
+				await splitEditorCSS.call(
+					this,
+					options,
+					bundle,
+					outputDirForCSS
+				);
+			},
 		},
 	};
 }

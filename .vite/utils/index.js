@@ -3,11 +3,8 @@
 // Input feature - block input configuration
 export { createBlockInputs } from './input/index.js';
 
-// Chunks feature - rollup chunking and file naming
-export {
-	createManualChunks,
-	createChunkFileNames,
-} from './chunks/index.js';
+// Chunks feature - rollup chunking
+export { createManualChunks } from './chunks/index.js';
 
 // Externals feature - external dependencies and globals
 export {
@@ -15,11 +12,8 @@ export {
 	createGlobalsMapping,
 } from './externals/index.js';
 
-// Bundle feature - generateBundle and writeBundle phases
-export {
-	createBundleGenerator,
-	createDirectOutputOrganizer,
-} from './bundle/index.js';
+// Bundle feature - generateBundle phase
+export { createBundleGenerator } from './bundle/index.js';
 
 // CSS feature - CSS processing and splitting
 export { splitEditorCSS } from './css/index.js';

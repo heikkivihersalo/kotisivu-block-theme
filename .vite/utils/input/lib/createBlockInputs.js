@@ -65,6 +65,7 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
 		// Check for main script file (index.ts, index.js, index.tsx, index.jsx)
+		// This should include the edit functionality and will bundle editor dependencies
 		const indexFile = findBlockFile(blockDir, 'index');
 		if (indexFile) {
 			input[`${entryPrefix}${blockName}/index`] = indexFile;
@@ -74,32 +75,6 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		const viewFile = findBlockFile(blockDir, 'view');
 		if (viewFile) {
 			input[`${entryPrefix}${blockName}/view`] = viewFile;
-		}
-
-		// Check for edit files (edit.ts, edit.js, etc.) - these import editor.css and generate index.css
-		const editFile = findBlockFile(blockDir, 'edit');
-		if (editFile) {
-			// Edit files are bundled to generate editor-specific CSS (index.css) and JS
-			input[`${entryPrefix}${blockName}/edit`] = editFile;
-		}
-
-		// Check for editor styles (editor.css, editor.scss) - only if no edit file exists
-		// If edit file exists, it will import the CSS directly
-		if (!editFile) {
-			const editorCssFile = findCSSFile(blockDir, 'editor');
-			if (editorCssFile) {
-				// Check if the file has content
-				try {
-					const fs = require('fs');
-					const content = fs.readFileSync(editorCssFile, 'utf8').trim();
-					if (content.length > 0) {
-						// Only create entries for blocks with actual CSS content
-						input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
-					}
-				} catch {
-					// If we can't read the file, skip it
-				}
-			}
 		}
 
 		// Check for frontend styles (style.css, style.scss)

@@ -1,33 +1,7 @@
 /**
  * Shared helper functions for chunk-related operations
- * These functions are used across multiple chunk feature files
+ * Currently unused since chunking is disabled in favor of bundling all dependencies into index.js files
  */
-
-/**
- * Checks if a module is React-related
- * @param {string} moduleId - Module ID to check
- * @param {string[]} customPatterns - Custom patterns to check (optional)
- * @returns {boolean} True if module is React-related
- */
-export function isReactModule(moduleId, customPatterns = null) {
-	const defaultPatterns = [
-		'jsx-dev-runtime',
-		'jsx-runtime',
-		'react/index',
-		'react-dom',
-	];
-
-	const patterns = customPatterns || defaultPatterns;
-	return patterns.some((pattern) => moduleId.includes(pattern));
-}
-
-/**
- * Checks if a module is a WordPress editor package
- * @param {string} moduleId - Module ID to check
- * @param {string[]} customPatterns - Custom patterns to check (optional)
- * @returns {boolean} True if module is a WordPress editor package
- */
-export function isWordPressEditorModule(moduleId, customPatterns = null) {
 	const defaultPatterns = [
 		'@wordpress/block-editor',
 		'@wordpress/components',
