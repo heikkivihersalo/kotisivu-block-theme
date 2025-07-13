@@ -189,6 +189,42 @@ describe('Block Build Output Tests', () => {
 				}
 			});
 		});
+
+		it('should only contain allowed files in block directories', () => {
+			const blockDirs = getBlockDirectories();
+
+			// Define allowed files in block directories
+			const allowedFiles = [
+				'block.json', // Block configuration (required)
+				'index.js', // Editor script (required for most blocks)
+				'index.css', // Editor styles (optional)
+				'style-index.css', // Frontend styles (optional)
+				'view.js', // Frontend script (optional)
+				'render.php', // Server-side render callback (optional)
+			];
+
+			blockDirs.forEach((blockDir) => {
+				const blockName = getBlockName(blockDir);
+				const files = readdirSync(blockDir);
+
+				files.forEach((file) => {
+					// Only check files, not directories
+					const filePath = join(blockDir, file);
+					if (statSync(filePath).isFile()) {
+						expect(
+							allowedFiles.includes(file),
+							`${blockName} contains unwanted file: ${file}. Only these files are allowed: ${allowedFiles.join(', ')}`
+						).toBe(true);
+					}
+				});
+
+				// Specifically check that editor-styles.css doesn't exist (common unwanted file)
+				expect(
+					hasFile(blockDir, 'editor-styles.css'),
+					`${blockName} should not contain editor-styles.css (editor styles should be in index.css)`
+				).toBe(false);
+			});
+		});
 	});
 
 	describe('Asset Organization', () => {
