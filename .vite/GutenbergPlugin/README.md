@@ -12,9 +12,13 @@ GutenbergPlugin/
 │   ├── input.js               # Block input discovery and validation
 │   ├── externals.js           # WordPress external dependencies
 │   └── chunks.js              # Chunking logic for frontend/editor separation
-└── processors/                # Build processors
-    ├── bundle.js              # Bundle generation (manifest, block.json copying)
-    └── css.js                 # CSS processing and splitting
+├── processors/                # Build processors
+│   ├── bundle.js              # Bundle generation (manifest, block.json copying)
+│   └── css.js                 # CSS processing and splitting
+└── tests/                     # Unit tests
+    ├── createManualChunks.test.js      # Tests for manual chunks function
+    ├── createChunkFileNames.test.js    # Tests for chunk file naming function
+    └── README.md              # Test documentation
 ```
 
 ## Features
@@ -91,11 +95,33 @@ export default defineConfig({
 
 ## Testing
 
-The plugin includes comprehensive tests to verify:
+The plugin includes comprehensive tests in the `tests/` directory:
+
+### Unit Tests
+- **`createManualChunks.test.js`**: Tests chunking logic and configuration behavior
+- **`createChunkFileNames.test.js`**: Tests chunk file naming patterns
+
+### Integration Tests (in project root `tests/`)
+- **`build-output.test.js`**: Tests complete build output and file structure
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run only plugin unit tests
+npx vitest run .vite/**/*.test.js
+
+# Run specific test file
+npx vitest run .vite/GutenbergPlugin/tests/createManualChunks.test.js
+```
+
+### Test Coverage
+The tests verify:
+- Correct chunking behavior (explicit vs. default bundling)
+- Proper file naming conventions
 - Correct file structure generation
 - No unwanted `style-index.js` files
 - Proper asset organization
 - Valid block.json files
 - Meaningful CSS content validation
-
-Run tests with: `npm test`
