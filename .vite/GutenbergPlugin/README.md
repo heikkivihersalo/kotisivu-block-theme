@@ -21,11 +21,41 @@ GutenbergPlugin/
 
 - **Dynamic Block Discovery**: Automatically finds and processes all `block.json` files
 - **CSS Validation**: Only generates `style-index.css` for blocks with meaningful frontend styles
-- **Smart Chunking**: Separates editor and frontend dependencies automatically
+- **Smart Chunking**: Explicit chunking configuration - dependencies only split when explicitly configured
 - **Asset Organization**: 
-  - `editor-assets/` - Shared editor dependencies and editor CSS
-  - `frontend-assets/` - Shared frontend dependencies (view files only)
+  - `editor-assets/` - Shared editor dependencies and editor CSS (when chunking enabled)
+  - `frontend-assets/` - Shared frontend dependencies (when chunking enabled)
   - Block directories - Block-specific files (`index.js`, `style-index.css`, etc.)
+
+## Chunking Behavior
+
+The plugin follows an explicit chunking strategy:
+
+- **No Chunking (Default)**: When `chunks.frontend` and `chunks.editor` arrays are empty, all dependencies stay bundled with their entry files. This results in simpler builds with fewer files.
+- **Explicit Chunking**: When paths are specified in chunk configuration, only those specific paths are split into chunks.
+
+### Example: No Chunking (Recommended for most projects)
+```javascript
+gutenbergBlocksPlugin({
+  input: { 'block-library': 'resources/widgets/block-library/custom' },
+  output: 'build/blocks',
+  chunks: {
+    frontend: [], // Empty - no chunking
+    editor: [],   // Empty - no chunking
+  },
+})
+```
+
+### Example: Explicit Chunking
+```javascript
+gutenbergBlocksPlugin({
+  input: { 'block-library': 'resources/widgets/block-library/custom' },
+  output: 'build/blocks',
+  chunks: {
+    frontend: ['resources/shared/utils/frontend'], // Only split this specific path
+    editor: ['resources/shared/components/inspector'], // Only split this specific path
+  },
+})
 
 ## Usage
 
@@ -41,7 +71,10 @@ export default defineConfig({
         'template-parts': 'resources/widgets/template-parts',
       },
       output: 'build/blocks',
-      copyBlockJson: true,
+      chunks: {
+        frontend: [], // No chunking (default) - all dependencies bundled with entry files
+        editor: [],   // No chunking (default) - all dependencies bundled with entry files
+      },
     }),
   ],
 });

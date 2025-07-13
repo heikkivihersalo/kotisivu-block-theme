@@ -3,10 +3,7 @@ import {
 	createExternalFunction,
 	createGlobalsMapping,
 } from './config/externals.js';
-import {
-	createManualChunks,
-	getFrontendOnlyChunkNames,
-} from './config/chunks.js';
+import { createManualChunks, createChunkFileNames } from './config/chunks.js';
 import { createBundleGenerator } from './processors/bundle.js';
 import { splitEditorCSS } from './processors/css.js';
 import { ASSET_FOLDERS } from './config/constants.js';
@@ -102,50 +99,10 @@ export default function gutenbergBlocksPlugin(options = {}) {
 							// All other assets (shared JS dependencies, etc.) go to editor-assets
 							return `${ASSET_FOLDERS.EDITOR}/[name].[ext]`;
 						},
-						chunkFileNames: (chunkInfo) => {
-							// Get frontend-only package chunks from package.json
-							const frontendOnlyPackageChunks =
-								getFrontendOnlyChunkNames();
-
-							// Check if this chunk is a frontend-only package
-							if (
-								frontendOnlyPackageChunks.includes(
-									chunkInfo.name
-								)
-							) {
-								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
-							}
-
-							// Check if this chunk matches any frontend folder paths
-							const isFrontendChunk = chunks.frontend.some(
-								(folderPath) =>
-									chunkInfo.moduleIds?.some((moduleId) =>
-										moduleId.includes(folderPath)
-									)
-							);
-
-							if (isFrontendChunk) {
-								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
-							}
-
-							// Check if this chunk matches any editor folder paths
-							const isEditorChunk = chunks.editor.some(
-								(folderPath) =>
-									chunkInfo.moduleIds?.some((moduleId) =>
-										moduleId.includes(folderPath)
-									)
-							);
-
-							if (isEditorChunk) {
-								return `${ASSET_FOLDERS.EDITOR}/[name].js`;
-							}
-
-							// All other chunks go to editor-assets by default
-							return `${ASSET_FOLDERS.EDITOR}/[name].js`;
-						},
+						chunkFileNames: createChunkFileNames(chunks),
 						format: 'es',
 						globals: createGlobalsMapping(),
-						manualChunks: createManualChunks(),
+						manualChunks: createManualChunks(chunks),
 					},
 					external: createExternalFunction(),
 				},

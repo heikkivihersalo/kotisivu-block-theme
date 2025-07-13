@@ -1,122 +1,88 @@
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { ASSET_FOLDERS } from './constants.js';
 
 /**
- * Get frontend-only packages from package.json dependencies
- * @returns {string[]} Array of package names that should be treated as frontend-only
+ * Check if chunking should be enabled based on configuration
+ * @param {Object} chunksConfig - Chunk configuration object
+ * @returns {boolean} Whether chunking is enabled
  */
-function getFrontendOnlyPackages() {
-	try {
-		const packageJsonPath = resolve(process.cwd(), 'package.json');
-		const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-		
-		// List of packages that should be considered frontend-only
-		// These are packages that are primarily used in view files, not editor files
-		const frontendPackagePatterns = [
-			'@tanstack/react-query',
-			'query-string',
-			'use-debounce',
-			// Add more patterns as needed
-		];
-		
-		const allDependencies = {
-			...packageJson.dependencies,
-			...packageJson.devDependencies,
-		};
-		
-		return Object.keys(allDependencies).filter(pkg =>
-			frontendPackagePatterns.some(pattern => pkg.includes(pattern))
-		);
-	} catch (error) {
-		console.warn('Could not read package.json for frontend package detection:', error.message);
-		return [];
-	}
-}
+function isChunkingEnabled(chunksConfig = {}) {
+	// Check if any chunk paths are explicitly defined
+	const hasFrontendChunks =
+		Array.isArray(chunksConfig.frontend) &&
+		chunksConfig.frontend.length > 0;
+	const hasEditorChunks =
+		Array.isArray(chunksConfig.editor) && chunksConfig.editor.length > 0;
 
-/**
- * Get chunk names for frontend-only packages
- * @returns {string[]} Array of chunk names for frontend packages
- */
-export function getFrontendOnlyChunkNames() {
-	return getFrontendOnlyPackages().map(pkg =>
-		pkg.replace(/[@\/]/g, '-').replace(/^-/, '')
-	);
+	return hasFrontendChunks || hasEditorChunks;
 }
 
 /**
  * Create manual chunks configuration for Rollup
- * This separates shared utilities based on their usage patterns
- * @returns {Function} Manual chunks function for Rollup
+ * This function implements explicit chunking logic:
+ * - If no chunk paths are configured, all dependencies stay bundled with entry files
+ * - If chunk paths are configured, only those specific paths are split into chunks
+ * - No automatic detection or complex heuristics
+ *
+ * @param {Object} chunksConfig - Chunk configuration object with frontend and editor arrays
+ * @returns {Function|undefined} Manual chunks function for Rollup, or undefined if no chunking
  */
-export function createManualChunks() {
-	const frontendOnlyPackages = getFrontendOnlyPackages();
-	
-	return (id, { getModuleInfo }) => {
-		// Handle npm packages
-		if (id.includes('node_modules')) {
-			const packageName = id.split('node_modules/')[1].split('/')[0];
-			
-			// Check if this is a scoped package
-			if (packageName.startsWith('@')) {
-				const scopedPackageName = id.split('node_modules/')[1].split('/').slice(0, 2).join('/');
-				if (frontendOnlyPackages.includes(scopedPackageName)) {
-					return scopedPackageName.replace(/[@\/]/g, '-').replace(/^-/, '');
-				}
-			} else if (frontendOnlyPackages.includes(packageName)) {
-				return packageName.replace(/[@\/]/g, '-');
-			}
-			
-			// Don't chunk other npm packages - let Vite handle them
-			return undefined;
-		}
-		
-		// Handle local utility modules that are used only by view files
-		const moduleInfo = getModuleInfo(id);
-		if (!moduleInfo) return undefined;
-		
-		// Get all importers recursively to determine usage
-		const getAllImporters = (moduleId, visited = new Set()) => {
-			if (visited.has(moduleId)) return new Set();
-			visited.add(moduleId);
-			
-			const module = getModuleInfo(moduleId);
-			if (!module) return new Set();
-			
-			const importers = new Set(module.importers);
-			
-			// Recursively get importers of importers
-			for (const importer of module.importers) {
-				const nestedImporters = getAllImporters(importer, visited);
-				nestedImporters.forEach(imp => importers.add(imp));
-			}
-			
-			return importers;
-		};
-		
-		const allImporters = getAllImporters(id);
-		const importerArray = Array.from(allImporters);
-		
-		// Check if this module is used only by view files
-		const usedOnlyByViewFiles = importerArray.length > 0 && 
-			importerArray.every(importer => importer.includes('/view.'));
-		
-		// Extract utility modules that are used only by view files
-		if (usedOnlyByViewFiles && (
-			id.includes('/utils/') || 
-			id.includes('/helpers/') ||
-			id.includes('/constants/')
-		)) {
-			// Extract the utility name for chunking
-			const segments = id.split('/');
-			const utilityName = segments[segments.length - 1].replace(/\.(js|ts|jsx|tsx)$/, '');
-			
-			// Only chunk if it's a meaningful utility name (not index files)
-			if (utilityName !== 'index' && utilityName.length > 2) {
-				return utilityName;
+export function createManualChunks(
+	chunksConfig = { frontend: [], editor: [] }
+) {
+	// Only enable chunking if explicitly configured
+	if (!isChunkingEnabled(chunksConfig)) {
+		return undefined; // No manual chunking - keeps dependencies with entry files
+	}
+
+	const frontendPaths = chunksConfig.frontend || [];
+	const editorPaths = chunksConfig.editor || [];
+
+	return (id) => {
+		// Check if this module matches any configured frontend chunk paths
+		for (const frontendPath of frontendPaths) {
+			if (id.includes(frontendPath)) {
+				// Extract a meaningful chunk name from the path
+				const segments = frontendPath.split('/');
+				const chunkName =
+					segments[segments.length - 1] || 'frontend-chunk';
+				return `${ASSET_FOLDERS.FRONTEND}/${chunkName}`;
 			}
 		}
-		
+
+		// Check if this module matches any configured editor chunk paths
+		for (const editorPath of editorPaths) {
+			if (id.includes(editorPath)) {
+				// Extract a meaningful chunk name from the path
+				const segments = editorPath.split('/');
+				const chunkName =
+					segments[segments.length - 1] || 'editor-chunk';
+				return `${ASSET_FOLDERS.EDITOR}/${chunkName}`;
+			}
+		}
+
+		// No explicit chunk configuration for this module
 		return undefined;
+	};
+}
+
+/**
+ * Generate chunk file names for the build output
+ * Simple naming: chunks go directly to their designated asset folders
+ *
+ * @param {Object} chunksConfig - Chunk configuration object
+ * @returns {Function|string} Chunk file naming function or default pattern
+ */
+export function createChunkFileNames(
+	chunksConfig = { frontend: [], editor: [] }
+) {
+	// Only use custom naming if chunking is enabled
+	if (!isChunkingEnabled(chunksConfig)) {
+		return '[name]-[hash].js'; // Default Vite naming
+	}
+
+	return (chunkInfo) => {
+		// The chunk name already includes the asset folder from createManualChunks
+		// e.g., "frontend-assets/utils" or "editor-assets/components"
+		return `${chunkInfo.name}-[hash].js`;
 	};
 }
