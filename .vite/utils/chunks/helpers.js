@@ -1,20 +1,4 @@
 /**
- * Shared helper functions for chunk-related operations
- * Currently unused since chunking is disabled in favor of bundling all dependencies into index.js files
- */
-	const defaultPatterns = [
-		'@wordpress/block-editor',
-		'@wordpress/components',
-		'@wordpress/compose',
-		'@wordpress/rich-text',
-		'@wordpress/editor',
-	];
-
-	const patterns = customPatterns || defaultPatterns;
-	return patterns.some((pattern) => moduleId.includes(pattern));
-}
-
-/**
  * Checks if a module is an editor file based on file patterns
  * @param {string} moduleId - Module ID to check
  * @param {string[]} customPatterns - Custom patterns to check (optional)
