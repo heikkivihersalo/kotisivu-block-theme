@@ -44,6 +44,11 @@ export default defineConfig({
 					// Example: Split editor-only utilities into chunks
 					// 'resources/shared/components',
 				],
+				common: [
+					// Example: Split common utilities into chunks
+					// 'resources/shared/constants',
+					// 'node_modules/some-package',
+				],
 			},
 		}),
 	],
