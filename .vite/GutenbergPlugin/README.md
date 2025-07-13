@@ -1,8 +1,14 @@
 # Gutenberg Blocks Plugin
 
-A Vite plugin for building WordPress Gutenberg blocks with optimal chunking and asset organization.
+A Vite plugin for building WordPress Gutenberg blocks with optimal chunking and asset organization# Run only plugin unit tests
+npx vitest run .vite/GutenbergPlugin/tests/config/
+npx vitest run .vite/GutenbergPlugin/tests/processors/
 
-## Directory Structure
+# Run only integration tests
+npx vitest run .vite/GutenbergPlugin/tests/integration/
+
+# Run specific test file
+npx vitest run .vite/GutenbergPlugin/tests/config/chunks/createManualChunks.test.js Directory Structure
 
 ```
 GutenbergPlugin/
@@ -15,15 +21,21 @@ GutenbergPlugin/
 ├── processors/                # Build processors
 │   ├── bundle.js              # Bundle generation (manifest, block.json copying)
 │   └── css.js                 # CSS processing and splitting
-├── tests/                     # Unit tests
-    ├── config/                # Configuration module tests
+├── tests/                     # Tests
+    ├── config/                # Unit tests for configuration modules
     │   ├── chunks/           # Chunking logic tests
     │   ├── constants/        # Constants tests (.gitkeep)
     │   ├── externals/        # External dependencies tests (.gitkeep)
     │   └── input/            # Input discovery tests (.gitkeep)
-    ├── processors/           # Build processor tests
+    ├── processors/           # Unit tests for build processors
     │   ├── bundle/           # Bundle generation tests (.gitkeep)
     │   └── css/              # CSS processing tests (.gitkeep)
+    ├── integration/          # Integration tests
+    │   └── build-output/     # Build output validation tests
+    │       ├── helpers.js    # Shared test utilities
+    │       ├── structure/    # File structure tests
+    │       ├── assets/       # Asset organization tests
+    │       └── content/      # Content validation tests
     └── README.md             # Test documentation
 ```
 
@@ -104,13 +116,13 @@ export default defineConfig({
 The plugin includes comprehensive tests in the `tests/` directory:
 
 ### Unit Tests
-- **`createManualChunks.test.js`**: Tests chunking logic and configuration behavior
-- **`createChunkFileNames.test.js`**: Tests chunk file naming patterns
+- **`config/chunks/createManualChunks.test.js`**: Tests chunking logic and configuration behavior
+- **`config/chunks/createChunkFileNames.test.js`**: Tests chunk file naming patterns
 
-### Integration Tests (in project root `tests/`)
-- **`build/structure/files.test.js`**: Tests block file structure and organization
-- **`build/assets/organization.test.js`**: Tests asset folder structure and chunking
-- **`build/content/validation.test.js`**: Tests file content and bundling validation
+### Integration Tests
+- **`integration/build-output/structure/files.test.js`**: Tests block file structure and organization
+- **`integration/build-output/assets/organization.test.js`**: Tests asset folder structure and chunking
+- **`integration/build-output/content/validation.test.js`**: Tests file content and bundling validation
 
 ### Running Tests
 ```bash
