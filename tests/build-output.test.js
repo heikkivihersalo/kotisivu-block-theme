@@ -242,18 +242,14 @@ describe('Block Build Output Tests', () => {
 			).toBeGreaterThan(0);
 		});
 
-		it('should have frontend-assets folder with shared frontend dependencies', () => {
+		it('should not have frontend-assets folder when chunking is disabled', () => {
+			// With current configuration (no chunk paths specified),
+			// frontend-assets folder should not exist as dependencies stay bundled
 			const frontendAssetsPath = join(BUILD_DIR, 'frontend-assets');
 			expect(
 				existsSync(frontendAssetsPath),
-				'frontend-assets folder should exist'
-			).toBe(true);
-
-			const frontendAssets = readdirSync(frontendAssetsPath);
-			expect(
-				frontendAssets.length,
-				'frontend-assets folder should not be empty'
-			).toBeGreaterThan(0);
+				'frontend-assets folder should not exist when chunking is disabled'
+			).toBe(false);
 		});
 
 		it('should have manifest.json file', () => {
@@ -284,22 +280,28 @@ describe('Block Build Output Tests', () => {
 			}
 		});
 
-		it('should verify React Query is in frontend-assets with dynamic naming', () => {
+		it('should verify dependencies stay bundled when chunking is disabled', () => {
+			// With no chunking configuration, React Query and other dependencies
+			// should be bundled directly with block files, not in separate chunks
 			const frontendAssetsPath = join(BUILD_DIR, 'frontend-assets');
-			if (existsSync(frontendAssetsPath)) {
-				const frontendAssets = readdirSync(frontendAssetsPath);
 
-				// Should have tanstack-react-query.js (dynamic naming)
-				const reactQueryFile = frontendAssets.find(
-					(file) =>
-						file.includes('tanstack-react-query') &&
-						file.endsWith('.js')
-				);
+			// Frontend assets folder should not exist
+			expect(
+				existsSync(frontendAssetsPath),
+				'frontend-assets should not exist when chunking is disabled'
+			).toBe(false);
 
-				expect(
-					reactQueryFile,
-					'React Query should be in frontend-assets with dynamic naming'
-				).toBeDefined();
+			// Verify that block files contain their dependencies
+			const blockDir = join(BUILD_DIR, 'block-library', 'hero');
+			if (existsSync(blockDir)) {
+				const indexJsPath = join(blockDir, 'index.js');
+				if (existsSync(indexJsPath)) {
+					const indexContent = readFileSync(indexJsPath, 'utf-8');
+					expect(
+						indexContent.length,
+						'Block index.js should be substantial (contains bundled dependencies)'
+					).toBeGreaterThan(1000); // Should be larger with bundled dependencies
+				}
 			}
 		});
 	});
