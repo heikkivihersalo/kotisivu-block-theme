@@ -32,7 +32,7 @@ function hasValidCSSContent(filePath) {
 			.replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
 			.replace(/\s+/g, '') // Remove whitespace
 			.trim();
-		
+
 		// Check if there's any meaningful CSS left
 		return cleanedContent.length > 0;
 	} catch (error) {
@@ -92,6 +92,19 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		const indexFile = findBlockFile(blockDir, 'index');
 		if (indexFile) {
 			input[`${entryPrefix}${blockName}/index`] = indexFile;
+		}
+
+		// Check for editor styles (editor.css, editor.scss)
+		// These should generate index.css files for editor styles
+		const editorCssFile = findCSSFile(blockDir, 'editor');
+		if (editorCssFile) {
+			// If there's already an index entry (JS), we need a separate CSS entry
+			// Use a different key for CSS-only entries
+			const cssEntryKey = indexFile
+				? `${entryPrefix}${blockName}/editor-styles`
+				: `${entryPrefix}${blockName}/index`;
+
+			input[cssEntryKey] = editorCssFile;
 		}
 
 		// Check for view files (view.ts, view.js, etc.)
