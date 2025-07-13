@@ -15,10 +15,9 @@ export function getBlockJsonFiles(blocksDir) {
 /**
  * Create bundle generator for copying block.json files and generating manifest
  * @param {Object} inputDirs - Input directories configuration
- * @param {boolean} copyBlockJson - Whether to copy block.json files
  * @returns {Function} Bundle generator function
  */
-export function createBundleGenerator(inputDirs, copyBlockJson = true) {
+export function createBundleGenerator(inputDirs) {
 	return function generateBundle(options, bundle) {
 		const manifest = {};
 
@@ -42,17 +41,15 @@ export function createBundleGenerator(inputDirs, copyBlockJson = true) {
 				}
 
 				// Copy block.json to output
-				if (copyBlockJson) {
-					this.emitFile({
-						type: 'asset',
-						fileName: `${blockKey}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
-						source: JSON.stringify(
-							JSON.parse(readFileSync(blockJsonPath, 'utf8')),
-							null,
-							2
-						),
-					});
-				}
+				this.emitFile({
+					type: 'asset',
+					fileName: `${blockKey}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
+					source: JSON.stringify(
+						JSON.parse(readFileSync(blockJsonPath, 'utf8')),
+						null,
+						2
+					),
+				});
 
 				// Add script entries to manifest based on what exists in the bundle
 				const indexKey = `${blockKey}/index`;
@@ -60,15 +57,18 @@ export function createBundleGenerator(inputDirs, copyBlockJson = true) {
 				const styleKey = `${blockKey}/style-index`;
 
 				if (bundle[indexKey + '.js']) {
-					manifest[blockKey].editorScript = `${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
+					manifest[blockKey].editorScript =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
 				}
 
 				if (bundle[viewKey + '.js']) {
-					manifest[blockKey].viewScript = `${blockKey}/${WORDPRESS_FILE_OUTPUT.VIEW_SCRIPT}`;
+					manifest[blockKey].viewScript =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.VIEW_SCRIPT}`;
 				}
 
 				if (bundle[styleKey + '.css']) {
-					manifest[blockKey].style = `${blockKey}/${WORDPRESS_FILE_OUTPUT.STYLE}`;
+					manifest[blockKey].style =
+						`${blockKey}/${WORDPRESS_FILE_OUTPUT.STYLE}`;
 				}
 			});
 		}

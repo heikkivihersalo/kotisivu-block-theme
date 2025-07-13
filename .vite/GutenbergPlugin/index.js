@@ -22,7 +22,6 @@ import { ASSET_FOLDERS } from './config/constants.js';
  * @param {Object} options - Plugin configuration options
  * @param {Object} options.input - Input directories mapping (required)
  * @param {string} options.output - Output directory (default: 'build/blocks')
- * @param {boolean} options.copyBlockJson - Copy block.json files (default: true)
  * @param {Object} options.chunks - Chunk organization configuration
  * @param {string[]} options.chunks.frontend - Array of folder paths for frontend-only chunks
  * @param {string[]} options.chunks.editor - Array of folder paths for editor-only chunks
@@ -31,7 +30,6 @@ export default function gutenbergBlocksPlugin(options = {}) {
 	const {
 		input,
 		output = 'build/blocks',
-		copyBlockJson = true,
 		chunks = { frontend: [], editor: [] },
 	} = options;
 
@@ -137,7 +135,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 			};
 		},
 
-		generateBundle: createBundleGenerator(inputDirs, copyBlockJson),
+		generateBundle: createBundleGenerator(inputDirs),
 
 		writeBundle: {
 			sequential: true,
