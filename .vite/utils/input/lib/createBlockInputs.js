@@ -20,7 +20,30 @@ function findBlockFile(blockDir, baseName) {
 }
 
 /**
+ * Check if a CSS file has meaningful content (not empty or just whitespace/comments)
+ * @param {string} filePath - Path to the CSS file
+ * @returns {boolean} True if file has meaningful content
+ */
+function hasValidCSSContent(filePath) {
+	try {
+		const content = readFileSync(filePath, 'utf8');
+		// Remove whitespace, comments, and empty rules
+		const cleanedContent = content
+			.replace(/\/\*[\s\S]*?\*\//g, '') // Remove comments
+			.replace(/\s+/g, '') // Remove whitespace
+			.trim();
+
+		// Check if there's any meaningful CSS left
+		return cleanedContent.length > 0;
+	} catch (error) {
+		console.warn(`Error reading CSS file ${filePath}:`, error.message);
+		return false;
+	}
+}
+
+/**
  * Find a CSS file in the block directory based on patterns
+ * Only returns the file if it has meaningful content
  * @param {string} blockDir - Block directory path
  * @param {string} baseName - Base name (e.g., 'style', 'editor')
  * @returns {string|null} Found file path or null
@@ -28,7 +51,7 @@ function findBlockFile(blockDir, baseName) {
 function findCSSFile(blockDir, baseName) {
 	for (const ext of BLOCK_PATTERNS.STYLE_EXTENSIONS) {
 		const filePath = resolve(blockDir, `${baseName}${ext}`);
-		if (existsSync(filePath)) {
+		if (existsSync(filePath) && hasValidCSSContent(filePath)) {
 			return filePath;
 		}
 	}
@@ -78,6 +101,7 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		}
 
 		// Check for frontend styles (style.css, style.scss)
+		// Only include if the file has meaningful content
 		const styleCssFile = findCSSFile(blockDir, 'style');
 		if (styleCssFile) {
 			input[`${entryPrefix}${blockName}/style-index`] = styleCssFile;
