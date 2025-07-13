@@ -2,14 +2,14 @@ import { describe, it, expect } from 'vitest';
 import { createManualChunks } from '../../../../config/chunks.js';
 
 describe('createManualChunks', () => {
-	it('should return undefined when no chunk configuration is provided', () => {
+	it('should always return a function regardless of configuration', () => {
 		const chunks = createManualChunks();
-		expect(chunks).toBeUndefined();
+		expect(chunks).toBeInstanceOf(Function);
 	});
 
-	it('should return undefined when chunk arrays are empty', () => {
+	it('should return a function when chunk arrays are empty', () => {
 		const chunks = createManualChunks({ frontend: [], editor: [] });
-		expect(chunks).toBeUndefined();
+		expect(chunks).toBeInstanceOf(Function);
 	});
 
 	it('should return a function when frontend paths are configured', () => {
@@ -37,7 +37,7 @@ describe('createManualChunks', () => {
 		const result = chunks(
 			'some/path/resources/shared/utils/frontend/helper.js'
 		);
-		expect(result).toBe('frontend-assets/frontend');
+		expect(result).toBe('assets/frontend/frontend');
 	});
 
 	it('should correctly chunk modules matching editor paths', () => {
@@ -49,7 +49,7 @@ describe('createManualChunks', () => {
 		const result = chunks(
 			'some/path/resources/shared/components/inspector/control.js'
 		);
-		expect(result).toBe('editor-assets/inspector');
+		expect(result).toBe('assets/editor/inspector');
 	});
 
 	it('should return undefined for modules not matching any configured paths', () => {
@@ -78,8 +78,8 @@ describe('createManualChunks', () => {
 			'some/path/resources/widgets/common/utils/utility.js'
 		);
 
-		expect(result1).toBe('frontend-assets/frontend');
-		expect(result2).toBe('frontend-assets/utils');
+		expect(result1).toBe('assets/frontend/frontend');
+		expect(result2).toBe('assets/frontend/utils');
 	});
 
 	it('should handle multiple editor paths correctly', () => {
@@ -98,7 +98,7 @@ describe('createManualChunks', () => {
 			'some/path/resources/shared/hooks/editor/useBlockProps.js'
 		);
 
-		expect(result1).toBe('editor-assets/inspector');
-		expect(result2).toBe('editor-assets/editor');
+		expect(result1).toBe('assets/editor/inspector');
+		expect(result2).toBe('assets/editor/editor');
 	});
 });

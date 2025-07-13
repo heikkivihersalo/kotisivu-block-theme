@@ -2,14 +2,14 @@ import { describe, it, expect } from 'vitest';
 import { createChunkFileNames } from '../../../../config/chunks.js';
 
 describe('createChunkFileNames', () => {
-	it('should return default naming when no chunking is configured', () => {
+	it('should return a function when no chunking is configured', () => {
 		const naming = createChunkFileNames({ frontend: [], editor: [] });
-		expect(naming).toBe('[name]-[hash].js');
+		expect(naming).toBeInstanceOf(Function);
 	});
 
-	it('should return default naming when undefined configuration is provided', () => {
+	it('should return a function when undefined configuration is provided', () => {
 		const naming = createChunkFileNames();
-		expect(naming).toBe('[name]-[hash].js');
+		expect(naming).toBeInstanceOf(Function);
 	});
 
 	it('should return a function when frontend chunking is configured', () => {

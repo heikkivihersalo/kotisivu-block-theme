@@ -62,8 +62,8 @@ gutenbergBlocksPlugin({
   input: { 'block-library': 'resources/widgets/block-library/custom' },
   output: 'build/blocks',
   chunks: {
-    frontend: [], // Empty - no chunking
-    editor: [],   // Empty - no chunking
+    frontend: [], // Empty - dependencies bundled with entries
+    editor: [],   // Empty - shared files in editor-assets folder
   },
 })
 ```

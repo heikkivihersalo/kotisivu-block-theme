@@ -62,48 +62,51 @@ export default function gutenbergBlocksPlugin(options = {}) {
 						: baseOutputDir;
 
 			// Update Vite config with direct output configuration
+			const rollupOutput = {
+				dir: finalOutputDir,
+				entryFileNames: '[name].js',
+				assetFileNames: (assetInfo) => {
+					// Frontend styles (style-index.css) stay in their block directories
+					if (
+						assetInfo.name &&
+						assetInfo.name.endsWith('style-index.css')
+					) {
+						return '[name].[ext]';
+					}
+
+					// Block-specific editor styles (editor-styles.css) should go to block directories as index.css
+					// These will be processed by the CSS processor to rename and move them
+					if (
+						assetInfo.name &&
+						assetInfo.name.endsWith('editor-styles.css')
+					) {
+						return '[name].[ext]';
+					}
+
+					// Direct index.css files (CSS-only blocks) stay in their block directories
+					if (
+						assetInfo.name &&
+						assetInfo.name.endsWith('index.css')
+					) {
+						return '[name].[ext]';
+					}
+
+					// Only move non-chunk assets to assets/common if needed
+					// Chunk files are handled by chunkFileNames
+					return '[name].[ext]';
+				},
+				chunkFileNames: createChunkFileNames(chunks),
+				format: 'es',
+				globals: createGlobalsMapping(),
+				manualChunks: createManualChunks(chunks),
+			};
+
 			config.build = {
 				...config.build,
 				cssCodeSplit: true, // Enable CSS code splitting per entry
 				rollupOptions: {
 					input: allInputs,
-					output: {
-						dir: finalOutputDir,
-						entryFileNames: '[name].js',
-						assetFileNames: (assetInfo) => {
-							// Frontend styles (style-index.css) stay in their block directories
-							if (
-								assetInfo.name &&
-								assetInfo.name.endsWith('style-index.css')
-							) {
-								return '[name].[ext]';
-							}
-
-							// Block-specific editor styles (editor-styles.css) should go to block directories as index.css
-							// These will be processed by the CSS processor to rename and move them
-							if (
-								assetInfo.name &&
-								assetInfo.name.endsWith('editor-styles.css')
-							) {
-								return '[name].[ext]';
-							}
-
-							// Direct index.css files (CSS-only blocks) stay in their block directories
-							if (
-								assetInfo.name &&
-								assetInfo.name.endsWith('index.css')
-							) {
-								return '[name].[ext]';
-							}
-
-							// All other assets (shared JS dependencies, etc.) go to editor-assets
-							return `${ASSET_FOLDERS.EDITOR}/[name].[ext]`;
-						},
-						chunkFileNames: createChunkFileNames(chunks),
-						format: 'es',
-						globals: createGlobalsMapping(),
-						manualChunks: createManualChunks(chunks),
-					},
+					output: rollupOutput,
 					external: createExternalFunction(),
 				},
 			};

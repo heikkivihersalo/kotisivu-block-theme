@@ -19,8 +19,9 @@ export const WORDPRESS_FILE_OUTPUT = {
 	BLOCK_JSON: 'block.json',
 };
 
-// Asset folder names
+// Asset folder names for organized chunk structure
 export const ASSET_FOLDERS = {
-	EDITOR: 'editor-assets',
-	FRONTEND: 'frontend-assets',
+	COMMON: 'assets/common',
+	FRONTEND: 'assets/frontend',
+	EDITOR: 'assets/editor',
 };

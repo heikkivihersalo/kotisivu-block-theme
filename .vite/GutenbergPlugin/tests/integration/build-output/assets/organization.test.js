@@ -4,27 +4,27 @@ import { join } from 'path';
 import { BUILD_DIR } from '../helpers.js';
 
 describe('Asset Organization Tests', () => {
-	it('should have editor-assets folder with shared editor dependencies', () => {
-		const editorAssetsPath = join(BUILD_DIR, 'editor-assets');
+	it('should have assets/common folder with shared dependencies', () => {
+		const commonAssetsPath = join(BUILD_DIR, 'assets', 'common');
 		expect(
-			existsSync(editorAssetsPath),
-			'editor-assets folder should exist'
+			existsSync(commonAssetsPath),
+			'assets/common folder should exist'
 		).toBe(true);
 
-		const editorAssets = readdirSync(editorAssetsPath);
+		const commonAssets = readdirSync(commonAssetsPath);
 		expect(
-			editorAssets.length,
-			'editor-assets folder should not be empty'
+			commonAssets.length,
+			'assets/common folder should not be empty'
 		).toBeGreaterThan(0);
 	});
 
-	it('should not have frontend-assets folder when chunking is disabled', () => {
+	it('should not have assets/frontend folder when chunking is disabled', () => {
 		// With current configuration (no chunk paths specified),
-		// frontend-assets folder should not exist as dependencies stay bundled
-		const frontendAssetsPath = join(BUILD_DIR, 'frontend-assets');
+		// assets/frontend folder should not exist as dependencies stay bundled
+		const frontendAssetsPath = join(BUILD_DIR, 'assets', 'frontend');
 		expect(
 			existsSync(frontendAssetsPath),
-			'frontend-assets folder should not exist when chunking is disabled'
+			'assets/frontend folder should not exist when chunking is disabled'
 		).toBe(false);
 	});
 
@@ -41,30 +41,39 @@ describe('Asset Organization Tests', () => {
 		).not.toThrow();
 	});
 
-	it('should not have style-index.css files in editor-assets', () => {
-		const editorAssetsPath = join(BUILD_DIR, 'editor-assets');
-		if (existsSync(editorAssetsPath)) {
-			const editorAssets = readdirSync(editorAssetsPath);
-			const styleIndexFiles = editorAssets.filter((file) =>
-				file.includes('style-index')
-			);
+	it('should not have style-index.css files in assets folders', () => {
+		const assetsPath = join(BUILD_DIR, 'assets');
+		if (existsSync(assetsPath)) {
+			const assetFolders = readdirSync(assetsPath, {
+				withFileTypes: true,
+			})
+				.filter((dirent) => dirent.isDirectory())
+				.map((dirent) => dirent.name);
 
-			expect(
-				styleIndexFiles.length,
-				'style-index.css files should not be in editor-assets'
-			).toBe(0);
+			for (const folder of assetFolders) {
+				const folderPath = join(assetsPath, folder);
+				const files = readdirSync(folderPath);
+				const styleIndexFiles = files.filter((file) =>
+					file.includes('style-index')
+				);
+
+				expect(
+					styleIndexFiles.length,
+					`style-index.css files should not be in assets/${folder}`
+				).toBe(0);
+			}
 		}
 	});
 
 	it('should verify dependencies stay bundled when chunking is disabled', () => {
 		// With no chunking configuration, React Query and other dependencies
 		// should be bundled directly with block files, not in separate chunks
-		const frontendAssetsPath = join(BUILD_DIR, 'frontend-assets');
+		const frontendAssetsPath = join(BUILD_DIR, 'assets', 'frontend');
 
 		// Frontend assets folder should not exist
 		expect(
 			existsSync(frontendAssetsPath),
-			'frontend-assets should not exist when chunking is disabled'
+			'assets/frontend should not exist when chunking is disabled'
 		).toBe(false);
 
 		// Verify that block files contain their dependencies

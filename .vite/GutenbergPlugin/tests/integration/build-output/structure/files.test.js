@@ -15,6 +15,47 @@ describe('Block Structure Tests', () => {
 		expect(existsSync(BUILD_DIR)).toBe(true);
 	});
 
+	it('should have clean root blocks folder with only allowed files and folders', () => {
+		const items = readdirSync(BUILD_DIR, { withFileTypes: true });
+		const allowedItems = [
+			'manifest.json',
+			'editor.deps.json',
+			'block-library',
+			'page-templates',
+			'template-parts',
+			'assets',
+		];
+
+		items.forEach((item) => {
+			expect(
+				allowedItems.includes(item.name),
+				`Unexpected item "${item.name}" found in blocks root folder. Only manifest.json, editor.deps.json, and block/asset folders should be present.`
+			).toBe(true);
+		});
+
+		// Ensure manifest.json exists
+		expect(
+			items.some(
+				(item) => item.name === 'manifest.json' && item.isFile()
+			),
+			'manifest.json file should exist in blocks root'
+		).toBe(true);
+
+		// Ensure no loose JS/CSS files exist in root
+		const looseFiles = items.filter(
+			(item) =>
+				item.isFile() &&
+				!['manifest.json', 'editor.deps.json'].includes(item.name)
+		);
+
+		expect(
+			looseFiles.length,
+			`Found loose files in blocks root: ${looseFiles
+				.map((f) => f.name)
+				.join(', ')}. All chunk files should be in assets/ folders.`
+		).toBe(0);
+	});
+
 	it('should have required files for each block', () => {
 		const blockDirs = getBlockDirectories();
 		expect(blockDirs.length).toBeGreaterThan(0);
@@ -146,7 +187,9 @@ describe('Block Structure Tests', () => {
 				if (statSync(filePath).isFile()) {
 					expect(
 						allowedFiles.includes(file),
-						`${blockName} contains unwanted file: ${file}. Only these files are allowed: ${allowedFiles.join(', ')}`
+						`${blockName} contains unwanted file: ${file}. Only these files are allowed: ${allowedFiles.join(
+							', '
+						)}`
 					).toBe(true);
 				}
 			});
