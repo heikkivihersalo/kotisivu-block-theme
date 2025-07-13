@@ -18,36 +18,36 @@ export const BLOCK_PATTERNS = {
  *
  */
 export const WORDPRESS_FILE_OUTPUT = {
-    /**
-     * This is copied from the block folder
-     * It is used to define the block's metadata and structure.
-     */
+	/**
+	 * This is copied from the block folder
+	 * It is used to define the block's metadata and structure.
+	 */
 	BLOCK_JSON: 'block.json',
-    /**
-     * This is copied from the block folder
-     * It is used to define block's rendering logic in PHP.
-     */
+	/**
+	 * This is copied from the block folder
+	 * It is used to define block's rendering logic in PHP.
+	 */
 	RENDER_PHP: 'render.php',
-    /**
-     * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
-     * It is the main entry point for the block's JavaScript logic.
-     * It is used to register the block in WordPress.
-     */
+	/**
+	 * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
+	 * It is the main entry point for the block's JavaScript logic.
+	 * It is used to register the block in WordPress.
+	 */
 	FRONTEND_CSS: 'style-index.css',
-    /**
-     * This is bundled from the edit.js|edit.jsx|edit.ts|edit.tsx file
-     * It is used to define the block's editor-specific styles.
-     */
+	/**
+	 * This is bundled from the edit.js|edit.jsx|edit.ts|edit.tsx file
+	 * It is used to define the block's editor-specific styles.
+	 */
 	EDITOR_CSS: 'index.css',
-    /**
-     * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
-     * It is used to define the block's main JavaScript logic.
-     */
+	/**
+	 * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
+	 * It is used to define the block's main JavaScript logic.
+	 */
 	INDEX_JS: 'index.js',
-    /**
-     * This is bundled from the view.js|view.jsx|view.ts|view.tsx file
-     * It is used to define the block's frontend rendering logic.
-     */
+	/**
+	 * This is bundled from the view.js|view.jsx|view.ts|view.tsx file
+	 * It is used to define the block's frontend rendering logic.
+	 */
 	VIEW_JS: 'view.js',
 };
 

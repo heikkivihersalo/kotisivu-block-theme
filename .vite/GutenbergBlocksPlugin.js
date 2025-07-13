@@ -58,7 +58,19 @@ export default function gutenbergBlocksPlugin(options = {}) {
 					output: {
 						dir: finalOutputDir,
 						entryFileNames: '[name].js',
-						assetFileNames: '[name].[ext]',
+						assetFileNames: (assetInfo) => {
+							// Only put editor-related assets in editor-assets folder
+							// Frontend styles (style-index.css) should stay in their block directories
+							if (
+								assetInfo.name &&
+								assetInfo.name.endsWith('style-index.css')
+							) {
+								return '[name].[ext]';
+							}
+							// All other assets (editor CSS, shared JS dependencies) go to editor-assets
+							return 'editor-assets/[name].[ext]';
+						},
+						chunkFileNames: 'editor-assets/[name].js',
 						format: 'es',
 						globals: createGlobalsMapping(),
 						manualChunks: createManualChunks(),

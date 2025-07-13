@@ -138,8 +138,9 @@ function extractBlockSpecificCSS(blockDir, blockName, relativePath) {
 function cleanupRootLevelCSS(outputDir) {
 	console.log('🧹 Cleaning up unwanted root-level CSS files...');
 
-	// Find all root-level CSS files that match the pattern index*.css
-	const rootCSSFiles = glob.sync(`${outputDir}/index*.css`);
+	// CSS files are now in editor-assets folder, so look there
+	const editorAssetsDir = resolve(outputDir, 'editor-assets');
+	const rootCSSFiles = glob.sync(`${editorAssetsDir}/index*.css`);
 
 	let cleanedCount = 0;
 	rootCSSFiles.forEach((filePath) => {
