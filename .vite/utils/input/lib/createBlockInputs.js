@@ -1,7 +1,39 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { glob } from 'glob';
-import { BLOCK_PATTERNS, WORDPRESS_FILES } from '../../constants.js';
+import { BLOCK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../../constants.js';
+
+/**
+ * Find a file in the block directory based on patterns
+ * @param {string} blockDir - Block directory path
+ * @param {string} baseName - Base name (e.g., 'index', 'edit', 'view')
+ * @returns {string|null} Found file path or null
+ */
+function findBlockFile(blockDir, baseName) {
+	for (const ext of BLOCK_PATTERNS.SCRIPT_EXTENSIONS) {
+		const filePath = resolve(blockDir, `${baseName}${ext}`);
+		if (existsSync(filePath)) {
+			return filePath;
+		}
+	}
+	return null;
+}
+
+/**
+ * Find a CSS file in the block directory based on patterns
+ * @param {string} blockDir - Block directory path
+ * @param {string} baseName - Base name (e.g., 'style', 'editor')
+ * @returns {string|null} Found file path or null
+ */
+function findCSSFile(blockDir, baseName) {
+	for (const ext of BLOCK_PATTERNS.STYLE_EXTENSIONS) {
+		const filePath = resolve(blockDir, `${baseName}${ext}`);
+		if (existsSync(filePath)) {
+			return filePath;
+		}
+	}
+	return null;
+}
 
 /**
  * Discover all block.json files and create build entries
@@ -33,52 +65,45 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
 		// Check for main script file (index.ts, index.js, index.tsx, index.jsx)
-		const indexFile = WORDPRESS_FILES.INDEX_JS.input
-			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => existsSync(filepath));
-
+		const indexFile = findBlockFile(blockDir, 'index');
 		if (indexFile) {
 			input[`${entryPrefix}${blockName}/index`] = indexFile;
 		}
 
 		// Check for view files (view.ts, view.js, etc.)
-		const viewFiles = WORDPRESS_FILES.VIEW_JS.input
-			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => existsSync(filepath));
-
-		if (viewFiles) {
-			input[`${entryPrefix}${blockName}/view`] = viewFiles;
+		const viewFile = findBlockFile(blockDir, 'view');
+		if (viewFile) {
+			input[`${entryPrefix}${blockName}/view`] = viewFile;
 		}
 
-		// Check for editor styles (editor.css, editor.scss) - output as index.css to match WordPress convention
-		const editorCssFile = WORDPRESS_FILES.EDITOR_CSS.input
-			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => {
-				if (!existsSync(filepath)) return false;
-				
-				// Always include CSS files, but mark empty ones for later processing
-				return true;
-			});
+		// Check for edit files (edit.ts, edit.js, etc.) - these import editor.css and generate index.css
+		const editFile = findBlockFile(blockDir, 'edit');
+		if (editFile) {
+			// Edit files are bundled to generate editor-specific CSS (index.css) and JS
+			input[`${entryPrefix}${blockName}/edit`] = editFile;
+		}
 
-		if (editorCssFile) {
-			// Check if the file has content
-			try {
-				const fs = require('fs');
-				const content = fs.readFileSync(editorCssFile, 'utf8').trim();
-				if (content.length > 0) {
-					// Only create entries for blocks with actual CSS content
-					input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
+		// Check for editor styles (editor.css, editor.scss) - only if no edit file exists
+		// If edit file exists, it will import the CSS directly
+		if (!editFile) {
+			const editorCssFile = findCSSFile(blockDir, 'editor');
+			if (editorCssFile) {
+				// Check if the file has content
+				try {
+					const fs = require('fs');
+					const content = fs.readFileSync(editorCssFile, 'utf8').trim();
+					if (content.length > 0) {
+						// Only create entries for blocks with actual CSS content
+						input[`${entryPrefix}${blockName}/index-css`] = editorCssFile;
+					}
+				} catch {
+					// If we can't read the file, skip it
 				}
-			} catch {
-				// If we can't read the file, skip it
 			}
 		}
 
 		// Check for frontend styles (style.css, style.scss)
-		const styleCssFile = WORDPRESS_FILES.STYLE_CSS.input
-			.map((filename) => resolve(blockDir, filename))
-			.find((filepath) => existsSync(filepath));
-
+		const styleCssFile = findCSSFile(blockDir, 'style');
 		if (styleCssFile) {
 			input[`${entryPrefix}${blockName}/style-index`] = styleCssFile;
 		}

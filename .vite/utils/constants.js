@@ -16,42 +16,39 @@ export const BLOCK_PATTERNS = {
  * WordPress file naming conventions
  * These are used to standardize input/output file names across the build process.
  *
- * This includes
- *  - block.json
- *  - render.php
- *  - style.css / style.scss
- *  - editor.css / editor.scss
- *  - index.js / index.ts / index.tsx / index.jsx
- *  - view.js / view.ts / view.tsx / view.jsx
- *
- *  editor.js files are imported into index.js and not generated separately.
- *  edit.js and save.js are also imported as index.js so they are not included here.
  */
-export const WORDPRESS_FILES = {
-	BLOCK_JSON: {
-		input: 'block.json',
-		output: 'block.json',
-	},
-	RENDER_PHP: {
-		input: 'render.php',
-		output: 'render.php',
-	},
-	STYLE_CSS: {
-		input: ['style.css', 'style.scss'],
-		output: 'style-index.css',
-	},
-	EDITOR_CSS: {
-		input: ['editor.css', 'editor.scss'],
-		output: 'index.css',
-	},
-	INDEX_JS: {
-		input: ['index.js', 'index.ts', 'index.tsx', 'index.jsx'],
-		output: 'index.js',
-	},
-	VIEW_JS: {
-		input: ['view.js', 'view.ts', 'view.tsx', 'view.jsx'],
-		output: 'view.js',
-	},
+export const WORDPRESS_FILE_OUTPUT = {
+    /**
+     * This is copied from the block folder
+     * It is used to define the block's metadata and structure.
+     */
+	BLOCK_JSON: 'block.json',
+    /**
+     * This is copied from the block folder
+     * It is used to define block's rendering logic in PHP.
+     */
+	RENDER_PHP: 'render.php',
+    /**
+     * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
+     * It is the main entry point for the block's JavaScript logic.
+     * It is used to register the block in WordPress.
+     */
+	FRONTEND_CSS: 'style-index.css',
+    /**
+     * This is bundled from the edit.js|edit.jsx|edit.ts|edit.tsx file
+     * It is used to define the block's editor-specific styles.
+     */
+	EDITOR_CSS: 'index.css',
+    /**
+     * This is bundled from the index.js|index.jsx|index.ts|index.tsx file
+     * It is used to define the block's main JavaScript logic.
+     */
+	INDEX_JS: 'index.js',
+    /**
+     * This is bundled from the view.js|view.jsx|view.ts|view.tsx file
+     * It is used to define the block's frontend rendering logic.
+     */
+	VIEW_JS: 'view.js',
 };
 
 /**

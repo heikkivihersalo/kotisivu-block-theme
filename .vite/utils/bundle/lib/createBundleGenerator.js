@@ -1,7 +1,17 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { getBlockJsonFiles } from '../utils/index.js';
-import { WORDPRESS_FILES } from '../../constants.js';
+import { WORDPRESS_FILE_OUTPUT, BLOCK_PATTERNS } from '../../constants.js';
+
+/**
+ * Find render.php file in the block directory
+ * @param {string} blockDir - Block directory path
+ * @returns {string|null} Found file path or null
+ */
+function findRenderPhp(blockDir) {
+	const renderPhpPath = resolve(blockDir, 'render.php');
+	return existsSync(renderPhpPath) ? renderPhpPath : null;
+}
 
 /**
  * Generates bundle files for blocks including block.json and render.php
@@ -32,23 +42,20 @@ export function createBundleGenerator(inputDirs, copyBlockJson = true) {
 				// Add block.json to bundle
 				this.emitFile({
 					type: 'asset',
-					fileName: `${filePrefix}${blockName}/${WORDPRESS_FILES.BLOCK_JSON.output}`,
+					fileName: `${filePrefix}${blockName}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
 					source: blockJsonContent,
 				});
 
 				// Copy render.php if it exists
-				const renderPhpPath = resolve(
-					blockDir,
-					WORDPRESS_FILES.RENDER_PHP.input
-				);
-				if (existsSync(renderPhpPath)) {
+				const renderPhpPath = findRenderPhp(blockDir);
+				if (renderPhpPath) {
 					const renderPhpContent = readFileSync(
 						renderPhpPath,
 						'utf8'
 					);
 					this.emitFile({
 						type: 'asset',
-						fileName: `${filePrefix}${blockName}/${WORDPRESS_FILES.RENDER_PHP.output}`,
+						fileName: `${filePrefix}${blockName}/${WORDPRESS_FILE_OUTPUT.RENDER_PHP}`,
 						source: renderPhpContent,
 					});
 				}

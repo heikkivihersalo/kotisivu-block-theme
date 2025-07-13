@@ -1,4 +1,11 @@
-// Feature-based exports for Vite configuration
+// Feature-based // Bundle feature - generateBundle and writeBundle phases
+export {
+	createBundleGenerator,
+	createDirectOutputOrganizer,
+} from './bundle/index.js';
+
+// CSS feature - CSS processing and splitting
+export { splitEditorCSS } from './css/index.js';ts for Vite configuration
 
 // Input feature - block input configuration
 export { createBlockInputs } from './input/index.js';
@@ -20,6 +27,3 @@ export {
 	createBundleGenerator,
 	createDirectOutputOrganizer,
 } from './bundle/index.js';
-
-// CSS feature - CSS processing and splitting
-export { splitEditorCSS } from './css/index.js';

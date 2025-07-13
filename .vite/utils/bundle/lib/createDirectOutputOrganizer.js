@@ -21,7 +21,7 @@ import {
 	cleanupCssComments,
 	removeCSSImportComments,
 } from '../utils/index.js';
-import { CHUNK_PATTERNS, WORDPRESS_FILES } from '../../constants.js';
+import { CHUNK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../../constants.js';
 
 /**
  * Updates import paths in files based on a mapping

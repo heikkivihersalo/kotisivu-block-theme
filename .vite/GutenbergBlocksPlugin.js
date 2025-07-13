@@ -6,6 +6,7 @@ import {
 	createChunkFileNames,
 	createBundleGenerator,
 	createDirectOutputOrganizer,
+	splitEditorCSS,
 } from './utils/index.js';
 
 /**
@@ -73,17 +74,20 @@ export default function gutenbergBlocksPlugin(options = {}) {
 					input: allInputs,
 					output: {
 						dir: finalOutputDir,
-						entryFileNames: '[name].js',
-						assetFileNames: (assetInfo) => {
-							// Handle CSS files from index-css entries
-							if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-								// Check if this is an index-css file that should be renamed to index.css
-								if (assetInfo.name.includes('/index-css.css')) {
-									return assetInfo.name.replace('/index-css.css', '/index.css');
-								}
+						entryFileNames: '[name].js',					assetFileNames: (assetInfo) => {
+						// Handle CSS files from edit entries and index-css entries
+						if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+							// Check if this is CSS from an edit entry that should be renamed to index.css
+							if (assetInfo.name.includes('/edit.css')) {
+								return assetInfo.name.replace('/edit.css', '/index.css');
 							}
-							return '[name].[ext]';
-						},
+							// Check if this is an index-css file that should be renamed to index.css
+							if (assetInfo.name.includes('/index-css.css')) {
+								return assetInfo.name.replace('/index-css.css', '/index.css');
+							}
+						}
+						return '[name].[ext]';
+					},
 						format: 'es',
 						globals: createGlobalsMapping(),
 						chunkFileNames: createChunkFileNames(
@@ -101,10 +105,27 @@ export default function gutenbergBlocksPlugin(options = {}) {
 
 		generateBundle: createBundleGenerator(inputDirs, copyBlockJson),
 
-		writeBundle: createDirectOutputOrganizer(
-			baseOutputDir,
-			editorDir,
-			inputDirs
-		),
+		writeBundle: {
+			sequential: true,
+			async handler(options, bundle) {
+				// First, handle direct output organization (move editor files, etc.)
+				const directOutputOrganizer = createDirectOutputOrganizer(
+					baseOutputDir,
+					editorDir,
+					inputDirs
+				);
+				await directOutputOrganizer.call(this, options, bundle);
+				
+				// Then, split the consolidated editor CSS into individual block files
+				// Use the same output directory calculation as in config
+				const outputDirForCSS = Object.keys(inputDirs).length > 1
+					? baseOutputDir
+					: Object.keys(inputDirs)[0]
+						? `${baseOutputDir}/${Object.keys(inputDirs)[0]}`
+						: baseOutputDir;
+				
+				await splitEditorCSS.call(this, options, bundle, outputDirForCSS);
+			}
+		},
 	};
 }
