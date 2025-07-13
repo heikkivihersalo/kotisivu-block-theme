@@ -1,7 +1,7 @@
 import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { glob } from 'glob';
-import { BLOCK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../../constants.js';
+import { BLOCK_PATTERNS } from './constants.js';
 
 /**
  * Find a file in the block directory based on patterns

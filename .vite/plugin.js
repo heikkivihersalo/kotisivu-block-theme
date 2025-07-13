@@ -1,12 +1,15 @@
+import { createBlockInputs } from './config/input.js';
 import {
-	createBlockInputs,
 	createExternalFunction,
 	createGlobalsMapping,
+} from './config/externals.js';
+import {
 	createManualChunks,
-	createBundleGenerator,
-	splitEditorCSS,
-} from './utils/index.js';
-import { getFrontendOnlyChunkNames } from './utils/chunks/lib/getFrontendOnlyPackages.js';
+	getFrontendOnlyChunkNames,
+} from './config/chunks.js';
+import { createBundleGenerator } from './processors/bundle.js';
+import { splitEditorCSS } from './processors/css.js';
+import { ASSET_FOLDERS } from './config/constants.js';
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin
@@ -69,7 +72,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 								return '[name].[ext]';
 							}
 							// All other assets (editor CSS, shared JS dependencies) go to editor-assets
-							return 'editor-assets/[name].[ext]';
+							return `${ASSET_FOLDERS.EDITOR}/[name].[ext]`;
 						},
 						chunkFileNames: (chunkInfo) => {
 							// Get frontend-only package chunks from package.json
@@ -82,7 +85,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 									chunkInfo.name
 								)
 							) {
-								return 'frontend-assets/[name].js';
+								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
 							}
 
 							// Check if this chunk is a utility that was detected as frontend-only
@@ -101,11 +104,11 @@ export default function gutenbergBlocksPlugin(options = {}) {
 								);
 
 							if (isFrontendUtility) {
-								return 'frontend-assets/[name].js';
+								return `${ASSET_FOLDERS.FRONTEND}/[name].js`;
 							}
 
 							// All other chunks go to editor-assets
-							return 'editor-assets/[name].js';
+							return `${ASSET_FOLDERS.EDITOR}/[name].js`;
 						},
 						format: 'es',
 						globals: createGlobalsMapping(),
