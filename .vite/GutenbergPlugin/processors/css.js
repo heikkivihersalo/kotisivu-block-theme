@@ -15,6 +15,8 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 	const editorAssetsDir = resolve(outputDir, ASSET_FOLDERS.EDITOR);
 
 	// Process each CSS file in the bundle
+	const filesToDelete = [];
+
 	Object.keys(bundle).forEach((fileName) => {
 		const chunk = bundle[fileName];
 
@@ -24,7 +26,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 
 			// Handle editor-styles entries that should become index.css
 			const editorStylesMatch = fileName.match(
-				/^(?:editor-assets\/)?(.+?)\/editor-styles\.css$/
+				/^(.+?)\/editor-styles\.css$/
 			);
 			if (editorStylesMatch) {
 				const blockPath = editorStylesMatch[1];
@@ -37,6 +39,8 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 					writeFileSync(blockSpecificCssPath, cssContent);
 					console.log(`📄 Created: ${blockPath}/index.css`);
 					createdCount++;
+					// Mark this file for deletion from the bundle
+					filesToDelete.push(fileName);
 				} catch (error) {
 					console.warn(
 						`⚠️  Failed to create ${blockPath}/index.css:`,
@@ -47,9 +51,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 			}
 
 			// Handle direct index.css entries (CSS-only blocks)
-			const indexCssMatch = fileName.match(
-				/^(?:editor-assets\/)?(.+?)\/index\.css$/
-			);
+			const indexCssMatch = fileName.match(/^(.+?)\/index\.css$/);
 			if (indexCssMatch) {
 				const blockPath = indexCssMatch[1];
 				const blockSpecificCssPath = resolve(
@@ -61,6 +63,8 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 					writeFileSync(blockSpecificCssPath, cssContent);
 					console.log(`📄 Created: ${blockPath}/index.css`);
 					createdCount++;
+					// Mark this file for deletion from the bundle
+					filesToDelete.push(fileName);
 				} catch (error) {
 					console.warn(
 						`⚠️  Failed to create ${blockPath}/index.css:`,
@@ -71,11 +75,27 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 		}
 	});
 
+	// Remove processed CSS files from the bundle and filesystem
+	filesToDelete.forEach((fileName) => {
+		delete bundle[fileName];
+
+		// Also delete the physical file from disk
+		const filePath = resolve(outputDir, fileName);
+		try {
+			if (existsSync(filePath)) {
+				unlinkSync(filePath);
+				console.log(`🗑️  Removed: ${fileName}`);
+			}
+		} catch (error) {
+			console.warn(`⚠️  Failed to remove ${fileName}:`, error.message);
+		}
+	});
+
 	if (createdCount > 0) {
 		console.log(`✅ Created editor CSS files for ${createdCount} blocks`);
 	}
 
-	// Clean up any unwanted CSS files in editor-assets
+	// Clean up any unwanted CSS files
 	await cleanupUnwantedCSSFiles(editorAssetsDir, outputDir);
 }
 
@@ -94,39 +114,7 @@ async function cleanupUnwantedCSSFiles(editorAssetsDir, outputDir) {
 	let cleanedCount = 0;
 
 	try {
-		// Recursively find and remove editor-styles.css files
-		const findEditorStylesFiles = (dir) => {
-			const files = [];
-			const items = readdirSync(dir, { withFileTypes: true });
-
-			for (const item of items) {
-				const fullPath = join(dir, item.name);
-				if (item.isDirectory()) {
-					files.push(...findEditorStylesFiles(fullPath));
-				} else if (item.name === 'editor-styles.css') {
-					files.push(fullPath);
-				}
-			}
-			return files;
-		};
-
-		const editorStylesFiles = findEditorStylesFiles(editorAssetsDir);
-
-		editorStylesFiles.forEach((filePath) => {
-			try {
-				unlinkSync(filePath);
-				const relativePath = filePath.replace(
-					editorAssetsDir + '/',
-					''
-				);
-				console.log(`🗑️  Removed: ${relativePath}`);
-				cleanedCount++;
-			} catch (error) {
-				console.warn(`⚠️  Failed to remove ${filePath}:`, error.message);
-			}
-		});
-
-		// Also clean up any unwanted root-level CSS files in editor-assets
+		// Clean up any unwanted root-level CSS files in editor-assets
 		const rootFiles = readdirSync(editorAssetsDir);
 		const unwantedRootCssFiles = rootFiles.filter(
 			(file) => file.endsWith('.css') && file.match(/^index\d*\.css$/)
