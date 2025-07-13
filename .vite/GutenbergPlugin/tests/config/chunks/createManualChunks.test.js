@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createManualChunks } from '../config/chunks.js';
+import { createManualChunks } from '../../../config/chunks.js';
 
 describe('createManualChunks', () => {
 	it('should return undefined when no chunk configuration is provided', () => {

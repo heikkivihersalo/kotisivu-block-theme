@@ -6,10 +6,10 @@ export default defineConfig({
 		globals: true,
 		environment: 'node',
 		include: [
-			'tests/**/*.test.js', 
+			'tests/**/*.test.js',
 			'tests/**/*.test.ts',
 			'.vite/**/*.test.js',
-			'.vite/**/*.test.ts'
+			'.vite/**/*.test.ts',
 		],
 	},
 	resolve: {

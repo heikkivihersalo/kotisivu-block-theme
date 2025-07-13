@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createChunkFileNames } from '../config/chunks.js';
+import { createChunkFileNames } from '../../../config/chunks.js';
 
 describe('createChunkFileNames', () => {
 	it('should return default naming when no chunking is configured', () => {
@@ -55,7 +55,9 @@ describe('createChunkFileNames', () => {
 		});
 
 		const frontendResult = naming({ name: 'frontend-assets/utils-helper' });
-		const editorResult = naming({ name: 'editor-assets/inspector-controls' });
+		const editorResult = naming({
+			name: 'editor-assets/inspector-controls',
+		});
 
 		expect(frontendResult).toBe('frontend-assets/utils-helper-[hash].js');
 		expect(editorResult).toBe('editor-assets/inspector-controls-[hash].js');
@@ -67,7 +69,11 @@ describe('createChunkFileNames', () => {
 			editor: [],
 		});
 
-		const result = naming({ name: 'frontend-assets/utils-special_component' });
-		expect(result).toBe('frontend-assets/utils-special_component-[hash].js');
+		const result = naming({
+			name: 'frontend-assets/utils-special_component',
+		});
+		expect(result).toBe(
+			'frontend-assets/utils-special_component-[hash].js'
+		);
 	});
 });

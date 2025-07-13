@@ -15,10 +15,16 @@ GutenbergPlugin/
 ├── processors/                # Build processors
 │   ├── bundle.js              # Bundle generation (manifest, block.json copying)
 │   └── css.js                 # CSS processing and splitting
-└── tests/                     # Unit tests
-    ├── createManualChunks.test.js      # Tests for manual chunks function
-    ├── createChunkFileNames.test.js    # Tests for chunk file naming function
-    └── README.md              # Test documentation
+├── tests/                     # Unit tests
+    ├── config/                # Configuration module tests
+    │   ├── chunks/           # Chunking logic tests
+    │   ├── constants/        # Constants tests (.gitkeep)
+    │   ├── externals/        # External dependencies tests (.gitkeep)
+    │   └── input/            # Input discovery tests (.gitkeep)
+    ├── processors/           # Build processor tests
+    │   ├── bundle/           # Bundle generation tests (.gitkeep)
+    │   └── css/              # CSS processing tests (.gitkeep)
+    └── README.md             # Test documentation
 ```
 
 ## Features
@@ -102,7 +108,9 @@ The plugin includes comprehensive tests in the `tests/` directory:
 - **`createChunkFileNames.test.js`**: Tests chunk file naming patterns
 
 ### Integration Tests (in project root `tests/`)
-- **`build-output.test.js`**: Tests complete build output and file structure
+- **`build/structure/files.test.js`**: Tests block file structure and organization
+- **`build/assets/organization.test.js`**: Tests asset folder structure and chunking
+- **`build/content/validation.test.js`**: Tests file content and bundling validation
 
 ### Running Tests
 ```bash
