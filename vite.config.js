@@ -32,9 +32,6 @@ export default defineConfig({
 				'template-parts': 'resources/widgets/template-parts',
 			},
 			output: 'build/blocks',
-			dependencies: {
-				editorOutput: 'build/blocks/editor',
-			},
 			copyBlockJson: true,
 		}),
 	],
