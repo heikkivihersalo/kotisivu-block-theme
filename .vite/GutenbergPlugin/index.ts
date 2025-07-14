@@ -6,13 +6,7 @@ import {
 import { createManualChunks, createChunkFileNames } from './config/chunks.js';
 import { createBundleGenerator } from './processors/bundle.js';
 import { splitEditorCSS } from './processors/css.js';
-import { ASSET_FOLDERS } from './config/constants.js';
-import type {
-	PluginOptions,
-	ChunkConfig,
-	AssetInfo,
-	ChunkInfo,
-} from './types.js';
+import type { PluginOptions, AssetInfo, ChunkInfo } from './types.js';
 
 // Vite plugin types
 type ViteConfig = {

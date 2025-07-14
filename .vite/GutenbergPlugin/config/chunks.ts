@@ -1,4 +1,3 @@
-import { ASSET_FOLDERS } from './constants.js';
 import type { ChunkConfig } from '../types.js';
 
 // Types for Rollup's chunk info
@@ -9,6 +8,59 @@ type ChunkInfo = {
 
 type ManualChunksFunction = (id: string) => string | undefined;
 type ChunkFileNamesFunction = (chunkInfo: ChunkInfo) => string;
+
+/**
+ * Extract chunk name from path
+ * @param path - Path to extract name from
+ * @param fallback - Fallback chunk name
+ * @returns Extracted chunk name
+ */
+function extractChunkName(path: string, fallback: string): string {
+	const segments = path.split('/');
+	return segments[segments.length - 1] || fallback;
+}
+
+/**
+ * Get chunk name for shared resources based on path
+ * @param id - Module ID
+ * @param useContextSpecificChunks - Whether to use context-specific chunks
+ * @returns Chunk name or undefined
+ */
+function getSharedResourceChunk(
+	id: string,
+	useContextSpecificChunks: boolean
+): string | undefined {
+	const resourceMap = {
+		'/components/': useContextSpecificChunks
+			? 'assets/editor/components'
+			: 'assets/common/components',
+		'/utils/': useContextSpecificChunks
+			? 'assets/frontend/utils'
+			: 'assets/common/utils',
+		'/hooks/': 'assets/common/hooks',
+		'/constants/': 'assets/common/constants',
+	};
+
+	for (const [path, chunkName] of Object.entries(resourceMap)) {
+		if (id.includes(path)) {
+			return chunkName;
+		}
+	}
+	return undefined;
+}
+function getChunkNameForPaths(
+	id: string,
+	paths: string[],
+	assetType: string
+): string | undefined {
+	for (const path of paths) {
+		if (id.includes(path)) {
+			const chunkName = extractChunkName(path, `${assetType}-chunk`);
+			return `assets/${assetType}/${chunkName}`;
+		}
+	}
+	return undefined;
+}
 
 /**
  * Check if chunking should be enabled based on configuration
@@ -56,38 +108,19 @@ export function createManualChunks(
 
 		// When explicit chunking is enabled, check specific paths first
 		if (isExplicitChunkingEnabled) {
-			// Check if this module matches any configured frontend chunk paths
-			for (const frontendPath of frontendPaths) {
-				if (id.includes(frontendPath)) {
-					// Extract a meaningful chunk name from the path
-					const segments = frontendPath.split('/');
-					const chunkName =
-						segments[segments.length - 1] || 'frontend-chunk';
-					return `assets/frontend/${chunkName}`;
-				}
-			}
+			// Check configured paths in order: frontend, editor, common
+			const frontendChunk = getChunkNameForPaths(
+				id,
+				frontendPaths,
+				'frontend'
+			);
+			if (frontendChunk) return frontendChunk;
 
-			// Check if this module matches any configured editor chunk paths
-			for (const editorPath of editorPaths) {
-				if (id.includes(editorPath)) {
-					// Extract a meaningful chunk name from the path
-					const segments = editorPath.split('/');
-					const chunkName =
-						segments[segments.length - 1] || 'editor-chunk';
-					return `assets/editor/${chunkName}`;
-				}
-			}
+			const editorChunk = getChunkNameForPaths(id, editorPaths, 'editor');
+			if (editorChunk) return editorChunk;
 
-			// Check if this module matches any configured common chunk paths
-			for (const commonPath of commonPaths) {
-				if (id.includes(commonPath)) {
-					// Extract a meaningful chunk name from the path
-					const segments = commonPath.split('/');
-					const chunkName =
-						segments[segments.length - 1] || 'common-chunk';
-					return `assets/common/${chunkName}`;
-				}
-			}
+			const commonChunk = getChunkNameForPaths(id, commonPaths, 'common');
+			if (commonChunk) return commonChunk;
 		}
 
 		// For shared dependencies: only chunk substantial shared modules
@@ -99,40 +132,8 @@ export function createManualChunks(
 				id.includes('/hooks/') ||
 				id.includes('/constants/')
 			) {
-				// When explicit chunking is enabled, organize by category and context
-				if (isExplicitChunkingEnabled) {
-					// Group by category and context for better organization
-					if (id.includes('/components/')) {
-						// Components typically used in editor contexts
-						return 'assets/editor/components';
-					}
-					if (id.includes('/utils/')) {
-						// Utils typically used in frontend contexts
-						return 'assets/frontend/utils';
-					}
-					if (id.includes('/hooks/')) {
-						// Hooks are often shared between contexts
-						return 'assets/common/hooks';
-					}
-					if (id.includes('/constants/')) {
-						// Constants are typically shared
-						return 'assets/common/constants';
-					}
-				} else {
-					// When explicit chunking is disabled, put everything in common
-					if (id.includes('/components/')) {
-						return 'assets/common/components';
-					}
-					if (id.includes('/utils/')) {
-						return 'assets/common/utils';
-					}
-					if (id.includes('/hooks/')) {
-						return 'assets/common/hooks';
-					}
-					if (id.includes('/constants/')) {
-						return 'assets/common/constants';
-					}
-				}
+				// Use helper function for shared resource chunking
+				return getSharedResourceChunk(id, isExplicitChunkingEnabled);
 			}
 		}
 
@@ -166,7 +167,7 @@ export function createManualChunks(
  * @returns Chunk file naming function
  */
 export function createChunkFileNames(
-	chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
+	_chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
 ): ChunkFileNamesFunction {
 	return (chunkInfo: ChunkInfo): string => {
 		// The chunk name already includes the assets subfolder from createManualChunks

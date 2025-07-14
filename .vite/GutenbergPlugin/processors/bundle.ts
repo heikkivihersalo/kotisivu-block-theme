@@ -1,8 +1,8 @@
-import { writeFileSync, readFileSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { readFileSync } from 'fs';
+import { dirname } from 'path';
 import { glob } from 'glob';
 import { BLOCK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../config/constants.js';
-import type { AssetInfo, ChunkInfo, ManifestStructure } from '../types.js';
+import type { AssetInfo, ChunkInfo } from '../types.js';
 
 // Rollup plugin context types
 type PluginContext = {
@@ -40,11 +40,6 @@ type ManifestAssets = {
 	chunks: Record<string, AssetChunk[]>;
 };
 
-type CompleteManifest = {
-	blocks: Record<string, Record<string, BlockManifest>>;
-	assets: ManifestAssets;
-};
-
 /**
  * Get all block.json files from a directory
  * @param blocksDir - Directory to search for blocks
@@ -62,7 +57,7 @@ export function getBlockJsonFiles(blocksDir: string): string[] {
 export function createBundleGenerator(inputDirs: Record<string, string>) {
 	return function generateBundle(
 		this: PluginContext,
-		options: any,
+		_options: any,
 		bundle: Bundle
 	): void {
 		const manifest: Record<string, Record<string, BlockManifest>> = {};

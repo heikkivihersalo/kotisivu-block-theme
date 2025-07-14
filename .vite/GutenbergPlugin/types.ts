@@ -101,11 +101,6 @@ export type ManifestAsset = {
 	css?: string[];
 };
 
-export type ManifestStructure = {
-	blocks: Record<string, Record<string, ManifestBlock>>;
-	assets: Record<string, ManifestAsset>;
-};
-
 // External dependencies types
 export type ExternalFunction = (id: string) => boolean;
 export type GlobalsMapping = Record<string, string>;
