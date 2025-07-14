@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createChunkFileNames } from '../../../../config/chunks.js';
+import { createChunkFileNames } from '../../../../config/chunks/chunks.js';
 import type { ChunkConfig } from '../../../../types.js';
 
 type MockChunkInfo = {

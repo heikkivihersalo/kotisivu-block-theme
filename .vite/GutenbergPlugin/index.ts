@@ -1,11 +1,14 @@
-import { createBlockInputs } from './config/input.js';
+import { createBlockInputs } from './config/input/input.js';
 import {
 	createExternalFunction,
 	createGlobalsMapping,
 } from './config/externals.js';
-import { createManualChunks, createChunkFileNames } from './config/chunks.js';
-import { createBundleGenerator } from './processors/bundle.js';
-import { splitEditorCSS } from './processors/css.js';
+import {
+	createManualChunks,
+	createChunkFileNames,
+} from './config/chunks/chunks.js';
+import { createBundleGenerator } from './processors/bundle/bundle.js';
+import { splitEditorCSS } from './processors/css/css.js';
 import type { PluginOptions, AssetInfo, ChunkInfo } from './types.js';
 
 // Vite plugin types
