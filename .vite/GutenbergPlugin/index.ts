@@ -15,7 +15,7 @@ import type {
 } from './types.js';
 
 // Vite plugin types
-interface ViteConfig {
+type ViteConfig = {
 	build?: {
 		cssCodeSplit?: boolean;
 		rollupOptions?: {
@@ -24,9 +24,9 @@ interface ViteConfig {
 			external?: (id: string) => boolean;
 		};
 	};
-}
+};
 
-interface VitePlugin {
+type VitePlugin = {
 	name: string;
 	config: (config: ViteConfig) => void;
 	generateBundle: any;
@@ -37,7 +37,7 @@ interface VitePlugin {
 			bundle: Record<string, AssetInfo | ChunkInfo>
 		) => Promise<void>;
 	};
-}
+};
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin

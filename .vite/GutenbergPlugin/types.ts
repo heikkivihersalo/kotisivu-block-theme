@@ -3,49 +3,49 @@
  */
 
 // Plugin configuration types
-export interface ChunkConfig {
+export type ChunkConfig = {
 	frontend: string[];
 	editor: string[];
 	common: string[];
-}
+};
 
-export interface PluginOptions {
+export type PluginOptions = {
 	input: Record<string, string>;
 	output?: string;
 	chunks?: ChunkConfig;
-}
+};
 
 // Block patterns and file extensions
-export interface BlockPatterns {
+export type BlockPatterns = {
 	BLOCK_JSON: string;
 	SCRIPT_EXTENSIONS: readonly string[];
 	STYLE_EXTENSIONS: readonly string[];
-}
+};
 
 // WordPress file output conventions
-export interface WordPressFileOutput {
+export type WordPressFileOutput = {
 	EDITOR_SCRIPT: string;
 	EDITOR_STYLE: string;
 	STYLE: string;
 	VIEW_SCRIPT: string;
 	RENDER: string;
 	BLOCK_JSON: string;
-}
+};
 
 // Asset folder structure
-export interface AssetFolders {
+export type AssetFolders = {
 	COMMON: string;
 	FRONTEND: string;
 	EDITOR: string;
-}
+};
 
 // Vite input configuration
-export interface ViteInput {
+export type ViteInput = {
 	[key: string]: string;
-}
+};
 
 // Bundle manifest types
-export interface AssetInfo {
+export type AssetInfo = {
 	fileName: string;
 	name?: string;
 	source?: string;
@@ -59,9 +59,9 @@ export interface AssetInfo {
 		importedAssets: Set<string>;
 		importedCss: Set<string>;
 	};
-}
+};
 
-export interface ChunkInfo {
+export type ChunkInfo = {
 	fileName: string;
 	name?: string;
 	type: 'chunk';
@@ -80,9 +80,9 @@ export interface ChunkInfo {
 		importedAssets: Set<string>;
 		importedCss: Set<string>;
 	};
-}
+};
 
-export interface ManifestBlock {
+export type ManifestBlock = {
 	editorScript?: string;
 	editorStyle?: string;
 	script?: string;
@@ -90,21 +90,21 @@ export interface ManifestBlock {
 	render?: string;
 	blockJson?: string;
 	dependencies?: string[];
-}
+};
 
-export interface ManifestAsset {
+export type ManifestAsset = {
 	fileName: string;
 	type: 'chunk' | 'asset';
 	isEntry?: boolean;
 	dependencies?: string[];
 	imports?: string[];
 	css?: string[];
-}
+};
 
-export interface ManifestStructure {
+export type ManifestStructure = {
 	blocks: Record<string, Record<string, ManifestBlock>>;
 	assets: Record<string, ManifestAsset>;
-}
+};
 
 // External dependencies types
 export type ExternalFunction = (id: string) => boolean;

@@ -5,19 +5,19 @@ import { BLOCK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../config/constants.js';
 import type { AssetInfo, ChunkInfo, ManifestStructure } from '../types.js';
 
 // Rollup plugin context types
-interface PluginContext {
+type PluginContext = {
 	emitFile: (file: {
 		type: 'asset';
 		fileName: string;
 		source: string;
 	}) => void;
-}
+};
 
 // Bundle type definition
 type Bundle = Record<string, AssetInfo | ChunkInfo>;
 
 // Manifest types
-interface BlockManifest {
+type BlockManifest = {
 	blockJson: string;
 	scripts?: {
 		editor?: string;
@@ -27,23 +27,23 @@ interface BlockManifest {
 		frontend?: string;
 	};
 	dependencies?: string[];
-}
+};
 
-interface AssetChunk {
+type AssetChunk = {
 	name: string;
 	fileName: string;
 	imports: string[];
 	modules: string[];
-}
+};
 
-interface ManifestAssets {
+type ManifestAssets = {
 	chunks: Record<string, AssetChunk[]>;
-}
+};
 
-interface CompleteManifest {
+type CompleteManifest = {
 	blocks: Record<string, Record<string, BlockManifest>>;
 	assets: ManifestAssets;
-}
+};
 
 /**
  * Get all block.json files from a directory

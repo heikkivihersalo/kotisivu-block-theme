@@ -2,10 +2,10 @@ import { ASSET_FOLDERS } from './constants.js';
 import type { ChunkConfig } from '../types.js';
 
 // Types for Rollup's chunk info
-interface ChunkInfo {
+type ChunkInfo = {
 	name: string;
 	[key: string]: any;
-}
+};
 
 type ManualChunksFunction = (id: string) => string | undefined;
 type ChunkFileNamesFunction = (chunkInfo: ChunkInfo) => string;

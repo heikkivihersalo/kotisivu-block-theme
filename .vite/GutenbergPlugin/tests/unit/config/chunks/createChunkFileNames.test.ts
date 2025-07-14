@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { createChunkFileNames } from '../../../../config/chunks.js';
 import type { ChunkConfig } from '../../../../types.js';
 
-interface MockChunkInfo {
+type MockChunkInfo = {
 	name: string;
 	[key: string]: any;
-}
+};
 
 describe('createChunkFileNames', () => {
 	it('should return a function when no chunking is configured', () => {
