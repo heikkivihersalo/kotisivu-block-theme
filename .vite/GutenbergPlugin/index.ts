@@ -9,7 +9,7 @@ import {
 } from './config/chunks/chunks.js';
 import { createBundleGenerator } from './processors/bundle/bundle.js';
 import { splitEditorCSS } from './processors/css/css.js';
-import type { PluginOptions, AssetInfo, ChunkInfo } from './types.js';
+import type { PluginOptions, AssetInfo, ChunkInfo } from './types/index.js';
 
 // Vite plugin types
 type ViteConfig = {

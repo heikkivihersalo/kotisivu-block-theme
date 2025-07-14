@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { createManualChunks } from '../../../../config/chunks.js';
-import type { ChunkConfig } from '../../../../types.js';
+import { createManualChunks } from '../../../../config/chunks/chunks.js';
+import type { ChunkConfig } from '../../../../types/lib/plugin.js';
 
 describe('createManualChunks', () => {
 	it('should always return a function regardless of configuration', () => {

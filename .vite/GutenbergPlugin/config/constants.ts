@@ -6,7 +6,7 @@ import type {
 	BlockPatterns,
 	WordPressFileOutput,
 	AssetFolders,
-} from '../types.js';
+} from '../types/lib/wordpress.js';
 
 // File patterns for block discovery
 export const BLOCK_PATTERNS: BlockPatterns = {

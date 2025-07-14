@@ -1,11 +1,15 @@
+/**
+ * External dependencies
+ */
 import { writeFileSync, unlinkSync, existsSync } from 'fs';
 import { resolve } from 'path';
+
+/**
+ * Internal dependencies
+ */
 import { cleanupUnwantedCSSFiles } from './utils.js';
 import { ASSET_FOLDERS } from '../../config/constants.js';
-import type { AssetInfo, ChunkInfo } from '../../types.js';
-
-// Bundle type definition
-type Bundle = Record<string, AssetInfo | ChunkInfo>;
+import type { AssetInfo, Bundle } from '../../types/index.js';
 
 /**
  * Split editor CSS into individual block-specific files
@@ -14,7 +18,7 @@ type Bundle = Record<string, AssetInfo | ChunkInfo>;
  * @param outputDir - Output directory
  */
 export async function splitEditorCSS(
-	options: any,
+	_options: any,
 	bundle: Bundle,
 	outputDir: string
 ): Promise<void> {

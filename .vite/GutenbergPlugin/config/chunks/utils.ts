@@ -1,4 +1,7 @@
-import type { ChunkConfig } from '../../types.js';
+/**
+ * Internal dependencies
+ */
+import type { ChunkConfig } from '../../types/lib/plugin.js';
 
 /**
  * Extract chunk name from path

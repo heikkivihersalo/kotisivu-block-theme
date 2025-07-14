@@ -3,7 +3,10 @@
  * These are provided by WordPress core and should not be bundled
  */
 
-import type { ExternalFunction, GlobalsMapping } from '../types.js';
+import type {
+	ExternalFunction,
+	GlobalsMapping,
+} from '../types/lib/externals.js';
 
 // WordPress global dependencies mapping
 const WORDPRESS_EXTERNALS: Record<string, string> = {

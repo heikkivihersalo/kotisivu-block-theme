@@ -1,9 +1,15 @@
+/**
+ * External dependencies
+ */
 import { dirname, basename } from 'path';
-import { readFileSync } from 'fs';
 import { glob } from 'glob';
+
+/**
+ * Internal dependencies
+ */
 import { BLOCK_PATTERNS } from '../constants.js';
 import { findBlockFile, findCSSFile } from './utils.js';
-import type { ViteInput } from '../../types.js';
+import type { ViteInput } from '../../types/lib/vite.js';
 
 /**
  * Discover all block.json files and create build entries
@@ -33,9 +39,6 @@ export function createBlockInputs(
 
 		// Create entry key with optional subdirectory prefix
 		const entryPrefix = outputSubDir ? `${outputSubDir}/` : '';
-
-		// Read block.json to understand the structure
-		const blockJson = JSON.parse(readFileSync(blockJsonPath, 'utf8'));
 
 		// Check for main script file (index.ts, index.js, index.tsx, index.jsx)
 		// This should include the edit functionality and will bundle editor dependencies

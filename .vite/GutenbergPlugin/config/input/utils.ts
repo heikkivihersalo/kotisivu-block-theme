@@ -1,5 +1,12 @@
+/**
+ * External dependencies
+ */
 import { resolve } from 'path';
 import { readFileSync, existsSync } from 'fs';
+
+/**
+ * Internal dependencies
+ */
 import { BLOCK_PATTERNS } from '../constants.js';
 
 /**

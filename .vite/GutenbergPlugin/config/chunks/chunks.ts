@@ -1,18 +1,17 @@
+/**
+ * Internal dependencies
+ */
 import {
 	getChunkNameForPaths,
 	getSharedResourceChunk,
 	isChunkingEnabled,
 } from './utils.js';
-import type { ChunkConfig } from '../../types.js';
-
-// Types for Rollup's chunk info
-type ChunkInfo = {
-	name: string;
-	[key: string]: any;
-};
-
-type ManualChunksFunction = (id: string) => string | undefined;
-type ChunkFileNamesFunction = (chunkInfo: ChunkInfo) => string;
+import type { ChunkConfig } from '../../types/lib/plugin.js';
+import type {
+	ManualChunksFunction,
+	ChunkFileNamingInfo,
+	ChunkFileNamesFunction,
+} from '../../types/lib/vite.js';
 
 /**
  * Create manual chunks configuration for Rollup
@@ -101,7 +100,7 @@ export function createManualChunks(
 export function createChunkFileNames(
 	_chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
 ): ChunkFileNamesFunction {
-	return (chunkInfo: ChunkInfo): string => {
+	return (chunkInfo: ChunkFileNamingInfo): string => {
 		// The chunk name already includes the assets subfolder from createManualChunks
 		// e.g., "assets/frontend/utils", "assets/editor/components", "assets/common/shared"
 		return `${chunkInfo.name}-[hash].js`;

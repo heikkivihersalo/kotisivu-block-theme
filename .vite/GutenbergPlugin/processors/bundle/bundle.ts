@@ -1,48 +1,26 @@
+/**
+ * External dependencies
+ */
 import { readFileSync } from 'fs';
 import { dirname } from 'path';
 import { glob } from 'glob';
+
+/**
+ * Internal dependencies
+ */
 import {
 	BLOCK_PATTERNS,
 	WORDPRESS_FILE_OUTPUT,
 } from '../../config/constants.js';
 import { generatePhpArray } from './utils.js';
-import type { AssetInfo, ChunkInfo } from '../../types.js';
 
-// Rollup plugin context types
-type PluginContext = {
-	emitFile: (file: {
-		type: 'asset';
-		fileName: string;
-		source: string;
-	}) => void;
-};
-
-// Bundle type definition
-type Bundle = Record<string, AssetInfo | ChunkInfo>;
-
-// Manifest types
-type BlockManifest = {
-	blockJson: string;
-	scripts?: {
-		editor?: string;
-		frontend?: string;
-	};
-	styles?: {
-		frontend?: string;
-	};
-	dependencies?: string[];
-};
-
-type AssetChunk = {
-	name: string;
-	fileName: string;
-	imports: string[];
-	modules: string[];
-};
-
-type ManifestAssets = {
-	chunks: Record<string, AssetChunk[]>;
-};
+import type {
+	ChunkInfo,
+	PluginContext,
+	Bundle,
+	BlockManifest,
+	ManifestAssets,
+} from '../../types/index.js';
 
 /**
  * Get all block.json files from a directory
