@@ -11,5 +11,6 @@ export default defineConfig({
 		alias: {
 			'@': path.resolve(__dirname, './resources'),
 		},
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
 	},
 });

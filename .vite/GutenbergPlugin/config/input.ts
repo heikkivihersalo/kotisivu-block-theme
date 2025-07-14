@@ -2,14 +2,15 @@ import { resolve, dirname, basename } from 'path';
 import { readFileSync, existsSync } from 'fs';
 import { glob } from 'glob';
 import { BLOCK_PATTERNS } from './constants.js';
+import type { ViteInput } from '../types.js';
 
 /**
  * Find a file in the block directory based on patterns
- * @param {string} blockDir - Block directory path
- * @param {string} baseName - Base name (e.g., 'index', 'edit', 'view')
- * @returns {string|null} Found file path or null
+ * @param blockDir - Block directory path
+ * @param baseName - Base name (e.g., 'index', 'edit', 'view')
+ * @returns Found file path or null
  */
-function findBlockFile(blockDir, baseName) {
+function findBlockFile(blockDir: string, baseName: string): string | null {
 	for (const ext of BLOCK_PATTERNS.SCRIPT_EXTENSIONS) {
 		const filePath = resolve(blockDir, `${baseName}${ext}`);
 		if (existsSync(filePath)) {
@@ -21,10 +22,10 @@ function findBlockFile(blockDir, baseName) {
 
 /**
  * Check if a CSS file has meaningful content (not empty or just whitespace/comments)
- * @param {string} filePath - Path to the CSS file
- * @returns {boolean} True if file has meaningful content
+ * @param filePath - Path to the CSS file
+ * @returns True if file has meaningful content
  */
-function hasValidCSSContent(filePath) {
+function hasValidCSSContent(filePath: string): boolean {
 	try {
 		const content = readFileSync(filePath, 'utf8');
 		// Remove whitespace, comments, and empty rules
@@ -36,7 +37,10 @@ function hasValidCSSContent(filePath) {
 		// Check if there's any meaningful CSS left
 		return cleanedContent.length > 0;
 	} catch (error) {
-		console.warn(`Error reading CSS file ${filePath}:`, error.message);
+		console.warn(
+			`Error reading CSS file ${filePath}:`,
+			(error as Error).message
+		);
 		return false;
 	}
 }
@@ -44,11 +48,11 @@ function hasValidCSSContent(filePath) {
 /**
  * Find a CSS file in the block directory based on patterns
  * Only returns the file if it has meaningful content
- * @param {string} blockDir - Block directory path
- * @param {string} baseName - Base name (e.g., 'style', 'editor')
- * @returns {string|null} Found file path or null
+ * @param blockDir - Block directory path
+ * @param baseName - Base name (e.g., 'style', 'editor')
+ * @returns Found file path or null
  */
-function findCSSFile(blockDir, baseName) {
+function findCSSFile(blockDir: string, baseName: string): string | null {
 	for (const ext of BLOCK_PATTERNS.STYLE_EXTENSIONS) {
 		const filePath = resolve(blockDir, `${baseName}${ext}`);
 		if (existsSync(filePath) && hasValidCSSContent(filePath)) {
@@ -60,11 +64,14 @@ function findCSSFile(blockDir, baseName) {
 
 /**
  * Discover all block.json files and create build entries
- * @param {string} blocksDir - Directory to search for blocks
- * @param {string} outputSubDir - Output subdirectory for this input (optional)
- * @returns {Object} Input configuration for Vite
+ * @param blocksDir - Directory to search for blocks
+ * @param outputSubDir - Output subdirectory for this input (optional)
+ * @returns Input configuration for Vite
  */
-export function createBlockInputs(blocksDir, outputSubDir = '') {
+export function createBlockInputs(
+	blocksDir: string,
+	outputSubDir = ''
+): ViteInput {
 	// Find all block.json files
 	const blockJsonFiles = glob.sync(
 		`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`
@@ -75,7 +82,7 @@ export function createBlockInputs(blocksDir, outputSubDir = '') {
 		return {};
 	}
 
-	const input = {};
+	const input: ViteInput = {};
 
 	blockJsonFiles.forEach((blockJsonPath) => {
 		const blockDir = dirname(blockJsonPath);

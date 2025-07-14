@@ -3,8 +3,10 @@
  * These are provided by WordPress core and should not be bundled
  */
 
+import type { ExternalFunction, GlobalsMapping } from '../types.js';
+
 // WordPress global dependencies mapping
-const WORDPRESS_EXTERNALS = {
+const WORDPRESS_EXTERNALS: Record<string, string> = {
 	'@wordpress/blocks': 'wp.blocks',
 	'@wordpress/block-editor': 'wp.blockEditor',
 	'@wordpress/components': 'wp.components',
@@ -34,18 +36,18 @@ const WORDPRESS_EXTERNALS = {
 };
 
 // React dependencies provided by WordPress
-const REACT_EXTERNALS = {
+const REACT_EXTERNALS: Record<string, string> = {
 	react: 'React',
 	'react-dom': 'ReactDOM',
 };
 
 // Lodash utilities provided by WordPress
-const LODASH_EXTERNALS = {
+const LODASH_EXTERNALS: Record<string, string> = {
 	lodash: 'lodash',
 };
 
 // All external dependencies combined
-const ALL_EXTERNALS = {
+const ALL_EXTERNALS: Record<string, string> = {
 	...WORDPRESS_EXTERNALS,
 	...REACT_EXTERNALS,
 	...LODASH_EXTERNALS,
@@ -53,18 +55,18 @@ const ALL_EXTERNALS = {
 
 /**
  * Create external function for Rollup to exclude WordPress dependencies
- * @returns {Function} External function for Rollup
+ * @returns External function for Rollup
  */
-export function createExternalFunction() {
-	return (id) => {
+export function createExternalFunction(): ExternalFunction {
+	return (id: string): boolean => {
 		return Object.keys(ALL_EXTERNALS).includes(id);
 	};
 }
 
 /**
  * Create globals mapping for UMD builds
- * @returns {Object} Globals mapping for Rollup
+ * @returns Globals mapping for Rollup
  */
-export function createGlobalsMapping() {
+export function createGlobalsMapping(): GlobalsMapping {
 	return ALL_EXTERNALS;
 }

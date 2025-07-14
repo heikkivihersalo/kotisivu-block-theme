@@ -7,6 +7,37 @@ import { createManualChunks, createChunkFileNames } from './config/chunks.js';
 import { createBundleGenerator } from './processors/bundle.js';
 import { splitEditorCSS } from './processors/css.js';
 import { ASSET_FOLDERS } from './config/constants.js';
+import type {
+	PluginOptions,
+	ChunkConfig,
+	AssetInfo,
+	ChunkInfo,
+} from './types.js';
+
+// Vite plugin types
+interface ViteConfig {
+	build?: {
+		cssCodeSplit?: boolean;
+		rollupOptions?: {
+			input?: Record<string, string>;
+			output?: any;
+			external?: (id: string) => boolean;
+		};
+	};
+}
+
+interface VitePlugin {
+	name: string;
+	config: (config: ViteConfig) => void;
+	generateBundle: any;
+	writeBundle: {
+		sequential: boolean;
+		handler: (
+			options: any,
+			bundle: Record<string, AssetInfo | ChunkInfo>
+		) => Promise<void>;
+	};
+}
 
 /**
  * WordPress Gutenberg Blocks Vite Plugin
@@ -16,15 +47,17 @@ import { ASSET_FOLDERS } from './config/constants.js';
  *
  * Supports multiple input directories with organized output structure.
  *
- * @param {Object} options - Plugin configuration options
- * @param {Object} options.input - Input directories mapping (required)
- * @param {string} options.output - Output directory (default: 'build/blocks')
- * @param {Object} options.chunks - Chunk organization configuration
- * @param {string[]} options.chunks.frontend - Array of folder paths for frontend-only chunks
- * @param {string[]} options.chunks.editor - Array of folder paths for editor-only chunks
- * @param {string[]} options.chunks.common - Array of folder paths for common chunks
+ * @param options - Plugin configuration options
+ * @param options.input - Input directories mapping (required)
+ * @param options.output - Output directory (default: 'build/blocks')
+ * @param options.chunks - Chunk organization configuration
+ * @param options.chunks.frontend - Array of folder paths for frontend-only chunks
+ * @param options.chunks.editor - Array of folder paths for editor-only chunks
+ * @param options.chunks.common - Array of folder paths for common chunks
  */
-export default function gutenbergBlocksPlugin(options = {}) {
+export default function gutenbergBlocksPlugin(
+	options: PluginOptions
+): VitePlugin {
 	const {
 		input,
 		output = 'build/blocks',
@@ -32,7 +65,8 @@ export default function gutenbergBlocksPlugin(options = {}) {
 	} = options;
 
 	// Determine configuration format and set up directories
-	let inputDirs, baseOutputDir;
+	let inputDirs: Record<string, string>;
+	let baseOutputDir: string;
 
 	if (input && typeof input === 'object') {
 		inputDirs = input;
@@ -45,9 +79,9 @@ export default function gutenbergBlocksPlugin(options = {}) {
 
 	return {
 		name: 'gutenberg-blocks',
-		config(config) {
+		config(config: ViteConfig): void {
 			// Create build entries for all input directories
-			const allInputs = {};
+			const allInputs: Record<string, string> = {};
 
 			for (const [outputSubDir, inputDir] of Object.entries(inputDirs)) {
 				const inputs = createBlockInputs(inputDir, outputSubDir);
@@ -66,7 +100,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 			const rollupOutput = {
 				dir: finalOutputDir,
 				entryFileNames: '[name].js',
-				assetFileNames: (assetInfo) => {
+				assetFileNames: (assetInfo: AssetInfo): string => {
 					// Frontend styles (style-index.css) stay in their block directories
 					if (
 						assetInfo.name &&
@@ -97,7 +131,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 					return '[name].[ext]';
 				},
 				chunkFileNames: createChunkFileNames(chunks),
-				format: 'es',
+				format: 'es' as const,
 				globals: createGlobalsMapping(),
 				manualChunks: createManualChunks(chunks),
 			};
@@ -117,7 +151,10 @@ export default function gutenbergBlocksPlugin(options = {}) {
 
 		writeBundle: {
 			sequential: true,
-			async handler(options, bundle) {
+			async handler(
+				options: any,
+				bundle: Record<string, AssetInfo | ChunkInfo>
+			): Promise<void> {
 				// Split the consolidated editor CSS into individual block-specific files
 				// Use the same output directory calculation as in config
 				const outputDirForCSS =
@@ -127,12 +164,7 @@ export default function gutenbergBlocksPlugin(options = {}) {
 							? `${baseOutputDir}/${Object.keys(inputDirs)[0]}`
 							: baseOutputDir;
 
-				await splitEditorCSS.call(
-					this,
-					options,
-					bundle,
-					outputDirForCSS
-				);
+				await splitEditorCSS(options, bundle, outputDirForCSS);
 			},
 		},
 	};

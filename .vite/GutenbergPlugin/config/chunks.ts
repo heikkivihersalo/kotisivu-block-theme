@@ -1,11 +1,23 @@
 import { ASSET_FOLDERS } from './constants.js';
+import type { ChunkConfig } from '../types.js';
+
+// Types for Rollup's chunk info
+interface ChunkInfo {
+	name: string;
+	[key: string]: any;
+}
+
+type ManualChunksFunction = (id: string) => string | undefined;
+type ChunkFileNamesFunction = (chunkInfo: ChunkInfo) => string;
 
 /**
  * Check if chunking should be enabled based on configuration
- * @param {Object} chunksConfig - Chunk configuration object
- * @returns {boolean} Whether chunking is enabled
+ * @param chunksConfig - Chunk configuration object
+ * @returns Whether chunking is enabled
  */
-function isChunkingEnabled(chunksConfig = {}) {
+function isChunkingEnabled(
+	chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
+): boolean {
 	// Check if any chunk paths are explicitly defined
 	const hasFrontendChunks =
 		Array.isArray(chunksConfig.frontend) &&
@@ -25,18 +37,18 @@ function isChunkingEnabled(chunksConfig = {}) {
  * - When chunking is configured: specific paths go to assets/frontend, assets/editor, or assets/common
  * - Unconfigured dependencies go to assets/common as fallback
  *
- * @param {Object} chunksConfig - Chunk configuration object with frontend, editor, and common arrays
- * @returns {Function} Manual chunks function for Rollup
+ * @param chunksConfig - Chunk configuration object with frontend, editor, and common arrays
+ * @returns Manual chunks function for Rollup
  */
 export function createManualChunks(
-	chunksConfig = { frontend: [], editor: [], common: [] }
-) {
+	chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
+): ManualChunksFunction {
 	const frontendPaths = chunksConfig.frontend || [];
 	const editorPaths = chunksConfig.editor || [];
 	const commonPaths = chunksConfig.common || [];
 	const isExplicitChunkingEnabled = isChunkingEnabled(chunksConfig);
 
-	return (id) => {
+	return (id: string): string | undefined => {
 		// Skip WordPress externals (these shouldn't be bundled at all)
 		if (id.startsWith('@wordpress')) {
 			return undefined;
@@ -150,13 +162,13 @@ export function createManualChunks(
  * Generate chunk file names for the build output
  * Organizes chunks in assets subdirectories based on their type
  *
- * @param {Object} chunksConfig - Chunk configuration object
- * @returns {Function} Chunk file naming function
+ * @param chunksConfig - Chunk configuration object
+ * @returns Chunk file naming function
  */
 export function createChunkFileNames(
-	chunksConfig = { frontend: [], editor: [], common: [] }
-) {
-	return (chunkInfo) => {
+	chunksConfig: ChunkConfig = { frontend: [], editor: [], common: [] }
+): ChunkFileNamesFunction {
+	return (chunkInfo: ChunkInfo): string => {
 		// The chunk name already includes the assets subfolder from createManualChunks
 		// e.g., "assets/frontend/utils", "assets/editor/components", "assets/common/shared"
 		return `${chunkInfo.name}-[hash].js`;

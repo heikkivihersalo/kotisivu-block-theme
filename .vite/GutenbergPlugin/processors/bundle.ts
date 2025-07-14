@@ -2,32 +2,80 @@ import { writeFileSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { glob } from 'glob';
 import { BLOCK_PATTERNS, WORDPRESS_FILE_OUTPUT } from '../config/constants.js';
+import type { AssetInfo, ChunkInfo, ManifestStructure } from '../types.js';
+
+// Rollup plugin context types
+interface PluginContext {
+	emitFile: (file: {
+		type: 'asset';
+		fileName: string;
+		source: string;
+	}) => void;
+}
+
+// Bundle type definition
+type Bundle = Record<string, AssetInfo | ChunkInfo>;
+
+// Manifest types
+interface BlockManifest {
+	blockJson: string;
+	scripts?: {
+		editor?: string;
+		frontend?: string;
+	};
+	styles?: {
+		frontend?: string;
+	};
+	dependencies?: string[];
+}
+
+interface AssetChunk {
+	name: string;
+	fileName: string;
+	imports: string[];
+	modules: string[];
+}
+
+interface ManifestAssets {
+	chunks: Record<string, AssetChunk[]>;
+}
+
+interface CompleteManifest {
+	blocks: Record<string, Record<string, BlockManifest>>;
+	assets: ManifestAssets;
+}
 
 /**
  * Get all block.json files from a directory
- * @param {string} blocksDir - Directory to search for blocks
- * @returns {string[]} Array of block.json file paths
+ * @param blocksDir - Directory to search for blocks
+ * @returns Array of block.json file paths
  */
-export function getBlockJsonFiles(blocksDir) {
+export function getBlockJsonFiles(blocksDir: string): string[] {
 	return glob.sync(`${blocksDir}/${BLOCK_PATTERNS.BLOCK_JSON}`);
 }
 
 /**
  * Create bundle generator for copying block.json files and generating manifest
- * @param {Object} inputDirs - Input directories configuration
- * @returns {Function} Bundle generator function
+ * @param inputDirs - Input directories configuration
+ * @returns Bundle generator function
  */
-export function createBundleGenerator(inputDirs) {
-	return function generateBundle(options, bundle) {
-		const manifest = {};
-		const assets = {
+export function createBundleGenerator(inputDirs: Record<string, string>) {
+	return function generateBundle(
+		this: PluginContext,
+		options: any,
+		bundle: Bundle
+	): void {
+		const manifest: Record<string, Record<string, BlockManifest>> = {};
+		const assets: ManifestAssets = {
 			chunks: {},
 		};
 
 		// Collect asset information from bundle
 		Object.keys(bundle).forEach((key) => {
 			const chunk = bundle[key];
-			if (chunk.isAsset || chunk.type === 'asset') return;
+			if (chunk.type === 'asset') return;
+
+			const chunkInfo = chunk as ChunkInfo;
 
 			// Track chunks (shared dependencies)
 			if (key.includes('assets/')) {
@@ -39,7 +87,7 @@ export function createBundleGenerator(inputDirs) {
 				}
 
 				// Clean up module paths to be relative
-				const cleanModules = Object.keys(chunk.modules || {})
+				const cleanModules = Object.keys(chunkInfo.modules || {})
 					.filter(
 						(mod) =>
 							!mod.includes('node_modules') ||
@@ -66,8 +114,8 @@ export function createBundleGenerator(inputDirs) {
 
 				assets.chunks[folder].push({
 					name: name,
-					fileName: chunk.fileName,
-					imports: (chunk.imports || []).filter(
+					fileName: chunkInfo.fileName,
+					imports: (chunkInfo.imports || []).filter(
 						(imp) => !imp.includes('.css')
 					),
 					modules: cleanModules,
@@ -86,7 +134,7 @@ export function createBundleGenerator(inputDirs) {
 
 			blockJsonFiles.forEach((blockJsonPath) => {
 				const blockDir = dirname(blockJsonPath);
-				const blockName = blockDir.split('/').pop();
+				const blockName = blockDir.split('/').pop()!;
 
 				// Create hierarchical structure
 				const blockKey = `${outputSubDir}/${blockName}`;
@@ -117,11 +165,11 @@ export function createBundleGenerator(inputDirs) {
 					if (!manifest[outputSubDir][blockName].scripts) {
 						manifest[outputSubDir][blockName].scripts = {};
 					}
-					manifest[outputSubDir][blockName].scripts.editor =
+					manifest[outputSubDir][blockName].scripts!.editor =
 						`${blockKey}/${WORDPRESS_FILE_OUTPUT.EDITOR_SCRIPT}`;
 
 					// Track valid dependencies (filter out phantom dependencies)
-					const chunk = bundle[indexKey + '.js'];
+					const chunk = bundle[indexKey + '.js'] as ChunkInfo;
 					if (chunk.imports && chunk.imports.length > 0) {
 						const validDependencies = chunk.imports.filter(
 							(imp) => {
@@ -154,7 +202,7 @@ export function createBundleGenerator(inputDirs) {
 					if (!manifest[outputSubDir][blockName].scripts) {
 						manifest[outputSubDir][blockName].scripts = {};
 					}
-					manifest[outputSubDir][blockName].scripts.frontend =
+					manifest[outputSubDir][blockName].scripts!.frontend =
 						`${blockKey}/${WORDPRESS_FILE_OUTPUT.VIEW_SCRIPT}`;
 				}
 
@@ -162,7 +210,7 @@ export function createBundleGenerator(inputDirs) {
 					if (!manifest[outputSubDir][blockName].styles) {
 						manifest[outputSubDir][blockName].styles = {};
 					}
-					manifest[outputSubDir][blockName].styles.frontend =
+					manifest[outputSubDir][blockName].styles!.frontend =
 						`${blockKey}/${WORDPRESS_FILE_OUTPUT.STYLE}`;
 				}
 			});
@@ -179,7 +227,7 @@ export function createBundleGenerator(inputDirs) {
 		});
 
 		// Keep JSON for backward compatibility - flatten structure for JSON
-		const jsonManifest = {};
+		const jsonManifest: Record<string, any> = {};
 		Object.keys(manifest).forEach((dir) => {
 			Object.keys(manifest[dir]).forEach((block) => {
 				const blockData = manifest[dir][block];
@@ -210,11 +258,11 @@ export function createBundleGenerator(inputDirs) {
 
 /**
  * Convert JavaScript object to PHP array format
- * @param {Object} data - Data to convert to PHP array
- * @returns {string} PHP array as string
+ * @param data - Data to convert to PHP array
+ * @returns PHP array as string
  */
-function generatePhpArray(data) {
-	function convertValue(value, indent = 0) {
+function generatePhpArray(data: any): string {
+	function convertValue(value: any, indent = 0): string {
 		const spaces = '    '.repeat(indent);
 		const nextSpaces = '    '.repeat(indent + 1);
 

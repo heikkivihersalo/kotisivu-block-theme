@@ -9,14 +9,14 @@ export const BUILD_DIR = resolve(__dirname, '../../../../../build/blocks');
 
 /**
  * Get all block directories from the build output
- * @returns {string[]} Array of block directory paths
+ * @returns Array of block directory paths
  */
-export function getBlockDirectories() {
+export function getBlockDirectories(): string[] {
 	const blockLibraryPath = join(BUILD_DIR, 'block-library');
 	const pageTemplatesPath = join(BUILD_DIR, 'page-templates');
 	const templatePartsPath = join(BUILD_DIR, 'template-parts');
 
-	const blockDirs = [];
+	const blockDirs: string[] = [];
 
 	// Get block-library blocks
 	if (existsSync(blockLibraryPath)) {
@@ -47,29 +47,29 @@ export function getBlockDirectories() {
 
 /**
  * Check if a file exists in a block directory
- * @param {string} blockDir - Block directory path
- * @param {string} filename - File to check
- * @returns {boolean} True if file exists
+ * @param blockDir - Block directory path
+ * @param filename - File to check
+ * @returns True if file exists
  */
-export function hasFile(blockDir, filename) {
+export function hasFile(blockDir: string, filename: string): boolean {
 	return existsSync(join(blockDir, filename));
 }
 
 /**
  * Get the block name from directory path
- * @param {string} blockDir - Block directory path
- * @returns {string} Block name
+ * @param blockDir - Block directory path
+ * @returns Block name
  */
-export function getBlockName(blockDir) {
-	return blockDir.split('/').pop();
+export function getBlockName(blockDir: string): string {
+	return blockDir.split('/').pop()!;
 }
 
 /**
  * Read file content from a block directory
- * @param {string} blockDir - Block directory path
- * @param {string} filename - File to read
- * @returns {string} File content
+ * @param blockDir - Block directory path
+ * @param filename - File to read
+ * @returns File content
  */
-export function readBlockFile(blockDir, filename) {
+export function readBlockFile(blockDir: string, filename: string): string {
 	return readFileSync(join(blockDir, filename), 'utf-8');
 }

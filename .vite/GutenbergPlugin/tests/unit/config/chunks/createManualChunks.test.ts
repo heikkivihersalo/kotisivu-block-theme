@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createManualChunks } from '../../../../config/chunks.js';
+import type { ChunkConfig } from '../../../../types.js';
 
 describe('createManualChunks', () => {
 	it('should always return a function regardless of configuration', () => {
@@ -20,6 +21,7 @@ describe('createManualChunks', () => {
 		const chunks = createManualChunks({
 			frontend: ['resources/shared/utils/frontend'],
 			editor: [],
+			common: [],
 		});
 		expect(typeof chunks).toBe('function');
 	});
@@ -28,6 +30,7 @@ describe('createManualChunks', () => {
 		const chunks = createManualChunks({
 			frontend: [],
 			editor: ['resources/shared/components/inspector'],
+			common: [],
 		});
 		expect(typeof chunks).toBe('function');
 	});
@@ -45,6 +48,7 @@ describe('createManualChunks', () => {
 		const chunks = createManualChunks({
 			frontend: ['resources/shared/utils/frontend'],
 			editor: [],
+			common: [],
 		});
 
 		const result = chunks(
@@ -57,6 +61,7 @@ describe('createManualChunks', () => {
 		const chunks = createManualChunks({
 			frontend: [],
 			editor: ['resources/shared/components/inspector'],
+			common: [],
 		});
 
 		const result = chunks(
@@ -80,6 +85,7 @@ describe('createManualChunks', () => {
 		const chunks = createManualChunks({
 			frontend: ['resources/shared/utils/frontend'],
 			editor: ['resources/shared/components/inspector'],
+			common: [],
 		});
 
 		const result = chunks('some/other/path/module.js');
@@ -93,6 +99,7 @@ describe('createManualChunks', () => {
 				'resources/widgets/common/utils',
 			],
 			editor: [],
+			common: [],
 		});
 
 		const result1 = chunks(
@@ -113,6 +120,7 @@ describe('createManualChunks', () => {
 				'resources/shared/components/inspector',
 				'resources/shared/hooks/editor',
 			],
+			common: [],
 		});
 
 		const result1 = chunks(

@@ -1,28 +1,37 @@
 import { writeFileSync, unlinkSync, existsSync, readdirSync } from 'fs';
 import { resolve, join } from 'path';
 import { ASSET_FOLDERS } from '../config/constants.js';
+import type { AssetInfo, ChunkInfo } from '../types.js';
+
+// Bundle type definition
+type Bundle = Record<string, AssetInfo | ChunkInfo>;
 
 /**
  * Split editor CSS into individual block-specific files
- * @param {Object} options - Build options
- * @param {Object} bundle - Rollup bundle
- * @param {string} outputDir - Output directory
+ * @param options - Build options
+ * @param bundle - Rollup bundle
+ * @param outputDir - Output directory
  */
-export async function splitEditorCSS(options, bundle, outputDir) {
+export async function splitEditorCSS(
+	options: any,
+	bundle: Bundle,
+	outputDir: string
+): Promise<void> {
 	console.log('📝 Creating individual editor CSS files for blocks...');
 
 	let createdCount = 0;
 	const editorAssetsDir = resolve(outputDir, ASSET_FOLDERS.EDITOR);
 
 	// Process each CSS file in the bundle
-	const filesToDelete = [];
+	const filesToDelete: string[] = [];
 
 	Object.keys(bundle).forEach((fileName) => {
 		const chunk = bundle[fileName];
 
 		// Look for CSS files that should be split into block-specific files
 		if (fileName.endsWith('.css') && chunk.type === 'asset') {
-			const cssContent = chunk.source;
+			const assetChunk = chunk as AssetInfo;
+			const cssContent = assetChunk.source;
 
 			// Handle editor-styles entries that should become index.css
 			const editorStylesMatch = fileName.match(
@@ -36,7 +45,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 				);
 
 				try {
-					writeFileSync(blockSpecificCssPath, cssContent);
+					writeFileSync(blockSpecificCssPath, cssContent as string);
 					console.log(`📄 Created: ${blockPath}/index.css`);
 					createdCount++;
 					// Mark this file for deletion from the bundle
@@ -44,7 +53,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 				} catch (error) {
 					console.warn(
 						`⚠️  Failed to create ${blockPath}/index.css:`,
-						error.message
+						(error as Error).message
 					);
 				}
 				return;
@@ -60,7 +69,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 				);
 
 				try {
-					writeFileSync(blockSpecificCssPath, cssContent);
+					writeFileSync(blockSpecificCssPath, cssContent as string);
 					console.log(`📄 Created: ${blockPath}/index.css`);
 					createdCount++;
 					// Mark this file for deletion from the bundle
@@ -68,7 +77,7 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 				} catch (error) {
 					console.warn(
 						`⚠️  Failed to create ${blockPath}/index.css:`,
-						error.message
+						(error as Error).message
 					);
 				}
 			}
@@ -87,7 +96,10 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 				console.log(`🗑️  Removed: ${fileName}`);
 			}
 		} catch (error) {
-			console.warn(`⚠️  Failed to remove ${fileName}:`, error.message);
+			console.warn(
+				`⚠️  Failed to remove ${fileName}:`,
+				(error as Error).message
+			);
 		}
 	});
 
@@ -101,10 +113,13 @@ export async function splitEditorCSS(options, bundle, outputDir) {
 
 /**
  * Clean up unwanted CSS files from the editor-assets directory
- * @param {string} editorAssetsDir - Editor assets directory path
- * @param {string} outputDir - Output directory path
+ * @param editorAssetsDir - Editor assets directory path
+ * @param outputDir - Output directory path
  */
-async function cleanupUnwantedCSSFiles(editorAssetsDir, outputDir) {
+async function cleanupUnwantedCSSFiles(
+	editorAssetsDir: string,
+	outputDir: string
+): Promise<void> {
 	console.log('🧹 Cleaning up unwanted CSS files...');
 
 	if (!existsSync(editorAssetsDir)) {
@@ -127,7 +142,10 @@ async function cleanupUnwantedCSSFiles(editorAssetsDir, outputDir) {
 				console.log(`🗑️  Removed unwanted root CSS file: ${file}`);
 				cleanedCount++;
 			} catch (error) {
-				console.warn(`⚠️  Failed to remove ${file}:`, error.message);
+				console.warn(
+					`⚠️  Failed to remove ${file}:`,
+					(error as Error).message
+				);
 			}
 		});
 
@@ -135,6 +153,6 @@ async function cleanupUnwantedCSSFiles(editorAssetsDir, outputDir) {
 			console.log(`✅ Cleaned up ${cleanedCount} unwanted CSS files`);
 		}
 	} catch (error) {
-		console.warn('⚠️  Error during CSS cleanup:', error.message);
+		console.warn('⚠️  Error during CSS cleanup:', (error as Error).message);
 	}
 }

@@ -6,4 +6,4 @@
  */
 
 // WordPress Gutenberg Blocks Plugin
-export { default as gutenbergBlocksPlugin } from './GutenbergPlugin/index.js';
+export { default as gutenbergBlocksPlugin } from './GutenbergPlugin/index.ts';
