@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { dirname } from 'path';
 import { glob } from 'glob';
 
@@ -12,7 +12,11 @@ import {
 	BLOCK_PATTERNS,
 	WORDPRESS_FILE_OUTPUT,
 } from '../../config/constants.js';
-import { generatePhpArray } from './utils.js';
+import {
+	generatePhpArray,
+	copyBlockJsonFile,
+	copyRenderFile,
+} from './utils.js';
 
 import type {
 	ChunkInfo,
@@ -116,21 +120,22 @@ export function createBundleGenerator(inputDirs: Record<string, string>) {
 				// Create hierarchical structure
 				const blockKey = `${outputSubDir}/${blockName}`;
 
+				copyBlockJsonFile({
+					context: this,
+					dir: blockDir,
+					key: blockKey,
+				});
+
+				copyRenderFile({
+					context: this,
+					dir: blockDir,
+					key: blockKey,
+				});
+
 				// Initialize block entry in manifest
 				manifest[outputSubDir][blockName] = {
 					blockJson: `${blockKey}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
 				};
-
-				// Copy block.json to output
-				this.emitFile({
-					type: 'asset',
-					fileName: `${blockKey}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
-					source: JSON.stringify(
-						JSON.parse(readFileSync(blockJsonPath, 'utf8')),
-						null,
-						2
-					),
-				});
 
 				// Add script entries to manifest based on what exists in the bundle
 				const indexKey = `${blockKey}/index`;
@@ -201,34 +206,6 @@ export function createBundleGenerator(inputDirs: Record<string, string>) {
 			type: 'asset',
 			fileName: 'manifest.php',
 			source: phpManifest,
-		});
-
-		// Keep JSON for backward compatibility - flatten structure for JSON
-		const jsonManifest: Record<string, any> = {};
-		Object.keys(manifest).forEach((dir) => {
-			Object.keys(manifest[dir]).forEach((block) => {
-				const blockData = manifest[dir][block];
-				const key = `${dir}/${block}`;
-				jsonManifest[key] = {
-					blockJson: blockData.blockJson,
-				};
-
-				if (blockData.scripts?.editor) {
-					jsonManifest[key].editorScript = blockData.scripts.editor;
-				}
-				if (blockData.scripts?.frontend) {
-					jsonManifest[key].viewScript = blockData.scripts.frontend;
-				}
-				if (blockData.styles?.frontend) {
-					jsonManifest[key].style = blockData.styles.frontend;
-				}
-			});
-		});
-
-		this.emitFile({
-			type: 'asset',
-			fileName: 'manifest.json',
-			source: JSON.stringify(jsonManifest, null, 2),
 		});
 	};
 }

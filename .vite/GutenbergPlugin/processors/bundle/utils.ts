@@ -1,4 +1,15 @@
 /**
+ * External dependencies
+ */
+import { readFileSync, existsSync } from 'fs';
+
+/**
+ * Internal dependencies
+ */
+import { WORDPRESS_FILE_OUTPUT } from '../../config/constants.js';
+import type { PluginContext } from '../../types/index.js';
+
+/**
  * Convert JavaScript object to PHP array format
  * @param data - Data to convert to PHP array
  * @returns PHP array as string
@@ -45,4 +56,64 @@ return ${convertValue(data)};
 `;
 
 	return phpCode;
+}
+
+/**
+ * Handle copying of render.php file to the output directory
+ * @param props - Properties for copying the render file
+ * @param props.context - Plugin context for emitting files
+ * @param props.dir - Output directory for the block
+ * @param props.key - Key for the block in the manifest
+ * @return void
+ */
+export function copyRenderFile({
+	context,
+	dir,
+	key,
+}: {
+	context: PluginContext;
+	dir: string;
+	key: string;
+}): void {
+	const renderPhpPath = `${dir}/${WORDPRESS_FILE_OUTPUT.RENDER}`;
+
+	if (existsSync(renderPhpPath)) {
+		context.emitFile({
+			type: 'asset',
+			fileName: `${key}/${WORDPRESS_FILE_OUTPUT.RENDER}`,
+			source: readFileSync(renderPhpPath, 'utf8'),
+		});
+	}
+}
+
+/**
+ * Handle copying of block.json file to the output directory
+ * @param props - Properties for copying the block.json file
+ * @param props.context - Plugin context for emitting files
+ * @param props.dir - Output directory for the block
+ * @param props.key - Key for the block in the manifest
+ * @return void
+ */
+export function copyBlockJsonFile({
+	context,
+	dir,
+	key,
+}: {
+	context: PluginContext;
+	dir: string;
+	key: string;
+}): void {
+	const blockJsonPath = `${dir}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`;
+
+	if (existsSync(blockJsonPath)) {
+		context.emitFile({
+			type: 'asset',
+			fileName: `${key}/${WORDPRESS_FILE_OUTPUT.BLOCK_JSON}`,
+			source: JSON.stringify(
+				JSON.parse(readFileSync(blockJsonPath, 'utf8')),
+				null,
+				2
+			),
+		});
+	}
 }
