@@ -41,6 +41,8 @@ export default defineConfig({
 					// 'resources/shared/utils',
 				],
 				editor: [
+					// Bundle WordPress icons as shared editor asset
+					'@wordpress/icons',
 					// Example: Split editor-only utilities into chunks
 					// 'resources/shared/components',
 				],
