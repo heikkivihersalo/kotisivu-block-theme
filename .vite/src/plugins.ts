@@ -1,6 +1,7 @@
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
+import type { BlockInfo } from '../types/index.js';
 
 /* *********************************************
  * External plugins required for the build process
@@ -15,7 +16,7 @@ const generatePlugins = ({
 	outDir?: string | null;
 	blockPath?: string | null;
 	blockName?: string | null;
-	discoveredBlocks?: any[];
+	discoveredBlocks?: BlockInfo[];
 } = {}) => {
 	const finalBlockPath = blockPath || resolve(pwd, 'src');
 

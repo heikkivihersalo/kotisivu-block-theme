@@ -1,13 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import type { WordpressBlockJson } from './transform.js';
-
-export interface BlockInfo {
-	path: string;
-	blockJson: WordpressBlockJson;
-	name: string;
-	outputPath?: string; // Custom output path for path mappings
-}
+import type { WordpressBlockJson, BlockInfo } from '../types/index.js';
 
 /**
  * Discover block.json files in the specified folders

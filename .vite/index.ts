@@ -5,28 +5,21 @@ import { sep } from 'node:path';
 import { readFileSync, existsSync } from 'node:fs';
 import { sideload } from './src/buildStart.js';
 import { config } from './src/config.js';
-import {
-	generateBundle,
-	type ChunkInfo,
-	type AssetInfo,
-} from './src/generateBundle.js';
+import { generateBundle } from './src/generateBundle.js';
 import { options } from './src/options.js';
 import { outputOptions } from './src/outputOptions.js';
 import generatePlugins from './src/plugins.js';
-import { transform, type WordpressBlockJson } from './src/transform.js';
+import { transform } from './src/transform.js';
 import {
 	discoverBlocks,
 	discoverBlocksWithMapping,
 } from './src/blockDiscovery.js';
-
-interface PluginConfig {
-	watch?: string[];
-	outDir?: string;
-	dependencies?: string[];
-	blockFolders?: string[];
-	// New path mapping support
-	pathMappings?: Record<string, string>;
-}
+import type {
+	PluginConfig,
+	WordpressBlockJson,
+	ChunkInfo,
+	AssetInfo,
+} from './types/index.js';
 
 let _config: ResolvedConfig;
 

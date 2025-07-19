@@ -1,16 +1,7 @@
 import type { PluginContext } from 'rollup';
 import { sep } from 'node:path';
-import type { EmittedAsset } from './generateBundle.js';
 import { preprocessCSS, type ResolvedConfig } from 'vite';
-
-export interface WordpressBlockJson {
-	style?: string | string[];
-	editorStyle?: string | string[];
-	viewStyle?: string | string[];
-	viewScript?: string | string[];
-	script?: string | string[];
-	editorScript?: string | string[];
-}
+import type { EmittedAsset, WordpressBlockJson } from '../types/index.js';
 
 function trimSlashes(filename: string): string {
 	return filename.replace(/^[/\\]+|[/\\]+$/g, '');

@@ -1,6 +1,5 @@
-import type { EmittedAsset } from './generateBundle.js';
-import type { WordpressBlockJson } from './transform.js';
 import type { PluginContext } from 'rollup';
+import type { EmittedAsset, WordpressBlockJson } from '../types/index.js';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
