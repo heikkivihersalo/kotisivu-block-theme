@@ -9,6 +9,7 @@ import {
 } from './config/chunks/chunks.js';
 import { createBundleGenerator } from './processors/bundle/bundle.js';
 import { splitEditorCSS } from './processors/css/css.js';
+import { cleanUpJavaScriptFiles } from './processors/cleanup/cleanup.js';
 import type { PluginOptions, AssetInfo, ChunkInfo } from './types/index.js';
 
 // Vite plugin types
@@ -162,6 +163,9 @@ export default function gutenbergBlocksPlugin(
 							: baseOutputDir;
 
 				await splitEditorCSS(options, bundle, outputDirForCSS);
+
+				// Fix malformed CSS comments in JavaScript files
+				await cleanUpJavaScriptFiles(options, bundle, outputDirForCSS);
 			},
 		},
 	};

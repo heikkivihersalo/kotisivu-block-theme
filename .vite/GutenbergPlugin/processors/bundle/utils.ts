@@ -155,6 +155,11 @@ export function extractWordPressDependencies(imports: string[]): string[] {
 	imports.forEach((importPath) => {
 		if (importPath.startsWith('@wordpress/')) {
 			const packageName = importPath.replace('@wordpress/', '');
+			// Skip icons package as it's not a valid WordPress script dependency
+			// Icons are typically bundled inline or loaded via other means
+			if (packageName === 'icons') {
+				return;
+			}
 			dependencies.push(`wp-${packageName}`);
 		}
 	});
