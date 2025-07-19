@@ -20,10 +20,10 @@ return [
     */
 
     'groups' => [
-        BlockGroup::create('src/widgets/block-library/custom', 'build/blocks/custom'),
         BlockGroup::create('src/widgets/block-library/parts', 'build/blocks/parts'),
-        BlockGroup::create('src/widgets/template-parts', 'build/template-parts'),
+        BlockGroup::create('src/widgets/block-library/custom', 'build/blocks/custom'),
         BlockGroup::create('src/widgets/page-templates', 'build/page-templates'),
+        BlockGroup::create('src/widgets/template-parts', 'build/template-parts'),
     ],
 
     /*

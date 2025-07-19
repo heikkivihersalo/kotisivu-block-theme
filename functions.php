@@ -14,6 +14,3 @@ require_once __DIR__ . '/bootstrap/theme.php';
 /**
  * Add your custom code here if needed or use the app folder (app/) for more organized code.
  */
-add_action('init', function () {
-    register_block_type(__DIR__ . '/build/blocks/custom/section');
-});
