@@ -2,6 +2,7 @@ import type { PluginContext } from 'rollup';
 import { readFileSync } from 'node:fs';
 import { findActualStylePath } from '../utils/file-finder.js';
 import { generateAssetFilename } from '../utils/output-config.js';
+import { FILE_EXTENSIONS } from '../../constants.js';
 import type { EmittedAsset } from '../../../types/index.js';
 import type { OutputConfig } from '../utils/output-config.js';
 
@@ -17,7 +18,7 @@ export const processStyle = (
 
 	if (!actualStylePath) {
 		console.warn(
-			`Warning: Style file not found: ${styleFile} (tried .css, .scss, .sass, .less extensions in ${config.basePath})`
+			`Warning: Style file not found: ${styleFile} (tried ${FILE_EXTENSIONS.STYLES.join(', ')} extensions in ${config.basePath})`
 		);
 		return;
 	}

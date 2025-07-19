@@ -7,6 +7,11 @@ import {
 	extractFilenameWithoutExtension,
 } from '../../utils.js';
 import { generateAssetFilename } from '../utils/output-config.js';
+import {
+	FILE_EXTENSIONS,
+	ESBUILD_CONFIG,
+	WORDPRESS_CONFIG,
+} from '../../constants.js';
 import type { EmittedAsset } from '../../../types/index.js';
 import type { OutputConfig } from '../utils/output-config.js';
 
@@ -22,7 +27,7 @@ export const processScript = async (
 
 	if (!actualScriptPath) {
 		console.warn(
-			`Warning: Script file not found: ${script} (tried .js, .jsx, .ts, .tsx extensions in ${config.basePath})`
+			`Warning: Script file not found: ${script} (tried ${FILE_EXTENSIONS.SCRIPTS.join(', ')} extensions in ${config.basePath})`
 		);
 		return;
 	}
@@ -35,20 +40,15 @@ export const processScript = async (
 	const result = await esBuild({
 		entryPoints: [actualScriptPath],
 		outfile: config.blockOutputDir + '/' + script,
-		platform: 'browser',
+		platform: ESBUILD_CONFIG.PLATFORM,
 		bundle: true,
 		write: false,
 		metafile: true,
-		loader: {
-			'.js': 'jsx',
-			'.jsx': 'jsx',
-			'.ts': 'tsx',
-			'.tsx': 'tsx',
-		},
-		target: 'es2020',
-		jsx: 'transform',
-		jsxFactory: 'wp.element.createElement',
-		jsxFragment: 'wp.element.Fragment',
+		loader: ESBUILD_CONFIG.LOADER_MAP,
+		target: ESBUILD_CONFIG.TARGET,
+		jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
+		jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
+		jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 		plugins: [
 			{
 				name: 'alias-wordpress',

@@ -1,6 +1,7 @@
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
+import { FILE_NAMES } from './constants.js';
 import type { BlockInfo } from '../types/index.js';
 
 /* *********************************************
@@ -29,7 +30,7 @@ const generatePlugins = ({
 			// Use custom output path if available, otherwise fall back to block name
 			const destPath = block.outputPath || block.name;
 			copyTargets.push({
-				src: resolve(block.path, 'block.json'),
+				src: resolve(block.path, FILE_NAMES.BLOCK_CONFIG),
 				dest: destPath,
 			});
 			// Also copy any PHP files
@@ -42,7 +43,7 @@ const generatePlugins = ({
 		// Fallback to default behavior
 		copyTargets.push(
 			{
-				src: resolve(finalBlockPath, 'block.json'),
+				src: resolve(finalBlockPath, FILE_NAMES.BLOCK_CONFIG),
 				dest: '.',
 			},
 			{

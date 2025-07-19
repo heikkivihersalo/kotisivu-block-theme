@@ -1,4 +1,5 @@
 import { resolve } from 'node:path';
+import { FILE_NAMES, ESBUILD_CONFIG } from './constants.js';
 
 /**
  * config
@@ -18,8 +19,8 @@ export const config = ({
 } = {}) => {
 	const pwd = process.env.PWD || process.cwd();
 	const entryPath = blockPath
-		? resolve(blockPath, 'index.jsx')
-		: resolve(pwd, 'src/index.jsx');
+		? resolve(blockPath, FILE_NAMES.DEFAULT_SCRIPT_ENTRY)
+		: resolve(pwd, 'src', FILE_NAMES.DEFAULT_SCRIPT_ENTRY);
 
 	// For multi-block builds, use outDir directly without appending block name
 	// The individual block paths will be handled by the sideload function
@@ -34,11 +35,11 @@ export const config = ({
 				entry: entryPath,
 				name: 'index',
 				formats: ['iife'],
-				fileName: () => 'index.js',
+				fileName: () => FILE_NAMES.DEFAULT_SCRIPT_OUTPUT,
 			},
 			outDir: outputPath,
 			rollupOptions: {},
-			target: 'es2020',
+			target: ESBUILD_CONFIG.TARGET,
 			minify: true,
 			cssCodeSplit: true, // This option stops the default `styles.css` from being bundled
 		},

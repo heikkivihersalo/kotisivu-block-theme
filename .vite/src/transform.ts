@@ -1,6 +1,7 @@
 import type { PluginContext } from 'rollup';
 import { sep } from 'node:path';
 import { preprocessCSS, type ResolvedConfig } from 'vite';
+import { REGEX_PATTERNS } from './constants.js';
 import type { EmittedAsset, WordpressBlockJson } from '../types/index.js';
 
 function trimSlashes(filename: string): string {
@@ -28,14 +29,15 @@ export async function transform(
 	config: ResolvedConfig
 ): Promise<string | boolean | void> {
 	const [filename] = id.split('?');
-	const isStylesheet = /\.(post|s)?css$/i.test(filename) === true;
+	const isStylesheet =
+		REGEX_PATTERNS.CSS_FILE_EXTENSION.test(filename) === true;
 	if (!isStylesheet) return;
 
 	const result = await preprocessCSS(code, id, config);
 
 	const outputPath = trimSlashes(
 		id.replace(`${process.cwd()}${sep}src`, '').replace(/\\/g, '/')
-	).replace(/\.(post|s)?css$/i, '.css');
+	).replace(REGEX_PATTERNS.CSS_FILE_EXTENSION, '.css');
 
 	const style = blockFile?.style ? wrapArray(blockFile.style) : [];
 	const editorStyle = blockFile?.editorStyle

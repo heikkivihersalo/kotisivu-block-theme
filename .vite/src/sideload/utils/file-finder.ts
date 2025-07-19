@@ -1,5 +1,10 @@
 import { resolve } from 'node:path';
 import { existsSync } from 'node:fs';
+import {
+	FILE_EXTENSIONS,
+	FILE_NAMES,
+	STYLE_FILE_PATTERNS,
+} from '../../constants.js';
 
 /**
  * Find the actual file path considering different extensions
@@ -16,7 +21,7 @@ export const findActualFilePath = (
 	}
 
 	// Try different extensions
-	const extensions = ['.js', '.jsx', '.ts', '.tsx'];
+	const extensions = FILE_EXTENSIONS.SCRIPTS;
 	const nameWithoutExt = fileName.replace(/\.(js|jsx|ts|tsx)$/, '');
 
 	for (const ext of extensions) {
@@ -44,7 +49,7 @@ export const findActualStylePath = (
 	}
 
 	// Try different extensions on the original filename
-	const extensions = ['.css', '.scss', '.sass', '.less'];
+	const extensions = FILE_EXTENSIONS.STYLES;
 	const nameWithoutExt = fileName.replace(/\.(css|scss|sass|less)$/, '');
 
 	for (const ext of extensions) {
@@ -58,13 +63,13 @@ export const findActualStylePath = (
 	const commonPatterns: string[] = [];
 
 	// If looking for index.css, try multiple alternatives
-	if (fileName === 'index.css') {
-		commonPatterns.push('editor', 'style', 'index');
+	if (fileName === FILE_NAMES.DEFAULT_STYLE_ENTRY) {
+		commonPatterns.push(...STYLE_FILE_PATTERNS.INDEX_CSS_ALTERNATIVES);
 	}
 
 	// If looking for style-index.css, try multiple alternatives
-	if (fileName === 'style-index.css') {
-		commonPatterns.push('style', 'style-index', 'index');
+	if (fileName === FILE_NAMES.STYLE_INDEX) {
+		commonPatterns.push(...STYLE_FILE_PATTERNS.STYLE_INDEX_ALTERNATIVES);
 	}
 
 	// Try the common patterns with all extensions

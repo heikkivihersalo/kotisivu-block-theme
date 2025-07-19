@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { FILE_NAMES } from './constants.js';
 import type { WordpressBlockJson, BlockInfo } from '../types/index.js';
 
 /**
@@ -47,7 +48,7 @@ function findBlocksRecursively(dirPath: string, rootPath: string): BlockInfo[] {
 			if (stat.isDirectory()) {
 				// Recursively search subdirectories
 				blocks.push(...findBlocksRecursively(itemPath, rootPath));
-			} else if (item === 'block.json') {
+			} else if (item === FILE_NAMES.BLOCK_CONFIG) {
 				// Found a block.json file
 				try {
 					const blockJsonContent = readFileSync(itemPath, 'utf-8');

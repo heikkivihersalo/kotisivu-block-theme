@@ -10,6 +10,7 @@ import { options } from './src/options.js';
 import { outputOptions } from './src/outputOptions.js';
 import generatePlugins from './src/plugins.js';
 import { transform } from './src/transform.js';
+import { FILE_NAMES } from './src/constants.js';
 import {
 	discoverBlocks,
 	discoverBlocksWithMapping,
@@ -30,7 +31,7 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 	// Try to read the default block.json if it exists, otherwise use empty config
 	let blockFile: WordpressBlockJson = {};
 
-	const defaultBlockPath = `${pwd}/src/block.json`;
+	const defaultBlockPath = `${pwd}/src/${FILE_NAMES.BLOCK_CONFIG}`;
 
 	if (existsSync(defaultBlockPath)) {
 		try {
