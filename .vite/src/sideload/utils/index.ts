@@ -1,4 +1,4 @@
 // Utils
-export * from './file-finder.js';
-export * from './block-assets.js';
-export * from './output-config.js';
+export * from './fileFinder.js';
+export * from './blockAssets.js';
+export * from './outputConfig.js';

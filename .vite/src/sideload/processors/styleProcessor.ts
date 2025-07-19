@@ -1,10 +1,10 @@
 import type { PluginContext } from 'rollup';
 import { readFileSync } from 'node:fs';
-import { findActualStylePath } from '../utils/file-finder.js';
-import { generateAssetFilename } from '../utils/output-config.js';
+import { findActualStylePath } from '../utils/fileFinder.js';
+import { generateAssetFilename } from '../utils/outputConfig.js';
 import { FILE_EXTENSIONS } from '../../constants.js';
 import type { EmittedAsset } from '../../../types/index.js';
-import type { OutputConfig } from '../utils/output-config.js';
+import type { OutputConfig } from '../utils/outputConfig.js';
 
 /**
  * Process a single style file

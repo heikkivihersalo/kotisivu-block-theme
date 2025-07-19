@@ -7,10 +7,10 @@ import type { WordpressBlockJson } from '../../types/index.js';
 /**
  * Internal dependencies
  */
-import { extractScripts, extractStyles } from './utils/block-assets.js';
-import { generateOutputConfig } from './utils/output-config.js';
-import { processScripts } from './processors/script-processor.js';
-import { processStyles } from './processors/style-processor.js';
+import { extractScripts, extractStyles } from './utils/blockAssets.js';
+import { generateOutputConfig } from './utils/outputConfig.js';
+import { processScripts } from './processors/scriptProcessor.js';
+import { processStyles } from './processors/styleProcessor.js';
 
 /**
  * Sideloads block assets (scripts and styles) based on the provided block.json
