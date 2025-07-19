@@ -14,13 +14,19 @@ import { options } from './src/options.js';
 import { outputOptions } from './src/outputOptions.js';
 import generatePlugins from './src/plugins.js';
 import { transform, type WordpressBlockJson } from './src/transform.js';
-import { discoverBlocks, type BlockInfo } from './src/blockDiscovery.js';
+import {
+	discoverBlocks,
+	discoverBlocksWithMapping,
+	type BlockInfo,
+} from './src/blockDiscovery.js';
 
 interface PluginConfig {
 	watch?: string[];
 	outDir?: string;
 	dependencies?: string[];
 	blockFolders?: string[];
+	// New path mapping support
+	pathMappings?: Record<string, string>;
 }
 
 let _config: ResolvedConfig;
@@ -46,15 +52,20 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 		outDir = null,
 		dependencies = [],
 		blockFolders = [],
+		pathMappings = {},
 	} = pluginConfig;
 
 	const regex = new RegExp(sep + '$');
 	const normalisedOut =
 		outDir && regex.test(outDir) === false ? outDir + sep : outDir;
 
-	// Discover blocks from specified folders
+	// Discover blocks from specified folders or path mappings
 	const discoveredBlocks =
-		blockFolders.length > 0 ? discoverBlocks(blockFolders, pwd) : [];
+		Object.keys(pathMappings).length > 0
+			? discoverBlocksWithMapping(pathMappings, pwd)
+			: blockFolders.length > 0
+				? discoverBlocks(blockFolders, pwd)
+				: [];
 
 	return [
 		{
@@ -101,7 +112,8 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 							block.blockJson,
 							outputDirectory,
 							block.path,
-							block.name
+							block.name,
+							block.outputPath // Pass custom output path if available
 						);
 					}
 				} else {

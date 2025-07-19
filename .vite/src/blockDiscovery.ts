@@ -6,6 +6,7 @@ export interface BlockInfo {
 	path: string;
 	blockJson: WordpressBlockJson;
 	name: string;
+	outputPath?: string; // Custom output path for path mappings
 }
 
 /**
@@ -82,6 +83,41 @@ function findBlocksRecursively(dirPath: string, rootPath: string): BlockInfo[] {
 			`Warning: Could not read directory ${dirPath}:`,
 			error.message
 		);
+	}
+
+	return blocks;
+}
+
+/**
+ * Discover block.json files with custom path mappings
+ */
+export function discoverBlocksWithMapping(
+	pathMappings: Record<string, string>,
+	pwd: string
+): BlockInfo[] {
+	const blocks: BlockInfo[] = [];
+
+	for (const [outputPath, sourcePath] of Object.entries(pathMappings)) {
+		const fullSourcePath = join(pwd, sourcePath);
+
+		try {
+			if (statSync(fullSourcePath).isDirectory()) {
+				// Search for block.json files recursively
+				const foundBlocks = findBlocksRecursively(fullSourcePath, pwd);
+				// Add custom output path with block name appended
+				for (const block of foundBlocks) {
+					blocks.push({
+						...block,
+						outputPath: `${outputPath}/${block.name}`,
+					});
+				}
+			}
+		} catch (error) {
+			console.warn(
+				`Warning: Could not access source path ${sourcePath}:`,
+				error.message
+			);
+		}
 	}
 
 	return blocks;

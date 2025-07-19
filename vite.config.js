@@ -15,12 +15,22 @@ export default defineConfig({
 		createViteBlock({
 			outDir: 'build',
 			dependencies: ['shadpress-editor'],
+			// Option 1: Use the original blockFolders format (backward compatible)
+			/*
 			blockFolders: [
 				'resources/widgets/block-library/custom',
 				'resources/widgets/template-parts',
 				'resources/widgets/page-templates',
 				'resources/widgets/block-library/parts',
 			],
+			*/
+			// Option 2: Use the new pathMappings format for custom output paths
+			pathMappings: {
+				'blocks/custom': 'resources/widgets/block-library/custom',
+				'blocks/parts': 'resources/widgets/block-library/parts',
+				'template-parts': 'resources/widgets/template-parts',
+				'page-templates': 'resources/widgets/page-templates',
+			},
 			watch: [
 				'./src/template.php',
 				'./src/render.php',

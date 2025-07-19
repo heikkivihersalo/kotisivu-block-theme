@@ -24,9 +24,12 @@ export const config = ({
 	const entryPath = blockPath
 		? resolve(blockPath, 'index.jsx')
 		: resolve(pwd, 'src/index.jsx');
+
+	// For multi-block builds, use outDir directly without appending block name
+	// The individual block paths will be handled by the sideload function
 	const outputPath = outDir
-		? resolve(outDir, finalBlockName)
-		: resolve(pwd, '../../../build', finalBlockName);
+		? resolve(outDir)
+		: resolve(pwd, '../../../build');
 
 	return {
 		define: { 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"` },

@@ -89,15 +89,19 @@ export async function sideload(
 	blockJson: WordpressBlockJson,
 	outputDirectory: string,
 	blockPath?: string,
-	blockName?: string
+	blockName?: string,
+	customOutputPath?: string
 ) {
 	// Default to PWD/src if no blockPath is provided (for backward compatibility)
 	const basePath = blockPath || `${process.env.PWD}/src`;
 
-	// Create block-specific output directory
-	const blockOutputDir = blockName
-		? resolve(outputDirectory, '..', blockName)
-		: outputDirectory;
+	// Use custom output path if provided, otherwise use block name or default
+	const outputPath = customOutputPath || blockName;
+	const blockOutputDir = customOutputPath
+		? resolve(process.env.PWD || process.cwd(), 'build', customOutputPath)
+		: outputPath
+			? resolve(outputDirectory, '..', outputPath)
+			: outputDirectory;
 
 	// Load all script and style assets from block.json
 	const viewScript = blockJson?.viewScript ?? [];
@@ -222,11 +226,11 @@ export async function sideload(
 			const filename = extractFilenameWithoutExtension(script);
 
 			// Create block-specific file paths
-			const assetFileName = blockName
-				? `${blockName}/${filename}.asset.php`
+			const assetFileName = outputPath
+				? `${outputPath}/${filename}.asset.php`
 				: `${filename}.asset.php`;
-			const scriptFileName = blockName
-				? `${blockName}/${script}`
+			const scriptFileName = outputPath
+				? `${outputPath}/${script}`
 				: script;
 
 			this.emitFile({
@@ -261,8 +265,8 @@ export async function sideload(
 			const cssContent = readFileSync(actualStylePath, 'utf-8');
 
 			// Create block-specific file path
-			const styleFileName = blockName
-				? `${blockName}/${styleFile}`
+			const styleFileName = outputPath
+				? `${outputPath}/${styleFile}`
 				: styleFile;
 
 			this.emitFile({

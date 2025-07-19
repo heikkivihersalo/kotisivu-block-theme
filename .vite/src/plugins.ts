@@ -28,14 +28,16 @@ const generatePlugins = ({
 	if (discoveredBlocks.length > 0) {
 		// Copy block.json files for each discovered block
 		discoveredBlocks.forEach((block) => {
+			// Use custom output path if available, otherwise fall back to block name
+			const destPath = block.outputPath || block.name;
 			copyTargets.push({
 				src: resolve(block.path, 'block.json'),
-				dest: block.name,
+				dest: destPath,
 			});
 			// Also copy any PHP files
 			copyTargets.push({
 				src: resolve(block.path, '*.php'),
-				dest: block.name,
+				dest: destPath,
 			});
 		});
 	} else {
