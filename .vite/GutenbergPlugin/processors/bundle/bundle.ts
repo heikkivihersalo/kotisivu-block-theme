@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { readFileSync, existsSync } from 'fs';
 import { dirname } from 'path';
 import { glob } from 'glob';
 

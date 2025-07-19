@@ -15,31 +15,62 @@ export function extractChunkName(path: string, fallback: string): string {
 }
 
 /**
- * Get chunk name for shared resources based on path
+ * Get chunk name for shared resources based on path and configuration
  * @param id - Module ID
  * @param useContextSpecificChunks - Whether to use context-specific chunks
+ * @param chunksConfig - Chunk configuration to determine what goes where
  * @returns Chunk name or undefined
  */
 export function getSharedResourceChunk(
 	id: string,
-	useContextSpecificChunks: boolean
+	useContextSpecificChunks: boolean,
+	chunksConfig?: { frontend: string[]; editor: string[]; common: string[] }
 ): string | undefined {
-	const resourceMap = {
-		'/components/': useContextSpecificChunks
-			? 'assets/editor/components'
-			: 'assets/common/components',
-		'/utils/': useContextSpecificChunks
-			? 'assets/frontend/utils'
-			: 'assets/common/utils',
-		'/hooks/': 'assets/common/hooks',
-		'/constants/': 'assets/common/constants',
-	};
+	// If no explicit chunking is enabled, everything goes to common
+	if (!useContextSpecificChunks || !chunksConfig) {
+		const resourceMap = {
+			'/components/': 'assets/common/components',
+			'/utils/': 'assets/common/utils',
+			'/hooks/': 'assets/common/hooks',
+			'/constants/': 'assets/common/constants',
+		};
 
-	for (const [path, chunkName] of Object.entries(resourceMap)) {
-		if (id.includes(path)) {
-			return chunkName;
+		for (const [path, chunkName] of Object.entries(resourceMap)) {
+			if (id.includes(path)) {
+				return chunkName;
+			}
 		}
+		return undefined;
 	}
+
+	// When explicit chunking is enabled, determine placement based on what's configured
+	// Check if the resource type matches any configured paths
+	if (id.includes('/components/')) {
+		// Check if any editor paths are configured (components usually go to editor)
+		if (chunksConfig.editor.length > 0) {
+			return 'assets/editor/components';
+		}
+		// Fall back to common if no editor chunks configured
+		return 'assets/common/components';
+	}
+
+	if (id.includes('/utils/')) {
+		// Check if any frontend paths are configured (utils usually go to frontend)
+		if (chunksConfig.frontend.length > 0) {
+			return 'assets/frontend/utils';
+		}
+		// Fall back to common if no frontend chunks configured
+		return 'assets/common/utils';
+	}
+
+	if (id.includes('/hooks/')) {
+		return 'assets/common/hooks';
+	}
+
+	if (id.includes('/constants/')) {
+		return 'assets/common/constants';
+	}
+
 	return undefined;
 }
 

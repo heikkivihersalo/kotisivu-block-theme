@@ -17,7 +17,7 @@ import type {
  * Create manual chunks configuration for Rollup
  * This function implements organized chunking logic:
  * - When no chunking is configured: all shared deps go to assets/common
- * - When chunking is configured: specific paths go to assets/frontend, assets/editor, or assets/common
+ * - When chunking is configured: only paths that match configured arrays get chunked to their respective assets folder
  * - Unconfigured dependencies go to assets/common as fallback
  *
  * @param chunksConfig - Chunk configuration object with frontend, editor, and common arrays
@@ -64,7 +64,11 @@ export function createManualChunks(
 				id.includes('/constants/')
 			) {
 				// Use helper function for shared resource chunking
-				return getSharedResourceChunk(id, isExplicitChunkingEnabled);
+				return getSharedResourceChunk(id, isExplicitChunkingEnabled, {
+					frontend: frontendPaths,
+					editor: editorPaths,
+					common: commonPaths,
+				});
 			}
 		}
 
