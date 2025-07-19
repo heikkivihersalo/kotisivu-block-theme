@@ -1,5 +1,6 @@
 import type { EmittedAsset } from './generateBundle.js';
 import type { WordpressBlockJson } from './transform.js';
+import type { PluginContext } from 'rollup';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
@@ -86,6 +87,7 @@ const findActualStylePath = (basePath: string, fileName: string) => {
 };
 
 export async function sideload(
+	this: PluginContext,
 	blockJson: WordpressBlockJson,
 	outputDirectory: string,
 	blockPath?: string,

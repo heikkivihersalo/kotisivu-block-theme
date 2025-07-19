@@ -1,10 +1,9 @@
-import { generateFileHash, generatePhpAssetFile } from "./utils.js";
-import type { SourceMap } from "node:module";
-import type { OutputOptions, PluginContext } from "rollup";
-import type { ResolvedConfig } from "vite";
+import { generateFileHash, generatePhpAssetFile } from './utils.js';
+import type { SourceMap } from 'node:module';
+import type { OutputOptions, PluginContext } from 'rollup';
 
 export type EmittedAsset = {
-	type: "asset";
+	type: 'asset';
 	name?: string;
 	needsCodeReference?: boolean;
 	fileName?: string;
@@ -16,7 +15,7 @@ export type AssetInfo = {
 	name?: string;
 	needsCodeReference: boolean;
 	source: string | Uint8Array;
-	type: "asset";
+	type: 'asset';
 	code: string;
 	imports: string[];
 };
@@ -46,7 +45,7 @@ export type ChunkInfo = {
 	moduleIds: string[];
 	name: string;
 	referencedFiles: string[];
-	type: "chunk";
+	type: 'chunk';
 };
 
 /**
@@ -62,18 +61,18 @@ export type ChunkInfo = {
  */
 export function generateBundle(
 	this: PluginContext,
-	options: OutputOptions,
+	_options: OutputOptions,
 	bundle: { [fileName: string]: ChunkInfo | AssetInfo },
 	dependencies: string[]
 ) {
-	let hash: string = "";
+	let hash: string = '';
 
 	const imports = Object.values(bundle).reduce((acc, file) => {
 		if (!file.code) return acc;
 
 		hash = generateFileHash(file.code);
 		file.imports.forEach((i) => {
-			i = i.replace(/^@wordpress\//, "wp-");
+			i = i.replace(/^@wordpress\//, 'wp-');
 			acc.add(i);
 		}, acc);
 		return acc;
@@ -84,8 +83,8 @@ export function generateBundle(
 	}
 
 	this.emitFile({
-		type: "asset",
-		fileName: "index.asset.php",
+		type: 'asset',
+		fileName: 'index.asset.php',
 		source: generatePhpAssetFile(imports, hash),
 	} satisfies EmittedAsset);
 }

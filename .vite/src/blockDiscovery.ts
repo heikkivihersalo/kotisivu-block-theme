@@ -30,7 +30,7 @@ export function discoverBlocks(
 		} catch (error) {
 			console.warn(
 				`Warning: Could not access folder ${folderPattern}:`,
-				error.message
+				error instanceof Error ? error.message : String(error)
 			);
 		}
 	}
@@ -60,9 +60,6 @@ function findBlocksRecursively(dirPath: string, rootPath: string): BlockInfo[] {
 					const blockJsonContent = readFileSync(itemPath, 'utf-8');
 					const blockJson: WordpressBlockJson =
 						JSON.parse(blockJsonContent);
-					const relativePath = itemPath
-						.replace(rootPath, '')
-						.replace(/^\/+/, '');
 					const blockName = dirPath.split('/').pop() || 'unknown';
 
 					blocks.push({
@@ -73,7 +70,9 @@ function findBlocksRecursively(dirPath: string, rootPath: string): BlockInfo[] {
 				} catch (parseError) {
 					console.warn(
 						`Warning: Could not parse block.json at ${itemPath}:`,
-						parseError.message
+						parseError instanceof Error
+							? parseError.message
+							: String(parseError)
 					);
 				}
 			}
@@ -81,7 +80,7 @@ function findBlocksRecursively(dirPath: string, rootPath: string): BlockInfo[] {
 	} catch (error) {
 		console.warn(
 			`Warning: Could not read directory ${dirPath}:`,
-			error.message
+			error instanceof Error ? error.message : String(error)
 		);
 	}
 
@@ -115,7 +114,7 @@ export function discoverBlocksWithMapping(
 		} catch (error) {
 			console.warn(
 				`Warning: Could not access source path ${sourcePath}:`,
-				error.message
+				error instanceof Error ? error.message : String(error)
 			);
 		}
 	}

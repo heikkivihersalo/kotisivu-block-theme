@@ -1,4 +1,4 @@
-import type { PluginContext, InputOptions, OutputOptions } from 'rollup';
+import type { PluginContext, OutputOptions } from 'rollup';
 import type { ResolvedConfig } from 'vite';
 
 import { sep } from 'node:path';
@@ -17,7 +17,6 @@ import { transform, type WordpressBlockJson } from './src/transform.js';
 import {
 	discoverBlocks,
 	discoverBlocksWithMapping,
-	type BlockInfo,
 } from './src/blockDiscovery.js';
 
 interface PluginConfig {
@@ -33,7 +32,6 @@ let _config: ResolvedConfig;
 
 export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 	const pwd = process.env.PWD || process.cwd();
-	let rootDirectory: string;
 	let outputDirectory: string;
 
 	// Try to read the default block.json if it exists, otherwise use empty config
@@ -77,27 +75,7 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 			},
 			options,
 			outputOptions,
-			buildStart: async function (
-				this: PluginContext,
-				options: InputOptions
-			) {
-				// Handle input options safely
-				const inputArray = Array.isArray(options.input)
-					? options.input
-					: typeof options.input === 'string'
-						? [options.input]
-						: Object.values(options.input || {});
-
-				if (
-					inputArray.length > 0 &&
-					typeof inputArray[0] === 'string'
-				) {
-					rootDirectory = inputArray[0].substring(
-						0,
-						inputArray[0].lastIndexOf('/')
-					);
-				}
-
+			buildStart: async function (this: PluginContext) {
 				watch.forEach((file) => this.addWatchFile(file));
 
 				// Process discovered blocks
@@ -122,15 +100,20 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 				}
 			},
 
-			transform: function (code: string, id: string) {
+			transform: function (
+				this: PluginContext,
+				code: string,
+				id: string
+			) {
 				// Use the first discovered block or fallback to default
 				const targetBlock =
 					discoveredBlocks.length > 0
 						? discoveredBlocks[0].blockJson
 						: blockFile;
-				transform.call(this, code, id, targetBlock, _config);
+				return transform.call(this, code, id, targetBlock, _config);
 			},
 			generateBundle: function (
+				this: PluginContext,
 				options: OutputOptions,
 				bundle: { [fileName: string]: ChunkInfo | AssetInfo }
 			) {

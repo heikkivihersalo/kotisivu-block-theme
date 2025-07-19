@@ -1,18 +1,15 @@
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import react from '@vitejs/plugin-react';
-import { resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 
 /* *********************************************
  * External plugins required for the build process
  * ******************************************* */
 
 const pwd = process.env.PWD || process.cwd();
-const block = pwd.split(sep).pop() || 'unknown';
 
 const generatePlugins = ({
-	outDir = null,
 	blockPath = null,
-	blockName = null,
 	discoveredBlocks = [],
 }: {
 	outDir?: string | null;

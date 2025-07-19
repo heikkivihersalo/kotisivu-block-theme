@@ -1,4 +1,4 @@
-import { resolve, sep } from 'node:path';
+import { resolve } from 'node:path';
 
 /**
  * config
@@ -9,9 +9,7 @@ import { resolve, sep } from 'node:path';
  */
 export const config = ({
 	outDir = null,
-	blockFile = null,
 	blockPath = null,
-	blockName = null,
 }: {
 	outDir?: string | null;
 	blockFile?: any;
@@ -19,8 +17,6 @@ export const config = ({
 	blockName?: string | null;
 } = {}) => {
 	const pwd = process.env.PWD || process.cwd();
-	const defaultBlockName = pwd.split(sep).pop() || 'unknown';
-	const finalBlockName = blockName || defaultBlockName;
 	const entryPath = blockPath
 		? resolve(blockPath, 'index.jsx')
 		: resolve(pwd, 'src/index.jsx');
