@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 3,
 	"name": "ksd/part-social-icons",
-	"title": "Part | Social Icons",
+	"title": "Social Icons",
 	"category": "theme",
 	"icon": "block-default",
 	"description": "Add global social icons to your site.",
@@ -11,6 +11,7 @@
 	"supports": {
 		"className": false
 	},
+	"parent": ["part-header"],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",

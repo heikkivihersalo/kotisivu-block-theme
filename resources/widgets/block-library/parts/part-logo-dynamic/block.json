@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 3,
 	"name": "ksd/part-logo-dynamic",
-	"title": "Part | Dynamic Company Logo",
+	"title": "Dynamic Company Logo",
 	"category": "theme",
 	"icon": "block-default",
 	"description": "Display site logo on your site. Toggles color between light and dark based on background color.",
@@ -11,7 +11,7 @@
 	"supports": {
 		"className": false
 	},
-	"parent": ["part-header"],
+	"parent": ["part-header", "part-footer"],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
