@@ -20,10 +20,7 @@ return [
     */
 
     'groups' => [
-        BlockGroup::create('src/widgets/block-library/parts', 'build/widgets/block-library/parts'),
-        BlockGroup::create('src/widgets/block-library/custom', 'build/widgets/block-library/custom'),
-        BlockGroup::create('src/widgets/page-templates', 'build/widgets/page-templates'),
-        BlockGroup::create('src/widgets/template-parts', 'build/widgets/template-parts'),
+        BlockGroup::create('src/widgets/block-library/custom', 'build/kotisivu-block-theme'),
     ],
 
     /*

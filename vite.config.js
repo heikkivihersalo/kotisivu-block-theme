@@ -15,6 +15,17 @@ export default defineConfig({
 		createViteBlock({
 			outDir: 'build',
 			dependencies: ['shadpress-editor'],
+			blockFolders: [
+				'resources/widgets/block-library/custom',
+				'resources/widgets/template-parts',
+				'resources/widgets/page-templates',
+				'resources/widgets/block-library/parts',
+			],
+			watch: [
+				'./src/template.php',
+				'./src/render.php',
+				'./resources/widgets/**/*.php',
+			],
 		}),
 	],
 	resolve: {
