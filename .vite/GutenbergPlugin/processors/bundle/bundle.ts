@@ -15,6 +15,9 @@ import {
 	generatePhpArray,
 	copyBlockJsonFile,
 	copyRenderFile,
+	generateAssetPhp,
+	extractWordPressDependencies,
+	generateVersionHash,
 } from './utils.js';
 
 import type {
@@ -57,7 +60,7 @@ export function createBundleGenerator(inputDirs: Record<string, string>) {
 
 			const chunkInfo = chunk as ChunkInfo;
 
-			// Track chunks (shared dependencies)
+			// Track chunks (shared dependencies) and generate asset.php files for them
 			if (key.includes('assets/')) {
 				const assetPath = key.replace(/\.js$/, '');
 				const [, folder, name] = assetPath.split('/');
@@ -99,6 +102,59 @@ export function createBundleGenerator(inputDirs: Record<string, string>) {
 						(imp) => !imp.includes('.css')
 					),
 					modules: cleanModules,
+				});
+
+				// Generate asset.php file for this chunk
+				const dependencies = extractWordPressDependencies(
+					chunkInfo.imports || []
+				);
+				const versionSource =
+					chunkInfo.fileName +
+					(chunkInfo.modules
+						? JSON.stringify(Object.keys(chunkInfo.modules))
+						: '');
+				const version = generateVersionHash(versionSource);
+				const assetContent = generateAssetPhp({
+					dependencies,
+					version,
+				});
+
+				// Emit the asset.php file
+				this.emitFile({
+					type: 'asset',
+					fileName: `${assetPath}.asset.php`,
+					source: assetContent,
+				});
+			}
+
+			// Generate asset.php files for individual block scripts too (skip CSS-only entries)
+			if (
+				!key.includes('assets/') &&
+				key.endsWith('.js') &&
+				!key.includes('editor-styles') &&
+				!key.includes('style-index')
+			) {
+				// This is a block script (index.js or view.js)
+				const blockPath = key.replace(/\.js$/, '');
+				const dependencies = extractWordPressDependencies(
+					chunkInfo.imports || []
+				);
+				const versionSource =
+					chunkInfo.fileName +
+					(chunkInfo.modules
+						? JSON.stringify(Object.keys(chunkInfo.modules))
+						: '');
+				const version = generateVersionHash(versionSource);
+				const assetContent = generateAssetPhp({
+					dependencies,
+					version,
+				});
+
+				// Emit the asset.php file for the block script
+				this.emitFile({
+					type: 'asset',
+					fileName: `${blockPath}.asset.php`,
+					source: assetContent,
 				});
 			}
 		});

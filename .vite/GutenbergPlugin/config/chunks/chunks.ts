@@ -97,6 +97,7 @@ export function createManualChunks(
 /**
  * Generate chunk file names for the build output
  * Organizes chunks in assets subdirectories based on their type
+ * Uses clean names without hashes since versioning is handled by asset.php files
  *
  * @param chunksConfig - Chunk configuration object
  * @returns Chunk file naming function
@@ -107,6 +108,7 @@ export function createChunkFileNames(
 	return (chunkInfo: ChunkFileNamingInfo): string => {
 		// The chunk name already includes the assets subfolder from createManualChunks
 		// e.g., "assets/frontend/utils", "assets/editor/components", "assets/common/shared"
-		return `${chunkInfo.name}-[hash].js`;
+		// Use clean names without hashes - versioning is handled by asset.php files
+		return `${chunkInfo.name}.js`;
 	};
 }

@@ -96,7 +96,7 @@ export default function gutenbergBlocksPlugin(
 			// Update Vite config with direct output configuration
 			const rollupOutput = {
 				dir: finalOutputDir,
-				entryFileNames: '[name].js',
+				entryFileNames: '[name].js', // Remove hash - versioning handled by asset.php
 				assetFileNames: (assetInfo: AssetInfo): string => {
 					// Frontend styles (style-index.css) stay in their block directories
 					if (

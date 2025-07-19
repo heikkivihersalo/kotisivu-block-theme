@@ -117,3 +117,71 @@ export function copyBlockJsonFile({
 		});
 	}
 }
+
+/**
+ * Generate WordPress asset.php file for a JavaScript chunk
+ * @param chunkInfo - Information about the chunk
+ * @param version - Version hash for the file
+ * @returns PHP asset file content
+ */
+export function generateAssetPhp(chunkInfo: {
+	dependencies: string[];
+	version: string;
+}): string {
+	const phpCode = `<?php return array('dependencies' => ${convertPhpArray(chunkInfo.dependencies)}, 'version' => '${chunkInfo.version}');
+`;
+	return phpCode;
+}
+
+/**
+ * Convert JavaScript array to PHP array format (simplified for asset files)
+ * @param array - Array to convert
+ * @returns PHP array as string
+ */
+function convertPhpArray(array: string[]): string {
+	if (array.length === 0) return 'array()';
+	const items = array.map((item) => `'${item.replace(/'/g, "\\'")}'`);
+	return `array(${items.join(', ')})`;
+}
+
+/**
+ * Extract WordPress dependencies from chunk imports
+ * @param imports - Array of import paths
+ * @returns Array of WordPress dependency handles
+ */
+export function extractWordPressDependencies(imports: string[]): string[] {
+	const dependencies: string[] = [];
+
+	imports.forEach((importPath) => {
+		if (importPath.startsWith('@wordpress/')) {
+			const packageName = importPath.replace('@wordpress/', '');
+			dependencies.push(`wp-${packageName}`);
+		}
+	});
+
+	// Add common WordPress dependencies that are often needed
+	const commonDeps = ['wp-element'];
+	commonDeps.forEach((dep) => {
+		if (!dependencies.includes(dep)) {
+			dependencies.push(dep);
+		}
+	});
+
+	return dependencies.sort();
+}
+
+/**
+ * Generate a version hash from file content or use provided hash
+ * @param content - File content or existing hash
+ * @returns Version hash string
+ */
+export function generateVersionHash(content: string): string {
+	// Simple hash generation - in production you might want to use crypto
+	let hash = 0;
+	for (let i = 0; i < content.length; i++) {
+		const char = content.charCodeAt(i);
+		hash = (hash << 5) - hash + char;
+		hash = hash & hash; // Convert to 32-bit integer
+	}
+	return Math.abs(hash).toString(16);
+}
