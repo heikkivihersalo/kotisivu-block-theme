@@ -5,7 +5,12 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'node',
-		include: ['.vite/**/*.test.js', '.vite/**/*.test.ts'],
+		include: [
+			'.vite/**/*.test.js',
+			'.vite/**/*.test.ts',
+			'tests/**/*.test.js',
+			'tests/**/*.test.ts',
+		],
 	},
 	resolve: {
 		alias: {
