@@ -3,7 +3,7 @@ import type { ResolvedConfig } from 'vite';
 
 import { sep } from 'node:path';
 import { readFileSync, existsSync } from 'node:fs';
-import { sideload } from './src/buildStart.js';
+import { sideload } from './src/sideload';
 import { config } from './src/config.js';
 import { generateBundle } from './src/generateBundle.js';
 import { options } from './src/options.js';
@@ -29,7 +29,9 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 
 	// Try to read the default block.json if it exists, otherwise use empty config
 	let blockFile: WordpressBlockJson = {};
+
 	const defaultBlockPath = `${pwd}/src/block.json`;
+
 	if (existsSync(defaultBlockPath)) {
 		try {
 			blockFile = JSON.parse(readFileSync(defaultBlockPath, 'utf-8'));
