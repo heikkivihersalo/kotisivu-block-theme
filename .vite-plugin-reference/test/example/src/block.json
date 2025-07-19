@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "example/example-block",
+	"version": "0.1.0",
+	"title": "Example Block",
+	"category": "example",
+	"description": "",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "example",
+	"editorScript": "file:./index.js",
+	"viewScript": ["file:./frontend/view-script.js"],
+	"script": ["file:./script.js"],
+	"editorStyle": "file:./editor-style.css"
+}

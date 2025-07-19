@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite';
-import { wordpressPlugin } from '@roots/vite-plugin';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import { gutenbergBlocksPlugin } from './.vite/index.ts';
+import { createViteBlock } from './.vite/index.ts';
 
 export default defineConfig({
 	base: '/build/',
@@ -13,45 +12,9 @@ export default defineConfig({
 		laravel({
 			input: ['resources/app/scripts/theme.ts'],
 		}),
-		wordpressPlugin({
-			hmr: {
-				// Enable/disable HMR (default: true)
-				enabled: false,
-
-				// Pattern to match editor entry points (default: /editor/)
-				editorPattern: /editor/,
-
-				// Name of the editor iframe element (default: 'editor-canvas')
-				iframeName: 'editor-canvas',
-			},
-		}),
-		gutenbergBlocksPlugin({
-			input: {
-				'block-library': 'resources/widgets/block-library/custom',
-				'page-templates': 'resources/widgets/page-templates',
-				'template-parts': 'resources/widgets/template-parts',
-			},
-			output: 'build/blocks',
-			chunks: {
-				// Explicit chunking configuration:
-				// - Empty arrays (default): Dependencies bundled with entries, shared files in assets/common
-				// - Specified paths: Only those paths are split into chunks in their designated folders
-				frontend: [
-					// Example: Split frontend-only utilities into chunks
-					// 'resources/shared/utils',
-				],
-				editor: [
-					// Bundle WordPress icons as shared editor asset
-					'@wordpress/icons',
-					// Example: Split editor-only utilities into chunks
-					// 'resources/shared/components',
-				],
-				common: [
-					// Example: Split common utilities into chunks
-					// 'resources/shared/constants',
-					// 'node_modules/some-package',
-				],
-			},
+		createViteBlock({
+			outDir: 'build',
+			dependencies: ['shadpress-editor'],
 		}),
 	],
 	resolve: {

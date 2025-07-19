@@ -1,0 +1,68 @@
+{
+	"name": "vite-plugin-gutenberg-blocks",
+	"version": "2.5.0",
+	"description": "Vite-powered Gutenberg block development for Wordpress",
+	"main": "dist/index.js",
+	"module": "dist/index.js",
+	"type": "module",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc --watch",
+		"prepublishOnly": "npm run build"
+	},
+	"bin": {
+		"init": "./bin/initEnvironment.js",
+		"create": "./bin/createBlock.js",
+		"publish": "./bin/publish.js"
+	},
+	"files": [
+		"/dist",
+		"/scripts",
+		"/bin",
+		"/stubs"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/evo-mark/vite-plugin-gutenberg-blocks.git"
+	},
+	"keywords": [
+		"vite",
+		"wordpress",
+		"gutenberg",
+		"blocks",
+		"react"
+	],
+	"author": "evomark",
+	"license": "MIT",
+	"homepage": "https://evomark.co.uk",
+	"engines": {
+		"node": "^18.0.0 || ^20.0.0 || ^22.0.0 || ^23.0.0 || ^24.0.0"
+	},
+	"devDependencies": {
+		"@types/grecaptcha": "^3.0.9",
+		"@types/node": "^22.16.4",
+		"@vitejs/plugin-react": "^4.6.0",
+		"sass": "^1.63.6"
+	},
+	"optionalDependencies": {
+		"sass": "^1.89.2"
+	},
+	"peerDependencies": {
+		"typescript": ">=4.9.4",
+		"vite": "^4.1.1 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+	},
+	"dependencies": {
+		"chalk": "^5.4.1",
+		"esbuild": "^0.25.6",
+		"rollup": "^4.45.1",
+		"vite-plugin-static-copy": "^3.0.0"
+	},
+	"packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@parcel/watcher",
+			"esbuild"
+		]
+	}
+}
