@@ -185,6 +185,19 @@ export async function sideload(
 							{ filter: /.*/, namespace: 'wordpress-alias' },
 							(args) => {
 								const moduleName = args.path.split('/')[1];
+
+								// Skip @wordpress/icons as it's not a WordPress core dependency
+								// Icons should be bundled with the block or handled separately
+								if (moduleName === 'icons') {
+									return {
+										contents: `
+											console.warn('@wordpress/icons should be bundled with your block or replaced with individual icon imports');
+											exports.default = {};
+										`,
+										loader: 'js',
+									};
+								}
+
 								// Convert kebab-case to camelCase for WordPress globals
 								const globalName = moduleName.replace(
 									/-./g,
