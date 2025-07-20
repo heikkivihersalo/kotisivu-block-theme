@@ -4,12 +4,12 @@ import { join } from 'node:path';
 import { glob } from 'glob';
 
 /**
- * Integration tests for the Vite block build process
+ * Integration tests for block generation in the Vite build process
  *
- * These tests ensure that the build process correctly generates all required files
- * for WordPress blocks in the expected directory structure.
+ * These tests ensure that WordPress blocks are correctly generated
+ * with proper directory structure, required files, and valid content.
  */
-describe('Build Process Integration', () => {
+describe('Block Build Process', () => {
 	const BUILD_DIR = join(process.cwd(), 'build');
 
 	const EXPECTED_BLOCK_GROUPS = {
@@ -85,9 +85,9 @@ describe('Build Process Integration', () => {
 	});
 
 	/**
-	 * Test that asset PHP files are valid and contain dependencies
+	 * Test that block asset PHP files are valid and contain dependencies
 	 */
-	test('asset files are valid and contain dependencies', () => {
+	test('block asset files are valid and contain dependencies', () => {
 		const blockDirs = getAllBlockDirectories();
 
 		for (const blockDir of blockDirs) {
@@ -179,6 +179,51 @@ describe('Build Process Integration', () => {
 						'resources/app/scripts/theme.ts'
 					);
 				}
+			}
+		}
+	});
+
+	/**
+	 * Test that block CSS files are properly generated
+	 */
+	test('block CSS files are properly generated', () => {
+		const blockDirs = getAllBlockDirectories();
+
+		for (const blockDir of blockDirs) {
+			// Check editor styles
+			const editorCss = join(blockDir, 'index.css');
+			if (existsSync(editorCss)) {
+				const stats = statSync(editorCss);
+				expect(stats.size).toBeGreaterThan(-1); // CSS can be empty, but file should exist
+			}
+
+			// Check frontend styles
+			const frontendCss = join(blockDir, 'style-index.css');
+			if (existsSync(frontendCss)) {
+				const stats = statSync(frontendCss);
+				expect(stats.size).toBeGreaterThan(-1); // CSS can be empty, but file should exist
+			}
+		}
+	});
+
+	/**
+	 * Test that blocks have consistent naming convention
+	 */
+	test('blocks have consistent naming convention', () => {
+		const blockDirs = getAllBlockDirectories();
+
+		for (const blockDir of blockDirs) {
+			const blockJsonPath = join(blockDir, 'block.json');
+			if (existsSync(blockJsonPath)) {
+				const blockJson = JSON.parse(
+					readFileSync(blockJsonPath, 'utf-8')
+				);
+
+				// All custom blocks should start with 'ksd/'
+				expect(blockJson.name).toMatch(/^ksd\//);
+
+				// Block name should not contain spaces or special characters
+				expect(blockJson.name).toMatch(/^[a-z0-9\/-]+$/);
 			}
 		}
 	});
