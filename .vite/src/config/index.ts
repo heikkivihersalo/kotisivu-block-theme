@@ -29,7 +29,7 @@ export const config = ({
 			outDir: outputPath,
 			rollupOptions: {
 				// Use a dummy entry file since we handle building manually
-				input: resolve(pwd, '.vite-entry.js'),
+				input: resolve(__dirname, '.vite-entry.js'),
 				output: {
 					// Don't output the dummy entry file to assets directory
 					entryFileNames: () => '.vite-entry-[hash].js',
