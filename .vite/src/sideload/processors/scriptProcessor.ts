@@ -1,17 +1,27 @@
-import type { PluginContext } from 'rollup';
+/**
+ * External dependencies
+ */
 import { build as esBuild } from 'esbuild';
+import type { PluginContext } from 'rollup';
+
+/**
+ * Internal dependencies
+ */
 import { findActualFilePath } from '../utils/fileFinder.ts';
+
 import {
 	generateFileHash,
 	generatePhpAssetFile,
 	extractFilenameWithoutExtension,
 } from '../../utils.ts';
+
 import { generateAssetFilename } from '../utils/outputConfig.ts';
 import {
 	FILE_EXTENSIONS,
 	ESBUILD_CONFIG,
 	WORDPRESS_CONFIG,
 } from '../../../constants.ts';
+
 import type { EmittedAsset } from '../../../types/index.ts';
 import type { OutputConfig } from '../utils/outputConfig.ts';
 

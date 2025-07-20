@@ -71,3 +71,21 @@ export const REGEX_PATTERNS = {
 	SCRIPT_FILE_EXTENSION: /\.(js|jsx|ts|tsx)$/,
 	STYLE_FILE_EXTENSION: /\.(css|scss|sass|less)$/,
 } as const;
+
+export const NS = '@wordpress/';
+const NS_EXCLUDE = ['icons', 'interface'];
+export const WORDPRESS_MATCH = new RegExp(
+	`^${NS}(?!(${NS_EXCLUDE.join('|')})).*$`
+); // /^@wordpress\/(?!(icons|interface)).*$/
+
+/**
+ * External dependencies
+ */
+export const EXTERNALS: Record<string, string> = {
+	jquery: 'window.jQuery',
+	'lodash-es': 'window.lodash',
+	lodash: 'window.lodash',
+	moment: 'window.moment',
+	'react-dom': 'window.ReactDOM',
+	react: 'window.React',
+};

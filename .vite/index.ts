@@ -12,8 +12,7 @@ import type { ResolvedConfig } from 'vite';
 import { sideload } from './src/sideload';
 import { config } from './src/config.js';
 import { generateBundle } from './src/generateBundle.js';
-import { options } from './src/options.js';
-import { outputOptions } from './src/outputOptions.js';
+import { options, outputOptions } from './src/options/index.js';
 import generatePlugins from './src/plugins.js';
 import { transform } from './src/transform.js';
 import { FILE_NAMES } from './constants.ts';
@@ -90,7 +89,6 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 				// Process discovered blocks
 				if (discoveredBlocks.length > 0) {
 					for (const block of discoveredBlocks) {
-						console.log(`- ${block.name} at ${block.path}`);
 						await sideload.call(
 							this,
 							block.blockJson,
