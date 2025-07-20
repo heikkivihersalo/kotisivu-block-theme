@@ -38,11 +38,11 @@ export const processStyle = (
 		);
 
 		// Use LightningCSS to process and minify the CSS
-		const { code } = transform({
+		const { code, map } = transform({
 			filename: styleFileName,
 			code: Buffer.from(cssContent),
 			minify: true,
-			sourceMap: false,
+			sourceMap: true,
 		});
 
 		pluginContext.emitFile({
@@ -50,6 +50,15 @@ export const processStyle = (
 			fileName: styleFileName,
 			source: code,
 		} satisfies EmittedAsset);
+
+		// Emit the source map if available
+		if (map) {
+			pluginContext.emitFile({
+				type: 'asset',
+				fileName: `${styleFileName}.map`,
+				source: map.toString(),
+			} satisfies EmittedAsset);
+		}
 	} catch (error) {
 		console.warn(
 			`Warning: Could not process style file ${actualStylePath}:`,

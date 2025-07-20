@@ -119,11 +119,11 @@ export async function processAssets(
 				const styleFileName = `${asset.outputPath}.css`;
 
 				// Use LightningCSS to process and minify the CSS
-				const { code } = transform({
+				const { code, map } = transform({
 					filename: styleFileName,
 					code: Buffer.from(cssContent),
 					minify: true,
-					sourceMap: false,
+					sourceMap: true,
 				});
 
 				context.emitFile({
@@ -131,6 +131,15 @@ export async function processAssets(
 					fileName: styleFileName,
 					source: code,
 				});
+
+				// Optionally, you can also emit the source map if needed
+				if (map) {
+					context.emitFile({
+						type: 'asset',
+						fileName: `${styleFileName}.map`,
+						source: map.toString(),
+					});
+				}
 			}
 			console.info(
 				`✓ Processing asset: ${asset.name} -> ${asset.outputPath}`
