@@ -8,7 +8,7 @@ import type { ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import { sideload } from './src/sideload';
+import { sideloadBlocks, sideloadAssets } from './src/sideload';
 import { config } from './src/config/index.js';
 import { generateBundle } from './src/generateBundle/index.js';
 import { options, outputOptions } from './src/options/index.js';
@@ -18,7 +18,7 @@ import {
 	discoverBlocksWithMapping,
 	discoverAssetsWithMapping,
 } from './src/discovery';
-import { processAssets } from './src/processors/assetProcessor.js';
+import { processAssets } from './src/sideload/processors/assetProcessor.js';
 
 import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
 
@@ -85,7 +85,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 
 				// Process discovered blocks (multi-block builds only)
 				for (const block of discoveredBlocks) {
-					await sideload.call(
+					await sideloadBlocks.call(
 						this,
 						block.blockJson,
 						outputDirectory,
@@ -97,10 +97,12 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 
 				// Process discovered assets (if any)
 				if (discoveredAssets.length > 0) {
-					await processAssets(this, discoveredAssets, {
+					await sideloadAssets.call(
+						this,
+						discoveredAssets,
 						outputDirectory,
-						dependencies,
-					});
+						dependencies
+					);
 				}
 			},
 

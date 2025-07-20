@@ -27,7 +27,15 @@ export const config = ({
 		define: { 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"` },
 		build: {
 			outDir: outputPath,
-			rollupOptions: {},
+			rollupOptions: {
+				// Use a dummy entry file since we handle building manually
+				input: resolve(pwd, '.vite-entry.js'),
+				output: {
+					// Don't output the dummy entry file to assets directory
+					entryFileNames: () => '.vite-entry-[hash].js',
+				},
+				external: () => true, // Make everything external to prevent bundling
+			},
 			target: ESBUILD_CONFIG.TARGET,
 			minify: true,
 			cssCodeSplit: true, // This option stops the default `styles.css` from being bundled

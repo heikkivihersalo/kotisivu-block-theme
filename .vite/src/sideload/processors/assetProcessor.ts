@@ -3,15 +3,15 @@
  */
 import { resolve, dirname } from 'node:path';
 import { build as esBuild } from 'esbuild';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 
 /**
  * Internal dependencies
  */
-import { generatePhpAssetFile, generateFileHash } from '../common/index.js';
-import type { DiscoveredAssetInfo } from '../../types/index.js';
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../constants.js';
+import { generatePhpAssetFile, generateFileHash } from '../../common/index.js';
+import type { DiscoveredAssetInfo } from '../../../types/index.js';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../constants.js';
 
 /**
  * Asset processor configuration
@@ -44,21 +44,17 @@ export async function processAssets(
 				outputDirectory,
 				`${asset.outputPath}.js`
 			);
-			const phpOutputPath = resolve(
-				outputDirectory,
-				`${asset.outputPath}.asset.php`
-			);
 
-			// Ensure output directory exists
+			// Ensure output directory exists (for esbuild processing)
 			mkdirSync(dirname(jsOutputPath), { recursive: true });
 
 			// Build the asset using esbuild (similar to how scripts are processed)
 			const result = await esBuild({
 				entryPoints: [asset.sourcePath],
-				outfile: jsOutputPath,
+				outdir: dirname(jsOutputPath), // Use outdir instead of outfile to enable CSS extraction
 				platform: ESBUILD_CONFIG.PLATFORM,
 				bundle: true,
-				write: true, // Write the JS file directly
+				write: false, // Don't write directly, we'll handle it through Rollup
 				metafile: true,
 				loader: ESBUILD_CONFIG.LOADER_MAP,
 				target: ESBUILD_CONFIG.TARGET,
@@ -66,10 +62,27 @@ export async function processAssets(
 				jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
 				jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 				minify: process.env.NODE_ENV === 'production',
+				outExtension: {
+					'.js': '.js',
+					'.css': '.css',
+				},
 			});
 
-			// Generate hash for the asset file
-			const hash = generateFileHash(asset.sourcePath);
+			// Get the built JavaScript content
+			const jsOutputFile = result.outputFiles?.find((file) =>
+				file.path.endsWith('.js')
+			);
+			const jsContent = jsOutputFile?.text || '';
+
+			// Extract CSS content if any
+			let cssContent = '';
+			const cssOutputFile = result.outputFiles?.find((file) =>
+				file.path.endsWith('.css')
+			);
+			if (cssOutputFile) {
+				cssContent = cssOutputFile.text;
+			} // Generate hash for the asset file
+			const hash = generateFileHash(jsContent);
 
 			// Extract dependencies from the build result
 			const assetDependencies = extractAssetDependencies(
@@ -91,9 +104,28 @@ export async function processAssets(
 			// Generate PHP asset file content
 			const phpContent = generatePhpAssetFile(allDependencies, hash);
 
-			// Write the PHP asset file
-			writeFileSync(phpOutputPath, phpContent);
+			// Emit JS file through Rollup
+			context.emitFile({
+				type: 'asset',
+				fileName: `${asset.outputPath}.js`,
+				source: jsContent,
+			});
 
+			// Emit PHP asset file through Rollup
+			context.emitFile({
+				type: 'asset',
+				fileName: `${asset.outputPath}.asset.php`,
+				source: phpContent,
+			});
+
+			// Emit CSS file through Rollup if there's CSS content
+			if (cssContent.trim()) {
+				context.emitFile({
+					type: 'asset',
+					fileName: `${asset.outputPath}.css`,
+					source: cssContent,
+				});
+			}
 			console.info(
 				`✓ Processing asset: ${asset.name} -> ${asset.outputPath}`
 			);

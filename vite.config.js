@@ -1,10 +1,9 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import laravel from 'laravel-vite-plugin';
 import { wp } from './.vite/index.ts';
 
 export default defineConfig({
 	base: '/build/',
+	publicDir: false, // Disable public directory copying
 	plugins: [
 		wp({
 			outDir: 'build',
