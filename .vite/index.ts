@@ -16,10 +16,7 @@ import { options, outputOptions } from './src/options/index.js';
 import generatePlugins from './src/plugins.js';
 import { transform } from './src/transform.js';
 import { FILE_NAMES } from './constants.ts';
-import {
-	discoverBlocks,
-	discoverBlocksWithMapping,
-} from './src/discovery/discovery.js';
+import { discoverBlocksWithMapping } from './src/discovery/discovery.js';
 
 import type {
 	PluginConfig,
@@ -57,7 +54,6 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 		watch = ['./src/template.php', './src/render.php'],
 		outDir = null,
 		dependencies = [],
-		blockFolders = [],
 		pathMappings = {},
 	} = pluginConfig;
 
@@ -65,13 +61,11 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 	const normalisedOut =
 		outDir && regex.test(outDir) === false ? outDir + sep : outDir;
 
-	// Discover blocks from specified folders or path mappings
+	// Discover blocks from path mappings
 	const discoveredBlocks =
 		Object.keys(pathMappings).length > 0
 			? discoverBlocksWithMapping(pathMappings, pwd)
-			: blockFolders.length > 0
-				? discoverBlocks(blockFolders, pwd)
-				: [];
+			: [];
 
 	return [
 		{

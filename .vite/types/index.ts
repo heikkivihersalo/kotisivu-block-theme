@@ -29,8 +29,7 @@ export type PluginConfig = {
 	watch?: string[];
 	outDir?: string;
 	dependencies?: string[];
-	blockFolders?: string[];
-	// New path mapping support
+	// Path mapping support
 	pathMappings?: Record<string, string>;
 };
 
