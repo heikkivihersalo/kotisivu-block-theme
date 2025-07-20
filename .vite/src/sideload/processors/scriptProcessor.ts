@@ -13,7 +13,7 @@ import {
 	generateFileHash,
 	generatePhpAssetFile,
 	extractFilenameWithoutExtension,
-} from '../../utils.ts';
+} from '../../common';
 
 import { generateAssetFilename } from '../utils/outputConfig.ts';
 import {

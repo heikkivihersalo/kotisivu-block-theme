@@ -9,10 +9,10 @@ import type { ResolvedConfig } from 'vite';
  * Internal dependencies
  */
 import { sideload } from './src/sideload';
-import { config } from './src/config.js';
-import { generateBundle } from './src/generateBundle.js';
+import { config } from './src/config/index.js';
+import { generateBundle } from './src/generateBundle/index.js';
 import { options, outputOptions } from './src/options/index.js';
-import generatePlugins from './src/plugins.js';
+import generatePlugins from './src/plugins/index.js';
 import { transform } from './src/transform/index.js';
 import { discoverBlocksWithMapping } from './src/discovery/discovery.js';
 

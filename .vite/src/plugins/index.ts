@@ -1,8 +1,8 @@
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
-import { FILE_NAMES } from '../constants.ts';
-import type { BlockInfo } from '../types/index.ts';
+import { FILE_NAMES } from '../../constants.ts';
+import type { BlockInfo } from '../../types/index.ts';
 
 /* *********************************************
  * External plugins required for the build process
