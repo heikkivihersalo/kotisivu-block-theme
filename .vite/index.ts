@@ -13,7 +13,7 @@ import { config } from './src/config.js';
 import { generateBundle } from './src/generateBundle.js';
 import { options, outputOptions } from './src/options/index.js';
 import generatePlugins from './src/plugins.js';
-import { transform } from './src/transform.js';
+import { transform } from './src/transform/index.js';
 import { discoverBlocksWithMapping } from './src/discovery/discovery.js';
 
 import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
