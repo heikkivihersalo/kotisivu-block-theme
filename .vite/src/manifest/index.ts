@@ -71,13 +71,7 @@ function generatePhpArrayContent(blocks: Record<string, any>): string {
  * Auto-generated block manifest containing all block.json configurations.
  * Generated on: ${timestamp}
  * 
- * @package KotisivuBlockTheme
  */
-
-// Prevent direct access
-if (!defined('ABSPATH')) {
-    exit;
-}
 
 return `;
 
