@@ -4,6 +4,7 @@
 import { resolve, dirname } from 'node:path';
 import { build as esBuild } from 'esbuild';
 import { mkdirSync } from 'node:fs';
+import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
 /**
@@ -115,10 +116,20 @@ export async function processAssets(
 
 			// Emit CSS file through Rollup if there's CSS content
 			if (cssContent.trim()) {
+				const styleFileName = `${asset.outputPath}.css`;
+
+				// Use LightningCSS to process and minify the CSS
+				const { code } = transform({
+					filename: styleFileName,
+					code: Buffer.from(cssContent),
+					minify: true,
+					sourceMap: false,
+				});
+
 				context.emitFile({
 					type: 'asset',
-					fileName: `${asset.outputPath}.css`,
-					source: cssContent,
+					fileName: styleFileName,
+					source: code,
 				});
 			}
 			console.info(

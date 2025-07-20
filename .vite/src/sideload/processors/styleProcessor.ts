@@ -1,5 +1,6 @@
 import type { PluginContext } from 'rollup';
 import { readFileSync } from 'node:fs';
+import { transform } from 'lightningcss';
 import { findActualStylePath } from '../utils/fileFinder.ts';
 import { generateAssetFilename } from '../utils/outputConfig.ts';
 import { FILE_EXTENSIONS } from '../../../constants.ts';
@@ -36,10 +37,18 @@ export const processStyle = (
 			config.outputPath
 		);
 
+		// Use LightningCSS to process and minify the CSS
+		const { code } = transform({
+			filename: styleFileName,
+			code: Buffer.from(cssContent),
+			minify: true,
+			sourceMap: false,
+		});
+
 		pluginContext.emitFile({
 			type: 'asset',
 			fileName: styleFileName,
-			source: cssContent,
+			source: code,
 		} satisfies EmittedAsset);
 	} catch (error) {
 		console.warn(
