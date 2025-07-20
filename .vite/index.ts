@@ -11,6 +11,7 @@ import type { ResolvedConfig } from 'vite';
 import { sideloadBlocks, sideloadAssets } from './src/sideload';
 import { config } from './src/config';
 import { generateBundle } from './src/bundle';
+import { generateBlockManifest } from './src/manifest';
 import { options, outputOptions } from './src/options';
 import generatePlugins from './src/plugins';
 import { transform } from './src/transform';
@@ -103,6 +104,13 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 						dependencies
 					);
 				}
+
+				// Generate block manifest from discovered blocks
+				generateBlockManifest.call(
+					this,
+					discoveredBlocks,
+					outputDirectory
+				);
 			},
 
 			transform: function (
