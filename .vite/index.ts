@@ -31,7 +31,7 @@ let _config: ResolvedConfig;
  * @param {PluginConfig} pluginConfig - Configuration options for the plugin (pathMappings required)
  * @returns {Array} Array of Vite plugins
  */
-export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
+export const wp = (pluginConfig = {} as PluginConfig) => {
 	const pwd = process.env.PWD || process.cwd();
 	let outputDirectory: string;
 
@@ -39,13 +39,13 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 		watch = [],
 		outDir = null,
 		dependencies = [],
-		pathMappings = {},
+		blockPaths = {},
 	} = pluginConfig;
 
-	// Require path mappings for multi-block builds
-	if (!pathMappings || Object.keys(pathMappings).length === 0) {
+	// Require block paths for multi-block builds
+	if (!blockPaths || Object.keys(blockPaths).length === 0) {
 		throw new Error(
-			'pathMappings are required for multi-block builds. This plugin does not support single block builds.'
+			'blockPaths are required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
 
@@ -53,12 +53,12 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 	const normalisedOut =
 		outDir && regex.test(outDir) === false ? outDir + sep : outDir;
 
-	// Discover blocks from path mappings (required)
-	const discoveredBlocks = discoverBlocksWithMapping(pathMappings, pwd);
+	// Discover blocks from block paths (required)
+	const discoveredBlocks = discoverBlocksWithMapping(blockPaths, pwd);
 
 	if (discoveredBlocks.length === 0) {
 		throw new Error(
-			'No blocks discovered from pathMappings. Ensure pathMappings are configured correctly and point to directories containing block.json files.'
+			'No blocks discovered from blockPaths. Ensure blockPaths are configured correctly and point to directories containing block.json files.'
 		);
 	}
 

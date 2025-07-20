@@ -1,18 +1,22 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import { viteBlocks } from './.vite/index.ts';
+import { wp } from './.vite/index.ts';
 
 export default defineConfig({
 	base: '/build/',
 	plugins: [
-		laravel({
-			input: ['resources/app/scripts/theme.ts'],
-		}),
-		viteBlocks({
+		wp({
 			outDir: 'build',
 			dependencies: [''],
-			pathMappings: {
+			assetPaths: {
+				'assets/admin': 'resources/app/scripts/admin.ts',
+				'assets/dark-mode': 'resources/app/scripts/dark-mode.ts',
+				'assets/inline': 'resources/app/scripts/inline.ts',
+				'assets/sanitize': 'resources/app/scripts/sanitize.ts',
+				'assets/theme': 'resources/app/scripts/theme.ts',
+			},
+			blockPaths: {
 				'blocks/custom': 'resources/widgets/block-library/custom',
 				'blocks/parts': 'resources/widgets/block-library/parts',
 				'template-parts': 'resources/widgets/template-parts',

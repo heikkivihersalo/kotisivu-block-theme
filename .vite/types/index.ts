@@ -29,8 +29,8 @@ export type PluginConfig = {
 	watch?: string[];
 	outDir?: string;
 	dependencies?: string[];
-	// Path mapping support - REQUIRED for multi-block builds
-	pathMappings: Record<string, string>;
+	assetPaths: Record<string, string>;
+	blockPaths: Record<string, string>;
 };
 
 /**
