@@ -14,18 +14,14 @@ export default defineConfig({
 		}),
 		viteBlocks({
 			outDir: 'build',
-			dependencies: ['shadpress-editor'],
+			dependencies: [''],
 			pathMappings: {
 				'blocks/custom': 'resources/widgets/block-library/custom',
 				'blocks/parts': 'resources/widgets/block-library/parts',
 				'template-parts': 'resources/widgets/template-parts',
 				'page-templates': 'resources/widgets/page-templates',
 			},
-			watch: [
-				'./src/template.php',
-				'./src/render.php',
-				'./resources/widgets/**/*.php',
-			],
+			watch: ['./resources/widgets/**/*.php'],
 		}),
 	],
 	resolve: {
