@@ -57,6 +57,7 @@
 		"@wordpress/server-side-render": "^5.22.0",
 		"autoprefixer": "^10.4.0",
 		"chalk": "^5.4.1",
+		"clsx": "^2.1.1",
 		"esbuild": "^0.25.6",
 		"glob": "^10.3.0",
 		"laravel-vite-plugin": "^2.0.0",

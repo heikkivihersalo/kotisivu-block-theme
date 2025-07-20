@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import removeAccents from 'remove-accents';
+import { removeAccents } from '@/shared/utils';
 
 /**
  * Object map tracking anchors.

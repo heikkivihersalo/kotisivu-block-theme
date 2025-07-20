@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import clsx from 'clsx';
+import { clsx } from 'clsx/lite';
 
 /**
  * WordPress dependencies

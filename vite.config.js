@@ -6,9 +6,7 @@ import { viteBlocks } from './.vite/index.ts';
 export default defineConfig({
 	base: '/build/',
 	plugins: [
-		react({
-			jsxRuntime: 'classic',
-		}),
+		react(),
 		laravel({
 			input: ['resources/app/scripts/theme.ts'],
 		}),
