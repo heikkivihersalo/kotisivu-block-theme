@@ -6,7 +6,7 @@ import type { OutputOptions, PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import { generateFileHash, generatePhpAssetFile } from '../common';
+import { generateFileHash, generatePhpAssetFile } from '../common/index.ts';
 import type { EmittedAsset, AssetInfo, ChunkInfo } from '../../types/index.ts';
 
 /**

@@ -9,16 +9,15 @@ import type { ResolvedConfig } from 'vite';
  * Internal dependencies
  */
 import { sideloadBlocks, sideloadAssets } from './src/sideload';
-import { config } from './src/config/index.js';
-import { generateBundle } from './src/generateBundle/index.js';
-import { options, outputOptions } from './src/options/index.js';
-import generatePlugins from './src/plugins/index.js';
-import { transform } from './src/transform/index.js';
+import { config } from './src/config';
+import { generateBundle } from './src/bundle';
+import { options, outputOptions } from './src/options';
+import generatePlugins from './src/plugins';
+import { transform } from './src/transform';
 import {
 	discoverBlocksWithMapping,
 	discoverAssetsWithMapping,
 } from './src/discovery';
-import { processAssets } from './src/sideload/processors/assetProcessor.js';
 
 import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
 
