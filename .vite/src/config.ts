@@ -1,29 +1,24 @@
 import { resolve } from 'node:path';
-import { FILE_NAMES, ESBUILD_CONFIG } from '../constants.js';
+import { ESBUILD_CONFIG } from '../constants.js';
 
 /**
  * config
  *
- * Provides Vite config settings required to build Gutenberg blocks
+ * Provides Vite config settings for multi-block builds.
+ * Individual block entry points and build configurations are handled
+ * by the sideload function during the build process.
  *
  * @see https://vitejs.dev/guide/api-plugin.html#config
  */
 export const config = ({
 	outDir = null,
-	blockPath = null,
 }: {
 	outDir?: string | null;
-	blockFile?: any;
-	blockPath?: string | null;
-	blockName?: string | null;
 } = {}) => {
 	const pwd = process.env.PWD || process.cwd();
-	const entryPath = blockPath
-		? resolve(blockPath, FILE_NAMES.DEFAULT_SCRIPT_ENTRY)
-		: resolve(pwd, 'src', FILE_NAMES.DEFAULT_SCRIPT_ENTRY);
 
-	// For multi-block builds, use outDir directly without appending block name
-	// The individual block paths will be handled by the sideload function
+	// Multi-block builds only - output directory is handled by sideload function
+	// Individual block entry points are processed during the sideload phase
 	const outputPath = outDir
 		? resolve(outDir)
 		: resolve(pwd, '../../../build');
@@ -31,12 +26,6 @@ export const config = ({
 	return {
 		define: { 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"` },
 		build: {
-			lib: {
-				entry: entryPath,
-				name: 'index',
-				formats: ['iife'],
-				fileName: () => FILE_NAMES.DEFAULT_SCRIPT_OUTPUT,
-			},
 			outDir: outputPath,
 			rollupOptions: {},
 			target: ESBUILD_CONFIG.TARGET,
