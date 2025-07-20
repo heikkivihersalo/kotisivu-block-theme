@@ -90,16 +90,11 @@ export async function processAssets(
 				result
 			);
 
-			// Filter out empty dependencies and combine with defaults
+			// Filter out empty dependencies and combine with extracted dependencies
 			const configDeps = dependencies.filter(
 				(dep) => dep && dep.trim() !== ''
 			);
 			const allDependencies = [...configDeps, ...assetDependencies];
-
-			// Add default wp-dom-ready if no dependencies are specified
-			if (allDependencies.length === 0) {
-				allDependencies.push('wp-dom-ready');
-			}
 
 			// Generate PHP asset file content
 			const phpContent = generatePhpAssetFile(allDependencies, hash);
@@ -141,15 +136,15 @@ export async function processAssets(
 
 /**
  * Extract dependencies from TypeScript/JavaScript asset file
- * @param _assetPath - Path to the asset file (unused for now)
- * @param _buildResult - esbuild result containing metafile (unused for now)
+ * @param assetPath - Path to the asset file
+ * @param buildResult - esbuild result containing metafile
  * @returns Array of WordPress dependencies
  */
 export function extractAssetDependencies(
-	_assetPath: string,
-	_buildResult?: any
+	assetPath: string,
+	buildResult?: any
 ): string[] {
-	// Additional dependencies can be extracted from the build metafile
-	// For now, return empty array as defaults are handled in the main function
+	// TODO: Implement dependency extraction from build metafile if needed
+	// Currently dependencies are specified in the plugin configuration
 	return [];
 }
