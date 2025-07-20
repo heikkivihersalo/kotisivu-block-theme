@@ -16,7 +16,7 @@ import { options } from './src/options.js';
 import { outputOptions } from './src/outputOptions.js';
 import generatePlugins from './src/plugins.js';
 import { transform } from './src/transform.js';
-import { FILE_NAMES } from './src/constants.js';
+import { FILE_NAMES } from './constants.ts';
 import {
 	discoverBlocks,
 	discoverBlocksWithMapping,

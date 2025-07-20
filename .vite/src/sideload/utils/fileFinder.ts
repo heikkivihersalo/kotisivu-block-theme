@@ -4,7 +4,7 @@ import {
 	FILE_EXTENSIONS,
 	FILE_NAMES,
 	STYLE_FILE_PATTERNS,
-} from '../../constants.js';
+} from '../../../constants.ts';
 
 /**
  * Find the actual file path considering different extensions

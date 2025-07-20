@@ -1,9 +1,9 @@
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
-import { FILE_NAMES, DISCOVERY_CONFIG } from '../../../constants.js';
+import { FILE_NAMES, DISCOVERY_CONFIG } from '../../../constants.ts';
 import { safeReadDirectory } from '../../common';
 import { extractBlockName, parseBlockJson } from '../utils';
-import type { BlockInfo } from '../../../types/index.js';
+import type { BlockInfo } from '../../../types/index.ts';
 
 /**
  * Helper function to validate and normalize paths

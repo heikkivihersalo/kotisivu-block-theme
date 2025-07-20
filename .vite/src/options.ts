@@ -1,5 +1,5 @@
-import type { InputOptions, ExternalOption } from "rollup";
-import { wordpressMatch, external } from "./outputOptions.js";
+import type { InputOptions, ExternalOption } from 'rollup';
+import { wordpressMatch, external } from './outputOptions.ts';
 
 export function options(options: InputOptions) {
 	if (Array.isArray(options.external) === false) {

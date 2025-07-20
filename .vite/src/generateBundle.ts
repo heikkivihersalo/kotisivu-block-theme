@@ -1,6 +1,6 @@
-import { generateFileHash, generatePhpAssetFile } from './utils.js';
+import { generateFileHash, generatePhpAssetFile } from './utils.ts';
 import type { OutputOptions, PluginContext } from 'rollup';
-import type { EmittedAsset, AssetInfo, ChunkInfo } from '../types/index.js';
+import type { EmittedAsset, AssetInfo, ChunkInfo } from '../types/index.ts';
 
 /**
  * generateBundle

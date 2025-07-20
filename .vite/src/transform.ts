@@ -1,8 +1,8 @@
 import type { PluginContext } from 'rollup';
 import { sep } from 'node:path';
 import { preprocessCSS, type ResolvedConfig } from 'vite';
-import { REGEX_PATTERNS } from './constants.js';
-import type { EmittedAsset, WordpressBlockJson } from '../types/index.js';
+import { REGEX_PATTERNS } from '../constants.ts';
+import type { EmittedAsset, WordpressBlockJson } from '../types/index.ts';
 
 function trimSlashes(filename: string): string {
 	return filename.replace(/^[/\\]+|[/\\]+$/g, '');

@@ -1,19 +1,19 @@
 import type { PluginContext } from 'rollup';
 import { build as esBuild } from 'esbuild';
-import { findActualFilePath } from '../utils/fileFinder.js';
+import { findActualFilePath } from '../utils/fileFinder.ts';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
 	extractFilenameWithoutExtension,
-} from '../../utils.js';
-import { generateAssetFilename } from '../utils/outputConfig.js';
+} from '../../utils.ts';
+import { generateAssetFilename } from '../utils/outputConfig.ts';
 import {
 	FILE_EXTENSIONS,
 	ESBUILD_CONFIG,
 	WORDPRESS_CONFIG,
-} from '../../../constants.js';
-import type { EmittedAsset } from '../../../types/index.js';
-import type { OutputConfig } from '../utils/outputConfig.js';
+} from '../../../constants.ts';
+import type { EmittedAsset } from '../../../types/index.ts';
+import type { OutputConfig } from '../utils/outputConfig.ts';
 
 /**
  * Process a single script file

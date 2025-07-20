@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { FILE_NAMES, ESBUILD_CONFIG } from './constants.js';
+import { FILE_NAMES, ESBUILD_CONFIG } from '../constants.js';
 
 /**
  * config
