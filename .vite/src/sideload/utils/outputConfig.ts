@@ -11,17 +11,26 @@ export type OutputConfig = {
 
 /**
  * Generate output configuration for block assets
+ * @param blockPath - Path to the block directory (required for multi-block builds)
+ * @param blockName - Name of the block (required)
+ * @param customOutputPath - Optional custom output path for assets
+ * @param outputDirectory - Optional output directory
  */
 export const generateOutputConfig = (
-	blockPath?: string,
-	blockName?: string,
+	blockPath: string,
+	blockName: string,
 	customOutputPath?: string,
 	outputDirectory?: string
 ): OutputConfig => {
-	// Default to PWD/src if no blockPath is provided (for backward compatibility)
-	const basePath = blockPath || `${process.env.PWD}/src`;
+	if (!blockPath) {
+		throw new Error('blockPath is required for multi-block builds');
+	}
 
-	// Use custom output path if provided, otherwise use block name or default
+	if (!blockName) {
+		throw new Error('blockName is required for multi-block builds');
+	}
+
+	// Use custom output path if provided, otherwise use block name
 	const outputPath = customOutputPath || blockName;
 	const blockOutputDir = customOutputPath
 		? resolve(process.env.PWD || process.cwd(), 'build', customOutputPath)
@@ -30,7 +39,7 @@ export const generateOutputConfig = (
 			: outputDirectory || '';
 
 	return {
-		basePath,
+		basePath: blockPath,
 		blockOutputDir,
 		outputPath,
 	};

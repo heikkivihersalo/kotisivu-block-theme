@@ -8,21 +8,13 @@ import type { BlockInfo } from '../types/index.ts';
  * External plugins required for the build process
  * ******************************************* */
 
-const pwd = process.env.PWD || process.cwd();
-
 const generatePlugins = ({
-	blockPath = null,
 	discoveredBlocks = [],
 }: {
-	outDir?: string | null;
-	blockPath?: string | null;
-	blockName?: string | null;
 	discoveredBlocks?: BlockInfo[];
 } = {}) => {
-	const finalBlockPath = blockPath || resolve(pwd, 'src');
-
-	// Create copy targets for discovered blocks
-	const copyTargets = [];
+	// Create copy targets for discovered blocks (multi-block builds only)
+	const copyTargets: Array<{ src: string; dest: string }> = [];
 
 	if (discoveredBlocks.length > 0) {
 		// Copy block.json files for each discovered block
@@ -39,18 +31,6 @@ const generatePlugins = ({
 				dest: destPath,
 			});
 		});
-	} else {
-		// Fallback to default behavior
-		copyTargets.push(
-			{
-				src: resolve(finalBlockPath, FILE_NAMES.BLOCK_CONFIG),
-				dest: '.',
-			},
-			{
-				src: resolve(finalBlockPath, '*.php'),
-				dest: '.',
-			}
-		);
 	}
 
 	const pluginCopy = viteStaticCopy({

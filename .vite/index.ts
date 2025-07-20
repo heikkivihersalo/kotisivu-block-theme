@@ -23,11 +23,12 @@ let _config: ResolvedConfig;
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
  *
- * This plugin is designed specifically for building multiple WordPress blocks
- * from organized directory structures using path mappings. It discovers blocks
- * automatically and processes them individually.
+ * This plugin is designed exclusively for building multiple WordPress blocks
+ * from organized directory structures using path mappings. Path mappings are
+ * mandatory and the plugin will throw an error if they are not configured.
+ * Single block builds are not supported.
  *
- * @param {PluginConfig} pluginConfig - Configuration options for the plugin
+ * @param {PluginConfig} pluginConfig - Configuration options for the plugin (pathMappings required)
  * @returns {Array} Array of Vite plugins
  */
 export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
@@ -41,15 +42,25 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 		pathMappings = {},
 	} = pluginConfig;
 
+	// Require path mappings for multi-block builds
+	if (!pathMappings || Object.keys(pathMappings).length === 0) {
+		throw new Error(
+			'pathMappings are required for multi-block builds. This plugin does not support single block builds.'
+		);
+	}
+
 	const regex = new RegExp(sep + '$');
 	const normalisedOut =
 		outDir && regex.test(outDir) === false ? outDir + sep : outDir;
 
-	// Discover blocks from path mappings
-	const discoveredBlocks =
-		Object.keys(pathMappings).length > 0
-			? discoverBlocksWithMapping(pathMappings, pwd)
-			: [];
+	// Discover blocks from path mappings (required)
+	const discoveredBlocks = discoverBlocksWithMapping(pathMappings, pwd);
+
+	if (discoveredBlocks.length === 0) {
+		throw new Error(
+			'No blocks discovered from pathMappings. Ensure pathMappings are configured correctly and point to directories containing block.json files.'
+		);
+	}
 
 	return [
 		{
@@ -65,20 +76,14 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 				watch.forEach((file) => this.addWatchFile(file));
 
 				// Process discovered blocks (multi-block builds only)
-				if (discoveredBlocks.length > 0) {
-					for (const block of discoveredBlocks) {
-						await sideload.call(
-							this,
-							block.blockJson,
-							outputDirectory,
-							block.path,
-							block.name,
-							block.outputPath // Pass custom output path if available
-						);
-					}
-				} else {
-					console.warn(
-						'No blocks discovered. Ensure pathMappings are configured correctly.'
+				for (const block of discoveredBlocks) {
+					await sideload.call(
+						this,
+						block.blockJson,
+						outputDirectory,
+						block.path,
+						block.name,
+						block.outputPath // Pass custom output path if available
 					);
 				}
 			},
@@ -88,11 +93,8 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 				code: string,
 				id: string
 			) {
-				// Use the first discovered block for transform context
-				const targetBlock =
-					discoveredBlocks.length > 0
-						? discoveredBlocks[0].blockJson
-						: {};
+				// Multi-block builds only - use the first discovered block for transform context
+				const targetBlock = discoveredBlocks[0].blockJson;
 				return transform.call(this, code, id, targetBlock, _config);
 			},
 			generateBundle: function (
@@ -103,6 +105,6 @@ export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 				generateBundle.call(this, options, bundle, dependencies);
 			},
 		},
-		...generatePlugins({ outDir: normalisedOut, discoveredBlocks }),
+		...generatePlugins({ discoveredBlocks }),
 	];
 };

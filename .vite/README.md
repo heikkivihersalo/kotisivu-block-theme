@@ -1,6 +1,8 @@
 # Vite Multi-Block Plugin
 
-A powerful Vite plugin specifically designed for building multiple WordPress Gutenberg blocks with modern JavaScript tooling. This plugin provides seamless integration between Vite's build system and WordPress block development, supporting TypeScript, React, and advanced path mapping capabilities for organized block libraries.
+A powerful Vite plugin specifically designed for building multiple WordPress Gutenberg blocks with modern JavaScript tooling. This plugin provides seamless integration between Vite's build system and WordPress block development, supporting TypeScript, React, and path mapping capabilities for organized block libraries.
+
+**⚠️ Important**: This plugin is designed exclusively for multi-block architectures and requires path mappings to be configured. Single block builds are not supported.
 
 ## Features
 
@@ -22,13 +24,11 @@ The plugin is included as part of this WordPress block theme. It's automatically
 import { viteBlocks } from './.vite/index.ts';
 ```
 
-**⚠️ Important**: This plugin requires path mappings to be configured - it does not support single block builds.
-
 ## Usage
 
 ### Required Configuration with Path Mappings
 
-The plugin requires path mappings to discover and build blocks. Configure it in your Vite setup:
+The plugin requires path mappings to discover and build blocks. Path mappings are mandatory:
 
 ```javascript
 viteBlocks({
@@ -52,12 +52,12 @@ viteBlocks({
 |--------|------|---------|-------------|
 | `outDir` | `string` | `null` | Output directory for built assets |
 | `dependencies` | `string[]` | `[]` | External dependencies to include |
-| `pathMappings` | `Record<string, string>` | `{}` | Custom path mappings for block discovery |
+| `pathMappings` | `Record<string, string>` | `{}` | **Required** - Custom path mappings for block discovery |
 | `watch` | `string[]` | `['./src/template.php', './src/render.php']` | Files to watch for changes |
 
-### Path Mappings
+### Path Mappings (Required)
 
-Path mappings allow you to organize your blocks in custom directory structures. Each mapping consists of:
+Path mappings are mandatory and allow you to organize your blocks in custom directory structures. Each mapping consists of:
 
 - **Key**: The output path where blocks will be built
 - **Value**: The source directory containing your block files
@@ -100,13 +100,14 @@ The plugin processes the following block.json properties:
 
 ## File Discovery
 
-The plugin automatically discovers blocks using path mappings only. It does not support single block builds.
+The plugin automatically discovers blocks using path mappings exclusively. Single block builds are not supported.
 
 ### Discovery Requirements
 
-- **Path mappings must be configured** - The plugin will not work without them
+- **Path mappings are mandatory** - The plugin will throw an error if they are not configured
 - Recursively searches directories specified in `pathMappings`
-- Each mapping should point to directories containing `block.json` files
+- Each mapping must point to directories containing `block.json` files
+- At least one block must be discovered or the build will fail
 
 ### Discovery Rules
 
@@ -116,12 +117,12 @@ The plugin automatically discovers blocks using path mappings only. It does not 
 
 ## Development Workflow
 
-1. **Configure Path Mappings**: Set up your `pathMappings` in the plugin configuration (required)
+1. **Configure Path Mappings**: Set up your `pathMappings` in the plugin configuration (mandatory)
 2. **Create Blocks**: Add your block files with `block.json` configurations in the mapped directories
 3. **Start Development**: Run `npm run dev` to start the Vite dev server
 4. **Watch Changes**: The plugin automatically rebuilds when files change
 
-**Note**: The plugin will display a warning if no blocks are discovered, indicating that path mappings need to be configured correctly.
+**Note**: The plugin will throw an error if no pathMappings are configured or if no blocks are discovered.
 
 ## Asset Processing
 

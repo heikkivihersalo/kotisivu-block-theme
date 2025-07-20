@@ -23,14 +23,14 @@ export type BlockInfo = {
 };
 
 /**
- * Plugin configuration options
+ * Plugin configuration options for multi-block builds
  */
 export type PluginConfig = {
 	watch?: string[];
 	outDir?: string;
 	dependencies?: string[];
-	// Path mapping support
-	pathMappings?: Record<string, string>;
+	// Path mapping support - REQUIRED for multi-block builds
+	pathMappings: Record<string, string>;
 };
 
 /**

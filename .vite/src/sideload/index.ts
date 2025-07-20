@@ -19,8 +19,8 @@ import { processStyles } from './processors/styleProcessor.js';
  * @param {PluginContext} this - The Rollup plugin context.
  * @param {WordpressBlockJson} blockJson - The block.json object containing block metadata.
  * @param {string} outputDirectory - The directory where assets should be output.
- * @param {string} [blockPath] - Optional path to the block directory.
- * @param {string} [blockName] - Optional name of the block.
+ * @param {string} blockPath - Path to the block directory (required for multi-block builds).
+ * @param {string} blockName - Name of the block (required for multi-block builds).
  * @param {string} [customOutputPath] - Optional custom output path for assets.
  * @returns {Promise<boolean>} Returns true if sideloading was successful.
  */
@@ -28,8 +28,8 @@ export async function sideload(
 	this: PluginContext,
 	blockJson: WordpressBlockJson,
 	outputDirectory: string,
-	blockPath?: string,
-	blockName?: string,
+	blockPath: string,
+	blockName: string,
 	customOutputPath?: string
 ): Promise<boolean> {
 	// Generate output configuration
