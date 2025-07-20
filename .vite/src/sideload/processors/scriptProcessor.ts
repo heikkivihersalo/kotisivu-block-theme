@@ -11,7 +11,7 @@ import {
 	FILE_EXTENSIONS,
 	ESBUILD_CONFIG,
 	WORDPRESS_CONFIG,
-} from '../../constants.js';
+} from '../../../constants.js';
 import type { EmittedAsset } from '../../../types/index.js';
 import type { OutputConfig } from '../utils/outputConfig.js';
 

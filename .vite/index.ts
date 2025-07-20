@@ -1,8 +1,14 @@
+/**
+ * External dependencies
+ */
+import { sep } from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
 import type { PluginContext, OutputOptions } from 'rollup';
 import type { ResolvedConfig } from 'vite';
 
-import { sep } from 'node:path';
-import { readFileSync, existsSync } from 'node:fs';
+/**
+ * Internal dependencies
+ */
 import { sideload } from './src/sideload';
 import { config } from './src/config.js';
 import { generateBundle } from './src/generateBundle.js';
@@ -14,7 +20,8 @@ import { FILE_NAMES } from './src/constants.js';
 import {
 	discoverBlocks,
 	discoverBlocksWithMapping,
-} from './src/blockDiscovery.js';
+} from './src/discovery/discovery.js';
+
 import type {
 	PluginConfig,
 	WordpressBlockJson,
@@ -24,7 +31,13 @@ import type {
 
 let _config: ResolvedConfig;
 
-export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
+/**
+ * Create a Vite plugin for Gutenberg blocks
+ *
+ * @param {PluginConfig} pluginConfig - Configuration options for the plugin
+ * @returns {Array} Array of Vite plugins
+ */
+export const viteBlocks = (pluginConfig = {} as PluginConfig) => {
 	const pwd = process.env.PWD || process.cwd();
 	let outputDirectory: string;
 
@@ -76,9 +89,6 @@ export const createViteBlock = (pluginConfig = {} as PluginConfig) => {
 
 				// Process discovered blocks
 				if (discoveredBlocks.length > 0) {
-					console.log(
-						`Found ${discoveredBlocks.length} blocks to process:`
-					);
 					for (const block of discoveredBlocks) {
 						console.log(`- ${block.name} at ${block.path}`);
 						await sideload.call(

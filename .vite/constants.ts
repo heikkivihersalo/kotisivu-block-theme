@@ -3,6 +3,15 @@
  */
 
 /**
+ * Configuration object for block discovery behavior
+ */
+export const DISCOVERY_CONFIG = {
+	MAX_RECURSION_DEPTH: 10,
+	SKIP_DIRECTORIES: ['node_modules', '.git', 'dist', 'build'],
+	VALID_EXTENSIONS: ['.js', '.jsx', '.ts', '.tsx'],
+};
+
+/**
  * Supported file extensions
  */
 export const FILE_EXTENSIONS = {

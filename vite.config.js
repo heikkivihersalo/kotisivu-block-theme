@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import { createViteBlock } from './.vite/index.ts';
+import { viteBlocks } from './.vite/index.ts';
 
 export default defineConfig({
 	base: '/build/',
@@ -12,19 +12,9 @@ export default defineConfig({
 		laravel({
 			input: ['resources/app/scripts/theme.ts'],
 		}),
-		createViteBlock({
+		viteBlocks({
 			outDir: 'build',
 			dependencies: ['shadpress-editor'],
-			// Option 1: Use the original blockFolders format (backward compatible)
-			/*
-			blockFolders: [
-				'resources/widgets/block-library/custom',
-				'resources/widgets/template-parts',
-				'resources/widgets/page-templates',
-				'resources/widgets/block-library/parts',
-			],
-			*/
-			// Option 2: Use the new pathMappings format for custom output paths
 			pathMappings: {
 				'blocks/custom': 'resources/widgets/block-library/custom',
 				'blocks/parts': 'resources/widgets/block-library/parts',
