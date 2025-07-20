@@ -23,6 +23,16 @@ export type BlockInfo = {
 };
 
 /**
+ * Asset discovery information
+ */
+export type DiscoveredAssetInfo = {
+	name: string;
+	sourcePath: string;
+	outputPath: string;
+	relativePath: string;
+};
+
+/**
  * Plugin configuration options for multi-block builds
  */
 export type PluginConfig = {

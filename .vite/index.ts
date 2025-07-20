@@ -14,7 +14,11 @@ import { generateBundle } from './src/generateBundle/index.js';
 import { options, outputOptions } from './src/options/index.js';
 import generatePlugins from './src/plugins/index.js';
 import { transform } from './src/transform/index.js';
-import { discoverBlocksWithMapping } from './src/discovery/discovery.js';
+import {
+	discoverBlocksWithMapping,
+	discoverAssetsWithMapping,
+} from './src/discovery';
+import { processAssets } from './src/processors/assetProcessor.js';
 
 import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
 
@@ -39,6 +43,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		watch = [],
 		outDir = null,
 		dependencies = [],
+		assetPaths = {},
 		blockPaths = {},
 	} = pluginConfig;
 
@@ -61,6 +66,9 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 			'No blocks discovered from blockPaths. Ensure blockPaths are configured correctly and point to directories containing block.json files.'
 		);
 	}
+
+	// Discover assets from asset paths (optional)
+	const discoveredAssets = discoverAssetsWithMapping(assetPaths, pwd);
 
 	return [
 		{
@@ -85,6 +93,14 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 						block.name,
 						block.outputPath // Pass custom output path if available
 					);
+				}
+
+				// Process discovered assets (if any)
+				if (discoveredAssets.length > 0) {
+					await processAssets(this, discoveredAssets, {
+						outputDirectory,
+						dependencies,
+					});
 				}
 			},
 
