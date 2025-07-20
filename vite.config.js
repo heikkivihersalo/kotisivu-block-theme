@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import { wp } from './.vite/index.ts';
 
 export default defineConfig({
-	base: '/build/',
 	publicDir: false, // Disable public directory copying
 	plugins: [
 		wp({
