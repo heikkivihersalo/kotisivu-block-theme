@@ -48,16 +48,18 @@ export type DiscoveredAssetInfo = {
  * Plugin configuration options for multi-block builds
  */
 export type PluginConfig = {
-	watch?: string[];
-	outDir?: string;
 	dependencies?: string[];
-	assetPaths: Record<string, string>;
-	blockPaths: Record<string, string>;
 	minify?: boolean | 'esbuild' | 'terser';
 	terserOptions?: {
 		compress?: Record<string, any>;
 		mangle?: Record<string, any>;
 		format?: Record<string, any>;
+	};
+	build: {
+		outDir?: string;
+		assetsDir: Record<string, string>;
+		blocksDir: Record<string, string>;
+		watch?: string[];
 	};
 };
 

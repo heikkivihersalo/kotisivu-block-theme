@@ -37,36 +37,38 @@ let _config: ResolvedConfig;
  */
 export const wp = (pluginConfig = {} as PluginConfig) => {
 	const {
-		watch = [],
-		outDir = null,
 		dependencies = [],
-		assetPaths = {},
-		blockPaths = {},
 		minify = true,
 		terserOptions = {},
+		build: {
+			outDir = null,
+			assetsDir = {},
+			blocksDir = {},
+			watch = [],
+		} = {},
 	} = pluginConfig;
 
 	const pwd = process.env.PWD || process.cwd();
 	let outputDirectory: string;
 
 	// Require block paths for multi-block builds
-	if (!blockPaths || Object.keys(blockPaths).length === 0) {
+	if (!blocksDir || Object.keys(blocksDir).length === 0) {
 		throw new Error(
-			'blockPaths are required for multi-block builds. This plugin does not support single block builds.'
+			'build.blocksDir are required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
 
 	// Discover blocks from block paths (required)
-	const discoveredBlocks = discoverBlocksWithMapping(blockPaths, pwd);
+	const discoveredBlocks = discoverBlocksWithMapping(blocksDir, pwd);
 
 	if (discoveredBlocks.length === 0) {
 		throw new Error(
-			'No blocks discovered from blockPaths. Ensure blockPaths are configured correctly and point to directories containing block.json files.'
+			'No blocks discovered from build.blocksDir. Ensure blocksDir are configured correctly and point to directories containing block.json files.'
 		);
 	}
 
 	// Discover assets from asset paths (optional)
-	const discoveredAssets = discoverAssetsWithMapping(assetPaths, pwd);
+	const discoveredAssets = discoverAssetsWithMapping(assetsDir, pwd);
 
 	return [
 		{
