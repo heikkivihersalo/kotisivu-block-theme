@@ -2,14 +2,6 @@ import { defineConfig } from 'vite';
 import { wp } from './.vite/index.ts';
 
 export default defineConfig({
-	publicDir: false, // Disable public directory copying
-	css: {
-		preprocessorOptions: {
-			scss: {
-				api: 'modern-compiler', // Use modern Sass API
-			},
-		},
-	},
 	plugins: [
 		wp({
 			outDir: 'build',
@@ -59,8 +51,5 @@ export default defineConfig({
 			'@/shared': '/resources/shared',
 			'@/widgets': '/resources/widgets',
 		},
-	},
-	optimizeDeps: {
-		include: [], // Don't pre-bundle dependencies in WordPress context
 	},
 });

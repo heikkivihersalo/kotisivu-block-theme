@@ -29,6 +29,17 @@ export const config = ({
 
 	return {
 		define: { 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"` },
+		publicDir: false, // Disable public directory copying for WordPress builds
+		css: {
+			preprocessorOptions: {
+				scss: {
+					api: 'modern-compiler', // Use modern Sass API
+				},
+			},
+		},
+		optimizeDeps: {
+			include: [], // Don't pre-bundle dependencies in WordPress context
+		},
 		build: {
 			outDir: outputPath,
 			rollupOptions: {
