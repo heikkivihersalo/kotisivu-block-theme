@@ -28,6 +28,8 @@ import { formatLtr } from '@wordpress/icons';
  */
 import { useOnEnter } from './use-enter';
 
+import './editor.scss';
+
 function ParagraphRTLControl({ direction, setDirection }) {
 	return (
 		isRTL() && (

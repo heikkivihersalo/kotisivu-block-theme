@@ -13,6 +13,8 @@ import metadata from './block.json';
 import save from './save';
 import transforms from './transforms';
 
+import './style.scss';
+
 registerBlockType(metadata.name, {
 	icon,
 	example: {

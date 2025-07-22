@@ -24,6 +24,8 @@ import {
  */
 import { generateAnchor, setAnchor } from './autogenerate-anchors';
 
+import './editor.scss';
+
 function HeadingEdit({
 	attributes,
 	setAttributes,
