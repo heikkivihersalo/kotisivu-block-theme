@@ -3,33 +3,6 @@ import { wp } from './.vite/index.ts';
 
 export default defineConfig({
 	publicDir: false, // Disable public directory copying
-	define: {
-		'process.env.NODE_ENV': '"production"', // Force production mode
-	},
-	build: {
-		minify: 'terser', // Use Terser for aggressive minification
-		terserOptions: {
-			compress: {
-				drop_console: true, // Remove console.* statements
-				drop_debugger: true, // Remove debugger statements
-				pure_funcs: [
-					'console.log',
-					'console.info',
-					'console.debug',
-					'console.warn',
-				],
-				passes: 2, // Run compression twice for better results
-			},
-			mangle: {
-				properties: false, // Don't mangle property names (safer for libraries)
-			},
-			output: {
-				comments: false, // Remove all comments
-				beautify: false, // Don't beautify output
-				semicolons: true, // Keep semicolons for safety
-			},
-		},
-	},
 	css: {
 		preprocessorOptions: {
 			scss: {
@@ -86,7 +59,6 @@ export default defineConfig({
 			'@/shared': '/resources/shared',
 			'@/widgets': '/resources/widgets',
 		},
-		conditions: ['production'], // Prioritize production builds
 	},
 	optimizeDeps: {
 		include: [], // Don't pre-bundle dependencies in WordPress context
