@@ -158,13 +158,6 @@ export const processAssets = async (
 						source: map.toString(),
 					});
 				}
-			} else if (cssSourceMapFile) {
-				// Emit CSS source map from esbuild if CSS content exists but no processed CSS
-				context.emitFile({
-					type: 'asset',
-					fileName: `${asset.outputPath}.css.map`,
-					source: cssSourceMapFile.text,
-				});
 			}
 			console.info(
 				`✓ Processing asset: ${asset.name} -> ${asset.outputPath}`
