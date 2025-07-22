@@ -5,12 +5,12 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * Helper function to validate and normalize paths
+ * Generate a source path by resolving the given path against the base path.
  * @param path - The path to validate
  * @param basePath - The base path to resolve against
- * @return Normalized path if valid, null otherwise
+ * @return The resolved path if it exists, otherwise null.
  */
-export function validateAndNormalizePath(
+export function generateSourcePath(
 	path: string,
 	basePath: string
 ): string | null {

@@ -6,7 +6,7 @@ import { statSync } from 'node:fs';
 /**
  * Internal dependencies
  */
-import { validateAndNormalizePath } from '../common/index.js';
+import { generateSourcePath } from '../common/index.js';
 import { findBlocksRecursively } from './utils/index.js';
 import type { BlockInfo } from '../../types/index.js';
 
@@ -57,7 +57,7 @@ export function discoverBlocksWithMapping(
 			continue;
 		}
 
-		const fullSourcePath = validateAndNormalizePath(sourcePath, pwd);
+		const fullSourcePath = generateSourcePath(sourcePath, pwd);
 
 		if (!fullSourcePath) {
 			errors.push(`Could not resolve source path: ${sourcePath}`);

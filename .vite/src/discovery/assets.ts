@@ -7,7 +7,7 @@ import { relative } from 'node:path';
 /**
  * Internal dependencies
  */
-import { validateAndNormalizePath } from '../common/index.js';
+import { generateSourcePath } from '../common/index.js';
 import type { DiscoveredAssetInfo } from '../../types/index.js';
 
 /**
@@ -57,7 +57,7 @@ export function discoverAssetsWithMapping(
 			continue;
 		}
 
-		const fullSourcePath = validateAndNormalizePath(sourcePath, pwd);
+		const fullSourcePath = generateSourcePath(sourcePath, pwd);
 
 		if (!fullSourcePath) {
 			errors.push(`Could not resolve asset source path: ${sourcePath}`);

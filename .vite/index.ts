@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { sep } from 'node:path';
 import type { PluginContext, OutputOptions } from 'rollup';
 import type { ResolvedConfig } from 'vite';
 
@@ -19,6 +18,7 @@ import {
 	discoverBlocksWithMapping,
 	discoverAssetsWithMapping,
 } from './src/discovery';
+import { normalizePath } from './src/common';
 
 import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
 
@@ -54,10 +54,6 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		);
 	}
 
-	const regex = new RegExp(sep + '$');
-	const normalisedOut =
-		outDir && regex.test(outDir) === false ? outDir + sep : outDir;
-
 	// Discover blocks from block paths (required)
 	const discoveredBlocks = discoverBlocksWithMapping(blockPaths, pwd);
 
@@ -73,7 +69,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 	return [
 		{
 			name: 'vite-plugin-gutenberg-multi-blocks',
-			config: () => config({ outDir: normalisedOut }),
+			config: () => config({ outDir: normalizePath(outDir) }),
 			configResolved(config: ResolvedConfig) {
 				_config = config;
 				outputDirectory = config.build.outDir;
