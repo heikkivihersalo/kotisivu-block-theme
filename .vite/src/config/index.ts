@@ -14,10 +14,12 @@ export const config = ({
 	outDir = null,
 	minify = true,
 	terserOptions = {},
+	sourcemap = false,
 }: {
 	outDir?: string | null;
 	minify?: boolean | 'esbuild' | 'terser';
 	terserOptions?: Record<string, any>;
+	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 } = {}) => {
 	const pwd = process.env.PWD || process.cwd();
 
@@ -42,6 +44,7 @@ export const config = ({
 		},
 		build: {
 			outDir: outputPath,
+			sourcemap,
 			rollupOptions: {
 				// Use a dummy entry file since we handle building manually
 				input: resolve(__dirname, '.vite-entry.js'),

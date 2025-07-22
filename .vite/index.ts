@@ -40,6 +40,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		dependencies = [],
 		minify = true,
 		terserOptions = {},
+		sourcemap = false,
 		build: {
 			outDir = null,
 			assetsDir = {},
@@ -124,6 +125,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 					outDir: normalizePath(outDir),
 					minify,
 					terserOptions: mergedTerserOptions,
+					sourcemap,
 				}),
 			configResolved(config: ResolvedConfig) {
 				_config = config;
@@ -142,7 +144,8 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 						outputDirectory,
 						block.path,
 						block.name,
-						block.outputPath // Pass custom output path if available
+						block.outputPath, // Pass custom output path if available
+						sourcemap // Pass sourcemap configuration
 					);
 				}
 
@@ -152,7 +155,8 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 						this,
 						discoveredAssets,
 						outputDirectory,
-						allDependencies
+						allDependencies,
+						sourcemap // Pass sourcemap configuration
 					);
 				}
 

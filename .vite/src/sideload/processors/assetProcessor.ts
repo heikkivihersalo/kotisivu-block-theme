@@ -10,8 +10,8 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import { generatePhpAssetFile, generateFileHash } from '../../common/index.js';
 import type { DiscoveredAssetInfo } from '../../../types/index.js';
+import { generateFileHash, generatePhpAssetFile } from '../../common/index.js';
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../constants.js';
 
 /**
@@ -20,6 +20,7 @@ import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../constants.js';
 interface AssetProcessorConfig {
 	outputDirectory: string;
 	dependencies?: string[];
+	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 }
 
 /**
@@ -28,12 +29,12 @@ interface AssetProcessorConfig {
  * @param assets - Array of discovered asset information
  * @param config - Asset processor configuration
  */
-export async function processAssets(
+export const processAssets = async (
 	context: PluginContext,
 	assets: DiscoveredAssetInfo[],
 	config: AssetProcessorConfig
-): Promise<void> {
-	const { outputDirectory, dependencies = [] } = config;
+): Promise<void> => {
+	const { outputDirectory, dependencies = [], sourcemap = false } = config;
 
 	for (const asset of assets) {
 		try {
@@ -57,6 +58,7 @@ export async function processAssets(
 				bundle: true,
 				write: false, // Don't write directly, we'll handle it through Rollup
 				metafile: true,
+				sourcemap: sourcemap,
 				loader: ESBUILD_CONFIG.LOADER_MAP,
 				target: ESBUILD_CONFIG.TARGET,
 				jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
@@ -82,7 +84,14 @@ export async function processAssets(
 			);
 			if (cssOutputFile) {
 				cssContent = cssOutputFile.text;
-			} // Generate hash for the asset file
+			}
+
+			// Check for source map files
+			const jsSourceMapFile = result.outputFiles?.find((file) =>
+				file.path.endsWith('.js.map')
+			);
+
+			// Generate hash for the asset file
 			const hash = generateFileHash(jsContent);
 
 			// Extract dependencies from the build result
@@ -106,6 +115,15 @@ export async function processAssets(
 				fileName: `${asset.outputPath}.js`,
 				source: jsContent,
 			});
+
+			// Emit JS source map if it exists
+			if (jsSourceMapFile) {
+				context.emitFile({
+					type: 'asset',
+					fileName: `${asset.outputPath}.js.map`,
+					source: jsSourceMapFile.text,
+				});
+			}
 
 			// Emit PHP asset file through Rollup
 			context.emitFile({
@@ -132,7 +150,7 @@ export async function processAssets(
 					source: code,
 				});
 
-				// Optionally, you can also emit the source map if needed
+				// Emit the processed CSS source map
 				if (map) {
 					context.emitFile({
 						type: 'asset',
@@ -140,6 +158,13 @@ export async function processAssets(
 						source: map.toString(),
 					});
 				}
+			} else if (cssSourceMapFile) {
+				// Emit CSS source map from esbuild if CSS content exists but no processed CSS
+				context.emitFile({
+					type: 'asset',
+					fileName: `${asset.outputPath}.css.map`,
+					source: cssSourceMapFile.text,
+				});
 			}
 			console.info(
 				`✓ Processing asset: ${asset.name} -> ${asset.outputPath}`
@@ -152,7 +177,7 @@ export async function processAssets(
 			);
 		}
 	}
-}
+};
 
 /**
  * Extract dependencies from TypeScript/JavaScript asset file

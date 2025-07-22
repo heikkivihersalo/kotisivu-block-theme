@@ -31,7 +31,8 @@ import type { OutputConfig } from '../utils/outputConfig.ts';
 export const processScript = async (
 	pluginContext: PluginContext,
 	script: string,
-	config: OutputConfig
+	config: OutputConfig,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<void> => {
 	const actualScriptPath = findActualFilePath(config.basePath, script);
 
@@ -54,6 +55,7 @@ export const processScript = async (
 		bundle: true,
 		write: false,
 		metafile: true,
+		sourcemap: sourcemap,
 		loader: ESBUILD_CONFIG.LOADER_MAP,
 		target: ESBUILD_CONFIG.TARGET,
 		jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
@@ -219,7 +221,22 @@ export const processScript = async (
 		const hash = generateFileHash(file.text);
 		const filename = extractFilenameWithoutExtension(script);
 
-		// Create block-specific file paths
+		// Check if this is a source map file
+		if (file.path.endsWith('.map')) {
+			const sourceMapFileName = generateAssetFilename(
+				`${script}.map`,
+				config.outputPath
+			);
+
+			pluginContext.emitFile({
+				type: 'asset',
+				fileName: sourceMapFileName,
+				source: file.contents,
+			} satisfies EmittedAsset);
+			return;
+		}
+
+		// Create block-specific file paths for JavaScript files
 		const assetFileName = generateAssetFilename(
 			`${filename}.asset.php`,
 			config.outputPath
@@ -246,9 +263,10 @@ export const processScript = async (
 export const processScripts = async (
 	pluginContext: PluginContext,
 	scripts: string[],
-	config: OutputConfig
+	config: OutputConfig,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<void> => {
 	for (const script of scripts) {
-		await processScript(pluginContext, script, config);
+		await processScript(pluginContext, script, config, sourcemap);
 	}
 };

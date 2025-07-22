@@ -50,6 +50,7 @@ export type DiscoveredAssetInfo = {
 export type PluginConfig = {
 	dependencies?: string[];
 	minify?: boolean | 'esbuild' | 'terser';
+	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 	terserOptions?: {
 		compress?: Record<string, any>;
 		mangle?: Record<string, any>;

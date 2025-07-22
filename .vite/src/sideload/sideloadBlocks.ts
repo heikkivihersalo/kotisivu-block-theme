@@ -22,6 +22,7 @@ import { processStyles } from './processors/styleProcessor.js';
  * @param {string} blockPath - Path to the block directory (required for multi-block builds).
  * @param {string} blockName - Name of the block (required for multi-block builds).
  * @param {string} [customOutputPath] - Optional custom output path for assets.
+ * @param {boolean | 'linked' | 'external' | 'inline' | 'both'} [sourcemap] - Source map configuration.
  * @returns {Promise<boolean>} Returns true if sideloading was successful.
  */
 export async function sideloadBlocks(
@@ -30,7 +31,8 @@ export async function sideloadBlocks(
 	outputDirectory: string,
 	blockPath: string,
 	blockName: string,
-	customOutputPath?: string
+	customOutputPath?: string,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<boolean> {
 	// Generate output configuration
 	const config = generateOutputConfig(
@@ -45,7 +47,7 @@ export async function sideloadBlocks(
 	const styles = extractStyles(blockJson);
 
 	// Process all scripts
-	await processScripts(this, scripts, config);
+	await processScripts(this, scripts, config, sourcemap);
 
 	// Process all styles
 	processStyles(this, styles, config);
