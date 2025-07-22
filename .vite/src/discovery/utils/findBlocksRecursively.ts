@@ -6,18 +6,69 @@ import { extractBlockName, parseBlockJson } from '../utils';
 import type { BlockInfo } from '../../../types/index.ts';
 
 /**
- * Helper function to validate and normalize paths
- * @param path - The path to validate
- * @param basePath - The base path to resolve against
- * @return Normalized path if valid, null otherwise
+ * Check if a directory should be skipped during block discovery
+ * @param dirPath - The directory path to check
+ * @return true if the directory should be skipped
  */
 function shouldSkipDirectory(dirPath: string): boolean {
 	const dirName = dirPath.split(/[/\\]/).pop() || '';
-
 	return (
 		DISCOVERY_CONFIG.SKIP_DIRECTORIES.includes(dirName) ||
 		dirName.startsWith('.')
 	);
+}
+
+/**
+ * Process a single directory item during block discovery
+ * @param itemPath - Path to the item to process
+ * @param item - Name of the item
+ * @param dirPath - Parent directory path
+ * @param rootPath - Root path for relative paths
+ * @param depth - Current recursion depth
+ * @return Array of discovered blocks or empty array
+ */
+function processDirectoryItem(
+	itemPath: string,
+	item: string,
+	dirPath: string,
+	rootPath: string,
+	depth: number
+): BlockInfo[] {
+	try {
+		const stat = statSync(itemPath);
+
+		if (stat.isDirectory()) {
+			return shouldSkipDirectory(item)
+				? []
+				: findBlocksRecursively(itemPath, rootPath, depth + 1);
+		}
+
+		if (item === FILE_NAMES.BLOCK_CONFIG) {
+			const { blockJson, error } = parseBlockJson(itemPath);
+
+			if (error) {
+				console.warn(`Warning: ${error} at ${itemPath}`);
+				return [];
+			}
+
+			if (blockJson) {
+				return [
+					{
+						path: dirPath,
+						blockJson,
+						name: extractBlockName(dirPath),
+					},
+				];
+			}
+		}
+
+		return [];
+	} catch (statError) {
+		const errorMessage =
+			statError instanceof Error ? statError.message : String(statError);
+		console.warn(`Warning: Could not stat ${itemPath}: ${errorMessage}`);
+		return [];
+	}
 }
 
 /**
@@ -38,64 +89,20 @@ export function findBlocksRecursively(
 		return [];
 	}
 
-	const blocks: BlockInfo[] = [];
 	const { items, error } = safeReadDirectory(dirPath);
 
 	if (error) {
 		console.warn(`Warning: ${error} at ${dirPath}`);
-		return blocks;
+		return [];
 	}
 
-	for (const item of items) {
-		const itemPath = join(dirPath, item);
-
-		try {
-			const stat = statSync(itemPath);
-
-			if (stat.isDirectory()) {
-				// Skip common directories that shouldn't contain blocks
-				if (shouldSkipDirectory(item)) {
-					continue;
-				}
-
-				// Recursively search subdirectories
-				const subBlocks = findBlocksRecursively(
-					itemPath,
-					rootPath,
-					depth + 1
-				);
-				blocks.push(...subBlocks);
-			} else if (item === FILE_NAMES.BLOCK_CONFIG) {
-				// Found a block.json file
-				const { blockJson, error: parseError } =
-					parseBlockJson(itemPath);
-
-				if (parseError) {
-					console.warn(`Warning: ${parseError} at ${itemPath}`);
-					continue;
-				}
-
-				if (blockJson) {
-					const blockName = extractBlockName(dirPath);
-					const blockInfo: BlockInfo = {
-						path: dirPath,
-						blockJson,
-						name: blockName,
-					};
-
-					blocks.push(blockInfo);
-				}
-			}
-		} catch (statError) {
-			const errorMessage =
-				statError instanceof Error
-					? statError.message
-					: String(statError);
-			console.warn(
-				`Warning: Could not stat ${itemPath}: ${errorMessage}`
-			);
-		}
-	}
-
-	return blocks;
+	return items.flatMap((item) =>
+		processDirectoryItem(
+			join(dirPath, item),
+			item,
+			dirPath,
+			rootPath,
+			depth
+		)
+	);
 }

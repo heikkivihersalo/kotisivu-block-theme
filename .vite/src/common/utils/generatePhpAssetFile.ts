@@ -8,6 +8,5 @@
 export const generatePhpAssetFile = (
 	dependencies: Set<string> | string[] = [],
 	hash = ''
-) => {
-	return `<?php return ["dependencies" => ${JSON.stringify(Array.from(dependencies))}, "version" => "${hash}"];`;
-};
+): string =>
+	`<?php return ["dependencies" => ${JSON.stringify(Array.from(dependencies))}, "version" => "${hash}"];`;

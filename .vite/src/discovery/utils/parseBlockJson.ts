@@ -16,10 +16,7 @@ export function parseBlockJson(filePath: string): {
 
 		// Basic validation - ensure it has required properties
 		if (!blockJson || typeof blockJson !== 'object') {
-			return {
-				blockJson: null,
-				error: 'Invalid block.json structure',
-			};
+			return { blockJson: null, error: 'Invalid block.json structure' };
 		}
 
 		return { blockJson, error: null };
@@ -28,7 +25,6 @@ export function parseBlockJson(filePath: string): {
 			parseError instanceof Error
 				? parseError.message
 				: String(parseError);
-
 		return {
 			blockJson: null,
 			error: `Failed to parse block.json: ${errorMessage}`,

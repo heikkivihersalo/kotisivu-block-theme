@@ -13,6 +13,5 @@ export function normalizePath(path: string | null | undefined): string | null {
 	if (path === null || path === undefined) {
 		return null;
 	}
-	const regex = new RegExp(sep + '$');
-	return regex.test(path) ? path : path + sep;
+	return path.endsWith(sep) ? path : path + sep;
 }

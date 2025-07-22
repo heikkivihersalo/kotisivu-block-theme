@@ -15,17 +15,10 @@ import type { AssetInfo, ChunkInfo } from '../../../types/index.ts';
 export function extractWpDependencies(bundle: {
 	[fileName: string]: ChunkInfo | AssetInfo;
 }): string[] {
-	const dependencies = new Set<string>();
+	const allImports = Object.values(bundle)
+		.filter((file) => file.code)
+		.flatMap((file) => file.imports)
+		.map((importPath) => importPath.replace(/^@wordpress\//, 'wp-'));
 
-	for (const file of Object.values(bundle)) {
-		if (!file.code) continue;
-
-		// Convert @wordpress/ imports to wp- format
-		for (const importPath of file.imports) {
-			const wpDependency = importPath.replace(/^@wordpress\//, 'wp-');
-			dependencies.add(wpDependency);
-		}
-	}
-
-	return Array.from(dependencies);
+	return [...new Set(allImports)];
 }
