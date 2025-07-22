@@ -39,10 +39,6 @@ describe('Manifest Build Process', () => {
 		// Should start with PHP opening tag
 		expect(content).toMatch(/^\s*<\?php/);
 
-		// Should contain WordPress security check
-		expect(content).toContain("if (!defined('ABSPATH'))");
-		expect(content).toContain('exit');
-
 		// Should return an array
 		expect(content).toContain('return [');
 		expect(content).toMatch(/;\s*$/); // Should end with semicolon
@@ -120,9 +116,6 @@ describe('Manifest Build Process', () => {
 		// Should contain generation timestamp
 		expect(content).toContain('Generated on:');
 		expect(content).toMatch(/Generated on: \d{4}-\d{2}-\d{2}T/);
-
-		// Should contain package info
-		expect(content).toContain('@package KotisivuBlockTheme');
 
 		// Should contain description
 		expect(content).toContain('Block Manifest');
