@@ -48,6 +48,52 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		} = {},
 	} = pluginConfig;
 
+	// Default WordPress dependencies that should always be externalized
+	const defaultDependencies = ['react', 'react-dom'];
+
+	// Merge default dependencies with user-provided dependencies (avoiding duplicates)
+	const allDependencies = [
+		...defaultDependencies,
+		...dependencies.filter((dep) => !defaultDependencies.includes(dep)),
+	];
+
+	// Default aggressive Terser configuration optimized for WordPress
+	const defaultTerserOptions = {
+		compress: {
+			drop_console: true,
+			drop_debugger: true,
+			pure_funcs: [
+				'console.log',
+				'console.info',
+				'console.debug',
+				'console.warn',
+			],
+			passes: 2,
+		},
+		mangle: {
+			properties: false,
+		},
+		format: {
+			comments: false,
+			beautify: false,
+			semicolons: true,
+		},
+	};
+
+	// Deep merge user terserOptions with defaults
+	const mergedTerserOptions = {
+		compress: {
+			...defaultTerserOptions.compress,
+			...terserOptions.compress,
+		},
+		mangle: { ...defaultTerserOptions.mangle, ...terserOptions.mangle },
+		format: {
+			...defaultTerserOptions.format,
+			...terserOptions.format,
+			...terserOptions.output, // Support legacy 'output' option
+		},
+	};
+
 	const pwd = process.env.PWD || process.cwd();
 	let outputDirectory: string;
 
@@ -77,7 +123,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 				config({
 					outDir: normalizePath(outDir),
 					minify,
-					terserOptions,
+					terserOptions: mergedTerserOptions,
 				}),
 			configResolved(config: ResolvedConfig) {
 				_config = config;
@@ -106,7 +152,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 						this,
 						discoveredAssets,
 						outputDirectory,
-						dependencies
+						allDependencies
 					);
 				}
 
@@ -132,7 +178,7 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 				options: OutputOptions,
 				bundle: { [fileName: string]: ChunkInfo | AssetInfo }
 			) {
-				generateBundle.call(this, options, bundle, dependencies);
+				generateBundle.call(this, options, bundle, allDependencies);
 			},
 		},
 		...generatePlugins({ discoveredBlocks }),

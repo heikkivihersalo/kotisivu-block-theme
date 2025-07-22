@@ -5,27 +5,6 @@ export default defineConfig({
 	plugins: [
 		wp({
 			minify: 'terser', // Enable Terser minification in wp plugin
-			terserOptions: {
-				compress: {
-					drop_console: true,
-					drop_debugger: true,
-					pure_funcs: [
-						'console.log',
-						'console.info',
-						'console.debug',
-						'console.warn',
-					],
-					passes: 2,
-				},
-				mangle: {
-					properties: false,
-				},
-				output: {
-					comments: false,
-					beautify: false,
-					semicolons: true,
-				},
-			},
 			build: {
 				outDir: 'build',
 				assetsDir: {
@@ -43,7 +22,6 @@ export default defineConfig({
 				},
 				watch: ['./resources/widgets/**/*.php'],
 			},
-			dependencies: ['react', 'react-dom'], // External dependencies provided by WordPress
 		}),
 	],
 	resolve: {
