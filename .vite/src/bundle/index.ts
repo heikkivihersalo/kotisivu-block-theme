@@ -6,7 +6,8 @@ import type { OutputOptions, PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import { generateFileHash, generatePhpAssetFile } from '../common/index.ts';
+import { generatePhpAssetFile } from '../common/index.ts';
+import { extractWpDependencies, generateVersionHash } from './utils';
 import type { EmittedAsset, AssetInfo, ChunkInfo } from '../../types/index.ts';
 
 /**
@@ -24,28 +25,24 @@ export function generateBundle(
 	this: PluginContext,
 	_options: OutputOptions,
 	bundle: { [fileName: string]: ChunkInfo | AssetInfo },
-	dependencies: string[]
+	additionalDependencies: string[]
 ) {
-	let hash: string = '';
+	// Extract WordPress dependencies from all bundle files
+	const wpDependencies = extractWpDependencies(bundle);
 
-	const imports = Object.values(bundle).reduce((acc, file) => {
-		if (!file.code) return acc;
+	// Combine with additional dependencies
+	const allDependencies = new Set([
+		...wpDependencies,
+		...additionalDependencies,
+	]);
 
-		hash = generateFileHash(file.code);
-		file.imports.forEach((i) => {
-			i = i.replace(/^@wordpress\//, 'wp-');
-			acc.add(i);
-		}, acc);
-		return acc;
-	}, new Set()) as Set<string>;
+	// Generate version hash from bundle content
+	const versionHash = generateVersionHash(bundle);
 
-	for (const dependency of dependencies) {
-		imports.add(dependency);
-	}
-
+	// Create the WordPress asset file
 	this.emitFile({
 		type: 'asset',
 		fileName: 'index.asset.php',
-		source: generatePhpAssetFile(imports, hash),
+		source: generatePhpAssetFile(allDependencies, versionHash),
 	} satisfies EmittedAsset);
 }
