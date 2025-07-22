@@ -59,10 +59,101 @@ export const processScript = async (
 		jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
 		jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
 		jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
+		external: ['react', 'react-dom'], // Externalize React dependencies
 		plugins: [
 			{
-				name: 'alias-wordpress',
+				name: 'alias-wordpress-and-react',
 				setup(build) {
+					// Intercept React imports and map to WordPress globals
+					build.onResolve({ filter: /^react$/ }, () => {
+						return {
+							path: 'react',
+							namespace: 'react-alias',
+						};
+					});
+
+					build.onResolve({ filter: /^react-dom$/ }, () => {
+						return {
+							path: 'react-dom',
+							namespace: 'react-alias',
+						};
+					});
+
+					build.onResolve({ filter: /^react\/jsx-runtime$/ }, () => {
+						return {
+							path: 'react/jsx-runtime',
+							namespace: 'react-alias',
+						};
+					});
+
+					build.onResolve(
+						{ filter: /^react\/jsx-dev-runtime$/ },
+						() => {
+							return {
+								path: 'react/jsx-dev-runtime',
+								namespace: 'react-alias',
+							};
+						}
+					);
+
+					// Generate React shims
+					build.onLoad(
+						{ filter: /.*/, namespace: 'react-alias' },
+						(args) => {
+							if (args.path === 'react') {
+								wpImports.push('react');
+								return {
+									contents: `
+										const React = window.React;
+										module.exports = React;
+										module.exports.default = React;
+									`,
+									loader: 'js',
+								};
+							}
+							if (args.path === 'react-dom') {
+								wpImports.push('react-dom');
+								return {
+									contents: `
+										const ReactDOM = window.ReactDOM;
+										module.exports = ReactDOM;
+										module.exports.default = ReactDOM;
+									`,
+									loader: 'js',
+								};
+							}
+							if (args.path === 'react/jsx-runtime') {
+								wpImports.push('react');
+								return {
+									contents: `
+										const React = window.React;
+										module.exports = {
+											jsx: React.createElement,
+											jsxs: React.createElement,
+											Fragment: React.Fragment
+										};
+									`,
+									loader: 'js',
+								};
+							}
+							if (args.path === 'react/jsx-dev-runtime') {
+								wpImports.push('react');
+								return {
+									contents: `
+										const React = window.React;
+										module.exports = {
+											jsx: React.createElement,
+											jsxs: React.createElement,
+											jsxDEV: React.createElement,
+											Fragment: React.Fragment
+										};
+									`,
+									loader: 'js',
+								};
+							}
+						}
+					);
+
 					// Intercept @wordpress/* paths
 					build.onResolve({ filter: /^@wordpress\// }, (args) => {
 						return {
