@@ -1,6 +1,6 @@
 import type { PluginContext } from 'rollup';
-import { readFileSync } from 'node:fs';
 import { transform } from 'lightningcss';
+import { readStylesheet } from '../utils';
 import { findActualStylePath } from '../utils/fileFinder.ts';
 import { generateAssetFilename } from '../utils/outputConfig.ts';
 import { FILE_EXTENSIONS } from '../../../constants.ts';
@@ -28,8 +28,7 @@ export const processStyle = (
 	pluginContext.addWatchFile(actualStylePath);
 
 	try {
-		// For CSS files, we can read them directly and emit them
-		const cssContent = readFileSync(actualStylePath, 'utf-8');
+		const cssContent = readStylesheet(actualStylePath);
 
 		// Create block-specific file path
 		const styleFileName = generateAssetFilename(

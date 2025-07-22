@@ -44,6 +44,9 @@ export const ESBUILD_CONFIG = {
 		'.jsx': 'jsx',
 		'.ts': 'tsx',
 		'.tsx': 'tsx',
+		'.css': 'css',
+		'.scss': 'css',
+		'.sass': 'css',
 	} as const,
 } as const;
 

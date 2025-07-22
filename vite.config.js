@@ -3,6 +3,13 @@ import { wp } from './.vite/index.ts';
 
 export default defineConfig({
 	publicDir: false, // Disable public directory copying
+	css: {
+		preprocessorOptions: {
+			scss: {
+				api: 'modern-compiler', // Use modern Sass API
+			},
+		},
+	},
 	plugins: [
 		wp({
 			outDir: 'build',
