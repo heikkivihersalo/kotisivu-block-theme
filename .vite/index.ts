@@ -42,6 +42,8 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		dependencies = [],
 		assetPaths = {},
 		blockPaths = {},
+		minify = true,
+		terserOptions = {},
 	} = pluginConfig;
 
 	const pwd = process.env.PWD || process.cwd();
@@ -69,7 +71,12 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 	return [
 		{
 			name: 'vite-plugin-gutenberg-multi-blocks',
-			config: () => config({ outDir: normalizePath(outDir) }),
+			config: () =>
+				config({
+					outDir: normalizePath(outDir),
+					minify,
+					terserOptions,
+				}),
 			configResolved(config: ResolvedConfig) {
 				_config = config;
 				outputDirectory = config.build.outDir;

@@ -12,8 +12,12 @@ import { ESBUILD_CONFIG } from '../../constants.js';
  */
 export const config = ({
 	outDir = null,
+	minify = true,
+	terserOptions = {},
 }: {
 	outDir?: string | null;
+	minify?: boolean | 'esbuild' | 'terser';
+	terserOptions?: Record<string, any>;
 } = {}) => {
 	const pwd = process.env.PWD || process.cwd();
 
@@ -37,7 +41,8 @@ export const config = ({
 				external: () => true, // Make everything external to prevent bundling
 			},
 			target: ESBUILD_CONFIG.TARGET,
-			minify: true,
+			minify,
+			...(minify === 'terser' && { terserOptions }),
 			cssCodeSplit: true, // This option stops the default `styles.css` from being bundled
 		},
 	};

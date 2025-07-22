@@ -16,12 +16,12 @@
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest run --coverage",
 		"zip": "rm -rf vendor && composer install --no-dev -o && zip -r kotisivu-block-theme.zip . -x 'node_modules/*' 'src/*' '*.log' '.git/*' '.vscode/*' 'tests/*' && rm -rf vendor && composer install",
-		"format": "yarn biome format --write ./src",
-		"lint": "yarn lint:biome && yarn lint:pint",
-		"lint:biome": "yarn biome lint ./src",
+		"format": "pnpm biome format --write ./src",
+		"lint": "pnpm lint:biome && pnpm lint:pint",
+		"lint:biome": "pnpm biome lint ./src",
 		"lint:pint": "./vendor/bin/pint",
-		"fix": "yarn fix:biome && yarn fix:pint",
-		"fix:biome": "yarn biome lint --write ./src",
+		"fix": "pnpm fix:biome && pnpm fix:pint",
+		"fix:biome": "pnpm biome lint --write ./src",
 		"fix:pint": "./vendor/bin/pint --repair",
 		"test:php": "./vendor/bin/phpunit",
 		"make-pot": "wp i18n make-pot . languages/kotisivu-block-theme.pot --slug=kotisivu-block-theme --domain=kotisivu-block-theme",
@@ -33,7 +33,7 @@
 		"wp-env:composer-install": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme composer install",
 		"wp-env:phpunit": "wp-env run tests-cli --env-cwd=wp-content/themes/kotisivu-block-theme ./vendor/bin/phpunit",
 		"wp-env:permalinks": "wp-env run tests-cli wp rewrite structure '/%postname%'",
-		"wp-env:init": "yarn wp-env:start && yarn wp-env:theme && yarn wp-env:composer-install"
+		"wp-env:init": "pnpm wp-env:start && pnpm wp-env:theme && pnpm wp-env:composer-install"
 	},
 	"dependencies": {
 		"@tanstack/react-query": "^5.83.0"
@@ -65,6 +65,7 @@
 		"postcss": "^8.4.0",
 		"rollup": "^4.45.1",
 		"sass": "^1.89.2",
+		"terser": "^5.43.1",
 		"typescript": "^5.8.3",
 		"vite": "^7.0.4",
 		"vite-plugin-static-copy": "^3.0.0",
@@ -80,8 +81,8 @@
 		"@wordpress/data": ">=9.0.0",
 		"@wordpress/element": ">=5.0.0",
 		"@wordpress/i18n": ">=4.0.0",
-		"react": ">=18.0.0",
-		"react-dom": ">=18.0.0"
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0"
 	},
 	"files": [
 		".github",

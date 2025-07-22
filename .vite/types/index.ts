@@ -53,6 +53,12 @@ export type PluginConfig = {
 	dependencies?: string[];
 	assetPaths: Record<string, string>;
 	blockPaths: Record<string, string>;
+	minify?: boolean | 'esbuild' | 'terser';
+	terserOptions?: {
+		compress?: Record<string, any>;
+		mangle?: Record<string, any>;
+		format?: Record<string, any>;
+	};
 };
 
 /**
