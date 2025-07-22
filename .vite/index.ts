@@ -36,9 +36,6 @@ let _config: ResolvedConfig;
  * @returns {Array} Array of Vite plugins
  */
 export const wp = (pluginConfig = {} as PluginConfig) => {
-	const pwd = process.env.PWD || process.cwd();
-	let outputDirectory: string;
-
 	const {
 		watch = [],
 		outDir = null,
@@ -46,6 +43,9 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		assetPaths = {},
 		blockPaths = {},
 	} = pluginConfig;
+
+	const pwd = process.env.PWD || process.cwd();
+	let outputDirectory: string;
 
 	// Require block paths for multi-block builds
 	if (!blockPaths || Object.keys(blockPaths).length === 0) {
