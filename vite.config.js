@@ -4,10 +4,10 @@ import { wp } from './.vite/index.ts';
 export default defineConfig({
 	plugins: [
 		wp({
-			sourcemap: 'linked', // Enable source maps for easier debugging
-			minify: 'terser', // Enable Terser minification in wp plugin
 			build: {
 				outDir: 'build',
+				sourcemap: 'linked', // Enable source maps for easier debugging
+				minify: 'terser', // Enable Terser minification in wp plugin
 				assetsDir: {
 					'assets/admin': 'resources/app/scripts/admin.ts',
 					'assets/dark-mode': 'resources/app/scripts/dark-mode.ts',

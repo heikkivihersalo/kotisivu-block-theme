@@ -38,14 +38,14 @@ let _config: ResolvedConfig;
 export const wp = (pluginConfig = {} as PluginConfig) => {
 	const {
 		dependencies = [],
-		minify = true,
 		terserOptions = {},
-		sourcemap = false,
 		build: {
 			outDir = null,
 			assetsDir = {},
 			blocksDir = {},
 			watch = [],
+			minify = true,
+			sourcemap = false,
 		} = {},
 	} = pluginConfig;
 
