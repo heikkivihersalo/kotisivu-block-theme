@@ -7,12 +7,12 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import { sideloadBlocks } from '../sideload';
-import { generateBlockManifest } from '../manifest';
-import { discoverBlocksWithMapping } from '../discovery';
-import { normalizePath } from '../common';
+import { sideloadBlocks } from './sideloadBlocks.js';
+import { generateBlockManifest } from './manifest/index.js';
+import { discoverBlocksWithMapping } from '../../common/discovery/index.js';
+import { normalizePath } from '../../common/index.js';
 
-import type { BlockInfo } from '../../types/index.js';
+import type { BlockInfo } from '../../common/types/index.js';
 
 interface BlocksPluginConfig {
 	blocksDir: Record<string, string>;
@@ -57,7 +57,7 @@ export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
 
 		configResolved(resolvedConfig: ResolvedConfig) {
 			if (typeof outDir === 'string') {
-				outputDirectory = normalizePath(outDir);
+				outputDirectory = normalizePath(outDir) || 'dist';
 			} else {
 				const defaultDir = resolvedConfig.build.outDir;
 				outputDirectory =

@@ -6,8 +6,8 @@ import type { Plugin } from 'vite';
 /**
  * Internal dependencies
  */
-import { config as viteConfig } from '../config';
-import { normalizePath } from '../common';
+import { config as viteConfig } from './config/index.js';
+import { normalizePath } from '../../common/index.js';
 
 interface ConfigPluginConfig {
 	outDir?: string | undefined;
@@ -78,7 +78,7 @@ export function ConfigPlugin(pluginConfig: ConfigPluginConfig): Plugin {
 
 		config: () => {
 			const configResult = viteConfig({
-				outDir: normalizePath(outDir),
+				outDir: normalizePath(outDir) || undefined,
 				minify,
 				terserOptions: mergedTerserOptions,
 				sourcemap,

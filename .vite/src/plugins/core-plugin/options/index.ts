@@ -1,5 +1,5 @@
 import type { InputOptions, ExternalOption, OutputOptions } from 'rollup';
-import { WORDPRESS_MATCH, EXTERNALS, NS } from '../../constants.ts';
+import { WORDPRESS_MATCH, EXTERNALS, NS } from '../../../common/constants.js';
 
 /**
  * Returns a custom global resolver that maps external libraries and objects to their `window` counterparts

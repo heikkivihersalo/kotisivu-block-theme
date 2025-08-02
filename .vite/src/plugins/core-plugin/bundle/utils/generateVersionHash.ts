@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { generateFileHash } from '../../common/index.ts';
-import type { AssetInfo, ChunkInfo } from '../../../types/index.ts';
+import { generateFileHash } from '../../../../common/index.js';
+import type { AssetInfo, ChunkInfo } from '../../../../common/types/index.js';
 
 /**
  * Generate version hash from bundle content

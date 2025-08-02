@@ -11,10 +11,10 @@ import {
 	AssetsPlugin,
 	CorePlugin,
 	ConfigPlugin,
-} from './src/plugins';
-import generatePlugins from './src/plugins';
+	generatePlugins,
+} from './src/plugins/index.js';
 
-import type { PluginConfig } from './types/index.js';
+import type { PluginConfig } from './src/common/types/index.js';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds

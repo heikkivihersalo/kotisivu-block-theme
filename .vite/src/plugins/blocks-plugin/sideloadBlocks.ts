@@ -1,0 +1,56 @@
+/**
+ * External dependencies
+ */
+import type { PluginContext } from 'rollup';
+import type { WordpressBlockJson } from '../../common/types/index.js';
+
+/**
+ * Internal dependencies
+ */
+import { extractScripts, extractStyles } from './utils/blockAssets.js';
+import { generateOutputConfig } from './utils/outputConfig.js';
+import { processScripts } from './processors/scriptProcessor.js';
+import { processStyles } from './processors/styleProcessor.js';
+
+/**
+ * Sideloads block assets (scripts and styles) based on the provided block.json
+ * and outputs them to the specified directory.
+ *
+ * @param {PluginContext} this - The Rollup plugin context.
+ * @param {WordpressBlockJson} blockJson - The block.json object containing block metadata.
+ * @param {string} outputDirectory - The directory where assets should be output.
+ * @param {string} blockPath - Path to the block directory (required for multi-block builds).
+ * @param {string} blockName - Name of the block (required for multi-block builds).
+ * @param {string} [customOutputPath] - Optional custom output path for assets.
+ * @param {boolean | 'linked' | 'external' | 'inline' | 'both'} [sourcemap] - Source map configuration.
+ * @returns {Promise<boolean>} Returns true if sideloading was successful.
+ */
+export async function sideloadBlocks(
+	this: PluginContext,
+	blockJson: WordpressBlockJson,
+	outputDirectory: string,
+	blockPath: string,
+	blockName: string,
+	customOutputPath?: string,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+): Promise<boolean> {
+	// Generate output configuration
+	const config = generateOutputConfig(
+		blockPath,
+		blockName,
+		customOutputPath,
+		outputDirectory
+	);
+
+	// Extract scripts and styles from block.json
+	const scripts = extractScripts(blockJson);
+	const styles = extractStyles(blockJson);
+
+	// Process all scripts
+	await processScripts(this, scripts, config, sourcemap);
+
+	// Process all styles
+	processStyles(this, styles, config);
+
+	return true;
+}

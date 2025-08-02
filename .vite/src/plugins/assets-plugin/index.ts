@@ -7,11 +7,11 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import { sideloadAssets } from '../sideload';
-import { discoverAssetsWithMapping } from '../discovery';
-import { normalizePath } from '../common';
+import { sideloadAssets } from './sideloadAssets.js';
+import { discoverAssetsWithMapping } from '../../common/discovery/index.js';
+import { normalizePath } from '../../common/index.js';
 
-import type { DiscoveredAssetInfo } from '../../types/index.js';
+import type { DiscoveredAssetInfo } from '../../common/types/index.js';
 
 interface AssetsPluginConfig {
 	assetsDir: Record<string, string>;
@@ -58,7 +58,7 @@ export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
 
 		configResolved(resolvedConfig: ResolvedConfig) {
 			if (typeof outDir === 'string') {
-				outputDirectory = normalizePath(outDir);
+				outputDirectory = normalizePath(outDir) || 'dist';
 			} else {
 				outputDirectory = resolvedConfig.build.outDir || 'dist';
 			}

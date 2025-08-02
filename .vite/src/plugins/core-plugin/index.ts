@@ -7,11 +7,15 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import { generateBundle } from '../bundle';
-import { options, outputOptions } from '../options';
-import { transform } from '../transform';
+import { generateBundle } from './bundle/index.js';
+import { options, outputOptions } from './options/index.js';
+import { transform } from './transform/index.js';
 
-import type { ChunkInfo, AssetInfo, BlockInfo } from '../../types/index.js';
+import type {
+	ChunkInfo,
+	AssetInfo,
+	BlockInfo,
+} from '../../common/types/index.js';
 
 interface CorePluginConfig {
 	dependencies?: string[];

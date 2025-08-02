@@ -6,9 +6,9 @@ import { statSync } from 'node:fs';
 /**
  * Internal dependencies
  */
-import { generateSourcePath } from '../common/index.js';
+import { generateSourcePath } from '../index.js';
 import { findBlocksRecursively } from './utils/index.js';
-import type { BlockInfo } from '../../types/index.js';
+import type { BlockInfo } from '../types/index.js';
 
 /**
  * Discover block.json files with custom path mappings

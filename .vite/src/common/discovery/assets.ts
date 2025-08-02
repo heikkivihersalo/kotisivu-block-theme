@@ -7,8 +7,8 @@ import { relative } from 'node:path';
 /**
  * Internal dependencies
  */
-import { generateSourcePath } from '../common/index.js';
-import type { DiscoveredAssetInfo } from '../../types/index.js';
+import { generateSourcePath } from '../index.js';
+import type { DiscoveredAssetInfo } from '../types/index.js';
 
 /**
  * Discover asset files with custom path mappings
