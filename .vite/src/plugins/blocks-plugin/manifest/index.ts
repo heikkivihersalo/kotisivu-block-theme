@@ -6,7 +6,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import type { BlockInfo, EmittedAsset } from '../../types/index.js';
+import type { BlockInfo, EmittedAsset } from '../../../common/types/index.js';
 
 /**
  * Generate block manifest PHP file from discovered blocks

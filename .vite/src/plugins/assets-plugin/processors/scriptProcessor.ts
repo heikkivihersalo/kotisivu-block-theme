@@ -13,16 +13,16 @@ import {
 	generateFileHash,
 	generatePhpAssetFile,
 	extractFilenameWithoutExtension,
-} from '../../common';
+} from '../../../common/index.js';
 
 import { generateAssetFilename } from '../utils/outputConfig.ts';
 import {
 	FILE_EXTENSIONS,
 	ESBUILD_CONFIG,
 	WORDPRESS_CONFIG,
-} from '../../../constants.ts';
+} from '../../../common/constants.js';
 
-import type { EmittedAsset } from '../../../types/index.ts';
+import type { EmittedAsset } from '../../../common/types/index.js';
 import type { OutputConfig } from '../utils/outputConfig.ts';
 
 /**

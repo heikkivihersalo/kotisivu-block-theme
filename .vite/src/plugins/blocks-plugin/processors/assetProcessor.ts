@@ -10,9 +10,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import type { DiscoveredAssetInfo } from '../../../types/index.js';
+import type { DiscoveredAssetInfo } from '../../../common/types/index.js';
 import { generateFileHash, generatePhpAssetFile } from '../../common/index.js';
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../constants.js';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../common/constants.js';
 
 /**
  * Asset processor configuration

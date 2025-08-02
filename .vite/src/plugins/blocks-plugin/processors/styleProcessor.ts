@@ -3,8 +3,8 @@ import { transform } from 'lightningcss';
 import { readStylesheet } from '../utils';
 import { findActualStylePath } from '../utils/fileFinder.ts';
 import { generateAssetFilename } from '../utils/outputConfig.ts';
-import { FILE_EXTENSIONS } from '../../../common/constants.ts';
-import type { EmittedAsset } from '../../../common/types/index.ts';
+import { FILE_EXTENSIONS } from '../../../common/constants.js';
+import type { EmittedAsset } from '../../../common/types/index.js';
 import type { OutputConfig } from '../utils/outputConfig.ts';
 
 /**

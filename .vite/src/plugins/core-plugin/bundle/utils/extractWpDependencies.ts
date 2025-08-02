@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import type { AssetInfo, ChunkInfo } from '../../../types/index.ts';
+import type { AssetInfo, ChunkInfo } from '../../../../common/types/index.js';
 
 /**
  * Extract WordPress dependencies from bundle files
