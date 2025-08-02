@@ -1,28 +1,20 @@
 /**
  * External dependencies
  */
-import type { PluginContext, OutputOptions } from 'rollup';
-import type { ResolvedConfig } from 'vite';
+import type { Plugin } from 'vite';
 
 /**
  * Internal dependencies
  */
-import { sideloadBlocks, sideloadAssets } from './src/sideload';
-import { config } from './src/config';
-import { generateBundle } from './src/bundle';
-import { generateBlockManifest } from './src/manifest';
-import { options, outputOptions } from './src/options';
-import generatePlugins from './src/plugins';
-import { transform } from './src/transform';
 import {
-	discoverBlocksWithMapping,
-	discoverAssetsWithMapping,
-} from './src/discovery';
-import { normalizePath } from './src/common';
+	BlocksPlugin,
+	AssetsPlugin,
+	CorePlugin,
+	ConfigPlugin,
+} from './src/plugins';
+import generatePlugins from './src/plugins';
 
-import type { PluginConfig, ChunkInfo, AssetInfo } from './types/index.js';
-
-let _config: ResolvedConfig;
+import type { PluginConfig } from './types/index.js';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
@@ -35,12 +27,12 @@ let _config: ResolvedConfig;
  * @param {PluginConfig} pluginConfig - Configuration options for the plugin (pathMappings required)
  * @returns {Array} Array of Vite plugins
  */
-export const wp = (pluginConfig = {} as PluginConfig) => {
+export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	const {
 		dependencies = [],
 		terserOptions = {},
 		build: {
-			outDir = null,
+			outDir,
 			assetsDir = {},
 			blocksDir = {},
 			watch = [],
@@ -49,55 +41,6 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		} = {},
 	} = pluginConfig;
 
-	// Default WordPress dependencies that should always be externalized
-	const defaultDependencies = ['react', 'react-dom'];
-
-	// Merge default dependencies with user-provided dependencies (avoiding duplicates)
-	const allDependencies = [
-		...defaultDependencies,
-		...dependencies.filter((dep) => !defaultDependencies.includes(dep)),
-	];
-
-	// Default aggressive Terser configuration optimized for WordPress
-	const defaultTerserOptions = {
-		compress: {
-			drop_console: true,
-			drop_debugger: true,
-			pure_funcs: [
-				'console.log',
-				'console.info',
-				'console.debug',
-				'console.warn',
-			],
-			passes: 2,
-		},
-		mangle: {
-			properties: false,
-		},
-		format: {
-			comments: false,
-			beautify: false,
-			semicolons: true,
-		},
-	};
-
-	// Deep merge user terserOptions with defaults
-	const mergedTerserOptions = {
-		compress: {
-			...defaultTerserOptions.compress,
-			...terserOptions.compress,
-		},
-		mangle: { ...defaultTerserOptions.mangle, ...terserOptions.mangle },
-		format: {
-			...defaultTerserOptions.format,
-			...terserOptions.format,
-			...terserOptions.output, // Support legacy 'output' option
-		},
-	};
-
-	const pwd = process.env.PWD || process.cwd();
-	let outputDirectory: string;
-
 	// Require block paths for multi-block builds
 	if (!blocksDir || Object.keys(blocksDir).length === 0) {
 		throw new Error(
@@ -105,86 +48,47 @@ export const wp = (pluginConfig = {} as PluginConfig) => {
 		);
 	}
 
-	// Discover blocks from block paths (required)
-	const discoveredBlocks = discoverBlocksWithMapping(blocksDir, pwd);
+	// Create configuration plugin (must be first to set up build config)
+	const configPlugin = ConfigPlugin({
+		outDir,
+		minify,
+		sourcemap,
+		terserOptions,
+	});
 
-	if (discoveredBlocks.length === 0) {
-		throw new Error(
-			'No blocks discovered from build.blocksDir. Ensure blocksDir are configured correctly and point to directories containing block.json files.'
-		);
-	}
+	// Create the blocks plugin
+	const blocksPlugin = BlocksPlugin({
+		blocksDir,
+		outDir,
+		sourcemap,
+		watch,
+	});
 
-	// Discover assets from asset paths (optional)
-	const discoveredAssets = discoverAssetsWithMapping(assetsDir, pwd);
+	// Create the assets plugin (optional, only if assets are configured)
+	const assetsPlugin = AssetsPlugin({
+		assetsDir,
+		outDir,
+		dependencies,
+		sourcemap,
+	});
+
+	// Create the core plugin with discovered blocks
+	const corePlugin = CorePlugin({
+		dependencies,
+		// Pass discovered blocks from the blocks plugin API
+		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
+	});
+
+	// Get additional plugins (React, static copy, etc.)
+	const additionalPlugins = generatePlugins({
+		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
+	});
 
 	return [
-		{
-			name: 'vite-plugin-gutenberg-multi-blocks',
-			config: () =>
-				config({
-					outDir: normalizePath(outDir),
-					minify,
-					terserOptions: mergedTerserOptions,
-					sourcemap,
-				}),
-			configResolved(config: ResolvedConfig) {
-				_config = config;
-				outputDirectory = config.build.outDir;
-			},
-			options,
-			outputOptions,
-			buildStart: async function (this: PluginContext) {
-				watch.forEach((file) => this.addWatchFile(file));
-
-				// Process discovered blocks (multi-block builds only)
-				for (const block of discoveredBlocks) {
-					await sideloadBlocks.call(
-						this,
-						block.blockJson,
-						outputDirectory,
-						block.path,
-						block.name,
-						block.outputPath, // Pass custom output path if available
-						sourcemap // Pass sourcemap configuration
-					);
-				}
-
-				// Process discovered assets (if any)
-				if (discoveredAssets.length > 0) {
-					await sideloadAssets.call(
-						this,
-						discoveredAssets,
-						outputDirectory,
-						allDependencies,
-						sourcemap // Pass sourcemap configuration
-					);
-				}
-
-				// Generate block manifest from discovered blocks
-				generateBlockManifest.call(
-					this,
-					discoveredBlocks,
-					outputDirectory
-				);
-			},
-
-			transform: function (
-				this: PluginContext,
-				code: string,
-				id: string
-			) {
-				// Multi-block builds only - use the first discovered block for transform context
-				const targetBlock = discoveredBlocks[0].blockJson;
-				return transform.call(this, code, id, targetBlock, _config);
-			},
-			generateBundle: function (
-				this: PluginContext,
-				options: OutputOptions,
-				bundle: { [fileName: string]: ChunkInfo | AssetInfo }
-			) {
-				generateBundle.call(this, options, bundle, allDependencies);
-			},
-		},
-		...generatePlugins({ discoveredBlocks }),
-	];
+		configPlugin,
+		corePlugin,
+		blocksPlugin,
+		assetsPlugin,
+		...additionalPlugins,
+	] as Plugin[];
 };

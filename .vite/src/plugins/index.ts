@@ -4,6 +4,12 @@ import { resolve } from 'node:path';
 import { FILE_NAMES } from '../../constants.ts';
 import type { BlockInfo } from '../../types/index.ts';
 
+// Export the new modular plugins
+export { BlocksPlugin } from './BlocksPlugin.js';
+export { AssetsPlugin } from './AssetsPlugin.js';
+export { CorePlugin } from './CorePlugin.js';
+export { ConfigPlugin } from './ConfigPlugin.js';
+
 /* *********************************************
  * External plugins required for the build process
  * ******************************************* */
