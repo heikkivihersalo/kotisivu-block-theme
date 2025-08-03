@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
+import { registerBlockStyle, unregisterBlockStyle } from '@wordpress/blocks';
 
 /**
  * Internal dependencies

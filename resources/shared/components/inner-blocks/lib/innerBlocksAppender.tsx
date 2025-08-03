@@ -3,8 +3,8 @@
  */
 import {
 	InnerBlocks,
-	useInnerBlocksProps,
 	store as blockEditorStore,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**

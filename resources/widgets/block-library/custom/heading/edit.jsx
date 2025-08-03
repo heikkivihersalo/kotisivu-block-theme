@@ -3,21 +3,21 @@
  */
 import { clsx } from 'clsx/lite';
 
+import {
+	AlignmentControl,
+	BlockControls,
+	HeadingLevelDropdown,
+	RichText,
+	store as blockEditorStore,
+	useBlockEditingMode,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { Platform, useEffect } from '@wordpress/element';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, Platform } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
-import {
-	AlignmentControl,
-	BlockControls,
-	RichText,
-	useBlockProps,
-	store as blockEditorStore,
-	HeadingLevelDropdown,
-	useBlockEditingMode,
-} from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

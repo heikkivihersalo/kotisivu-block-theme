@@ -1,15 +1,15 @@
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 /**
  * Shared dependencies
  */
 import { InnerBlocksAppender } from '@/shared/components/inner-blocks';
 import { VariationPicker } from '@/shared/components/variations';
-import { getBlockStyles, getIsReversedClass, classnames } from '@/shared/utils';
+import { classnames, getBlockStyles, getIsReversedClass } from '@/shared/utils';
 
 /**
  * Internal dependencies

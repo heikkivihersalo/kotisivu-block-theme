@@ -1,4 +1,44 @@
-import { StyleAttributes, BlockStyles } from '@/shared/utils';
+type StyleAttributes = {
+	backgroundColor?: string;
+	spacing?: {
+		margin?: {
+			top?: string;
+			bottom?: string;
+			left?: string;
+			right?: string;
+		};
+		padding?: {
+			top?: string;
+			bottom?: string;
+			left?: string;
+			right?: string;
+		};
+	};
+	width?: string;
+	height?: string;
+	justifyItems?: string;
+	alignItems?: string;
+	alignContent?: string;
+	justifyContent?: string;
+	gap?: string;
+};
+
+type BlockStyles = {
+	background?: string;
+	marginTop?: string;
+	marginBottom?: string;
+	paddingTop?: string;
+	paddingBottom?: string;
+	paddingLeft?: string;
+	paddingRight?: string;
+	width?: string;
+	height?: string;
+	display?: string;
+	justifyItems?: string;
+	alignItems?: string;
+	alignContent?: string;
+	gap?: string;
+};
 
 /**
  * Check if the style object has grid alignment properties
@@ -63,3 +103,4 @@ function getBlockStyles(style: StyleAttributes): BlockStyles {
 }
 
 export { getBlockStyles };
+export type { BlockStyles, StyleAttributes };

@@ -1,8 +1,8 @@
+import { registerBlockStyle, unregisterBlockStyle } from '@wordpress/blocks';
 /**
  * WordPress dependencies
  */
 import domReady from '@wordpress/dom-ready';
-import { unregisterBlockStyle, registerBlockStyle } from '@wordpress/blocks';
 
 /**
  * Internal dependencies

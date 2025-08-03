@@ -1,16 +1,16 @@
+import domReady from '@wordpress/dom-ready';
 /**
  * WordPress dependencies
  */
 import { createRoot } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import domReady from '@wordpress/dom-ready';
 
+import Analytics from './pages/Analytics';
+import Contact from './pages/Contact';
 /**
  * Internal dependencies
  */
 import General from './pages/General';
-import Analytics from './pages/Analytics';
-import Contact from './pages/Contact';
 import Social from './pages/Social';
 
 import './style.css';

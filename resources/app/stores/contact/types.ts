@@ -1,8 +1,8 @@
+import type { StoreAction, StoreApiResponse } from '@stores';
 /**
  * Internal dependencies
  */
 import { ACTIONS, API_PATH, CONTACT } from './constants';
-import type { StoreAction, StoreApiResponse } from '@stores';
 
 /**
  * Handle the store actions

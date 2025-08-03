@@ -1,8 +1,8 @@
+import { PanelBody, RangeControl } from '@wordpress/components';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RangeControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

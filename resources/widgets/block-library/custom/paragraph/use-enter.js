@@ -1,16 +1,16 @@
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import {
+	createBlock,
+	getDefaultBlockName,
+	hasBlockSupport,
+} from '@wordpress/blocks';
+import { useRefEffect } from '@wordpress/compose';
+import { useDispatch, useRegistry, useSelect } from '@wordpress/data';
 /**
  * WordPress dependencies
  */
 import { useRef } from '@wordpress/element';
-import { useRefEffect } from '@wordpress/compose';
 import { ENTER } from '@wordpress/keycodes';
-import { useSelect, useDispatch, useRegistry } from '@wordpress/data';
-import { store as blockEditorStore } from '@wordpress/block-editor';
-import {
-	hasBlockSupport,
-	createBlock,
-	getDefaultBlockName,
-} from '@wordpress/blocks';
 
 export function useOnEnter(props) {
 	const { batch } = useRegistry();

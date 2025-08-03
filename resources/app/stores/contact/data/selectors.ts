@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import type { Store, SetOption } from '../types';
+import type { SetOption, Store } from '../types';
 
 /**
  * Selectors for the store

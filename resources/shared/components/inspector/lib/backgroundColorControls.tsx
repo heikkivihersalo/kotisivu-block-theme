@@ -1,8 +1,8 @@
+import { PanelColorSettings } from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { PanelColorSettings } from '@wordpress/block-editor';
 
 /**
  * Types

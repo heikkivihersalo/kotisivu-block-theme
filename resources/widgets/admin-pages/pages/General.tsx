@@ -1,13 +1,13 @@
+import apiFetch from '@wordpress/api-fetch';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
  */
-import { OptionBody, OptionGroup, Option } from '../components/containers';
+import { Option, OptionBody, OptionGroup } from '../components/containers';
 import { Button } from '../components/misc';
 
 /**

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 
 /**
  * Block save function

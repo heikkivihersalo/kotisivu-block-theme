@@ -1,8 +1,8 @@
+import { InspectorControls } from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
 
 import { PanelBody, PanelRow, TextControl } from '@wordpress/components';
 

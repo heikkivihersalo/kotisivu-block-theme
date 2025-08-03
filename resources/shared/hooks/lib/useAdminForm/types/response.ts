@@ -1,8 +1,8 @@
 import type {
-	ContactAdminSettingsData,
-	SocialAccountsAdminSettingsData,
 	AnalyticsAdminSettingsData,
 	CacheAdminSettingsData,
+	ContactAdminSettingsData,
+	SocialAccountsAdminSettingsData,
 } from './data';
 
 export type ResponseBody<T> = {

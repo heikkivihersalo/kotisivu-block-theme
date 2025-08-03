@@ -1,9 +1,9 @@
 import domReady from '@wordpress/dom-ready';
 import { __ } from '@wordpress/i18n';
 import {
-	getPosts,
-	createPostCardNode,
 	createErrorNode,
+	createPostCardNode,
+	getPosts,
 } from './scripts/helpers';
 
 /**

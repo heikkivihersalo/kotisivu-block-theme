@@ -1,9 +1,9 @@
+import { VideoMarkup } from '@/shared/components/media';
+import { Button } from '@wordpress/components';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { VideoMarkup } from '@/shared/components/media';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies

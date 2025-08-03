@@ -9,8 +9,8 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AriaLabelControls,
 	BackgroundColorControls,
-	WidthControls,
 	GridAlignControls,
+	WidthControls,
 } from '@/shared/components/inspector';
 
 /**

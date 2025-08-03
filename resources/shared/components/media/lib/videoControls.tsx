@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 
+import VideoControlButtons from './components/video/VideoControlButtons';
 /**
  * Internal dependencies
  */
 import VideoSelector from './components/video/VideoSelector';
-import VideoControlButtons from './components/video/VideoControlButtons';
 
 type Props = {
 	attributes: BlockJSON_Video;

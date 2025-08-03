@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import {
-	InspectorControls,
 	InspectorAdvancedControls,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import { FormTokenField } from '@wordpress/components';
 

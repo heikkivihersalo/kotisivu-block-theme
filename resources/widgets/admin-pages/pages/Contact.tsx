@@ -13,7 +13,7 @@ import type { ContactAdminSettingsData } from '@/shared/hooks/lib/useAdminForm/t
  * Internal dependencies
  */
 import { OptionBody, OptionGroup } from '../components/containers';
-import { Form, FormHead, FormBody, FormButton } from '../components/form';
+import { Form, FormBody, FormButton, FormHead } from '../components/form';
 import { Input } from '../components/inputs';
 
 /**

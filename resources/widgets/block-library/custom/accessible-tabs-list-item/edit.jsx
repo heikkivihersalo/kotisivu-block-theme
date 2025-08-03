@@ -1,13 +1,13 @@
+import {
+	InspectorControls,
+	RichText,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import { PanelBody, PanelRow, TextControl } from '@wordpress/components';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useBlockProps,
-	RichText,
-	InspectorControls,
-} from '@wordpress/block-editor';
-import { PanelBody, PanelRow, TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

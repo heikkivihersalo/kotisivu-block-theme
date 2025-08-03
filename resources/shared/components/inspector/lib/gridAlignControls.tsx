@@ -1,14 +1,14 @@
+import {
+	Button,
+	ButtonGroup,
+	PanelBody,
+	PanelRow,
+	ToggleControl,
+} from '@wordpress/components';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	PanelRow,
-	Button,
-	ButtonGroup,
-	ToggleControl,
-} from '@wordpress/components';
 
 /**
  * Internal dependencies

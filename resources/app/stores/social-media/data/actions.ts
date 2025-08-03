@@ -3,7 +3,7 @@
  */
 import { ACTIONS } from '../constants';
 
-import type { SetOption, GetOption, SetAction, GetAction } from '../types';
+import type { GetAction, GetOption, SetAction, SetOption } from '../types';
 
 /**
  * Actions for the store.

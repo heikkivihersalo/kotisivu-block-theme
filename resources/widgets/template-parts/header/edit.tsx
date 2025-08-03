@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 import type { EditorTemplateLock } from '@wordpress/block-editor';
 import type { Template } from '@wordpress/blocks';
 

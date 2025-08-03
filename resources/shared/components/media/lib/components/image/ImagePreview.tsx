@@ -1,6 +1,6 @@
-import { __ } from '@wordpress/i18n';
 import { ImageMarkup } from '@/shared/components/media';
 import { Button } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies

@@ -1,10 +1,10 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+// @ts-ignore
+import { __experimentalBlockVariationPicker as BlockVariationPicker } from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
-// @ts-ignore
-import { __experimentalBlockVariationPicker as BlockVariationPicker } from '@wordpress/block-editor';
 /* eslint-enable @wordpress/no-unsafe-wp-apis */
 
 /**

@@ -3,11 +3,11 @@
  */
 import { createBlock, getBlockAttributes } from '@wordpress/blocks';
 
+import { getTransformedMetadata } from '@/shared/utils';
 /**
  * Internal dependencies
  */
 import { getLevelFromHeadingNodeName } from './shared';
-import { getTransformedMetadata } from '@/shared/utils';
 
 const transforms = {
 	from: [

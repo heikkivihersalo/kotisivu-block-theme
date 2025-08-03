@@ -1,10 +1,10 @@
+import { API_PATH } from '../constants';
 /**
  * Internal dependencies
  */
 import actions from './actions';
-import { API_PATH } from '../constants';
 
-import type { SetAction, GetAction, ApiResponse } from '../types';
+import type { ApiResponse, GetAction, SetAction } from '../types';
 
 /**
  * Resolvers for the store.

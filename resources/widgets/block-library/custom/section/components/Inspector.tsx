@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import {
-	InspectorControls,
 	InspectorAdvancedControls,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import { FormTokenField } from '@wordpress/components';
 
@@ -17,7 +17,7 @@ import {
 
 import { TAILWIND_UTILITIES } from '@/shared/constants/tailwind-utilities';
 
-import { BlockAttributes } from '../types';
+import type { BlockAttributes } from '../types';
 
 /**
  * Inspector controls

@@ -3,25 +3,25 @@
  */
 import { clsx } from 'clsx/lite';
 
-/**
- * WordPress dependencies
- */
-import { __, _x, isRTL } from '@wordpress/i18n';
-import {
-	ToolbarButton,
-	ToggleControl,
-	__experimentalToolsPanelItem as ToolsPanelItem,
-} from '@wordpress/components';
 import {
 	AlignmentControl,
 	BlockControls,
 	InspectorControls,
 	RichText,
+	useBlockEditingMode,
 	useBlockProps,
 	useSettings,
-	useBlockEditingMode,
 } from '@wordpress/block-editor';
 import { getBlockSupport } from '@wordpress/blocks';
+import {
+	ToggleControl,
+	ToolbarButton,
+	__experimentalToolsPanelItem as ToolsPanelItem,
+} from '@wordpress/components';
+/**
+ * WordPress dependencies
+ */
+import { __, _x, isRTL } from '@wordpress/i18n';
 import { formatLtr } from '@wordpress/icons';
 /**
  * Internal dependencies

@@ -1,32 +1,25 @@
+import {
+	Button,
+	ButtonGroup,
+	PanelBody,
+	PanelRow,
+	ToggleControl,
+} from '@wordpress/components';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	PanelRow,
-	Button,
-	ButtonGroup,
-	ToggleControl,
-} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { WidthFull, WidthContent, WidthNarrow } from '@/shared/icons';
+import { WidthContent, WidthFull, WidthNarrow } from '@/shared/icons';
 
 const width = {
 	full: 'var(--wp--custom--wide-size)',
 	content: 'var(--wp--custom--content-size)',
 	narrow: 'var(--wp--custom--narrow-size)',
 } as const;
-
-type SizeKey = 'width' | 'height';
-type SizeValue =
-	| 'var(--wp--custom--wide-size)'
-	| 'var(--wp--custom--content-size)'
-	| 'var(--wp--custom--narrow-size)'
-	| '100%';
 
 type Props = {
 	style: Record<string, any>;

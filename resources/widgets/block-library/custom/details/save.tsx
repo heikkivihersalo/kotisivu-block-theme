@@ -2,15 +2,15 @@
  * WordPress dependencies
  */
 import {
+	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
-	RichText,
 } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
-import { getBlockStyles, classnames } from '@/shared/utils';
+import { classnames, getBlockStyles } from '@/shared/utils';
 
 /**
  * Block save function

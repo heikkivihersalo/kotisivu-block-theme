@@ -1,7 +1,7 @@
 /**
  * Shared dependencies
  */
-import { ThemeColorSchemes, ColorSchemeCookie } from '@/shared/types/dark-mode';
+import { ColorSchemeCookie, ThemeColorSchemes } from '@/shared/types/dark-mode';
 import type { ColorScheme } from '@/shared/types/dark-mode';
 
 /**

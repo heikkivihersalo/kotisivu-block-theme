@@ -1,6 +1,22 @@
 {
-	"include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-	"exclude": ["node_modules", "dist", "build", "out", "coverage", "public"],
+	"include": [
+		"resources/**/*.ts",
+		"resources/**/*.tsx",
+		"resources/**/*.js",
+		"resources/**/*.jsx",
+		".vite/**/*.ts",
+		".vite/**/*.tsx"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"build",
+		"out",
+		"coverage",
+		"public",
+		"vendor",
+		"app"
+	],
 	"compilerOptions": {
 		"target": "ES2022",
 		"jsx": "react-jsx",

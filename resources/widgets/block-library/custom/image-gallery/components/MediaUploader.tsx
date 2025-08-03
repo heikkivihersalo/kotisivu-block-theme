@@ -1,14 +1,14 @@
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
+import type { MediaUploader_Image } from '@/shared/components/media';
 /**
  * Internal dependencies
  */
 import { Button } from '@wordpress/components';
-import type { MediaUploader_Image } from '@/shared/components/media';
 import type { BlockSetAttributes } from '../types';
 
 type Props = {

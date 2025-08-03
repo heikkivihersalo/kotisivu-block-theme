@@ -1,6 +1,6 @@
-import { __ } from '@wordpress/i18n';
 import { columnFull, columnTwoHalfs } from '@/shared/icons/index';
 import type { BlockVariation } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 
 const variations: Array<BlockVariation> = [
 	{

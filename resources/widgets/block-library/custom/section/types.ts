@@ -2,13 +2,13 @@
  * Internal dependencies
  */
 import type {
-	Template,
-	TemplateLock,
 	AllowedBlocks,
 	BlockStyleAttributes,
-	BlockSave as DefaultSave,
-	BlockEdit as DefaultEdit,
 	BlockConfig as DefaultConfig,
+	BlockEdit as DefaultEdit,
+	BlockSave as DefaultSave,
+	Template,
+	TemplateLock,
 } from '@/shared/types/block-editor';
 
 /**

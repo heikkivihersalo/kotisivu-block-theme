@@ -1,5 +1,5 @@
 import { createElement } from '@wordpress/element';
-import { SVG, Path } from '@wordpress/primitives';
+import { Path, SVG } from '@wordpress/primitives';
 
 export const columnThreeHalfs = createElement(
 	SVG,

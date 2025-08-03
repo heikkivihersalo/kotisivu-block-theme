@@ -1,16 +1,16 @@
+import apiFetch from '@wordpress/api-fetch';
+import { useEffect, useState } from '@wordpress/element';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
-import apiFetch from '@wordpress/api-fetch';
 
+import type { AdminSettingsData } from './types/data';
 /**
  * Internal dependencies
  */
 import type { AdminSettingsApiPath } from './types/paths';
 import type { AdminSettingsApiResponse } from './types/response';
-import type { AdminSettingsData } from './types/data';
 
 type Props = {
 	path: AdminSettingsApiPath;

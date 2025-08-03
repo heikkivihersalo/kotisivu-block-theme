@@ -1,14 +1,14 @@
-/**
- * WordPress dependencies
- */
-import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
-import { link, linkOff } from '@wordpress/icons';
 import {
 	BlockControls,
 	__experimentalLinkControl as LinkControl,
 } from '@wordpress/block-editor';
-import { ToolbarButton, Popover } from '@wordpress/components';
+import { Popover, ToolbarButton } from '@wordpress/components';
+import { useEffect, useRef, useState } from '@wordpress/element';
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { link, linkOff } from '@wordpress/icons';
 
 /**
  * Internal dependencies

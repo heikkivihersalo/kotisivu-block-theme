@@ -1,18 +1,18 @@
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from '@wordpress/block-editor';
 /**
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	useBlockProps,
-	InnerBlocks,
-	useInnerBlocksProps,
-} from '@wordpress/block-editor';
 
+import ActionButtons from './components/ActionButtons.jsx';
 /**
  * Internal dependencies
  */
 import Inspector from './components/Inspector.jsx';
-import ActionButtons from './components/ActionButtons.jsx';
 
 /**
  * Styles

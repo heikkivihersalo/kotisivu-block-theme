@@ -1,8 +1,8 @@
+import { useDispatch } from '@wordpress/data';
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
 
 /**
  * Block edit function

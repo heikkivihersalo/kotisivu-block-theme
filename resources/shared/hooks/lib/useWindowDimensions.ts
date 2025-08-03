@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 type Dimensions = {
 	width: number;
