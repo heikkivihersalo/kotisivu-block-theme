@@ -1,21 +1,17 @@
 /**
- * Vite 6 Enhanced Configuration Helpers
- *
- * Leverages Vite 6's improved configuration options and environment handling
+ * External dependencies
  */
-
 import type { BuildOptions, UserConfig } from 'vite';
-import { WORDPRESS_EXTERNALS } from '../constants.js';
 
-interface WordPressViteConfig {
-	outDir?: string;
-	minify?: boolean | 'esbuild' | 'terser';
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	terserOptions?: any;
-	target?: string | string[];
-	cssCodeSplit?: boolean;
-	enableFuture?: boolean;
-}
+/**
+ * Shared dependencies
+ */
+import { WORDPRESS_EXTERNALS } from '../../../../common/constants.js';
+
+/**
+ * Internal dependencies
+ */
+import type { WordPressViteConfig } from '../../types.ts';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
@@ -128,53 +124,4 @@ export function createWordPressViteConfig(
 	}
 
 	return viteConfig;
-}
-
-/**
- * Create environment-specific build configurations
- * Leverages Vite 6's multi-environment support
- */
-export function createEnvironmentConfigs(baseConfig: WordPressViteConfig = {}) {
-	const baseViteConfig = createWordPressViteConfig(baseConfig);
-
-	return {
-		// Client environment (default)
-		client: {
-			...baseViteConfig,
-			build: {
-				...baseViteConfig.build,
-				outDir: `${baseConfig.outDir || 'build'}/client`,
-			},
-		},
-
-		// Admin environment (if needed)
-		admin: {
-			...baseViteConfig,
-			build: {
-				...baseViteConfig.build,
-				outDir: `${baseConfig.outDir || 'build'}/admin`,
-				rollupOptions: {
-					...baseViteConfig.build?.rollupOptions,
-					input: {
-						admin: 'src/admin/main.js',
-					},
-				},
-			},
-		},
-
-		// Block editor environment
-		editor: {
-			...baseViteConfig,
-			build: {
-				...baseViteConfig.build,
-				outDir: `${baseConfig.outDir || 'build'}/editor`,
-				rollupOptions: {
-					...baseViteConfig.build?.rollupOptions,
-					input: {
-						editor: 'src/editor/main.js',
-					},
-				},
-			},
-		},
-	};
 }

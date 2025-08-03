@@ -4,12 +4,15 @@
 import type { Plugin } from 'vite';
 
 /**
+ * Shared dependencies
+ */
+import { normalizePath } from '../../common/utils';
+/**
  * Internal dependencies
  */
-import { createWordPressViteConfig } from '../../common/config/vite6Config.js';
-import { normalizePath } from '../../common/index.js';
+import { createWordPressViteConfig } from './utils';
 
-interface ConfigPluginConfig {
+type ConfigPluginConfig = {
 	outDir?: string;
 	minify?: boolean | 'esbuild' | 'terser';
 	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
@@ -19,7 +22,7 @@ interface ConfigPluginConfig {
 		format?: Record<string, any>;
 		output?: Record<string, any>;
 	};
-}
+};
 
 /**
  * Vite 6 Modern Configuration Plugin for WordPress
