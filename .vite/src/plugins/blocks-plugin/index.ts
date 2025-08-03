@@ -111,49 +111,6 @@ export function BlocksPlugin(config: Props): Plugin {
 					);
 				}
 
-				// Copy CSS files with WordPress naming convention
-				// editor.css -> index.css (editor styles)
-				try {
-					const editorCssSrc = resolve(block.path, 'editor.css');
-					const editorCssContent = await readFile(
-						editorCssSrc,
-						'utf-8'
-					);
-					this.emitFile({
-						type: 'asset',
-						fileName: `${destPath}/index.css`,
-						source: editorCssContent,
-					});
-				} catch (error) {
-					// editor.css doesn't exist, create empty file
-					this.emitFile({
-						type: 'asset',
-						fileName: `${destPath}/index.css`,
-						source: '',
-					});
-				}
-
-				// style.css -> style-index.css (frontend styles)
-				try {
-					const styleCssSrc = resolve(block.path, 'style.css');
-					const styleCssContent = await readFile(
-						styleCssSrc,
-						'utf-8'
-					);
-					this.emitFile({
-						type: 'asset',
-						fileName: `${destPath}/style-index.css`,
-						source: styleCssContent,
-					});
-				} catch (error) {
-					// style.css doesn't exist, create empty file
-					this.emitFile({
-						type: 'asset',
-						fileName: `${destPath}/style-index.css`,
-						source: '',
-					});
-				}
-
 				// Copy any PHP files
 				try {
 					const files = await readdir(block.path);

@@ -39,15 +39,31 @@ export const processStyle = (
 	try {
 		const cssContent = readStylesheet(actualStylePath);
 
-		// Create block-specific file path
-		const styleFileName = generateAssetFilename(
-			styleFile,
-			config.outputPath
-		);
+		// Determine output filename based on WordPress conventions
+		let outputFilename: string;
+		if (styleFile === 'editor.css') {
+			// WordPress convention: editor.css -> index.css
+			outputFilename = generateAssetFilename(
+				'index.css',
+				config.outputPath
+			);
+		} else if (styleFile === 'style.css') {
+			// WordPress convention: style.css -> style-index.css
+			outputFilename = generateAssetFilename(
+				'style-index.css',
+				config.outputPath
+			);
+		} else {
+			// Use original filename for other CSS files
+			outputFilename = generateAssetFilename(
+				styleFile,
+				config.outputPath
+			);
+		}
 
 		// Use LightningCSS to process and minify the CSS
 		const { code, map } = transform({
-			filename: styleFileName,
+			filename: outputFilename,
 			code: Buffer.from(cssContent),
 			minify: true,
 			sourceMap: true,
@@ -55,7 +71,7 @@ export const processStyle = (
 
 		pluginContext.emitFile({
 			type: 'asset',
-			fileName: styleFileName,
+			fileName: outputFilename,
 			source: code,
 		} satisfies EmittedAsset);
 
@@ -63,7 +79,7 @@ export const processStyle = (
 		if (map) {
 			pluginContext.emitFile({
 				type: 'asset',
-				fileName: `${styleFileName}.map`,
+				fileName: `${outputFilename}.map`,
 				source: map.toString(),
 			} satisfies EmittedAsset);
 		}

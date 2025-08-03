@@ -1,6 +1,8 @@
 /**
  * External dependencies
  */
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import type { PluginContext } from 'rollup';
 
 /**
@@ -12,7 +14,10 @@ import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
  * Internal dependencies
  */
 import { processScripts } from '../../../common/processors/scriptProcessor.ts';
-import { processStyles } from '../../../common/processors/styleProcessor.ts';
+import {
+	processStyle,
+	processStyles,
+} from '../../../common/processors/styleProcessor.ts';
 import { extractScripts, extractStyles } from './utils';
 import { generateOutputConfig } from './utils';
 
@@ -53,8 +58,47 @@ export async function sideloadBlocks(
 	// Process all scripts
 	await processScripts(this, scripts, config, sourcemap);
 
-	// Process all styles
+	// Process all styles from block.json
 	processStyles(this, styles, config);
+
+	// Handle WordPress convention CSS files with proper naming
+	// editor.css -> index.css (editor styles)
+	const editorCssPath = resolve(blockPath, 'editor.css');
+	if (existsSync(editorCssPath)) {
+		// Create a custom config for the editor CSS with WordPress naming convention
+		const editorConfig = {
+			...config,
+			outputPath: config.outputPath, // Will generate index.css automatically
+		};
+		processStyle(this, 'editor.css', editorConfig);
+	} else {
+		// Create empty editor CSS file if it doesn't exist
+		this.emitFile({
+			type: 'asset',
+			fileName: `${config.outputPath}/index.css`,
+			source: '',
+		});
+	}
+
+	// style.css -> style-index.css (frontend styles)
+	const styleCssPath = resolve(blockPath, 'style.css');
+	if (existsSync(styleCssPath)) {
+		// Create a custom config for the style CSS with WordPress naming convention
+		const styleConfig = {
+			...config,
+			outputPath: config.outputPath, // Will need to handle style-index.css naming
+		};
+		// For now, use the existing processor - we may need to enhance it later
+		// to handle the style-index.css naming convention
+		processStyle(this, 'style.css', styleConfig);
+	} else {
+		// Create empty style CSS file if it doesn't exist
+		this.emitFile({
+			type: 'asset',
+			fileName: `${config.outputPath}/style-index.css`,
+			source: '',
+		});
+	}
 
 	return true;
 }
