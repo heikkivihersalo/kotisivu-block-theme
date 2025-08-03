@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generatePhpAssetFile } from '../../../src/common/utils/generatePhpAssetFile';
+import { generatePhpAssetFile } from '../../../src/common/utils/lib/generatePhpAssetFile';
 
 describe('generatePhpAssetFile', () => {
 	it('should generate PHP file with array dependencies and empty hash', () => {

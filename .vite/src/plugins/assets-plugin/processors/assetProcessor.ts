@@ -15,7 +15,7 @@ import {
 /**
  * Internal dependencies
  */
-import type { DiscoveredAssetInfo } from '../../../common/types/index.js';
+import type { DiscoveredAssetInfo } from '../../../common/types/assets.ts';
 
 /**
  * Asset processor configuration

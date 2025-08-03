@@ -4,11 +4,15 @@
 import { statSync } from 'node:fs';
 
 /**
+ * Shared dependencies
+ */
+import { generateSourcePath } from '../../../common/utils';
+
+/**
  * Internal dependencies
  */
-import { generateSourcePath } from '../index.js';
-import type { BlockInfo } from '../types/index.js';
-import { findBlocksRecursively } from './utils/index.js';
+import { findBlocksRecursively } from './utils/findBlocksRecursively.ts';
+import type { BlockInfo } from '../types.ts';
 
 /**
  * Discover block.json files with custom path mappings
@@ -17,7 +21,7 @@ import { findBlocksRecursively } from './utils/index.js';
  * @param pwd - Current working directory to resolve relative paths
  * @return An array of BlockInfo objects for each discovered block
  */
-export function discoverBlocksWithMapping(
+export function discoverBlocksWithMappings(
 	pathMappings: Record<string, string>,
 	pwd: string
 ): BlockInfo[] {

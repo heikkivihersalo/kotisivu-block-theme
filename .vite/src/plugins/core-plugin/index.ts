@@ -10,11 +10,8 @@ import type { Plugin, ResolvedConfig } from 'vite';
 import { generateBundle } from './bundle/index.js';
 import { transform } from './transform/index.js';
 
-import type {
-	AssetInfo,
-	BlockInfo,
-	ChunkInfo,
-} from '../../common/types/index.js';
+import type { BlockInfo } from '../../common/types/blocks.ts';
+import type { AssetInfo, ChunkInfo } from '../../common/types/rollup.ts';
 
 interface CorePluginConfig {
 	dependencies?: string[];

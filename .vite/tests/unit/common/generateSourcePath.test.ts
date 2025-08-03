@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { generateSourcePath } from '../../../src/common/utils/generateSourcePath';
+import { generateSourcePath } from '../../../src/common/utils/lib/generateSourcePath';
 
 describe('generateSourcePath', () => {
 	let testDir: string;

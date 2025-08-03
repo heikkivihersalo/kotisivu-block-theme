@@ -1,6 +1,6 @@
 import { join, parse } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { extractFilenameWithoutExtension } from '../../../src/common/utils/extractFilenameWithoutExtension';
+import { extractFilenameWithoutExtension } from '../../../src/common/utils/lib/extractFilenameWithoutExtension';
 
 describe('extractFilenameWithoutExtension', () => {
 	it('should extract filename without extension from simple file path', () => {

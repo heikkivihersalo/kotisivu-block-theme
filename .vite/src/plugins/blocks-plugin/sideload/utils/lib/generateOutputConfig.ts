@@ -1,13 +1,12 @@
+/**
+ * External dependencies
+ */
 import { resolve } from 'node:path';
 
 /**
- * Output path configuration for block assets
+ * External dependencies
  */
-export type OutputConfig = {
-	basePath: string;
-	blockOutputDir: string;
-	outputPath?: string;
-};
+import type { OutputConfig } from '../../../types.ts';
 
 /**
  * Generate output configuration for block assets
@@ -45,14 +44,4 @@ export const generateOutputConfig = (
 		blockOutputDir,
 		outputPath,
 	};
-};
-
-/**
- * Generate asset filename with output path prefix
- */
-export const generateAssetFilename = (
-	filename: string,
-	outputPath?: string
-): string => {
-	return outputPath ? `${outputPath}/${filename}` : filename;
 };

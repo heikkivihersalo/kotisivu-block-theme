@@ -4,23 +4,24 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { discoverBlocksWithMapping } from '../../common/discovery/index.js';
 import { FILTERS, HOOKS, pluginHooks } from '../../common/hooks/index.js';
 import { normalizePath } from '../../common/index.js';
 import { generateBlockManifest } from './manifest/index.js';
+
 /**
  * Internal dependencies
  */
-import { sideloadBlocks } from './sideloadBlocks.js';
+import { sideloadBlocks } from './sideload';
+import { discoverBlocksWithMappings } from './discovery';
 
-import type { BlockInfo } from '../../common/types/index.js';
+import type { BlockInfo } from './types.ts';
 
-interface BlocksPluginConfig {
+type Props = {
 	blocksDir: Record<string, string>;
 	outDir?: string | undefined;
 	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 	watch?: string[];
-}
+};
 
 /**
  * Vite plugin for handling WordPress Gutenberg blocks
@@ -30,7 +31,7 @@ interface BlocksPluginConfig {
  * - Sideloading block entry points
  * - Generating block manifest files
  */
-export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
+export function BlocksPlugin(config: Props): Plugin {
 	const { blocksDir, outDir, sourcemap = false, watch = [] } = config;
 
 	let outputDirectory: string;
@@ -47,7 +48,7 @@ export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
 	// Async discovery function
 	const discoverBlocks = async () => {
 		// Discover blocks from block paths
-		discoveredBlocks = discoverBlocksWithMapping(blocksDir, pwd);
+		discoveredBlocks = discoverBlocksWithMappings(blocksDir, pwd);
 
 		if (discoveredBlocks.length === 0) {
 			throw new Error(

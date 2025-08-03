@@ -1,11 +1,24 @@
+/**
+ * External dependencies
+ */
 import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
-import { FILE_EXTENSIONS } from '../../../common/constants.js';
-import type { EmittedAsset } from '../../../common/types/index.js';
-import { readStylesheet } from '../utils';
-import { findActualStylePath } from '../utils/fileFinder.ts';
-import { generateAssetFilename } from '../utils/outputConfig.ts';
-import type { OutputConfig } from '../utils/outputConfig.ts';
+
+/**
+ * Shared dependencies
+ */
+import { FILE_EXTENSIONS } from '../../../../common/constants.ts';
+import type { EmittedAsset } from '../../../../common/types/rollup.ts';
+
+/**
+ * Internal dependencies
+ */
+import {
+	findActualStylePath,
+	generateAssetFilename,
+	readStylesheet,
+} from '../utils';
+import type { OutputConfig } from '../../types.ts';
 
 /**
  * Process a single style file

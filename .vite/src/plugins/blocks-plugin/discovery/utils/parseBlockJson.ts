@@ -1,5 +1,12 @@
+/**
+ * External dependencies
+ */
 import { readFileSync } from 'node:fs';
-import type { WordpressBlockJson } from '../../types/index.js';
+
+/**
+ * Internal dependencies
+ */
+import type { WordpressBlockJson } from '../../types.ts';
 
 /**
  * Helper function to safely parse block.json content

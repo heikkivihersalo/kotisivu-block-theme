@@ -1,21 +1,24 @@
-import { mkdirSync } from 'node:fs';
 /**
  * External dependencies
  */
 import { dirname, resolve } from 'node:path';
+import { mkdirSync } from 'node:fs';
 import { build as esBuild } from 'esbuild';
 import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../common/constants.js';
+/**
+ * Shared dependencies
+ */
+import {
+	ESBUILD_CONFIG,
+	WORDPRESS_CONFIG,
+} from '../../../../common/constants.js';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../../../common/index.js';
-/**
- * Internal dependencies
- */
-import type { DiscoveredAssetInfo } from '../../../common/types/index.js';
+} from '../../../../common/index.js';
+import type { DiscoveredAssetInfo } from '../../../../common/types/assets.ts';
 
 /**
  * Asset processor configuration

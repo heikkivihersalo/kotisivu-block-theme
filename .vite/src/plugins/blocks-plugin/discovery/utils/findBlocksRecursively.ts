@@ -1,9 +1,21 @@
+/**
+ * External dependencies
+ */
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
-import { DISCOVERY_CONFIG, FILE_NAMES } from '../../constants.js';
-import { safeReadDirectory } from '../../index.js';
-import type { BlockInfo } from '../../types/index.js';
-import { extractBlockName, parseBlockJson } from '../utils';
+
+/**
+ * Shared dependencies
+ */
+import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../../common/constants.ts';
+import { safeReadDirectory } from '../../../../common/utils';
+
+/**
+ * Internal dependencies
+ */
+import type { BlockInfo } from '../../types.ts';
+import { extractBlockName } from './extractBlockName.ts';
+import { parseBlockJson } from './parseBlockJson.ts';
 
 /**
  * Check if a directory should be skipped during block discovery

@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { generateFileHash } from '../../../src/common/utils/generateFileHash';
+import { generateFileHash } from '../../../src/common/utils/lib/generateFileHash';
 
 describe('generateFileHash', () => {
 	it('should generate consistent MD5 hash for the same content', () => {

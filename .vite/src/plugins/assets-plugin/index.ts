@@ -11,7 +11,7 @@ import { normalizePath } from '../../common/index.js';
  */
 import { sideloadAssets } from './sideloadAssets.js';
 
-import type { DiscoveredAssetInfo } from '../../common/types/index.js';
+import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
 
 interface AssetsPluginConfig {
 	assetsDir: Record<string, string>;

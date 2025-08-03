@@ -15,7 +15,7 @@ import {
 	generatePlugins,
 } from './src/plugins/index.js';
 
-import type { PluginConfig } from './src/common/types/index.js';
+import type { PluginConfig } from './src/common/types/plugin.ts';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
