@@ -1,8 +1,11 @@
 /**
  * Internal dependencies
  */
-import { generateFileHash } from '../../../../common/index.js';
-import type { AssetInfo, ChunkInfo } from '../../../../common/types/index.js';
+import { generateFileHash } from '../../../../../common/utils';
+import type {
+	AssetInfo,
+	ChunkInfo,
+} from '../../../../../common/types/rollup.ts';
 
 /**
  * Generate version hash from bundle content

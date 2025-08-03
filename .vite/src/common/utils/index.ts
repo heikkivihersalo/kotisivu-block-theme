@@ -1,4 +1,3 @@
-export * from './lib/environmentHelpers';
 export * from './lib/extractFilenameWithoutExtension';
 export * from './lib/generateFileHash';
 export * from './lib/generatePhpAssetFile';

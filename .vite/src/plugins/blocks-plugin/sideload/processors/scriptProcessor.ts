@@ -17,7 +17,7 @@ import {
 	extractFilenameWithoutExtension,
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../../../../common/index.js';
+} from '../../../../common/utils';
 
 import type { EmittedAsset } from '../../../../common/types/rollup.ts';
 

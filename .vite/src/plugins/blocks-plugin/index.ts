@@ -5,16 +5,15 @@ import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 import { FILTERS, HOOKS, pluginHooks } from '../../common/hooks/index.js';
-import { normalizePath } from '../../common/index.js';
+import { normalizePath } from '../../common/utils';
 import { generateBlockManifest } from './manifest/index.js';
+import type { BlockInfo } from '../../common/types/blocks.ts';
 
 /**
  * Internal dependencies
  */
 import { sideloadBlocks } from './sideload';
 import { discoverBlocksWithMappings } from './discovery';
-
-import type { BlockInfo } from './types.ts';
 
 type Props = {
 	blocksDir: Record<string, string>;
