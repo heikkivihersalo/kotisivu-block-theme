@@ -8,6 +8,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 
 import { FILTERS, HOOKS, pluginHooks } from '../../common/hooks/index.js';
 import { normalizePath } from '../../common/utils';
+import { processPhpFiles } from '../../common/processors';
 import { generateBlockManifest } from './manifest/index.js';
 import type { BlockInfo } from '../../common/types/blocks.ts';
 
@@ -111,30 +112,23 @@ export function BlocksPlugin(config: Props): Plugin {
 					);
 				}
 
-				// Copy any PHP files
+				// Process PHP files with minification
 				try {
 					const files = await readdir(block.path);
 					const phpFiles = files.filter((file) =>
 						file.endsWith('.php')
 					);
 
-					for (const phpFile of phpFiles) {
-						const phpSrc = resolve(block.path, phpFile);
-						const phpFileName = `${destPath}/${phpFile}`;
+					const phpFileInfos = phpFiles.map((phpFile) => ({
+						sourcePath: resolve(block.path, phpFile),
+						outputPath: `${destPath}/${phpFile}`,
+					}));
 
-						try {
-							const phpContent = await readFile(phpSrc, 'utf-8');
-							this.emitFile({
-								type: 'asset',
-								fileName: phpFileName,
-								source: phpContent,
-							});
-						} catch (error) {
-							console.warn(
-								`Warning: Could not copy ${phpFile} for block ${block.name}:`,
-								error
-							);
-						}
+					if (phpFileInfos.length > 0) {
+						// Process PHP files with minification enabled in production
+						const shouldMinify =
+							process.env.NODE_ENV === 'production';
+						processPhpFiles(this, phpFileInfos, shouldMinify);
 					}
 				} catch (error) {
 					console.warn(

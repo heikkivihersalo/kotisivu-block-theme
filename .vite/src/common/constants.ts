@@ -100,6 +100,7 @@ export const WORDPRESS_EXTERNALS: Record<string, string> = {
 	'@wordpress/notices': 'window.wp.notices',
 	'@wordpress/rich-text': 'window.wp.richText',
 	'@wordpress/url': 'window.wp.url',
+	'@wordpress/server-side-render': 'window.wp.serverSideRender',
 	jquery: 'window.jQuery',
 	lodash: 'window.lodash',
 } as const;

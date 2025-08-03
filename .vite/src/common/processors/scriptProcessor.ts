@@ -68,14 +68,34 @@ export const processScript = async (
 			{
 				name: 'alias-wordpress-and-react',
 				setup(build) {
-					build.onResolve({ filter: /^@wordpress\/.*/ }, (args) => {
-						const packageName = args.path
-							.replace('@wordpress/', 'wp-')
-							.replace(/-([a-z])/g, (_, letter) =>
-								letter.toUpperCase()
-							);
+					// Valid WordPress dependency handles - wp-icons is not valid as it's part of wp-components
+					const validWpDependencies = [
+						'wp-element',
+						'wp-blocks',
+						'wp-block-editor',
+						'wp-components',
+						'wp-data',
+						'wp-i18n',
+						'wp-api-fetch',
+						'wp-compose',
+						'wp-hooks',
+						'wp-notices',
+						'wp-rich-text',
+						'wp-url',
+						'wp-server-side-render',
+					];
 
-						if (!wpImports.includes(packageName)) {
+					build.onResolve({ filter: /^@wordpress\/.*/ }, (args) => {
+						const packageName = args.path.replace(
+							'@wordpress/',
+							'wp-'
+						);
+
+						// Only add valid WordPress dependencies
+						if (
+							validWpDependencies.includes(packageName) &&
+							!wpImports.includes(packageName)
+						) {
 							wpImports.push(packageName);
 						}
 
@@ -84,7 +104,6 @@ export const processScript = async (
 							external: true,
 						};
 					});
-
 					build.onResolve({ filter: /^react$/ }, (args) => {
 						if (!wpImports.includes('wp-element')) {
 							wpImports.push('wp-element');
