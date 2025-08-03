@@ -1,7 +1,7 @@
-import { describe, test, expect, beforeAll } from 'vitest';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { glob } from 'glob';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 /**
  * Integration tests for asset generation in the Vite build process

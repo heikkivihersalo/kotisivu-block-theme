@@ -1,6 +1,6 @@
-import { describe, test, expect, beforeAll } from 'vitest';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 /**
  * Integration tests for block manifest generation in the Vite build process

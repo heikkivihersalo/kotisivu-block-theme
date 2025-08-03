@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { findBlocksRecursively } from '../../../src/discovery/utils/findBlocksRecursively';
+import { join } from 'node:path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { findBlocksRecursively } from '../../../src/common/discovery/utils/findBlocksRecursively';
 
 describe('findBlocksRecursively', () => {
 	let testDir: string;
@@ -66,7 +66,7 @@ describe('findBlocksRecursively', () => {
 
 		expect(result).toHaveLength(3);
 
-		const blockNames = result.map((block) => block.name).sort();
+		const blockNames = result.map((block: any) => block.name).sort();
 		expect(blockNames).toEqual(['block-one', 'block-three', 'block-two']);
 	});
 
@@ -135,7 +135,7 @@ describe('findBlocksRecursively', () => {
 
 		expect(result).toHaveLength(3);
 
-		const blockNames = result.map((block) => block.name).sort();
+		const blockNames = result.map((block: any) => block.name).sort();
 		expect(blockNames).toEqual([
 			'deep-block',
 			'nested-block',
@@ -332,7 +332,7 @@ describe('findBlocksRecursively', () => {
 
 		expect(result).toHaveLength(3);
 
-		const blockNames = result.map((block) => block.name).sort();
+		const blockNames = result.map((block: any) => block.name).sort();
 		expect(blockNames).toEqual(['тест-блок', '测试块', '🚀-block']);
 	});
 

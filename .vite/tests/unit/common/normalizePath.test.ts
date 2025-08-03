@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { sep } from 'node:path';
+import { describe, expect, it } from 'vitest';
 import { normalizePath } from '../../../src/common/utils/normalizePath';
 
 describe('normalizePath', () => {
@@ -42,8 +42,6 @@ describe('normalizePath', () => {
 	});
 
 	it('should handle Windows-style paths', () => {
-		const originalSep = sep;
-
 		// Test with backslash separator (Windows-style)
 		const path = 'C:\\Users\\Documents';
 		const result = normalizePath(path);

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { join, parse } from 'node:path';
+import { describe, expect, it } from 'vitest';
 import { extractFilenameWithoutExtension } from '../../../src/common/utils/extractFilenameWithoutExtension';
 
 describe('extractFilenameWithoutExtension', () => {

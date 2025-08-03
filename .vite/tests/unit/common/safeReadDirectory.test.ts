@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { mkdirSync, rmSync, writeFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { safeReadDirectory } from '../../../src/common/utils/safeReadDirectory';
 
 describe('safeReadDirectory', () => {

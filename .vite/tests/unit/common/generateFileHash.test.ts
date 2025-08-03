@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { createHash } from 'node:crypto';
+import { describe, expect, it } from 'vitest';
 import { generateFileHash } from '../../../src/common/utils/generateFileHash';
 
 describe('generateFileHash', () => {

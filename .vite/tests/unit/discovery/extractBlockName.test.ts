@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { extractBlockName } from '../../../src/discovery/utils/extractBlockName';
+import { describe, expect, it } from 'vitest';
+import { extractBlockName } from '../../../src/common/discovery/utils/extractBlockName';
 
 describe('extractBlockName', () => {
 	it('should extract block name from Unix-style path', () => {

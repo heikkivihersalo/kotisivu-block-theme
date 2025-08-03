@@ -1,13 +1,13 @@
 /**
  * External dependencies
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import * as commonUtils from '../../../src/common/index';
 /**
  * Internal dependencies
  */
-import { generateVersionHash } from '../../../src/bundle/utils/generateVersionHash';
-import * as commonUtils from '../../../src/common/index';
+import { generateVersionHash } from '../../../src/plugins/core-plugin/bundle/utils/generateVersionHash';
 
 // Mock the generateFileHash function
 vi.mock('../../../src/common/index', () => ({

@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 /**
  * Internal dependencies
  */
-import { extractWpDependencies } from '../../../src/bundle/utils/extractWpDependencies';
+import { extractWpDependencies } from '../../../src/plugins/core-plugin/bundle/utils/extractWpDependencies';
 
 describe('extractWpDependencies', () => {
 	it('should extract WordPress dependencies from bundle files', () => {
