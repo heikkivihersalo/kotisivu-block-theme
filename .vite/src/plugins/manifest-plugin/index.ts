@@ -1,33 +1,40 @@
-import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 /**
  * External dependencies
  */
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Plugin, ResolvedConfig } from 'vite';
 
+/**
+ * Shared dependencies
+ */
 import { normalizePath } from '../../common/index.js';
+
 /**
  * Internal dependencies
  */
 import {
 	convertViteManifestToWordPress,
 	generateWordPressEnqueueFile,
-} from '../../common/utils/manifestHelpers.js';
+} from './tools';
 
-interface ManifestPluginConfig {
+type Props = {
 	outDir?: string;
 	generatePhpManifest?: boolean;
 	publicPath?: string;
 	textDomain?: string;
-}
+};
 
 /**
- * Vite 6 Enhanced Manifest Plugin for WordPress
+ * Vite plugin for generating WordPress-compatible asset manifests
  *
- * Leverages Vite 6's improved manifest generation to create
- * WordPress-compatible asset manifests and PHP enqueue files
+ * This plugin reads the Vite 6 manifest and generates a PHP file for WordPress
+ * enqueueing assets, along with a JSON version for debugging.
+ *
+ * @param config - Configuration options for the plugin.
+ * @return A Vite plugin that processes the manifest and generates WordPress-compatible files.
  */
-export function ManifestPlugin(config: ManifestPluginConfig = {}): Plugin {
+export function ManifestPlugin(config: Props = {}): Plugin {
 	const {
 		outDir = 'build',
 		generatePhpManifest = true,
