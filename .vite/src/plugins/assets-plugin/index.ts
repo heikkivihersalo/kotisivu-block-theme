@@ -4,21 +4,24 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { discoverAssetsWithMapping } from '../../common/discovery/index.js';
+/**
+ * Shared dependencies
+ */
 import { normalizePath } from '../../common/index.js';
+import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
+
 /**
  * Internal dependencies
  */
-import { sideloadAssets } from './sideloadAssets.js';
+import { discoverAssetsWithMapping } from './discovery';
+import { sideloadAssets } from './sideload';
 
-import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
-
-interface AssetsPluginConfig {
+type AssetsPluginConfig = {
 	assetsDir: Record<string, string>;
 	outDir?: string | undefined;
 	dependencies?: string[];
 	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-}
+};
 
 /**
  * Vite plugin for handling WordPress assets
