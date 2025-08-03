@@ -1,4 +1,5 @@
 export * from './lib/extractFilenameWithoutExtension';
+export * from './lib/extractWpDependencies';
 export * from './lib/findActualFilePath';
 export * from './lib/findActualStylePath';
 export * from './lib/generateAssetFilename';

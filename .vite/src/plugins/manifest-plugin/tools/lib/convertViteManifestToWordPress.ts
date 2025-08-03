@@ -1,9 +1,13 @@
 /**
+ * Shared dependencies
+ */
+import { extractWpDependencies } from '../../../../common/utils';
+
+/**
  * Internal dependencies
  */
 import type { ViteManifest, WordPressAssetManifest } from '../../types.ts';
 import {
-	extractWordPressDependencies,
 	generateVersionFromFile,
 	shouldLoadInFooter,
 } from '../../utils/index.ts';
@@ -30,7 +34,7 @@ export function convertViteManifestToWordPress(
 			wpManifest[assetKey] = {
 				file: `${publicPath}${chunk.file}`,
 				css: (chunk.css || []).map((css) => `${publicPath}${css}`),
-				dependencies: extractWordPressDependencies(chunk),
+				dependencies: extractWpDependencies(chunk.imports),
 				version: generateVersionFromFile(chunk.file),
 				in_footer: shouldLoadInFooter(chunk.src),
 			};

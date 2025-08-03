@@ -6,7 +6,10 @@ import type { OutputOptions, PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { generatePhpAssetFile } from '../../../common/utils';
+import {
+	generatePhpAssetFile,
+	extractWpDependencies,
+} from '../../../common/utils';
 
 import type {
 	AssetInfo,
@@ -17,7 +20,7 @@ import type {
 /**
  * Internal dependencies
  */
-import { extractWpDependencies, generateVersionHash } from './utils';
+import { generateVersionHash } from './utils';
 
 /**
  * generateBundle
