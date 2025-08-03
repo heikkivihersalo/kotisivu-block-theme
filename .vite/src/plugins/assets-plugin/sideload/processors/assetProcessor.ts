@@ -18,6 +18,7 @@ import {
 	generateFileHash,
 	generatePhpAssetFile,
 } from '../../../../common/utils';
+import { scssPlugin } from '../../../../common/plugins/scssPlugin.ts';
 
 import type { DiscoveredAssetInfo } from '../../../../common/types/assets.ts';
 
@@ -74,6 +75,7 @@ export const processAssets = async (
 				jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
 				jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 				minify: process.env.NODE_ENV === 'production',
+				plugins: [scssPlugin],
 				outExtension: {
 					'.js': '.js',
 					'.css': '.css',

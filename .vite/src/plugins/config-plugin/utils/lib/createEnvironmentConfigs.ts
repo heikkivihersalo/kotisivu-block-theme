@@ -29,9 +29,7 @@ export function createEnvironmentConfigs(baseConfig: WordPressViteConfig = {}) {
 				outDir: `${baseConfig.outDir || 'build'}/admin`,
 				rollupOptions: {
 					...baseViteConfig.build?.rollupOptions,
-					input: {
-						admin: 'src/admin/main.js',
-					},
+					// Remove hardcoded input - let the WordPress plugin handle entry points
 				},
 			},
 		},
@@ -44,9 +42,7 @@ export function createEnvironmentConfigs(baseConfig: WordPressViteConfig = {}) {
 				outDir: `${baseConfig.outDir || 'build'}/editor`,
 				rollupOptions: {
 					...baseViteConfig.build?.rollupOptions,
-					input: {
-						editor: 'src/editor/main.js',
-					},
+					// Remove hardcoded input - let the WordPress plugin handle entry points
 				},
 			},
 		},

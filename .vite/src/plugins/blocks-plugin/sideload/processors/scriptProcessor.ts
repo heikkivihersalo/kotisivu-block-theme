@@ -20,6 +20,7 @@ import {
 	generateFileHash,
 	generatePhpAssetFile,
 } from '../../../../common/utils';
+import { scssPlugin } from '../../../../common/plugins/scssPlugin.ts';
 
 import type { EmittedAsset } from '../../../../common/types/rollup.ts';
 import type { OutputConfig } from '../../../../common/types/assets.ts';
@@ -62,6 +63,7 @@ export const processScript = async (
 		jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 		external: ['react', 'react-dom'], // Externalize React dependencies
 		plugins: [
+			scssPlugin,
 			{
 				name: 'alias-wordpress-and-react',
 				setup(build) {

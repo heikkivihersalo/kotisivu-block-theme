@@ -66,6 +66,10 @@ export const ESBUILD_CONFIG = {
 		'.jsx': 'jsx',
 		'.ts': 'tsx',
 		'.tsx': 'tsx',
+		'.css': 'css',
+		'.scss': 'css',
+		'.sass': 'css',
+		'.less': 'css',
 	} as const,
 } as const;
 
@@ -73,7 +77,7 @@ export const ESBUILD_CONFIG = {
  * Regular expression patterns
  */
 export const REGEX_PATTERNS = {
-	CSS_FILE_EXTENSION: /\.(post|s)?css$/i,
+	CSS_FILE_EXTENSION: /\.(css|scss|sass|less|postcss)$/i,
 	SCRIPT_FILE_EXTENSION: /\.(js|jsx|ts|tsx)$/,
 	STYLE_FILE_EXTENSION: /\.(css|scss|sass|less)$/,
 } as const;

@@ -52,5 +52,21 @@ export function ConfigPlugin(pluginConfig: ConfigPluginConfig): Plugin {
 				enableFuture: true,
 			});
 		},
+
+		resolveId(id: string) {
+			if (id === 'virtual:wordpress-entry') {
+				return id;
+			}
+			return null;
+		},
+
+		load(id: string) {
+			if (id === 'virtual:wordpress-entry') {
+				// Return minimal content for virtual entry point
+				// Actual builds happen through WordPress sideloading
+				return 'console.log("WordPress blocks built via sideloading");';
+			}
+			return null;
+		},
 	};
 }

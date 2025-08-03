@@ -61,6 +61,9 @@ export function createWordPressViteConfig(
 
 		// Rollup configuration optimized for WordPress
 		rollupOptions: {
+			// Provide virtual entry point to satisfy Vite's requirements
+			// Actual building happens through WordPress plugin sideloading
+			input: 'virtual:wordpress-entry',
 			external: Object.keys(WORDPRESS_EXTERNALS),
 			output: {
 				globals: WORDPRESS_EXTERNALS,
@@ -90,6 +93,9 @@ export function createWordPressViteConfig(
 	const viteConfig: UserConfig = {
 		build: buildConfig,
 
+		// Disable public directory copying for WordPress themes
+		publicDir: false,
+
 		// Optimized for WordPress development
 		define: {
 			'process.env.NODE_ENV': JSON.stringify(
@@ -108,6 +114,14 @@ export function createWordPressViteConfig(
 		// CSS handling optimized for WordPress
 		css: {
 			devSourcemap: sourcemap !== false,
+			preprocessorOptions: {
+				scss: {
+					// Basic SCSS configuration
+				},
+				sass: {
+					// Basic Sass configuration
+				},
+			},
 			postcss: {
 				plugins: [
 					// Add postcss plugins as needed
