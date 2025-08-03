@@ -1,6 +1,7 @@
 export * from './lib/extractFilenameWithoutExtension';
 export * from './lib/findActualFilePath';
 export * from './lib/findActualStylePath';
+export * from './lib/generateAssetFilename';
 export * from './lib/generateFileHash';
 export * from './lib/generatePhpAssetFile';
 export * from './lib/generateSourcePath';

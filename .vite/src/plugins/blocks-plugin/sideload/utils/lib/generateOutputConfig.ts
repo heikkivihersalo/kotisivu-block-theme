@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 /**
  * External dependencies
  */
-import type { OutputConfig } from '../../../types';
+import type { OutputConfig } from '../../../../../common/types/assets.ts';
 
 /**
  * Generate output configuration for block assets

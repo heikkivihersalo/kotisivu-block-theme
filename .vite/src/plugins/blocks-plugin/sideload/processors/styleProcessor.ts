@@ -7,15 +7,14 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { findActualStylePath, readStylesheet } from '../../../../common/utils';
+import {
+	findActualStylePath,
+	generateAssetFilename,
+	readStylesheet,
+} from '../../../../common/utils';
 import { FILE_EXTENSIONS } from '../../../../common/constants.ts';
 import type { EmittedAsset } from '../../../../common/types/rollup.ts';
-
-/**
- * Internal dependencies
- */
-import { generateAssetFilename } from '../utils';
-import type { OutputConfig } from '../../types.ts';
+import type { OutputConfig } from '../../../../common/types/assets.ts';
 
 /**
  * Process a single style file
