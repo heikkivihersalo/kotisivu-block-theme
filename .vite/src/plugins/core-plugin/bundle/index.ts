@@ -4,14 +4,19 @@
 import type { OutputOptions, PluginContext } from 'rollup';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
-import { generatePhpAssetFile } from '../../../common/index.js';
+import { generatePhpAssetFile } from '../../../common/utils';
+
 import type {
 	AssetInfo,
 	ChunkInfo,
 	EmittedAsset,
-} from '../../../common/types/index.js';
+} from '../../../common/types/rollup.ts';
+
+/**
+ * Internal dependencies
+ */
 import { extractWpDependencies, generateVersionHash } from './utils';
 
 /**

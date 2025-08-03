@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import type { AssetInfo, ChunkInfo } from '../../../../common/types/rollup.ts';
+import type {
+	AssetInfo,
+	ChunkInfo,
+} from '../../../../../common/types/rollup.ts';
 
 /**
  * Extract WordPress dependencies from bundle files

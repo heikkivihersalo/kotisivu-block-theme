@@ -1,18 +1,21 @@
+/**
+ * External dependencies
+ */
 import { sep } from 'node:path';
 import type { PluginContext } from 'rollup';
 import { type ResolvedConfig, preprocessCSS } from 'vite';
-import { REGEX_PATTERNS } from '../../../common/constants.js';
-import type {
-	EmittedAsset,
-	WordpressBlockJson,
-} from '../../../common/types/index.js';
 
-function trimSlashes(filename: string): string {
-	return filename.replace(/^[/\\]+|[/\\]+$/g, '');
-}
-function wrapArray<T>(maybeArray: T | T[]): T[] {
-	return Array.isArray(maybeArray) ? maybeArray : [maybeArray];
-}
+/**
+ * Shared dependencies
+ */
+import { REGEX_PATTERNS } from '../../../common/constants.js';
+import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
+import type { EmittedAsset } from '../../../common/types/rollup.ts';
+
+/**
+ * Internal dependencies
+ */
+import { trimSlashes, wrapArray } from './utils/';
 
 /**
  * transform

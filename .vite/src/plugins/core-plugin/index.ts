@@ -5,18 +5,21 @@ import type { OutputBundle, OutputOptions, PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
-import { generateBundle } from './bundle/index.js';
-import { transform } from './transform/index.js';
-
 import type { BlockInfo } from '../../common/types/blocks.ts';
 import type { AssetInfo, ChunkInfo } from '../../common/types/rollup.ts';
 
-interface CorePluginConfig {
+/**
+ * Internal dependencies
+ */
+import { generateBundle } from './bundle';
+import { transform } from './transform';
+
+type Props = {
 	dependencies?: string[];
 	discoveredBlocks?: BlockInfo[];
-}
+};
 
 /**
  * Modern Vite 6 plugin for core WordPress Gutenberg functionality
@@ -26,7 +29,7 @@ interface CorePluginConfig {
  * - Modern plugin hooks
  * - Enhanced bundle generation
  */
-export function CorePlugin(pluginConfig: CorePluginConfig): Plugin {
+export function CorePlugin(pluginConfig: Props): Plugin {
 	const { dependencies = [], discoveredBlocks = [] } = pluginConfig;
 
 	let _config: ResolvedConfig;

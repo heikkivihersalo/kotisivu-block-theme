@@ -1,2 +1,2 @@
-export * from './extractWpDependencies.ts';
-export * from './generateVersionHash.ts';
+export * from './lib/extractWpDependencies.ts';
+export * from './lib/generateVersionHash.ts';
