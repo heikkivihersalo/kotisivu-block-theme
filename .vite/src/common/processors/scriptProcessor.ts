@@ -62,69 +62,187 @@ export const processScript = async (
 		jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
 		jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 		minify: process.env.NODE_ENV === 'production',
-		external: ['react', 'react-dom'], // Externalize React dependencies
 		plugins: [
 			scssPlugin,
 			{
 				name: 'alias-wordpress-and-react',
 				setup(build) {
-					// Valid WordPress dependency handles - wp-icons is not valid as it's part of wp-components
-					const validWpDependencies = [
-						'wp-element',
-						'wp-blocks',
-						'wp-block-editor',
-						'wp-components',
-						'wp-data',
-						'wp-i18n',
-						'wp-api-fetch',
-						'wp-compose',
-						'wp-hooks',
-						'wp-notices',
-						'wp-rich-text',
-						'wp-url',
-						'wp-server-side-render',
-					];
-
-					build.onResolve({ filter: /^@wordpress\/.*/ }, (args) => {
-						const packageName = args.path.replace(
-							'@wordpress/',
-							'wp-'
-						);
-
-						// Only add valid WordPress dependencies
-						if (
-							validWpDependencies.includes(packageName) &&
-							!wpImports.includes(packageName)
-						) {
-							wpImports.push(packageName);
-						}
-
+					// Intercept @wordpress/* paths
+					build.onResolve({ filter: /^@wordpress\// }, (args) => {
 						return {
 							path: args.path,
-							external: true,
+							namespace: 'wordpress-alias',
 						};
 					});
+
+					// Generate a shim for @wordpress/* imports
+					build.onLoad(
+						{ filter: /.*/, namespace: 'wordpress-alias' },
+						(args) => {
+							const moduleName = args.path.split('/')[1];
+							const wpHandle = 'wp-' + moduleName;
+
+							// Convert kebab-case to camelCase for window.wp properties
+							const globalName =
+								moduleName === 'block-editor'
+									? 'blockEditor'
+									: moduleName.replace(/-([a-z])/g, (g) =>
+											g[1].toUpperCase()
+										);
+
+							// Only add valid WordPress dependencies
+							const validWpDependencies = [
+								'wp-element',
+								'wp-blocks',
+								'wp-block-editor',
+								'wp-components',
+								'wp-data',
+								'wp-i18n',
+								'wp-api-fetch',
+								'wp-compose',
+								'wp-hooks',
+								'wp-notices',
+								'wp-rich-text',
+								'wp-url',
+								'wp-server-side-render',
+							];
+
+							if (
+								validWpDependencies.includes(wpHandle) &&
+								!wpImports.includes(wpHandle)
+							) {
+								wpImports.push(wpHandle);
+							}
+
+							return {
+								contents: `
+								const wpModule = window.wp.${globalName};
+								for (const key in wpModule) {
+									if (Object.prototype.hasOwnProperty.call(wpModule, key)) {
+										exports[key] = wpModule[key];
+									}
+								}
+							`,
+								loader: 'js',
+							};
+						}
+					);
+
+					// Handle React imports
 					build.onResolve({ filter: /^react$/ }, (args) => {
-						if (!wpImports.includes('wp-element')) {
-							wpImports.push('wp-element');
-						}
-
 						return {
 							path: args.path,
-							external: true,
+							namespace: 'react-alias',
 						};
 					});
 
+					build.onLoad(
+						{ filter: /.*/, namespace: 'react-alias' },
+						() => {
+							if (!wpImports.includes('wp-element')) {
+								wpImports.push('wp-element');
+							}
+
+							return {
+								contents: `
+								const wpElement = window.wp.element;
+								module.exports = wpElement;
+							`,
+								loader: 'js',
+							};
+						}
+					);
+
+					// Handle React DOM imports
 					build.onResolve({ filter: /^react-dom$/ }, (args) => {
-						if (!wpImports.includes('wp-element')) {
-							wpImports.push('wp-element');
-						}
-
 						return {
 							path: args.path,
-							external: true,
+							namespace: 'react-dom-alias',
 						};
 					});
+
+					build.onLoad(
+						{ filter: /.*/, namespace: 'react-dom-alias' },
+						() => {
+							if (!wpImports.includes('wp-element')) {
+								wpImports.push('wp-element');
+							}
+
+							return {
+								contents: `
+								const wpElement = window.wp.element;
+								module.exports = wpElement;
+							`,
+								loader: 'js',
+							};
+						}
+					);
+
+					// Handle React JSX Runtime imports
+					build.onResolve(
+						{ filter: /^react\/jsx-runtime$/ },
+						(args) => {
+							return {
+								path: args.path,
+								namespace: 'react-jsx-runtime-alias',
+							};
+						}
+					);
+
+					build.onLoad(
+						{ filter: /.*/, namespace: 'react-jsx-runtime-alias' },
+						() => {
+							if (!wpImports.includes('wp-element')) {
+								wpImports.push('wp-element');
+							}
+
+							return {
+								contents: `
+								const wpElement = window.wp.element;
+								module.exports = {
+									jsx: wpElement.createElement,
+									jsxs: wpElement.createElement,
+									Fragment: wpElement.Fragment
+								};
+							`,
+								loader: 'js',
+							};
+						}
+					);
+
+					// Handle React JSX Dev Runtime imports
+					build.onResolve(
+						{ filter: /^react\/jsx-dev-runtime$/ },
+						(args) => {
+							return {
+								path: args.path,
+								namespace: 'react-jsx-dev-runtime-alias',
+							};
+						}
+					);
+
+					build.onLoad(
+						{
+							filter: /.*/,
+							namespace: 'react-jsx-dev-runtime-alias',
+						},
+						() => {
+							if (!wpImports.includes('wp-element')) {
+								wpImports.push('wp-element');
+							}
+
+							return {
+								contents: `
+								const wpElement = window.wp.element;
+								module.exports = {
+									jsxDEV: wpElement.createElement,
+									Fragment: wpElement.Fragment
+								};
+							`,
+								loader: 'js',
+							};
+						}
+					);
 				},
 			},
 		],
