@@ -4,14 +4,17 @@
 import type { PluginContext } from 'rollup';
 
 /**
+ * Shared dependencies
+ */
+import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
+
+/**
  * Internal dependencies
  */
 import { processScripts } from './processors/scriptProcessor.js';
 import { processStyles } from './processors/styleProcessor.js';
 import { extractScripts, extractStyles } from './utils';
 import { generateOutputConfig } from './utils';
-
-import type { WordpressBlockJson } from '../types.ts';
 
 /**
  * Sideloads block assets (scripts and styles) based on the provided block.json

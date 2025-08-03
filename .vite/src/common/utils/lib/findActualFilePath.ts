@@ -1,13 +1,6 @@
-/**
- * External dependencies
- */
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-
-/**
- * Shared dependencies
- */
-import { FILE_EXTENSIONS } from '../../../../../common/constants.ts';
+import { FILE_EXTENSIONS } from '../../constants.ts';
 
 /**
  * Find the actual file path considering different extensions

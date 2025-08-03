@@ -1,17 +1,10 @@
-/**
- * External dependencies
- */
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-
-/**
- * Shared dependencies
- */
 import {
 	FILE_EXTENSIONS,
 	FILE_NAMES,
 	STYLE_FILE_ALTERNATIVES,
-} from '../../../../../common/constants.ts';
+} from '../../constants.ts';
 
 /**
  * Find the actual style file path considering different extensions and filename patterns

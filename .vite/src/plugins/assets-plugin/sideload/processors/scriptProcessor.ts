@@ -5,25 +5,28 @@ import { build as esBuild } from 'esbuild';
 import type { PluginContext } from 'rollup';
 
 /**
- * Internal dependencies
+ * Shared dependencies
  */
-import { findActualFilePath } from '../utils/fileFinder.ts';
-
+import { findActualFilePath } from '../../../../common/utils';
 import {
 	extractFilenameWithoutExtension,
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../../../common/index.js';
+} from '../../../../common/utils';
 
 import {
 	ESBUILD_CONFIG,
 	FILE_EXTENSIONS,
 	WORDPRESS_CONFIG,
-} from '../../../common/constants.js';
-import { generateAssetFilename } from '../utils/outputConfig.ts';
+} from '../../../../common/constants.ts';
 
-import type { EmittedAsset } from '../../../common/types/index.js';
-import type { OutputConfig } from '../utils/outputConfig.ts';
+import type { EmittedAsset } from '../../../../common/types/rollup.ts';
+
+/**
+ * Internal dependencies
+ */
+import { generateAssetFilename } from '../utils';
+import type { OutputConfig } from '../../types.ts';
 
 /**
  * Process a single script file

@@ -15,6 +15,7 @@ import {
 
 import {
 	extractFilenameWithoutExtension,
+	findActualFilePath,
 	generateFileHash,
 	generatePhpAssetFile,
 } from '../../../../common/utils';
@@ -24,7 +25,7 @@ import type { EmittedAsset } from '../../../../common/types/rollup.ts';
 /**
  * Internal dependencies
  */
-import { findActualFilePath, generateAssetFilename } from '../utils';
+import { generateAssetFilename } from '../utils';
 import type { OutputConfig } from '../../types.ts';
 
 /**

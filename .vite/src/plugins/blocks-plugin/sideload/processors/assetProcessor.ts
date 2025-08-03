@@ -17,7 +17,7 @@ import {
 import {
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../../../../common/index.js';
+} from '../../../../common/utils';
 import type { DiscoveredAssetInfo } from '../../../../common/types/assets.ts';
 
 /**
