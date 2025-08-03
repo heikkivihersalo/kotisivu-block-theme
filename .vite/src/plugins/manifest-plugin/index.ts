@@ -8,7 +8,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Shared dependencies
  */
-import { normalizePath } from '../../common/index.js';
+import { normalizePath } from '../../common/utils';
 
 /**
  * Internal dependencies
