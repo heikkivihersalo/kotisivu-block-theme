@@ -1,30 +1,31 @@
-import { mkdirSync } from 'node:fs';
 /**
  * External dependencies
  */
+import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { build as esBuild } from 'esbuild';
 import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
+/**
+ * Shared dependencies
+ */
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../common/constants.js';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
 } from '../../../common/index.js';
-/**
- * Internal dependencies
- */
+
 import type { DiscoveredAssetInfo } from '../../../common/types/assets.ts';
 
 /**
  * Asset processor configuration
  */
-interface AssetProcessorConfig {
+type AssetProcessorConfig = {
 	outputDirectory: string;
 	dependencies?: string[];
 	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-}
+};
 
 /**
  * Process generic assets and generate corresponding PHP asset files

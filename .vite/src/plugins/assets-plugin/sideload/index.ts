@@ -14,17 +14,17 @@ import { processAssets } from './processors/assetProcessor.ts';
  *
  */
 export async function sideloadAssets(
-	this: PluginContext,
-	discoveredAssets: DiscoveredAssetInfo[],
-	outputDirectory: string,
-	dependencies: string[] = [],
-	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+    this: PluginContext,
+    discoveredAssets: DiscoveredAssetInfo[],
+    outputDirectory: string,
+    dependencies: string[] = [],
+    sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<boolean> {
-	await processAssets(this, discoveredAssets, {
-		outputDirectory,
-		dependencies,
-		sourcemap,
-	});
+    await processAssets(this, discoveredAssets, {
+        outputDirectory,
+        dependencies,
+        sourcemap,
+    });
 
-	return true;
+    return true;
 }
