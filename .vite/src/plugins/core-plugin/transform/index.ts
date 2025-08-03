@@ -29,12 +29,15 @@ export async function transform(
 	code: string,
 	id: string,
 	blockFile: WordpressBlockJson,
-	config: ResolvedConfig
+	config: ResolvedConfig,
+	_environment?: any
 ): Promise<string | boolean | void> {
 	const [filename] = id.split('?');
-	const isStylesheet =
-		REGEX_PATTERNS.CSS_FILE_EXTENSION.test(filename) === true;
+	const isStylesheet = REGEX_PATTERNS.CSS_FILE_EXTENSION.test(filename);
 	if (!isStylesheet) return;
+
+	// Modern Vite 6: Environment is available for future enhancements
+	// const isServer = isServerEnvironment(environment);
 
 	const result = await preprocessCSS(code, id, config);
 

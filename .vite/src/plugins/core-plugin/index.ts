@@ -8,8 +8,8 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Internal dependencies
  */
 import { generateBundle } from './bundle/index.js';
-import { options, outputOptions } from './options/index.js';
 import { transform } from './transform/index.js';
+import { pluginHooks, HOOKS } from '../../common/hooks/index.js';
 
 import type {
 	ChunkInfo,
@@ -23,21 +23,20 @@ interface CorePluginConfig {
 }
 
 /**
- * Vite plugin for core WordPress Gutenberg functionality
+ * Modern Vite 6 plugin for core WordPress Gutenberg functionality
  *
- * This plugin is responsible for:
- * - Handling code transformations
- * - Generating final bundles
+ * No backward compatibility - pure Vite 6 approach with:
+ * - this.environment API
+ * - Modern plugin hooks
+ * - Enhanced bundle generation
  */
 export function CorePlugin(pluginConfig: CorePluginConfig): Plugin {
 	const { dependencies = [], discoveredBlocks = [] } = pluginConfig;
 
 	let _config: ResolvedConfig;
 
-	// Default WordPress dependencies that should always be externalized
+	// WordPress dependencies that should be externalized
 	const defaultDependencies = ['react', 'react-dom'];
-
-	// Merge default dependencies with user-provided dependencies (avoiding duplicates)
 	const allDependencies = [
 		...defaultDependencies,
 		...dependencies.filter((dep) => !defaultDependencies.includes(dep)),
@@ -50,34 +49,34 @@ export function CorePlugin(pluginConfig: CorePluginConfig): Plugin {
 			_config = resolvedConfig;
 		},
 
-		options,
-		outputOptions,
-
 		transform: async function (
 			this: PluginContext,
 			code: string,
 			id: string
 		) {
+			// Modern Vite 6: Use this.environment directly
+			const environment = this.environment;
+
 			// Use the first discovered block for transform context if available
 			const targetBlock =
 				discoveredBlocks.length > 0
 					? discoveredBlocks[0].blockJson
 					: {};
+
 			const result = await transform.call(
 				this,
 				code,
 				id,
 				targetBlock,
-				_config
+				_config,
+				environment
 			);
 
-			// The transform function returns string | boolean | void
-			// Vite expects TransformResult which can be string, {code: string} or null/undefined
+			// Vite 6: Return TransformResult directly
 			if (typeof result === 'string') {
 				return { code: result };
 			}
 
-			// Return null if the transform didn't process this file
 			return null;
 		},
 
@@ -86,7 +85,7 @@ export function CorePlugin(pluginConfig: CorePluginConfig): Plugin {
 			options: OutputOptions,
 			bundle: OutputBundle
 		) {
-			// Convert Rollup bundle to our custom bundle format
+			// Modern Vite 6: Direct bundle processing
 			const customBundle: { [fileName: string]: ChunkInfo | AssetInfo } =
 				{};
 
@@ -109,10 +108,11 @@ export function CorePlugin(pluginConfig: CorePluginConfig): Plugin {
 			generateBundle.call(this, options, customBundle, allDependencies);
 		},
 
-		// Expose configuration for other plugins
+		// Modern plugin API exposure
 		api: {
 			getConfig: () => _config,
 			getAllDependencies: () => allDependencies,
+			getDiscoveredBlocks: () => discoveredBlocks,
 		},
 	};
 }

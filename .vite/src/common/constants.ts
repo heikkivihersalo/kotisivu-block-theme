@@ -1,5 +1,5 @@
 /**
- * Common constants used throughout the Vite plugin
+ * Modern Vite 6 constants for WordPress plugin
  */
 
 /**
@@ -27,43 +27,14 @@ export const FILE_NAMES = {
 	DEFAULT_SCRIPT_ENTRY: 'index.jsx',
 	DEFAULT_SCRIPT_OUTPUT: 'index.js',
 	DEFAULT_STYLE_ENTRY: 'index.css',
-	STYLE_INDEX: 'style-index.css',
-	EDITOR_STYLE: 'editor',
-	MAIN_STYLE: 'style',
 } as const;
 
 /**
- * ESBuild configuration constants
- */
-export const ESBUILD_CONFIG = {
-	PLATFORM: 'browser' as const,
-	TARGET: 'es2020' as const,
-	JSX_TRANSFORM: 'transform' as const,
-	LOADER_MAP: {
-		'.js': 'jsx',
-		'.jsx': 'jsx',
-		'.ts': 'tsx',
-		'.tsx': 'tsx',
-		'.css': 'css',
-		'.scss': 'css',
-		'.sass': 'css',
-	} as const,
-} as const;
-
-/**
- * WordPress-specific constants
+ * WordPress-specific constants for modern builds
  */
 export const WORDPRESS_CONFIG = {
 	JSX_FACTORY: 'wp.element.createElement',
 	JSX_FRAGMENT: 'wp.element.Fragment',
-} as const;
-
-/**
- * Common style file patterns for WordPress blocks
- */
-export const STYLE_FILE_PATTERNS = {
-	INDEX_CSS_ALTERNATIVES: ['editor', 'style', 'index'],
-	STYLE_INDEX_ALTERNATIVES: ['style', 'style-index', 'index'],
 } as const;
 
 /**
@@ -75,20 +46,24 @@ export const REGEX_PATTERNS = {
 	STYLE_FILE_EXTENSION: /\.(css|scss|sass|less)$/,
 } as const;
 
-export const NS = '@wordpress/';
-const NS_EXCLUDE = ['icons', 'interface'];
-export const WORDPRESS_MATCH = new RegExp(
-	`^${NS}(?!(${NS_EXCLUDE.join('|')})).*$`
-); // /^@wordpress\/(?!(icons|interface)).*$/
-
 /**
- * External dependencies
+ * WordPress external dependencies (handled by WordPress core)
  */
-export const EXTERNALS: Record<string, string> = {
-	jquery: 'window.jQuery',
-	'lodash-es': 'window.lodash',
-	lodash: 'window.lodash',
-	moment: 'window.moment',
-	'react-dom': 'window.ReactDOM',
+export const WORDPRESS_EXTERNALS: Record<string, string> = {
 	react: 'window.React',
-};
+	'react-dom': 'window.ReactDOM',
+	'@wordpress/element': 'window.wp.element',
+	'@wordpress/blocks': 'window.wp.blocks',
+	'@wordpress/block-editor': 'window.wp.blockEditor',
+	'@wordpress/components': 'window.wp.components',
+	'@wordpress/data': 'window.wp.data',
+	'@wordpress/i18n': 'window.wp.i18n',
+	'@wordpress/api-fetch': 'window.wp.apiFetch',
+	'@wordpress/compose': 'window.wp.compose',
+	'@wordpress/hooks': 'window.wp.hooks',
+	'@wordpress/notices': 'window.wp.notices',
+	'@wordpress/rich-text': 'window.wp.richText',
+	'@wordpress/url': 'window.wp.url',
+	jquery: 'window.jQuery',
+	lodash: 'window.lodash',
+} as const;

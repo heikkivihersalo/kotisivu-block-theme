@@ -11,6 +11,7 @@ import {
 	AssetsPlugin,
 	CorePlugin,
 	ConfigPlugin,
+	ManifestPlugin,
 	generatePlugins,
 } from './src/plugins/index.js';
 
@@ -79,6 +80,13 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
 	});
 
+	// Create enhanced manifest plugin (leverages Vite 6 manifest improvements)
+	const manifestPlugin = ManifestPlugin({
+		outDir,
+		generatePhpManifest: true,
+		publicPath: '/',
+	});
+
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins({
 		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
@@ -89,6 +97,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		corePlugin,
 		blocksPlugin,
 		assetsPlugin,
+		manifestPlugin, // Add the new manifest plugin
 		...additionalPlugins,
 	] as Plugin[];
 };

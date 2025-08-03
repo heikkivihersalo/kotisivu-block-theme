@@ -11,6 +11,7 @@ import { sideloadBlocks } from './sideloadBlocks.js';
 import { generateBlockManifest } from './manifest/index.js';
 import { discoverBlocksWithMapping } from '../../common/discovery/index.js';
 import { normalizePath } from '../../common/index.js';
+import { pluginHooks, HOOKS, FILTERS } from '../../common/hooks/index.js';
 
 import type { BlockInfo } from '../../common/types/index.js';
 
@@ -43,14 +44,27 @@ export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
 		);
 	}
 
-	// Discover blocks from block paths
-	discoveredBlocks = discoverBlocksWithMapping(blocksDir, pwd);
+	// Async discovery function
+	const discoverBlocks = async () => {
+		// Discover blocks from block paths
+		discoveredBlocks = discoverBlocksWithMapping(blocksDir, pwd);
 
-	if (discoveredBlocks.length === 0) {
-		throw new Error(
-			'No blocks discovered from blocksDir. Ensure blocksDir is configured correctly and points to directories containing block.json files.'
+		if (discoveredBlocks.length === 0) {
+			throw new Error(
+				'No blocks discovered from blocksDir. Ensure blocksDir is configured correctly and points to directories containing block.json files.'
+			);
+		}
+
+		// Apply discovery filters using the new hook system
+		discoveredBlocks = await pluginHooks.applyFilters(
+			FILTERS.DISCOVERED_BLOCKS,
+			discoveredBlocks,
+			{ blocksDir, pwd }
 		);
-	}
+
+		// Emit discovery hook for other plugins
+		await pluginHooks.doHook(HOOKS.BLOCKS_DISCOVERED, discoveredBlocks);
+	};
 
 	return {
 		name: 'vite-plugin-gutenberg-blocks',
@@ -66,6 +80,9 @@ export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
 		},
 
 		buildStart: async function (this: PluginContext) {
+			// Discover blocks asynchronously
+			await discoverBlocks();
+
 			// Add watch files if specified
 			watch.forEach((file) => this.addWatchFile(file));
 
