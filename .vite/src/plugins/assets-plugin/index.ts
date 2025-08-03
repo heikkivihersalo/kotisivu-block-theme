@@ -4,12 +4,12 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
+import { discoverAssetsWithMapping } from '../../common/discovery/index.js';
+import { normalizePath } from '../../common/index.js';
 /**
  * Internal dependencies
  */
 import { sideloadAssets } from './sideloadAssets.js';
-import { discoverAssetsWithMapping } from '../../common/discovery/index.js';
-import { normalizePath } from '../../common/index.js';
 
 import type { DiscoveredAssetInfo } from '../../common/types/index.js';
 

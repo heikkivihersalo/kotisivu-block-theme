@@ -1,6 +1,6 @@
-import type { PluginContext } from 'rollup';
 import { sep } from 'node:path';
-import { preprocessCSS, type ResolvedConfig } from 'vite';
+import type { PluginContext } from 'rollup';
+import { type ResolvedConfig, preprocessCSS } from 'vite';
 import { REGEX_PATTERNS } from '../../../common/constants.js';
 import type {
 	EmittedAsset,

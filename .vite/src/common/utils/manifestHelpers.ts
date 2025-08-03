@@ -70,7 +70,7 @@ function extractWordPressDependencies(chunk: ViteManifestChunk): string[] {
 	);
 
 	// Add common mappings
-	wpCoreDeps['react'] = 'wp-element';
+	wpCoreDeps.react = 'wp-element';
 	wpCoreDeps['react-dom'] = 'wp-element';
 
 	// Process imports to find WordPress dependencies

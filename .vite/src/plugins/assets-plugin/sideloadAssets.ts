@@ -3,11 +3,11 @@
  */
 import type { PluginContext } from 'rollup';
 
+import type { DiscoveredAssetInfo } from '../../common/types/index.js';
 /**
  * Internal dependencies
  */
 import { processAssets } from './processors/assetProcessor.ts';
-import type { DiscoveredAssetInfo } from '../../common/types/index.js';
 
 /**
  * Sideloads theme assets (scripts and styles) and outputs them to the specified directory.

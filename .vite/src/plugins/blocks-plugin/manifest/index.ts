@@ -15,16 +15,12 @@ import type { BlockInfo, EmittedAsset } from '../../../common/types/index.js';
 export function generateBlockManifest(
 	this: PluginContext,
 	discoveredBlocks: BlockInfo[],
-	outputDirectory: string
+	_outputDirectory: string
 ): void {
 	if (!discoveredBlocks || discoveredBlocks.length === 0) {
 		console.warn('⚠️  No blocks discovered for manifest generation');
 		return;
 	}
-
-	console.log(
-		`🔍 Generating block manifest from ${discoveredBlocks.length} blocks...`
-	);
 
 	const blocks: Record<string, any> = {};
 
@@ -35,7 +31,6 @@ export function generateBlockManifest(
 			const blockKey = blockData.name || blockInfo.name;
 
 			blocks[blockKey] = blockData;
-			console.log(`✅ Added block to manifest: ${blockKey}`);
 		} catch (error) {
 			console.error(
 				`❌ Error processing block ${blockInfo.name}:`,
@@ -53,9 +48,6 @@ export function generateBlockManifest(
 		fileName: 'block-manifest.php',
 		source: phpContent,
 	} satisfies EmittedAsset);
-
-	console.log(`🎉 Block manifest generated successfully`);
-	console.log(`📊 Total blocks in manifest: ${Object.keys(blocks).length}`);
 }
 
 /**

@@ -40,7 +40,9 @@ export function ConfigPlugin(pluginConfig: ConfigPluginConfig): Plugin {
 
 		config: () => {
 			return createWordPressViteConfig({
-				outDir: outDir ? normalizePath(outDir) : undefined,
+				outDir: outDir
+					? (normalizePath(outDir) ?? undefined)
+					: undefined,
 				minify,
 				terserOptions,
 				sourcemap,

@@ -10,17 +10,17 @@ import type { PluginContext } from 'rollup';
 import { findActualFilePath } from '../utils/fileFinder.ts';
 
 import {
+	extractFilenameWithoutExtension,
 	generateFileHash,
 	generatePhpAssetFile,
-	extractFilenameWithoutExtension,
 } from '../../../common/index.js';
 
-import { generateAssetFilename } from '../utils/outputConfig.ts';
 import {
-	FILE_EXTENSIONS,
 	ESBUILD_CONFIG,
+	FILE_EXTENSIONS,
 	WORDPRESS_CONFIG,
 } from '../../../common/constants.js';
+import { generateAssetFilename } from '../utils/outputConfig.ts';
 
 import type { EmittedAsset } from '../../../common/types/index.js';
 import type { OutputConfig } from '../utils/outputConfig.ts';

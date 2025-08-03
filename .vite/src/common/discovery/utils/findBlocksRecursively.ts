@@ -1,9 +1,9 @@
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
-import { FILE_NAMES, DISCOVERY_CONFIG } from '../../constants.js';
+import { DISCOVERY_CONFIG, FILE_NAMES } from '../../constants.js';
 import { safeReadDirectory } from '../../index.js';
-import { extractBlockName, parseBlockJson } from '../utils';
 import type { BlockInfo } from '../../types/index.js';
+import { extractBlockName, parseBlockJson } from '../utils';
 
 /**
  * Check if a directory should be skipped during block discovery

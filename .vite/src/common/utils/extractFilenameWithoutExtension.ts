@@ -1,4 +1,4 @@
-import { parse, join } from 'node:path';
+import { join, parse } from 'node:path';
 
 /**
  * Extract the filename without its extension from a given path.

@@ -20,6 +20,22 @@ export const FILE_EXTENSIONS = {
 } as const;
 
 /**
+ * Style file patterns for discovery
+ */
+export const STYLE_FILE_PATTERNS = [
+	'index.css',
+	'style.css',
+	'editor.css',
+	'main.scss',
+	'style.scss',
+] as const;
+
+export const STYLE_FILE_ALTERNATIVES = {
+	INDEX_CSS_ALTERNATIVES: ['index.css', 'main.scss'],
+	STYLE_INDEX_ALTERNATIVES: ['style.css', 'style.scss'],
+} as const;
+
+/**
  * Common file names and patterns
  */
 export const FILE_NAMES = {
@@ -27,6 +43,7 @@ export const FILE_NAMES = {
 	DEFAULT_SCRIPT_ENTRY: 'index.jsx',
 	DEFAULT_SCRIPT_OUTPUT: 'index.js',
 	DEFAULT_STYLE_ENTRY: 'index.css',
+	STYLE_INDEX: 'index.css',
 } as const;
 
 /**
@@ -35,6 +52,21 @@ export const FILE_NAMES = {
 export const WORDPRESS_CONFIG = {
 	JSX_FACTORY: 'wp.element.createElement',
 	JSX_FRAGMENT: 'wp.element.Fragment',
+} as const;
+
+/**
+ * ESBuild configuration for consistent builds
+ */
+export const ESBUILD_CONFIG = {
+	PLATFORM: 'browser' as const,
+	TARGET: 'es2020',
+	JSX_TRANSFORM: 'automatic' as const,
+	LOADER_MAP: {
+		'.js': 'jsx',
+		'.jsx': 'jsx',
+		'.ts': 'tsx',
+		'.tsx': 'tsx',
+	} as const,
 } as const;
 
 /**

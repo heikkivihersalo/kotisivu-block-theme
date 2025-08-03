@@ -1,18 +1,21 @@
+import { mkdirSync } from 'node:fs';
 /**
  * External dependencies
  */
-import { resolve, dirname } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { build as esBuild } from 'esbuild';
-import { mkdirSync } from 'node:fs';
 import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../common/constants.js';
+import {
+	generateFileHash,
+	generatePhpAssetFile,
+} from '../../../common/index.js';
 /**
  * Internal dependencies
  */
 import type { DiscoveredAssetInfo } from '../../../common/types/index.js';
-import { generateFileHash, generatePhpAssetFile } from '../../common/index.js';
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../common/constants.js';
 
 /**
  * Asset processor configuration
@@ -159,9 +162,6 @@ export const processAssets = async (
 					});
 				}
 			}
-			console.info(
-				`✓ Processing asset: ${asset.name} -> ${asset.outputPath}`
-			);
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : String(error);
@@ -174,13 +174,13 @@ export const processAssets = async (
 
 /**
  * Extract dependencies from TypeScript/JavaScript asset file
- * @param assetPath - Path to the asset file
- * @param buildResult - esbuild result containing metafile
+ * @param _assetPath - Path to the asset file (unused for now)
+ * @param _buildResult - esbuild result containing metafile (unused for now)
  * @returns Array of WordPress dependencies
  */
 export function extractAssetDependencies(
-	assetPath: string,
-	buildResult?: any
+	_assetPath: string,
+	_buildResult?: any
 ): string[] {
 	// TODO: Implement dependency extraction from build metafile if needed
 	// Currently dependencies are specified in the plugin configuration

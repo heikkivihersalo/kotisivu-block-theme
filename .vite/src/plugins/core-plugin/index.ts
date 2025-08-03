@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import type { PluginContext, OutputOptions, OutputBundle } from 'rollup';
+import type { OutputBundle, OutputOptions, PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 /**
@@ -9,12 +9,11 @@ import type { Plugin, ResolvedConfig } from 'vite';
  */
 import { generateBundle } from './bundle/index.js';
 import { transform } from './transform/index.js';
-import { pluginHooks, HOOKS } from '../../common/hooks/index.js';
 
 import type {
-	ChunkInfo,
 	AssetInfo,
 	BlockInfo,
+	ChunkInfo,
 } from '../../common/types/index.js';
 
 interface CorePluginConfig {

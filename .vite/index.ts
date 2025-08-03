@@ -7,10 +7,10 @@ import type { Plugin } from 'vite';
  * Internal dependencies
  */
 import {
-	BlocksPlugin,
 	AssetsPlugin,
-	CorePlugin,
+	BlocksPlugin,
 	ConfigPlugin,
+	CorePlugin,
 	ManifestPlugin,
 	generatePlugins,
 } from './src/plugins/index.js';

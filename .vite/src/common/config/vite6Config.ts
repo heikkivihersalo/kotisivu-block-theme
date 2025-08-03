@@ -4,7 +4,7 @@
  * Leverages Vite 6's improved configuration options and environment handling
  */
 
-import type { UserConfig, BuildOptions } from 'vite';
+import type { BuildOptions, UserConfig } from 'vite';
 import { WORDPRESS_EXTERNALS } from '../constants.js';
 
 interface WordPressViteConfig {

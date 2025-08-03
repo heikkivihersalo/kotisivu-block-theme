@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import type { WordpressBlockJson } from '../../../types/index.js';
+import type { WordpressBlockJson } from '../../types/index.js';
 
 /**
  * Helper function to safely parse block.json content

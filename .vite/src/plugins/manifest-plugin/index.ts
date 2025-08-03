@@ -1,10 +1,11 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 /**
  * External dependencies
  */
 import type { Plugin, ResolvedConfig } from 'vite';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
 
+import { normalizePath } from '../../common/index.js';
 /**
  * Internal dependencies
  */
@@ -12,7 +13,6 @@ import {
 	convertViteManifestToWordPress,
 	generateWordPressEnqueueFile,
 } from '../../common/utils/manifestHelpers.js';
-import { normalizePath } from '../../common/index.js';
 
 interface ManifestPluginConfig {
 	outDir?: string;
@@ -35,6 +35,7 @@ export function ManifestPlugin(config: ManifestPluginConfig = {}): Plugin {
 		textDomain = 'theme',
 	} = config;
 
+	// Store resolved config for potential future use
 	let _resolvedConfig: ResolvedConfig;
 	let outputDirectory: string;
 
@@ -87,10 +88,6 @@ export function ManifestPlugin(config: ManifestPluginConfig = {}): Plugin {
 				writeFileSync(
 					jsonManifestPath,
 					JSON.stringify(wpManifest, null, 2)
-				);
-
-				console.log(
-					`✓ Generated WordPress asset manifest: ${phpManifestPath}`
 				);
 			} catch (error) {
 				console.warn('Failed to generate WordPress manifest:', error);

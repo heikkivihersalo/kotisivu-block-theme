@@ -1,10 +1,10 @@
-import type { PluginContext } from 'rollup';
 import { transform } from 'lightningcss';
+import type { PluginContext } from 'rollup';
+import { FILE_EXTENSIONS } from '../../../common/constants.js';
+import type { EmittedAsset } from '../../../common/types/index.js';
 import { readStylesheet } from '../utils';
 import { findActualStylePath } from '../utils/fileFinder.ts';
 import { generateAssetFilename } from '../utils/outputConfig.ts';
-import { FILE_EXTENSIONS } from '../../../common/constants.js';
-import type { EmittedAsset } from '../../../common/types/index.js';
 import type { OutputConfig } from '../utils/outputConfig.ts';
 
 /**

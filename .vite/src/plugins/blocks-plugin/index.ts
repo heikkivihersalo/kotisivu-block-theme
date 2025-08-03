@@ -4,14 +4,14 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
+import { discoverBlocksWithMapping } from '../../common/discovery/index.js';
+import { FILTERS, HOOKS, pluginHooks } from '../../common/hooks/index.js';
+import { normalizePath } from '../../common/index.js';
+import { generateBlockManifest } from './manifest/index.js';
 /**
  * Internal dependencies
  */
 import { sideloadBlocks } from './sideloadBlocks.js';
-import { generateBlockManifest } from './manifest/index.js';
-import { discoverBlocksWithMapping } from '../../common/discovery/index.js';
-import { normalizePath } from '../../common/index.js';
-import { pluginHooks, HOOKS, FILTERS } from '../../common/hooks/index.js';
 
 import type { BlockInfo } from '../../common/types/index.js';
 

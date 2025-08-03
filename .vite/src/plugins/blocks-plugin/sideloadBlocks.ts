@@ -4,13 +4,13 @@
 import type { PluginContext } from 'rollup';
 import type { WordpressBlockJson } from '../../common/types/index.js';
 
+import { processScripts } from './processors/scriptProcessor.js';
+import { processStyles } from './processors/styleProcessor.js';
 /**
  * Internal dependencies
  */
 import { extractScripts, extractStyles } from './utils/blockAssets.js';
 import { generateOutputConfig } from './utils/outputConfig.js';
-import { processScripts } from './processors/scriptProcessor.js';
-import { processStyles } from './processors/styleProcessor.js';
 
 /**
  * Sideloads block assets (scripts and styles) based on the provided block.json

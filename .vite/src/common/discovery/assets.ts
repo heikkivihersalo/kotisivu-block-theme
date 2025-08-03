@@ -40,7 +40,6 @@ export function discoverAssetsWithMapping(
 	const mappingEntries = Object.entries(pathMappings);
 
 	if (mappingEntries.length === 0) {
-		console.debug('No asset path mappings specified for discovery');
 		return [];
 	}
 

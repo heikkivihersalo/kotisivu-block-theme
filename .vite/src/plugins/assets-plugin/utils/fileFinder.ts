@@ -1,9 +1,9 @@
-import { resolve } from 'node:path';
 import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import {
 	FILE_EXTENSIONS,
 	FILE_NAMES,
-	STYLE_FILE_PATTERNS,
+	STYLE_FILE_ALTERNATIVES,
 } from '../../../common/constants.js';
 
 /**
@@ -64,12 +64,14 @@ export const findActualStylePath = (
 
 	// If looking for index.css, try multiple alternatives
 	if (fileName === FILE_NAMES.DEFAULT_STYLE_ENTRY) {
-		commonPatterns.push(...STYLE_FILE_PATTERNS.INDEX_CSS_ALTERNATIVES);
+		commonPatterns.push(...STYLE_FILE_ALTERNATIVES.INDEX_CSS_ALTERNATIVES);
 	}
 
 	// If looking for style-index.css, try multiple alternatives
 	if (fileName === FILE_NAMES.STYLE_INDEX) {
-		commonPatterns.push(...STYLE_FILE_PATTERNS.STYLE_INDEX_ALTERNATIVES);
+		commonPatterns.push(
+			...STYLE_FILE_ALTERNATIVES.STYLE_INDEX_ALTERNATIVES
+		);
 	}
 
 	// Try the common patterns with all extensions
