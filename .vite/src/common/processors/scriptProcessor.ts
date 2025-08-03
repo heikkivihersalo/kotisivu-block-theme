@@ -1,0 +1,178 @@
+/**
+ * External dependencies
+ */
+import { build as esBuild } from 'esbuild';
+import type { PluginContext } from 'rollup';
+
+/**
+ * Shared dependencies
+ */
+import { findActualFilePath } from '../utils';
+import {
+	extractFilenameWithoutExtension,
+	generateAssetFilename,
+	generateFileHash,
+	generatePhpAssetFile,
+} from '../utils';
+
+import {
+	ESBUILD_CONFIG,
+	FILE_EXTENSIONS,
+	WORDPRESS_CONFIG,
+} from '../constants.ts';
+import { scssPlugin } from '../plugins/scssPlugin.ts';
+
+import type { EmittedAsset } from '../types/rollup.ts';
+import type { OutputConfig } from '../types/assets.ts';
+
+/**
+ * Process a single script file
+ */
+export const processScript = async (
+	pluginContext: PluginContext,
+	script: string,
+	config: OutputConfig,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+): Promise<void> => {
+	const actualScriptPath = findActualFilePath(config.basePath, script);
+
+	if (!actualScriptPath) {
+		console.warn(
+			`Warning: Script file not found: ${script} (tried ${FILE_EXTENSIONS.SCRIPTS.join(', ')} extensions in ${config.basePath})`
+		);
+		return;
+	}
+
+	// Vite won't track this file for watching, so we'll add a manual watcher
+	pluginContext.addWatchFile(actualScriptPath);
+	const wpImports: string[] = [];
+
+	// Build the script as a sideloaded file that isn't injected into the main bundle
+	const result = await esBuild({
+		entryPoints: [actualScriptPath],
+		outfile: config.blockOutputDir + '/' + script,
+		platform: ESBUILD_CONFIG.PLATFORM,
+		bundle: true,
+		write: false,
+		metafile: true,
+		sourcemap: sourcemap,
+		loader: ESBUILD_CONFIG.LOADER_MAP,
+		target: ESBUILD_CONFIG.TARGET,
+		jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
+		jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
+		jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
+		minify: process.env.NODE_ENV === 'production',
+		external: ['react', 'react-dom'], // Externalize React dependencies
+		plugins: [
+			scssPlugin,
+			{
+				name: 'alias-wordpress-and-react',
+				setup(build) {
+					build.onResolve({ filter: /^@wordpress\/.*/ }, (args) => {
+						const packageName = args.path
+							.replace('@wordpress/', 'wp-')
+							.replace(/-([a-z])/g, (_, letter) =>
+								letter.toUpperCase()
+							);
+
+						if (!wpImports.includes(packageName)) {
+							wpImports.push(packageName);
+						}
+
+						return {
+							path: args.path,
+							external: true,
+						};
+					});
+
+					build.onResolve({ filter: /^react$/ }, (args) => {
+						if (!wpImports.includes('wp-element')) {
+							wpImports.push('wp-element');
+						}
+
+						return {
+							path: args.path,
+							external: true,
+						};
+					});
+
+					build.onResolve({ filter: /^react-dom$/ }, (args) => {
+						if (!wpImports.includes('wp-element')) {
+							wpImports.push('wp-element');
+						}
+
+						return {
+							path: args.path,
+							external: true,
+						};
+					});
+				},
+			},
+		],
+	});
+
+	const bundledDependencies = Object.keys(result.metafile.inputs).filter(
+		(dep) => {
+			if (dep === 'src/' + script) return false;
+			if (/:/.test(dep)) return false;
+			else return true;
+		}
+	);
+
+	bundledDependencies.forEach((dep) => {
+		pluginContext.addWatchFile(dep);
+	});
+
+	result.outputFiles.forEach((file) => {
+		const hash = generateFileHash(file.text);
+		const filename = extractFilenameWithoutExtension(script);
+
+		// Check if this is a source map file
+		if (file.path.endsWith('.map')) {
+			const sourceMapFileName = generateAssetFilename(
+				`${script}.map`,
+				config.outputPath
+			);
+
+			pluginContext.emitFile({
+				type: 'asset',
+				fileName: sourceMapFileName,
+				source: file.contents,
+			} satisfies EmittedAsset);
+			return;
+		}
+
+		// Create block-specific file paths for JavaScript files
+		const assetFileName = generateAssetFilename(
+			`${filename}.asset.php`,
+			config.outputPath
+		);
+		const scriptFileName = generateAssetFilename(script, config.outputPath);
+
+		pluginContext.emitFile({
+			type: 'asset',
+			fileName: assetFileName,
+			source: generatePhpAssetFile(wpImports, hash),
+		} satisfies EmittedAsset);
+
+		pluginContext.emitFile({
+			type: 'asset',
+			fileName: scriptFileName,
+			source: file.contents,
+		} satisfies EmittedAsset);
+	});
+};
+
+/**
+ * Process all scripts for a block
+ */
+export const processScripts = async (
+	pluginContext: PluginContext,
+	scripts: string[],
+	config: OutputConfig,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+): Promise<void> => {
+	for (const script of scripts) {
+		await processScript(pluginContext, script, config, sourcemap);
+	}
+};

@@ -11,8 +11,8 @@ import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
 /**
  * Internal dependencies
  */
-import { processScripts } from './processors/scriptProcessor.js';
-import { processStyles } from './processors/styleProcessor.js';
+import { processScripts } from '../../../common/processors/scriptProcessor.ts';
+import { processStyles } from '../../../common/processors/styleProcessor.ts';
 import { extractScripts, extractStyles } from './utils';
 import { generateOutputConfig } from './utils';
 

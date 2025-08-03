@@ -11,10 +11,10 @@ import {
 	findActualStylePath,
 	generateAssetFilename,
 	readStylesheet,
-} from '../../../../common/utils';
-import { FILE_EXTENSIONS } from '../../../../common/constants.ts';
-import type { EmittedAsset } from '../../../../common/types/rollup.ts';
-import type { OutputConfig } from '../../../../common/types/assets.ts';
+} from '../utils';
+import { FILE_EXTENSIONS } from '../constants.ts';
+import type { EmittedAsset } from '../types/rollup.ts';
+import type { OutputConfig } from '../types/assets.ts';
 
 /**
  * Process a single style file
