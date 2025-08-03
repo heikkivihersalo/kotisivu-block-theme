@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { glob } from 'glob';
 import { beforeAll, describe, expect, test } from 'vitest';
@@ -268,6 +268,10 @@ describe('Block Build Process', () => {
 	function assertBlockHasRequiredFiles(blockDir: string): void {
 		for (const file of REQUIRED_BLOCK_FILES) {
 			const filePath = join(blockDir, file);
+			if (!existsSync(filePath)) {
+				console.log(`Missing file: ${filePath} in block: ${blockDir}`);
+				console.log(`Block directory contents:`, readdirSync(blockDir));
+			}
 			expect(existsSync(filePath)).toBe(true);
 		}
 	}

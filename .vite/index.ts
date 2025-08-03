@@ -88,9 +88,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	});
 
 	// Get additional plugins (React, static copy, etc.)
-	const additionalPlugins = generatePlugins({
-		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
-	});
+	const additionalPlugins = generatePlugins();
 
 	return [
 		configPlugin,

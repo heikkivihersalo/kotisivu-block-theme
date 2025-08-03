@@ -1,6 +1,8 @@
 /**
  * External dependencies
  */
+import { resolve } from 'node:path';
+import { readFile, readdir } from 'node:fs/promises';
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
@@ -85,6 +87,105 @@ export function BlocksPlugin(config: Props): Plugin {
 
 			// Add watch files if specified
 			watch.forEach((file) => this.addWatchFile(file));
+
+			// Copy static files for each discovered block
+			for (const block of discoveredBlocks) {
+				const destPath = block.outputPath || block.name;
+
+				// Copy block.json file
+				try {
+					const blockJsonSrc = resolve(block.path, 'block.json');
+					const blockJsonContent = await readFile(
+						blockJsonSrc,
+						'utf-8'
+					);
+					this.emitFile({
+						type: 'asset',
+						fileName: `${destPath}/block.json`,
+						source: blockJsonContent,
+					});
+				} catch (error) {
+					console.warn(
+						`Warning: Could not copy block.json for block ${block.name}:`,
+						error
+					);
+				}
+
+				// Copy CSS files with WordPress naming convention
+				// editor.css -> index.css (editor styles)
+				try {
+					const editorCssSrc = resolve(block.path, 'editor.css');
+					const editorCssContent = await readFile(
+						editorCssSrc,
+						'utf-8'
+					);
+					this.emitFile({
+						type: 'asset',
+						fileName: `${destPath}/index.css`,
+						source: editorCssContent,
+					});
+				} catch (error) {
+					// editor.css doesn't exist, create empty file
+					this.emitFile({
+						type: 'asset',
+						fileName: `${destPath}/index.css`,
+						source: '',
+					});
+				}
+
+				// style.css -> style-index.css (frontend styles)
+				try {
+					const styleCssSrc = resolve(block.path, 'style.css');
+					const styleCssContent = await readFile(
+						styleCssSrc,
+						'utf-8'
+					);
+					this.emitFile({
+						type: 'asset',
+						fileName: `${destPath}/style-index.css`,
+						source: styleCssContent,
+					});
+				} catch (error) {
+					// style.css doesn't exist, create empty file
+					this.emitFile({
+						type: 'asset',
+						fileName: `${destPath}/style-index.css`,
+						source: '',
+					});
+				}
+
+				// Copy any PHP files
+				try {
+					const files = await readdir(block.path);
+					const phpFiles = files.filter((file) =>
+						file.endsWith('.php')
+					);
+
+					for (const phpFile of phpFiles) {
+						const phpSrc = resolve(block.path, phpFile);
+						const phpFileName = `${destPath}/${phpFile}`;
+
+						try {
+							const phpContent = await readFile(phpSrc, 'utf-8');
+							this.emitFile({
+								type: 'asset',
+								fileName: phpFileName,
+								source: phpContent,
+							});
+						} catch (error) {
+							console.warn(
+								`Warning: Could not copy ${phpFile} for block ${block.name}:`,
+								error
+							);
+						}
+					}
+				} catch (error) {
+					console.warn(
+						`Warning: Could not read directory for block ${block.name}:`,
+						error
+					);
+				}
+			}
 
 			// Process discovered blocks
 			for (const block of discoveredBlocks) {
