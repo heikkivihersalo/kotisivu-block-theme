@@ -20,22 +20,6 @@ export const FILE_EXTENSIONS = {
 } as const;
 
 /**
- * Style file patterns for discovery
- */
-export const STYLE_FILE_PATTERNS = [
-	'index.css',
-	'style.css',
-	'editor.css',
-	'main.scss',
-	'style.scss',
-] as const;
-
-export const STYLE_FILE_ALTERNATIVES = {
-	INDEX_CSS_ALTERNATIVES: ['index.css', 'main.scss'],
-	STYLE_INDEX_ALTERNATIVES: ['style.css', 'style.scss'],
-} as const;
-
-/**
  * Common file names and patterns
  */
 export const FILE_NAMES = {
@@ -43,7 +27,7 @@ export const FILE_NAMES = {
 	DEFAULT_SCRIPT_ENTRY: 'index.jsx',
 	DEFAULT_SCRIPT_OUTPUT: 'index.js',
 	DEFAULT_STYLE_ENTRY: 'index.css',
-	STYLE_INDEX: 'index.css',
+	STYLE_INDEX: 'style-index.css',
 } as const;
 
 /**
