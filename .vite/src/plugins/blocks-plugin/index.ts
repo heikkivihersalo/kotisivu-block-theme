@@ -6,7 +6,6 @@ import { readFile, readdir } from 'node:fs/promises';
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { FILTERS, HOOKS, pluginHooks } from '../../common/hooks/index.js';
 import { normalizePath } from '../../common/utils';
 import { processPhpFiles } from '../../common/processors';
 import { generateBlockManifest } from './manifest/index.js';
@@ -57,16 +56,6 @@ export function BlocksPlugin(config: Props): Plugin {
 				'No blocks discovered from blocksDir. Ensure blocksDir is configured correctly and points to directories containing block.json files.'
 			);
 		}
-
-		// Apply discovery filters using the new hook system
-		discoveredBlocks = await pluginHooks.applyFilters(
-			FILTERS.DISCOVERED_BLOCKS,
-			discoveredBlocks,
-			{ blocksDir, pwd }
-		);
-
-		// Emit discovery hook for other plugins
-		await pluginHooks.doHook(HOOKS.BLOCKS_DISCOVERED, discoveredBlocks);
 	};
 
 	return {
