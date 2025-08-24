@@ -4,8 +4,8 @@ import { describe, expect, test } from 'vitest';
 
 /**
  * Tests to validate that the WordPress and React shims are correctly implemented
- * in the actual processor files. These tests ensure the processors contain the
- * expected shim logic and prevent regressions.
+ * in the refactored structure. These tests ensure the processors use the ReactShimPlugin
+ * and that the plugin contains the expected shim logic.
  */
 describe('Processor Shim Implementation Validation', () => {
 	const PROCESSOR_FILES = [
@@ -13,125 +13,128 @@ describe('Processor Shim Implementation Validation', () => {
 		'.vite/src/plugins/assets-plugin/processor.ts',
 	];
 
+	const SHIM_PLUGIN_FILE = '.vite/src/common/plugins/reactShimPlugin.ts';
+	const SHIM_FUNCTIONS_FILE = '.vite/src/common/shims.ts';
+
 	/**
-	 * Test that all processors contain WordPress shim logic
+	 * Test that all processors use ReactShimPlugin
 	 */
-	test('processors contain WordPress dependency shim logic', () => {
+	test('processors use ReactShimPlugin for WordPress and React shims', () => {
 		for (const processorFile of PROCESSOR_FILES) {
 			const filePath = join(process.cwd(), processorFile);
 			const content = readFileSync(filePath, 'utf-8');
 
-			// Check for WordPress onResolve handler
-			expect(content).toContain('@wordpress/');
-			expect(content).toContain('wordpress-alias');
+			// Check that processors import ReactShimPlugin
+			expect(content).toContain('ReactShimPlugin');
+			expect(
+				content.includes("from '../plugins/reactShimPlugin.ts'") ||
+					content.includes(
+						"from '../../common/plugins/reactShimPlugin.ts'"
+					)
+			).toBe(true);
 
-			// Check for WordPress onLoad handler with correct logic
-			expect(content).toContain('window.wp.');
-			expect(content).toContain('for (const key in wpModule)');
+			// Check that ReactShimPlugin is used in esbuild plugins
+			expect(content).toContain('ReactShimPlugin(wpImports)');
 			expect(content).toContain(
-				'Object.prototype.hasOwnProperty.call(wpModule, key)'
+				'plugins: [scssPlugin, ReactShimPlugin(wpImports)]'
 			);
-			expect(content).toContain('exports[key] = wpModule[key]');
-
-			// Check for block-editor special case handling
-			expect(content).toContain('block-editor');
-			expect(content).toContain('blockEditor');
-
-			// Check for valid WordPress dependencies list
-			expect(content).toContain('wp-element');
-			expect(content).toContain('wp-blocks');
-			expect(content).toContain('wp-block-editor');
-			expect(content).toContain('wp-components');
 		}
 	});
 
 	/**
-	 * Test that all processors contain React shim logic
+	 * Test that ReactShimPlugin contains WordPress dependency shim logic
 	 */
-	test('processors contain React dependency shim logic', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+	test('ReactShimPlugin contains WordPress dependency shim logic', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			// Check for React onResolve handler
-			expect(content).toContain('filter: /^react$/');
-			expect(content).toContain('react-alias');
+		// Check for WordPress onResolve handler
+		expect(content).toContain('@wordpress/');
+		expect(content).toContain('wordpress-alias');
 
-			// Check for React onLoad handler
-			expect(content).toContain('window.wp.element');
-			expect(content).toContain('module.exports = wpElement');
+		// Check for valid WordPress dependencies list
+		expect(content).toContain('wp-element');
+		expect(content).toContain('wp-blocks');
+		expect(content).toContain('wp-block-editor');
+		expect(content).toContain('wp-components');
 
-			// Check for React DOM shim
-			expect(content).toContain('filter: /^react-dom$/');
-			expect(content).toContain('react-dom-alias');
-		}
+		// Check for wpImports tracking
+		expect(content).toContain('wpImports');
+		expect(content).toContain('!wpImports.includes');
+		expect(content).toContain('wpImports.push');
 	});
 
 	/**
-	 * Test that all processors contain React JSX Runtime shim logic
+	 * Test that ReactShimPlugin contains React dependency shim logic
 	 */
-	test('processors contain React JSX Runtime shim logic', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+	test('ReactShimPlugin contains React dependency shim logic', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			// Check for JSX Runtime onResolve handler
-			expect(content).toContain('filter: /^react\\/jsx-runtime$/');
-			expect(content).toContain('react-jsx-runtime-alias');
+		// Check for React onResolve handler
+		expect(content).toContain('filter: /^react$/');
+		expect(content).toContain('react-alias');
 
-			// Check for JSX Runtime onLoad handler with correct exports
-			expect(content).toContain('jsx: wpElement.createElement');
-			expect(content).toContain('jsxs: wpElement.createElement');
-			expect(content).toContain('Fragment: wpElement.Fragment');
+		// Check for React DOM shim
+		expect(content).toContain('filter: /^react-dom$/');
+		expect(content).toContain('react-dom-alias');
 
-			// Check for JSX Dev Runtime
-			expect(content).toContain('filter: /^react\\/jsx-dev-runtime$/');
-			expect(content).toContain('react-jsx-dev-runtime-alias');
-			expect(content).toContain('jsxDEV: wpElement.createElement');
-		}
+		// Check for wp-element dependency tracking for React
+		expect(content).toContain("wpImports.includes('wp-element')");
+		expect(content).toContain("wpImports.push('wp-element')");
 	});
 
 	/**
-	 * Test that processors properly track WordPress dependencies
+	 * Test that ReactShimPlugin contains React JSX Runtime shim logic
+	 */
+	test('ReactShimPlugin contains React JSX Runtime shim logic', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
+
+		// Check for JSX Runtime onResolve handler
+		expect(content).toContain('filter: /^react\\/jsx-runtime$/');
+		expect(content).toContain('react-jsx-runtime-alias');
+
+		// Check for JSX Dev Runtime
+		expect(content).toContain('filter: /^react\\/jsx-dev-runtime$/');
+		expect(content).toContain('react-jsx-dev-runtime-alias');
+	});
+
+	/**
+	 * Test that processors properly pass wpImports array to ReactShimPlugin
 	 */
 	test('processors track WordPress dependencies correctly', () => {
 		for (const processorFile of PROCESSOR_FILES) {
 			const filePath = join(process.cwd(), processorFile);
 			const content = readFileSync(filePath, 'utf-8');
 
-			// Check for wpImports array usage
+			// Check for wpImports array usage in processors
 			expect(content).toContain('wpImports');
-			expect(content).toContain('!wpImports.includes');
-			expect(content).toContain('wpImports.push');
-
-			// Check for wp-element dependency tracking for React
-			expect(content).toContain("wpImports.includes('wp-element')");
-			expect(content).toContain("wpImports.push('wp-element')");
+			expect(content).toContain('const wpImports: string[] = []');
+			expect(content).toContain('ReactShimPlugin(wpImports)');
 		}
 	});
 
 	/**
-	 * Test that processors use consistent camelCase conversion
+	 * Test that ReactShimPlugin uses consistent camelCase conversion
 	 */
-	test('processors use consistent camelCase conversion for WordPress globals', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+	test('ReactShimPlugin uses consistent camelCase conversion for WordPress globals', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			// Check for specific block-editor to blockEditor conversion logic
-			expect(content).toContain('block-editor');
-			expect(content).toContain('blockEditor');
+		// Check for specific block-editor to blockEditor conversion logic
+		expect(content).toContain('block-editor');
+		expect(content).toContain('blockEditor');
 
-			// Check for general kebab-case to camelCase conversion pattern
-			expect(content).toContain('/-([a-z])/g');
-			expect(content).toContain('g[1].toUpperCase()');
-		}
+		// Check for general kebab-case to camelCase conversion pattern
+		expect(content).toContain('/-([a-z])/g');
+		expect(content).toContain('g[1].toUpperCase()');
 	});
 
 	/**
-	 * Test that processors contain valid WordPress dependency lists
+	 * Test that ReactShimPlugin contains valid WordPress dependency lists
 	 */
-	test('processors contain comprehensive WordPress dependency lists', () => {
+	test('ReactShimPlugin contains comprehensive WordPress dependency lists', () => {
 		const requiredDependencies = [
 			'wp-element',
 			'wp-blocks',
@@ -148,41 +151,37 @@ describe('Processor Shim Implementation Validation', () => {
 			'wp-server-side-render',
 		];
 
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			for (const dependency of requiredDependencies) {
-				expect(content).toContain(`'${dependency}'`);
-			}
+		for (const dependency of requiredDependencies) {
+			expect(content).toContain(`'${dependency}'`);
 		}
 	});
 
 	/**
-	 * Test that processors don't contain problematic patterns
+	 * Test that ReactShimPlugin doesn't contain problematic patterns
 	 */
-	test('processors avoid problematic shim patterns', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+	test('ReactShimPlugin avoids problematic shim patterns', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			// Should not use direct require() calls for WordPress packages
-			expect(content).not.toContain("require('@wordpress/");
+		// Should not use direct require() calls for WordPress packages
+		expect(content).not.toContain("require('@wordpress/");
 
-			// Should not use incorrect window.wp property names
-			expect(content).not.toContain('window.wp.block-editor');
-			expect(content).not.toContain('window.wp.api-fetch');
-			expect(content).not.toContain('window.wp.rich-text');
+		// Should not use incorrect window.wp property names
+		expect(content).not.toContain('window.wp.block-editor');
+		expect(content).not.toContain('window.wp.api-fetch');
+		expect(content).not.toContain('window.wp.rich-text');
 
-			// Should not have hardcoded module names in window.wp calls
-			expect(content).not.toContain('window.wp.${moduleName}');
-		}
+		// Should not have hardcoded module names in window.wp calls
+		expect(content).not.toContain('window.wp.${moduleName}');
 	});
 
 	/**
-	 * Test that all processors handle namespace resolution consistently
+	 * Test that ReactShimPlugin handles namespace resolution consistently
 	 */
-	test('processors handle namespace resolution consistently', () => {
+	test('ReactShimPlugin handles namespace resolution consistently', () => {
 		const expectedNamespaces = [
 			'wordpress-alias',
 			'react-alias',
@@ -191,38 +190,62 @@ describe('Processor Shim Implementation Validation', () => {
 			'react-jsx-dev-runtime-alias',
 		];
 
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			for (const namespace of expectedNamespaces) {
-				expect(content).toContain(`namespace: '${namespace}'`);
-			}
+		for (const namespace of expectedNamespaces) {
+			expect(content).toContain(`namespace: '${namespace}'`);
 		}
 	});
 
 	/**
-	 * Test that processors contain proper esbuild plugin structure
+	 * Test that ReactShimPlugin contains proper esbuild plugin structure
 	 */
-	test('processors contain proper esbuild plugin structure', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+	test('ReactShimPlugin contains proper esbuild plugin structure', () => {
+		const filePath = join(process.cwd(), SHIM_PLUGIN_FILE);
+		const content = readFileSync(filePath, 'utf-8');
 
-			// Check for plugin name
-			expect(content).toContain('alias-wordpress-and-react');
+		// Check for plugin name
+		expect(content).toContain('alias-wordpress-and-react');
 
-			// Check for setup function
-			expect(content).toContain('setup(build)');
+		// Check for setup function
+		expect(content).toContain('setup(build)');
 
-			// Check for onResolve and onLoad handlers
-			expect(content).toContain('build.onResolve');
-			expect(content).toContain('build.onLoad');
+		// Check for onResolve and onLoad handlers
+		expect(content).toContain('build.onResolve');
+		expect(content).toContain('build.onLoad');
 
-			// Check for proper return structure
-			expect(content).toContain('return {');
-			expect(content).toContain("loader: 'js'");
-		}
+		// Check for proper return structure
+		expect(content).toContain('return {');
+		expect(content).toContain("loader: 'js'");
+	});
+
+	/**
+	 * Test that shim functions contain proper WordPress and React shim logic
+	 */
+	test('shim functions contain proper WordPress and React shim logic', () => {
+		const filePath = join(process.cwd(), SHIM_FUNCTIONS_FILE);
+		const content = readFileSync(filePath, 'utf-8');
+
+		// Check for React element shim
+		expect(content).toContain('window.wp.element');
+		expect(content).toContain('module.exports = wpElement');
+
+		// Check for JSX Runtime shim with correct exports
+		expect(content).toContain('jsx: wpElement.createElement');
+		expect(content).toContain('jsxs: wpElement.createElement');
+		expect(content).toContain('Fragment: wpElement.Fragment');
+
+		// Check for JSX Dev Runtime shim
+		expect(content).toContain('jsxDEV: wpElement.createElement');
+
+		// Check for WordPress module shim with correct logic
+		expect(content).toContain('window.wp.');
+		expect(content).toContain('for (const key in wpModule)');
+		expect(content).toContain(
+			'Object.prototype.hasOwnProperty.call(wpModule, key)'
+		);
+		expect(content).toContain('exports[key] = wpModule[key]');
 	});
 
 	/**
