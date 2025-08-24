@@ -10,7 +10,7 @@ import { describe, expect, test } from 'vitest';
 describe('Processor Shim Implementation Validation', () => {
 	const PROCESSOR_FILES = [
 		'.vite/src/common/processors/scriptProcessor.ts',
-		'.vite/src/plugins/assets-plugin/sideload/processors/assetProcessor.ts',
+		'.vite/src/plugins/assets-plugin/processor.ts',
 	];
 
 	/**
@@ -250,7 +250,7 @@ describe('Processor Shim Implementation Validation', () => {
 	 */
 	test('asset processors contain specific implementation details', () => {
 		const assetProcessorPaths = [
-			'.vite/src/plugins/assets-plugin/sideload/processors/assetProcessor.ts',
+			'.vite/src/plugins/assets-plugin/processor.ts',
 		];
 
 		for (const processorFile of assetProcessorPaths) {
