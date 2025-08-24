@@ -10,7 +10,6 @@ import { describe, expect, test } from 'vitest';
 describe('Processor Shim Implementation Validation', () => {
 	const PROCESSOR_FILES = [
 		'.vite/src/common/processors/scriptProcessor.ts',
-		'.vite/src/plugins/blocks-plugin/sideload/processors/assetProcessor.ts',
 		'.vite/src/plugins/assets-plugin/sideload/processors/assetProcessor.ts',
 	];
 
