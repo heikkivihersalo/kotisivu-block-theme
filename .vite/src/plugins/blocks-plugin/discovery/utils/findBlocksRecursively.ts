@@ -13,7 +13,7 @@ import { safeReadDirectory } from '../../../../common/utils';
 /**
  * Internal dependencies
  */
-import type { BlockInfo } from '../../types.ts';
+import type { BlockInfo } from '../../../../common/types/blocks.ts';
 import { extractBlockName } from './extractBlockName.ts';
 import { parseBlockJson } from './parseBlockJson.ts';
 

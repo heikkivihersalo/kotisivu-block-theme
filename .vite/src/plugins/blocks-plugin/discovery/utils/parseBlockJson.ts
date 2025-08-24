@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 /**
  * Internal dependencies
  */
-import type { WordpressBlockJson } from '../../types.ts';
+import type { WordpressBlockJson } from '../../../../common/types/blocks.ts';
 
 /**
  * Helper function to safely parse block.json content
