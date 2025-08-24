@@ -1,10 +1,6 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import {
-	FILE_EXTENSIONS,
-	FILE_NAMES,
-	STYLE_FILE_ALTERNATIVES,
-} from '../../constants.ts';
+import { FILE_EXTENSIONS, FILE_NAMES } from '../../constants.ts';
 
 /**
  * Find the actual style file path considering different extensions and filename patterns
@@ -34,16 +30,14 @@ export const findActualStylePath = (
 	// Try common WordPress block filename patterns
 	const commonPatterns: string[] = [];
 
-	// If looking for index.css, try multiple alternatives
+	// If looking for index.css (editor styles), try editor.*
 	if (fileName === FILE_NAMES.DEFAULT_STYLE_ENTRY) {
-		commonPatterns.push(...STYLE_FILE_ALTERNATIVES.INDEX_CSS_ALTERNATIVES);
+		commonPatterns.push('editor');
 	}
 
-	// If looking for style-index.css, try multiple alternatives
+	// If looking for style-index.css (frontend styles), try style.*
 	if (fileName === FILE_NAMES.STYLE_INDEX) {
-		commonPatterns.push(
-			...STYLE_FILE_ALTERNATIVES.STYLE_INDEX_ALTERNATIVES
-		);
+		commonPatterns.push('style');
 	}
 
 	// Try the common patterns with all extensions
