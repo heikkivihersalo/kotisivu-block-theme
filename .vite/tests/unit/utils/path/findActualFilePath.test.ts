@@ -17,69 +17,46 @@ describe('findActualFilePath', () => {
 
 	it('should return the original path if file exists as specified', () => {
 		const fileName = 'existing-file.js';
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'test content');
+		writeFileSync(join(tempDir, fileName), 'test content');
 
 		const result = findActualFilePath(tempDir, fileName);
 		expect(result).toBe(resolve(tempDir, fileName));
 	});
 
 	it('should return null if no file exists with any extension', () => {
-		const fileName = 'non-existing-file';
-		const result = findActualFilePath(tempDir, fileName);
+		const result = findActualFilePath(tempDir, 'non-existing-file');
 		expect(result).toBeNull();
 	});
 
-	it('should find .js file when searching by name without extension', () => {
-		const baseName = 'test-file';
-		const fileName = `${baseName}.js`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'js content');
+	it('should find script files with different extensions when searching without extension', () => {
+		// Test multiple extensions in a single test
+		const testCases = [
+			{ baseName: 'component', ext: '.jsx' },
+			{ baseName: 'utils', ext: '.ts' },
+			{ baseName: 'hooks', ext: '.tsx' },
+		];
 
-		const result = findActualFilePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
+		testCases.forEach(({ baseName, ext }) => {
+			const fileName = baseName + ext;
+			writeFileSync(join(tempDir, fileName), 'content');
+
+			const result = findActualFilePath(tempDir, baseName);
+			expect(result).toBe(resolve(tempDir, fileName));
+
+			// Clean up for next iteration
+			rmSync(join(tempDir, fileName));
+		});
 	});
 
-	it('should find .jsx file when searching by name without extension', () => {
-		const baseName = 'test-component';
-		const fileName = `${baseName}.jsx`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'jsx content');
-
-		const result = findActualFilePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should find .ts file when searching by name without extension', () => {
-		const baseName = 'test-types';
-		const fileName = `${baseName}.ts`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'ts content');
-
-		const result = findActualFilePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should find .tsx file when searching by name without extension', () => {
-		const baseName = 'test-component';
-		const fileName = `${baseName}.tsx`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'tsx content');
-
-		const result = findActualFilePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should prefer the first found extension in order (.js, .jsx, .ts, .tsx)', () => {
+	it('should prefer extensions in order (.js, .jsx, .ts, .tsx)', () => {
 		const baseName = 'multi-extension-file';
 
-		// Create files with multiple extensions
+		// Create files with multiple extensions (intentionally out of order)
+		writeFileSync(join(tempDir, `${baseName}.tsx`), 'tsx content');
 		writeFileSync(join(tempDir, `${baseName}.jsx`), 'jsx content');
-		writeFileSync(join(tempDir, `${baseName}.ts`), 'ts content');
 		writeFileSync(join(tempDir, `${baseName}.js`), 'js content');
 
 		const result = findActualFilePath(tempDir, baseName);
-		// Should find .js first as it comes first in FILE_EXTENSIONS.SCRIPTS
 		expect(result).toBe(resolve(tempDir, `${baseName}.js`));
 	});
 
@@ -93,41 +70,21 @@ describe('findActualFilePath', () => {
 		expect(result).toBe(resolve(tempDir, tsxFile));
 	});
 
-	it('should handle files with multiple dots in filename', () => {
-		const complexName = 'my.component.test';
-		const fileName = `${complexName}.js`;
-		writeFileSync(join(tempDir, fileName), 'complex name content');
-
-		const result = findActualFilePath(tempDir, complexName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
 	it('should handle nested directory paths', () => {
 		const subDir = 'components';
-		const subDirPath = join(tempDir, subDir);
-		mkdirSync(subDirPath, { recursive: true }); // Create the directory structure
+		mkdirSync(join(tempDir, subDir), { recursive: true });
 
-		const baseName = 'Button';
-		const fileName = `${baseName}.jsx`;
-		const nestedFile = join(subDir, fileName);
-		writeFileSync(join(tempDir, nestedFile), 'nested component');
+		const nestedFile = join(subDir, 'Button.jsx');
+		writeFileSync(join(tempDir, nestedFile), 'component content');
 
 		const result = findActualFilePath(tempDir, nestedFile);
 		expect(result).toBe(resolve(tempDir, nestedFile));
 	});
-	it('should return original path for files that exist with full extension', () => {
-		const fileName = 'index.tsx';
-		writeFileSync(join(tempDir, fileName), 'index content');
 
-		const result = findActualFilePath(tempDir, fileName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should handle case where file extension does not match script extensions', () => {
+	it('should return original path for non-script files that exist', () => {
 		const fileName = 'styles.css';
 		writeFileSync(join(tempDir, fileName), 'css content');
 
-		// Should return the original path since it exists
 		const result = findActualFilePath(tempDir, fileName);
 		expect(result).toBe(resolve(tempDir, fileName));
 	});

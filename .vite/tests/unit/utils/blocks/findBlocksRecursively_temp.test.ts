@@ -69,7 +69,7 @@ describe('findBlocksRecursively', () => {
 		const normalDir = join(tempDir, 'button');
 		const hiddenDir = join(tempDir, '.hidden');
 		const nodeModulesDir = join(tempDir, 'node_modules', 'some-package');
-		
+
 		mkdirSync(normalDir, { recursive: true });
 		mkdirSync(hiddenDir, { recursive: true });
 		mkdirSync(nodeModulesDir, { recursive: true });

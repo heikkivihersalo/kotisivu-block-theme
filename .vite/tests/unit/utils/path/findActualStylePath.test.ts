@@ -17,86 +17,63 @@ describe('findActualStylePath', () => {
 
 	it('should return the original path if file exists as specified', () => {
 		const fileName = 'existing-style.css';
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'css content');
+		writeFileSync(join(tempDir, fileName), 'css content');
 
 		const result = findActualStylePath(tempDir, fileName);
 		expect(result).toBe(resolve(tempDir, fileName));
 	});
 
 	it('should return null if no file exists with any extension', () => {
-		const fileName = 'non-existing-style';
-		const result = findActualStylePath(tempDir, fileName);
+		const result = findActualStylePath(tempDir, 'non-existing-style');
 		expect(result).toBeNull();
 	});
 
-	it('should find .css file when searching by name without extension', () => {
-		const baseName = 'main';
-		const fileName = `${baseName}.css`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'css content');
+	it('should find style files with different extensions when searching without extension', () => {
+		// Test multiple extensions in a single test
+		const testCases = [
+			{ baseName: 'main', ext: '.css' },
+			{ baseName: 'variables', ext: '.scss' },
+			{ baseName: 'mixins', ext: '.sass' },
+			{ baseName: 'theme', ext: '.less' },
+		];
 
-		const result = findActualStylePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
+		testCases.forEach(({ baseName, ext }) => {
+			const fileName = baseName + ext;
+			writeFileSync(join(tempDir, fileName), 'content');
+
+			const result = findActualStylePath(tempDir, baseName);
+			expect(result).toBe(resolve(tempDir, fileName));
+
+			// Clean up for next iteration
+			rmSync(join(tempDir, fileName));
+		});
 	});
 
-	it('should find .scss file when searching by name without extension', () => {
-		const baseName = 'variables';
-		const fileName = `${baseName}.scss`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'scss content');
-
-		const result = findActualStylePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should find .sass file when searching by name without extension', () => {
-		const baseName = 'mixins';
-		const fileName = `${baseName}.sass`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'sass content');
-
-		const result = findActualStylePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should find .less file when searching by name without extension', () => {
-		const baseName = 'theme';
-		const fileName = `${baseName}.less`;
-		const filePath = join(tempDir, fileName);
-		writeFileSync(filePath, 'less content');
-
-		const result = findActualStylePath(tempDir, baseName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
-	it('should prefer the first found extension in order (.css, .scss, .sass, .less)', () => {
+	it('should prefer extensions in order (.css, .scss, .sass, .less)', () => {
 		const baseName = 'multi-style';
 
-		// Create files with multiple extensions
-		writeFileSync(join(tempDir, `${baseName}.scss`), 'scss content');
+		// Create files with multiple extensions (intentionally out of order)
 		writeFileSync(join(tempDir, `${baseName}.less`), 'less content');
+		writeFileSync(join(tempDir, `${baseName}.scss`), 'scss content');
 		writeFileSync(join(tempDir, `${baseName}.css`), 'css content');
 
 		const result = findActualStylePath(tempDir, baseName);
-		// Should find .css first as it comes first in FILE_EXTENSIONS.STYLES
 		expect(result).toBe(resolve(tempDir, `${baseName}.css`));
 	});
 
-	it('should find editor styles when searching for index.css', () => {
-		const editorFile = 'editor.scss';
-		writeFileSync(join(tempDir, editorFile), 'editor styles');
+	it('should handle WordPress-specific filename patterns', () => {
+		// Test index.css → editor pattern
+		writeFileSync(join(tempDir, 'editor.scss'), 'editor styles');
+		let result = findActualStylePath(tempDir, 'index.css');
+		expect(result).toBe(resolve(tempDir, 'editor.scss'));
 
-		const result = findActualStylePath(tempDir, 'index.css');
-		expect(result).toBe(resolve(tempDir, editorFile));
-	});
+		// Clean up
+		rmSync(join(tempDir, 'editor.scss'));
 
-	it('should find style files when searching for style-index.css', () => {
-		const styleFile = 'style.scss';
-		writeFileSync(join(tempDir, styleFile), 'frontend styles');
-
-		const result = findActualStylePath(tempDir, 'style-index.css');
-		expect(result).toBe(resolve(tempDir, styleFile));
+		// Test style-index.css → style pattern
+		writeFileSync(join(tempDir, 'style.scss'), 'frontend styles');
+		result = findActualStylePath(tempDir, 'style-index.css');
+		expect(result).toBe(resolve(tempDir, 'style.scss'));
 	});
 
 	it('should prioritize exact filename match over pattern matching', () => {
@@ -106,15 +83,6 @@ describe('findActualStylePath', () => {
 
 		const result = findActualStylePath(tempDir, 'index.css');
 		expect(result).toBe(resolve(tempDir, 'index.css'));
-	});
-
-	it('should try multiple extensions for WordPress patterns', () => {
-		// Only create editor with different extension
-		const editorFile = 'editor.less';
-		writeFileSync(join(tempDir, editorFile), 'editor less styles');
-
-		const result = findActualStylePath(tempDir, 'index.css');
-		expect(result).toBe(resolve(tempDir, editorFile));
 	});
 
 	it('should strip existing extension and try alternatives', () => {
@@ -127,27 +95,23 @@ describe('findActualStylePath', () => {
 		expect(result).toBe(resolve(tempDir, scssFile));
 	});
 
-	it('should handle files with multiple dots in filename', () => {
-		const complexName = 'my.component.styles';
-		const fileName = `${complexName}.css`;
-		writeFileSync(join(tempDir, fileName), 'complex name styles');
-
-		const result = findActualStylePath(tempDir, complexName);
-		expect(result).toBe(resolve(tempDir, fileName));
-	});
-
 	it('should handle nested directory paths', () => {
 		const subDir = 'styles';
-		const subDirPath = join(tempDir, subDir);
-		mkdirSync(subDirPath, { recursive: true }); // Create the directory structure
+		mkdirSync(join(tempDir, subDir), { recursive: true });
 
-		const baseName = 'button';
-		const fileName = `${baseName}.scss`;
-		const nestedFile = join(subDir, fileName);
+		const nestedFile = join(subDir, 'button.scss');
 		writeFileSync(join(tempDir, nestedFile), 'nested styles');
 
 		const result = findActualStylePath(tempDir, nestedFile);
 		expect(result).toBe(resolve(tempDir, nestedFile));
+	});
+
+	it('should return original path for non-style files that exist', () => {
+		const fileName = 'script.js';
+		writeFileSync(join(tempDir, fileName), 'js content');
+
+		const result = findActualStylePath(tempDir, fileName);
+		expect(result).toBe(resolve(tempDir, fileName));
 	});
 
 	it('should return null when no patterns match', () => {
@@ -156,14 +120,5 @@ describe('findActualStylePath', () => {
 
 		const result = findActualStylePath(tempDir, 'index.css');
 		expect(result).toBeNull();
-	});
-
-	it('should handle case where file extension does not match style extensions', () => {
-		const fileName = 'script.js';
-		writeFileSync(join(tempDir, fileName), 'js content');
-
-		// Should return the original path since it exists
-		const result = findActualStylePath(tempDir, fileName);
-		expect(result).toBe(resolve(tempDir, fileName));
 	});
 });

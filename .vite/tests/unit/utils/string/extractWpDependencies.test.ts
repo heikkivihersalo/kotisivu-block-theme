@@ -6,58 +6,50 @@ import type {
 } from '../../../../src/common/types/index.ts';
 
 describe('extractWpDependencies', () => {
-	it('should return empty array for undefined input', () => {
-		const result = extractWpDependencies(undefined);
-		expect(result).toEqual([]);
-	});
-
-	it('should handle array of import strings', () => {
-		const imports = ['@wordpress/element', '@wordpress/blocks', 'react'];
-		const result = extractWpDependencies(imports);
-		expect(result).toEqual(['wp-element', 'wp-blocks', 'react']);
-	});
-
-	it('should handle empty array of imports', () => {
-		const imports: string[] = [];
-		const result = extractWpDependencies(imports);
-		expect(result).toEqual([]);
-	});
-
-	it('should transform @wordpress namespace imports to wp- format', () => {
+	it('should handle array of import strings and transform WordPress namespaces', () => {
 		const imports = [
 			'@wordpress/element',
+			'@wordpress/blocks',
+			'react',
+			'lodash',
+		];
+		const result = extractWpDependencies(imports);
+		expect(result).toEqual(['wp-element', 'wp-blocks', 'react', 'lodash']);
+	});
+
+	it('should handle empty and undefined inputs', () => {
+		// Undefined input
+		expect(extractWpDependencies(undefined)).toEqual([]);
+
+		// Empty array
+		expect(extractWpDependencies([])).toEqual([]);
+
+		// Empty bundle object
+		expect(extractWpDependencies({})).toEqual([]);
+	});
+
+	it('should transform complex WordPress package names and remove duplicates', () => {
+		const imports = [
 			'@wordpress/block-editor',
-			'@wordpress/components',
-			'@wordpress/data',
+			'@wordpress/server-side-render',
+			'@wordpress/api-fetch',
+			'@wordpress/element',
+			'react',
+			'@wordpress/element', // duplicate
+			'wp-element', // already transformed duplicate
+			'react', // duplicate
 		];
 		const result = extractWpDependencies(imports);
 		expect(result).toEqual([
-			'wp-element',
 			'wp-block-editor',
-			'wp-components',
-			'wp-data',
+			'wp-server-side-render',
+			'wp-api-fetch',
+			'wp-element',
+			'react',
 		]);
 	});
 
-	it('should preserve non-WordPress imports', () => {
-		const imports = ['react', 'lodash', 'jquery', '@wordpress/element'];
-		const result = extractWpDependencies(imports);
-		expect(result).toEqual(['react', 'lodash', 'jquery', 'wp-element']);
-	});
-
-	it('should remove duplicate imports', () => {
-		const imports = [
-			'@wordpress/element',
-			'react',
-			'@wordpress/element',
-			'wp-element',
-			'react',
-		];
-		const result = extractWpDependencies(imports);
-		expect(result).toEqual(['wp-element', 'react']);
-	});
-
-	it('should handle bundle object with chunk info', () => {
+	it('should handle bundle object with chunk and asset info', () => {
 		const bundle = {
 			'chunk1.js': {
 				code: 'some code',
@@ -79,6 +71,15 @@ describe('extractWpDependencies', () => {
 				preliminaryFileName: 'chunk1.js',
 				referencedFiles: [],
 			} satisfies ChunkInfo,
+			'style.css': {
+				fileName: 'style.css',
+				name: 'style',
+				needsCodeReference: false,
+				source: 'css content',
+				type: 'asset' as const,
+				code: '', // No code = should be filtered out
+				imports: ['@wordpress/should-be-ignored'],
+			} satisfies AssetInfo,
 			'chunk2.js': {
 				code: 'more code',
 				imports: ['react', '@wordpress/components'],
@@ -107,65 +108,6 @@ describe('extractWpDependencies', () => {
 			'wp-blocks',
 			'react',
 			'wp-components',
-		]);
-	});
-
-	it('should handle bundle with asset info that has no code', () => {
-		const bundle = {
-			'style.css': {
-				fileName: 'style.css',
-				name: 'style',
-				needsCodeReference: false,
-				source: 'css content',
-				type: 'asset' as const,
-				code: '',
-				imports: [],
-			} satisfies AssetInfo,
-			'script.js': {
-				code: 'js code',
-				imports: ['@wordpress/element'],
-				type: 'chunk' as const,
-				fileName: 'script.js',
-				dynamicImports: [],
-				exports: [],
-				facadeModuleId: null,
-				implicitlyLoadedBefore: [],
-				importedBindings: {},
-				isDynamicEntry: false,
-				isEntry: true,
-				isImplicitEntry: false,
-				map: null,
-				modules: {},
-				moduleIds: [],
-				name: 'script',
-				preliminaryFileName: 'script.js',
-				referencedFiles: [],
-			} satisfies ChunkInfo,
-		};
-
-		const result = extractWpDependencies(bundle);
-		expect(result).toEqual(['wp-element']);
-	});
-
-	it('should handle empty bundle object', () => {
-		const bundle = {};
-		const result = extractWpDependencies(bundle);
-		expect(result).toEqual([]);
-	});
-
-	it('should handle complex WordPress package names', () => {
-		const imports = [
-			'@wordpress/block-editor',
-			'@wordpress/server-side-render',
-			'@wordpress/api-fetch',
-			'@wordpress/rich-text',
-		];
-		const result = extractWpDependencies(imports);
-		expect(result).toEqual([
-			'wp-block-editor',
-			'wp-server-side-render',
-			'wp-api-fetch',
-			'wp-rich-text',
 		]);
 	});
 });
