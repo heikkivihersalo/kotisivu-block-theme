@@ -12,7 +12,7 @@ import { generateSourcePath } from '../../../common/utils';
  * Internal dependencies
  */
 import { findBlocksRecursively } from './utils/findBlocksRecursively.ts';
-import type { BlockInfo } from '../types.ts';
+import type { BlockInfo } from '../../../common/types/blocks.ts';
 
 /**
  * Discover block.json files with custom path mappings
