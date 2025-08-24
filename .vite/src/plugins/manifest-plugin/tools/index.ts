@@ -1,2 +1,2 @@
-export * from './lib/generateWordPressEnqueueFile';
-export * from './lib/convertViteManifestToWordPress';
+export * from './generateWordPressEnqueueFile';
+export * from './convertViteManifestToWordPress';

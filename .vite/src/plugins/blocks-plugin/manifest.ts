@@ -6,9 +6,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import { generatePhpArrayContent } from '../../../common/utils';
-import type { BlockInfo } from '../../../common/types/blocks.ts';
-import type { EmittedAsset } from '../../../common/types/rollup.ts';
+import { generatePhpArrayContent } from '../../common/utils/index.ts';
+import type { BlockInfo } from '../../common/types/blocks.ts';
+import type { EmittedAsset } from '../../common/types/rollup.ts';
 
 /**
  * Generate block manifest PHP file from discovered blocks

@@ -6,13 +6,13 @@ import { statSync } from 'node:fs';
 /**
  * Shared dependencies
  */
-import { generateSourcePath } from '../../../common/utils';
+import { generateSourcePath } from '../../common/utils/index.ts';
 
 /**
  * Internal dependencies
  */
-import { findBlocksRecursively } from '../../../common/utils';
-import type { BlockInfo } from '../../../common/types/blocks.ts';
+import { findBlocksRecursively } from '../../common/utils/index.ts';
+import type { BlockInfo } from '../../common/types/blocks.ts';
 
 /**
  * Discover block.json files with custom path mappings

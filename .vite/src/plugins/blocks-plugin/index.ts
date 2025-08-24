@@ -8,14 +8,14 @@ import type { Plugin, ResolvedConfig } from 'vite';
 
 import { normalizePath } from '../../common/utils';
 import { processPhpFiles } from '../../common/processors';
-import { generateBlockManifest } from './manifest/index.js';
+import { generateBlockManifest } from './manifest.js';
 import type { BlockInfo } from '../../common/types/blocks.ts';
 
 /**
  * Internal dependencies
  */
-import { sideloadBlocks } from './sideload';
-import { discoverBlocksWithMappings } from './discovery';
+import { sideloadBlocks } from './sideload.ts';
+import { discoverBlocksWithMappings } from './discovery.ts';
 
 type Props = {
 	blocksDir: Record<string, string>;

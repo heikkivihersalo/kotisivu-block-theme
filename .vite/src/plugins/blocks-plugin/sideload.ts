@@ -8,21 +8,21 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
+import type { WordpressBlockJson } from '../../common/types/blocks.ts';
 
 /**
  * Internal dependencies
  */
-import { processScripts } from '../../../common/processors/scriptProcessor.ts';
+import { processScripts } from '../../common/processors/scriptProcessor.ts';
 import {
 	processStyle,
 	processStyles,
-} from '../../../common/processors/styleProcessor.ts';
+} from '../../common/processors/styleProcessor.ts';
 import {
 	extractScripts,
 	extractStyles,
 	generateOutputConfig,
-} from '../../../common/utils';
+} from '../../common/utils/index.ts';
 
 /**
  * Sideloads block assets (scripts and styles) based on the provided block.json
