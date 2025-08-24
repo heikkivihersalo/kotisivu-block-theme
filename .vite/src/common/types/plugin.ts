@@ -13,8 +13,10 @@ export type PluginConfig = {
 		outDir?: string;
 		minify?: boolean | 'esbuild' | 'terser';
 		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-		assetsDir: Record<string, string>;
-		blocksDir: Record<string, string>;
+		target?: string;
+		assetsDir?: Record<string, string>;
+		blocksDir?: Record<string, string>;
 		watch?: string[];
+		cssCodeSplit?: boolean;
 	};
 };
