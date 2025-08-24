@@ -13,6 +13,7 @@ import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../common/constants.ts';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
+	emitCss,
 } from '../../common/utils/index.ts';
 import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
 
@@ -21,7 +22,6 @@ import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
 /**
  * Internal dependencies
  */
-import { emitCss } from './utils';
 import { ReactShimPlugin } from '../../common/shims/react-shim-plugin.ts';
 
 type AssetProcessorConfig = {

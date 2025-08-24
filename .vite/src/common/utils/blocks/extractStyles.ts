@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { normaliseArray } from './normaliseArray.ts';
+import { normaliseArray } from '../array/normaliseArray.ts';
 
 /**
  * Extract styles from block.json configuration

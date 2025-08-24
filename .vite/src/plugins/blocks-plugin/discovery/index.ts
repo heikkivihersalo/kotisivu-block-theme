@@ -11,7 +11,7 @@ import { generateSourcePath } from '../../../common/utils';
 /**
  * Internal dependencies
  */
-import { findBlocksRecursively } from './utils/findBlocksRecursively.ts';
+import { findBlocksRecursively } from '../../../common/utils';
 import type { BlockInfo } from '../../../common/types/blocks.ts';
 
 /**

@@ -6,7 +6,7 @@ import type { Plugin } from 'esbuild';
 /**
  * Shared dependencies
  */
-import { readStylesheet } from '../utils/lib/readStylesheet.ts';
+import { readStylesheet } from '../utils';
 
 /**
  * ESBuild plugin to handle SCSS/Sass files

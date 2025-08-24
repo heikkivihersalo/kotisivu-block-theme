@@ -18,8 +18,7 @@ import {
 	processStyle,
 	processStyles,
 } from '../../../common/processors/styleProcessor.ts';
-import { extractScripts, extractStyles } from './utils';
-import { generateOutputConfig } from './utils';
+import { extractScripts, extractStyles, generateOutputConfig } from '../../../common/utils';
 
 /**
  * Sideloads block assets (scripts and styles) based on the provided block.json

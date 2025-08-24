@@ -7,14 +7,14 @@ import { join } from 'node:path';
 /**
  * Shared dependencies
  */
-import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../../common/constants.ts';
+import { DISCOVERY_CONFIG, FILE_NAMES } from '../../constants.ts';
 
 /**
  * Internal dependencies
  */
-import type { BlockInfo } from '../../../../common/types/blocks.ts';
-import { extractBlockName } from './extractBlockName.ts';
-import { parseBlockJson } from './parseBlockJson.ts';
+import type { BlockInfo } from '../../types/blocks.ts';
+import { extractBlockName } from '../string/extractBlockName.ts';
+import { parseBlockJson } from '../file/parseBlockJson.ts';
 
 /**
  * Check if a directory should be skipped during block discovery

@@ -6,7 +6,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import { generatePhpArrayContent } from './utils';
+import { generatePhpArrayContent } from '../../../common/utils';
 import type { BlockInfo } from '../../../common/types/blocks.ts';
 import type { EmittedAsset } from '../../../common/types/rollup.ts';
 

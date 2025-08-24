@@ -1,16 +1,16 @@
 /**
  * Shared dependencies
  */
-import { extractWpDependencies } from '../../../../common/utils';
+import {
+	extractWpDependencies,
+	generateVersionFromFile,
+	shouldLoadInFooter,
+} from '../../../../common/utils';
 
 /**
  * Internal dependencies
  */
 import type { ViteManifest, WordPressAssetManifest } from '../../types.ts';
-import {
-	generateVersionFromFile,
-	shouldLoadInFooter,
-} from '../../utils/index.ts';
 
 /**
  * Convert Vite 6 manifest to WordPress-compatible format
