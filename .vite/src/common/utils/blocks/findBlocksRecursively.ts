@@ -12,7 +12,7 @@ import { DISCOVERY_CONFIG, FILE_NAMES } from '../../constants.ts';
 /**
  * Internal dependencies
  */
-import type { BlockInfo } from '../../types/blocks.ts';
+import type { BlockInfo } from '../../types/wordpress.ts';
 import { extractBlockName } from '../string/extractBlockName.ts';
 import { parseBlockJson } from '../file/parseBlockJson.ts';
 
