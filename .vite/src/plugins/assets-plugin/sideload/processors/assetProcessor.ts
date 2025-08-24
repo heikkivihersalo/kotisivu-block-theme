@@ -25,8 +25,6 @@ import type { DiscoveredAssetInfo } from '../../../../common/types/assets.ts';
 /**
  * Internal dependencies
  */
-import { extractAssetDependencies } from '../utils/';
-
 type AssetProcessorConfig = {
 	outputDirectory: string;
 	dependencies?: string[];
@@ -89,16 +87,9 @@ export const processAssets = async (
 				f.path.endsWith('.js.map')
 			);
 			const hash = generateFileHash(jsContent);
-			const assetDependencies = extractAssetDependencies(
-				asset.sourcePath,
-				result
-			);
+
 			const configDeps = dependencies.filter((dep) => dep.trim() !== '');
-			const allDependencies = [
-				...configDeps,
-				...assetDependencies,
-				...wpImports,
-			];
+			const allDependencies = [...configDeps, ...wpImports];
 			const phpContent = generatePhpAssetFile(allDependencies, hash);
 
 			context.emitFile({
