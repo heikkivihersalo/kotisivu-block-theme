@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { normaliseArray } from '../array/normaliseArray.ts';
+import { wrapArray } from '../array/wrapArray.ts';
 
 /**
  * Extract scripts from block.json configuration
@@ -17,9 +17,9 @@ export const extractScripts = (
 	const editorScript = blockJson?.editorScript ?? [];
 
 	// Normalise into arrays and combine
-	return normaliseArray(viewScript)
-		.concat(normaliseArray(standardScript))
-		.concat(normaliseArray(editorScript))
+	return wrapArray(viewScript)
+		.concat(wrapArray(standardScript))
+		.concat(wrapArray(editorScript))
 		.filter(
 			(script) => typeof script === 'string' && script.startsWith('file')
 		)

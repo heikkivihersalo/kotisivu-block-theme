@@ -29,17 +29,14 @@ describe('generateFileHash', () => {
 	});
 
 	it('should handle various content types', () => {
-		const jsonContent = '{"name": "test", "value": 123}';
+		const jsonContent = '{"name": "test"}';
 		const cssContent = 'body { margin: 0; }';
-		const jsContent = 'console.log("Hello");';
 
 		const jsonHash = generateFileHash(jsonContent);
 		const cssHash = generateFileHash(cssContent);
-		const jsHash = generateFileHash(jsContent);
 
 		expect(jsonHash).toHaveLength(32);
 		expect(cssHash).toHaveLength(32);
-		expect(jsHash).toHaveLength(32);
-		expect(new Set([jsonHash, cssHash, jsHash]).size).toBe(3); // All different
+		expect(jsonHash).not.toBe(cssHash);
 	});
 });

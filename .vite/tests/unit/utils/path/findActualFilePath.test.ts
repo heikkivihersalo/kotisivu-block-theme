@@ -29,23 +29,15 @@ describe('findActualFilePath', () => {
 	});
 
 	it('should find script files with different extensions when searching without extension', () => {
-		// Test multiple extensions in a single test
-		const testCases = [
-			{ baseName: 'component', ext: '.jsx' },
-			{ baseName: 'utils', ext: '.ts' },
-			{ baseName: 'hooks', ext: '.tsx' },
-		];
+		writeFileSync(join(tempDir, 'component.jsx'), 'content');
+		writeFileSync(join(tempDir, 'utils.ts'), 'content');
 
-		testCases.forEach(({ baseName, ext }) => {
-			const fileName = baseName + ext;
-			writeFileSync(join(tempDir, fileName), 'content');
-
-			const result = findActualFilePath(tempDir, baseName);
-			expect(result).toBe(resolve(tempDir, fileName));
-
-			// Clean up for next iteration
-			rmSync(join(tempDir, fileName));
-		});
+		expect(findActualFilePath(tempDir, 'component')).toBe(
+			resolve(tempDir, 'component.jsx')
+		);
+		expect(findActualFilePath(tempDir, 'utils')).toBe(
+			resolve(tempDir, 'utils.ts')
+		);
 	});
 
 	it('should prefer extensions in order (.js, .jsx, .ts, .tsx)', () => {

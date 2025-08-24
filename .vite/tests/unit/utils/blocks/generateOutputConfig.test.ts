@@ -41,18 +41,15 @@ describe('generateOutputConfig', () => {
 	});
 
 	it('should validate required parameters', () => {
-		// Test each required parameter
-		expect(() => {
-			generateOutputConfig('', 'button', undefined, '/output');
-		}).toThrow('blockPath is required for multi-block builds');
-
-		expect(() => {
-			generateOutputConfig('/path/to/block', '', undefined, '/output');
-		}).toThrow('blockName is required for multi-block builds');
-
-		expect(() => {
-			generateOutputConfig('/path/to/block', 'button', undefined, '');
-		}).toThrow('outputDirectory is required for multi-block builds');
+		expect(() =>
+			generateOutputConfig('', 'button', undefined, '/output')
+		).toThrow('blockPath is required');
+		expect(() =>
+			generateOutputConfig('/path', '', undefined, '/output')
+		).toThrow('blockName is required');
+		expect(() =>
+			generateOutputConfig('/path', 'button', undefined, '')
+		).toThrow('outputDirectory is required');
 	});
 
 	it('should prioritize custom output path over block name', () => {

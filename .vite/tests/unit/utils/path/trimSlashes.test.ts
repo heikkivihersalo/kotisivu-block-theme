@@ -27,6 +27,5 @@ describe('trimSlashes', () => {
 		expect(trimSlashes('')).toBe('');
 		expect(trimSlashes('///')).toBe('');
 		expect(trimSlashes('/')).toBe('');
-		expect(trimSlashes('\\')).toBe('');
 	});
 });

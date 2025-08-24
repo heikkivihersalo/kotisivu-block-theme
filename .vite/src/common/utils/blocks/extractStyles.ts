@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { normaliseArray } from '../array/normaliseArray.ts';
+import { wrapArray } from '../array/wrapArray.ts';
 
 /**
  * Extract styles from block.json configuration
@@ -14,9 +14,9 @@ export const extractStyles = (blockJson: Record<string, unknown>): string[] => {
 	const viewStyle = blockJson?.viewStyle ?? [];
 
 	// Normalise into arrays and combine
-	return normaliseArray(editorStyle)
-		.concat(normaliseArray(style))
-		.concat(normaliseArray(viewStyle))
+	return wrapArray(editorStyle)
+		.concat(wrapArray(style))
+		.concat(wrapArray(viewStyle))
 		.filter(
 			(style) => typeof style === 'string' && style.startsWith('file')
 		)

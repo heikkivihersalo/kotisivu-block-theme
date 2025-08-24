@@ -26,10 +26,11 @@ describe('readStylesheet', () => {
 
 	it('should compile SCSS file and return CSS', () => {
 		const scssContent = `
+			@use "sass:color";
 			$primary-color: #3498db;
 			.header {
 				color: $primary-color;
-				&:hover { color: darken($primary-color, 10%); }
+				&:hover { color: color.adjust($primary-color, $lightness: -10%); }
 			}
 		`;
 		const scssFile = join(tempDir, 'styles.scss');

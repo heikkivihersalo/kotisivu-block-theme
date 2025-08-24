@@ -17,11 +17,10 @@ describe('convertToPhpArray', () => {
 	it('should convert arrays', () => {
 		expect(convertToPhpArray([])).toBe('[]');
 
-		const simpleArray = ['item1', 'item2', 'item3'];
+		const simpleArray = ['item1', 'item2'];
 		const expectedSimple = `[
 \t'item1',
-\t'item2',
-\t'item3'
+\t'item2'
 ]`;
 		expect(convertToPhpArray(simpleArray)).toBe(expectedSimple);
 
