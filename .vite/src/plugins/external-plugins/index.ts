@@ -1,20 +1,9 @@
 /**
  * External dependencies
  */
-import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import type { Plugin } from 'vite';
-
-/**
- * Shared dependencies
- */
-import { FILE_NAMES } from '../../common/constants.js';
-import type { BlockInfo } from '../../common/types/blocks.ts';
-
-/* *********************************************
- * External plugins required for the build process
- * ******************************************* */
 
 /**
  * Creates a static copy plugin that dynamically configures copy targets
