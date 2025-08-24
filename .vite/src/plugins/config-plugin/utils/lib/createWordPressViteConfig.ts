@@ -68,6 +68,15 @@ export function createWordPressViteConfig(
 			output: {
 				globals: WORDPRESS_EXTERNALS,
 			},
+			// Suppress unhelpful file overwrite warnings
+			onwarn(warning, warn) {
+				// Suppress warnings about overwriting previously emitted files
+				if (warning.code === 'FILE_NAME_CONFLICT') {
+					return;
+				}
+				// Use default warning behavior for other warnings
+				warn(warning);
+			},
 		},
 
 		// Terser options if specified
