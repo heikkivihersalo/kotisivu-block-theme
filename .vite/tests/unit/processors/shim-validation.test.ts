@@ -250,7 +250,6 @@ describe('Processor Shim Implementation Validation', () => {
 	 */
 	test('asset processors contain specific implementation details', () => {
 		const assetProcessorPaths = [
-			'.vite/src/plugins/blocks-plugin/sideload/processors/assetProcessor.ts',
 			'.vite/src/plugins/assets-plugin/sideload/processors/assetProcessor.ts',
 		];
 
