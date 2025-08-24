@@ -16,20 +16,6 @@ import {
 import type { OutputConfig } from '../types';
 
 /**
- * Process CSS with LightningCSS
- * @param cssContent - The CSS content to process
- * @param outputFilename - The output file name
- */
-const processCSS = (cssContent: string, outputFilename: string) => {
-	return transform({
-		filename: outputFilename,
-		code: Buffer.from(cssContent),
-		minify: true,
-		sourceMap: true,
-	});
-};
-
-/**
  * Process a single style file
  * @param pluginContext - The Rollup plugin context
  * @param styleFile - The original style file name
@@ -50,7 +36,12 @@ export const processStyle = (
 		const outputFilename = determineOutputFilename(styleFile, config);
 
 		// Process CSS with LightningCSS
-		const { code, map } = processCSS(cssContent, outputFilename);
+		const { code, map } = transform({
+			filename: outputFilename,
+			code: Buffer.from(cssContent),
+			minify: true,
+			sourceMap: true,
+		});
 
 		// Emit CSS and source map assets
 		emitCssAssets(pluginContext, code, map || undefined, outputFilename);

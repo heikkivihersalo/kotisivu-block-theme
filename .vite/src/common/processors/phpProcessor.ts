@@ -10,17 +10,6 @@ import type { PluginContext } from 'rollup';
 import { minifyPhp, emitPhpAsset } from '../utils';
 
 /**
- * Read and optionally minify PHP content
- * @param phpPath - The path to the PHP file
- * @param shouldMinify - Whether to minify the PHP content
- * @return The processed PHP content
- */
-const processPHPContent = (phpPath: string, shouldMinify: boolean): string => {
-	const phpContent = readFileSync(phpPath, 'utf-8');
-	return shouldMinify ? minifyPhp(phpContent) : phpContent;
-};
-
-/**
  * Process a single PHP file and minify it
  * @param pluginContext - The Rollup plugin context
  * @param phpPath - The path to the PHP file
@@ -34,7 +23,13 @@ export const processPhp = (
 ): void => {
 	try {
 		pluginContext.addWatchFile(phpPath);
-		const processedContent = processPHPContent(phpPath, shouldMinify);
+
+		const phpContent = readFileSync(phpPath, 'utf-8');
+
+		const processedContent = shouldMinify
+			? minifyPhp(phpContent)
+			: phpContent;
+
 		emitPhpAsset(pluginContext, outputFileName, processedContent);
 	} catch {
 		// Skip files that can't be processed
