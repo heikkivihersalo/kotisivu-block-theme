@@ -8,14 +8,10 @@ import { type ResolvedConfig, preprocessCSS } from 'vite';
 /**
  * Shared dependencies
  */
-import { REGEX_PATTERNS } from '../../../common/constants.js';
-import type { WordpressBlockJson } from '../../../common/types/blocks.ts';
-import type { EmittedAsset } from '../../../common/types/rollup.ts';
-
-/**
- * Internal dependencies
- */
-import { trimSlashes, wrapArray } from './utils/';
+import { trimSlashes, wrapArray } from '../../common/utils';
+import { REGEX_PATTERNS } from '../../common/constants.js';
+import type { WordpressBlockJson } from '../../common/types/blocks.ts';
+import type { EmittedAsset } from '../../common/types/rollup.ts';
 
 /**
  * transform

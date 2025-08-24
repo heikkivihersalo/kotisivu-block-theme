@@ -13,7 +13,7 @@ import type { AssetInfo, ChunkInfo } from '../../common/types/rollup.ts';
 /**
  * Internal dependencies
  */
-import { generateBundle } from './bundle';
+import { generateBundle } from './bundler.ts';
 import { transform } from './transform';
 
 type Props = {

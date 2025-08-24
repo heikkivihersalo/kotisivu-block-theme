@@ -7,20 +7,16 @@ import type { OutputOptions, PluginContext } from 'rollup';
  * Shared dependencies
  */
 import {
+	generateVersionHash,
 	generatePhpAssetFile,
 	extractWpDependencies,
-} from '../../../common/utils';
+} from '../../common/utils/index.ts';
 
 import type {
 	AssetInfo,
 	ChunkInfo,
 	EmittedAsset,
-} from '../../../common/types/rollup.ts';
-
-/**
- * Internal dependencies
- */
-import { generateVersionHash } from './utils';
+} from '../../common/types/rollup.ts';
 
 /**
  * generateBundle
