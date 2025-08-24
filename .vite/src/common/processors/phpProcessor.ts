@@ -3,7 +3,7 @@
  */
 import { readFileSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
-import type { EmittedAsset } from '../types/rollup.ts';
+import type { EmittedAsset } from '../types';
 
 /**
  * Minify PHP content by removing comments, unnecessary whitespace, and formatting

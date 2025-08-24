@@ -17,18 +17,15 @@ import {
 } from '../../common/utils/index.ts';
 import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
 
-import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
+import type {
+	DiscoveredAssetInfo,
+	AssetProcessorConfig,
+} from '../../common/types';
 
 /**
  * Internal dependencies
  */
 import { ReactShimPlugin } from '../../common/shims/react-shim-plugin.ts';
-
-type AssetProcessorConfig = {
-	outputDirectory: string;
-	dependencies?: string[];
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-};
 
 /**
  * Process generic assets and generate corresponding PHP asset files

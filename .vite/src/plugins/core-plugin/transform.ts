@@ -10,8 +10,10 @@ import { type ResolvedConfig, preprocessCSS } from 'vite';
  */
 import { trimSlashes, wrapArray } from '../../common/utils';
 import { REGEX_PATTERNS } from '../../common/constants.js';
-import type { WordpressBlockJson } from '../../common/types/blocks.ts';
-import type { EmittedAsset } from '../../common/types/rollup.ts';
+import type {
+	WordPressBlockJSON,
+	BundlerEmittedAsset,
+} from '../../common/types';
 
 /**
  * transform
@@ -27,7 +29,7 @@ export async function transform(
 	this: PluginContext,
 	code: string,
 	id: string,
-	blockFile: WordpressBlockJson,
+	blockFile: WordPressBlockJSON,
 	config: ResolvedConfig,
 	_environment?: any
 ): Promise<string | boolean | void> {
@@ -63,5 +65,5 @@ export async function transform(
 		type: 'asset',
 		fileName: outputPath,
 		source: result.code,
-	} satisfies EmittedAsset);
+	} satisfies BundlerEmittedAsset);
 }

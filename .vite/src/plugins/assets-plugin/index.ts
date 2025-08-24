@@ -8,20 +8,16 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
-import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
+import type {
+	DiscoveredAsset,
+	ViteAssetsPluginConfig,
+} from '../../common/types';
 
 /**
  * Internal dependencies
  */
 import { discoverAssetsWithMapping } from './discovery';
 import { processAssets } from './processor.ts';
-
-type AssetsPluginConfig = {
-	assetsDir: Record<string, string>;
-	outDir?: string | undefined;
-	dependencies?: string[];
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-};
 
 /**
  * Vite plugin for handling WordPress assets
@@ -30,11 +26,11 @@ type AssetsPluginConfig = {
  * - Discovering assets from configured directories
  * - Sideloading asset entry points
  */
-export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
+export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 	const { assetsDir, outDir, dependencies = [], sourcemap = false } = config;
 
 	let outputDirectory: string;
-	let discoveredAssets: DiscoveredAssetInfo[] = [];
+	let discoveredAssets: DiscoveredAsset[] = [];
 	const pwd = process.env.PWD || process.cwd();
 
 	// Default WordPress dependencies that should always be externalized

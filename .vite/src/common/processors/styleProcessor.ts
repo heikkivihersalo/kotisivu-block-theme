@@ -12,8 +12,7 @@ import {
 	generateAssetFilename,
 	readStylesheet,
 } from '../utils';
-import type { EmittedAsset } from '../types/rollup.ts';
-import type { OutputConfig } from '../types/assets.ts';
+import type { EmittedAsset, OutputConfig } from '../types';
 
 /**
  * Process a single style file

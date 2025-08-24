@@ -1,5 +1,5 @@
 import { generateFileHash } from './generateFileHash.ts';
-import type { AssetInfo, ChunkInfo } from '../../../common/types/rollup.ts';
+import type { BundlerAssetInfo, BundlerChunkInfo } from '../../types';
 
 /**
  * Generate a version hash for the given bundle.
@@ -9,7 +9,7 @@ import type { AssetInfo, ChunkInfo } from '../../../common/types/rollup.ts';
  * @return The generated version hash.
  */
 export function generateVersionHash(bundle: {
-	[fileName: string]: ChunkInfo | AssetInfo;
+	[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
 }): string {
 	// Find the first file with code to generate hash from
 	for (const file of Object.values(bundle)) {

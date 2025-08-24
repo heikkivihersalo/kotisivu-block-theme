@@ -8,7 +8,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import type { WordpressBlockJson } from '../../common/types/blocks.ts';
+import type { WordPressBlockJSON } from '../../common/types';
 
 /**
  * Internal dependencies
@@ -29,7 +29,7 @@ import {
  * and outputs them to the specified directory.
  *
  * @param {PluginContext} this - The Rollup plugin context.
- * @param {WordpressBlockJson} blockJson - The block.json object containing block metadata.
+ * @param {WordPressBlockJSON} blockJson - The block.json object containing block metadata.
  * @param {string} outputDirectory - The directory where assets should be output.
  * @param {string} blockPath - Path to the block directory (required for multi-block builds).
  * @param {string} blockName - Name of the block (required for multi-block builds).
@@ -39,7 +39,7 @@ import {
  */
 export async function sideloadBlocks(
 	this: PluginContext,
-	blockJson: WordpressBlockJson,
+	blockJson: WordPressBlockJSON,
 	outputDirectory: string,
 	blockPath: string,
 	blockName: string,

@@ -1,9 +1,13 @@
 import type { SourceMap } from 'node:module';
 
 /**
- * Rollup emitted asset
+ * Bundler and build system types for Rollup/Vite operations
  */
-export type EmittedAsset = {
+
+/**
+ * Asset emitted by the bundler
+ */
+export type BundlerEmittedAsset = {
 	type: 'asset';
 	name?: string;
 	needsCodeReference?: boolean;
@@ -12,9 +16,9 @@ export type EmittedAsset = {
 };
 
 /**
- * Rollup asset info
+ * Bundler asset information
  */
-export type AssetInfo = {
+export type BundlerAssetInfo = {
 	fileName: string;
 	name?: string;
 	needsCodeReference: boolean;
@@ -25,9 +29,9 @@ export type AssetInfo = {
 };
 
 /**
- * Rollup chunk info
+ * Bundler chunk information
  */
-export type ChunkInfo = {
+export type BundlerChunkInfo = {
 	code: string;
 	dynamicImports: string[];
 	exports: string[];

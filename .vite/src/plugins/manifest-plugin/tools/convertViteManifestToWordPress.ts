@@ -10,7 +10,10 @@ import {
 /**
  * Internal dependencies
  */
-import type { ViteManifest, WordPressAssetManifest } from '../types.ts';
+import type {
+	ViteManifest,
+	WordPressAssetManifest,
+} from '../../../common/types';
 
 /**
  * Convert Vite 6 manifest to WordPress-compatible format

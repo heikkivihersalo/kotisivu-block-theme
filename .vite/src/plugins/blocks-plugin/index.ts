@@ -9,20 +9,13 @@ import type { Plugin, ResolvedConfig } from 'vite';
 import { normalizePath } from '../../common/utils';
 import { processPhpFiles } from '../../common/processors';
 import { generateBlockManifest } from './manifest.js';
-import type { BlockInfo } from '../../common/types/blocks.ts';
+import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
 
 /**
  * Internal dependencies
  */
 import { sideloadBlocks } from './sideload.ts';
 import { discoverBlocksWithMappings } from './discovery.ts';
-
-type Props = {
-	blocksDir: Record<string, string>;
-	outDir?: string | undefined;
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	watch?: string[];
-};
 
 /**
  * Vite plugin for handling WordPress Gutenberg blocks
@@ -32,7 +25,7 @@ type Props = {
  * - Sideloading block entry points
  * - Generating block manifest files
  */
-export function BlocksPlugin(config: Props): Plugin {
+export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 	const { blocksDir, outDir, sourcemap = false, watch = [] } = config;
 
 	let outputDirectory: string;
@@ -72,7 +65,7 @@ export function BlocksPlugin(config: Props): Plugin {
 			await discoverBlocks();
 
 			// Add watch files if specified
-			watch.forEach((file) => this.addWatchFile(file));
+			watch.forEach((file: string) => this.addWatchFile(file));
 
 			// Copy static files for each discovered block
 			for (const block of discoveredBlocks) {

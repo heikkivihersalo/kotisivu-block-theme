@@ -11,12 +11,12 @@ import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
 /**
  * Internal dependencies
  */
-import type { PluginConfig } from '../../common/types/plugin.ts';
+import type { ViteWordPressConfig } from '../../common/types';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
-export function config(config: PluginConfig): UserConfig {
+export function config(config: ViteWordPressConfig): UserConfig {
 	const {
 		build: {
 			outDir = 'build',

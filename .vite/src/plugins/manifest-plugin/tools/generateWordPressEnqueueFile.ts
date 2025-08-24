@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import type { WordPressAssetManifest } from '../types.js';
+import type { WordPressAssetManifest } from '../../../common/types';
 
 /**
  * Generate a PHP file for WordPress enqueueing assets

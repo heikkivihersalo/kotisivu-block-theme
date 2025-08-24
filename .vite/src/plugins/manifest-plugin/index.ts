@@ -9,6 +9,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
+import type { ViteManifestPluginConfig } from '../../common/types';
 
 /**
  * Internal dependencies
@@ -17,13 +18,6 @@ import {
 	convertViteManifestToWordPress,
 	generateWordPressEnqueueFile,
 } from './tools';
-
-type Props = {
-	outDir?: string;
-	generatePhpManifest?: boolean;
-	publicPath?: string;
-	textDomain?: string;
-};
 
 /**
  * Vite plugin for generating WordPress-compatible asset manifests
@@ -34,7 +28,7 @@ type Props = {
  * @param config - Configuration options for the plugin.
  * @return A Vite plugin that processes the manifest and generates WordPress-compatible files.
  */
-export function ManifestPlugin(config: Props = {}): Plugin {
+export function ManifestPlugin(config: ViteManifestPluginConfig = {}): Plugin {
 	const {
 		outDir = 'build',
 		generatePhpManifest = true,

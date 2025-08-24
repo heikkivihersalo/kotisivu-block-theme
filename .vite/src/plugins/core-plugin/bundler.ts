@@ -12,11 +12,7 @@ import {
 	extractWpDependencies,
 } from '../../common/utils/index.ts';
 
-import type {
-	AssetInfo,
-	ChunkInfo,
-	EmittedAsset,
-} from '../../common/types/rollup.ts';
+import type { AssetInfo, ChunkInfo, EmittedAsset } from '../../common/types';
 
 /**
  * generateBundle

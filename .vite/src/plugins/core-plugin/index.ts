@@ -7,19 +7,17 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Shared dependencies
  */
-import type { BlockInfo } from '../../common/types/blocks.ts';
-import type { AssetInfo, ChunkInfo } from '../../common/types/rollup.ts';
+import type {
+	BundlerAssetInfo,
+	BundlerChunkInfo,
+	ViteCorePluginConfig,
+} from '../../common/types';
 
 /**
  * Internal dependencies
  */
 import { generateBundle } from './bundler.ts';
 import { transform } from './transform';
-
-type Props = {
-	dependencies?: string[];
-	discoveredBlocks?: BlockInfo[];
-};
 
 /**
  * Modern Vite 6 plugin for core WordPress Gutenberg functionality
@@ -29,7 +27,7 @@ type Props = {
  * - Modern plugin hooks
  * - Enhanced bundle generation
  */
-export function CorePlugin(pluginConfig: Props): Plugin {
+export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 	const { dependencies = [], discoveredBlocks = [] } = pluginConfig;
 
 	let _config: ResolvedConfig;
@@ -38,7 +36,9 @@ export function CorePlugin(pluginConfig: Props): Plugin {
 	const defaultDependencies = ['react', 'react-dom'];
 	const allDependencies = [
 		...defaultDependencies,
-		...dependencies.filter((dep) => !defaultDependencies.includes(dep)),
+		...dependencies.filter(
+			(dep: string) => !defaultDependencies.includes(dep)
+		),
 	];
 
 	return {
@@ -85,8 +85,9 @@ export function CorePlugin(pluginConfig: Props): Plugin {
 			bundle: OutputBundle
 		) {
 			// Modern Vite 6: Direct bundle processing
-			const customBundle: { [fileName: string]: ChunkInfo | AssetInfo } =
-				{};
+			const customBundle: {
+				[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
+			} = {};
 
 			for (const [fileName, bundleItem] of Object.entries(bundle)) {
 				if (bundleItem.type === 'chunk') {
@@ -94,13 +95,13 @@ export function CorePlugin(pluginConfig: Props): Plugin {
 						...bundleItem,
 						code: bundleItem.code,
 						imports: bundleItem.imports,
-					} as ChunkInfo;
+					} as BundlerChunkInfo;
 				} else {
 					customBundle[fileName] = {
 						...bundleItem,
 						code: bundleItem.source?.toString() || '',
 						imports: [],
-					} as AssetInfo;
+					} as BundlerAssetInfo;
 				}
 			}
 
