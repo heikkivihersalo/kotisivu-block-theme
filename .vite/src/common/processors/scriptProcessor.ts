@@ -15,11 +15,7 @@ import {
 	generatePhpAssetFile,
 } from '../utils';
 
-import {
-	ESBUILD_CONFIG,
-	FILE_EXTENSIONS,
-	WORDPRESS_CONFIG,
-} from '../constants.ts';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../shims/react-shim-plugin.ts';
 
@@ -36,15 +32,8 @@ export const processScript = async (
 	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<void> => {
 	const actualScriptPath = findActualFilePath(config.basePath, script);
+	if (!actualScriptPath) return;
 
-	if (!actualScriptPath) {
-		console.warn(
-			`Warning: Script file not found: ${script} (tried ${FILE_EXTENSIONS.SCRIPTS.join(', ')} extensions in ${config.basePath})`
-		);
-		return;
-	}
-
-	// Vite won't track this file for watching, so we'll add a manual watcher
 	pluginContext.addWatchFile(actualScriptPath);
 	const wpImports: string[] = [];
 

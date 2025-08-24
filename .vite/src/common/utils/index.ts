@@ -9,6 +9,5 @@ export * from './lib/generateSourcePath';
 export * from './lib/generateVersionHash';
 export * from './lib/normalizePath';
 export * from './lib/readStylesheet';
-export * from './lib/safeReadDirectory';
 export * from './lib/trimSlashes';
 export * from './lib/wrapArray';

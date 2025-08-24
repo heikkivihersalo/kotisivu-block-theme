@@ -42,15 +42,13 @@ export function ManifestPlugin(config: Props = {}): Plugin {
 		textDomain = 'theme',
 	} = config;
 
-	// Store resolved config for potential future use
-	let _resolvedConfig: ResolvedConfig;
+	// Store the output directory
 	let outputDirectory: string;
 
 	return {
 		name: 'vite-plugin-gutenberg-manifest',
 
 		configResolved(config: ResolvedConfig) {
-			_resolvedConfig = config;
 			outputDirectory = normalizePath(outDir) || config.build.outDir;
 		},
 
@@ -96,8 +94,8 @@ export function ManifestPlugin(config: Props = {}): Plugin {
 					jsonManifestPath,
 					JSON.stringify(wpManifest, null, 2)
 				);
-			} catch (error) {
-				console.warn('Failed to generate WordPress manifest:', error);
+			} catch {
+				// Skip manifest generation if files are missing or malformed
 			}
 		},
 

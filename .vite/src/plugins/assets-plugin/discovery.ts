@@ -12,10 +12,6 @@ import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
 
 /**
  * Discover asset files with custom path mappings
- * This function allows mapping source files to custom output paths
- * @param pathMappings - Object mapping output paths to source files
- * @param pwd - Current working directory to resolve relative paths
- * @return An array of DiscoveredAssetInfo objects for each discovered asset
  */
 export function discoverAssetsWithMapping(
 	pathMappings: Record<string, string>,
@@ -42,8 +38,9 @@ export function discoverAssetsWithMapping(
 					relativePath: relative(pwd, fullSourcePath),
 				});
 			}
-		} catch (error) {
-			console.warn(`Could not process asset ${sourcePath}:`, error);
+		} catch {
+			// Skip inaccessible assets
+			continue;
 		}
 	}
 

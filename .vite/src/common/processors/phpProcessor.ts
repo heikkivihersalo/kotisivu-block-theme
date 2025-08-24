@@ -55,25 +55,19 @@ export const processPhp = (
 	shouldMinify: boolean = true
 ): void => {
 	try {
-		// Add the PHP file to Rollup's bundle for watching
 		pluginContext.addWatchFile(phpPath);
-
-		// Read the PHP file content
 		const phpContent = readFileSync(phpPath, 'utf-8');
-
-		// Minify the content if requested
 		const processedContent = shouldMinify
 			? minifyPhp(phpContent)
 			: phpContent;
 
-		// Emit the processed PHP file
 		pluginContext.emitFile({
 			type: 'asset',
 			fileName: outputFileName,
 			source: processedContent,
 		} satisfies EmittedAsset);
-	} catch (error) {
-		console.warn(`Warning: Could not process PHP file ${phpPath}:`, error);
+	} catch {
+		// Skip files that can't be processed
 	}
 };
 

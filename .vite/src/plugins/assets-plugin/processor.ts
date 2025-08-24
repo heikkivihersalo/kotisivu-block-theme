@@ -93,6 +93,7 @@ export const processAssets = async (
 				fileName: `${asset.outputPath}.js`,
 				source: jsContent,
 			});
+
 			if (jsSourceMapFile) {
 				context.emitFile({
 					type: 'asset',
@@ -100,17 +101,19 @@ export const processAssets = async (
 					source: jsSourceMapFile.text,
 				});
 			}
+
 			context.emitFile({
 				type: 'asset',
 				fileName: `${asset.outputPath}.asset.php`,
 				source: phpContent,
 			});
-			if (cssContent.trim())
+
+			if (cssContent.trim()) {
 				emitCss(context, asset.outputPath, cssContent);
-		} catch (e) {
-			console.error(
-				`✗ Failed to process asset ${asset.name}: ${e instanceof Error ? e.message : e}`
-			);
+			}
+		} catch {
+			// Skip assets that can't be processed
+			continue;
 		}
 	}
 };

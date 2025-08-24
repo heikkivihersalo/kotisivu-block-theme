@@ -12,7 +12,6 @@ import {
 	generateAssetFilename,
 	readStylesheet,
 } from '../utils';
-import { FILE_EXTENSIONS } from '../constants.ts';
 import type { EmittedAsset } from '../types/rollup.ts';
 import type { OutputConfig } from '../types/assets.ts';
 
@@ -25,15 +24,8 @@ export const processStyle = (
 	config: OutputConfig
 ): void => {
 	const actualStylePath = findActualStylePath(config.basePath, styleFile);
+	if (!actualStylePath) return;
 
-	if (!actualStylePath) {
-		console.warn(
-			`Warning: Style file not found: ${styleFile} (tried ${FILE_EXTENSIONS.STYLES.join(', ')} extensions in ${config.basePath})`
-		);
-		return;
-	}
-
-	// Vite won't track this file for watching, so we'll add a manual watcher
 	pluginContext.addWatchFile(actualStylePath);
 
 	try {
@@ -42,19 +34,16 @@ export const processStyle = (
 		// Determine output filename based on WordPress conventions
 		let outputFilename: string;
 		if (styleFile === 'editor.css') {
-			// WordPress convention: editor.css -> index.css
 			outputFilename = generateAssetFilename(
 				'index.css',
 				config.outputPath
 			);
 		} else if (styleFile === 'style.css') {
-			// WordPress convention: style.css -> style-index.css
 			outputFilename = generateAssetFilename(
 				'style-index.css',
 				config.outputPath
 			);
 		} else {
-			// Use original filename for other CSS files
 			outputFilename = generateAssetFilename(
 				styleFile,
 				config.outputPath
@@ -83,11 +72,8 @@ export const processStyle = (
 				source: map.toString(),
 			} satisfies EmittedAsset);
 		}
-	} catch (error) {
-		console.warn(
-			`Warning: Could not process style file ${actualStylePath}:`,
-			error
-		);
+	} catch {
+		// Skip styles that can't be processed
 	}
 };
 

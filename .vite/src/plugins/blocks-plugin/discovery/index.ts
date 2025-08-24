@@ -16,93 +16,34 @@ import type { BlockInfo } from '../../../common/types/blocks.ts';
 
 /**
  * Discover block.json files with custom path mappings
- * This function allows mapping source directories to custom output paths
- * @param pathMappings - Object mapping output paths to source directories
- * @param pwd - Current working directory to resolve relative paths
- * @return An array of BlockInfo objects for each discovered block
  */
 export function discoverBlocksWithMappings(
 	pathMappings: Record<string, string>,
 	pwd: string
 ): BlockInfo[] {
-	if (!pathMappings || typeof pathMappings !== 'object') {
-		console.warn(
-			'Warning: Invalid path mappings provided for block discovery'
-		);
-		return [];
-	}
-
-	if (!pwd || typeof pwd !== 'string') {
-		console.warn(
-			'Warning: Invalid working directory provided for mapped block discovery'
-		);
-		return [];
-	}
-
 	const blocks: BlockInfo[] = [];
-	const errors: string[] = [];
-	const mappingEntries = Object.entries(pathMappings);
 
-	if (mappingEntries.length === 0) {
-		console.warn('Warning: No path mappings specified for discovery');
-		return [];
-	}
-
-	for (const [outputPath, sourcePath] of mappingEntries) {
-		if (
-			!outputPath ||
-			!sourcePath ||
-			typeof outputPath !== 'string' ||
-			typeof sourcePath !== 'string'
-		) {
-			errors.push(
-				`Invalid mapping entry: ${outputPath} -> ${sourcePath}`
-			);
-			continue;
-		}
-
+	for (const [outputPath, sourcePath] of Object.entries(pathMappings)) {
 		const fullSourcePath = generateSourcePath(sourcePath, pwd);
-
-		if (!fullSourcePath) {
-			errors.push(`Could not resolve source path: ${sourcePath}`);
-			continue;
-		}
+		if (!fullSourcePath) continue;
 
 		try {
 			const stat = statSync(fullSourcePath);
-			if (stat.isDirectory()) {
-				const foundBlocks = findBlocksRecursively(
-					fullSourcePath,
-					pwd,
-					0
-				);
+			if (!stat.isDirectory()) continue;
 
-				// Add custom output path to each discovered block
-				for (const block of foundBlocks) {
-					const blockWithMapping: BlockInfo = {
-						...block,
-						outputPath: `${outputPath.replace(/\/$/, '')}/${block.name}`,
-					};
-					blocks.push(blockWithMapping);
-				}
-			} else {
-				errors.push(`Source path is not a directory: ${sourcePath}`);
-			}
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : String(error);
-			errors.push(
-				`Could not access source path ${sourcePath}: ${errorMessage}`
-			);
+			const foundBlocks = findBlocksRecursively(fullSourcePath, pwd, 0);
+
+			// Add custom output path to each discovered block
+			foundBlocks.forEach((block) => {
+				blocks.push({
+					...block,
+					outputPath: `${outputPath.replace(/\/$/, '')}/${block.name}`,
+				});
+			});
+		} catch {
+			// Silently skip inaccessible paths - this is expected during development
+			continue;
 		}
-	}
-
-	// Log accumulated errors
-	if (errors.length > 0) {
-		console.warn(
-			'Block discovery with mapping completed with errors:',
-			errors
-		);
 	}
 
 	return blocks;

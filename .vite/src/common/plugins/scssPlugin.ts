@@ -10,9 +10,6 @@ import { readStylesheet } from '../utils/lib/readStylesheet.ts';
 
 /**
  * ESBuild plugin to handle SCSS/Sass files
- *
- * This plugin intercepts imports of .scss and .sass files and compiles them to CSS
- * using the existing readStylesheet utility.
  */
 export const scssPlugin: Plugin = {
 	name: 'scss',
@@ -22,7 +19,6 @@ export const scssPlugin: Plugin = {
 			try {
 				// Use the existing readStylesheet utility to compile SCSS to CSS
 				const css = readStylesheet(args.path);
-
 				return {
 					contents: css,
 					loader: 'css',

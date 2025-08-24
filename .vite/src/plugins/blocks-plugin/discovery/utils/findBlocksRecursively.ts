@@ -1,14 +1,13 @@
 /**
  * External dependencies
  */
-import { statSync } from 'node:fs';
+import { statSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
  * Shared dependencies
  */
 import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../../common/constants.ts';
-import { safeReadDirectory } from '../../../../common/utils';
 
 /**
  * Internal dependencies
@@ -32,12 +31,6 @@ function shouldSkipDirectory(dirPath: string): boolean {
 
 /**
  * Process a single directory item during block discovery
- * @param itemPath - Path to the item to process
- * @param item - Name of the item
- * @param dirPath - Parent directory path
- * @param rootPath - Root path for relative paths
- * @param depth - Current recursion depth
- * @return Array of discovered blocks or empty array
  */
 function processDirectoryItem(
 	itemPath: string,
@@ -49,72 +42,54 @@ function processDirectoryItem(
 	try {
 		const stat = statSync(itemPath);
 
-		if (stat.isDirectory()) {
-			return shouldSkipDirectory(item)
-				? []
-				: findBlocksRecursively(itemPath, rootPath, depth + 1);
+		if (stat.isDirectory() && !shouldSkipDirectory(item)) {
+			return findBlocksRecursively(itemPath, rootPath, depth + 1);
 		}
 
 		if (item === FILE_NAMES.BLOCK_CONFIG) {
-			const { blockJson, error } = parseBlockJson(itemPath);
-
-			if (error) {
-				console.warn(`Warning: ${error} at ${itemPath}`);
-				return [];
-			}
-
-			if (blockJson) {
-				return [
-					{
-						path: dirPath,
-						blockJson,
-						name: extractBlockName(dirPath),
-					},
-				];
-			}
+			const blockJson = parseBlockJson(itemPath);
+			return blockJson
+				? [
+						{
+							path: dirPath,
+							blockJson,
+							name: extractBlockName(dirPath),
+						},
+					]
+				: [];
 		}
-
-		return [];
-	} catch (statError) {
-		const errorMessage =
-			statError instanceof Error ? statError.message : String(statError);
-		console.warn(`Warning: Could not stat ${itemPath}: ${errorMessage}`);
-		return [];
+	} catch {
+		// Silently skip inaccessible items
 	}
+
+	return [];
 }
 
 /**
  * Recursively find block.json files in a directory with depth control
- * @param dirPath - The directory path to start searching from
- * @param rootPath - The root path for relative paths in block info
- * @param depth - Current recursion depth (used to prevent infinite loops)
- * @return An array of BlockInfo objects for each discovered block
  */
 export function findBlocksRecursively(
 	dirPath: string,
 	rootPath: string,
 	depth: number = 0
 ): BlockInfo[] {
-	// Prevent infinite recursion and overly deep searches
+	// Prevent infinite recursion
 	if (depth > DISCOVERY_CONFIG.MAX_RECURSION_DEPTH) {
-		console.warn(`Warning: Maximum recursion depth reached at ${dirPath}`);
 		return [];
 	}
 
-	const { items, error } = safeReadDirectory(dirPath);
-
-	if (error) {
-		console.warn(`Warning: ${error} at ${dirPath}`);
+	try {
+		const items = readdirSync(dirPath);
+		return items.flatMap((item) =>
+			processDirectoryItem(
+				join(dirPath, item),
+				item,
+				dirPath,
+				rootPath,
+				depth
+			)
+		);
+	} catch {
 		return [];
 	}
-
-	return items.flatMap((item) =>
-		processDirectoryItem(
-			join(dirPath, item),
-			item,
-			dirPath,
-			rootPath,
-			depth
-		)
-	);
 }

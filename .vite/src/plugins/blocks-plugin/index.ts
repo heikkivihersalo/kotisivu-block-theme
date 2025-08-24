@@ -41,19 +41,15 @@ export function BlocksPlugin(config: Props): Plugin {
 
 	// Validate required configuration
 	if (!blocksDir || Object.keys(blocksDir).length === 0) {
-		throw new Error(
-			'blocksDir is required for BlocksPlugin. This plugin does not support single block builds.'
-		);
+		throw new Error('blocksDir is required for BlocksPlugin');
 	}
 
 	// Async discovery function
 	const discoverBlocks = async () => {
-		// Discover blocks from block paths
 		discoveredBlocks = discoverBlocksWithMappings(blocksDir, pwd);
-
 		if (discoveredBlocks.length === 0) {
 			throw new Error(
-				'No blocks discovered from blocksDir. Ensure blocksDir is configured correctly and points to directories containing block.json files.'
+				'No blocks discovered. Check your blocksDir configuration'
 			);
 		}
 	};
@@ -94,36 +90,26 @@ export function BlocksPlugin(config: Props): Plugin {
 						fileName: `${destPath}/block.json`,
 						source: blockJsonContent,
 					});
-				} catch (error) {
-					console.warn(
-						`Warning: Could not copy block.json for block ${block.name}:`,
-						error
-					);
-				}
 
-				// Process PHP files with minification
-				try {
+					// Process PHP files
 					const files = await readdir(block.path);
 					const phpFiles = files.filter((file) =>
 						file.endsWith('.php')
 					);
 
-					const phpFileInfos = phpFiles.map((phpFile) => ({
-						sourcePath: resolve(block.path, phpFile),
-						outputPath: `${destPath}/${phpFile}`,
-					}));
+					if (phpFiles.length > 0) {
+						const phpFileInfos = phpFiles.map((phpFile) => ({
+							sourcePath: resolve(block.path, phpFile),
+							outputPath: `${destPath}/${phpFile}`,
+						}));
 
-					if (phpFileInfos.length > 0) {
-						// Process PHP files with minification enabled in production
 						const shouldMinify =
 							process.env.NODE_ENV === 'production';
 						processPhpFiles(this, phpFileInfos, shouldMinify);
 					}
-				} catch (error) {
-					console.warn(
-						`Warning: Could not read directory for block ${block.name}:`,
-						error
-					);
+				} catch {
+					// Skip blocks with missing or invalid files
+					continue;
 				}
 			}
 
