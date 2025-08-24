@@ -9,8 +9,8 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
-		"start": "vite",
-		"watch": "vite build --watch",
+		"start": "NODE_ENV=development vite build --watch --mode development",
+		"watch": "NODE_ENV=development vite build --watch --mode development",
 		"test": "vitest",
 		"test:run": "vitest run",
 		"test:ui": "vitest --ui",
