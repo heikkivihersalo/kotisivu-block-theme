@@ -6,4 +6,4 @@
 
 export { processStyle, processStyles } from './styleProcessor.ts';
 export { processScript, processScripts } from './scriptProcessor.ts';
-export { processPhp, processPhpFiles, minifyPhp } from './phpProcessor.ts';
+export { processPhp, processPhpFiles } from './phpProcessor.ts';

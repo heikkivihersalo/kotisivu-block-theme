@@ -8,37 +8,31 @@ import type { PluginContext } from 'rollup';
  * Shared dependencies
  */
 import { findActualFilePath } from '../utils';
-import {
-	extractFilenameWithoutExtension,
-	generateAssetFilename,
-	generateFileHash,
-	generatePhpAssetFile,
-} from '../utils';
+import { emitScriptAssets, emitSourceMap } from '../utils';
 
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
 
-import type { EmittedAsset, OutputConfig } from '../types';
+import type { OutputConfig } from '../types';
 
 /**
- * Process a single script file
+ * Build script with esbuild
+ * @param pluginContext - The Rollup plugin context
+ * @param scriptPath - The path to the script file
+ * @param config - The output configuration
+ * @param sourcemap - The source map configuration
+ * @param wpImports - List of WordPress imports used in the script
  */
-export const processScript = async (
-	pluginContext: PluginContext,
+const buildScript = async (
+	scriptPath: string,
 	script: string,
 	config: OutputConfig,
-	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
-): Promise<void> => {
-	const actualScriptPath = findActualFilePath(config.basePath, script);
-	if (!actualScriptPath) return;
-
-	pluginContext.addWatchFile(actualScriptPath);
-	const wpImports: string[] = [];
-
-	// Build the script as a sideloaded file that isn't injected into the main bundle
-	const result = await esBuild({
-		entryPoints: [actualScriptPath],
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both',
+	wpImports: string[]
+) => {
+	return await esBuild({
+		entryPoints: [scriptPath],
 		outfile: config.blockOutputDir + '/' + script,
 		platform: ESBUILD_CONFIG.PLATFORM,
 		bundle: true,
@@ -53,61 +47,79 @@ export const processScript = async (
 		minify: process.env.NODE_ENV === 'production',
 		plugins: [scssPlugin, ReactShimPlugin(wpImports)],
 	});
+};
 
-	const bundledDependencies = Object.keys(result.metafile.inputs).filter(
-		(dep) => {
-			if (dep === 'src/' + script) return false;
-			if (/:/.test(dep)) return false;
-			else return true;
-		}
-	);
+/**
+ * Extract and register bundled dependencies for file watching
+ * @param pluginContext - The Rollup plugin context
+ * @param metafile - The esbuild metafile
+ * @param script - The script file name
+ */
+const registerBundledDependencies = (
+	pluginContext: PluginContext,
+	metafile: any,
+	script: string
+) => {
+	const bundledDependencies = Object.keys(metafile.inputs).filter((dep) => {
+		if (dep === 'src/' + script) return false;
+		if (/:/.test(dep)) return false;
+		return true;
+	});
 
 	bundledDependencies.forEach((dep) => {
 		pluginContext.addWatchFile(dep);
 	});
+};
 
+/**
+ * Process a single script file
+ * @param pluginContext - The Rollup plugin context
+ * @param script - The script file name
+ * @param config - The output configuration
+ * @param sourcemap - The source map configuration
+ * @return {Promise<void>}
+ */
+export const processScript = async (
+	pluginContext: PluginContext,
+	script: string,
+	config: OutputConfig,
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+): Promise<void> => {
+	const actualScriptPath = findActualFilePath(config.basePath, script);
+	if (!actualScriptPath) return;
+
+	pluginContext.addWatchFile(actualScriptPath);
+	const wpImports: string[] = [];
+
+	// Build the script
+	const result = await buildScript(
+		actualScriptPath,
+		script,
+		config,
+		sourcemap,
+		wpImports
+	);
+
+	// Register dependencies for file watching
+	registerBundledDependencies(pluginContext, result.metafile, script);
+
+	// Emit output files
 	result.outputFiles.forEach((file) => {
-		const hash = generateFileHash(file.text);
-		const filename = extractFilenameWithoutExtension(script);
-
-		// Check if this is a source map file
 		if (file.path.endsWith('.map')) {
-			const sourceMapFileName = generateAssetFilename(
-				`${script}.map`,
-				config.outputPath
-			);
-
-			pluginContext.emitFile({
-				type: 'asset',
-				fileName: sourceMapFileName,
-				source: file.contents,
-			} satisfies EmittedAsset);
-			return;
+			emitSourceMap(pluginContext, file, script, config);
+		} else {
+			emitScriptAssets(pluginContext, file, script, config, wpImports);
 		}
-
-		// Create block-specific file paths for JavaScript files
-		const assetFileName = generateAssetFilename(
-			`${filename}.asset.php`,
-			config.outputPath
-		);
-		const scriptFileName = generateAssetFilename(script, config.outputPath);
-
-		pluginContext.emitFile({
-			type: 'asset',
-			fileName: assetFileName,
-			source: generatePhpAssetFile(wpImports, hash),
-		} satisfies EmittedAsset);
-
-		pluginContext.emitFile({
-			type: 'asset',
-			fileName: scriptFileName,
-			source: file.contents,
-		} satisfies EmittedAsset);
 	});
 };
 
 /**
  * Process all scripts for a block
+ * @param pluginContext - The Rollup plugin context
+ * @param scripts - The script file names
+ * @param config - The output configuration
+ * @param sourcemap - The source map configuration
+ * @return {Promise<void>}
  */
 export const processScripts = async (
 	pluginContext: PluginContext,

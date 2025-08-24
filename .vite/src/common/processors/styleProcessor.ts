@@ -9,13 +9,31 @@ import type { PluginContext } from 'rollup';
  */
 import {
 	findActualStylePath,
-	generateAssetFilename,
+	determineOutputFilename,
 	readStylesheet,
+	emitCssAssets,
 } from '../utils';
-import type { EmittedAsset, OutputConfig } from '../types';
+import type { OutputConfig } from '../types';
+
+/**
+ * Process CSS with LightningCSS
+ * @param cssContent - The CSS content to process
+ * @param outputFilename - The output file name
+ */
+const processCSS = (cssContent: string, outputFilename: string) => {
+	return transform({
+		filename: outputFilename,
+		code: Buffer.from(cssContent),
+		minify: true,
+		sourceMap: true,
+	});
+};
 
 /**
  * Process a single style file
+ * @param pluginContext - The Rollup plugin context
+ * @param styleFile - The original style file name
+ * @param config - The output configuration
  */
 export const processStyle = (
 	pluginContext: PluginContext,
@@ -29,48 +47,13 @@ export const processStyle = (
 
 	try {
 		const cssContent = readStylesheet(actualStylePath);
+		const outputFilename = determineOutputFilename(styleFile, config);
 
-		// Determine output filename based on WordPress conventions
-		let outputFilename: string;
-		if (styleFile === 'editor.css') {
-			outputFilename = generateAssetFilename(
-				'index.css',
-				config.outputPath
-			);
-		} else if (styleFile === 'style.css') {
-			outputFilename = generateAssetFilename(
-				'style-index.css',
-				config.outputPath
-			);
-		} else {
-			outputFilename = generateAssetFilename(
-				styleFile,
-				config.outputPath
-			);
-		}
+		// Process CSS with LightningCSS
+		const { code, map } = processCSS(cssContent, outputFilename);
 
-		// Use LightningCSS to process and minify the CSS
-		const { code, map } = transform({
-			filename: outputFilename,
-			code: Buffer.from(cssContent),
-			minify: true,
-			sourceMap: true,
-		});
-
-		pluginContext.emitFile({
-			type: 'asset',
-			fileName: outputFilename,
-			source: code,
-		} satisfies EmittedAsset);
-
-		// Emit the source map if available
-		if (map) {
-			pluginContext.emitFile({
-				type: 'asset',
-				fileName: `${outputFilename}.map`,
-				source: map.toString(),
-			} satisfies EmittedAsset);
-		}
+		// Emit CSS and source map assets
+		emitCssAssets(pluginContext, code, map || undefined, outputFilename);
 	} catch {
 		// Skip styles that can't be processed
 	}
@@ -78,6 +61,9 @@ export const processStyle = (
 
 /**
  * Process all styles for a block
+ * @param pluginContext - The Rollup plugin context
+ * @param styles - The original style file names
+ * @param config - The output configuration
  */
 export const processStyles = (
 	pluginContext: PluginContext,

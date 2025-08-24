@@ -3,15 +3,28 @@
  */
 import { readFileSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
-import type { EmittedAsset } from '../types';
 
 /**
  * Shared dependencies
  */
-import { minifyPhp } from '../utils';
+import { minifyPhp, emitPhpAsset } from '../utils';
+
+/**
+ * Read and optionally minify PHP content
+ * @param phpPath - The path to the PHP file
+ * @param shouldMinify - Whether to minify the PHP content
+ * @return The processed PHP content
+ */
+const processPHPContent = (phpPath: string, shouldMinify: boolean): string => {
+	const phpContent = readFileSync(phpPath, 'utf-8');
+	return shouldMinify ? minifyPhp(phpContent) : phpContent;
+};
 
 /**
  * Process a single PHP file and minify it
+ * @param pluginContext - The Rollup plugin context
+ * @param phpPath - The path to the PHP file
+ * @param outputFileName - The output file name
  */
 export const processPhp = (
 	pluginContext: PluginContext,
@@ -21,16 +34,8 @@ export const processPhp = (
 ): void => {
 	try {
 		pluginContext.addWatchFile(phpPath);
-		const phpContent = readFileSync(phpPath, 'utf-8');
-		const processedContent = shouldMinify
-			? minifyPhp(phpContent)
-			: phpContent;
-
-		pluginContext.emitFile({
-			type: 'asset',
-			fileName: outputFileName,
-			source: processedContent,
-		} satisfies EmittedAsset);
+		const processedContent = processPHPContent(phpPath, shouldMinify);
+		emitPhpAsset(pluginContext, outputFileName, processedContent);
 	} catch {
 		// Skip files that can't be processed
 	}
@@ -38,6 +43,9 @@ export const processPhp = (
 
 /**
  * Process multiple PHP files
+ * @param pluginContext - The Rollup plugin context
+ * @param phpFiles - The PHP files to process
+ * @param shouldMinify - Whether to minify the PHP content
  */
 export const processPhpFiles = (
 	pluginContext: PluginContext,
