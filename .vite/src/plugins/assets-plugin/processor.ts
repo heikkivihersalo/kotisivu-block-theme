@@ -10,17 +10,14 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import {
-	ESBUILD_CONFIG,
-	WORDPRESS_CONFIG,
-} from '../../../../common/constants.ts';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../common/constants.ts';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../../../../common/utils';
-import { scssPlugin } from '../../../../common/plugins/scssPlugin.ts';
+} from '../../common/utils/index.ts';
+import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
 
-import type { DiscoveredAssetInfo } from '../../../../common/types/assets.ts';
+import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
 
 /**
  * Internal dependencies

@@ -14,7 +14,7 @@ import type { DiscoveredAssetInfo } from '../../common/types/assets.ts';
  * Internal dependencies
  */
 import { discoverAssetsWithMapping } from './discovery';
-import { sideloadAssets } from './sideload';
+import { processAssets } from './processor.ts';
 
 type AssetsPluginConfig = {
 	assetsDir: Record<string, string>;
@@ -38,13 +38,7 @@ export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
 	const pwd = process.env.PWD || process.cwd();
 
 	// Default WordPress dependencies that should always be externalized
-	const defaultDependencies = ['react', 'react-dom'];
-
-	// Merge default dependencies with user-provided dependencies (avoiding duplicates)
-	const allDependencies = [
-		...defaultDependencies,
-		...dependencies.filter((dep) => !defaultDependencies.includes(dep)),
-	];
+	const allDependencies = ['react', 'react-dom', ...dependencies];
 
 	// Discover assets from asset paths (optional)
 	if (assetsDir && Object.keys(assetsDir).length > 0) {
@@ -70,20 +64,12 @@ export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
 		buildStart: async function (this: PluginContext) {
 			// Process discovered assets only if any exist
 			if (discoveredAssets.length > 0) {
-				await sideloadAssets.call(
-					this,
-					discoveredAssets,
+				await processAssets(this, discoveredAssets, {
 					outputDirectory,
-					allDependencies,
-					sourcemap
-				);
+					dependencies: allDependencies,
+					sourcemap,
+				});
 			}
-		},
-
-		// Expose discovered assets for other plugins
-		api: {
-			getDiscoveredAssets: () => discoveredAssets,
-			getAllDependencies: () => allDependencies,
 		},
 	};
 }
