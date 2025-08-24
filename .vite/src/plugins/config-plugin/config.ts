@@ -6,27 +6,26 @@ import type { BuildOptions, UserConfig } from 'vite';
 /**
  * Shared dependencies
  */
-import { WORDPRESS_EXTERNALS } from '../../../../common/constants.js';
+import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
 
 /**
  * Internal dependencies
  */
-import type { WordPressViteConfig } from '../../types.ts';
+import type { PluginConfig } from '../../common/types/plugin.ts';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
-export function createWordPressViteConfig(
-	config: WordPressViteConfig = {}
-): UserConfig {
+export function config(config: PluginConfig): UserConfig {
 	const {
-		outDir = 'build',
-		minify = 'esbuild',
-		sourcemap = false,
+		build: {
+			outDir = 'build',
+			minify = 'esbuild',
+			sourcemap = false,
+			target = 'es2018',
+			cssCodeSplit = true,
+		},
 		terserOptions = {},
-		target = 'es2018',
-		cssCodeSplit = true,
-		enableFuture = true,
 	} = config;
 
 	const buildConfig: BuildOptions = {
@@ -137,14 +136,12 @@ export function createWordPressViteConfig(
 				],
 			},
 		},
-	};
 
-	// Add Vite 6 future flags if enabled
-	if (enableFuture) {
-		viteConfig.future = {
+		// Add Vite 6 future flags
+		future: {
 			removePluginHookSsrArgument: 'warn',
-		};
-	}
+		},
+	};
 
 	return viteConfig;
 }

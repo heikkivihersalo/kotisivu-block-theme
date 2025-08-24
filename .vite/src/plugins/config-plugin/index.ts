@@ -7,22 +7,12 @@ import type { Plugin } from 'vite';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
+import type { PluginConfig } from '../..//common/types/plugin.ts';
+
 /**
  * Internal dependencies
  */
-import { createWordPressViteConfig } from './utils';
-
-type ConfigPluginConfig = {
-	outDir?: string;
-	minify?: boolean | 'esbuild' | 'terser';
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	terserOptions?: {
-		compress?: Record<string, any>;
-		mangle?: Record<string, any>;
-		format?: Record<string, any>;
-		output?: Record<string, any>;
-	};
-};
+import { config } from './config.ts';
 
 /**
  * Vite 6 Modern Configuration Plugin for WordPress
@@ -30,11 +20,9 @@ type ConfigPluginConfig = {
  * This plugin provides optimized Vite 6 configuration for WordPress development
  * with no backward compatibility layers - fully modern approach
  */
-export function ConfigPlugin(pluginConfig: ConfigPluginConfig): Plugin {
+export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 	const {
-		outDir,
-		minify = 'esbuild',
-		sourcemap = false,
+		build: { outDir, minify = 'esbuild', sourcemap = false },
 		terserOptions = {},
 	} = pluginConfig;
 
@@ -42,14 +30,15 @@ export function ConfigPlugin(pluginConfig: ConfigPluginConfig): Plugin {
 		name: 'vite-plugin-gutenberg-config',
 
 		config: () => {
-			return createWordPressViteConfig({
-				outDir: outDir
-					? (normalizePath(outDir) ?? undefined)
-					: undefined,
-				minify,
+			return config({
+				build: {
+					outDir: outDir
+						? (normalizePath(outDir) ?? undefined)
+						: undefined,
+					minify,
+					sourcemap,
+				},
 				terserOptions,
-				sourcemap,
-				enableFuture: true,
 			});
 		},
 

@@ -50,12 +50,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	}
 
 	// Create configuration plugin (must be first to set up build config)
-	const configPlugin = ConfigPlugin({
-		outDir,
-		minify,
-		sourcemap,
-		terserOptions,
-	});
+	const configPlugin = ConfigPlugin(pluginConfig);
 
 	// Create the blocks plugin
 	const blocksPlugin = BlocksPlugin({
