@@ -6,7 +6,7 @@ import {
 	shimJsxRuntime,
 	shimJsxDevRuntime,
 	shimWordPressModule,
-} from './shims.ts';
+} from '../shims.ts';
 
 /**
  * WordPress React Shim Plugin

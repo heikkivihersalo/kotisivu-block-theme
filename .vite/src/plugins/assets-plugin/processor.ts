@@ -25,7 +25,7 @@ import type {
 /**
  * Internal dependencies
  */
-import { ReactShimPlugin } from '../../common/shims/react-shim-plugin.ts';
+import { ReactShimPlugin } from '../../common/plugins/reactShimPlugin.ts';
 
 /**
  * Process generic assets and generate corresponding PHP asset files

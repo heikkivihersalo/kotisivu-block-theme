@@ -17,7 +17,7 @@ import {
 
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
-import { ReactShimPlugin } from '../shims/react-shim-plugin.ts';
+import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
 
 import type { EmittedAsset, OutputConfig } from '../types';
 
