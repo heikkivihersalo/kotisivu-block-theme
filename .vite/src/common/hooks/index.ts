@@ -113,45 +113,14 @@ export const pluginHooks = new VitePluginHooks();
  * Hook names for WordPress Gutenberg workflow
  */
 export const HOOKS = {
-	// Discovery hooks
+	// Discovery hooks (currently used)
 	BLOCKS_DISCOVERED: 'blocks:discovered',
-	ASSETS_DISCOVERED: 'assets:discovered',
-
-	// Transform hooks
-	TRANSFORM_BLOCK: 'transform:block',
-	TRANSFORM_ASSET: 'transform:asset',
-	TRANSFORM_CSS: 'transform:css',
-
-	// Build hooks
-	BUILD_START: 'build:start',
-	BUILD_END: 'build:end',
-	BUNDLE_GENERATED: 'bundle:generated',
-
-	// Manifest hooks
-	MANIFEST_GENERATED: 'manifest:generated',
-	MANIFEST_PROCESSED: 'manifest:processed',
-
-	// Environment hooks
-	ENVIRONMENT_RESOLVED: 'environment:resolved',
 } as const;
 
 /**
  * Filters for data transformation
  */
 export const FILTERS = {
-	// Discovery filters
+	// Discovery filters (currently used)
 	DISCOVERED_BLOCKS: 'filter:discovered_blocks',
-	DISCOVERED_ASSETS: 'filter:discovered_assets',
-
-	// Build filters
-	BUILD_CONFIG: 'filter:build_config',
-	BUNDLE_OPTIONS: 'filter:bundle_options',
-
-	// Output filters
-	MANIFEST_DATA: 'filter:manifest_data',
-	ASSET_PATH: 'filter:asset_path',
-
-	// WordPress filters
-	WP_DEPENDENCIES: 'filter:wp_dependencies',
-	WP_ENQUEUE_DATA: 'filter:wp_enqueue_data',
 } as const;
