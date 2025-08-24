@@ -1,65 +1,43 @@
 /**
  * Convert JavaScript object to PHP array format
- * @param blocks - The blocks object containing block.json configurations.
+ * @param value - The value to convert to PHP array format
+ * @param indent - Current indentation level (for recursive calls)
  * @return A string representing the PHP array content
  */
-export function convertToPhpArray(value: any, indent: number = 0): string {
-	const indentStr = '\t'.repeat(indent);
-	const nextIndentStr = '\t'.repeat(indent + 1);
+export function convertToPhpArray(value: any, indent = 0): string {
+	const tab = '\t'.repeat(indent);
+	const nextTab = '\t'.repeat(indent + 1);
 
-	if (value === null) {
-		return 'null';
-	}
-
-	if (typeof value === 'boolean') {
-		return value ? 'true' : 'false';
-	}
-
-	if (typeof value === 'number') {
-		return value.toString();
-	}
-
+	// Handle primitives
+	if (value === null) return 'null';
+	if (typeof value === 'boolean') return value ? 'true' : 'false';
+	if (typeof value === 'number') return value.toString();
 	if (typeof value === 'string') {
-		// Escape single quotes and backslashes
 		const escaped = value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 		return `'${escaped}'`;
 	}
 
+	// Handle arrays
 	if (Array.isArray(value)) {
-		if (value.length === 0) {
-			return '[]';
-		}
+		if (value.length === 0) return '[]';
 
-		let result = '[\n';
-		value.forEach((item, index) => {
-			result += `${nextIndentStr}${convertToPhpArray(item, indent + 1)}`;
-			if (index < value.length - 1) {
-				result += ',';
-			}
-			result += '\n';
-		});
-		result += `${indentStr}]`;
-		return result;
+		const items = value.map(
+			(item) => `${nextTab}${convertToPhpArray(item, indent + 1)}`
+		);
+		return `[\n${items.join(',\n')}\n${tab}]`;
 	}
 
+	// Handle objects
 	if (typeof value === 'object') {
 		const keys = Object.keys(value);
-		if (keys.length === 0) {
-			return '[]';
-		}
+		if (keys.length === 0) return '[]';
 
-		let result = '[\n';
-		keys.forEach((key, index) => {
+		const pairs = keys.map((key) => {
 			const phpKey = convertToPhpArray(key, 0);
 			const phpValue = convertToPhpArray(value[key], indent + 1);
-			result += `${nextIndentStr}${phpKey} => ${phpValue}`;
-			if (index < keys.length - 1) {
-				result += ',';
-			}
-			result += '\n';
+			return `${nextTab}${phpKey} => ${phpValue}`;
 		});
-		result += `${indentStr}]`;
-		return result;
+		return `[\n${pairs.join(',\n')}\n${tab}]`;
 	}
 
 	return 'null';

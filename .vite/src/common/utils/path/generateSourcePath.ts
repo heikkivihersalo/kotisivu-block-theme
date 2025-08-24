@@ -14,14 +14,8 @@ export function generateSourcePath(
 	path: string,
 	basePath: string
 ): string | null {
-	if (!path || typeof path !== 'string') {
-		return null;
-	}
+	if (!path) return null;
 
-	try {
-		const fullPath = resolve(basePath, path);
-		return existsSync(fullPath) ? fullPath : null;
-	} catch (error) {
-		return null;
-	}
+	const fullPath = resolve(basePath, path);
+	return existsSync(fullPath) ? fullPath : null;
 }
