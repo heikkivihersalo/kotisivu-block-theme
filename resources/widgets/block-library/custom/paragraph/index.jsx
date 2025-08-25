@@ -13,7 +13,7 @@ import edit from './edit';
 import save from './save';
 import transforms from './transforms';
 
-import './style.scss';
+import './style.css';
 
 registerBlockType(metadata.name, {
 	icon,

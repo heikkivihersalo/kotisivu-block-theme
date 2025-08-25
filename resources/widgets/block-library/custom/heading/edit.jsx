@@ -24,7 +24,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { generateAnchor, setAnchor } from './autogenerate-anchors';
 
-import './editor.scss';
+import './editor.css';
 
 function HeadingEdit({
 	attributes,

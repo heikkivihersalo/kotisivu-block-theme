@@ -28,7 +28,7 @@ import { formatLtr } from '@wordpress/icons';
  */
 import { useOnEnter } from './use-enter';
 
-import './editor.scss';
+import './editor.css';
 
 function ParagraphRTLControl({ direction, setDirection }) {
 	return (
