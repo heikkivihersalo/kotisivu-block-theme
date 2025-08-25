@@ -12,13 +12,13 @@ import {
 	emitScriptAssets,
 	emitSourceMap,
 	registerBundledDependencies,
-} from '../utils';
+} from '../utils/index.ts';
 
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
 
-import type { OutputConfig } from '../types';
+import type { OutputConfig } from '../types/index.ts';
 
 /**
  * Script Processor class for handling JavaScript file processing with ESBuild
