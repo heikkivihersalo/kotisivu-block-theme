@@ -1,13 +1,16 @@
 /**
  * External dependencies
  */
+import { readFile, readdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import type { PluginContext } from 'rollup';
 
 /**
  * Internal dependencies
  */
 import { CSS_Processor, JS_Processor, PHP_Processor } from './utils';
-import type { OutputConfig } from '../../types';
+import { FileEmitter } from '../../utils';
+import type { OutputConfig, BlockInfo } from '../../types';
 
 /**
  * Main Block Handler class that combines CSS, JS, and PHP processing
@@ -19,11 +22,16 @@ export class BlockHandler {
 	private css: CSS_Processor;
 	private js: JS_Processor;
 	private php: PHP_Processor;
+	private fileEmitter?: FileEmitter;
 
-	constructor() {
+	constructor(outputDirectory?: string) {
 		this.css = new CSS_Processor();
 		this.js = new JS_Processor();
 		this.php = new PHP_Processor();
+
+		if (outputDirectory) {
+			this.fileEmitter = new FileEmitter(outputDirectory);
+		}
 	}
 
 	/**
@@ -206,5 +214,178 @@ export class BlockHandler {
 		}
 
 		await Promise.all(promises);
+	}
+
+	/**
+	 * Process block.json file and emit it to the output directory
+	 * @param pluginContext - The Rollup plugin context
+	 * @param block - Block information containing path and output details
+	 */
+	async processBlockJson(
+		pluginContext: PluginContext,
+		block: BlockInfo
+	): Promise<void> {
+		const destPath = block.outputPath || block.name;
+
+		try {
+			const blockJsonSrc = resolve(block.path, 'block.json');
+			const blockJsonContent = await readFile(blockJsonSrc, 'utf-8');
+
+			if (this.fileEmitter) {
+				// Use FileEmitter for static files like block.json
+				await this.fileEmitter.writeStaticFile(
+					`${destPath}/block.json`,
+					blockJsonContent
+				);
+			} else {
+				// Fallback to plugin context emitFile
+				pluginContext.emitFile({
+					type: 'asset',
+					fileName: `${destPath}/block.json`,
+					source: blockJsonContent,
+				});
+			}
+		} catch (error) {
+			console.error(
+				`Failed to process block.json for ${block.name}:`,
+				error
+			);
+			throw error;
+		}
+	}
+
+	/**
+	 * Process PHP files for a block
+	 * @param pluginContext - The Rollup plugin context
+	 * @param block - Block information containing path and output details
+	 * @param shouldMinify - Whether to minify PHP content
+	 */
+	async processBlockPhpFiles(
+		pluginContext: PluginContext,
+		block: BlockInfo,
+		shouldMinify: boolean = true
+	): Promise<void> {
+		const destPath = block.outputPath || block.name;
+
+		try {
+			const files = await readdir(block.path);
+			const phpFiles = files.filter((file) => file.endsWith('.php'));
+
+			if (phpFiles.length > 0) {
+				const phpFileInfos = phpFiles.map((phpFile) => ({
+					sourcePath: resolve(block.path, phpFile),
+					outputPath: `${destPath}/${phpFile}`,
+				}));
+
+				await this.processPhpFiles(
+					pluginContext,
+					phpFileInfos,
+					shouldMinify
+				);
+			}
+		} catch (error) {
+			console.error(
+				`Failed to process PHP files for ${block.name}:`,
+				error
+			);
+			throw error;
+		}
+	}
+
+	/**
+	 * Process all static files for a block (block.json and PHP files)
+	 * @param pluginContext - The Rollup plugin context
+	 * @param block - Block information containing path and output details
+	 * @param shouldMinify - Whether to minify PHP content
+	 */
+	async processBlockStaticFiles(
+		pluginContext: PluginContext,
+		block: BlockInfo,
+		shouldMinify: boolean = true
+	): Promise<void> {
+		// Process block.json and PHP files in parallel
+		await Promise.all([
+			this.processBlockJson(pluginContext, block),
+			this.processBlockPhpFiles(pluginContext, block, shouldMinify),
+		]);
+	}
+
+	/**
+	 * Process a complete block with all its assets
+	 * @param pluginContext - The Rollup plugin context
+	 * @param block - Block information
+	 * @param config - Output configuration
+	 * @param options - Processing options
+	 */
+	async processCompleteBlock(
+		pluginContext: PluginContext,
+		block: BlockInfo,
+		config: OutputConfig,
+		options: {
+			sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
+			minifyPhp?: boolean;
+			processStaticFiles?: boolean;
+		} = {}
+	): Promise<void> {
+		const {
+			sourcemap = false,
+			minifyPhp = true,
+			processStaticFiles = false,
+		} = options;
+
+		// Extract scripts and styles from block.json
+		const scripts: string[] = [];
+		const styles: string[] = [];
+
+		// Extract from various script properties with proper file: prefix handling
+		['script', 'editorScript', 'viewScript'].forEach((prop) => {
+			const scriptValue = block.blockJson[prop];
+			if (typeof scriptValue === 'string') {
+				if (scriptValue.startsWith('file:')) {
+					scripts.push(scriptValue.replace('file:./', ''));
+				}
+			} else if (Array.isArray(scriptValue)) {
+				scriptValue.forEach((script) => {
+					if (
+						typeof script === 'string' &&
+						script.startsWith('file:')
+					) {
+						scripts.push(script.replace('file:./', ''));
+					}
+				});
+			}
+		});
+
+		// Extract from various style properties with proper file: prefix handling
+		['style', 'editorStyle', 'viewStyle'].forEach((prop) => {
+			const styleValue = block.blockJson[prop];
+			if (typeof styleValue === 'string') {
+				if (styleValue.startsWith('file:')) {
+					styles.push(styleValue.replace('file:./', ''));
+				}
+			} else if (Array.isArray(styleValue)) {
+				styleValue.forEach((style) => {
+					if (
+						typeof style === 'string' &&
+						style.startsWith('file:')
+					) {
+						styles.push(style.replace('file:./', ''));
+					}
+				});
+			}
+		});
+
+		// Process block assets
+		await this.processBlockAssets(
+			pluginContext,
+			{ scripts, styles },
+			config,
+			{ sourcemap, minifyPhp }
+		);
+
+		// Process static files if requested
+		if (processStaticFiles) {
+			await this.processBlockStaticFiles(pluginContext, block, minifyPhp);
+		}
 	}
 }

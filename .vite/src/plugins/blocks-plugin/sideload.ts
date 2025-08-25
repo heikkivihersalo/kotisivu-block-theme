@@ -8,69 +8,45 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import type { WordPressBlockJSON } from '../../common/types';
+import type { BlockInfo } from '../../common/types';
 
 /**
  * Internal dependencies
  */
 import { BlockHandler } from '../../common/handlers';
-import {
-	extractScripts,
-	extractStyles,
-	generateOutputConfig,
-} from '../../common/utils/index.ts';
+import { generateOutputConfig } from '../../common/utils/index.ts';
 
 /**
- * Sideloads block assets (scripts and styles) based on the provided block.json
- * and outputs them to the specified directory.
+ * Sideloads block assets (scripts and styles) based on the provided block information.
  *
  * @param {PluginContext} this - The Rollup plugin context.
- * @param {WordPressBlockJSON} blockJson - The block.json object containing block metadata.
+ * @param {BlockHandler} blockHandler - The block handler instance to use for processing.
+ * @param {BlockInfo} block - The block information containing metadata and paths.
  * @param {string} outputDirectory - The directory where assets should be output.
- * @param {string} blockPath - Path to the block directory (required for multi-block builds).
- * @param {string} blockName - Name of the block (required for multi-block builds).
- * @param {string} [customOutputPath] - Optional custom output path for assets.
  * @param {boolean | 'linked' | 'external' | 'inline' | 'both'} [sourcemap] - Source map configuration.
  * @returns {Promise<boolean>} Returns true if sideloading was successful.
  */
 export async function sideloadBlocks(
 	this: PluginContext,
-	blockJson: WordPressBlockJSON,
+	blockHandler: BlockHandler,
+	block: BlockInfo,
 	outputDirectory: string,
-	blockPath: string,
-	blockName: string,
-	customOutputPath?: string,
 	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<boolean> {
 	// Generate output configuration
 	const config = generateOutputConfig(
-		blockPath,
-		blockName,
-		customOutputPath,
+		block.path,
+		block.name,
+		block.outputPath,
 		outputDirectory
 	);
 
-	// Extract scripts and styles from block.json
-	const scripts = extractScripts(blockJson);
-	const styles = extractStyles(blockJson);
-
-	// Create unified block handler instance
-	const blockHandler = new BlockHandler();
-
-	// Process all block assets (scripts and styles) in one call
-	await blockHandler.processBlockAssets(
-		this,
-		{
-			scripts,
-			styles,
-		},
-		config,
-		{ sourcemap }
-	);
+	// Process the complete block using the block handler
+	await blockHandler.processCompleteBlock(this, block, config, { sourcemap });
 
 	// Handle WordPress convention CSS files with proper naming
 	// editor.css -> index.css (editor styles)
-	const editorCssPath = resolve(blockPath, 'editor.css');
+	const editorCssPath = resolve(block.path, 'editor.css');
 	if (!existsSync(editorCssPath)) {
 		throw new Error(
 			`Required editor.css file not found at: ${editorCssPath}`
@@ -85,7 +61,7 @@ export async function sideloadBlocks(
 	await blockHandler.processStyle(this, 'editor.css', editorConfig);
 
 	// style.css -> style-index.css (frontend styles)
-	const styleCssPath = resolve(blockPath, 'style.css');
+	const styleCssPath = resolve(block.path, 'style.css');
 	if (!existsSync(styleCssPath)) {
 		throw new Error(
 			`Required style.css file not found at: ${styleCssPath}`
