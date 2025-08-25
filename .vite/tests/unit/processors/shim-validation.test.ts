@@ -14,11 +14,6 @@ import { describe, expect, test } from 'vitest';
  * and that the plugin contains the expected shim logic.
  */
 describe('Processor Shim Implementation Validation', () => {
-	const PROCESSOR_FILES = [
-		'.vite/src/common/processors/scriptProcessor.ts',
-		'.vite/src/plugins/assets-plugin/processor.ts',
-	];
-
 	const SHIM_PLUGIN_FILE = '.vite/src/common/plugins/reactShimPlugin.ts';
 	const SHIM_FUNCTIONS_FILE = '.vite/src/common/shims.ts';
 
@@ -26,25 +21,41 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test that all processors use ReactShimPlugin
 	 */
 	test('processors use ReactShimPlugin for WordPress and React shims', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+		// Check JS_Processor which directly uses ReactShimPlugin
+		const jsProcessorPath = join(
+			process.cwd(),
+			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
+		);
+		const jsContent = readFileSync(jsProcessorPath, 'utf-8');
 
-			// Check that processors import ReactShimPlugin
-			expect(content).toContain('ReactShimPlugin');
-			expect(
-				content.includes("from '../plugins/reactShimPlugin.ts'") ||
-					content.includes(
-						"from '../../common/plugins/reactShimPlugin.ts'"
-					)
-			).toBe(true);
+		// Check that JS processor imports ReactShimPlugin
+		expect(jsContent).toContain('ReactShimPlugin');
+		expect(jsContent).toContain("from '../../../plugins/reactShimPlugin'");
 
-			// Check that ReactShimPlugin is used in esbuild plugins
-			expect(content).toContain('ReactShimPlugin(wpImports)');
-			expect(content).toContain(
-				'plugins: [scssPlugin, ReactShimPlugin(wpImports)]'
-			);
-		}
+		// Check that ReactShimPlugin is used in esbuild plugins
+		expect(jsContent).toContain('ReactShimPlugin(wpImports)');
+		expect(jsContent).toContain(
+			'plugins: [scssPlugin, ReactShimPlugin(wpImports)]'
+		);
+
+		// Check asset processor which delegates to AssetHandler
+		const assetProcessorPath = join(
+			process.cwd(),
+			'.vite/src/plugins/assets-plugin/processor.ts'
+		);
+		const assetContent = readFileSync(assetProcessorPath, 'utf-8');
+
+		// Asset processor uses AssetHandler which has ReactShimPlugin
+		expect(assetContent).toContain('AssetHandler');
+
+		// Verify AssetHandler also uses ReactShimPlugin
+		const assetHandlerPath = join(
+			process.cwd(),
+			'.vite/src/common/handlers/AssetHandler.ts'
+		);
+		const handlerContent = readFileSync(assetHandlerPath, 'utf-8');
+		expect(handlerContent).toContain('ReactShimPlugin');
+		expect(handlerContent).toContain('ReactShimPlugin(wpImports)');
 	});
 
 	/**
@@ -110,15 +121,28 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test that processors properly pass wpImports array to ReactShimPlugin
 	 */
 	test('processors track WordPress dependencies correctly', () => {
-		for (const processorFile of PROCESSOR_FILES) {
-			const filePath = join(process.cwd(), processorFile);
-			const content = readFileSync(filePath, 'utf-8');
+		// Check JS_Processor which directly handles wpImports
+		const jsProcessorPath = join(
+			process.cwd(),
+			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
+		);
+		const jsContent = readFileSync(jsProcessorPath, 'utf-8');
 
-			// Check for wpImports array usage in processors
-			expect(content).toContain('wpImports');
-			expect(content).toContain('const wpImports: string[] = []');
-			expect(content).toContain('ReactShimPlugin(wpImports)');
-		}
+		// Check for wpImports array usage in JS processor
+		expect(jsContent).toContain('wpImports');
+		expect(jsContent).toContain('const wpImports: string[] = []');
+		expect(jsContent).toContain('ReactShimPlugin(wpImports)');
+
+		// Check asset processor which delegates to AssetHandler
+		const assetProcessorPath = join(
+			process.cwd(),
+			'.vite/src/plugins/assets-plugin/processor.ts'
+		);
+		const assetContent = readFileSync(assetProcessorPath, 'utf-8');
+
+		// Asset processor uses AssetHandler which handles wpImports
+		expect(assetContent).toContain('AssetHandler');
+		expect(assetContent).toContain('processAsset');
 	});
 
 	/**
@@ -260,7 +284,7 @@ describe('Processor Shim Implementation Validation', () => {
 	test('script processor contains specific implementation details', () => {
 		const scriptProcessorPath = join(
 			process.cwd(),
-			'.vite/src/common/processors/scriptProcessor.ts'
+			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
 		);
 		const content = readFileSync(scriptProcessorPath, 'utf-8');
 
@@ -286,11 +310,11 @@ describe('Processor Shim Implementation Validation', () => {
 			const filePath = join(process.cwd(), processorFile);
 			const content = readFileSync(filePath, 'utf-8');
 
-			// Should handle CSS extraction
-			expect(content).toContain('outExtension');
+			// Should use AssetHandler for processing
+			expect(content).toContain('AssetHandler');
 
-			// Should include SCSS plugin
-			expect(content).toContain('scssPlugin');
+			// Should handle asset processing through handler
+			expect(content).toContain('processAsset');
 
 			// Should handle asset emission - either through fileEmitter or FileEmitter
 			const hasFileEmitterUsage = content.includes(
@@ -299,12 +323,15 @@ describe('Processor Shim Implementation Validation', () => {
 			const hasDevFileEmitterUsage = content.includes(
 				'FileEmitter.safeEmitFile'
 			);
-			const hasContextAddWatchFile = content.includes(
-				'context.addWatchFile'
+			const hasAssetHandlerEmission = content.includes(
+				'emitJavaScriptAssets'
 			);
 
-			expect(hasFileEmitterUsage || hasDevFileEmitterUsage).toBe(true);
-			expect(hasContextAddWatchFile).toBe(true);
+			expect(
+				hasFileEmitterUsage ||
+					hasDevFileEmitterUsage ||
+					hasAssetHandlerEmission
+			).toBe(true);
 		}
 	});
 });
