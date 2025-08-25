@@ -4,6 +4,6 @@
  * to avoid code duplication
  */
 
-export { CssProcessor } from './CssProcessor.ts';
-export { ScriptProcessor } from './ScriptProcessor.ts';
-export { PhpProcessor } from './PhpProcessor.ts';
+export { CSS_Handler } from './CSS_Handler.ts';
+export { JS_Handler } from './JS_Handler.ts';
+export { PHP_Handler } from './PHP_Handler.ts';

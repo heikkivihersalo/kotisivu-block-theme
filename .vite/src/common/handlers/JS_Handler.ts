@@ -24,9 +24,9 @@ import { DevFileEmitter } from '../utils/vite/DevFileEmitter.ts';
 import type { OutputConfig, EmittedAsset } from '../types/index.ts';
 
 /**
- * Script Processor class for handling JavaScript file processing with ESBuild
+ * Script Handler class for handling JavaScript file processing with ESBuild
  */
-export class ScriptProcessor {
+export class JS_Handler {
 	/**
 	 * Emit JavaScript and PHP asset files
 	 * @param pluginContext - The Rollup plugin context

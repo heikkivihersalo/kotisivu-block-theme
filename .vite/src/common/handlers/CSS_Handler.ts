@@ -16,9 +16,9 @@ import type { OutputConfig, EmittedAsset } from '../types';
 import { DevFileEmitter } from '../utils/vite/DevFileEmitter';
 
 /**
- * CSS Processor class for handling CSS file processing with LightningCSS
+ * CSS Handler class for handling CSS file processing with LightningCSS
  */
-export class CssProcessor {
+export class CSS_Handler {
 	private fileEmitter?: DevFileEmitter;
 
 	constructor(fileEmitter?: DevFileEmitter) {

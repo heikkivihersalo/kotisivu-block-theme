@@ -13,10 +13,7 @@ import type { WordPressBlockJSON } from '../../common/types';
 /**
  * Internal dependencies
  */
-import {
-	ScriptProcessor,
-	CssProcessor,
-} from '../../common/processors/index.ts';
+import { JS_Handler, CSS_Handler } from '../../common/handlers';
 import {
 	extractScripts,
 	extractStyles,
@@ -57,17 +54,17 @@ export async function sideloadBlocks(
 	const scripts = extractScripts(blockJson);
 	const styles = extractStyles(blockJson);
 
-	// Create CSS processor instance
-	const cssProcessor = new CssProcessor();
+	// Create CSS handler instance
+	const cssHandler = new CSS_Handler();
 
-	// Create script processor instance
-	const scriptProcessor = new ScriptProcessor();
+	// Create script handler instance
+	const scriptHandler = new JS_Handler();
 
 	// Process all scripts
-	await scriptProcessor.processScripts(this, scripts, config, sourcemap);
+	await scriptHandler.processScripts(this, scripts, config, sourcemap);
 
 	// Process all styles from block.json
-	await cssProcessor.processStyles(this, styles, config);
+	await cssHandler.processStyles(this, styles, config);
 
 	// Handle WordPress convention CSS files with proper naming
 	// editor.css -> index.css (editor styles)
@@ -83,7 +80,7 @@ export async function sideloadBlocks(
 		...config,
 		outputPath: config.outputPath, // Will generate index.css automatically
 	};
-	await cssProcessor.processStyle(this, 'editor.css', editorConfig);
+	await cssHandler.processStyle(this, 'editor.css', editorConfig);
 
 	// style.css -> style-index.css (frontend styles)
 	const styleCssPath = resolve(blockPath, 'style.css');
@@ -98,9 +95,9 @@ export async function sideloadBlocks(
 		...config,
 		outputPath: config.outputPath, // Will need to handle style-index.css naming
 	};
-	// For now, use the existing processor - we may need to enhance it later
+	// For now, use the existing handler - we may need to enhance it later
 	// to handle the style-index.css naming convention
-	await cssProcessor.processStyle(this, 'style.css', styleConfig);
+	await cssHandler.processStyle(this, 'style.css', styleConfig);
 
 	return true;
 }

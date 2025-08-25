@@ -15,7 +15,7 @@ import {
 	generatePhpAssetFile,
 	DevFileEmitter,
 } from '../../common/utils/index.ts';
-import { CssProcessor } from '../../common/processors/CssProcessor.ts';
+import { CSS_Handler } from '../../common/handlers/CSS_Handler.ts';
 import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
 
 import type {
@@ -44,8 +44,8 @@ export const processAssets = async (
 		fileEmitter,
 	}: AssetProcessorConfig
 ): Promise<void> => {
-	// Create CSS processor instance
-	const cssProcessor = new CssProcessor(fileEmitter);
+	// Create CSS handler instance
+	const cssHandler = new CSS_Handler(fileEmitter);
 
 	for (const asset of assets) {
 		try {
@@ -115,7 +115,7 @@ export const processAssets = async (
 
 			// Process CSS if available
 			if (cssContent.trim()) {
-				await cssProcessor.processWithBasePath(
+				await cssHandler.processWithBasePath(
 					context,
 					asset.outputPath,
 					cssContent

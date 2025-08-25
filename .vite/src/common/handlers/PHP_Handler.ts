@@ -7,14 +7,14 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { minifyPhp } from '../utils';
+import { minifyPhp } from '../utils/index.ts';
 import { DevFileEmitter } from '../utils/vite/DevFileEmitter.ts';
 import type { EmittedAsset } from '../types/index.ts';
 
 /**
  * PHP Processor class for handling PHP file processing and emission
  */
-export class PhpProcessor {
+export class PHP_Handler {
 	/**
 	 * Emit PHP file as asset
 	 * @param pluginContext - The Rollup plugin context
