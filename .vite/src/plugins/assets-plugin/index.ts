@@ -8,6 +8,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
+import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
 import type {
 	DiscoveredAsset,
 	ViteAssetsPluginConfig,
@@ -31,6 +32,7 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 
 	let outputDirectory: string;
 	let discoveredAssets: DiscoveredAsset[] = [];
+	let fileEmitter: DevFileEmitter;
 	const pwd = process.env.PWD || process.cwd();
 
 	// Default WordPress dependencies that should always be externalized
@@ -55,6 +57,9 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 			} else {
 				outputDirectory = resolvedConfig.build.outDir || 'dist';
 			}
+
+			// Initialize file emitter with output directory
+			fileEmitter = new DevFileEmitter(outputDirectory);
 		},
 
 		buildStart: async function (this: PluginContext) {
@@ -64,6 +69,7 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 					outputDirectory,
 					dependencies: allDependencies,
 					sourcemap,
+					fileEmitter,
 				});
 			}
 		},

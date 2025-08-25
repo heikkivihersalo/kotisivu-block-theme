@@ -95,13 +95,16 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
 
-	return [
+	// All plugins now support DevFileEmitter and can run in both dev and production
+	const plugins = [
 		configPlugin,
 		corePlugin,
 		blocksPlugin,
 		assetsPlugin,
-		manifestPlugin, // Add the new manifest plugin
-		devServerPlugin, // Add HMR support
+		manifestPlugin,
+		devServerPlugin, // Always include for HMR
 		...additionalPlugins,
 	] as Plugin[];
+
+	return plugins;
 };

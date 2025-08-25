@@ -1,52 +1,36 @@
 /**
- * External dependencies
- */
-import type { PluginContext } from 'rollup';
-
-/**
  * Internal dependencies
  */
-import { generatePhpArrayContent } from '../../common/utils/index.ts';
-import type { BlockInfo, EmittedAsset } from '../../common/types';
+import { generatePhpArrayContent } from '../../common/utils/php/generatePhpArrayContent.js';
+import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter.js';
+import type { BlockInfo } from '../../common/types/wordpress.js';
 
 /**
- * Generate block manifest PHP file from discovered blocks
- * This integrates with the existing Vite plugin workflow
+ * Generate block manifest file
  */
-export function generateBlockManifest(
-	this: PluginContext,
-	discoveredBlocks: BlockInfo[],
-	_outputDirectory: string
-): void {
-	if (!discoveredBlocks || discoveredBlocks.length === 0) {
-		console.warn('⚠️  No blocks discovered for manifest generation');
+export function generateBlockManifest(this: any, blocks: BlockInfo[]): void {
+	if (blocks.length === 0) {
+		console.log('No blocks found. Skipping block manifest generation...');
 		return;
 	}
 
-	const blocks: Record<string, any> = {};
+	const fileName = 'block-manifest.php';
 
-	// Process each discovered block
-	for (const blockInfo of discoveredBlocks) {
-		try {
-			const blockData = blockInfo.blockJson;
-			const blockKey = blockData.name || blockInfo.name;
+	// Convert blocks array to a record object that generatePhpArrayContent expects
+	const blocksRecord: Record<string, any> = {};
+	blocks.forEach((block) => {
+		blocksRecord[block.name] = block.blockJson;
+	});
 
-			blocks[blockKey] = blockData;
-		} catch (error) {
-			console.error(
-				`❌ Error processing block ${blockInfo.name}:`,
-				error
-			);
-		}
-	}
+	// Generate PHP content
+	const phpContent = generatePhpArrayContent(blocksRecord);
 
-	// Generate PHP array content
-	const phpContent = generatePhpArrayContent(blocks);
-
-	// Emit the manifest file
-	this.emitFile({
+	// Use DevFileEmitter to handle file emission
+	DevFileEmitter.safeEmitFile(this, {
 		type: 'asset',
-		fileName: 'block-manifest.php',
+		fileName,
 		source: phpContent,
-	} satisfies EmittedAsset);
+	});
+
+	console.log(`✓ Generated ${fileName} with ${blocks.length} blocks`);
 }

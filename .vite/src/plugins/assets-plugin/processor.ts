@@ -40,6 +40,7 @@ export const processAssets = async (
 		outputDirectory,
 		dependencies = [],
 		sourcemap = false,
+		fileEmitter,
 	}: AssetProcessorConfig
 ): Promise<void> => {
 	for (const asset of assets) {
@@ -85,25 +86,47 @@ export const processAssets = async (
 			const allDependencies = [...configDeps, ...wpImports];
 			const phpContent = generatePhpAssetFile(allDependencies, hash);
 
-			context.emitFile({
-				type: 'asset',
-				fileName: `${asset.outputPath}.js`,
-				source: jsContent,
-			});
+			if (fileEmitter) {
+				await fileEmitter.emitFile(context, {
+					type: 'asset',
+					fileName: `${asset.outputPath}.js`,
+					source: jsContent,
+				});
 
-			if (jsSourceMapFile) {
+				if (jsSourceMapFile) {
+					await fileEmitter.emitFile(context, {
+						type: 'asset',
+						fileName: `${asset.outputPath}.js.map`,
+						source: jsSourceMapFile.text,
+					});
+				}
+
+				await fileEmitter.emitFile(context, {
+					type: 'asset',
+					fileName: `${asset.outputPath}.asset.php`,
+					source: phpContent,
+				});
+			} else {
 				context.emitFile({
 					type: 'asset',
-					fileName: `${asset.outputPath}.js.map`,
-					source: jsSourceMapFile.text,
+					fileName: `${asset.outputPath}.js`,
+					source: jsContent,
+				});
+
+				if (jsSourceMapFile) {
+					context.emitFile({
+						type: 'asset',
+						fileName: `${asset.outputPath}.js.map`,
+						source: jsSourceMapFile.text,
+					});
+				}
+
+				context.emitFile({
+					type: 'asset',
+					fileName: `${asset.outputPath}.asset.php`,
+					source: phpContent,
 				});
 			}
-
-			context.emitFile({
-				type: 'asset',
-				fileName: `${asset.outputPath}.asset.php`,
-				source: phpContent,
-			});
 
 			if (cssContent.trim()) {
 				emitCss(context, asset.outputPath, cssContent);

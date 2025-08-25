@@ -8,19 +8,23 @@ import type { PluginContext } from 'rollup';
  * Shared dependencies
  */
 import { minifyPhp, emitPhpAsset } from '../utils';
+import type { DevFileEmitter } from '../utils/vite/DevFileEmitter';
 
 /**
  * Process a single PHP file and minify it
  * @param pluginContext - The Rollup plugin context
  * @param phpPath - The path to the PHP file
  * @param outputFileName - The output file name
+ * @param shouldMinify - Whether to minify the PHP content
+ * @param fileEmitter - Optional DevFileEmitter for development mode
  */
-export const processPhp = (
+export const processPhp = async (
 	pluginContext: PluginContext,
 	phpPath: string,
 	outputFileName: string,
-	shouldMinify: boolean = true
-): void => {
+	shouldMinify: boolean = true,
+	fileEmitter?: DevFileEmitter
+): Promise<void> => {
 	try {
 		pluginContext.addWatchFile(phpPath);
 
@@ -30,7 +34,12 @@ export const processPhp = (
 			? minifyPhp(phpContent)
 			: phpContent;
 
-		emitPhpAsset(pluginContext, outputFileName, processedContent);
+		await emitPhpAsset(
+			pluginContext,
+			outputFileName,
+			processedContent,
+			fileEmitter
+		);
 	} catch {
 		// Skip files that can't be processed
 	}
@@ -41,13 +50,21 @@ export const processPhp = (
  * @param pluginContext - The Rollup plugin context
  * @param phpFiles - The PHP files to process
  * @param shouldMinify - Whether to minify the PHP content
+ * @param fileEmitter - Optional DevFileEmitter for development mode
  */
-export const processPhpFiles = (
+export const processPhpFiles = async (
 	pluginContext: PluginContext,
 	phpFiles: Array<{ sourcePath: string; outputPath: string }>,
-	shouldMinify: boolean = true
-): void => {
+	shouldMinify: boolean = true,
+	fileEmitter?: DevFileEmitter
+): Promise<void> => {
 	for (const { sourcePath, outputPath } of phpFiles) {
-		processPhp(pluginContext, sourcePath, outputPath, shouldMinify);
+		await processPhp(
+			pluginContext,
+			sourcePath,
+			outputPath,
+			shouldMinify,
+			fileEmitter
+		);
 	}
 };

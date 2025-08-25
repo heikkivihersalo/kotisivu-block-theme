@@ -12,6 +12,7 @@ import {
 	extractWpDependencies,
 } from '../../common/utils/index.ts';
 
+import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
 import type { AssetInfo, ChunkInfo, EmittedAsset } from '../../common/types';
 
 /**
@@ -25,11 +26,12 @@ import type { AssetInfo, ChunkInfo, EmittedAsset } from '../../common/types';
  *
  * @see https://rollupjs.org/plugin-development/#generatebundle
  */
-export function generateBundle(
+export async function generateBundle(
 	this: PluginContext,
 	_options: OutputOptions,
 	bundle: { [fileName: string]: ChunkInfo | AssetInfo },
-	additionalDependencies: string[]
+	additionalDependencies: string[],
+	fileEmitter?: DevFileEmitter
 ) {
 	// Extract WordPress dependencies from all bundle files
 	const wpDependencies = extractWpDependencies(bundle);
@@ -44,9 +46,17 @@ export function generateBundle(
 	const versionHash = generateVersionHash(bundle);
 
 	// Create the WordPress asset file
-	this.emitFile({
-		type: 'asset',
-		fileName: 'index.asset.php',
-		source: generatePhpAssetFile(allDependencies, versionHash),
-	} satisfies EmittedAsset);
+	if (fileEmitter) {
+		await fileEmitter.emitFile(this, {
+			type: 'asset',
+			fileName: 'index.asset.php',
+			source: generatePhpAssetFile(allDependencies, versionHash),
+		} satisfies EmittedAsset);
+	} else {
+		this.emitFile({
+			type: 'asset',
+			fileName: 'index.asset.php',
+			source: generatePhpAssetFile(allDependencies, versionHash),
+		} satisfies EmittedAsset);
+	}
 }

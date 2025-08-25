@@ -63,7 +63,18 @@ export function config(config: ViteWordPressConfig): UserConfig {
 			// Provide virtual entry point to satisfy Vite's requirements
 			// Actual building happens through WordPress plugin sideloading
 			input: 'virtual:wordpress-entry',
-			external: Object.keys(WORDPRESS_EXTERNALS),
+			// Only externalize WordPress dependencies in production
+			external: (id: string) => {
+				// In development mode, don't externalize React/ReactDOM for HMR
+				if (process.env.NODE_ENV === 'development') {
+					// Allow React and ReactDOM to be bundled for HMR
+					if (id === 'react' || id === 'react-dom') {
+						return false;
+					}
+				}
+				// Externalize other WordPress dependencies
+				return Object.keys(WORDPRESS_EXTERNALS).includes(id);
+			},
 			output: {
 				globals: WORDPRESS_EXTERNALS,
 			},
@@ -131,9 +142,19 @@ export function config(config: ViteWordPressConfig): UserConfig {
 		// Enhanced optimization for WordPress dependencies
 		optimizeDeps: {
 			include: [
+				// In development, include React for HMR
+				...(process.env.NODE_ENV === 'development'
+					? ['react', 'react-dom']
+					: []),
 				// Only include dependencies that aren't provided by WordPress
 			],
-			exclude: Object.keys(WORDPRESS_EXTERNALS),
+			exclude: Object.keys(WORDPRESS_EXTERNALS).filter((dep) => {
+				// In development, don't exclude React for HMR
+				if (process.env.NODE_ENV === 'development') {
+					return dep !== 'react' && dep !== 'react-dom';
+				}
+				return true;
+			}),
 		},
 
 		// CSS handling optimized for WordPress

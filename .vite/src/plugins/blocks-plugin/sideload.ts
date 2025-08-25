@@ -8,6 +8,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
+import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
 import type { WordPressBlockJSON } from '../../common/types';
 
 /**
@@ -44,7 +45,8 @@ export async function sideloadBlocks(
 	blockPath: string,
 	blockName: string,
 	customOutputPath?: string,
-	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false,
+	fileEmitter?: DevFileEmitter
 ): Promise<boolean> {
 	// Generate output configuration
 	const config = generateOutputConfig(
@@ -74,13 +76,21 @@ export async function sideloadBlocks(
 			outputPath: config.outputPath, // Will generate index.css automatically
 		};
 		processStyle(this, 'editor.css', editorConfig);
-	} else {
-		// Create empty editor CSS file if it doesn't exist
-		this.emitFile({
-			type: 'asset',
-			fileName: `${config.outputPath}/index.css`,
-			source: '',
-		});
+	} else if (process.env.NODE_ENV !== 'development') {
+		// Only emit empty files in production builds
+		if (fileEmitter) {
+			await fileEmitter.emitFile(this, {
+				type: 'asset',
+				fileName: `${config.outputPath}/index.css`,
+				source: '',
+			});
+		} else {
+			this.emitFile({
+				type: 'asset',
+				fileName: `${config.outputPath}/index.css`,
+				source: '',
+			});
+		}
 	}
 
 	// style.css -> style-index.css (frontend styles)
@@ -94,13 +104,21 @@ export async function sideloadBlocks(
 		// For now, use the existing processor - we may need to enhance it later
 		// to handle the style-index.css naming convention
 		processStyle(this, 'style.css', styleConfig);
-	} else {
-		// Create empty style CSS file if it doesn't exist
-		this.emitFile({
-			type: 'asset',
-			fileName: `${config.outputPath}/style-index.css`,
-			source: '',
-		});
+	} else if (process.env.NODE_ENV !== 'development') {
+		// Only emit empty files in production builds
+		if (fileEmitter) {
+			await fileEmitter.emitFile(this, {
+				type: 'asset',
+				fileName: `${config.outputPath}/style-index.css`,
+				source: '',
+			});
+		} else {
+			this.emitFile({
+				type: 'asset',
+				fileName: `${config.outputPath}/style-index.css`,
+				source: '',
+			});
+		}
 	}
 
 	return true;

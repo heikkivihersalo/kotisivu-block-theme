@@ -6,7 +6,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { normalizePath } from '../../common/utils';
+import { normalizePath, DevFileEmitter } from '../../common/utils';
 import { processPhpFiles } from '../../common/processors';
 import { generateBlockManifest } from './manifest.js';
 import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
@@ -30,6 +30,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 
 	let outputDirectory: string;
 	let discoveredBlocks: BlockInfo[] = [];
+	let fileEmitter: DevFileEmitter;
 	const pwd = process.env.PWD || process.cwd();
 
 	// Validate required configuration
@@ -58,33 +59,108 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 				outputDirectory =
 					typeof defaultDir === 'string' ? defaultDir : 'dist';
 			}
+
+			// Initialize file emitter with output directory
+			fileEmitter = new DevFileEmitter(outputDirectory);
 		},
 
 		buildStart: async function (this: PluginContext) {
+			console.log('BlocksPlugin buildStart called');
+			console.log('NODE_ENV:', process.env.NODE_ENV);
+			console.log('process.argv:', process.argv);
+
 			// Discover blocks asynchronously
 			await discoverBlocks();
+			console.log('Discovered blocks count:', discoveredBlocks.length);
 
 			// Add watch files if specified
 			watch.forEach((file: string) => this.addWatchFile(file));
 
-			// Copy static files for each discovered block
+			// Check if this is a dev server (serve mode) vs build mode
+			const isBuildMode = process.argv.includes('build');
+			console.log('Is build mode:', isBuildMode);
+
+			// Skip file emission in development mode since it's not supported by emitFile()
+			if (!isBuildMode) {
+				console.log('Skipping static file copying in serve mode');
+				// Process discovered blocks for HMR but don't emit files
+				for (const block of discoveredBlocks) {
+					await sideloadBlocks.call(
+						this,
+						block.blockJson,
+						outputDirectory,
+						block.path,
+						block.name,
+						block.outputPath,
+						sourcemap,
+						fileEmitter
+					);
+				}
+
+				// Generate block manifest in development mode too
+				generateBlockManifest.call(this, discoveredBlocks);
+				return;
+			}
+
+			console.log(
+				'Build mode detected - will copy static files in generateBundle hook'
+			);
+
+			// Process blocks for building (without static files yet)
+			for (const block of discoveredBlocks) {
+				await sideloadBlocks.call(
+					this,
+					block.blockJson,
+					outputDirectory,
+					block.path,
+					block.name,
+					block.outputPath,
+					sourcemap,
+					fileEmitter
+				);
+			}
+
+			// Generate block manifest
+			generateBlockManifest.call(this, discoveredBlocks);
+		},
+
+		generateBundle: async function (this: PluginContext) {
+			console.log('Block static copy plugin - generateBundle called');
+
+			// Check if this is a build mode
+			const isBuildMode = process.argv.includes('build');
+
+			if (!isBuildMode) {
+				console.log('Skipping static file copying in serve mode');
+				return;
+			}
+
+			console.log('Copying static files in generateBundle hook');
+
+			// Copy static files for each discovered block (only in build mode)
 			for (const block of discoveredBlocks) {
 				const destPath = block.outputPath || block.name;
 
-				// Copy block.json file
+				// Copy block.json file - always use DevFileEmitter for static files
 				try {
 					const blockJsonSrc = resolve(block.path, 'block.json');
 					const blockJsonContent = await readFile(
 						blockJsonSrc,
 						'utf-8'
 					);
-					this.emitFile({
-						type: 'asset',
-						fileName: `${destPath}/block.json`,
-						source: blockJsonContent,
-					});
+					console.log(
+						`[generateBundle] Copying block.json for ${block.name}`
+					);
+					// Use DevFileEmitter's writeStaticFile method for static files like block.json
+					await fileEmitter.writeStaticFile(
+						`${destPath}/block.json`,
+						blockJsonContent
+					);
+					console.log(
+						`[generateBundle] ✓ Copied block.json to ${destPath}/block.json`
+					);
 
-					// Process PHP files
+					// Process PHP files - also use DevFileEmitter for static files
 					const files = await readdir(block.path);
 					const phpFiles = files.filter((file) =>
 						file.endsWith('.php')
@@ -98,29 +174,22 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 
 						const shouldMinify =
 							process.env.NODE_ENV === 'production';
-						processPhpFiles(this, phpFileInfos, shouldMinify);
+						await processPhpFiles(
+							this,
+							phpFileInfos,
+							shouldMinify,
+							fileEmitter
+						);
 					}
-				} catch {
+				} catch (error) {
+					console.log(
+						`[generateBundle] Failed to copy static files for ${block.name}:`,
+						error
+					);
 					// Skip blocks with missing or invalid files
 					continue;
 				}
 			}
-
-			// Process discovered blocks
-			for (const block of discoveredBlocks) {
-				await sideloadBlocks.call(
-					this,
-					block.blockJson,
-					outputDirectory,
-					block.path,
-					block.name,
-					block.outputPath,
-					sourcemap
-				);
-			}
-
-			// Generate block manifest from discovered blocks
-			generateBlockManifest.call(this, discoveredBlocks, outputDirectory);
 		},
 
 		// Expose discovered blocks for other plugins

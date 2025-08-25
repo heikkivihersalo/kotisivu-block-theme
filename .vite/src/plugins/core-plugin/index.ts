@@ -7,6 +7,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Shared dependencies
  */
+import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
 import type {
 	BundlerAssetInfo,
 	BundlerChunkInfo,
@@ -31,6 +32,7 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 	const { dependencies = [], discoveredBlocks = [] } = pluginConfig;
 
 	let _config: ResolvedConfig;
+	let fileEmitter: DevFileEmitter;
 
 	// WordPress dependencies that should be externalized
 	const defaultDependencies = ['react', 'react-dom'];
@@ -46,6 +48,10 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 
 		configResolved(resolvedConfig: ResolvedConfig) {
 			_config = resolvedConfig;
+
+			// Initialize file emitter with output directory
+			const outputDir = resolvedConfig.build.outDir || 'dist';
+			fileEmitter = new DevFileEmitter(outputDir);
 		},
 
 		transform: async function (
@@ -68,7 +74,8 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 				id,
 				targetBlock,
 				_config,
-				environment
+				environment,
+				fileEmitter
 			);
 
 			// Vite 6: Return TransformResult directly
@@ -105,7 +112,13 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 				}
 			}
 
-			generateBundle.call(this, options, customBundle, allDependencies);
+			generateBundle.call(
+				this,
+				options,
+				customBundle,
+				allDependencies,
+				fileEmitter
+			);
 		},
 
 		// Modern plugin API exposure
