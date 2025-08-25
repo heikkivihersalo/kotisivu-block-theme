@@ -4,6 +4,6 @@
  * to avoid code duplication
  */
 
-export { processStyle, processStyles } from './styleProcessor.ts';
+export { CssProcessor } from './CssProcessor.ts';
 export { processScript, processScripts } from './scriptProcessor.ts';
 export { processPhp, processPhpFiles } from './phpProcessor.ts';
