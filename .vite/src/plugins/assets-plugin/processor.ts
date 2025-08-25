@@ -13,8 +13,9 @@ import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../common/constants.ts';
 import {
 	generateFileHash,
 	generatePhpAssetFile,
-	emitCss,
+	DevFileEmitter,
 } from '../../common/utils/index.ts';
+import { CssProcessor } from '../../common/processors/CssProcessor.ts';
 import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
 
 import type {
@@ -43,6 +44,9 @@ export const processAssets = async (
 		fileEmitter,
 	}: AssetProcessorConfig
 ): Promise<void> => {
+	// Create CSS processor instance
+	const cssProcessor = new CssProcessor(fileEmitter);
+
 	for (const asset of assets) {
 		try {
 			context.addWatchFile(asset.sourcePath);
@@ -86,58 +90,35 @@ export const processAssets = async (
 			const allDependencies = [...configDeps, ...wpImports];
 			const phpContent = generatePhpAssetFile(allDependencies, hash);
 
-			if (fileEmitter) {
-				await fileEmitter.emitFile(context, {
-					type: 'asset',
-					fileName: `${asset.outputPath}.js`,
-					source: jsContent,
-				});
+			// Emit JavaScript file
+			await DevFileEmitter.safeEmitFile(context, {
+				type: 'asset',
+				fileName: `${asset.outputPath}.js`,
+				source: jsContent,
+			});
 
-				if (jsSourceMapFile) {
-					await fileEmitter.emitFile(context, {
-						type: 'asset',
-						fileName: `${asset.outputPath}.js.map`,
-						source: jsSourceMapFile.text,
-					});
-				}
-
-				await fileEmitter.emitFile(context, {
-					type: 'asset',
-					fileName: `${asset.outputPath}.asset.php`,
-					source: phpContent,
-				});
-			} else {
-				const { DevFileEmitter } = await import(
-					'../../common/utils/vite/DevFileEmitter'
-				);
-
+			// Emit source map if available
+			if (jsSourceMapFile) {
 				await DevFileEmitter.safeEmitFile(context, {
 					type: 'asset',
-					fileName: `${asset.outputPath}.js`,
-					source: jsContent,
-				});
-
-				if (jsSourceMapFile) {
-					await DevFileEmitter.safeEmitFile(context, {
-						type: 'asset',
-						fileName: `${asset.outputPath}.js.map`,
-						source: jsSourceMapFile.text,
-					});
-				}
-
-				await DevFileEmitter.safeEmitFile(context, {
-					type: 'asset',
-					fileName: `${asset.outputPath}.asset.php`,
-					source: phpContent,
+					fileName: `${asset.outputPath}.js.map`,
+					source: jsSourceMapFile.text,
 				});
 			}
 
+			// Emit PHP asset file
+			await DevFileEmitter.safeEmitFile(context, {
+				type: 'asset',
+				fileName: `${asset.outputPath}.asset.php`,
+				source: phpContent,
+			});
+
+			// Process CSS if available
 			if (cssContent.trim()) {
-				await emitCss(
+				await cssProcessor.processWithBasePath(
 					context,
 					asset.outputPath,
-					cssContent,
-					fileEmitter
+					cssContent
 				);
 			}
 		} catch {
