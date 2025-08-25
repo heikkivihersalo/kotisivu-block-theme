@@ -7,14 +7,17 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { minifyPhp } from '../utils/index.ts';
-import { FileEmitter } from '../utils/vite/FileEmitter.ts';
-import type { EmittedAsset } from '../types/index.ts';
+import { minifyPhp } from '../../../utils/index';
+import { FileEmitter } from '../../../utils/vite/FileEmitter';
+import type { EmittedAsset } from '../../../types/index';
 
 /**
- * PHP Processor class for handling PHP file processing and emission
+ * PHP Processor utility for handling PHP file processing and emission
+ *
+ * This utility is focused specifically on PHP processing for WordPress blocks,
+ * providing methods for reading, minifying, and emitting PHP files.
  */
-export class PHP_Handler {
+export class PHP_Processor {
 	/**
 	 * Emit PHP file as asset
 	 * @param pluginContext - The Rollup plugin context

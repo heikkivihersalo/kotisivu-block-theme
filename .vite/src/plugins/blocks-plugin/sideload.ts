@@ -13,7 +13,7 @@ import type { WordPressBlockJSON } from '../../common/types';
 /**
  * Internal dependencies
  */
-import { JS_Handler, CSS_Handler } from '../../common/handlers';
+import { BlockHandler } from '../../common/handlers';
 import {
 	extractScripts,
 	extractStyles,
@@ -54,17 +54,19 @@ export async function sideloadBlocks(
 	const scripts = extractScripts(blockJson);
 	const styles = extractStyles(blockJson);
 
-	// Create CSS handler instance
-	const cssHandler = new CSS_Handler();
+	// Create unified block handler instance
+	const blockHandler = new BlockHandler();
 
-	// Create script handler instance
-	const scriptHandler = new JS_Handler();
-
-	// Process all scripts
-	await scriptHandler.processScripts(this, scripts, config, sourcemap);
-
-	// Process all styles from block.json
-	await cssHandler.processStyles(this, styles, config);
+	// Process all block assets (scripts and styles) in one call
+	await blockHandler.processBlockAssets(
+		this,
+		{
+			scripts,
+			styles,
+		},
+		config,
+		{ sourcemap }
+	);
 
 	// Handle WordPress convention CSS files with proper naming
 	// editor.css -> index.css (editor styles)
@@ -80,7 +82,7 @@ export async function sideloadBlocks(
 		...config,
 		outputPath: config.outputPath, // Will generate index.css automatically
 	};
-	await cssHandler.processStyle(this, 'editor.css', editorConfig);
+	await blockHandler.processStyle(this, 'editor.css', editorConfig);
 
 	// style.css -> style-index.css (frontend styles)
 	const styleCssPath = resolve(blockPath, 'style.css');
@@ -97,7 +99,7 @@ export async function sideloadBlocks(
 	};
 	// For now, use the existing handler - we may need to enhance it later
 	// to handle the style-index.css naming convention
-	await cssHandler.processStyle(this, 'style.css', styleConfig);
+	await blockHandler.processStyle(this, 'style.css', styleConfig);
 
 	return true;
 }

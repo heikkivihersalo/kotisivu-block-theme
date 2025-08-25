@@ -7,7 +7,7 @@ import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 import { normalizePath, FileEmitter } from '../../common/utils';
-import { PHP_Handler } from '../../common/handlers';
+import { BlockHandler } from '../../common/handlers';
 import { generateBlockManifest } from './manifest.js';
 import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
 
@@ -181,13 +181,12 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 						const shouldMinify =
 							process.env.NODE_ENV === 'production';
 
-						// Create PHP handler instance
-						const phpHandler = new PHP_Handler();
-						await phpHandler.processPhpFiles(
+						// Create block handler instance with file emitter
+						const blockHandler = new BlockHandler(fileEmitter);
+						await blockHandler.processPhpFiles(
 							this,
 							phpFileInfos,
-							shouldMinify,
-							fileEmitter
+							shouldMinify
 						);
 					}
 				} catch (error) {

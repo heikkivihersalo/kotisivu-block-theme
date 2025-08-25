@@ -14,19 +14,23 @@ import {
 	generateAssetFilename,
 	generateFileHash,
 	generatePhpAssetFile,
-} from '../utils/index.ts';
+} from '../../../utils/index';
 
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
-import { scssPlugin } from '../plugins/scssPlugin.ts';
-import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
-import { FileEmitter } from '../utils/vite/FileEmitter.ts';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../../constants';
+import { scssPlugin } from '../../../plugins/scssPlugin';
+import { ReactShimPlugin } from '../../../plugins/reactShimPlugin';
+import { FileEmitter } from '../../../utils/vite/FileEmitter';
 
-import type { OutputConfig, EmittedAsset } from '../types/index.ts';
+import type { OutputConfig, EmittedAsset } from '../../../types/index';
 
 /**
- * Script Handler class for handling JavaScript file processing with ESBuild
+ * JavaScript Processor utility for handling JavaScript file processing with ESBuild
+ *
+ * This utility is focused specifically on JavaScript processing for WordPress blocks,
+ * providing methods for building, transforming, and emitting JavaScript files
+ * along with their associated PHP asset files and source maps.
  */
-export class JS_Handler {
+export class JS_Processor {
 	/**
 	 * Emit JavaScript and PHP asset files
 	 * @param pluginContext - The Rollup plugin context
@@ -89,6 +93,7 @@ export class JS_Handler {
 			source: file.contents,
 		} satisfies EmittedAsset);
 	}
+
 	/**
 	 * Process ESBuild content and emit assets
 	 * @param pluginContext - The Rollup plugin context

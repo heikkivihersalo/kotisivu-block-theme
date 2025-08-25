@@ -11,14 +11,18 @@ import {
 	findActualStylePath,
 	determineOutputFilename,
 	readStylesheet,
-} from '../utils';
-import type { OutputConfig, EmittedAsset } from '../types';
-import { FileEmitter } from '../utils/vite/FileEmitter';
+} from '../../../utils';
+import type { OutputConfig, EmittedAsset } from '../../../types';
+import { FileEmitter } from '../../../utils/vite/FileEmitter';
 
 /**
- * CSS Handler class for handling CSS file processing with LightningCSS
+ * CSS Processor utility for handling CSS file processing with LightningCSS
+ *
+ * This utility is focused specifically on CSS processing for WordPress blocks,
+ * providing methods for processing individual files, string content, and
+ * handling CSS transformations with proper source maps.
  */
-export class CSS_Handler {
+export class CSS_Processor {
 	private fileEmitter?: FileEmitter;
 
 	constructor(fileEmitter?: FileEmitter) {
