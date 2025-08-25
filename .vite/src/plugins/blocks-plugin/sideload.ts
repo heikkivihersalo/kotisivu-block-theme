@@ -9,16 +9,12 @@ import type { PluginContext } from 'rollup';
  * Shared dependencies
  */
 import type { WordPressBlockJSON } from '../../common/types';
-import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
 
 /**
  * Internal dependencies
  */
 import { processScripts } from '../../common/processors/scriptProcessor.ts';
-import {
-	processStyle,
-	processStyles,
-} from '../../common/processors/styleProcessor.ts';
+import { CssProcessor } from '../../common/processors/CssProcessor.ts';
 import {
 	extractScripts,
 	extractStyles,
@@ -59,50 +55,47 @@ export async function sideloadBlocks(
 	const scripts = extractScripts(blockJson);
 	const styles = extractStyles(blockJson);
 
+	// Create CSS processor instance
+	const cssProcessor = new CssProcessor();
+
 	// Process all scripts
 	await processScripts(this, scripts, config, sourcemap);
 
 	// Process all styles from block.json
-	await processStyles(this, styles, config);
+	await cssProcessor.processStyles(this, styles, config);
 
 	// Handle WordPress convention CSS files with proper naming
 	// editor.css -> index.css (editor styles)
 	const editorCssPath = resolve(blockPath, 'editor.css');
-	if (existsSync(editorCssPath)) {
-		// Create a custom config for the editor CSS with WordPress naming convention
-		const editorConfig = {
-			...config,
-			outputPath: config.outputPath, // Will generate index.css automatically
-		};
-		await processStyle(this, 'editor.css', editorConfig);
-	} else {
-		// Emit empty index.css file when editor.css doesn't exist
-		await DevFileEmitter.safeEmitFile(this, {
-			type: 'asset',
-			fileName: `${config.outputPath}/index.css`,
-			source: '',
-		});
+	if (!existsSync(editorCssPath)) {
+		throw new Error(
+			`Required editor.css file not found at: ${editorCssPath}`
+		);
 	}
+
+	// Create a custom config for the editor CSS with WordPress naming convention
+	const editorConfig = {
+		...config,
+		outputPath: config.outputPath, // Will generate index.css automatically
+	};
+	await cssProcessor.processStyle(this, 'editor.css', editorConfig);
 
 	// style.css -> style-index.css (frontend styles)
 	const styleCssPath = resolve(blockPath, 'style.css');
-	if (existsSync(styleCssPath)) {
-		// Create a custom config for the style CSS with WordPress naming convention
-		const styleConfig = {
-			...config,
-			outputPath: config.outputPath, // Will need to handle style-index.css naming
-		};
-		// For now, use the existing processor - we may need to enhance it later
-		// to handle the style-index.css naming convention
-		await processStyle(this, 'style.css', styleConfig);
-	} else {
-		// Emit empty style-index.css file when style.css doesn't exist
-		await DevFileEmitter.safeEmitFile(this, {
-			type: 'asset',
-			fileName: `${config.outputPath}/style-index.css`,
-			source: '',
-		});
+	if (!existsSync(styleCssPath)) {
+		throw new Error(
+			`Required style.css file not found at: ${styleCssPath}`
+		);
 	}
+
+	// Create a custom config for the style CSS with WordPress naming convention
+	const styleConfig = {
+		...config,
+		outputPath: config.outputPath, // Will need to handle style-index.css naming
+	};
+	// For now, use the existing processor - we may need to enhance it later
+	// to handle the style-index.css naming convention
+	await cssProcessor.processStyle(this, 'style.css', styleConfig);
 
 	return true;
 }
