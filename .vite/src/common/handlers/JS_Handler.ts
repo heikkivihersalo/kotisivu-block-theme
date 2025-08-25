@@ -19,7 +19,7 @@ import {
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
-import { DevFileEmitter } from '../utils/vite/DevFileEmitter.ts';
+import { FileEmitter } from '../utils/vite/FileEmitter.ts';
 
 import type { OutputConfig, EmittedAsset } from '../types/index.ts';
 
@@ -52,13 +52,13 @@ export class JS_Handler {
 		);
 		const scriptFileName = generateAssetFilename(script, config.outputPath);
 
-		await DevFileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(pluginContext, {
 			type: 'asset',
 			fileName: assetFileName,
 			source: generatePhpAssetFile(wpImports, hash),
 		} satisfies EmittedAsset);
 
-		await DevFileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(pluginContext, {
 			type: 'asset',
 			fileName: scriptFileName,
 			source: file.contents,
@@ -83,7 +83,7 @@ export class JS_Handler {
 			config.outputPath
 		);
 
-		await DevFileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(pluginContext, {
 			type: 'asset',
 			fileName: sourceMapFileName,
 			source: file.contents,

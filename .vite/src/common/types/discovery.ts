@@ -6,7 +6,7 @@
  * Internal dependencies
  */
 import type { FileIdentifier, DiscoveredFilePathInfo } from './paths.ts';
-import type { DevFileEmitter } from '../utils/vite/DevFileEmitter';
+import type { FileEmitter } from '../utils/vite/FileEmitter.ts';
 
 /**
  * Information about a discovered asset during build process
@@ -20,5 +20,5 @@ export type AssetProcessorConfig = {
 	outputDirectory: string;
 	dependencies?: string[];
 	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	fileEmitter?: DevFileEmitter;
+	fileEmitter?: FileEmitter;
 };

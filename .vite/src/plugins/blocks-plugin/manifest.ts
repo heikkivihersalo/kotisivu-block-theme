@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { generatePhpArrayContent } from '../../common/utils/php/generatePhpArrayContent.js';
-import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter.js';
+import { FileEmitter } from '../../common/utils/vite/FileEmitter.js';
 import type { BlockInfo } from '../../common/types/wordpress.js';
 
 /**
@@ -11,7 +11,7 @@ import type { BlockInfo } from '../../common/types/wordpress.js';
 export async function generateBlockManifest(
 	this: any,
 	blocks: BlockInfo[],
-	fileEmitter?: DevFileEmitter
+	fileEmitter?: FileEmitter
 ): Promise<void> {
 	if (blocks.length === 0) {
 		console.log('No blocks found. Skipping block manifest generation...');
@@ -29,7 +29,7 @@ export async function generateBlockManifest(
 	// Generate PHP content
 	const phpContent = generatePhpArrayContent(blocksRecord);
 
-	// Use the provided DevFileEmitter instance if available
+	// Use the provided FileEmitter instance if available
 	if (fileEmitter) {
 		await fileEmitter.emitFile(this, {
 			type: 'asset',
@@ -46,7 +46,7 @@ export async function generateBlockManifest(
 				source: phpContent,
 			});
 		} else {
-			// In development mode, create a temporary DevFileEmitter
+			// In development mode, create a temporary FileEmitter
 			// This shouldn't happen if the function is called correctly
 			console.warn(
 				'generateBlockManifest called without fileEmitter in dev mode, skipping file emission'

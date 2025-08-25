@@ -6,7 +6,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { normalizePath, DevFileEmitter } from '../../common/utils';
+import { normalizePath, FileEmitter } from '../../common/utils';
 import { PHP_Handler } from '../../common/handlers';
 import { generateBlockManifest } from './manifest.js';
 import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
@@ -30,7 +30,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 
 	let outputDirectory: string;
 	let discoveredBlocks: BlockInfo[] = [];
-	let fileEmitter: DevFileEmitter;
+	let fileEmitter: FileEmitter;
 	const pwd = process.env.PWD || process.cwd();
 
 	// Validate required configuration
@@ -61,7 +61,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			}
 
 			// Initialize file emitter with output directory
-			fileEmitter = new DevFileEmitter(outputDirectory);
+			fileEmitter = new FileEmitter(outputDirectory);
 		},
 
 		buildStart: async function (this: PluginContext) {
@@ -147,7 +147,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			for (const block of discoveredBlocks) {
 				const destPath = block.outputPath || block.name;
 
-				// Copy block.json file - always use DevFileEmitter for static files
+				// Copy block.json file - always use FileEmitter for static files
 				try {
 					const blockJsonSrc = resolve(block.path, 'block.json');
 					const blockJsonContent = await readFile(
@@ -157,7 +157,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 					console.log(
 						`[generateBundle] Copying block.json for ${block.name}`
 					);
-					// Use DevFileEmitter's writeStaticFile method for static files like block.json
+					// Use FileEmitter's writeStaticFile method for static files like block.json
 					await fileEmitter.writeStaticFile(
 						`${destPath}/block.json`,
 						blockJsonContent
@@ -166,7 +166,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 						`[generateBundle] ✓ Copied block.json to ${destPath}/block.json`
 					);
 
-					// Process PHP files - also use DevFileEmitter for static files
+					// Process PHP files - also use FileEmitter for static files
 					const files = await readdir(block.path);
 					const phpFiles = files.filter((file) =>
 						file.endsWith('.php')

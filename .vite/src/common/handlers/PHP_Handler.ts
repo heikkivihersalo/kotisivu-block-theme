@@ -8,7 +8,7 @@ import type { PluginContext } from 'rollup';
  * Shared dependencies
  */
 import { minifyPhp } from '../utils/index.ts';
-import { DevFileEmitter } from '../utils/vite/DevFileEmitter.ts';
+import { FileEmitter } from '../utils/vite/FileEmitter.ts';
 import type { EmittedAsset } from '../types/index.ts';
 
 /**
@@ -20,13 +20,13 @@ export class PHP_Handler {
 	 * @param pluginContext - The Rollup plugin context
 	 * @param outputFileName - The output file name
 	 * @param content - The PHP content to emit
-	 * @param fileEmitter - Optional DevFileEmitter for development mode
+	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	private async emitAsset(
 		pluginContext: PluginContext,
 		outputFileName: string,
 		content: string,
-		fileEmitter?: DevFileEmitter
+		fileEmitter?: FileEmitter
 	): Promise<void> {
 		if (fileEmitter) {
 			await fileEmitter.emitFile(pluginContext, {
@@ -35,7 +35,7 @@ export class PHP_Handler {
 				source: content,
 			} satisfies EmittedAsset);
 		} else {
-			await DevFileEmitter.safeEmitFile(pluginContext, {
+			await FileEmitter.safeEmitFile(pluginContext, {
 				type: 'asset',
 				fileName: outputFileName,
 				source: content,
@@ -49,14 +49,14 @@ export class PHP_Handler {
 	 * @param phpPath - The path to the PHP file
 	 * @param outputFileName - The output file name
 	 * @param shouldMinify - Whether to minify the PHP content
-	 * @param fileEmitter - Optional DevFileEmitter for development mode
+	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	async processPhp(
 		pluginContext: PluginContext,
 		phpPath: string,
 		outputFileName: string,
 		shouldMinify: boolean = true,
-		fileEmitter?: DevFileEmitter
+		fileEmitter?: FileEmitter
 	): Promise<void> {
 		try {
 			pluginContext.addWatchFile(phpPath);
@@ -83,13 +83,13 @@ export class PHP_Handler {
 	 * @param pluginContext - The Rollup plugin context
 	 * @param phpFiles - The PHP files to process
 	 * @param shouldMinify - Whether to minify the PHP content
-	 * @param fileEmitter - Optional DevFileEmitter for development mode
+	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	async processPhpFiles(
 		pluginContext: PluginContext,
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true,
-		fileEmitter?: DevFileEmitter
+		fileEmitter?: FileEmitter
 	): Promise<void> {
 		for (const { sourcePath, outputPath } of phpFiles) {
 			await this.processPhp(

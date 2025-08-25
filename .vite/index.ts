@@ -95,7 +95,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
 
-	// All plugins now support DevFileEmitter and can run in both dev and production
+	// All plugins now support FileEmitter and can run in both dev and production
 	const plugins = [
 		configPlugin,
 		corePlugin,

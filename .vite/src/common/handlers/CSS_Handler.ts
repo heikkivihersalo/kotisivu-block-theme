@@ -13,15 +13,15 @@ import {
 	readStylesheet,
 } from '../utils';
 import type { OutputConfig, EmittedAsset } from '../types';
-import { DevFileEmitter } from '../utils/vite/DevFileEmitter';
+import { FileEmitter } from '../utils/vite/FileEmitter';
 
 /**
  * CSS Handler class for handling CSS file processing with LightningCSS
  */
 export class CSS_Handler {
-	private fileEmitter?: DevFileEmitter;
+	private fileEmitter?: FileEmitter;
 
-	constructor(fileEmitter?: DevFileEmitter) {
+	constructor(fileEmitter?: FileEmitter) {
 		this.fileEmitter = fileEmitter;
 	}
 
@@ -63,7 +63,7 @@ export class CSS_Handler {
 		if (this.fileEmitter) {
 			await this.fileEmitter.emitFile(pluginContext, cssAsset);
 		} else {
-			await DevFileEmitter.safeEmitFile(pluginContext, cssAsset);
+			await FileEmitter.safeEmitFile(pluginContext, cssAsset);
 		}
 
 		// Emit the source map if available
@@ -77,7 +77,7 @@ export class CSS_Handler {
 			if (this.fileEmitter) {
 				await this.fileEmitter.emitFile(pluginContext, mapAsset);
 			} else {
-				await DevFileEmitter.safeEmitFile(pluginContext, mapAsset);
+				await FileEmitter.safeEmitFile(pluginContext, mapAsset);
 			}
 		}
 	}
