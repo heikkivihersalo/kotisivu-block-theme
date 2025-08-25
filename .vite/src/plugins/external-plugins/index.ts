@@ -2,29 +2,6 @@
  * External dependencies
  */
 import react from '@vitejs/plugin-react';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
-import type { Plugin } from 'vite';
-
-/**
- * Creates a static copy plugin that dynamically configures copy targets
- * based on discovered blocks during the build process
- */
-const createBlockStaticCopyPlugin = (): Plugin => {
-	return {
-		name: 'block-static-copy',
-		apply: 'build',
-
-		async generateBundle() {
-			// At this point, we need to access discovered blocks
-			// Since the timing issue persists, let's use a different approach
-			// and create the static copy functionality directly
-
-			// For now, we'll implement basic static copying logic
-			// This will be improved once we fix the discovery timing
-			console.log('Block static copy plugin - generateBundle called');
-		},
-	};
-};
 
 const generatePlugins = () => {
 	const pluginReact = react({
@@ -32,15 +9,9 @@ const generatePlugins = () => {
 		jsxImportSource: '@wordpress/element',
 	});
 
-	// For now, create an empty static copy plugin until we fix the timing issue
-	const emptyStaticCopy = viteStaticCopy({
-		silent: false,
-		targets: [],
-	});
-
-	const blockStaticCopy = createBlockStaticCopyPlugin();
-
-	return [emptyStaticCopy, blockStaticCopy, pluginReact];
+	// Note: vite-plugin-static-copy was removed as it had no targets configured
+	// Re-add when static file copying is needed
+	return [pluginReact];
 };
 
 export default generatePlugins;
