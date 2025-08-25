@@ -3,30 +3,17 @@
  */
 import { mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { build as esBuild } from 'esbuild';
 import type { PluginContext } from 'rollup';
 
 /**
  * Shared dependencies
  */
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../../common/constants.ts';
-import {
-	generateFileHash,
-	generatePhpAssetFile,
-	DevFileEmitter,
-} from '../../common/utils/index.ts';
-import { CSS_Handler } from '../../common/handlers/CSS_Handler.ts';
-import { scssPlugin } from '../../common/plugins/scssPlugin.ts';
+import { AssetHandler } from '../../common/handlers/index.ts';
 
 import type {
 	DiscoveredAssetInfo,
 	AssetProcessorConfig,
 } from '../../common/types';
-
-/**
- * Internal dependencies
- */
-import { ReactShimPlugin } from '../../common/plugins/reactShimPlugin.ts';
 
 /**
  * Process generic assets and generate corresponding PHP asset files
@@ -41,86 +28,43 @@ export const processAssets = async (
 		outputDirectory,
 		dependencies = [],
 		sourcemap = false,
-		fileEmitter,
+		fileEmitter, // eslint-disable-line @typescript-eslint/no-unused-vars
 	}: AssetProcessorConfig
 ): Promise<void> => {
-	// Create CSS handler instance
-	const cssHandler = new CSS_Handler(fileEmitter);
+	// Create Asset handler instance
+	const assetHandler = new AssetHandler();
 
 	for (const asset of assets) {
 		try {
-			context.addWatchFile(asset.sourcePath);
 			const jsOutputPath = resolve(
 				outputDirectory,
 				`${asset.outputPath}.js`
 			);
 			mkdirSync(dirname(jsOutputPath), { recursive: true });
-			const wpImports: string[] = [];
 
-			const result = await esBuild({
-				entryPoints: [asset.sourcePath],
-				outdir: dirname(jsOutputPath),
-				platform: ESBUILD_CONFIG.PLATFORM,
-				bundle: true,
-				write: false,
-				metafile: true,
-				sourcemap,
-				loader: ESBUILD_CONFIG.LOADER_MAP,
-				target: ESBUILD_CONFIG.TARGET,
-				jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
-				jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
-				jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
-				minify: process.env.NODE_ENV === 'production',
-				plugins: [scssPlugin, ReactShimPlugin(wpImports)],
-				outExtension: { '.js': '.js', '.css': '.css' },
-			});
+			// Process asset with AssetHandler
+			const { jsContent, cssContent, jsSourceMapFile, phpContent } =
+				await assetHandler.processAsset(
+					context,
+					asset,
+					outputDirectory,
+					dependencies,
+					sourcemap
+				);
 
-			const jsContent =
-				result.outputFiles?.find((f) => f.path.endsWith('.js'))?.text ||
-				'';
-			const cssContent =
-				result.outputFiles?.find((f) => f.path.endsWith('.css'))
-					?.text || '';
-			const jsSourceMapFile = result.outputFiles?.find((f) =>
-				f.path.endsWith('.js.map')
+			// Emit JavaScript files and source map
+			await assetHandler.emitJavaScriptAssets(
+				context,
+				asset,
+				jsContent,
+				jsSourceMapFile
 			);
-			const hash = generateFileHash(jsContent);
-
-			const configDeps = dependencies.filter((dep) => dep.trim() !== '');
-			const allDependencies = [...configDeps, ...wpImports];
-			const phpContent = generatePhpAssetFile(allDependencies, hash);
-
-			// Emit JavaScript file
-			await DevFileEmitter.safeEmitFile(context, {
-				type: 'asset',
-				fileName: `${asset.outputPath}.js`,
-				source: jsContent,
-			});
-
-			// Emit source map if available
-			if (jsSourceMapFile) {
-				await DevFileEmitter.safeEmitFile(context, {
-					type: 'asset',
-					fileName: `${asset.outputPath}.js.map`,
-					source: jsSourceMapFile.text,
-				});
-			}
 
 			// Emit PHP asset file
-			await DevFileEmitter.safeEmitFile(context, {
-				type: 'asset',
-				fileName: `${asset.outputPath}.asset.php`,
-				source: phpContent,
-			});
+			await assetHandler.emitPhpAsset(context, asset, phpContent);
 
-			// Process CSS if available
-			if (cssContent.trim()) {
-				await cssHandler.processWithBasePath(
-					context,
-					asset.outputPath,
-					cssContent
-				);
-			}
+			// Emit CSS files if available
+			await assetHandler.emitCssAssets(context, asset, cssContent);
 		} catch {
 			// Skip assets that can't be processed
 			continue;
