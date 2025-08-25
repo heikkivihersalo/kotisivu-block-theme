@@ -6,7 +6,7 @@ import type {
 } from '../../../../src/common/types/index.ts';
 
 describe('generateVersionHash', () => {
-	it('should generate hash from first file with code', () => {
+	it('should generate hash from file content', () => {
 		const bundle = {
 			'chunk1.js': {
 				code: 'console.log("hello world");',
@@ -28,15 +28,6 @@ describe('generateVersionHash', () => {
 				preliminaryFileName: 'chunk1.js',
 				referencedFiles: [],
 			} satisfies BundlerChunkInfo,
-		};
-
-		const result = generateVersionHash(bundle);
-		expect(result).toHaveLength(32);
-		expect(result).toMatch(/^[a-f0-9]{32}$/);
-	});
-
-	it('should return empty string for bundle with no code', () => {
-		const bundle = {
 			'style.css': {
 				fileName: 'style.css',
 				name: 'style',
@@ -49,23 +40,27 @@ describe('generateVersionHash', () => {
 		};
 
 		const result = generateVersionHash(bundle);
-		expect(result).toBe('');
+		expect(result).toHaveLength(32);
+		expect(result).toMatch(/^[a-f0-9]{32}$/);
 	});
 
-	it('should return empty string for empty bundle', () => {
+	it('should return a consistent hash for an empty bundle', () => {
 		const bundle = {};
 		const result = generateVersionHash(bundle);
-		expect(result).toBe('');
+		expect(result).toBe('d41d8cd98f00b204e9800998ecf8427e'); // MD5 of empty string
 	});
 
-	it('should generate consistent hash for same code content', () => {
-		const code = 'function test() { return true; }';
-
-		const createBundle = (fileName: string) => ({
-			[fileName]: {
+	it('should generate consistent hash for same content regardless of filename', () => {
+		const createBundle = (
+			code: string,
+			source: string,
+			fileName1: string,
+			fileName2: string
+		) => ({
+			[fileName1]: {
 				code,
 				type: 'chunk' as const,
-				fileName,
+				fileName: fileName1,
 				imports: [],
 				dynamicImports: [],
 				exports: [],
@@ -78,24 +73,46 @@ describe('generateVersionHash', () => {
 				map: null,
 				modules: {},
 				moduleIds: [],
-				name: fileName.replace('.js', ''),
-				preliminaryFileName: fileName,
+				name: fileName1.replace('.js', ''),
+				preliminaryFileName: fileName1,
 				referencedFiles: [],
 			} satisfies BundlerChunkInfo,
+			[fileName2]: {
+				source,
+				type: 'asset' as const,
+				fileName: fileName2,
+				name: fileName2.replace('.css', ''),
+				needsCodeReference: false,
+				code: '',
+				imports: [],
+			} satisfies BundlerAssetInfo,
 		});
 
-		const hash1 = generateVersionHash(createBundle('test1.js'));
-		const hash2 = generateVersionHash(createBundle('test2.js'));
+		const bundle1 = createBundle(
+			'console.log("hello");',
+			'body { color: red; }',
+			'a.js',
+			'b.css'
+		);
+		const bundle2 = createBundle(
+			'console.log("hello");',
+			'body { color: red; }',
+			'c.js',
+			'd.css'
+		);
+
+		const hash1 = generateVersionHash(bundle1);
+		const hash2 = generateVersionHash(bundle2);
 
 		expect(hash1).toBe(hash2);
 	});
 
-	it('should generate different hashes for different code content', () => {
-		const createBundle = (code: string, fileName: string) => ({
-			[fileName]: {
+	it('should generate different hashes for different content', () => {
+		const createBundle = (code: string, source: string) => ({
+			'file.js': {
 				code,
 				type: 'chunk' as const,
-				fileName,
+				fileName: 'file.js',
 				imports: [],
 				dynamicImports: [],
 				exports: [],
@@ -108,28 +125,37 @@ describe('generateVersionHash', () => {
 				map: null,
 				modules: {},
 				moduleIds: [],
-				name: fileName.replace('.js', ''),
-				preliminaryFileName: fileName,
+				name: 'file',
+				preliminaryFileName: 'file.js',
 				referencedFiles: [],
 			} satisfies BundlerChunkInfo,
+			'style.css': {
+				source,
+				type: 'asset' as const,
+				fileName: 'style.css',
+				name: 'style',
+				needsCodeReference: false,
+				code: '',
+				imports: [],
+			} satisfies BundlerAssetInfo,
 		});
 
 		const hash1 = generateVersionHash(
-			createBundle('console.log("hello");', 'file1.js')
+			createBundle('console.log("hello");', 'body { color: red; }')
 		);
 		const hash2 = generateVersionHash(
-			createBundle('console.log("world");', 'file2.js')
+			createBundle('console.log("world");', 'body { color: blue; }')
 		);
 
 		expect(hash1).not.toBe(hash2);
 	});
 
-	it('should skip files without code and use first file with code', () => {
+	it('should handle files without code or source gracefully', () => {
 		const bundle = {
-			'empty.js': {
+			'empty-chunk.js': {
 				code: '',
 				type: 'chunk' as const,
-				fileName: 'empty.js',
+				fileName: 'empty-chunk.js',
 				imports: [],
 				dynamicImports: [],
 				exports: [],
@@ -142,10 +168,19 @@ describe('generateVersionHash', () => {
 				map: null,
 				modules: {},
 				moduleIds: [],
-				name: 'empty',
-				preliminaryFileName: 'empty.js',
+				name: 'empty-chunk',
+				preliminaryFileName: 'empty-chunk.js',
 				referencedFiles: [],
 			} satisfies BundlerChunkInfo,
+			'empty-asset.css': {
+				source: '',
+				type: 'asset' as const,
+				fileName: 'empty-asset.css',
+				name: 'empty-asset',
+				needsCodeReference: false,
+				code: '',
+				imports: [],
+			} satisfies BundlerAssetInfo,
 			'main.js': {
 				code: 'const x = 42;',
 				type: 'chunk' as const,

@@ -9,7 +9,7 @@ describe('generatePhpAssetFile', () => {
 		const result = generatePhpAssetFile(dependencies, hash);
 
 		expect(result).toBe(
-			'<?php return ["dependencies" => ["wp-blocks","wp-element","wp-components"], "version" => "abc123def456"];'
+			`<?php return ['dependencies'=>['wp-blocks','wp-element','wp-components'],'version'=>'abc123def456'];`
 		);
 	});
 
@@ -24,7 +24,7 @@ describe('generatePhpAssetFile', () => {
 		const result = generatePhpAssetFile(dependencies, hash);
 
 		expect(result).toBe(
-			'<?php return ["dependencies" => ["wp-blocks","wp-element","wp-components"], "version" => "abc123def456"];'
+			`<?php return ['dependencies'=>['wp-blocks','wp-element','wp-components'],'version'=>'abc123def456'];`
 		);
 	});
 
@@ -32,25 +32,23 @@ describe('generatePhpAssetFile', () => {
 		// Empty array
 		let result = generatePhpAssetFile([], 'test-hash');
 		expect(result).toBe(
-			'<?php return ["dependencies" => [], "version" => "test-hash"];'
+			`<?php return ['dependencies'=>[],'version'=>'test-hash'];`
 		);
 
 		// Empty Set
 		result = generatePhpAssetFile(new Set<string>(), 'test-hash');
 		expect(result).toBe(
-			'<?php return ["dependencies" => [], "version" => "test-hash"];'
+			`<?php return ['dependencies'=>[],'version'=>'test-hash'];`
 		);
 
 		// No parameters (defaults)
 		result = generatePhpAssetFile();
-		expect(result).toBe(
-			'<?php return ["dependencies" => [], "version" => ""];'
-		);
+		expect(result).toBe(`<?php return ['dependencies'=>[],'version'=>''];`);
 
 		// Empty hash
 		result = generatePhpAssetFile(['wp-blocks'], '');
 		expect(result).toBe(
-			'<?php return ["dependencies" => ["wp-blocks"], "version" => ""];'
+			`<?php return ['dependencies'=>['wp-blocks'],'version'=>''];`
 		);
 	});
 
@@ -66,16 +64,16 @@ describe('generatePhpAssetFile', () => {
 		const result = generatePhpAssetFile(dependencies, hash);
 
 		// Check all dependencies are included
-		expect(result).toContain('"wp-blocks"');
-		expect(result).toContain('"lodash"');
-		expect(result).toContain('"my-custom-script"');
-		expect(result).toContain('"wp-element"');
-		expect(result).toContain('"version" => "mixed-deps-hash"');
+		expect(result).toContain(`'wp-blocks'`);
+		expect(result).toContain(`'lodash'`);
+		expect(result).toContain(`'my-custom-script'`);
+		expect(result).toContain(`'wp-element'`);
+		expect(result).toContain(`'version'=>'mixed-deps-hash'`);
 
 		// Check order is preserved
-		const startIndex = result.indexOf('"wp-blocks"');
-		const middleIndex = result.indexOf('"lodash"');
-		const endIndex = result.indexOf('"wp-element"');
+		const startIndex = result.indexOf(`'wp-blocks'`);
+		const middleIndex = result.indexOf(`'lodash'`);
+		const endIndex = result.indexOf(`'wp-element'`);
 		expect(startIndex).toBeLessThan(middleIndex);
 		expect(middleIndex).toBeLessThan(endIndex);
 	});
@@ -87,14 +85,14 @@ describe('generatePhpAssetFile', () => {
 		const result = generatePhpAssetFile(dependencies, hash);
 
 		// Should only contain wp-blocks once
-		const blockCount = (result.match(/"wp-blocks"/g) || []).length;
+		const blockCount = (result.match(/'wp-blocks'/g) || []).length;
 		expect(blockCount).toBe(1);
-		expect(result).toContain('"wp-element"');
+		expect(result).toContain(`'wp-element'`);
 
 		// Check PHP syntax
-		expect(result.startsWith('<?php return [')).toBe(true);
-		expect(result.endsWith('];')).toBe(true);
-		expect(result).toContain('"dependencies" =>');
-		expect(result).toContain('"version" =>');
+		expect(result.startsWith('<?php return ')).toBe(true);
+		expect(result.endsWith(';')).toBe(true);
+		expect(result).toContain(`'dependencies'=>`);
+		expect(result).toContain(`'version'=>`);
 	});
 });

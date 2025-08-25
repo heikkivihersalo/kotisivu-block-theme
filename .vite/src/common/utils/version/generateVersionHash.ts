@@ -1,4 +1,4 @@
-import { generateFileHash } from './generateFileHash.ts';
+import { createHash } from 'node:crypto';
 import type { BundlerAssetInfo, BundlerChunkInfo } from '../../types';
 
 /**
@@ -11,11 +11,18 @@ import type { BundlerAssetInfo, BundlerChunkInfo } from '../../types';
 export function generateVersionHash(bundle: {
 	[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
 }): string {
-	// Find the first file with code to generate hash from
-	for (const file of Object.values(bundle)) {
-		if (file.code) {
-			return generateFileHash(file.code);
+	const hash = createHash('md5');
+
+	const sortedFiles = Object.values(bundle).sort((a, b) =>
+		a.fileName.localeCompare(b.fileName)
+	);
+
+	for (const file of sortedFiles) {
+		const source = file.type === 'chunk' ? file.code : file.source;
+		if (source) {
+			hash.update(source);
 		}
 	}
-	return '';
+
+	return hash.digest('hex');
 }

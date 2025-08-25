@@ -1,3 +1,5 @@
+import { convertToPhpArray } from './convertToPhpArray';
+
 /**
  * Generate a PHP asset file with dependencies and version hash.
  *
@@ -8,5 +10,11 @@
 export const generatePhpAssetFile = (
 	dependencies: Set<string> | string[] = [],
 	hash = ''
-): string =>
-	`<?php return ["dependencies" => ${JSON.stringify(Array.from(dependencies))}, "version" => "${hash}"];`;
+): string => {
+	const data = {
+		dependencies: Array.from(dependencies),
+		version: hash,
+	};
+
+	return `<?php return ${convertToPhpArray(data, 0, true)};`;
+};
