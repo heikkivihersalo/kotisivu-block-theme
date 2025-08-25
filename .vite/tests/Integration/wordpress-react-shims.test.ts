@@ -342,9 +342,8 @@ describe('WordPress and React Shims Integration', () => {
 			const content = readFileSync(assetFile, 'utf-8');
 
 			// Should contain a version hash
-			const versionMatch = content.match(/"version" => "([a-f0-9]+)"/);
+			const versionMatch = content.match(/'version'=>'([a-f0-9]+)'/);
 			expect(versionMatch).toBeTruthy();
-
 			if (versionMatch) {
 				const hash = versionMatch[1];
 				// Hash should be 32 characters (MD5) or 40 characters (SHA-1)
