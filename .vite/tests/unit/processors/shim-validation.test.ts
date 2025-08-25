@@ -4,7 +4,13 @@ import { describe, expect, test } from 'vitest';
 
 /**
  * Tests to validate that the WordPress and React shims are correctly implemented
- * in the refactored structure. These tests ensure the processors use the ReactShimPlugin
+ * in the refactored structure. These tests ensure the processors use the Reac		// Should handle asset emission - either through fileEmitter or DevFileEmitter
+		const hasFileEmitterUsage = content.includes('fileEmitter.emitFile');
+		const hasDevFileEmitterUsage = content.includes('DevFileEmitter.safeEmitFile');
+		const hasContextAddWatchFile = content.includes('context.addWatchFile');
+		
+		expect(hasFileEmitterUsage || hasDevFileEmitterUsage).toBe(true);
+		expect(hasContextAddWatchFile).toBe(true);himPlugin
  * and that the plugin contains the expected shim logic.
  */
 describe('Processor Shim Implementation Validation', () => {
@@ -286,8 +292,19 @@ describe('Processor Shim Implementation Validation', () => {
 			// Should include SCSS plugin
 			expect(content).toContain('scssPlugin');
 
-			// Should handle asset emission
-			expect(content).toContain('context.emitFile');
+			// Should handle asset emission - either through fileEmitter or DevFileEmitter
+			const hasFileEmitterUsage = content.includes(
+				'fileEmitter.emitFile'
+			);
+			const hasDevFileEmitterUsage = content.includes(
+				'DevFileEmitter.safeEmitFile'
+			);
+			const hasContextAddWatchFile = content.includes(
+				'context.addWatchFile'
+			);
+
+			expect(hasFileEmitterUsage || hasDevFileEmitterUsage).toBe(true);
+			expect(hasContextAddWatchFile).toBe(true);
 		}
 	});
 });
