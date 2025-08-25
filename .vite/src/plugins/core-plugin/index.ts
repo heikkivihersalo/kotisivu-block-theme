@@ -7,7 +7,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Shared dependencies
  */
-import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
+import { FileEmitter } from '../../common/utils/vite/FileEmitter.ts';
 import type {
 	BundlerAssetInfo,
 	BundlerChunkInfo,
@@ -32,7 +32,7 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 	const { dependencies = [], discoveredBlocks = [] } = pluginConfig;
 
 	let _config: ResolvedConfig;
-	let fileEmitter: DevFileEmitter;
+	let fileEmitter: FileEmitter;
 
 	// WordPress dependencies that should be externalized
 	const defaultDependencies = ['react', 'react-dom'];
@@ -51,7 +51,7 @@ export function CorePlugin(pluginConfig: ViteCorePluginConfig): Plugin {
 
 			// Initialize file emitter with output directory
 			const outputDir = resolvedConfig.build.outDir || 'dist';
-			fileEmitter = new DevFileEmitter(outputDir);
+			fileEmitter = new FileEmitter(outputDir);
 		},
 
 		transform: async function (

@@ -12,7 +12,7 @@ import {
 	extractWpDependencies,
 } from '../../common/utils/index.ts';
 
-import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
+import { FileEmitter } from '../../common/utils/vite/FileEmitter.ts';
 import type { AssetInfo, ChunkInfo, EmittedAsset } from '../../common/types';
 
 /**
@@ -31,7 +31,7 @@ export async function generateBundle(
 	_options: OutputOptions,
 	bundle: { [fileName: string]: ChunkInfo | AssetInfo },
 	additionalDependencies: string[],
-	fileEmitter?: DevFileEmitter
+	fileEmitter?: FileEmitter
 ) {
 	// Extract WordPress dependencies from all bundle files
 	const wpDependencies = extractWpDependencies(bundle);
@@ -53,10 +53,10 @@ export async function generateBundle(
 			source: generatePhpAssetFile(allDependencies, versionHash),
 		} satisfies EmittedAsset);
 	} else {
-		const { DevFileEmitter } = await import(
-			'../../common/utils/vite/DevFileEmitter'
+		const { FileEmitter } = await import(
+			'../../common/utils/vite/FileEmitter.ts'
 		);
-		await DevFileEmitter.safeEmitFile(this, {
+		await FileEmitter.safeEmitFile(this, {
 			type: 'asset',
 			fileName: 'index.asset.php',
 			source: generatePhpAssetFile(allDependencies, versionHash),

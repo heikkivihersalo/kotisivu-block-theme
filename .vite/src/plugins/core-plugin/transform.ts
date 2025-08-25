@@ -10,7 +10,7 @@ import { type ResolvedConfig, preprocessCSS } from 'vite';
  */
 import { trimSlashes, wrapArray } from '../../common/utils';
 import { REGEX_PATTERNS } from '../../common/constants.js';
-import { DevFileEmitter } from '../../common/utils/vite/DevFileEmitter';
+import { FileEmitter } from '../../common/utils/vite/FileEmitter.js';
 import type {
 	WordPressBlockJSON,
 	BundlerEmittedAsset,
@@ -33,7 +33,7 @@ export async function transform(
 	blockFile: WordPressBlockJSON,
 	config: ResolvedConfig,
 	_environment?: any,
-	fileEmitter?: DevFileEmitter
+	fileEmitter?: FileEmitter
 ): Promise<string | boolean | void> {
 	const [filename] = id.split('?');
 	const isStylesheet = REGEX_PATTERNS.CSS_FILE_EXTENSION.test(filename);
@@ -70,10 +70,10 @@ export async function transform(
 			source: result.code,
 		} satisfies BundlerEmittedAsset);
 	} else {
-		const { DevFileEmitter } = await import(
-			'../../common/utils/vite/DevFileEmitter'
+		const { FileEmitter } = await import(
+			'../../common/utils/vite/FileEmitter.js'
 		);
-		await DevFileEmitter.safeEmitFile(this, {
+		await FileEmitter.safeEmitFile(this, {
 			type: 'asset',
 			fileName: outputPath,
 			source: result.code,

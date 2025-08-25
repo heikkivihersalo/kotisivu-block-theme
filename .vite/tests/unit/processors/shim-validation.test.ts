@@ -4,9 +4,9 @@ import { describe, expect, test } from 'vitest';
 
 /**
  * Tests to validate that the WordPress and React shims are correctly implemented
- * in the refactored structure. These tests ensure the processors use the Reac		// Should handle asset emission - either through fileEmitter or DevFileEmitter
+ * in the refactored structure. These tests ensure the processors use the Reac		// Should handle asset emission - either through fileEmitter or FileEmitter
 		const hasFileEmitterUsage = content.includes('fileEmitter.emitFile');
-		const hasDevFileEmitterUsage = content.includes('DevFileEmitter.safeEmitFile');
+		const hasDevFileEmitterUsage = content.includes('FileEmitter.safeEmitFile');
 		const hasContextAddWatchFile = content.includes('context.addWatchFile');
 		
 		expect(hasFileEmitterUsage || hasDevFileEmitterUsage).toBe(true);
@@ -292,12 +292,12 @@ describe('Processor Shim Implementation Validation', () => {
 			// Should include SCSS plugin
 			expect(content).toContain('scssPlugin');
 
-			// Should handle asset emission - either through fileEmitter or DevFileEmitter
+			// Should handle asset emission - either through fileEmitter or FileEmitter
 			const hasFileEmitterUsage = content.includes(
 				'fileEmitter.emitFile'
 			);
 			const hasDevFileEmitterUsage = content.includes(
-				'DevFileEmitter.safeEmitFile'
+				'FileEmitter.safeEmitFile'
 			);
 			const hasContextAddWatchFile = content.includes(
 				'context.addWatchFile'

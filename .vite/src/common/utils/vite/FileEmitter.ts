@@ -15,7 +15,7 @@ import type { EmittedAsset } from '../../types';
  * Alternative to emitFile() for development mode
  * Uses file system operations to write files directly
  */
-export class DevFileEmitter {
+export class FileEmitter {
 	private outputDir: string;
 	private isDevelopment: boolean;
 
@@ -40,8 +40,8 @@ export class DevFileEmitter {
 
 		if (isServeMode) {
 			if (outputDir) {
-				// Use DevFileEmitter in development serve mode with output directory
-				const emitter = new DevFileEmitter(outputDir);
+				// Use FileEmitter in development serve mode with output directory
+				const emitter = new FileEmitter(outputDir);
 				await emitter.emitFile(pluginContext, asset);
 			} else {
 				// In serve mode without output directory, skip file emission
@@ -108,7 +108,7 @@ export class DevFileEmitter {
 			} else {
 				await writeFile(fullPath, source);
 			}
-			console.log(`📁 DevFileEmitter: Wrote ${fileName}`);
+			console.log(`📁 FileEmitter: Wrote ${fileName}`);
 		} catch (error) {
 			console.error(`❌ Error writing file ${fileName}:`, error);
 			throw error;
@@ -133,7 +133,7 @@ export class DevFileEmitter {
 
 		// Copy the file
 		await copyFile(sourcePath, fullDestPath);
-		console.log(`📄 DevFileEmitter: Copied ${destFileName}`);
+		console.log(`📄 FileEmitter: Copied ${destFileName}`);
 	}
 
 	/**
@@ -144,7 +144,7 @@ export class DevFileEmitter {
 		fileName: string,
 		source: string | Uint8Array
 	): Promise<void> {
-		console.log(`🔧 DevFileEmitter.writeStaticFile called: ${fileName}`);
+		console.log(`🔧 FileEmitter.writeStaticFile called: ${fileName}`);
 		console.log(`🔧 Output dir: ${this.outputDir}`);
 		console.log(`🔧 isDevelopment: ${this.isDevelopment}`);
 		console.log(
