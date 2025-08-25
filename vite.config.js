@@ -33,4 +33,15 @@ export default defineConfig({
 			'@/widgets': '/resources/widgets',
 		},
 	},
+	// HMR configuration
+	server: {
+		host: 'localhost',
+		port: 5173,
+		strictPort: true,
+		cors: true,
+		// Allow serving files from outside the workspace
+		fs: {
+			allow: ['..', '.'],
+		},
+	},
 });

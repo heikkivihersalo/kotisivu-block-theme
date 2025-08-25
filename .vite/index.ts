@@ -11,6 +11,7 @@ import {
 	BlocksPlugin,
 	ConfigPlugin,
 	CorePlugin,
+	DevServerPlugin,
 	ManifestPlugin,
 	generatePlugins,
 } from './src/plugins/index.js';
@@ -82,6 +83,15 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		publicPath: '/',
 	});
 
+	// Create DevServer plugin for HMR support
+	const devServerPlugin = DevServerPlugin({
+		base: '/',
+		srcDir: 'resources',
+		outDir,
+		css: 'scss',
+		manifest: true,
+	});
+
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
 
@@ -91,6 +101,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		blocksPlugin,
 		assetsPlugin,
 		manifestPlugin, // Add the new manifest plugin
+		devServerPlugin, // Add HMR support
 		...additionalPlugins,
 	] as Plugin[];
 };

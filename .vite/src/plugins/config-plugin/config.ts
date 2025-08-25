@@ -104,6 +104,23 @@ export function config(config: ViteWordPressConfig): UserConfig {
 		// Disable public directory copying for WordPress themes
 		publicDir: false,
 
+		// HMR configuration for WordPress development
+		server: {
+			host: 'localhost',
+			port: 5173,
+			strictPort: true,
+			cors: true,
+			// Allow serving files from outside the workspace
+			fs: {
+				allow: ['..', '.'],
+			},
+			// Configure HMR for WordPress
+			hmr: {
+				port: 5173,
+				host: 'localhost',
+			},
+		},
+
 		// Optimized for WordPress development
 		define: {
 			'process.env.NODE_ENV': JSON.stringify(
