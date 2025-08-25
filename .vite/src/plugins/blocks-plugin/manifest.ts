@@ -8,7 +8,11 @@ import type { BlockInfo } from '../../common/types/wordpress.js';
 /**
  * Generate block manifest file
  */
-export function generateBlockManifest(this: any, blocks: BlockInfo[]): void {
+export async function generateBlockManifest(
+	this: any,
+	blocks: BlockInfo[],
+	fileEmitter?: DevFileEmitter
+): Promise<void> {
 	if (blocks.length === 0) {
 		console.log('No blocks found. Skipping block manifest generation...');
 		return;
@@ -25,12 +29,30 @@ export function generateBlockManifest(this: any, blocks: BlockInfo[]): void {
 	// Generate PHP content
 	const phpContent = generatePhpArrayContent(blocksRecord);
 
-	// Use DevFileEmitter to handle file emission
-	DevFileEmitter.safeEmitFile(this, {
-		type: 'asset',
-		fileName,
-		source: phpContent,
-	});
+	// Use the provided DevFileEmitter instance if available
+	if (fileEmitter) {
+		await fileEmitter.emitFile(this, {
+			type: 'asset',
+			fileName,
+			source: phpContent,
+		});
+	} else {
+		// Only use standard emitFile in build mode
+		const isBuildCommand = process.argv.includes('build');
+		if (isBuildCommand) {
+			this.emitFile({
+				type: 'asset',
+				fileName,
+				source: phpContent,
+			});
+		} else {
+			// In development mode, create a temporary DevFileEmitter
+			// This shouldn't happen if the function is called correctly
+			console.warn(
+				'generateBlockManifest called without fileEmitter in dev mode, skipping file emission'
+			);
+		}
+	}
 
 	console.log(`✓ Generated ${fileName} with ${blocks.length} blocks`);
 }

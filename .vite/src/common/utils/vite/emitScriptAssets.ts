@@ -16,19 +16,26 @@ import {
 import type { EmittedAsset, OutputConfig } from '../../types';
 
 /**
+ * Internal dependencies
+ */
+import { DevFileEmitter } from './DevFileEmitter';
+
+/**
  * Emit JavaScript and PHP asset files
  * @param pluginContext - The Rollup plugin context
  * @param file - The output file
  * @param script - The script file name
  * @param config - The output configuration
  * @param wpImports - List of WordPress imports used in the script
+ * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
-export const emitScriptAssets = (
+export const emitScriptAssets = async (
 	pluginContext: PluginContext,
 	file: any,
 	script: string,
 	config: OutputConfig,
-	wpImports: string[]
+	wpImports: string[],
+	fileEmitter?: DevFileEmitter
 ) => {
 	const hash = generateFileHash(file.text);
 	const filename = extractFilenameWithoutExtension(script);
@@ -40,15 +47,29 @@ export const emitScriptAssets = (
 	);
 	const scriptFileName = generateAssetFilename(script, config.outputPath);
 
-	pluginContext.emitFile({
-		type: 'asset',
-		fileName: assetFileName,
-		source: generatePhpAssetFile(wpImports, hash),
-	} satisfies EmittedAsset);
+	if (fileEmitter) {
+		await fileEmitter.emitFile(pluginContext, {
+			type: 'asset',
+			fileName: assetFileName,
+			source: generatePhpAssetFile(wpImports, hash),
+		} satisfies EmittedAsset);
 
-	pluginContext.emitFile({
-		type: 'asset',
-		fileName: scriptFileName,
-		source: file.contents,
-	} satisfies EmittedAsset);
+		await fileEmitter.emitFile(pluginContext, {
+			type: 'asset',
+			fileName: scriptFileName,
+			source: file.contents,
+		} satisfies EmittedAsset);
+	} else {
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: assetFileName,
+			source: generatePhpAssetFile(wpImports, hash),
+		} satisfies EmittedAsset);
+
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: scriptFileName,
+			source: file.contents,
+		} satisfies EmittedAsset);
+	}
 };

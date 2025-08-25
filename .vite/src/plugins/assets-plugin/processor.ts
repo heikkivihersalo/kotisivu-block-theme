@@ -107,21 +107,25 @@ export const processAssets = async (
 					source: phpContent,
 				});
 			} else {
-				context.emitFile({
+				const { DevFileEmitter } = await import(
+					'../../common/utils/vite/DevFileEmitter'
+				);
+
+				await DevFileEmitter.safeEmitFile(context, {
 					type: 'asset',
 					fileName: `${asset.outputPath}.js`,
 					source: jsContent,
 				});
 
 				if (jsSourceMapFile) {
-					context.emitFile({
+					await DevFileEmitter.safeEmitFile(context, {
 						type: 'asset',
 						fileName: `${asset.outputPath}.js.map`,
 						source: jsSourceMapFile.text,
 					});
 				}
 
-				context.emitFile({
+				await DevFileEmitter.safeEmitFile(context, {
 					type: 'asset',
 					fileName: `${asset.outputPath}.asset.php`,
 					source: phpContent,
@@ -129,7 +133,12 @@ export const processAssets = async (
 			}
 
 			if (cssContent.trim()) {
-				emitCss(context, asset.outputPath, cssContent);
+				await emitCss(
+					context,
+					asset.outputPath,
+					cssContent,
+					fileEmitter
+				);
 			}
 		} catch {
 			// Skip assets that can't be processed

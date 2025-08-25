@@ -5,15 +5,22 @@ import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
 /**
+ * Internal dependencies
+ */
+import { DevFileEmitter } from './DevFileEmitter';
+
+/**
  * Emit CSS files
  * @param context - Rollup plugin context
  * @param baseOutputPath - Base output path for the CSS file
  * @param cssContent - CSS content to emit
+ * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
-export function emitCss(
+export async function emitCss(
 	context: PluginContext,
 	baseOutputPath: string,
-	cssContent: string
+	cssContent: string,
+	fileEmitter?: DevFileEmitter
 ) {
 	const styleFileName = `${baseOutputPath}.css`;
 	const { code, map } = transform({
@@ -22,11 +29,32 @@ export function emitCss(
 		minify: true,
 		sourceMap: true,
 	});
-	context.emitFile({ type: 'asset', fileName: styleFileName, source: code });
-	if (map)
-		context.emitFile({
+
+	if (fileEmitter) {
+		await fileEmitter.emitFile(context, {
 			type: 'asset',
-			fileName: `${styleFileName}.map`,
-			source: map.toString(),
+			fileName: styleFileName,
+			source: code,
 		});
+		if (map) {
+			await fileEmitter.emitFile(context, {
+				type: 'asset',
+				fileName: `${styleFileName}.map`,
+				source: map.toString(),
+			});
+		}
+	} else {
+		await DevFileEmitter.safeEmitFile(context, {
+			type: 'asset',
+			fileName: styleFileName,
+			source: code,
+		});
+		if (map) {
+			await DevFileEmitter.safeEmitFile(context, {
+				type: 'asset',
+				fileName: `${styleFileName}.map`,
+				source: map.toString(),
+			});
+		}
+	}
 }

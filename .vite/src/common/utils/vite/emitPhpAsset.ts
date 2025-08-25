@@ -30,7 +30,7 @@ export const emitPhpAsset = async (
 			source: content,
 		} satisfies EmittedAsset);
 	} else {
-		pluginContext.emitFile({
+		await DevFileEmitter.safeEmitFile(pluginContext, {
 			type: 'asset',
 			fileName: outputFileName,
 			source: content,

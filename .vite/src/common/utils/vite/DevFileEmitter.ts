@@ -38,10 +38,18 @@ export class DevFileEmitter {
 		const isServeMode =
 			process.env.NODE_ENV === 'development' && !isBuildCommand;
 
-		if (isServeMode && outputDir) {
-			// Use DevFileEmitter in development serve mode only
-			const emitter = new DevFileEmitter(outputDir);
-			await emitter.emitFile(pluginContext, asset);
+		if (isServeMode) {
+			if (outputDir) {
+				// Use DevFileEmitter in development serve mode with output directory
+				const emitter = new DevFileEmitter(outputDir);
+				await emitter.emitFile(pluginContext, asset);
+			} else {
+				// In serve mode without output directory, skip file emission
+				// This prevents the "emitFile() is not supported in serve mode" error
+				console.log(
+					`🔧 Skipping file emission in serve mode: ${asset.fileName} (no output directory)`
+				);
+			}
 		} else {
 			// Use standard emitFile in build mode
 			pluginContext.emitFile(asset);

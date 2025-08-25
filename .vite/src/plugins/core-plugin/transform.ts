@@ -70,7 +70,10 @@ export async function transform(
 			source: result.code,
 		} satisfies BundlerEmittedAsset);
 	} else {
-		this.emitFile({
+		const { DevFileEmitter } = await import(
+			'../../common/utils/vite/DevFileEmitter'
+		);
+		await DevFileEmitter.safeEmitFile(this, {
 			type: 'asset',
 			fileName: outputPath,
 			source: result.code,

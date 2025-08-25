@@ -61,10 +61,10 @@ export async function sideloadBlocks(
 	const styles = extractStyles(blockJson);
 
 	// Process all scripts
-	await processScripts(this, scripts, config, sourcemap);
+	await processScripts(this, scripts, config, sourcemap, fileEmitter);
 
 	// Process all styles from block.json
-	processStyles(this, styles, config);
+	await processStyles(this, styles, config, fileEmitter);
 
 	// Handle WordPress convention CSS files with proper naming
 	// editor.css -> index.css (editor styles)
@@ -75,7 +75,7 @@ export async function sideloadBlocks(
 			...config,
 			outputPath: config.outputPath, // Will generate index.css automatically
 		};
-		processStyle(this, 'editor.css', editorConfig);
+		await processStyle(this, 'editor.css', editorConfig, fileEmitter);
 	} else if (process.env.NODE_ENV !== 'development') {
 		// Only emit empty files in production builds
 		if (fileEmitter) {
@@ -85,7 +85,10 @@ export async function sideloadBlocks(
 				source: '',
 			});
 		} else {
-			this.emitFile({
+			const { DevFileEmitter } = await import(
+				'../../common/utils/vite/DevFileEmitter'
+			);
+			await DevFileEmitter.safeEmitFile(this, {
 				type: 'asset',
 				fileName: `${config.outputPath}/index.css`,
 				source: '',
@@ -103,7 +106,7 @@ export async function sideloadBlocks(
 		};
 		// For now, use the existing processor - we may need to enhance it later
 		// to handle the style-index.css naming convention
-		processStyle(this, 'style.css', styleConfig);
+		await processStyle(this, 'style.css', styleConfig, fileEmitter);
 	} else if (process.env.NODE_ENV !== 'development') {
 		// Only emit empty files in production builds
 		if (fileEmitter) {
@@ -113,7 +116,10 @@ export async function sideloadBlocks(
 				source: '',
 			});
 		} else {
-			this.emitFile({
+			const { DevFileEmitter } = await import(
+				'../../common/utils/vite/DevFileEmitter'
+			);
+			await DevFileEmitter.safeEmitFile(this, {
 				type: 'asset',
 				fileName: `${config.outputPath}/style-index.css`,
 				source: '',

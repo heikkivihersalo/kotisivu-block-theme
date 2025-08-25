@@ -14,18 +14,21 @@ import {
 	emitCssAssets,
 } from '../utils';
 import type { OutputConfig } from '../types';
+import type { DevFileEmitter } from '../utils/vite/DevFileEmitter';
 
 /**
  * Process a single style file
  * @param pluginContext - The Rollup plugin context
  * @param styleFile - The original style file name
  * @param config - The output configuration
+ * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
-export const processStyle = (
+export const processStyle = async (
 	pluginContext: PluginContext,
 	styleFile: string,
-	config: OutputConfig
-): void => {
+	config: OutputConfig,
+	fileEmitter?: DevFileEmitter
+): Promise<void> => {
 	const actualStylePath = findActualStylePath(config.basePath, styleFile);
 	if (!actualStylePath) return;
 
@@ -44,7 +47,13 @@ export const processStyle = (
 		});
 
 		// Emit CSS and source map assets
-		emitCssAssets(pluginContext, code, map || undefined, outputFilename);
+		await emitCssAssets(
+			pluginContext,
+			code,
+			map || undefined,
+			outputFilename,
+			fileEmitter
+		);
 	} catch {
 		// Skip styles that can't be processed
 	}
@@ -55,13 +64,15 @@ export const processStyle = (
  * @param pluginContext - The Rollup plugin context
  * @param styles - The original style file names
  * @param config - The output configuration
+ * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
-export const processStyles = (
+export const processStyles = async (
 	pluginContext: PluginContext,
 	styles: string[],
-	config: OutputConfig
-): void => {
+	config: OutputConfig,
+	fileEmitter?: DevFileEmitter
+): Promise<void> => {
 	for (const styleFile of styles) {
-		processStyle(pluginContext, styleFile, config);
+		await processStyle(pluginContext, styleFile, config, fileEmitter);
 	}
 };

@@ -98,7 +98,11 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 				}
 
 				// Generate block manifest in development mode too
-				generateBlockManifest.call(this, discoveredBlocks);
+				await generateBlockManifest.call(
+					this,
+					discoveredBlocks,
+					fileEmitter
+				);
 				return;
 			}
 
@@ -121,7 +125,11 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			}
 
 			// Generate block manifest
-			generateBlockManifest.call(this, discoveredBlocks);
+			await generateBlockManifest.call(
+				this,
+				discoveredBlocks,
+				fileEmitter
+			);
 		},
 
 		generateBundle: async function (this: PluginContext) {

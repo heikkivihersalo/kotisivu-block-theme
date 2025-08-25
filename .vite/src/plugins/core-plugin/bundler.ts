@@ -53,7 +53,10 @@ export async function generateBundle(
 			source: generatePhpAssetFile(allDependencies, versionHash),
 		} satisfies EmittedAsset);
 	} else {
-		this.emitFile({
+		const { DevFileEmitter } = await import(
+			'../../common/utils/vite/DevFileEmitter'
+		);
+		await DevFileEmitter.safeEmitFile(this, {
 			type: 'asset',
 			fileName: 'index.asset.php',
 			source: generatePhpAssetFile(allDependencies, versionHash),

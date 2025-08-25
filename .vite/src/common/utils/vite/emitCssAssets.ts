@@ -9,30 +9,55 @@ import type { PluginContext } from 'rollup';
 import type { EmittedAsset } from '../../types';
 
 /**
+ * Internal dependencies
+ */
+import { DevFileEmitter } from './DevFileEmitter';
+
+/**
  * Emit CSS and source map files
  * @param pluginContext - The Rollup plugin context
  * @param code - The processed CSS code
  * @param map - The source map for the CSS code
+ * @param outputFilename - The output filename for the CSS file
+ * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
-export const emitCssAssets = (
+export const emitCssAssets = async (
 	pluginContext: PluginContext,
 	code: Uint8Array,
 	map: Uint8Array | undefined,
-	outputFilename: string
+	outputFilename: string,
+	fileEmitter?: DevFileEmitter
 ) => {
 	// Emit the CSS file
-	pluginContext.emitFile({
-		type: 'asset',
-		fileName: outputFilename,
-		source: code,
-	} satisfies EmittedAsset);
-
-	// Emit the source map if available
-	if (map) {
-		pluginContext.emitFile({
+	if (fileEmitter) {
+		await fileEmitter.emitFile(pluginContext, {
 			type: 'asset',
-			fileName: `${outputFilename}.map`,
-			source: map.toString(),
+			fileName: outputFilename,
+			source: code,
 		} satisfies EmittedAsset);
+
+		// Emit the source map if available
+		if (map) {
+			await fileEmitter.emitFile(pluginContext, {
+				type: 'asset',
+				fileName: `${outputFilename}.map`,
+				source: map.toString(),
+			} satisfies EmittedAsset);
+		}
+	} else {
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: outputFilename,
+			source: code,
+		} satisfies EmittedAsset);
+
+		// Emit the source map if available
+		if (map) {
+			await DevFileEmitter.safeEmitFile(pluginContext, {
+				type: 'asset',
+				fileName: `${outputFilename}.map`,
+				source: map.toString(),
+			} satisfies EmittedAsset);
+		}
 	}
 };
