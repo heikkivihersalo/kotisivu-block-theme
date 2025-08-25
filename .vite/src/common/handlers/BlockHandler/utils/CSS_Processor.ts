@@ -23,10 +23,8 @@ import { FileEmitter } from '../../../utils/vite/FileEmitter';
  * handling CSS transformations with proper source maps.
  */
 export class CSS_Processor {
-	private fileEmitter?: FileEmitter;
-
-	constructor(fileEmitter?: FileEmitter) {
-		this.fileEmitter = fileEmitter;
+	constructor() {
+		// No longer need to store fileEmitter
 	}
 
 	/**
@@ -64,11 +62,7 @@ export class CSS_Processor {
 			source: code,
 		};
 
-		if (this.fileEmitter) {
-			await this.fileEmitter.emitFile(pluginContext, cssAsset);
-		} else {
-			await FileEmitter.safeEmitFile(pluginContext, cssAsset);
-		}
+		await FileEmitter.safeEmitFile(pluginContext, cssAsset);
 
 		// Emit the source map if available
 		if (map) {
@@ -78,11 +72,7 @@ export class CSS_Processor {
 				source: map.toString(),
 			};
 
-			if (this.fileEmitter) {
-				await this.fileEmitter.emitFile(pluginContext, mapAsset);
-			} else {
-				await FileEmitter.safeEmitFile(pluginContext, mapAsset);
-			}
+			await FileEmitter.safeEmitFile(pluginContext, mapAsset);
 		}
 	}
 

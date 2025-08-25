@@ -97,11 +97,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 				}
 
 				// Generate block manifest in development mode too
-				await generateBlockManifest.call(
-					this,
-					discoveredBlocks,
-					fileEmitter
-				);
+				await generateBlockManifest.call(this, discoveredBlocks);
 				return;
 			}
 
@@ -123,11 +119,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			}
 
 			// Generate block manifest
-			await generateBlockManifest.call(
-				this,
-				discoveredBlocks,
-				fileEmitter
-			);
+			await generateBlockManifest.call(this, discoveredBlocks);
 		},
 
 		generateBundle: async function (this: PluginContext) {
@@ -181,8 +173,8 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 						const shouldMinify =
 							process.env.NODE_ENV === 'production';
 
-						// Create block handler instance with file emitter
-						const blockHandler = new BlockHandler(fileEmitter);
+						// Create block handler instance
+						const blockHandler = new BlockHandler();
 						await blockHandler.processPhpFiles(
 							this,
 							phpFileInfos,

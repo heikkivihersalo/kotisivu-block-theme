@@ -23,27 +23,17 @@ export class PHP_Processor {
 	 * @param pluginContext - The Rollup plugin context
 	 * @param outputFileName - The output file name
 	 * @param content - The PHP content to emit
-	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	private async emitAsset(
 		pluginContext: PluginContext,
 		outputFileName: string,
-		content: string,
-		fileEmitter?: FileEmitter
+		content: string
 	): Promise<void> {
-		if (fileEmitter) {
-			await fileEmitter.emitFile(pluginContext, {
-				type: 'asset',
-				fileName: outputFileName,
-				source: content,
-			} satisfies EmittedAsset);
-		} else {
-			await FileEmitter.safeEmitFile(pluginContext, {
-				type: 'asset',
-				fileName: outputFileName,
-				source: content,
-			} satisfies EmittedAsset);
-		}
+		await FileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: outputFileName,
+			source: content,
+		} satisfies EmittedAsset);
 	}
 
 	/**
@@ -52,14 +42,12 @@ export class PHP_Processor {
 	 * @param phpPath - The path to the PHP file
 	 * @param outputFileName - The output file name
 	 * @param shouldMinify - Whether to minify the PHP content
-	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	async processPhp(
 		pluginContext: PluginContext,
 		phpPath: string,
 		outputFileName: string,
-		shouldMinify: boolean = true,
-		fileEmitter?: FileEmitter
+		shouldMinify: boolean = true
 	): Promise<void> {
 		try {
 			pluginContext.addWatchFile(phpPath);
@@ -73,8 +61,7 @@ export class PHP_Processor {
 			await this.emitAsset(
 				pluginContext,
 				outputFileName,
-				processedContent,
-				fileEmitter
+				processedContent
 			);
 		} catch {
 			// Skip files that can't be processed
@@ -86,21 +73,18 @@ export class PHP_Processor {
 	 * @param pluginContext - The Rollup plugin context
 	 * @param phpFiles - The PHP files to process
 	 * @param shouldMinify - Whether to minify the PHP content
-	 * @param fileEmitter - Optional FileEmitter for development mode
 	 */
 	async processPhpFiles(
 		pluginContext: PluginContext,
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
-		shouldMinify: boolean = true,
-		fileEmitter?: FileEmitter
+		shouldMinify: boolean = true
 	): Promise<void> {
 		for (const { sourcePath, outputPath } of phpFiles) {
 			await this.processPhp(
 				pluginContext,
 				sourcePath,
 				outputPath,
-				shouldMinify,
-				fileEmitter
+				shouldMinify
 			);
 		}
 	}

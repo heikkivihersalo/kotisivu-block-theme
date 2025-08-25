@@ -7,7 +7,6 @@ import type { PluginContext } from 'rollup';
  * Internal dependencies
  */
 import { CSS_Processor, JS_Processor, PHP_Processor } from './utils';
-import { FileEmitter } from '../../utils/vite/FileEmitter';
 import type { OutputConfig } from '../../types';
 
 /**
@@ -20,11 +19,9 @@ export class BlockHandler {
 	private css: CSS_Processor;
 	private js: JS_Processor;
 	private php: PHP_Processor;
-	private emitter?: FileEmitter;
 
-	constructor(fileEmitter?: FileEmitter) {
-		this.emitter = fileEmitter;
-		this.css = new CSS_Processor(fileEmitter);
+	constructor() {
+		this.css = new CSS_Processor();
 		this.js = new JS_Processor();
 		this.php = new PHP_Processor();
 	}
@@ -136,12 +133,7 @@ export class BlockHandler {
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		await this.php.processPhpFiles(
-			pluginContext,
-			phpFiles,
-			shouldMinify,
-			this.emitter
-		);
+		await this.php.processPhpFiles(pluginContext, phpFiles, shouldMinify);
 	}
 
 	/**
@@ -161,8 +153,7 @@ export class BlockHandler {
 			pluginContext,
 			phpPath,
 			outputFileName,
-			shouldMinify,
-			this.emitter
+			shouldMinify
 		);
 	}
 

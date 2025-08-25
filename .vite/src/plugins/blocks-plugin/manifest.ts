@@ -10,8 +10,7 @@ import type { BlockInfo } from '../../common/types/wordpress.js';
  */
 export async function generateBlockManifest(
 	this: any,
-	blocks: BlockInfo[],
-	fileEmitter?: FileEmitter
+	blocks: BlockInfo[]
 ): Promise<void> {
 	if (blocks.length === 0) {
 		console.log('No blocks found. Skipping block manifest generation...');
@@ -29,30 +28,12 @@ export async function generateBlockManifest(
 	// Generate PHP content
 	const phpContent = generatePhpArrayContent(blocksRecord);
 
-	// Use the provided FileEmitter instance if available
-	if (fileEmitter) {
-		await fileEmitter.emitFile(this, {
-			type: 'asset',
-			fileName,
-			source: phpContent,
-		});
-	} else {
-		// Only use standard emitFile in build mode
-		const isBuildCommand = process.argv.includes('build');
-		if (isBuildCommand) {
-			this.emitFile({
-				type: 'asset',
-				fileName,
-				source: phpContent,
-			});
-		} else {
-			// In development mode, create a temporary FileEmitter
-			// This shouldn't happen if the function is called correctly
-			console.warn(
-				'generateBlockManifest called without fileEmitter in dev mode, skipping file emission'
-			);
-		}
-	}
+	// Always use FileEmitter.safeEmitFile which handles both build and dev modes properly
+	await FileEmitter.safeEmitFile(this, {
+		type: 'asset',
+		fileName,
+		source: phpContent,
+	});
 
 	console.log(`✓ Generated ${fileName} with ${blocks.length} blocks`);
 }
