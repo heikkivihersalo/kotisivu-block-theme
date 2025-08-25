@@ -5,5 +5,5 @@
  */
 
 export { CssProcessor } from './CssProcessor.ts';
-export { processScript, processScripts } from './scriptProcessor.ts';
+export { ScriptProcessor } from './ScriptProcessor.ts';
 export { processPhp, processPhpFiles } from './phpProcessor.ts';
