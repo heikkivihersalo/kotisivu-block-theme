@@ -13,7 +13,7 @@ import type { WordPressBlockJSON } from '../../common/types';
 /**
  * Internal dependencies
  */
-import { processScripts } from '../../common/processors/scriptProcessor.ts';
+import { processScripts } from '../../common/processors/index.ts';
 import { CssProcessor } from '../../common/processors/CssProcessor.ts';
 import {
 	extractScripts,
