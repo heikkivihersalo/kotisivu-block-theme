@@ -19,45 +19,26 @@ import { DevFileEmitter } from './DevFileEmitter';
  * @param code - The processed CSS code
  * @param map - The source map for the CSS code
  * @param outputFilename - The output filename for the CSS file
- * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
 export const emitCssAssets = async (
 	pluginContext: PluginContext,
 	code: Uint8Array,
 	map: Uint8Array | undefined,
-	outputFilename: string,
-	fileEmitter?: DevFileEmitter
+	outputFilename: string
 ) => {
 	// Emit the CSS file
-	if (fileEmitter) {
-		await fileEmitter.emitFile(pluginContext, {
-			type: 'asset',
-			fileName: outputFilename,
-			source: code,
-		} satisfies EmittedAsset);
+	await DevFileEmitter.safeEmitFile(pluginContext, {
+		type: 'asset',
+		fileName: outputFilename,
+		source: code,
+	} satisfies EmittedAsset);
 
-		// Emit the source map if available
-		if (map) {
-			await fileEmitter.emitFile(pluginContext, {
-				type: 'asset',
-				fileName: `${outputFilename}.map`,
-				source: map.toString(),
-			} satisfies EmittedAsset);
-		}
-	} else {
+	// Emit the source map if available
+	if (map) {
 		await DevFileEmitter.safeEmitFile(pluginContext, {
 			type: 'asset',
-			fileName: outputFilename,
-			source: code,
+			fileName: `${outputFilename}.map`,
+			source: map.toString(),
 		} satisfies EmittedAsset);
-
-		// Emit the source map if available
-		if (map) {
-			await DevFileEmitter.safeEmitFile(pluginContext, {
-				type: 'asset',
-				fileName: `${outputFilename}.map`,
-				source: map.toString(),
-			} satisfies EmittedAsset);
-		}
 	}
 };

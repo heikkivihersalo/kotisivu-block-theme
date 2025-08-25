@@ -92,8 +92,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 						block.path,
 						block.name,
 						block.outputPath,
-						sourcemap,
-						fileEmitter
+						sourcemap
 					);
 				}
 
@@ -119,8 +118,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 					block.path,
 					block.name,
 					block.outputPath,
-					sourcemap,
-					fileEmitter
+					sourcemap
 				);
 			}
 

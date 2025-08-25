@@ -20,31 +20,21 @@ import { DevFileEmitter } from './DevFileEmitter';
  * @param file - The output file
  * @param script - The script file name
  * @param config - The output configuration
- * @param fileEmitter - Optional DevFileEmitter instance for development mode
  */
 export const emitSourceMap = async (
 	pluginContext: PluginContext,
 	file: any,
 	script: string,
-	config: OutputConfig,
-	fileEmitter?: DevFileEmitter
+	config: OutputConfig
 ) => {
 	const sourceMapFileName = generateAssetFilename(
 		`${script}.map`,
 		config.outputPath
 	);
 
-	if (fileEmitter) {
-		await fileEmitter.emitFile(pluginContext, {
-			type: 'asset',
-			fileName: sourceMapFileName,
-			source: file.contents,
-		} satisfies EmittedAsset);
-	} else {
-		await DevFileEmitter.safeEmitFile(pluginContext, {
-			type: 'asset',
-			fileName: sourceMapFileName,
-			source: file.contents,
-		} satisfies EmittedAsset);
-	}
+	await DevFileEmitter.safeEmitFile(pluginContext, {
+		type: 'asset',
+		fileName: sourceMapFileName,
+		source: file.contents,
+	} satisfies EmittedAsset);
 };

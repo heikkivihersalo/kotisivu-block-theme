@@ -19,7 +19,6 @@ import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
 
 import type { OutputConfig } from '../types';
-import type { DevFileEmitter } from '../utils/vite/DevFileEmitter';
 
 /**
  * Process a single script file
@@ -27,15 +26,13 @@ import type { DevFileEmitter } from '../utils/vite/DevFileEmitter';
  * @param script - The script file name
  * @param config - The output configuration
  * @param sourcemap - The source map configuration
- * @param fileEmitter - Optional DevFileEmitter instance for development mode
  * @return {Promise<void>}
  */
 export const processScript = async (
 	pluginContext: PluginContext,
 	script: string,
 	config: OutputConfig,
-	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false,
-	fileEmitter?: DevFileEmitter
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<void> => {
 	const actualScriptPath = findActualFilePath(config.basePath, script);
 	if (!actualScriptPath) return;
@@ -67,21 +64,14 @@ export const processScript = async (
 	// Emit output files
 	for (const file of result.outputFiles) {
 		if (file.path.endsWith('.map')) {
-			await emitSourceMap(
-				pluginContext,
-				file,
-				script,
-				config,
-				fileEmitter
-			);
+			await emitSourceMap(pluginContext, file, script, config);
 		} else {
 			await emitScriptAssets(
 				pluginContext,
 				file,
 				script,
 				config,
-				wpImports,
-				fileEmitter
+				wpImports
 			);
 		}
 	}
@@ -93,23 +83,15 @@ export const processScript = async (
  * @param scripts - The script file names
  * @param config - The output configuration
  * @param sourcemap - The source map configuration
- * @param fileEmitter - Optional DevFileEmitter instance for development mode
  * @return {Promise<void>}
  */
 export const processScripts = async (
 	pluginContext: PluginContext,
 	scripts: string[],
 	config: OutputConfig,
-	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false,
-	fileEmitter?: DevFileEmitter
+	sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 ): Promise<void> => {
 	for (const script of scripts) {
-		await processScript(
-			pluginContext,
-			script,
-			config,
-			sourcemap,
-			fileEmitter
-		);
+		await processScript(pluginContext, script, config, sourcemap);
 	}
 };
