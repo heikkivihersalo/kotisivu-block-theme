@@ -1,7 +1,5 @@
 export * from './DevFileEmitter';
 export * from './emitPhpAsset';
-export * from './emitScriptAssets';
-export * from './emitSourceMap';
 export * from './registerBundledDependencies';
 export * from './safeEmitFile';
 export * from './shouldLoadInFooter';

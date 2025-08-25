@@ -9,21 +9,86 @@ import type { PluginContext } from 'rollup';
  */
 import {
 	findActualFilePath,
-	emitScriptAssets,
-	emitSourceMap,
 	registerBundledDependencies,
+	extractFilenameWithoutExtension,
+	generateAssetFilename,
+	generateFileHash,
+	generatePhpAssetFile,
 } from '../utils/index.ts';
 
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
 import { scssPlugin } from '../plugins/scssPlugin.ts';
 import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
+import { DevFileEmitter } from '../utils/vite/DevFileEmitter.ts';
 
-import type { OutputConfig } from '../types/index.ts';
+import type { OutputConfig, EmittedAsset } from '../types/index.ts';
 
 /**
  * Script Processor class for handling JavaScript file processing with ESBuild
  */
 export class ScriptProcessor {
+	/**
+	 * Emit JavaScript and PHP asset files
+	 * @param pluginContext - The Rollup plugin context
+	 * @param file - The output file
+	 * @param script - The script file name
+	 * @param config - The output configuration
+	 * @param wpImports - List of WordPress imports used in the script
+	 */
+	private async emitAssets(
+		pluginContext: PluginContext,
+		file: any,
+		script: string,
+		config: OutputConfig,
+		wpImports: string[]
+	): Promise<void> {
+		const hash = generateFileHash(file.text);
+		const filename = extractFilenameWithoutExtension(script);
+
+		// Create block-specific file paths for JavaScript files
+		const assetFileName = generateAssetFilename(
+			`${filename}.asset.php`,
+			config.outputPath
+		);
+		const scriptFileName = generateAssetFilename(script, config.outputPath);
+
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: assetFileName,
+			source: generatePhpAssetFile(wpImports, hash),
+		} satisfies EmittedAsset);
+
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: scriptFileName,
+			source: file.contents,
+		} satisfies EmittedAsset);
+	}
+
+	/**
+	 * Emit source map file
+	 * @param pluginContext - The Rollup plugin context
+	 * @param file - The output file
+	 * @param script - The script file name
+	 * @param config - The output configuration
+	 */
+	private async emitSourceMap(
+		pluginContext: PluginContext,
+		file: any,
+		script: string,
+		config: OutputConfig
+	): Promise<void> {
+		const sourceMapFileName = generateAssetFilename(
+			`${script}.map`,
+			config.outputPath
+		);
+
+		await DevFileEmitter.safeEmitFile(pluginContext, {
+			type: 'asset',
+			fileName: sourceMapFileName,
+			source: file.contents,
+		} satisfies EmittedAsset);
+	}
 	/**
 	 * Process ESBuild content and emit assets
 	 * @param pluginContext - The Rollup plugin context
@@ -45,9 +110,9 @@ export class ScriptProcessor {
 		// Emit output files
 		for (const file of result.outputFiles) {
 			if (file.path.endsWith('.map')) {
-				await emitSourceMap(pluginContext, file, script, config);
+				await this.emitSourceMap(pluginContext, file, script, config);
 			} else {
-				await emitScriptAssets(
+				await this.emitAssets(
 					pluginContext,
 					file,
 					script,
@@ -67,7 +132,7 @@ export class ScriptProcessor {
 	 * @param wpImports - List of WordPress imports used in the script
 	 * @returns ESBuild result
 	 */
-	private async buildScript(
+	private async build(
 		actualScriptPath: string,
 		script: string,
 		config: OutputConfig,
@@ -114,7 +179,7 @@ export class ScriptProcessor {
 
 		try {
 			// Build the script
-			const result = await this.buildScript(
+			const result = await this.build(
 				actualScriptPath,
 				script,
 				config,

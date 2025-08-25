@@ -13,8 +13,10 @@ import type { WordPressBlockJSON } from '../../common/types';
 /**
  * Internal dependencies
  */
-import { processScripts } from '../../common/processors/index.ts';
-import { CssProcessor } from '../../common/processors/CssProcessor.ts';
+import {
+	ScriptProcessor,
+	CssProcessor,
+} from '../../common/processors/index.ts';
 import {
 	extractScripts,
 	extractStyles,
@@ -58,8 +60,11 @@ export async function sideloadBlocks(
 	// Create CSS processor instance
 	const cssProcessor = new CssProcessor();
 
+	// Create script processor instance
+	const scriptProcessor = new ScriptProcessor();
+
 	// Process all scripts
-	await processScripts(this, scripts, config, sourcemap);
+	await scriptProcessor.processScripts(this, scripts, config, sourcemap);
 
 	// Process all styles from block.json
 	await cssProcessor.processStyles(this, styles, config);
