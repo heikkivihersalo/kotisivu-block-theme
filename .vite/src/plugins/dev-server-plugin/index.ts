@@ -19,7 +19,7 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 		base = '/',
 		srcDir = 'resources',
 		outDir = 'build',
-		css = 'scss',
+		css = 'css',
 		manifest = true,
 	} = config;
 
