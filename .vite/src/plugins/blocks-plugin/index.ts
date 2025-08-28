@@ -66,13 +66,8 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 		},
 
 		buildStart: async function (this: PluginContext) {
-			console.log('BlocksPlugin buildStart called');
-			console.log('NODE_ENV:', process.env.NODE_ENV);
-			console.log('process.argv:', process.argv);
-
 			// Discover blocks asynchronously
 			await discoverBlocks();
-			console.log('Discovered blocks count:', discoveredBlocks.length);
 
 			// Add watch files if specified
 			watch.forEach((file: string) => this.addWatchFile(file));
@@ -93,15 +88,11 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 		},
 
 		generateBundle: async function (this: PluginContext) {
-			console.log('Block static copy plugin - generateBundle called');
-
 			// Only copy static files in build mode
 			if (!isBuildMode()) {
 				console.log('Skipping static file copying in serve mode');
 				return;
 			}
-
-			console.log('Copying static files in generateBundle hook');
 
 			// Determine if we should minify based on environment
 			const shouldMinify = process.env.NODE_ENV === 'production';
@@ -109,19 +100,11 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			// Copy static files for each discovered block (only in build mode)
 			for (const block of discoveredBlocks) {
 				try {
-					console.log(
-						`[generateBundle] Processing static files for ${block.name}`
-					);
-
 					// Use BlockHandler to process all static files
 					await blockHandler.processBlockStaticFiles(
 						this,
 						block,
 						shouldMinify
-					);
-
-					console.log(
-						`[generateBundle] ✓ Processed static files for ${block.name}`
 					);
 				} catch (error) {
 					console.log(

@@ -26,34 +26,66 @@ import type { DiscoveredAssetInfo } from '../types/index.ts';
  */
 export class AssetHandler {
 	/**
+	 * Rollup plugin context
+	 * @private
+	 * @type {PluginContext}
+	 */
+	private context: PluginContext;
+
+	/**
+	 * Output directory for processed assets
+	 * @private
+	 * @type {string}
+	 */
+	private outputDirectory: string;
+
+	/**
+	 * Dependencies for the asset
+	 * @private
+	 * @type {string[]}
+	 */
+	private dependencies: string[];
+
+	/**
+	 * WordPress dependencies for the asset
+	 * @private
+	 * @type {string[]}
+	 */
+	private wpDependencies: string[];
+
+	/**
+	 * Constructor for AssetHandler
+	 */
+	constructor({
+		context,
+		outputDirectory,
+		dependencies,
+	}: {
+		context: PluginContext;
+		outputDirectory: string;
+		dependencies: string[];
+	}) {
+		this.context = context;
+		this.outputDirectory = outputDirectory;
+		this.dependencies = dependencies;
+		this.wpDependencies = [];
+	}
+
+	/**
 	 * Process a single asset file
-	 * @param pluginContext - The Rollup plugin context
 	 * @param assetInfo - Information about the asset to process
-	 * @param outputDirectory - The output directory
-	 * @param dependencies - Additional dependencies to include
 	 * @param sourcemap - The source map configuration
-	 * @return {Promise<{jsContent: string, cssContent: string, jsSourceMapFile?: any, allDependencies: string[], hash: string}>}
+	 * @return {Promise<void>}
 	 */
 	async processAsset(
-		pluginContext: PluginContext,
 		assetInfo: DiscoveredAssetInfo,
-		outputDirectory: string,
-		dependencies: string[] = [],
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
-	): Promise<{
-		jsContent: string;
-		cssContent: string;
-		jsSourceMapFile?: any;
-		allDependencies: string[];
-		hash: string;
-		phpContent: string;
-	}> {
-		pluginContext.addWatchFile(assetInfo.sourcePath);
-		const wpImports: string[] = [];
+	): Promise<void> {
+		this.context.addWatchFile(assetInfo.sourcePath);
 
 		const result = await esBuild({
 			entryPoints: [assetInfo.sourcePath],
-			outdir: outputDirectory,
+			outdir: this.outputDirectory,
 			platform: ESBUILD_CONFIG.PLATFORM,
 			bundle: true,
 			write: false,
@@ -65,60 +97,56 @@ export class AssetHandler {
 			jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
 			jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
 			minify: process.env.NODE_ENV === 'production',
-			plugins: [scssPlugin, ReactShimPlugin(wpImports)],
+			plugins: [scssPlugin, ReactShimPlugin(this.wpDependencies)],
 			outExtension: { '.js': '.js', '.css': '.css' },
 		});
 
 		const jsContent =
 			result.outputFiles?.find((f) => f.path.endsWith('.js'))?.text || '';
+
 		const cssContent =
 			result.outputFiles?.find((f) => f.path.endsWith('.css'))?.text ||
 			'';
+
 		const jsSourceMapFile = result.outputFiles?.find((f) =>
 			f.path.endsWith('.js.map')
 		);
-		const hash = generateFileHash(jsContent);
 
-		const configDeps = dependencies.filter((dep) => dep.trim() !== '');
-		const allDependencies = [...configDeps, ...wpImports];
-		const phpContent = generatePhpAssetFile(allDependencies, hash);
+		const configDeps = this.dependencies.filter((dep) => dep.trim() !== '');
+		const phpContent = generatePhpAssetFile(
+			[...configDeps, ...this.wpDependencies],
+			generateFileHash(jsContent)
+		);
 
-		return {
-			jsContent,
-			cssContent,
-			jsSourceMapFile,
-			allDependencies,
-			hash,
-			phpContent,
-		};
+		await this.emitScriptAsset(assetInfo, jsContent, jsSourceMapFile);
+		await this.emitCssAsset(assetInfo, cssContent);
+		await this.emitPhpAsset(assetInfo, phpContent);
 	}
 
 	/**
 	 * Emit JavaScript file and source map
-	 * @param pluginContext - The Rollup plugin context
 	 * @param assetInfo - Information about the asset
 	 * @param jsContent - The JavaScript content
 	 * @param jsSourceMapFile - The source map file (if available)
 	 */
-	async emitJavaScriptAssets(
-		pluginContext: PluginContext,
+	async emitScriptAsset(
 		assetInfo: DiscoveredAssetInfo,
-		jsContent: string,
-		jsSourceMapFile?: any
+		content: string,
+		sourceMap?: any
 	): Promise<void> {
 		// Emit JavaScript file
-		await FileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(this.context, {
 			type: 'asset',
 			fileName: `${assetInfo.outputPath}.js`,
-			source: jsContent,
+			source: content,
 		});
 
 		// Emit source map if available
-		if (jsSourceMapFile) {
-			await FileEmitter.safeEmitFile(pluginContext, {
+		if (sourceMap) {
+			await FileEmitter.safeEmitFile(this.context, {
 				type: 'asset',
 				fileName: `${assetInfo.outputPath}.js.map`,
-				source: jsSourceMapFile.text,
+				source: sourceMap.text,
 			});
 		}
 	}
@@ -130,11 +158,10 @@ export class AssetHandler {
 	 * @param phpContent - The PHP content
 	 */
 	async emitPhpAsset(
-		pluginContext: PluginContext,
 		assetInfo: DiscoveredAssetInfo,
 		phpContent: string
 	): Promise<void> {
-		await FileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(this.context, {
 			type: 'asset',
 			fileName: `${assetInfo.outputPath}.asset.php`,
 			source: phpContent,
@@ -142,42 +169,25 @@ export class AssetHandler {
 	}
 
 	/**
-	 * Process CSS content with LightningCSS
-	 * @param cssContent - The CSS content to process
-	 * @param outputFilename - The output filename for the CSS file
-	 * @returns Processed CSS code and source map
-	 */
-	private processCssContent(cssContent: string, outputFilename: string) {
-		return transform({
-			filename: outputFilename,
-			code: Buffer.from(cssContent),
-			minify: true,
-			sourceMap: true,
-		});
-	}
-
-	/**
 	 * Emit CSS file and source map
-	 * @param pluginContext - The Rollup plugin context
 	 * @param assetInfo - Information about the asset
 	 * @param cssContent - The CSS content to process and emit
 	 */
-	async emitCssAssets(
-		pluginContext: PluginContext,
+	async emitCssAsset(
 		assetInfo: DiscoveredAssetInfo,
-		cssContent: string
+		content: string
 	): Promise<void> {
-		if (!cssContent.trim()) return;
+		if (!content.trim()) return;
 
 		try {
 			const styleFileName = `${assetInfo.outputPath}.css`;
 			const { code, map } = this.processCssContent(
-				cssContent,
+				content,
 				styleFileName
 			);
 
 			// Emit CSS file
-			await FileEmitter.safeEmitFile(pluginContext, {
+			await FileEmitter.safeEmitFile(this.context, {
 				type: 'asset',
 				fileName: styleFileName,
 				source: code.toString(),
@@ -185,7 +195,7 @@ export class AssetHandler {
 
 			// Emit CSS source map if available
 			if (map) {
-				await FileEmitter.safeEmitFile(pluginContext, {
+				await FileEmitter.safeEmitFile(this.context, {
 					type: 'asset',
 					fileName: `${styleFileName}.map`,
 					source: map.toString(),
@@ -197,5 +207,20 @@ export class AssetHandler {
 				error
 			);
 		}
+	}
+
+	/**
+	 * Process CSS content with LightningCSS
+	 * @param content - The CSS content to process
+	 * @param filename - The output filename for the CSS file
+	 * @returns Processed CSS code and source map
+	 */
+	private processCssContent(content: string, filename: string) {
+		return transform({
+			filename,
+			code: Buffer.from(content),
+			minify: true,
+			sourceMap: true,
+		});
 	}
 }

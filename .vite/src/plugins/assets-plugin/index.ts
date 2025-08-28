@@ -3,11 +3,14 @@
  */
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
+import { mkdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
 /**
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
+import { AssetHandler } from '../../common/handlers/index.ts';
 import { FileEmitter } from '../../common/utils/vite/FileEmitter.ts';
 import type {
 	DiscoveredAsset,
@@ -18,7 +21,6 @@ import type {
  * Internal dependencies
  */
 import { discoverAssetsWithMapping } from './discovery';
-import { processAssets } from './processor.ts';
 
 /**
  * Vite plugin for handling WordPress assets
@@ -64,13 +66,26 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 
 		buildStart: async function (this: PluginContext) {
 			// Process discovered assets only if any exist
-			if (discoveredAssets.length > 0) {
-				await processAssets(this, discoveredAssets, {
-					outputDirectory,
-					dependencies: allDependencies,
-					sourcemap,
-					fileEmitter,
-				});
+			if (discoveredAssets.length === 0) {
+				return;
+			}
+
+			// Create Asset handler instance
+			const assetHandler = new AssetHandler({
+				context: this,
+				outputDirectory,
+				dependencies: allDependencies,
+			});
+
+			for (const asset of discoveredAssets) {
+				try {
+					const jsOutputPath = resolve(`${asset.outputPath}.js`);
+					mkdirSync(dirname(jsOutputPath), { recursive: true });
+					await assetHandler.processAsset(asset, sourcemap);
+				} catch {
+					// Skip assets that can't be processed
+					continue;
+				}
 			}
 		},
 	};
