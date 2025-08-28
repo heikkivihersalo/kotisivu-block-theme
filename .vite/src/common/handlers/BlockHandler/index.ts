@@ -22,12 +22,18 @@ export class BlockHandler {
 	private css: CSS_Processor;
 	private js: JS_Processor;
 	private php: PHP_Processor;
+	private context: PluginContext;
 	private fileEmitter?: FileEmitter;
 
-	constructor(outputDirectory?: string) {
+	constructor({
+		context,
+		outputDirectory = '',
+	}: { context: PluginContext; outputDirectory?: string }) {
 		this.css = new CSS_Processor();
 		this.js = new JS_Processor();
 		this.php = new PHP_Processor();
+
+		this.context = context;
 
 		if (outputDirectory) {
 			this.fileEmitter = new FileEmitter(outputDirectory);
@@ -41,11 +47,10 @@ export class BlockHandler {
 	 * @param config - Output configuration
 	 */
 	async processStyleFiles(
-		pluginContext: PluginContext,
 		styles: string[],
 		config: OutputConfig
 	): Promise<void> {
-		await this.css.processStyles(pluginContext, styles, config);
+		await this.css.processStyles(this.context, styles, config);
 	}
 
 	/**
@@ -54,12 +59,8 @@ export class BlockHandler {
 	 * @param styleFile - Style file name
 	 * @param config - Output configuration
 	 */
-	async processStyle(
-		pluginContext: PluginContext,
-		styleFile: string,
-		config: OutputConfig
-	): Promise<void> {
-		await this.css.processStyle(pluginContext, styleFile, config);
+	async processStyle(styleFile: string, config: OutputConfig): Promise<void> {
+		await this.css.processStyle(this.context, styleFile, config);
 	}
 
 	/**
@@ -69,12 +70,11 @@ export class BlockHandler {
 	 * @param outputFilename - Output filename
 	 */
 	async processCssContent(
-		pluginContext: PluginContext,
 		cssContent: string,
 		outputFilename: string
 	): Promise<void> {
 		await this.css.processStringContent(
-			pluginContext,
+			this.context,
 			cssContent,
 			outputFilename
 		);
@@ -87,12 +87,11 @@ export class BlockHandler {
 	 * @param cssContent - CSS content to emit
 	 */
 	async processCssWithBasePath(
-		pluginContext: PluginContext,
 		baseOutputPath: string,
 		cssContent: string
 	): Promise<void> {
 		await this.css.processWithBasePath(
-			pluginContext,
+			this.context,
 			baseOutputPath,
 			cssContent
 		);
@@ -106,28 +105,25 @@ export class BlockHandler {
 	 * @param sourcemap - Source map configuration
 	 */
 	async processScriptFiles(
-		pluginContext: PluginContext,
 		scripts: string[],
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScripts(pluginContext, scripts, config, sourcemap);
+		await this.js.processScripts(this.context, scripts, config, sourcemap);
 	}
 
 	/**
 	 * Process a single JavaScript file
-	 * @param pluginContext - The Rollup plugin context
 	 * @param script - Script file name
 	 * @param config - Output configuration
 	 * @param sourcemap - Source map configuration
 	 */
 	async processScript(
-		pluginContext: PluginContext,
 		script: string,
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScript(pluginContext, script, config, sourcemap);
+		await this.js.processScript(this.context, script, config, sourcemap);
 	}
 
 	/**
@@ -137,28 +133,25 @@ export class BlockHandler {
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
 	async processPhpFiles(
-		pluginContext: PluginContext,
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		await this.php.processPhpFiles(pluginContext, phpFiles, shouldMinify);
+		await this.php.processPhpFiles(phpFiles, shouldMinify);
 	}
 
 	/**
 	 * Process a single PHP file
-	 * @param pluginContext - The Rollup plugin context
 	 * @param phpPath - Path to the PHP file
 	 * @param outputFileName - Output file name
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
 	async processPhp(
-		pluginContext: PluginContext,
 		phpPath: string,
 		outputFileName: string,
 		shouldMinify: boolean = true
 	): Promise<void> {
 		await this.php.processPhp(
-			pluginContext,
+			this.context,
 			phpPath,
 			outputFileName,
 			shouldMinify
@@ -167,13 +160,11 @@ export class BlockHandler {
 
 	/**
 	 * Process all block assets (CSS, JS, PHP) in one method
-	 * @param pluginContext - The Rollup plugin context
 	 * @param assets - Object containing all assets to process
 	 * @param config - Output configuration
 	 * @param options - Processing options
 	 */
 	async processBlockAssets(
-		pluginContext: PluginContext,
 		assets: {
 			styles?: string[];
 			scripts?: string[];
@@ -191,26 +182,17 @@ export class BlockHandler {
 		const promises: Promise<void>[] = [];
 
 		if (assets.styles?.length) {
-			promises.push(
-				this.processStyleFiles(pluginContext, assets.styles, config)
-			);
+			promises.push(this.processStyleFiles(assets.styles, config));
 		}
 
 		if (assets.scripts?.length) {
 			promises.push(
-				this.processScriptFiles(
-					pluginContext,
-					assets.scripts,
-					config,
-					sourcemap
-				)
+				this.processScriptFiles(assets.scripts, config, sourcemap)
 			);
 		}
 
 		if (assets.phpFiles?.length) {
-			promises.push(
-				this.processPhpFiles(pluginContext, assets.phpFiles, minifyPhp)
-			);
+			promises.push(this.processPhpFiles(assets.phpFiles, minifyPhp));
 		}
 
 		await Promise.all(promises);
@@ -218,13 +200,9 @@ export class BlockHandler {
 
 	/**
 	 * Process block.json file and emit it to the output directory
-	 * @param pluginContext - The Rollup plugin context
 	 * @param block - Block information containing path and output details
 	 */
-	async processBlockJson(
-		pluginContext: PluginContext,
-		block: BlockInfo
-	): Promise<void> {
+	async processBlockJson(block: BlockInfo): Promise<void> {
 		const destPath = block.outputPath || block.name;
 
 		try {
@@ -239,7 +217,7 @@ export class BlockHandler {
 				);
 			} else {
 				// Fallback to plugin context emitFile
-				pluginContext.emitFile({
+				this.context.emitFile({
 					type: 'asset',
 					fileName: `${destPath}/block.json`,
 					source: blockJsonContent,
@@ -261,7 +239,6 @@ export class BlockHandler {
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
 	async processBlockPhpFiles(
-		pluginContext: PluginContext,
 		block: BlockInfo,
 		shouldMinify: boolean = true
 	): Promise<void> {
@@ -277,11 +254,7 @@ export class BlockHandler {
 					outputPath: `${destPath}/${phpFile}`,
 				}));
 
-				await this.processPhpFiles(
-					pluginContext,
-					phpFileInfos,
-					shouldMinify
-				);
+				await this.processPhpFiles(phpFileInfos, shouldMinify);
 			}
 		} catch (error) {
 			console.error(
@@ -294,31 +267,27 @@ export class BlockHandler {
 
 	/**
 	 * Process all static files for a block (block.json and PHP files)
-	 * @param pluginContext - The Rollup plugin context
 	 * @param block - Block information containing path and output details
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
 	async processBlockStaticFiles(
-		pluginContext: PluginContext,
 		block: BlockInfo,
 		shouldMinify: boolean = true
 	): Promise<void> {
 		// Process block.json and PHP files in parallel
 		await Promise.all([
-			this.processBlockJson(pluginContext, block),
-			this.processBlockPhpFiles(pluginContext, block, shouldMinify),
+			this.processBlockJson(block),
+			this.processBlockPhpFiles(block, shouldMinify),
 		]);
 	}
 
 	/**
 	 * Process a complete block with all its assets
-	 * @param pluginContext - The Rollup plugin context
 	 * @param block - Block information
 	 * @param config - Output configuration
 	 * @param options - Processing options
 	 */
 	async processCompleteBlock(
-		pluginContext: PluginContext,
 		block: BlockInfo,
 		config: OutputConfig,
 		options: {
@@ -376,16 +345,14 @@ export class BlockHandler {
 		});
 
 		// Process block assets
-		await this.processBlockAssets(
-			pluginContext,
-			{ scripts, styles },
-			config,
-			{ sourcemap, minifyPhp }
-		);
+		await this.processBlockAssets({ scripts, styles }, config, {
+			sourcemap,
+			minifyPhp,
+		});
 
 		// Process static files if requested
 		if (processStaticFiles) {
-			await this.processBlockStaticFiles(pluginContext, block, minifyPhp);
+			await this.processBlockStaticFiles(block, minifyPhp);
 		}
 	}
 }
