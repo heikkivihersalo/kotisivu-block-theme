@@ -12,7 +12,6 @@ import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
 /**
  * Internal dependencies
  */
-import { sideloadBlocks } from './sideload.ts';
 import { discoverBlocksWithMappings } from './discovery.ts';
 
 /**
@@ -77,13 +76,7 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 
 			// Process discovered blocks for both dev and build modes
 			for (const block of discoveredBlocks) {
-				await sideloadBlocks.call(
-					this,
-					blockHandler,
-					block,
-					outputDirectory,
-					sourcemap
-				);
+				await blockHandler.sideload({ block, sourcemap });
 			}
 
 			// Generate block manifest

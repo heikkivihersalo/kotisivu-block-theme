@@ -3,13 +3,14 @@
  */
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { existsSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 
 /**
  * Internal dependencies
  */
 import { CSS_Processor, JS_Processor, PHP_Processor } from './utils';
-import { FileEmitter } from '../../utils';
+import { FileEmitter, generateOutputConfig } from '../../utils';
 import type { OutputConfig, BlockInfo } from '../../types';
 
 /**
@@ -23,21 +24,19 @@ export class BlockHandler {
 	private js: JS_Processor;
 	private php: PHP_Processor;
 	private context: PluginContext;
+	private outputDirectory: string;
 	private fileEmitter?: FileEmitter;
 
 	constructor({
 		context,
-		outputDirectory = '',
-	}: { context: PluginContext; outputDirectory?: string }) {
-		this.css = new CSS_Processor();
-		this.js = new JS_Processor();
-		this.php = new PHP_Processor();
-
+		outputDirectory,
+	}: { context: PluginContext; outputDirectory: string }) {
 		this.context = context;
-
-		if (outputDirectory) {
-			this.fileEmitter = new FileEmitter(outputDirectory);
-		}
+		this.css = new CSS_Processor({ context });
+		this.js = new JS_Processor({ context });
+		this.php = new PHP_Processor({ context });
+		this.outputDirectory = outputDirectory;
+		this.fileEmitter = new FileEmitter(outputDirectory);
 	}
 
 	/**
@@ -50,7 +49,7 @@ export class BlockHandler {
 		styles: string[],
 		config: OutputConfig
 	): Promise<void> {
-		await this.css.processStyles(this.context, styles, config);
+		await this.css.processStyles(styles, config);
 	}
 
 	/**
@@ -60,7 +59,7 @@ export class BlockHandler {
 	 * @param config - Output configuration
 	 */
 	async processStyle(styleFile: string, config: OutputConfig): Promise<void> {
-		await this.css.processStyle(this.context, styleFile, config);
+		await this.css.processStyle(styleFile, config);
 	}
 
 	/**
@@ -73,11 +72,7 @@ export class BlockHandler {
 		cssContent: string,
 		outputFilename: string
 	): Promise<void> {
-		await this.css.processStringContent(
-			this.context,
-			cssContent,
-			outputFilename
-		);
+		await this.css.processStringContent(cssContent, outputFilename);
 	}
 
 	/**
@@ -90,11 +85,7 @@ export class BlockHandler {
 		baseOutputPath: string,
 		cssContent: string
 	): Promise<void> {
-		await this.css.processWithBasePath(
-			this.context,
-			baseOutputPath,
-			cssContent
-		);
+		await this.css.processWithBasePath(baseOutputPath, cssContent);
 	}
 
 	/**
@@ -109,7 +100,7 @@ export class BlockHandler {
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScripts(this.context, scripts, config, sourcemap);
+		await this.js.processScripts(scripts, config, sourcemap);
 	}
 
 	/**
@@ -123,7 +114,7 @@ export class BlockHandler {
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScript(this.context, script, config, sourcemap);
+		await this.js.processScript(script, config, sourcemap);
 	}
 
 	/**
@@ -150,12 +141,7 @@ export class BlockHandler {
 		outputFileName: string,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		await this.php.processPhp(
-			this.context,
-			phpPath,
-			outputFileName,
-			shouldMinify
-		);
+		await this.php.processPhp(phpPath, outputFileName, shouldMinify);
 	}
 
 	/**
@@ -354,5 +340,61 @@ export class BlockHandler {
 		if (processStaticFiles) {
 			await this.processBlockStaticFiles(block, minifyPhp);
 		}
+	}
+
+	async sideload({
+		block,
+		sourcemap = false,
+	}: {
+		block: BlockInfo;
+		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
+	}): Promise<boolean> {
+		// Generate output configuration
+		const config = generateOutputConfig(
+			block.path,
+			block.name,
+			block.outputPath,
+			this.outputDirectory
+		);
+
+		// Process the complete block using the block handler
+		await this.processCompleteBlock(block, config, {
+			sourcemap,
+		});
+
+		// Handle WordPress convention CSS files with proper naming
+		// editor.css -> index.css (editor styles)
+		const editorCssPath = resolve(block.path, 'editor.css');
+		if (!existsSync(editorCssPath)) {
+			throw new Error(
+				`Required editor.css file not found at: ${editorCssPath}`
+			);
+		}
+
+		// Create a custom config for the editor CSS with WordPress naming convention
+		const editorConfig = {
+			...config,
+			outputPath: config.outputPath, // Will generate index.css automatically
+		};
+		await this.processStyle('editor.css', editorConfig);
+
+		// style.css -> style-index.css (frontend styles)
+		const styleCssPath = resolve(block.path, 'style.css');
+		if (!existsSync(styleCssPath)) {
+			throw new Error(
+				`Required style.css file not found at: ${styleCssPath}`
+			);
+		}
+
+		// Create a custom config for the style CSS with WordPress naming convention
+		const styleConfig = {
+			...config,
+			outputPath: config.outputPath, // Will need to handle style-index.css naming
+		};
+		// For now, use the existing handler - we may need to enhance it later
+		// to handle the style-index.css naming convention
+		await this.processStyle('style.css', styleConfig);
+
+		return true;
 	}
 }
