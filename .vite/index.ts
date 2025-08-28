@@ -10,7 +10,6 @@ import {
 	AssetsPlugin,
 	BlocksPlugin,
 	ConfigPlugin,
-	CorePlugin,
 	DevServerPlugin,
 	ManifestPlugin,
 	generatePlugins,
@@ -69,13 +68,6 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		sourcemap,
 	});
 
-	// Create the core plugin with discovered blocks
-	const corePlugin = CorePlugin({
-		dependencies,
-		// Pass discovered blocks from the blocks plugin API
-		discoveredBlocks: blocksPlugin.api?.getDiscoveredBlocks() || [],
-	});
-
 	// Create enhanced manifest plugin (leverages Vite 6 manifest improvements)
 	const manifestPlugin = ManifestPlugin({
 		outDir,
@@ -98,7 +90,6 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	// All plugins now support FileEmitter and can run in both dev and production
 	const plugins = [
 		configPlugin,
-		corePlugin,
 		blocksPlugin,
 		assetsPlugin,
 		manifestPlugin,
