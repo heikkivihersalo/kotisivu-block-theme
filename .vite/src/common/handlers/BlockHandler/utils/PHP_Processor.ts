@@ -18,18 +18,22 @@ import type { EmittedAsset } from '../../../types/index';
  * providing methods for reading, minifying, and emitting PHP files.
  */
 export class PHP_Processor {
+	private context: PluginContext;
+
+	constructor({ context }: { context: PluginContext }) {
+		this.context = context;
+	}
+
 	/**
 	 * Emit PHP file as asset
-	 * @param pluginContext - The Rollup plugin context
 	 * @param outputFileName - The output file name
 	 * @param content - The PHP content to emit
 	 */
 	private async emitAsset(
-		pluginContext: PluginContext,
 		outputFileName: string,
 		content: string
 	): Promise<void> {
-		await FileEmitter.safeEmitFile(pluginContext, {
+		await FileEmitter.safeEmitFile(this.context, {
 			type: 'asset',
 			fileName: outputFileName,
 			source: content,
@@ -44,13 +48,12 @@ export class PHP_Processor {
 	 * @param shouldMinify - Whether to minify the PHP content
 	 */
 	async processPhp(
-		pluginContext: PluginContext,
 		phpPath: string,
 		outputFileName: string,
 		shouldMinify: boolean = true
 	): Promise<void> {
 		try {
-			pluginContext.addWatchFile(phpPath);
+			this.context.addWatchFile(phpPath);
 
 			const phpContent = readFileSync(phpPath, 'utf-8');
 
@@ -58,11 +61,7 @@ export class PHP_Processor {
 				? minifyPhp(phpContent)
 				: phpContent;
 
-			await this.emitAsset(
-				pluginContext,
-				outputFileName,
-				processedContent
-			);
+			await this.emitAsset(outputFileName, processedContent);
 		} catch {
 			// Skip files that can't be processed
 		}
@@ -70,22 +69,15 @@ export class PHP_Processor {
 
 	/**
 	 * Process multiple PHP files
-	 * @param pluginContext - The Rollup plugin context
 	 * @param phpFiles - The PHP files to process
 	 * @param shouldMinify - Whether to minify the PHP content
 	 */
 	async processPhpFiles(
-		pluginContext: PluginContext,
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true
 	): Promise<void> {
 		for (const { sourcePath, outputPath } of phpFiles) {
-			await this.processPhp(
-				pluginContext,
-				sourcePath,
-				outputPath,
-				shouldMinify
-			);
+			await this.processPhp(sourcePath, outputPath, shouldMinify);
 		}
 	}
 }

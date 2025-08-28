@@ -23,8 +23,10 @@ import { FileEmitter } from '../../../utils/vite/FileEmitter';
  * handling CSS transformations with proper source maps.
  */
 export class CSS_Processor {
-	constructor() {
-		// No longer need to store fileEmitter
+	private context: PluginContext;
+
+	constructor({ context }: { context: PluginContext }) {
+		this.context = context;
 	}
 
 	/**
@@ -44,13 +46,11 @@ export class CSS_Processor {
 
 	/**
 	 * Emit CSS and source map assets
-	 * @param pluginContext - The Rollup plugin context
 	 * @param code - The processed CSS code
 	 * @param map - The source map for the CSS code
 	 * @param outputFilename - The output filename for the CSS file
 	 */
 	private async emitAssets(
-		pluginContext: PluginContext,
 		code: Uint8Array,
 		map: Uint8Array | undefined,
 		outputFilename: string
@@ -62,7 +62,7 @@ export class CSS_Processor {
 			source: code,
 		};
 
-		await FileEmitter.safeEmitFile(pluginContext, cssAsset);
+		await FileEmitter.safeEmitFile(this.context, cssAsset);
 
 		// Emit the source map if available
 		if (map) {
@@ -72,7 +72,7 @@ export class CSS_Processor {
 				source: map.toString(),
 			};
 
-			await FileEmitter.safeEmitFile(pluginContext, mapAsset);
+			await FileEmitter.safeEmitFile(this.context, mapAsset);
 		}
 	}
 
@@ -83,7 +83,6 @@ export class CSS_Processor {
 	 * @param outputFilename - The output filename for the CSS file
 	 */
 	async processStringContent(
-		pluginContext: PluginContext,
 		cssContent: string,
 		outputFilename: string
 	): Promise<void> {
@@ -92,12 +91,7 @@ export class CSS_Processor {
 				cssContent,
 				outputFilename
 			);
-			await this.emitAssets(
-				pluginContext,
-				code,
-				map || undefined,
-				outputFilename
-			);
+			await this.emitAssets(code, map || undefined, outputFilename);
 		} catch (error) {
 			// Skip styles that can't be processed
 			console.warn(
@@ -109,28 +103,19 @@ export class CSS_Processor {
 
 	/**
 	 * Process a single style file
-	 * @param pluginContext - The Rollup plugin context
 	 * @param styleFile - The original style file name
 	 * @param config - The output configuration
 	 */
-	async processStyle(
-		pluginContext: PluginContext,
-		styleFile: string,
-		config: OutputConfig
-	): Promise<void> {
+	async processStyle(styleFile: string, config: OutputConfig): Promise<void> {
 		const actualStylePath = findActualStylePath(config.basePath, styleFile);
 		if (!actualStylePath) return;
 
-		pluginContext.addWatchFile(actualStylePath);
+		this.context.addWatchFile(actualStylePath);
 
 		try {
 			const cssContent = readStylesheet(actualStylePath);
 			const outputFilename = determineOutputFilename(styleFile, config);
-			await this.processStringContent(
-				pluginContext,
-				cssContent,
-				outputFilename
-			);
+			await this.processStringContent(cssContent, outputFilename);
 		} catch (error) {
 			// Skip styles that can't be processed
 			console.warn(`Failed to process style file ${styleFile}:`, error);
@@ -139,36 +124,25 @@ export class CSS_Processor {
 
 	/**
 	 * Process all styles for a block
-	 * @param pluginContext - The Rollup plugin context
 	 * @param styles - The original style file names
 	 * @param config - The output configuration
 	 */
-	async processStyles(
-		pluginContext: PluginContext,
-		styles: string[],
-		config: OutputConfig
-	): Promise<void> {
+	async processStyles(styles: string[], config: OutputConfig): Promise<void> {
 		for (const styleFile of styles) {
-			await this.processStyle(pluginContext, styleFile, config);
+			await this.processStyle(styleFile, config);
 		}
 	}
 
 	/**
 	 * Process CSS with base output path (for compatibility with emitCss function)
-	 * @param pluginContext - The Rollup plugin context
 	 * @param baseOutputPath - Base output path for the CSS file
 	 * @param cssContent - CSS content to emit
 	 */
 	async processWithBasePath(
-		pluginContext: PluginContext,
 		baseOutputPath: string,
 		cssContent: string
 	): Promise<void> {
 		const styleFileName = `${baseOutputPath}.css`;
-		await this.processStringContent(
-			pluginContext,
-			cssContent,
-			styleFileName
-		);
+		await this.processStringContent(cssContent, styleFileName);
 	}
 }
