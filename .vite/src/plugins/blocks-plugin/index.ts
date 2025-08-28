@@ -60,12 +60,15 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 				outputDirectory =
 					typeof defaultDir === 'string' ? defaultDir : 'dist';
 			}
-
-			// Initialize block handler with output directory
-			blockHandler = new BlockHandler(outputDirectory);
 		},
 
 		buildStart: async function (this: PluginContext) {
+			// Initialize block handler with output directory and full context
+			blockHandler = new BlockHandler({
+				context: this,
+				outputDirectory,
+			});
+
 			// Discover blocks asynchronously
 			await discoverBlocks();
 
@@ -102,7 +105,6 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 				try {
 					// Use BlockHandler to process all static files
 					await blockHandler.processBlockStaticFiles(
-						this,
 						block,
 						shouldMinify
 					);
