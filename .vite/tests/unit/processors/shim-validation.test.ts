@@ -38,14 +38,14 @@ describe('Processor Shim Implementation Validation', () => {
 			'plugins: [scssPlugin, ReactShimPlugin(wpImports)]'
 		);
 
-		// Check asset processor which delegates to AssetHandler
-		const assetProcessorPath = join(
+		// Check asset plugin which delegates to AssetHandler
+		const assetPluginPath = join(
 			process.cwd(),
-			'.vite/src/plugins/assets-plugin/processor.ts'
+			'.vite/src/plugins/assets-plugin/index.ts'
 		);
-		const assetContent = readFileSync(assetProcessorPath, 'utf-8');
+		const assetContent = readFileSync(assetPluginPath, 'utf-8');
 
-		// Asset processor uses AssetHandler which has ReactShimPlugin
+		// Asset plugin uses AssetHandler which has ReactShimPlugin
 		expect(assetContent).toContain('AssetHandler');
 
 		// Verify AssetHandler also uses ReactShimPlugin
@@ -55,7 +55,9 @@ describe('Processor Shim Implementation Validation', () => {
 		);
 		const handlerContent = readFileSync(assetHandlerPath, 'utf-8');
 		expect(handlerContent).toContain('ReactShimPlugin');
-		expect(handlerContent).toContain('ReactShimPlugin(wpImports)');
+		expect(handlerContent).toContain(
+			'ReactShimPlugin(this.wpDependencies)'
+		);
 	});
 
 	/**
@@ -133,14 +135,14 @@ describe('Processor Shim Implementation Validation', () => {
 		expect(jsContent).toContain('const wpImports: string[] = []');
 		expect(jsContent).toContain('ReactShimPlugin(wpImports)');
 
-		// Check asset processor which delegates to AssetHandler
-		const assetProcessorPath = join(
+		// Check asset plugin which delegates to AssetHandler
+		const assetPluginPath = join(
 			process.cwd(),
-			'.vite/src/plugins/assets-plugin/processor.ts'
+			'.vite/src/plugins/assets-plugin/index.ts'
 		);
-		const assetContent = readFileSync(assetProcessorPath, 'utf-8');
+		const assetContent = readFileSync(assetPluginPath, 'utf-8');
 
-		// Asset processor uses AssetHandler which handles wpImports
+		// Asset plugin uses AssetHandler which handles wpImports
 		expect(assetContent).toContain('AssetHandler');
 		expect(assetContent).toContain('processAsset');
 	});
@@ -303,7 +305,7 @@ describe('Processor Shim Implementation Validation', () => {
 	 */
 	test('asset processors contain specific implementation details', () => {
 		const assetProcessorPaths = [
-			'.vite/src/plugins/assets-plugin/processor.ts',
+			'.vite/src/plugins/assets-plugin/index.ts',
 		];
 
 		for (const processorFile of assetProcessorPaths) {
@@ -316,22 +318,12 @@ describe('Processor Shim Implementation Validation', () => {
 			// Should handle asset processing through handler
 			expect(content).toContain('processAsset');
 
-			// Should handle asset emission - either through fileEmitter or FileEmitter
-			const hasFileEmitterUsage = content.includes(
-				'fileEmitter.emitFile'
-			);
-			const hasDevFileEmitterUsage = content.includes(
-				'FileEmitter.safeEmitFile'
-			);
-			const hasAssetHandlerEmission = content.includes(
-				'emitJavaScriptAssets'
-			);
+			// Should have FileEmitter for handling file emission
+			const hasFileEmitterUsage = content.includes('FileEmitter');
+			const hasFileEmitterInit = content.includes('new FileEmitter');
 
-			expect(
-				hasFileEmitterUsage ||
-					hasDevFileEmitterUsage ||
-					hasAssetHandlerEmission
-			).toBe(true);
+			expect(hasFileEmitterUsage).toBe(true);
+			expect(hasFileEmitterInit).toBe(true);
 		}
 	});
 });
