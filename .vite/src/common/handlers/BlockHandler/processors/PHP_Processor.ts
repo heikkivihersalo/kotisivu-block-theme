@@ -18,7 +18,7 @@ import type { EmittedAsset } from '../../../types/index';
  * providing methods for reading, minifying, and emitting PHP files.
  */
 export class PHP_Processor {
-	private context: PluginContext;
+	public context: PluginContext;
 
 	constructor({ context }: { context: PluginContext }) {
 		this.context = context;

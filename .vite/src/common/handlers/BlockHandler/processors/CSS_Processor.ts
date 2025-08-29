@@ -23,7 +23,7 @@ import { FileEmitter } from '../../../utils/vite/FileEmitter';
  * handling CSS transformations with proper source maps.
  */
 export class CSS_Processor {
-	private context: PluginContext;
+	public context: PluginContext;
 
 	constructor({ context }: { context: PluginContext }) {
 		this.context = context;

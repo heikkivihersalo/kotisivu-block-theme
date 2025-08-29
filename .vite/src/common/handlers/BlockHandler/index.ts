@@ -1,24 +1,15 @@
 /**
  * External dependencies
  */
-import { readFile, readdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
-import { existsSync, statSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 import type { ResolvedConfig } from 'vite';
 
 /**
  * Internal dependencies
  */
-import { CSS_Processor, JS_Processor, PHP_Processor } from './utils';
-import {
-	FileEmitter,
-	generateOutputConfig,
-	generatePhpArrayContent,
-	generateSourcePath,
-	findBlocksRecursively,
-	normalizePath,
-} from '../../utils';
+import { CSS_Processor, JS_Processor, PHP_Processor } from './processors';
+import { BlockDiscovery, AssetProcessor, FileManager } from './services';
+import { normalizePath } from '../../utils';
 import type {
 	OutputConfig,
 	BlockInfo,
@@ -45,15 +36,23 @@ import type {
 export class BlockHandler {
 	static manifestName = 'block-manifest.php';
 
-	private css: CSS_Processor;
-	private js: JS_Processor;
-	private php: PHP_Processor;
+	// Shared processors (single instances used by all services)
+	private processors: {
+		css: CSS_Processor;
+		js: JS_Processor;
+		php: PHP_Processor;
+	};
+
+	// New service-based architecture
+	private blockDiscovery!: BlockDiscovery;
+	private assetProcessor!: AssetProcessor;
+	private fileManager!: FileManager;
+
+	// Core dependencies
 	private context: PluginContext;
 	private outputDirectory: string;
-	private fileEmitter: FileEmitter;
 	private config: ViteBlocksPluginConfig;
 	private pwd: string;
-	private discoveredBlocks: BlockInfo[] = [];
 
 	constructor({
 		context,
@@ -65,13 +64,40 @@ export class BlockHandler {
 		config: ViteBlocksPluginConfig;
 	}) {
 		this.context = context;
-		this.css = new CSS_Processor({ context });
-		this.js = new JS_Processor({ context });
-		this.php = new PHP_Processor({ context });
 		this.outputDirectory = outputDirectory;
-		this.fileEmitter = new FileEmitter(outputDirectory);
 		this.config = config;
 		this.pwd = process.env.PWD || process.cwd();
+
+		// Initialize shared processors (single source of truth)
+		this.processors = {
+			css: new CSS_Processor({ context }),
+			js: new JS_Processor({ context }),
+			php: new PHP_Processor({ context }),
+		};
+
+		// Initialize services with shared processors
+		this.initializeServices();
+	}
+
+	/**
+	 * Initialize services with dependency injection
+	 */
+	private initializeServices(): void {
+		const serviceDependencies = {
+			context: this.context,
+			outputDirectory: this.outputDirectory,
+			config: this.config,
+			pwd: this.pwd,
+		};
+
+		this.blockDiscovery = new BlockDiscovery(serviceDependencies);
+		this.assetProcessor = new AssetProcessor(
+			serviceDependencies,
+			this.processors
+		);
+		this.fileManager = new FileManager(serviceDependencies, {
+			php: this.processors.php,
+		});
 	}
 
 	/**
@@ -79,11 +105,7 @@ export class BlockHandler {
 	 * @throws Error if configuration is invalid
 	 */
 	private validateConfig(): void {
-		const { blocksDir } = this.config;
-
-		if (!blocksDir || Object.keys(blocksDir).length === 0) {
-			throw new Error('blocksDir is required for BlockHandler');
-		}
+		this.blockDiscovery.validateConfig();
 	}
 
 	/**
@@ -94,62 +116,17 @@ export class BlockHandler {
 	}
 
 	/**
-	 * Discover block.json files with custom path mappings
-	 */
-	private discoverBlocksWithMappings(): BlockInfo[] {
-		const { blocksDir } = this.config;
-		const blocks: BlockInfo[] = [];
-
-		for (const [outputPath, sourcePath] of Object.entries(blocksDir)) {
-			const fullSourcePath = generateSourcePath(sourcePath, this.pwd);
-			if (!fullSourcePath) continue;
-
-			try {
-				const stat = statSync(fullSourcePath);
-				if (!stat.isDirectory()) continue;
-
-				const foundBlocks = findBlocksRecursively(
-					fullSourcePath,
-					this.pwd,
-					0
-				);
-
-				// Add custom output path to each discovered block
-				foundBlocks.forEach((block) => {
-					blocks.push({
-						...block,
-						outputPath: `${outputPath.replace(/\/$/, '')}/${block.name}`,
-					});
-				});
-			} catch {
-				// Silently skip inaccessible paths - this is expected during development
-				continue;
-			}
-		}
-
-		return blocks;
-	}
-
-	/**
 	 * Discover blocks and validate discovery results
 	 */
 	async discoverBlocks(): Promise<BlockInfo[]> {
-		this.discoveredBlocks = this.discoverBlocksWithMappings();
-
-		if (this.discoveredBlocks.length === 0) {
-			throw new Error(
-				'No blocks discovered. Check your blocksDir configuration'
-			);
-		}
-
-		return this.discoveredBlocks;
+		return await this.blockDiscovery.discoverBlocks();
 	}
 
 	/**
 	 * Get discovered blocks
 	 */
 	getDiscoveredBlocks(): BlockInfo[] {
-		return this.discoveredBlocks;
+		return this.blockDiscovery.getDiscoveredBlocks();
 	}
 
 	/**
@@ -166,8 +143,8 @@ export class BlockHandler {
 				typeof defaultDir === 'string' ? defaultDir : 'dist';
 		}
 
-		// Update file emitter with new output directory
-		this.fileEmitter = new FileEmitter(this.outputDirectory);
+		// Re-initialize services with new output directory
+		this.initializeServices();
 	}
 
 	/**
@@ -191,13 +168,15 @@ export class BlockHandler {
 	async processAllBlocks(
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
+		const discoveredBlocks = this.getDiscoveredBlocks();
+
 		// Process discovered blocks for both dev and build modes
-		for (const block of this.discoveredBlocks) {
+		for (const block of discoveredBlocks) {
 			await this.sideload({ block, sourcemap });
 		}
 
 		// Generate block manifest
-		await this.generateManifest(this.discoveredBlocks);
+		await this.generateManifest(discoveredBlocks);
 	}
 
 	/**
@@ -212,12 +191,13 @@ export class BlockHandler {
 
 		// Determine if we should minify based on environment
 		const shouldMinify = process.env.NODE_ENV === 'production';
+		const discoveredBlocks = this.getDiscoveredBlocks();
 
 		// Copy static files for each discovered block (only in build mode)
-		for (const block of this.discoveredBlocks) {
+		for (const block of discoveredBlocks) {
 			try {
-				// Use BlockHandler to process all static files
-				await this.processBlockStaticFiles(block, shouldMinify);
+				// Use FileManager to process all static files
+				await this.fileManager.copyStaticFiles(block, shouldMinify);
 			} catch (error) {
 				console.log(
 					`[copyStaticFilesForAllBlocks] Failed to copy static files for ${block.name}:`,
@@ -231,7 +211,6 @@ export class BlockHandler {
 
 	/**
 	 * Process CSS files for a block
-	 * @param pluginContext - The Rollup plugin context
 	 * @param styles - Array of style file names
 	 * @param config - Output configuration
 	 */
@@ -239,22 +218,20 @@ export class BlockHandler {
 		styles: string[],
 		config: OutputConfig
 	): Promise<void> {
-		await this.css.processStyles(styles, config);
+		await this.processors.css.processStyles(styles, config);
 	}
 
 	/**
 	 * Process a single CSS file
-	 * @param pluginContext - The Rollup plugin context
 	 * @param styleFile - Style file name
 	 * @param config - Output configuration
 	 */
 	async processStyle(styleFile: string, config: OutputConfig): Promise<void> {
-		await this.css.processStyle(styleFile, config);
+		await this.processors.css.processStyle(styleFile, config);
 	}
 
 	/**
 	 * Process CSS from string content
-	 * @param pluginContext - The Rollup plugin context
 	 * @param cssContent - CSS content to process
 	 * @param outputFilename - Output filename
 	 */
@@ -262,12 +239,14 @@ export class BlockHandler {
 		cssContent: string,
 		outputFilename: string
 	): Promise<void> {
-		await this.css.processStringContent(cssContent, outputFilename);
+		await this.processors.css.processStringContent(
+			cssContent,
+			outputFilename
+		);
 	}
 
 	/**
 	 * Process CSS with base output path
-	 * @param pluginContext - The Rollup plugin context
 	 * @param baseOutputPath - Base output path for the CSS file
 	 * @param cssContent - CSS content to emit
 	 */
@@ -275,12 +254,14 @@ export class BlockHandler {
 		baseOutputPath: string,
 		cssContent: string
 	): Promise<void> {
-		await this.css.processWithBasePath(baseOutputPath, cssContent);
+		await this.processors.css.processWithBasePath(
+			baseOutputPath,
+			cssContent
+		);
 	}
 
 	/**
 	 * Process JavaScript files for a block
-	 * @param pluginContext - The Rollup plugin context
 	 * @param scripts - Array of script file names
 	 * @param config - Output configuration
 	 * @param sourcemap - Source map configuration
@@ -290,7 +271,7 @@ export class BlockHandler {
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScripts(scripts, config, sourcemap);
+		await this.processors.js.processScripts(scripts, config, sourcemap);
 	}
 
 	/**
@@ -304,12 +285,11 @@ export class BlockHandler {
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		await this.js.processScript(script, config, sourcemap);
+		await this.processors.js.processScript(script, config, sourcemap);
 	}
 
 	/**
 	 * Process PHP files for a block
-	 * @param pluginContext - The Rollup plugin context
 	 * @param phpFiles - Array of PHP file information
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
@@ -317,7 +297,7 @@ export class BlockHandler {
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		await this.php.processPhpFiles(phpFiles, shouldMinify);
+		await this.processors.php.processPhpFiles(phpFiles, shouldMinify);
 	}
 
 	/**
@@ -331,7 +311,11 @@ export class BlockHandler {
 		outputFileName: string,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		await this.php.processPhp(phpPath, outputFileName, shouldMinify);
+		await this.processors.php.processPhp(
+			phpPath,
+			outputFileName,
+			shouldMinify
+		);
 	}
 
 	/**
@@ -379,29 +363,11 @@ export class BlockHandler {
 	 * @param block - Block information containing path and output details
 	 */
 	async processBlockJson(block: BlockInfo): Promise<void> {
-		const destPath = block.outputPath || block.name;
-
-		try {
-			const blockJsonSrc = resolve(block.path, 'block.json');
-			const blockJsonContent = await readFile(blockJsonSrc, 'utf-8');
-
-			// Use FileEmitter for static files like block.json
-			await this.fileEmitter.writeStaticFile(
-				`${destPath}/block.json`,
-				blockJsonContent
-			);
-		} catch (error) {
-			console.error(
-				`Failed to process block.json for ${block.name}:`,
-				error
-			);
-			throw error;
-		}
+		await this.fileManager.processBlockJson(block);
 	}
 
 	/**
 	 * Process PHP files for a block
-	 * @param pluginContext - The Rollup plugin context
 	 * @param block - Block information containing path and output details
 	 * @param shouldMinify - Whether to minify PHP content
 	 */
@@ -409,29 +375,7 @@ export class BlockHandler {
 		block: BlockInfo,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		const destPath = block.outputPath || block.name;
-
-		try {
-			const files = await readdir(block.path);
-			const phpFiles = files.filter((file) => file.endsWith('.php'));
-
-			if (phpFiles.length === 0) {
-				return;
-			}
-
-			const phpFileInfos = phpFiles.map((phpFile) => ({
-				sourcePath: resolve(block.path, phpFile),
-				outputPath: `${destPath}/${phpFile}`,
-			}));
-
-			await this.processPhpFiles(phpFileInfos, shouldMinify);
-		} catch (error) {
-			console.error(
-				`Failed to process PHP files for ${block.name}:`,
-				error
-			);
-			throw error;
-		}
+		await this.fileManager.processBlockPhpFiles(block, shouldMinify);
 	}
 
 	/**
@@ -443,11 +387,7 @@ export class BlockHandler {
 		block: BlockInfo,
 		shouldMinify: boolean = true
 	): Promise<void> {
-		// Process block.json and PHP files in parallel
-		await Promise.all([
-			this.processBlockJson(block),
-			this.processBlockPhpFiles(block, shouldMinify),
-		]);
+		await this.fileManager.copyStaticFiles(block, shouldMinify);
 	}
 
 	/**
@@ -465,63 +405,12 @@ export class BlockHandler {
 			processStaticFiles?: boolean;
 		} = {}
 	): Promise<void> {
-		const {
-			sourcemap = false,
-			minifyPhp = true,
-			processStaticFiles = false,
-		} = options;
-
-		// Extract scripts and styles from block.json
-		const scripts: string[] = [];
-		const styles: string[] = [];
-
-		// Extract from various script properties with proper file: prefix handling
-		['script', 'editorScript', 'viewScript'].forEach((prop) => {
-			const scriptValue = block.blockJson[prop];
-			if (typeof scriptValue === 'string') {
-				if (scriptValue.startsWith('file:')) {
-					scripts.push(scriptValue.replace('file:./', ''));
-				}
-			} else if (Array.isArray(scriptValue)) {
-				scriptValue.forEach((script) => {
-					if (
-						typeof script === 'string' &&
-						script.startsWith('file:')
-					) {
-						scripts.push(script.replace('file:./', ''));
-					}
-				});
-			}
-		});
-
-		// Extract from various style properties with proper file: prefix handling
-		['style', 'editorStyle', 'viewStyle'].forEach((prop) => {
-			const styleValue = block.blockJson[prop];
-			if (typeof styleValue === 'string') {
-				if (styleValue.startsWith('file:')) {
-					styles.push(styleValue.replace('file:./', ''));
-				}
-			} else if (Array.isArray(styleValue)) {
-				styleValue.forEach((style) => {
-					if (
-						typeof style === 'string' &&
-						style.startsWith('file:')
-					) {
-						styles.push(style.replace('file:./', ''));
-					}
-				});
-			}
-		});
-
-		// Process block assets
-		await this.processBlockAssets({ scripts, styles }, config, {
-			sourcemap,
-			minifyPhp,
-		});
+		// Delegate to the AssetProcessor service
+		await this.assetProcessor.processCompleteBlock(block, config, options);
 
 		// Process static files if requested
-		if (processStaticFiles) {
-			await this.processBlockStaticFiles(block, minifyPhp);
+		if (options.processStaticFiles) {
+			await this.fileManager.copyStaticFiles(block, options.minifyPhp);
 		}
 	}
 
@@ -532,78 +421,30 @@ export class BlockHandler {
 		block: BlockInfo;
 		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 	}): Promise<boolean> {
-		// Generate output configuration
-		const config = generateOutputConfig(
-			block.path,
-			block.name,
-			block.outputPath,
-			this.outputDirectory
-		);
-
-		// Process the complete block using the block handler
-		await this.processCompleteBlock(block, config, {
+		// Use the new AssetProcessor for streamlined processing
+		await this.assetProcessor.processBlockWithAutoConfig(block, {
 			sourcemap,
 		});
-
-		// Handle WordPress convention CSS files with proper naming
-		// editor.css -> index.css (editor styles)
-		const editorCssPath = resolve(block.path, 'editor.css');
-		if (!existsSync(editorCssPath)) {
-			throw new Error(
-				`Required editor.css file not found at: ${editorCssPath}`
-			);
-		}
-
-		// Create a custom config for the editor CSS with WordPress naming convention
-		const editorConfig = {
-			...config,
-			outputPath: config.outputPath, // Will generate index.css automatically
-		};
-		await this.processStyle('editor.css', editorConfig);
-
-		// style.css -> style-index.css (frontend styles)
-		const styleCssPath = resolve(block.path, 'style.css');
-		if (!existsSync(styleCssPath)) {
-			throw new Error(
-				`Required style.css file not found at: ${styleCssPath}`
-			);
-		}
-
-		// Create a custom config for the style CSS with WordPress naming convention
-		const styleConfig = {
-			...config,
-			outputPath: config.outputPath, // Will need to handle style-index.css naming
-		};
-		// For now, use the existing handler - we may need to enhance it later
-		// to handle the style-index.css naming convention
-		await this.processStyle('style.css', styleConfig);
 
 		return true;
 	}
 
 	async generateManifest(blocks: BlockInfo[]): Promise<void> {
-		if (blocks.length === 0) {
-			console.log(
-				'No blocks found. Skipping block manifest generation...'
-			);
-			return;
-		}
-
-		// Convert blocks array to a record object that generatePhpArrayContent expects
-		const blocksRecord: Record<string, any> = {};
-
-		blocks.forEach((block) => {
-			blocksRecord[block.name] = block.blockJson;
-		});
-
-		// Generate PHP content
-		const phpContent = generatePhpArrayContent(blocksRecord);
-
-		// Always use FileEmitter.safeEmitFile which handles both build and dev modes properly
-		await FileEmitter.safeEmitFile(this.context, {
-			type: 'asset',
-			fileName: BlockHandler.manifestName,
-			source: phpContent,
-		});
+		await this.fileManager.generateManifest(blocks);
 	}
 }
+
+/**
+ * Export services for direct use
+ */
+export { BlockDiscovery, AssetProcessor, FileManager } from './services';
+
+/**
+ * Export processors for direct use
+ */
+export { CSS_Processor, JS_Processor, PHP_Processor } from './processors';
+
+/**
+ * Export types for external use
+ */
+export type * from './types';

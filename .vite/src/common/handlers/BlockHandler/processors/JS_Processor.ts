@@ -31,7 +31,7 @@ import type { OutputConfig, EmittedAsset } from '../../../types/index';
  * along with their associated PHP asset files and source maps.
  */
 export class JS_Processor {
-	private context: PluginContext;
+	public context: PluginContext;
 
 	constructor({ context }: { context: PluginContext }) {
 		this.context = context;
