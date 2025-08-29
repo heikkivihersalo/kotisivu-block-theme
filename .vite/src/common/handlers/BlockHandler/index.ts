@@ -25,7 +25,7 @@ export class BlockHandler {
 	private php: PHP_Processor;
 	private context: PluginContext;
 	private outputDirectory: string;
-	private fileEmitter?: FileEmitter;
+	private fileEmitter: FileEmitter;
 
 	constructor({
 		context,
@@ -195,20 +195,11 @@ export class BlockHandler {
 			const blockJsonSrc = resolve(block.path, 'block.json');
 			const blockJsonContent = await readFile(blockJsonSrc, 'utf-8');
 
-			if (this.fileEmitter) {
-				// Use FileEmitter for static files like block.json
-				await this.fileEmitter.writeStaticFile(
-					`${destPath}/block.json`,
-					blockJsonContent
-				);
-			} else {
-				// Fallback to plugin context emitFile
-				this.context.emitFile({
-					type: 'asset',
-					fileName: `${destPath}/block.json`,
-					source: blockJsonContent,
-				});
-			}
+			// Use FileEmitter for static files like block.json
+			await this.fileEmitter.writeStaticFile(
+				`${destPath}/block.json`,
+				blockJsonContent
+			);
 		} catch (error) {
 			console.error(
 				`Failed to process block.json for ${block.name}:`,
@@ -234,14 +225,16 @@ export class BlockHandler {
 			const files = await readdir(block.path);
 			const phpFiles = files.filter((file) => file.endsWith('.php'));
 
-			if (phpFiles.length > 0) {
-				const phpFileInfos = phpFiles.map((phpFile) => ({
-					sourcePath: resolve(block.path, phpFile),
-					outputPath: `${destPath}/${phpFile}`,
-				}));
-
-				await this.processPhpFiles(phpFileInfos, shouldMinify);
+			if (phpFiles.length === 0) {
+				return;
 			}
+
+			const phpFileInfos = phpFiles.map((phpFile) => ({
+				sourcePath: resolve(block.path, phpFile),
+				outputPath: `${destPath}/${phpFile}`,
+			}));
+
+			await this.processPhpFiles(phpFileInfos, shouldMinify);
 		} catch (error) {
 			console.error(
 				`Failed to process PHP files for ${block.name}:`,
