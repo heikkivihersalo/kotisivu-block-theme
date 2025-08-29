@@ -3,40 +3,230 @@
  */
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
+import type { ResolvedConfig } from 'vite';
 
 /**
  * Internal dependencies
  */
 import { CSS_Processor, JS_Processor, PHP_Processor } from './utils';
-import { FileEmitter, generateOutputConfig } from '../../utils';
-import type { OutputConfig, BlockInfo } from '../../types';
+import {
+	FileEmitter,
+	generateOutputConfig,
+	generatePhpArrayContent,
+	generateSourcePath,
+	findBlocksRecursively,
+	normalizePath,
+} from '../../utils';
+import type {
+	OutputConfig,
+	BlockInfo,
+	ViteBlocksPluginConfig,
+} from '../../types';
 
 /**
- * Main Block Handler class that combines CSS, JS, and PHP processing
+ * Main Block Handler class for comprehensive WordPress Gutenberg block processing
  *
- * This handler is specifically designed for WordPress block processing
- * and provides a unified interface for handling all block assets.
+ * This handler serves as the central orchestrator for all WordPress block operations
+ * and provides a unified interface for:
+ *
+ * - Block discovery and validation
+ * - Configuration management and validation
+ * - Asset processing (CSS, JS, PHP)
+ * - Static file management
+ * - Build/development mode coordination
+ * - Watch file management
+ * - Manifest generation
+ *
+ * The handler is designed to work with Vite plugins but can be used independently
+ * for block processing in other build systems.
  */
 export class BlockHandler {
+	static manifestName = 'block-manifest.php';
+
 	private css: CSS_Processor;
 	private js: JS_Processor;
 	private php: PHP_Processor;
 	private context: PluginContext;
 	private outputDirectory: string;
 	private fileEmitter: FileEmitter;
+	private config: ViteBlocksPluginConfig;
+	private pwd: string;
+	private discoveredBlocks: BlockInfo[] = [];
 
 	constructor({
 		context,
 		outputDirectory,
-	}: { context: PluginContext; outputDirectory: string }) {
+		config,
+	}: {
+		context: PluginContext;
+		outputDirectory: string;
+		config: ViteBlocksPluginConfig;
+	}) {
 		this.context = context;
 		this.css = new CSS_Processor({ context });
 		this.js = new JS_Processor({ context });
 		this.php = new PHP_Processor({ context });
 		this.outputDirectory = outputDirectory;
 		this.fileEmitter = new FileEmitter(outputDirectory);
+		this.config = config;
+		this.pwd = process.env.PWD || process.cwd();
+	}
+
+	/**
+	 * Validate the configuration for the block handler
+	 * @throws Error if configuration is invalid
+	 */
+	private validateConfig(): void {
+		const { blocksDir } = this.config;
+
+		if (!blocksDir || Object.keys(blocksDir).length === 0) {
+			throw new Error('blocksDir is required for BlockHandler');
+		}
+	}
+
+	/**
+	 * Check if this is build mode vs serve mode
+	 */
+	private isBuildMode(): boolean {
+		return process.argv.includes('build');
+	}
+
+	/**
+	 * Discover block.json files with custom path mappings
+	 */
+	private discoverBlocksWithMappings(): BlockInfo[] {
+		const { blocksDir } = this.config;
+		const blocks: BlockInfo[] = [];
+
+		for (const [outputPath, sourcePath] of Object.entries(blocksDir)) {
+			const fullSourcePath = generateSourcePath(sourcePath, this.pwd);
+			if (!fullSourcePath) continue;
+
+			try {
+				const stat = statSync(fullSourcePath);
+				if (!stat.isDirectory()) continue;
+
+				const foundBlocks = findBlocksRecursively(
+					fullSourcePath,
+					this.pwd,
+					0
+				);
+
+				// Add custom output path to each discovered block
+				foundBlocks.forEach((block) => {
+					blocks.push({
+						...block,
+						outputPath: `${outputPath.replace(/\/$/, '')}/${block.name}`,
+					});
+				});
+			} catch {
+				// Silently skip inaccessible paths - this is expected during development
+				continue;
+			}
+		}
+
+		return blocks;
+	}
+
+	/**
+	 * Discover blocks and validate discovery results
+	 */
+	async discoverBlocks(): Promise<BlockInfo[]> {
+		this.discoveredBlocks = this.discoverBlocksWithMappings();
+
+		if (this.discoveredBlocks.length === 0) {
+			throw new Error(
+				'No blocks discovered. Check your blocksDir configuration'
+			);
+		}
+
+		return this.discoveredBlocks;
+	}
+
+	/**
+	 * Get discovered blocks
+	 */
+	getDiscoveredBlocks(): BlockInfo[] {
+		return this.discoveredBlocks;
+	}
+
+	/**
+	 * Configure output directory from resolved Vite config
+	 */
+	configureOutputDirectory(resolvedConfig: ResolvedConfig): void {
+		const { outDir } = this.config;
+
+		if (typeof outDir === 'string') {
+			this.outputDirectory = normalizePath(outDir) || 'dist';
+		} else {
+			const defaultDir = resolvedConfig.build.outDir;
+			this.outputDirectory =
+				typeof defaultDir === 'string' ? defaultDir : 'dist';
+		}
+
+		// Update file emitter with new output directory
+		this.fileEmitter = new FileEmitter(this.outputDirectory);
+	}
+
+	/**
+	 * Initialize the block handler with validation and discovery
+	 */
+	async initialize(): Promise<void> {
+		// Validate configuration
+		this.validateConfig();
+
+		// Add watch files if specified
+		const { watch = [] } = this.config;
+		watch.forEach((file: string) => this.context.addWatchFile(file));
+
+		// Discover blocks
+		await this.discoverBlocks();
+	}
+
+	/**
+	 * Process all discovered blocks
+	 */
+	async processAllBlocks(
+		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
+	): Promise<void> {
+		// Process discovered blocks for both dev and build modes
+		for (const block of this.discoveredBlocks) {
+			await this.sideload({ block, sourcemap });
+		}
+
+		// Generate block manifest
+		await this.generateManifest(this.discoveredBlocks);
+	}
+
+	/**
+	 * Copy static files for all discovered blocks (build mode only)
+	 */
+	async copyStaticFilesForAllBlocks(): Promise<void> {
+		// Only copy static files in build mode
+		if (!this.isBuildMode()) {
+			console.log('Skipping static file copying in serve mode');
+			return;
+		}
+
+		// Determine if we should minify based on environment
+		const shouldMinify = process.env.NODE_ENV === 'production';
+
+		// Copy static files for each discovered block (only in build mode)
+		for (const block of this.discoveredBlocks) {
+			try {
+				// Use BlockHandler to process all static files
+				await this.processBlockStaticFiles(block, shouldMinify);
+			} catch (error) {
+				console.log(
+					`[copyStaticFilesForAllBlocks] Failed to copy static files for ${block.name}:`,
+					error
+				);
+				// Skip blocks with missing or invalid files
+				continue;
+			}
+		}
 	}
 
 	/**
@@ -389,5 +579,31 @@ export class BlockHandler {
 		await this.processStyle('style.css', styleConfig);
 
 		return true;
+	}
+
+	async generateManifest(blocks: BlockInfo[]): Promise<void> {
+		if (blocks.length === 0) {
+			console.log(
+				'No blocks found. Skipping block manifest generation...'
+			);
+			return;
+		}
+
+		// Convert blocks array to a record object that generatePhpArrayContent expects
+		const blocksRecord: Record<string, any> = {};
+
+		blocks.forEach((block) => {
+			blocksRecord[block.name] = block.blockJson;
+		});
+
+		// Generate PHP content
+		const phpContent = generatePhpArrayContent(blocksRecord);
+
+		// Always use FileEmitter.safeEmitFile which handles both build and dev modes properly
+		await FileEmitter.safeEmitFile(this.context, {
+			type: 'asset',
+			fileName: BlockHandler.manifestName,
+			source: phpContent,
+		});
 	}
 }

@@ -4,117 +4,60 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { normalizePath } from '../../common/utils';
 import { BlockHandler } from '../../common/handlers';
-import { generateBlockManifest } from './manifest.js';
-import type { BlockInfo, ViteBlocksPluginConfig } from '../../common/types';
+import type { ViteBlocksPluginConfig } from '../../common/types';
 
 /**
- * Internal dependencies
- */
-import { discoverBlocksWithMappings } from './discovery.ts';
-
-/**
- * Vite plugin for handling WordPress Gutenberg blocks
+ * Vite plugin for WordPress Gutenberg blocks
  *
- * This plugin is responsible for:
- * - Discovering blocks from configured directories
- * - Sideloading block entry points
- * - Generating block manifest files
+ * This is a lean plugin that serves as a bridge between Vite's plugin system
+ * and the comprehensive BlockHandler. The plugin's responsibilities are:
+ *
+ * - Integrating with Vite's plugin lifecycle hooks
+ * - Coordinating between Vite configuration and BlockHandler
+ * - Exposing block discovery API for other plugins
+ *
+ * All block processing logic is handled by the BlockHandler class, making
+ * this plugin a thin coordinator that focuses purely on Vite integration.
  */
 export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
-	const { blocksDir, outDir, sourcemap = false, watch = [] } = config;
-
-	let outputDirectory: string;
-	let discoveredBlocks: BlockInfo[] = [];
+	const { sourcemap = false } = config;
 	let blockHandler: BlockHandler;
-	const pwd = process.env.PWD || process.cwd();
-
-	// Validate required configuration
-	if (!blocksDir || Object.keys(blocksDir).length === 0) {
-		throw new Error('blocksDir is required for BlocksPlugin');
-	}
-
-	// Check if this is build mode vs serve mode
-	const isBuildMode = () => process.argv.includes('build');
-
-	// Async discovery function
-	const discoverBlocks = async () => {
-		discoveredBlocks = discoverBlocksWithMappings(blocksDir, pwd);
-		if (discoveredBlocks.length === 0) {
-			throw new Error(
-				'No blocks discovered. Check your blocksDir configuration'
-			);
-		}
-	};
+	let resolvedViteConfig: ResolvedConfig;
 
 	return {
 		name: 'vite-plugin-gutenberg-blocks',
 
 		configResolved(resolvedConfig: ResolvedConfig) {
-			if (typeof outDir === 'string') {
-				outputDirectory = normalizePath(outDir) || 'dist';
-			} else {
-				const defaultDir = resolvedConfig.build.outDir;
-				outputDirectory =
-					typeof defaultDir === 'string' ? defaultDir : 'dist';
-			}
+			resolvedViteConfig = resolvedConfig;
 		},
 
 		buildStart: async function (this: PluginContext) {
-			// Initialize block handler with output directory and full context
+			// Initialize block handler with configuration and context
 			blockHandler = new BlockHandler({
 				context: this,
-				outputDirectory,
+				outputDirectory: '', // Will be configured below
+				config,
 			});
 
-			// Discover blocks asynchronously
-			await discoverBlocks();
+			// Configure output directory from resolved config
+			blockHandler.configureOutputDirectory(resolvedViteConfig);
 
-			// Add watch files if specified
-			watch.forEach((file: string) => this.addWatchFile(file));
+			// Initialize block handler (validation, discovery, watch files)
+			await blockHandler.initialize();
 
-			// Process discovered blocks for both dev and build modes
-			for (const block of discoveredBlocks) {
-				await blockHandler.sideload({ block, sourcemap });
-			}
-
-			// Generate block manifest
-			await generateBlockManifest.call(this, discoveredBlocks);
+			// Process all discovered blocks
+			await blockHandler.processAllBlocks(sourcemap);
 		},
 
 		generateBundle: async function (this: PluginContext) {
-			// Only copy static files in build mode
-			if (!isBuildMode()) {
-				console.log('Skipping static file copying in serve mode');
-				return;
-			}
-
-			// Determine if we should minify based on environment
-			const shouldMinify = process.env.NODE_ENV === 'production';
-
-			// Copy static files for each discovered block (only in build mode)
-			for (const block of discoveredBlocks) {
-				try {
-					// Use BlockHandler to process all static files
-					await blockHandler.processBlockStaticFiles(
-						block,
-						shouldMinify
-					);
-				} catch (error) {
-					console.log(
-						`[generateBundle] Failed to copy static files for ${block.name}:`,
-						error
-					);
-					// Skip blocks with missing or invalid files
-					continue;
-				}
-			}
+			// Copy static files for all blocks (build mode only)
+			await blockHandler.copyStaticFilesForAllBlocks();
 		},
 
 		// Expose discovered blocks for other plugins
 		api: {
-			getDiscoveredBlocks: () => discoveredBlocks,
+			getDiscoveredBlocks: () => blockHandler.getDiscoveredBlocks(),
 		},
 	};
 }
