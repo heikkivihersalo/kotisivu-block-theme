@@ -32,6 +32,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	const {
 		dependencies = [],
 		terserOptions = {},
+		devServer = {},
 		build: {
 			outDir,
 			assetsDir = {},
@@ -82,6 +83,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		outDir,
 		css: 'scss',
 		manifest: true,
+		...devServer, // Spread devServer config (host, port, devServerUrl)
 	});
 
 	// Get additional plugins (React, static copy, etc.)
