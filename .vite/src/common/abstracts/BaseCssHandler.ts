@@ -41,6 +41,10 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 		super(context);
 	}
 
+	// ========================================
+	// Abstract Method Implementation
+	// ========================================
+
 	/**
 	 * Implement the abstract method from BaseFileHandler
 	 * Process CSS file content (minification, transformation, etc.)
@@ -66,6 +70,46 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 			sourceMap: map?.toString(),
 		};
 	}
+
+	// ========================================
+	// Public Methods (exposed to external consumers)
+	// ========================================
+
+	/**
+	 * Process a single CSS file with default CSS options
+	 * @param sourcePath - The path to the CSS file
+	 * @param outputPath - The output path for the processed file
+	 * @param shouldMinify - Whether to minify the CSS content (always true for CSS)
+	 */
+	public async processCssFile(
+		sourcePath: string,
+		outputPath: string,
+		shouldMinify: boolean = true
+	): Promise<void> {
+		await this.processFileAndEmit(sourcePath, outputPath, {
+			shouldMinify,
+			shouldWatch: true,
+		});
+	}
+
+	/**
+	 * Process multiple CSS files with the same options
+	 * @param cssFiles - Array of CSS file configurations
+	 * @param shouldMinify - Whether to minify the CSS content
+	 */
+	public async processCssFiles(
+		cssFiles: Array<{ sourcePath: string; outputPath: string }>,
+		shouldMinify: boolean = true
+	): Promise<void> {
+		await this.processFilesAndEmit(cssFiles, {
+			shouldMinify,
+			shouldWatch: true,
+		});
+	}
+
+	// ========================================
+	// Protected Methods (for subclass usage)
+	// ========================================
 
 	/**
 	 * Process CSS content with LightningCSS
@@ -130,38 +174,6 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	}
 
 	/**
-	 * Process a single CSS file with default CSS options
-	 * @param sourcePath - The path to the CSS file
-	 * @param outputPath - The output path for the processed file
-	 * @param shouldMinify - Whether to minify the CSS content (always true for CSS)
-	 */
-	async processCssFile(
-		sourcePath: string,
-		outputPath: string,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFileAndEmit(sourcePath, outputPath, {
-			shouldMinify,
-			shouldWatch: true,
-		});
-	}
-
-	/**
-	 * Process multiple CSS files with the same options
-	 * @param cssFiles - Array of CSS file configurations
-	 * @param shouldMinify - Whether to minify the CSS content
-	 */
-	async processCssFiles(
-		cssFiles: Array<{ sourcePath: string; outputPath: string }>,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFilesAndEmit(cssFiles, {
-			shouldMinify,
-			shouldWatch: true,
-		});
-	}
-
-	/**
 	 * Handle CSS processing errors with consistent logging
 	 * @param filename - The filename that failed to process
 	 * @param error - The error that occurred
@@ -172,6 +184,10 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	): void {
 		console.warn(`Failed to process CSS content for ${filename}:`, error);
 	}
+
+	// ========================================
+	// Validation and Utility Methods
+	// ========================================
 
 	/**
 	 * Check if CSS content is valid for processing

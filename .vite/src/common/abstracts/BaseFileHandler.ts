@@ -48,6 +48,92 @@ export abstract class BaseFileHandler {
 		this.context = context;
 	}
 
+	// ========================================
+	// Abstract Methods (must be implemented by subclasses)
+	// ========================================
+
+	/**
+	 * Abstract method for processing file content
+	 * Must be implemented by extending classes
+	 * @param content - The file content to process
+	 * @param filePath - The original file path
+	 * @param options - Processing options
+	 * @returns Processed content and optional source map
+	 */
+	protected abstract processFileContent(
+		content: string,
+		filePath: string,
+		options: FileProcessingOptions
+	): Promise<FileProcessingResult>;
+
+	// ========================================
+	// Public Methods (exposed to external consumers)
+	// ========================================
+
+	/**
+	 * Process a file and emit the result
+	 * @param filePath - The path to the file to process
+	 * @param outputFileName - The output file name
+	 * @param options - Processing options
+	 */
+	public async processFileAndEmit(
+		filePath: string,
+		outputFileName: string,
+		options: FileProcessingOptions = {}
+	): Promise<void> {
+		const { shouldWatch = true, encoding = 'utf-8' } = options;
+
+		try {
+			// Add to watch list if requested
+			if (shouldWatch) {
+				this.addToWatchList(filePath);
+			}
+
+			// Read and process the file
+			const content = this.readFileContent(filePath, encoding);
+			const processedContent = await this.processFileContent(
+				content,
+				filePath,
+				options
+			);
+
+			// Emit the processed content
+			await this.emitAsset(outputFileName, processedContent.content);
+
+			// Emit source map if available
+			if (processedContent.sourceMap) {
+				await this.emitAsset(
+					`${outputFileName}.map`,
+					processedContent.sourceMap
+				);
+			}
+		} catch (error) {
+			this.handleFileProcessingError(outputFileName, error);
+		}
+	}
+
+	/**
+	 * Process multiple files with the same options
+	 * @param files - Array of file configurations
+	 * @param options - Processing options
+	 */
+	public async processFilesAndEmit(
+		files: Array<{ sourcePath: string; outputPath: string }>,
+		options: FileProcessingOptions = {}
+	): Promise<void> {
+		for (const file of files) {
+			await this.processFileAndEmit(
+				file.sourcePath,
+				file.outputPath,
+				options
+			);
+		}
+	}
+
+	// ========================================
+	// Protected Methods (for subclass usage)
+	// ========================================
+
 	/**
 	 * Read file content from disk
 	 * @param filePath - The path to the file to read
@@ -106,66 +192,6 @@ export abstract class BaseFileHandler {
 	}
 
 	/**
-	 * Process a file and emit the result
-	 * @param filePath - The path to the file to process
-	 * @param outputFileName - The output file name
-	 * @param options - Processing options
-	 */
-	protected async processFileAndEmit(
-		filePath: string,
-		outputFileName: string,
-		options: FileProcessingOptions = {}
-	): Promise<void> {
-		const { shouldWatch = true, encoding = 'utf-8' } = options;
-
-		try {
-			// Add to watch list if requested
-			if (shouldWatch) {
-				this.addToWatchList(filePath);
-			}
-
-			// Read and process the file
-			const content = this.readFileContent(filePath, encoding);
-			const processedContent = await this.processFileContent(
-				content,
-				filePath,
-				options
-			);
-
-			// Emit the processed content
-			await this.emitAsset(outputFileName, processedContent.content);
-
-			// Emit source map if available
-			if (processedContent.sourceMap) {
-				await this.emitAsset(
-					`${outputFileName}.map`,
-					processedContent.sourceMap
-				);
-			}
-		} catch (error) {
-			this.handleFileProcessingError(outputFileName, error);
-		}
-	}
-
-	/**
-	 * Process multiple files with the same options
-	 * @param files - Array of file configurations
-	 * @param options - Processing options
-	 */
-	protected async processFilesAndEmit(
-		files: Array<{ sourcePath: string; outputPath: string }>,
-		options: FileProcessingOptions = {}
-	): Promise<void> {
-		for (const file of files) {
-			await this.processFileAndEmit(
-				file.sourcePath,
-				file.outputPath,
-				options
-			);
-		}
-	}
-
-	/**
 	 * Handle file processing errors with consistent logging
 	 * @param fileName - The file name that failed to process
 	 * @param error - The error that occurred
@@ -176,6 +202,10 @@ export abstract class BaseFileHandler {
 	): void {
 		console.warn(`Failed to process file ${fileName}:`, error);
 	}
+
+	// ========================================
+	// Utility Methods (for subclass usage)
+	// ========================================
 
 	/**
 	 * Check if file content is valid for processing
@@ -209,52 +239,15 @@ export abstract class BaseFileHandler {
 	}
 
 	/**
-	 * Generate a version hash for the given bundle.
-	 * This hash can be used to identify changes in the bundle's content.
+	 * Extract the filename without its extension from a given path.
 	 *
-	 * @param bundle - The bundle to generate a hash for.
-	 * @return The generated version hash.
+	 * @param {string} path - The file path to extract the filename from.
+	 * @return {string} The filename without its extension.
 	 */
-	protected generateVersionHash(bundle: {
-		[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
-	}): string {
-		const hash = createHash('md5');
-
-		const sortedFiles = Object.values(bundle).sort((a, b) =>
-			a.fileName.localeCompare(b.fileName)
-		);
-
-		for (const file of sortedFiles) {
-			const source = file.type === 'chunk' ? file.code : file.source;
-			if (source) {
-				hash.update(source);
-			}
-		}
-
-		return hash.digest('hex');
-	}
-
-	/**
-	 * Generate a hash for a file.
-	 * @param content - The content of the file to hash.
-	 * @returns The hash of the file.
-	 */
-	protected generateFileHash(content: Buffer | string): string {
-		return createHash('md5').update(content).digest('hex');
-	}
-
-	/**
-	 * Generate a version string from a filename
-	 * This function extracts a version hash from the filename,
-	 * typically used for cache busting in asset management.
-	 *
-	 * @param filename - The name of the file to extract the version from.
-	 * @return A string representing the version, or '1.0.0' if no
-	 */
-	protected generateVersionFromFile(filename: string): string {
-		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
-		return match ? match[1].substring(0, 8) : '1.0.0';
-	}
+	protected extractFilenameWithoutExtension = (path: string): string => {
+		const parsed = parse(path);
+		return join(parsed.dir, parsed.name);
+	};
 
 	/**
 	 * Generate asset filename by joining output path and filename
@@ -269,17 +262,6 @@ export abstract class BaseFileHandler {
 		return outputPath && outputPath !== ''
 			? `${outputPath}/${filename}`
 			: filename;
-	};
-
-	/**
-	 * Extract the filename without its extension from a given path.
-	 *
-	 * @param {string} path - The file path to extract the filename from.
-	 * @return {string} The filename without its extension.
-	 */
-	protected extractFilenameWithoutExtension = (path: string): string => {
-		const parsed = parse(path);
-		return join(parsed.dir, parsed.name);
 	};
 
 	/**
@@ -310,17 +292,55 @@ export abstract class BaseFileHandler {
 		return null;
 	};
 
+	// ========================================
+	// Hash and Version Methods
+	// ========================================
+
 	/**
-	 * Abstract method for processing file content
-	 * Must be implemented by extending classes
-	 * @param content - The file content to process
-	 * @param filePath - The original file path
-	 * @param options - Processing options
-	 * @returns Processed content and optional source map
+	 * Generate a hash for a file.
+	 * @param content - The content of the file to hash.
+	 * @returns The hash of the file.
 	 */
-	protected abstract processFileContent(
-		content: string,
-		filePath: string,
-		options: FileProcessingOptions
-	): Promise<FileProcessingResult>;
+	protected generateFileHash(content: Buffer | string): string {
+		return createHash('md5').update(content).digest('hex');
+	}
+
+	/**
+	 * Generate a version hash for the given bundle.
+	 * This hash can be used to identify changes in the bundle's content.
+	 *
+	 * @param bundle - The bundle to generate a hash for.
+	 * @return The generated version hash.
+	 */
+	protected generateVersionHash(bundle: {
+		[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
+	}): string {
+		const hash = createHash('md5');
+
+		const sortedFiles = Object.values(bundle).sort((a, b) =>
+			a.fileName.localeCompare(b.fileName)
+		);
+
+		for (const file of sortedFiles) {
+			const source = file.type === 'chunk' ? file.code : file.source;
+			if (source) {
+				hash.update(source);
+			}
+		}
+
+		return hash.digest('hex');
+	}
+
+	/**
+	 * Generate a version string from a filename
+	 * This function extracts a version hash from the filename,
+	 * typically used for cache busting in asset management.
+	 *
+	 * @param filename - The name of the file to extract the version from.
+	 * @return A string representing the version, or '1.0.0' if no
+	 */
+	protected generateVersionFromFile(filename: string): string {
+		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
+		return match ? match[1].substring(0, 8) : '1.0.0';
+	}
 }

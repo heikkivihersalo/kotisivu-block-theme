@@ -24,6 +24,10 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 		super(context);
 	}
 
+	// ========================================
+	// Abstract Method Implementation
+	// ========================================
+
 	/**
 	 * Process PHP file content (minification, validation, etc.)
 	 * @param content - The PHP content to process
@@ -51,17 +55,32 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 		};
 	}
 
+	// ========================================
+	// Public Methods (exposed to external consumers)
+	// ========================================
+
 	/**
-	 * Check if PHP content is valid for processing
-	 * @param content - The PHP content to validate
-	 * @returns True if the content is valid PHP
+	 * Generate a PHP asset file with dependencies and version hash.
+	 *
+	 * @param {Set<string> | string[]} dependencies - Set or array of dependencies.
+	 * @param {string} [hash=''] - Version hash for the asset.
+	 * @return {string} PHP code as a string that returns an array with dependencies and version
 	 */
-	protected isValidPhpContent(content: string): boolean {
-		return (
-			this.isValidFileContent(content) &&
-			(content.includes('<?php') || content.includes('<?='))
-		);
-	}
+	public generatePhpAssetFile = (
+		dependencies: Set<string> | string[] = [],
+		hash = ''
+	): string => {
+		const data = {
+			dependencies: Array.from(dependencies),
+			version: hash,
+		};
+
+		return `<?php return ${this.convertToPhpArray(data, 0, true)};`;
+	};
+
+	// ========================================
+	// Protected Methods (for subclass usage)
+	// ========================================
 
 	/**
 	 * Process a single PHP file with default PHP options
@@ -107,6 +126,47 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 		// For PHP files, we often want to silently skip files that can't be processed
 		// This maintains backward compatibility with the original PHP_Processor behavior
 		console.warn(`Failed to process PHP file ${fileName}:`, error);
+	}
+
+	/**
+	 * Generate PHP array content for block manifests
+	 * @param blocks - The blocks object containing block.json configurations.
+	 * @return A string representing the PHP array content
+	 */
+	protected generatePhpArrayContent(blocks: Record<string, any>): string {
+		const timestamp = new Date().toISOString();
+
+		let phpContent = `<?php
+	/**
+	 * Block Manifest
+	 * 
+	 * Auto-generated block manifest containing all block.json configurations.
+	 * Generated on: ${timestamp}
+	 * 
+	 */
+	
+	return `;
+
+		phpContent += this.convertToPhpArray(blocks, 0);
+		phpContent += ';\n';
+
+		return phpContent;
+	}
+
+	// ========================================
+	// Validation and Utility Methods
+	// ========================================
+
+	/**
+	 * Check if PHP content is valid for processing
+	 * @param content - The PHP content to validate
+	 * @returns True if the content is valid PHP
+	 */
+	protected isValidPhpContent(content: string): boolean {
+		return (
+			this.isValidFileContent(content) &&
+			(content.includes('<?php') || content.includes('<?='))
+		);
 	}
 
 	/**
@@ -169,50 +229,6 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 
 		return 'null';
 	}
-
-	/**
-	 * Convert JavaScript object to PHP array format
-	 * @param blocks - The blocks object containing block.json configurations.
-	 * @return A string representing the PHP array content
-	 */
-	protected generatePhpArrayContent(blocks: Record<string, any>): string {
-		const timestamp = new Date().toISOString();
-
-		let phpContent = `<?php
-	/**
-	 * Block Manifest
-	 * 
-	 * Auto-generated block manifest containing all block.json configurations.
-	 * Generated on: ${timestamp}
-	 * 
-	 */
-	
-	return `;
-
-		phpContent += this.convertToPhpArray(blocks, 0);
-		phpContent += ';\n';
-
-		return phpContent;
-	}
-
-	/**
-	 * Generate a PHP asset file with dependencies and version hash.
-	 *
-	 * @param {Set<string> | string[]} dependencies - Set or array of dependencies.
-	 * @param {string} [hash=''] - Version hash for the asset.
-	 * @return {string} PHP code as a string that returns an array with dependencies and version
-	 */
-	protected generatePhpAssetFile = (
-		dependencies: Set<string> | string[] = [],
-		hash = ''
-	): string => {
-		const data = {
-			dependencies: Array.from(dependencies),
-			version: hash,
-		};
-
-		return `<?php return ${this.convertToPhpArray(data, 0, true)};`;
-	};
 
 	/**
 	 * Minify PHP content by removing comments, unnecessary whitespace, and formatting
