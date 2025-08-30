@@ -19,6 +19,9 @@ export class FilePathResolver {
 	/**
 	 * Find the actual style file path considering different extensions and filename patterns
 	 * Supports .css, .scss, .sass, .less extensions
+	 * @param basePath The base directory to search in
+	 * @param fileName The name of the file to find
+	 * @return The resolved file path or null if not found
 	 */
 	static findActualStylePath(
 		basePath: string,
@@ -70,6 +73,9 @@ export class FilePathResolver {
 	/**
 	 * Find the actual file path considering different extensions
 	 * Supports .js, .jsx, .ts, .tsx extensions
+	 * @param basePath The base directory to search in
+	 * @param fileName The name of the file to find
+	 * @return The resolved file path or null if not found
 	 */
 	static findActualFilePath(
 		basePath: string,
@@ -97,6 +103,8 @@ export class FilePathResolver {
 
 	/**
 	 * Check if a file exists at the given path
+	 * @param filePath The path to the file to check
+	 * @return True if the file exists, false otherwise
 	 */
 	static fileExists(filePath: string): boolean {
 		return existsSync(filePath);
