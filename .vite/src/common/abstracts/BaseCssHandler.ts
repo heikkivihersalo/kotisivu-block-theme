@@ -24,10 +24,10 @@ import type { OutputConfig } from '../types';
 /**
  * CSS processing result interface
  */
-export interface CssProcessingResult {
+export type CssProcessingResult = {
 	code: Uint8Array;
 	map?: Uint8Array;
-}
+};
 
 /**
  * Base CSS Handler class providing common CSS processing functionality

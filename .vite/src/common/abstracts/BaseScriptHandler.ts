@@ -19,19 +19,19 @@ import {
 /**
  * ESBuild processing result interface
  */
-export interface ScriptProcessingResult {
+export type ScriptProcessingResult = {
 	jsContent: string;
 	cssContent?: string;
 	jsSourceMap?: string;
 	cssSourceMap?: string;
 	wpDependencies: string[];
 	metafile?: any;
-}
+};
 
 /**
  * ESBuild configuration options
  */
-export interface BuildOptions {
+export type BuildOptions = {
 	entryPoint: string;
 	outfile?: string;
 	outdir?: string;
@@ -39,7 +39,7 @@ export interface BuildOptions {
 	minify?: boolean;
 	platform?: string;
 	target?: string | string[];
-}
+};
 
 /**
  * Base Script Handler class providing common JavaScript processing functionality

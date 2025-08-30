@@ -20,19 +20,19 @@ import { FILE_EXTENSIONS } from '../constants';
 /**
  * File processing result interface
  */
-export interface FileProcessingResult<T = string> {
+export type FileProcessingResult<T = string> = {
 	content: T;
 	sourceMap?: string;
-}
+};
 
 /**
  * File processing options interface
  */
-export interface FileProcessingOptions {
+export type FileProcessingOptions = {
 	shouldMinify?: boolean;
 	shouldWatch?: boolean;
 	encoding?: BufferEncoding;
-}
+};
 
 /**
  * Base File Handler class providing common file processing functionality
