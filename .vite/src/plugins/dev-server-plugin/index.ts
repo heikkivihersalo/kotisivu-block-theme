@@ -35,15 +35,11 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 				return;
 			}
 
-			console.log(
-				'🚀 WordPress DevServer plugin: Configuring HMR endpoint'
-			);
+			console.log('🚀 Configuring HMR endpoint');
 
 			// Add middleware to serve the vite-wordpress.json endpoint
 			server.middlewares.use('/vite-wordpress.json', (req, res) => {
-				console.log(
-					'📡 WordPress DevServer: Request to /vite-wordpress.json'
-				);
+				console.log('📡 Request to /vite-wordpress.json');
 
 				if (req.method === 'GET') {
 					const responseConfig = {
@@ -55,10 +51,7 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 						buildMap,
 					};
 
-					console.log(
-						'📤 WordPress DevServer: Sending config:',
-						responseConfig
-					);
+					console.log('📤 Sending config:', responseConfig);
 
 					res.setHeader('Content-Type', 'application/json');
 					res.setHeader('Access-Control-Allow-Origin', '*');
@@ -78,10 +71,7 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 						src: data.file.replace(process.cwd(), '').substring(1),
 						file: fileName,
 					};
-					console.log(
-						'🔄 WordPress DevServer: Updated build map for',
-						fileName
-					);
+					console.log('🔄 Updated build map for', fileName);
 				}
 			});
 		},

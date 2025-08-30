@@ -1,7 +1,7 @@
 /**
  * Configuration types for DevServer plugin
  */
-export interface DevServerConfig {
+export type DevServerConfig = {
 	/**
 	 * Development server host
 	 */
@@ -36,4 +36,4 @@ export interface DevServerConfig {
 	 * Whether to generate manifest
 	 */
 	manifest?: boolean;
-}
+};
