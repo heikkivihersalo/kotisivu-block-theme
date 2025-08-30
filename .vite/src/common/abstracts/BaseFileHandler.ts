@@ -40,6 +40,7 @@ export type FileProcessingOptions = {
 export interface FileHandlerConfig {
 	filePathResolver?: typeof FilePathResolver;
 	fileEmitter?: typeof FileEmitter;
+	outputDirectory?: string;
 }
 
 /**
@@ -54,11 +55,13 @@ export abstract class BaseFileHandler {
 	protected context: PluginContext;
 	protected filePathResolver: typeof FilePathResolver;
 	protected fileEmitter: typeof FileEmitter;
+	protected outputDirectory?: string;
 
 	constructor(context: PluginContext, config: FileHandlerConfig = {}) {
 		this.context = context;
 		this.filePathResolver = config.filePathResolver || FilePathResolver;
 		this.fileEmitter = config.fileEmitter || FileEmitter;
+		this.outputDirectory = config.outputDirectory;
 	}
 
 	// ========================================
@@ -185,7 +188,7 @@ export abstract class BaseFileHandler {
 			source: source || content,
 		};
 
-		await this.fileEmitter.safeEmitFile(this.context, asset);
+		await this.fileEmitter.safeEmitFile(this.context, asset, this.outputDirectory);
 	}
 
 	/**

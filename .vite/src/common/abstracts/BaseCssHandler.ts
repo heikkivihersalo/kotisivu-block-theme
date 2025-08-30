@@ -23,6 +23,7 @@ import { FilePathResolver } from '../services/FilePathResolver';
 export interface CssHandlerConfig {
 	cssProcessor?: CssProcessor;
 	filePathResolver?: typeof FilePathResolver;
+	outputDirectory?: string;
 }
 
 /**
@@ -37,7 +38,7 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	protected filePathResolver: typeof FilePathResolver;
 
 	constructor(context: PluginContext, config: CssHandlerConfig = {}) {
-		super(context);
+		super(context, { outputDirectory: config.outputDirectory });
 		this.cssProcessor = config.cssProcessor || new LightningCssProcessor();
 		this.filePathResolver = config.filePathResolver || FilePathResolver;
 	}
