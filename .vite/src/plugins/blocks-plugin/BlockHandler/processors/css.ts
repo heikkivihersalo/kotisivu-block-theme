@@ -69,17 +69,4 @@ export class CSS extends BaseCssHandler {
 			await this.processStyle(styleFile, config);
 		}
 	}
-
-	/**
-	 * Process CSS with base output path (for compatibility with emitCss function)
-	 * @param baseOutputPath - Base output path for the CSS file
-	 * @param cssContent - CSS content to emit
-	 */
-	async processWithBasePath(
-		baseOutputPath: string,
-		cssContent: string
-	): Promise<void> {
-		const styleFileName = `${baseOutputPath}.css`;
-		await this.processStringContent(cssContent, styleFileName);
-	}
 }

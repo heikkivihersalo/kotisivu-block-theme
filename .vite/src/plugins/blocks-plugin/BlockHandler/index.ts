@@ -430,16 +430,4 @@ export class BlockHandler {
 			source: phpContent,
 		});
 	}
-
-	// Legacy method for compatibility
-	async sideload({
-		block,
-		sourcemap = false,
-	}: {
-		block: BlockInfo;
-		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	}): Promise<boolean> {
-		await this.processCompleteBlock(block, sourcemap);
-		return true;
-	}
 }

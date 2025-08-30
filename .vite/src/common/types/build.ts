@@ -33,5 +33,4 @@ export type TerserConfig = {
 	compress?: Record<string, any>;
 	mangle?: Record<string, any>;
 	format?: Record<string, any>;
-	output?: Record<string, any>; // Alias for format (legacy support)
 };

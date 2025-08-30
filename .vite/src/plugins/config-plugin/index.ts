@@ -18,7 +18,7 @@ import { config } from './config.ts';
  * Vite 6 Modern Configuration Plugin for WordPress
  *
  * This plugin provides optimized Vite 6 configuration for WordPress development
- * with no backward compatibility layers - fully modern approach
+ * with a fully modern approach
  */
 export function ConfigPlugin(pluginConfig: ViteWordPressConfig): Plugin {
 	const {

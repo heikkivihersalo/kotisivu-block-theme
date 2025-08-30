@@ -43,21 +43,6 @@ export function config(config: ViteWordPressConfig): UserConfig {
 		// Vite 6 enhanced manifest generation
 		manifest: true,
 
-		// Improved module preload for WordPress
-		modulePreload: {
-			polyfill: true,
-			resolveDependencies: (_url: string, deps: string[]) => {
-				// Filter WordPress externals from preload using constants
-				const wpExternalKeys = Object.keys(WORDPRESS_EXTERNALS);
-				return deps.filter(
-					(dep) =>
-						!wpExternalKeys.some((external) =>
-							dep.includes(external)
-						)
-				);
-			},
-		},
-
 		// Rollup configuration optimized for WordPress
 		rollupOptions: {
 			// Provide virtual entry point to satisfy Vite's requirements
