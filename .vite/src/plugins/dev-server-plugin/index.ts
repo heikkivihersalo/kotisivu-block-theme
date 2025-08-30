@@ -32,58 +32,23 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 	const buildCache = path.join(process.cwd(), outDir, 'buildMap.json');
 
 	return {
-		name: 'vite-plugin-wordpress-dev-server',
+		name: 'vite-wordpress-dev-server',
+		enforce: 'post', // Run after other plugins to avoid conflicts
 
 		/**
 		 * Configure Server Hook.
 		 */
 		configureServer(server: ViteDevServer) {
-			const publicDir = path.join(process.cwd(), 'public');
-			const indexUrls = [
-				'/index.html',
-				path.join(server.config.base, 'index.html'),
-				server.config.base.replace(/\/$/, ''),
-				server.config.base,
-			];
-
-			const getProtocol = (req: IncomingMessage) => {
-				if (req.headers['x-forwarded-proto']) {
-					return (req.headers['x-forwarded-proto'] as string).split(
-						','
-					)[0];
-				}
-				return req.socket && 'encrypted' in req.socket
-					? 'https'
-					: 'http';
-			};
-
-			const getHost = (req: IncomingMessage, server: ViteDevServer) => {
-				// First try to get host from request headers
-				if (req.headers.host) {
-					return req.headers.host;
-				}
-
-				// Fallback to server configuration
-				const serverHost = server.config.server?.host;
-				const serverPort = server.config.server?.port || 5173;
-
-				if (
-					serverHost &&
-					serverHost !== '0.0.0.0' &&
-					serverHost !== true
-				) {
-					return `${serverHost}:${serverPort}`;
-				}
-
-				// Final fallback
-				return 'localhost:5173';
-			};
-
 			server.middlewares.use(
 				async (req: IncomingMessage, res: ServerResponse, next) => {
-					const protocol = getProtocol(req);
-					const host = getHost(req, server);
-					const localUrl = `${protocol}://${host}`;
+					// Skip processing for Vite's built-in endpoints
+					if (
+						req.url?.startsWith('/@vite/') ||
+						req.url?.startsWith('/@fs/') ||
+						req.url?.startsWith('/@id/')
+					) {
+						return next();
+					}
 
 					if (req.url && req.url === `/${VITE_PLUGIN_NAME}.json`) {
 						const exposed = {
@@ -104,39 +69,8 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 						res.setHeader('Content-Type', 'application/json');
 						res.statusCode = 200;
 						res.end(JSON.stringify(exposed, null, 2)); // Expose plugin config.
-					} else if (req.url && indexUrls.includes(req.url)) {
-						res.statusCode = 404;
-						const indexPath = path.join(
-							publicDir,
-							'dev-server-index.html'
-						);
-
-						if (fs.existsSync(indexPath)) {
-							res.end(
-								fs
-									.readFileSync(indexPath)
-									.toString()
-									.replace(
-										/{{ CONFIG_URL }}/g,
-										`${localUrl}/${VITE_PLUGIN_NAME}.json`
-									)
-							);
-						} else {
-							// Fallback if dev-server-index.html doesn't exist
-							res.end(`
-							<!DOCTYPE html>
-							<html>
-							<head>
-								<title>Vite Dev Server</title>
-							</head>
-							<body>
-								<h1>Vite Development Server</h1>
-								<p>Config URL: <a href="${localUrl}/${VITE_PLUGIN_NAME}.json">${localUrl}/${VITE_PLUGIN_NAME}.json</a></p>
-							</body>
-							</html>
-						`);
-						}
 					} else {
+						// Let Vite handle all other requests (including root and built-in endpoints)
 						next();
 					}
 				}
