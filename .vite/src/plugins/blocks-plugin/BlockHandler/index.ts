@@ -300,7 +300,10 @@ export class BlockHandler {
 				outputPath: `${destPath}/${phpFile}`,
 			}));
 
-			await this.php.processPhpFiles(phpFileInfos, shouldMinify);
+			await this.php.processFilesAndEmit(phpFileInfos, {
+				shouldMinify,
+				shouldWatch: true,
+			});
 		} catch (error) {
 			console.error(
 				`Failed to process PHP files for ${block.name}:`,

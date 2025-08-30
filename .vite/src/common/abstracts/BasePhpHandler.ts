@@ -78,62 +78,12 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 		return `<?php return ${this.convertToPhpArray(data, 0, true)};`;
 	};
 
-	// ========================================
-	// Protected Methods (for subclass usage)
-	// ========================================
-
-	/**
-	 * Process a single PHP file with default PHP options
-	 * @param sourcePath - The path to the PHP file
-	 * @param outputPath - The output path for the processed file
-	 * @param shouldMinify - Whether to minify the PHP content
-	 */
-	protected async processPhpFile(
-		sourcePath: string,
-		outputPath: string,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFileAndEmit(sourcePath, outputPath, {
-			shouldMinify,
-			shouldWatch: true,
-		});
-	}
-
-	/**
-	 * Process multiple PHP files with the same options
-	 * @param phpFiles - Array of PHP file configurations
-	 * @param shouldMinify - Whether to minify the PHP content
-	 */
-	protected async processPhpFiles(
-		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFilesAndEmit(phpFiles, {
-			shouldMinify,
-			shouldWatch: true,
-		});
-	}
-
-	/**
-	 * Handle PHP processing errors with specific context
-	 * @param fileName - The file name that failed to process
-	 * @param error - The error that occurred
-	 */
-	protected handleFileProcessingError(
-		fileName: string,
-		error: unknown
-	): void {
-		// For PHP files, we often want to silently skip files that can't be processed
-		// This maintains backward compatibility with the original PHP_Processor behavior
-		console.warn(`Failed to process PHP file ${fileName}:`, error);
-	}
-
 	/**
 	 * Generate PHP array content for block manifests
 	 * @param blocks - The blocks object containing block.json configurations.
 	 * @return A string representing the PHP array content
 	 */
-	protected generatePhpArrayContent(blocks: Record<string, any>): string {
+	public generatePhpArrayContent(blocks: Record<string, any>): string {
 		const timestamp = new Date().toISOString();
 
 		let phpContent = `<?php
@@ -151,6 +101,24 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 		phpContent += ';\n';
 
 		return phpContent;
+	}
+
+	// ========================================
+	// Protected Methods (for subclass usage)
+	// ========================================
+
+	/**
+	 * Handle PHP processing errors with specific context
+	 * @param fileName - The file name that failed to process
+	 * @param error - The error that occurred
+	 */
+	protected handleFileProcessingError(
+		fileName: string,
+		error: unknown
+	): void {
+		// For PHP files, we often want to silently skip files that can't be processed
+		// This maintains backward compatibility with the original PHP_Processor behavior
+		console.warn(`Failed to process PHP file ${fileName}:`, error);
 	}
 
 	// ========================================
