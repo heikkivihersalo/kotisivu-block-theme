@@ -41,8 +41,17 @@ class DevServer {
      */
     protected array $resolvedAssets = [];
 
-    public function __construct(string $host = '') {
+    /**
+     * Manifest resolver
+     */
+    protected ?ManifestResolver $manifest = null;
+
+    public function __construct(string $host = '', ?ManifestResolver $manifest = null) {
         $this->host = $host ?: get_site_url();
+
+        if (null !== $manifest) {
+            $this->manifest = $manifest;
+        }
     }
 
     /**
@@ -51,8 +60,10 @@ class DevServer {
     public function register(): self {
         if ($this->isConfigActive() && $this->isClientActive()) {
             add_action('wp_head', [$this, 'injectViteClient'], $this->clientHookPriority);
+            add_action('elementor/editor/before_enqueue_scripts', [$this, 'injectIntoElementorEditor']);
             add_action('init', [$this, 'prioritizeImportMapHook']);
             add_filter('body_class', [$this, 'filterBodyClass'], 999);
+            add_filter('script_module_loader_src', [$this, 'filterAssetLoaderSrc'], 999, 2);
             add_filter('script_loader_src', [$this, 'filterAssetLoaderSrc'], 999, 2);
             add_filter('style_loader_src', [$this, 'filterAssetLoaderSrc'], 999, 2);
             add_filter('script_loader_tag', [$this, 'filterAssetLoaderTags'], 999, 3);
@@ -87,29 +98,50 @@ class DevServer {
     }
 
     /**
+     * Set the config (mainly used for tests)
+     */
+    public function setConfig(array $config): self {
+        $this->config = $config;
+        return $this;
+    }
+
+    /**
      * Make a request to the Vite dev server
+     *
+     * @return array{
+     *     errors: string|null,
+     *     response: int,
+     *     data: array<string, mixed>
+     * }
      */
     protected function viteServerRequest(string $url): array {
-        $response = wp_remote_get($url, [
-            'timeout'   => 5,
-            'sslverify' => false,
-        ]);
+        // phpcs:disable WordPress.WP.AlternativeFunctions
+        $curl    = curl_init();
+        $options = [
+            CURLOPT_URL            => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 5,
+        ];
 
-        if (is_wp_error($response)) {
-            return [
-                'errors'   => $response->get_error_message(),
-                'response' => 0,
-                'data'     => [],
-            ];
+        curl_setopt_array($curl, $options);
+
+        $jsonData = curl_exec($curl);
+        $errors   = curl_error($curl) ? curl_error($curl) : null;
+        $response = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+        // phpcs:enable
+
+        $data = [];
+
+        if (null === $errors && $response >= 200 && $response < 300) {
+            $data = json_decode($jsonData, true);
         }
 
-        $code = wp_remote_retrieve_response_code($response);
-        $body = wp_remote_retrieve_body($response);
-
         return [
-            'errors'   => null,
-            'response' => $code,
-            'data'     => $code >= 200 && $code < 300 ? json_decode($body, true) : [],
+            'errors'   => $errors,
+            'response' => $response,
+            'data'     => $data,
         ];
     }
 
@@ -229,6 +261,28 @@ class DevServer {
     }
 
     /**
+     * Get block information from manifest
+     */
+    public function getBlockInfo(string $blockName): array|false {
+        if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
+            return false;
+        }
+
+        return $this->manifest->getByBlockName($blockName);
+    }
+
+    /**
+     * Check if a block exists in the manifest
+     */
+    public function hasBlock(string $blockName): bool {
+        if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
+            return false;
+        }
+
+        return $this->manifest->getByBlockName($blockName) !== false;
+    }
+
+    /**
      * Get source path for an asset
      */
     public function getSourcePath(string $filePath): string|false {
@@ -238,7 +292,24 @@ class DevServer {
             return false;
         }
 
-        // Check build map from server
+        // Check if manifest exists and resolve from the manifest
+        if (isset($this->manifest)) {
+            $manifestEntry = $this->manifest->getByFile($fileName);
+
+            if ($manifestEntry && isset($manifestEntry['src'])) {
+                return $manifestEntry['src'];
+            }
+
+            // If it's a block manifest, try resolving block assets
+            if ($this->manifest->isBlockManifest()) {
+                $blockAssetPath = $this->resolveBlockAsset($fileName);
+                if ($blockAssetPath) {
+                    return $blockAssetPath;
+                }
+            }
+        }
+
+        // If not resolved from the manifest, try resolving via server's build map
         if (isset($this->buildMap[$fileName])) {
             $buildEntry = $this->buildMap[$fileName];
             if (isset($buildEntry['src'])) {
@@ -246,7 +317,7 @@ class DevServer {
             }
         }
 
-        // Try file system resolution
+        // If not resolved from the build map, try resolving from the file system
         $fileName       = str_replace('.css', ".{$this->getConfig('css')}", $fileName);
         $fileSystemPath = "{$this->getServerPath()}/{$this->getConfig('srcDir')}/{$fileName}";
 
@@ -258,7 +329,61 @@ class DevServer {
     }
 
     /**
-     * Get relative local path for block.json
+     * Resolve block asset from block manifest
+     */
+    protected function resolveBlockAsset(string $fileName): string|false {
+        if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
+            return false;
+        }
+
+        // Try to find the block that contains this file
+        foreach ($this->manifest->getBlockNames() as $blockName) {
+            $blockData = $this->manifest->getByBlockName($blockName);
+
+            if (!$blockData) {
+                continue;
+            }
+
+            $fileProperties = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
+
+            foreach ($fileProperties as $property) {
+                if (isset($blockData[$property])) {
+                    $blockFile = $blockData[$property];
+
+                    // Remove 'file:./' prefix if present
+                    $blockFile = str_replace('file:./', '', $blockFile);
+
+                    // Check if this matches our target file
+                    if (basename($blockFile) === basename($fileName) || $blockFile === $fileName) {
+                        // Construct source path for development
+                        $srcDir = $this->getConfig('srcDir') ?: 'resources';
+                        return "{$srcDir}/blocks/{$blockName}/{$blockFile}";
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets the relative local path for block.json. This approach is based
+     * on how npm handles local paths for packages.
+     *
+     * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#wpdefinedpath
+     *
+     * @example
+     * ```
+     * $from = '/absolute/path/to/my/folder/';
+     * $to = '/absolute/path/to/my/local/render.php';
+     *
+     * echo $this->getRelativeLocalPath($from, $to);
+     * // Output: "file:./../local/render.php"
+     * ```
+     *
+     * @param string $from The path from which it needs to be relative from
+     * @param string $to The path to construct the relative path
+     * @return string
      */
     public function getRelativeLocalPath(string $from, string $to): string {
         $fromParts = explode(DIRECTORY_SEPARATOR, rtrim($from, DIRECTORY_SEPARATOR));
@@ -275,7 +400,10 @@ class DevServer {
     }
 
     /**
-     * Get file name from path
+     * Removes query parameters, base and outDir from path to get the file name
+     *
+     * @param string $path Path to get the file name from
+     * @return string|false The file name or false if no valid file name
      */
     public function getFileName(string $path): string|false {
         $fileName = preg_replace('/\?.*$/', '', $path);
@@ -308,7 +436,24 @@ class DevServer {
     }
 
     /**
-     * Get config value
+     * Get the server port
+     */
+    public function getServerPort(): string {
+        return $this->port;
+    }
+
+    /**
+     * Get the server host
+     */
+    public function getServerHost(): string {
+        return $this->host;
+    }
+
+    /**
+     * Get the vite plugin config
+     *
+     * @param string|null $key Config key to get
+     * @return array<string, mixed>|string|bool|null The plugin config
      */
     public function getConfig(?string $key = null): mixed {
         if (!isset($this->config)) {
@@ -319,7 +464,7 @@ class DevServer {
     }
 
     /**
-     * Check if path contains base
+     * Check if the path contains the base path
      */
     public function containsBase(string $path): bool {
         $base = $this->getConfig('base');
@@ -327,7 +472,7 @@ class DevServer {
     }
 
     /**
-     * Check if URL contains server base URL
+     * Check if the URL contains the server base URL
      */
     public function containsServerUrl(string $url): bool {
         $baseUrl = $this->getBaseUrl();
