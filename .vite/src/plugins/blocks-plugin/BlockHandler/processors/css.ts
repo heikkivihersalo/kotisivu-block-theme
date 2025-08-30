@@ -42,7 +42,9 @@ export class CSS extends BaseCssHandler {
 				styleFile,
 				config
 			);
-			await this.processCssAndEmit(cssContent, outputFilename);
+			await this.processFileContent(cssContent, outputFilename, {
+				shouldMinify: true,
+			});
 		} catch (error) {
 			// Skip styles that can't be processed
 			console.warn(`Failed to process style file ${styleFile}:`, error);

@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
 /**
@@ -12,33 +11,35 @@ import {
 	type FileProcessingOptions,
 	type FileProcessingResult,
 } from './BaseFileHandler';
-import { resolve } from 'node:path';
-import { existsSync } from 'node:fs';
-import {
-	FILE_EXTENSIONS,
-	FILE_NAMES,
-	WORDPRESS_STYLE_MAPPING,
-} from '../constants';
+import { WORDPRESS_STYLE_MAPPING } from '../constants';
 import type { OutputConfig } from '../types';
+import type { CssProcessor } from '../interfaces/CssProcessor';
+import { LightningCssProcessor } from '../processors/LightningCssProcessor';
+import { FilePathResolver } from '../services/FilePathResolver';
 
 /**
- * CSS processing result interface
+ * Configuration for the CSS Handler
  */
-export type CssProcessingResult = {
-	code: Uint8Array;
-	map?: Uint8Array;
-};
+export interface CssHandlerConfig {
+	cssProcessor?: CssProcessor;
+	filePathResolver?: typeof FilePathResolver;
+}
 
 /**
- * Base CSS Handler class providing common CSS processing functionality
+ * Refactored CSS Handler class with improved testability and separation of concerns
  *
- * This base class extends BaseFileHandler and adds CSS-specific processing
- * capabilities using LightningCSS. It provides methods for processing CSS content
- * and emitting CSS assets with source maps.
+ * This version uses dependency injection and composition to make the class
+ * more testable and flexible. It separates CSS processing logic, file path
+ * resolution, and asset emission concerns.
  */
 export abstract class BaseCssHandler extends BaseFileHandler {
-	constructor(context: PluginContext) {
+	protected cssProcessor: CssProcessor;
+	protected filePathResolver: typeof FilePathResolver;
+
+	constructor(context: PluginContext, config: CssHandlerConfig = {}) {
 		super(context);
+		this.cssProcessor = config.cssProcessor || new LightningCssProcessor();
+		this.filePathResolver = config.filePathResolver || FilePathResolver;
 	}
 
 	// ========================================
@@ -48,63 +49,28 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	/**
 	 * Implement the abstract method from BaseFileHandler
 	 * Process CSS file content (minification, transformation, etc.)
-	 * @param content - The CSS content to process
-	 * @param filePath - The original file path
-	 * @param options - Processing options
-	 * @returns Processed CSS content
 	 */
 	protected async processFileContent(
 		content: string,
 		filePath: string,
-		_options: FileProcessingOptions
+		options: FileProcessingOptions
 	): Promise<FileProcessingResult> {
-		if (!this.isValidCssContent(content)) {
-			throw new Error(`Invalid CSS content in file: ${filePath}`);
-		}
+		this.validateCssContent(content, filePath);
 
 		const filename = this.getFilenameWithoutExtension(filePath) + '.css';
-		const { code, map } = this.processCssContent(content, filename);
+		const processResult = await this.cssProcessor.process(
+			content,
+			filename,
+			{
+				minify: options.shouldMinify !== false,
+				sourceMap: true,
+			}
+		);
 
 		return {
-			content: code.toString(),
-			sourceMap: map?.toString(),
+			content: processResult.code.toString(),
+			sourceMap: processResult.map?.toString(),
 		};
-	}
-
-	// ========================================
-	// Public Methods (exposed to external consumers)
-	// ========================================
-
-	/**
-	 * Process a single CSS file with default CSS options
-	 * @param sourcePath - The path to the CSS file
-	 * @param outputPath - The output path for the processed file
-	 * @param shouldMinify - Whether to minify the CSS content (always true for CSS)
-	 */
-	public async processCssFile(
-		sourcePath: string,
-		outputPath: string,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFileAndEmit(sourcePath, outputPath, {
-			shouldMinify,
-			shouldWatch: true,
-		});
-	}
-
-	/**
-	 * Process multiple CSS files with the same options
-	 * @param cssFiles - Array of CSS file configurations
-	 * @param shouldMinify - Whether to minify the CSS content
-	 */
-	public async processCssFiles(
-		cssFiles: Array<{ sourcePath: string; outputPath: string }>,
-		shouldMinify: boolean = true
-	): Promise<void> {
-		await this.processFilesAndEmit(cssFiles, {
-			shouldMinify,
-			shouldWatch: true,
-		});
 	}
 
 	// ========================================
@@ -112,156 +78,66 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	// ========================================
 
 	/**
-	 * Process CSS content with LightningCSS
-	 * @param cssContent - The CSS content to process
-	 * @param filename - The filename for the CSS file (used for source maps)
-	 * @returns Processed CSS code and source map
-	 */
-	protected processCssContent(
-		cssContent: string,
-		filename: string
-	): CssProcessingResult {
-		const { code, map } = transform({
-			filename,
-			code: Buffer.from(cssContent),
-			minify: true,
-			sourceMap: true,
-		});
-
-		return {
-			code,
-			map: map || undefined,
-		};
-	}
-
-	/**
-	 * Emit CSS and source map assets using base class methods
-	 * @param code - The processed CSS code
-	 * @param map - The source map for the CSS code (optional)
-	 * @param filename - The output filename for the CSS file
+	 * Emit CSS and source map assets
 	 */
 	protected async emitCssAssets(
 		code: Uint8Array,
 		map: Uint8Array | undefined,
 		filename: string
 	): Promise<void> {
-		// Emit the CSS file
 		await this.emitAsset(filename, code);
 
-		// Emit source map if available
 		if (map) {
 			await this.emitAsset(`${filename}.map`, map.toString());
 		}
 	}
 
 	/**
-	 * Process CSS content and emit the resulting assets
-	 * @param cssContent - The CSS content to process
-	 * @param filename - The output filename for the CSS file
+	 * Find the actual style file path using the file path resolver
 	 */
-	protected async processCssAndEmit(
-		cssContent: string,
-		filename: string
-	): Promise<void> {
-		if (!cssContent.trim()) return;
+	protected findActualStylePath(
+		basePath: string,
+		fileName: string
+	): string | null {
+		return this.filePathResolver.findActualStylePath(basePath, fileName);
+	}
 
-		try {
-			const { code, map } = this.processCssContent(cssContent, filename);
-			await this.emitCssAssets(code, map, filename);
-		} catch (error) {
-			this.handleFileProcessingError(filename, error);
+	/**
+	 * Determine output filename based on WordPress conventions
+	 */
+	protected determineOutputFilename(
+		styleFile: string,
+		config: OutputConfig
+	): string {
+		const mappedName = WORDPRESS_STYLE_MAPPING[styleFile];
+		const targetFile = mappedName || styleFile;
+		return this.generateAssetFilename(targetFile, config.outputPath);
+	}
+
+	// ========================================
+	// Validation and Error Handling
+	// ========================================
+
+	/**
+	 * Validate CSS content and throw descriptive errors
+	 */
+	protected validateCssContent(content: string, filePath: string): void {
+		if (!this.isValidCssContent(content)) {
+			throw new Error(`Invalid CSS content in file: ${filePath}`);
 		}
 	}
 
 	/**
-	 * Handle CSS processing errors with consistent logging
-	 * @param filename - The filename that failed to process
-	 * @param error - The error that occurred
-	 */
-	protected handleFileProcessingError(
-		filename: string,
-		error: unknown
-	): void {
-		console.warn(`Failed to process CSS content for ${filename}:`, error);
-	}
-
-	// ========================================
-	// Validation and Utility Methods
-	// ========================================
-
-	/**
 	 * Check if CSS content is valid for processing
-	 * @param cssContent - The CSS content to validate
-	 * @returns True if the content can be processed
 	 */
 	protected isValidCssContent(cssContent: string): boolean {
 		return typeof cssContent === 'string' && cssContent.trim().length > 0;
 	}
 
 	/**
-	 * Find the actual style file path considering different extensions and filename patterns
-	 * Supports .css, .scss, .sass, .less extensions
+	 * Handle CSS processing errors with consistent logging
 	 */
-	protected findActualStylePath = (
-		basePath: string,
-		fileName: string
-	): string | null => {
-		// If the file exists as specified, return it
-		const originalPath = resolve(basePath, fileName);
-		if (existsSync(originalPath)) {
-			return originalPath;
-		}
-
-		// Try different extensions on the original filename
-		const extensions = FILE_EXTENSIONS.STYLES;
-		const nameWithoutExt = fileName.replace(/\.(css|scss|sass|less)$/, '');
-
-		for (const ext of extensions) {
-			const testPath = resolve(basePath, nameWithoutExt + ext);
-			if (existsSync(testPath)) {
-				return testPath;
-			}
-		}
-
-		// Try common WordPress block filename patterns
-		const commonPatterns: string[] = [];
-
-		// If looking for index.css (editor styles), try editor.*
-		if (fileName === FILE_NAMES.DEFAULT_STYLE_ENTRY) {
-			commonPatterns.push('editor');
-		}
-
-		// If looking for style-index.css (frontend styles), try style.*
-		if (fileName === FILE_NAMES.STYLE_INDEX) {
-			commonPatterns.push('style');
-		}
-
-		// Try the common patterns with all extensions
-		for (const pattern of commonPatterns) {
-			for (const ext of extensions) {
-				const testPath = resolve(basePath, pattern + ext);
-				if (existsSync(testPath)) {
-					return testPath;
-				}
-			}
-		}
-
-		return null;
-	};
-
-	/**
-	 * Determine output filename based on WordPress conventions
-	 * @param styleFile - The original style file name
-	 * @param config - The output configuration
-	 * @return The determined output file name
-	 */
-	protected determineOutputFilename = (
-		styleFile: string,
-		config: OutputConfig
-	): string => {
-		const mappedName = WORDPRESS_STYLE_MAPPING[styleFile];
-		const targetFile = mappedName || styleFile;
-
-		return this.generateAssetFilename(targetFile, config.outputPath);
-	};
+	protected handleCssProcessingError(filename: string, error: unknown): void {
+		console.warn(`Failed to process CSS content for ${filename}:`, error);
+	}
 }
