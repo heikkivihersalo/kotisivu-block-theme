@@ -45,15 +45,24 @@ pnpm dev
 npm run dev
 ```
 
-### 2. Configure Environment (Optional)
+### 2. Configure Environment
 
-Create a `.env` file based on `example.env`:
+Create a `.env` file based on `example.env` and configure your development server:
 
 ```bash
 # Vite Development Server Configuration
-VITE_DEV_SERVER_HOST="http://localhost"
-VITE_DEV_SERVER_PORT="5173"
+VITE_DEV_SERVER_HOST="http://localhost"    # Your local WordPress site URL
+VITE_DEV_SERVER_PORT="5173"                # Vite dev server port
 ```
+
+**For different local development environments:**
+
+- **Local by Flywheel**: `VITE_DEV_SERVER_HOST="https://your-site.local"`
+- **Laravel Valet**: `VITE_DEV_SERVER_HOST="http://your-site.test"`
+- **DDEV**: `VITE_DEV_SERVER_HOST="http://your-site.ddev.site"`
+- **Standard localhost**: `VITE_DEV_SERVER_HOST="http://localhost"`
+
+> **Important**: The `VITE_DEV_SERVER_HOST` should match your WordPress site's URL for proper HMR functionality.
 
 ### 3. Development Workflow
 
@@ -67,33 +76,46 @@ VITE_DEV_SERVER_PORT="5173"
 
 ### Vite Configuration
 
-The HMR setup is configured in your `vite.config.js`:
+The HMR setup reads environment variables and configures the server automatically in your `vite.config.js`:
 
 ```javascript
-export default defineConfig({
-  // ... your existing config
-  server: {
-    host: 'localhost',
-    port: 5173,
-    strictPort: true,
-    cors: true,
-    fs: {
-      allow: ['..', '.'],
+export default defineConfig(({ mode }) => {
+  // Load environment variables
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  // Parse dev server configuration from environment
+  const devServerHost = env.VITE_DEV_SERVER_HOST || 'http://localhost';
+  const devServerPort = parseInt(env.VITE_DEV_SERVER_PORT || '5173', 10);
+  
+  return {
+    // ... your existing config
+    server: {
+      host: new URL(devServerHost).hostname,
+      port: devServerPort,
+      strictPort: true,
+      cors: true,
+      fs: {
+        allow: ['..', '.'],
+      },
     },
-  },
+  };
 });
 ```
 
 ### PHP Configuration
 
-The DevServer is automatically registered when `WP_DEBUG` is true. You can customize it in `bootstrap/theme.php`:
+The DevServer is automatically registered when `WP_DEBUG` is true and reads the same environment variables. It's configured in `app/Providers/ViteDevServerProvider.php`:
 
 ```php
-$devServer = new DevServer();
-$devServer
-    ->setHost('http://localhost')
-    ->setPort(5173)
-    ->register();
+protected function getDevServerHost(): string {
+    // Allow override via environment or use site URL
+    return $_ENV['VITE_DEV_SERVER_HOST'] ?? get_site_url();
+}
+
+protected function getDevServerPort(): int {
+    // Allow override via environment or use default
+    return (int) ($_ENV['VITE_DEV_SERVER_PORT'] ?? 5173);
+}
 ```
 
 ## How Assets Are Resolved
@@ -101,9 +123,18 @@ $devServer
 1. **Production**: WordPress serves built assets from the `build/` directory
 2. **Development with HMR**: 
    - DevServer detects Vite is running
-   - Asset URLs are rewritten to point to `http://localhost:5173`
+   - Asset URLs are rewritten to point to the dev server (HTTP or HTTPS based on config)
    - Scripts are converted to ES modules
    - CSS is served via JavaScript imports for hot reloading
+
+## SSL Configuration
+
+The setup automatically detects if you're using HTTPS and configures SSL accordingly:
+
+- **HTTPS**: When `VITE_DEV_SERVER_HOST` starts with `https://`, the `@vitejs/plugin-basic-ssl` plugin is automatically enabled
+- **HTTP**: When using `http://`, no SSL is configured
+- **Self-signed certificates**: The basic SSL plugin generates self-signed certificates automatically
+- **WordPress integration**: The PHP DevServer disables SSL verification for local development to avoid certificate errors
 
 ## Debugging
 
@@ -111,13 +142,27 @@ $devServer
 
 - Look for `vite-dev-server-is-active` class on the `<body>` element
 - Check browser console for Vite client connection messages
-- Verify `http://localhost:5173/vite-wordpress.json` returns configuration
+- Verify your dev server URL returns configuration (e.g., `https://your-site.local:5173/vite-wordpress.json`)
+- Check console output when starting Vite: `🚀 Dev server will run at: [URL]`
 
 ### Common Issues
 
-1. **Port conflicts**: Change port in both Vite config and environment variables
-2. **CORS issues**: Ensure `cors: true` in Vite server config
-3. **Asset resolution**: Check that `base` path matches your WordPress setup
+1. **Environment Variable Mismatch**: 
+   - Ensure `VITE_DEV_SERVER_HOST` in `.env` matches your WordPress site URL
+   - WordPress site at `https://my-site.local` requires `VITE_DEV_SERVER_HOST="https://my-site.local"`
+
+2. **Port conflicts**: Change port in `VITE_DEV_SERVER_PORT` environment variable
+
+3. **CORS issues**: 
+   - Ensure your local development environment allows cross-origin requests
+   - For Local by Flywheel with SSL, use `https://` in `VITE_DEV_SERVER_HOST`
+
+4. **Asset resolution**: Check that both PHP and JavaScript configs use the same host/port
+
+5. **SSL/Certificate issues**: 
+   - For HTTPS sites, the `@vitejs/plugin-basic-ssl` plugin automatically generates self-signed certificates
+   - If you see SSL errors, ensure the plugin is installed: `pnpm add -D @vitejs/plugin-basic-ssl`
+   - The PHP DevServer automatically disables SSL verification for local development
 
 ## File Structure
 
