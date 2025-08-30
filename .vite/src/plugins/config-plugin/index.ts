@@ -24,22 +24,30 @@ export function ConfigPlugin(pluginConfig: ViteWordPressConfig): Plugin {
 	const {
 		build: { outDir, minify = 'esbuild', sourcemap = false },
 		terserOptions = {},
+		server = {},
+		resolve = {},
 	} = pluginConfig;
 
 	return {
 		name: 'vite-plugin-gutenberg-config',
 
-		config: () => {
-			return config({
-				build: {
-					outDir: outDir
-						? (FilePathResolver.normalizePath(outDir) ?? undefined)
-						: undefined,
-					minify,
-					sourcemap,
+		config: (_, { mode }) => {
+			return config(
+				{
+					build: {
+						outDir: outDir
+							? (FilePathResolver.normalizePath(outDir) ??
+								undefined)
+							: undefined,
+						minify,
+						sourcemap,
+					},
+					terserOptions,
+					server,
+					resolve,
 				},
-				terserOptions,
-			});
+				mode
+			);
 		},
 
 		resolveId(id: string) {
