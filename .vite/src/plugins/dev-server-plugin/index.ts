@@ -38,10 +38,7 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 		 * Configure Server Hook.
 		 */
 		configureServer(server: ViteDevServer) {
-			const publicDir =
-				path.basename(process.cwd()) === 'src'
-					? path.join(process.cwd(), '..', 'public')
-					: process.cwd();
+			const publicDir = path.join(process.cwd(), 'public');
 			const indexUrls = [
 				'/index.html',
 				path.join(server.config.base, 'index.html'),
@@ -60,10 +57,32 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 					: 'http';
 			};
 
+			const getHost = (req: IncomingMessage, server: ViteDevServer) => {
+				// First try to get host from request headers
+				if (req.headers.host) {
+					return req.headers.host;
+				}
+
+				// Fallback to server configuration
+				const serverHost = server.config.server?.host;
+				const serverPort = server.config.server?.port || 5173;
+
+				if (
+					serverHost &&
+					serverHost !== '0.0.0.0' &&
+					serverHost !== true
+				) {
+					return `${serverHost}:${serverPort}`;
+				}
+
+				// Final fallback
+				return 'localhost:5173';
+			};
+
 			server.middlewares.use(
 				async (req: IncomingMessage, res: ServerResponse, next) => {
 					const protocol = getProtocol(req);
-					const host = req.headers.host || 'localhost:5173';
+					const host = getHost(req, server);
 					const localUrl = `${protocol}://${host}`;
 
 					if (req.url && req.url === `/${VITE_PLUGIN_NAME}.json`) {
@@ -91,6 +110,7 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 							publicDir,
 							'dev-server-index.html'
 						);
+
 						if (fs.existsSync(indexPath)) {
 							res.end(
 								fs
