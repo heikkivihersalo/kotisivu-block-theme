@@ -59,7 +59,7 @@ export class JS extends BaseScriptHandler {
 	 * @param sourcemap - The source map configuration
 	 * @return {Promise<void>}
 	 */
-	async processScript(
+	private async process(
 		script: string,
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
@@ -145,7 +145,7 @@ export class JS extends BaseScriptHandler {
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
 		for (const script of scripts) {
-			await this.processScript(script, config, sourcemap);
+			await this.process(script, config, sourcemap);
 		}
 	}
 }
