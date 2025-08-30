@@ -1,10 +1,22 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { wp } from './.vite/index.ts';
 
 export default defineConfig(({ mode }) => {
+	// Load environment variables
+	const env = loadEnv(mode, process.cwd(), '');
+
+	// Get devServer configuration from environment
+	const devServerHost = env.VITE_DEV_SERVER_HOST || 'http://localhost';
+	const devServerPort = parseInt(env.VITE_DEV_SERVER_PORT || '5173', 10);
+	const devServerUrl = `${devServerHost}:${devServerPort}`;
+
 	return {
 		plugins: [
 			wp({
+				devServer: {
+					devServerUrl,
+					css: 'css',
+				},
 				build: {
 					outDir: 'build',
 					sourcemap: 'linked', // Enable source maps for easier debugging

@@ -81,7 +81,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		base: '/',
 		srcDir: 'resources',
 		outDir,
-		css: 'scss',
+		css: 'css',
 		manifest: true,
 		...devServer, // Spread devServer config (host, port, devServerUrl)
 	});
