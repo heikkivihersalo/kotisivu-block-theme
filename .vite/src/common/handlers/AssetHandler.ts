@@ -1,8 +1,6 @@
 /**
  * External dependencies
  */
-import { build as esBuild } from 'esbuild';
-import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
 /**
@@ -14,9 +12,8 @@ import {
 	FileEmitter,
 } from '../utils/index.ts';
 
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants.ts';
-import { scssPlugin } from '../plugins/scssPlugin.ts';
-import { ReactShimPlugin } from '../plugins/reactShimPlugin.ts';
+import { BaseCssHandler } from '../../abstracts/BaseCssHandler.ts';
+import { BaseScriptHandler } from '../../abstracts/BaseScriptHandler.ts';
 
 import type { DiscoveredAssetInfo } from '../types/index.ts';
 
@@ -24,14 +21,7 @@ import type { DiscoveredAssetInfo } from '../types/index.ts';
  * Asset Handler class for handling asset file processing with ESBuild
  * This is specifically designed for the assets plugin and generic asset processing
  */
-export class AssetHandler {
-	/**
-	 * Rollup plugin context
-	 * @private
-	 * @type {PluginContext}
-	 */
-	private context: PluginContext;
-
+export class AssetHandler extends BaseCssHandler {
 	/**
 	 * Output directory for processed assets
 	 * @private
@@ -47,11 +37,11 @@ export class AssetHandler {
 	private dependencies: string[];
 
 	/**
-	 * WordPress dependencies for the asset
+	 * Script handler for JavaScript processing
 	 * @private
-	 * @type {string[]}
+	 * @type {BaseScriptHandler}
 	 */
-	private wpDependencies: string[];
+	private scriptHandler: BaseScriptHandler;
 
 	/**
 	 * Constructor for AssetHandler
@@ -65,10 +55,10 @@ export class AssetHandler {
 		outputDirectory: string;
 		dependencies: string[];
 	}) {
-		this.context = context;
+		super(context);
 		this.outputDirectory = outputDirectory;
 		this.dependencies = dependencies;
-		this.wpDependencies = [];
+		this.scriptHandler = new (class extends BaseScriptHandler {})(context);
 	}
 
 	/**
@@ -81,58 +71,52 @@ export class AssetHandler {
 		assetInfo: DiscoveredAssetInfo,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		this.context.addWatchFile(assetInfo.sourcePath);
+		try {
+			// Use script handler for building
+			const result = await this.scriptHandler.buildScript({
+				entryPoint: assetInfo.sourcePath,
+				outdir: this.outputDirectory,
+				sourcemap,
+			});
 
-		const result = await esBuild({
-			entryPoints: [assetInfo.sourcePath],
-			outdir: this.outputDirectory,
-			platform: ESBUILD_CONFIG.PLATFORM,
-			bundle: true,
-			write: false,
-			metafile: true,
-			sourcemap,
-			loader: ESBUILD_CONFIG.LOADER_MAP,
-			target: ESBUILD_CONFIG.TARGET,
-			jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
-			jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
-			jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
-			minify: process.env.NODE_ENV === 'production',
-			plugins: [scssPlugin, ReactShimPlugin(this.wpDependencies)],
-			outExtension: { '.js': '.js', '.css': '.css' },
-		});
+			// Filter non-empty dependencies
+			const configDeps = this.dependencies.filter(
+				(dep) => dep.trim() !== ''
+			);
+			const allDependencies = [...configDeps, ...result.wpDependencies];
 
-		const jsContent =
-			result.outputFiles?.find((f) => f.path.endsWith('.js'))?.text || '';
+			// Generate PHP content
+			const phpContent = generatePhpAssetFile(
+				allDependencies,
+				generateFileHash(result.jsContent)
+			);
 
-		const cssContent =
-			result.outputFiles?.find((f) => f.path.endsWith('.css'))?.text ||
-			'';
-
-		const jsSourceMapFile = result.outputFiles?.find((f) =>
-			f.path.endsWith('.js.map')
-		);
-
-		const configDeps = this.dependencies.filter((dep) => dep.trim() !== '');
-		const phpContent = generatePhpAssetFile(
-			[...configDeps, ...this.wpDependencies],
-			generateFileHash(jsContent)
-		);
-
-		await this.emitScriptAsset(assetInfo, jsContent, jsSourceMapFile);
-		await this.emitCssAsset(assetInfo, cssContent);
-		await this.emitPhpAsset(assetInfo, phpContent);
+			// Emit assets
+			await this.emitScriptAsset(
+				assetInfo,
+				result.jsContent,
+				result.jsSourceMap
+			);
+			await this.emitCssAsset(assetInfo, result.cssContent || '');
+			await this.emitPhpAsset(assetInfo, phpContent);
+		} catch (error) {
+			console.warn(
+				`Failed to process asset ${assetInfo.sourcePath}:`,
+				error
+			);
+		}
 	}
 
 	/**
 	 * Emit JavaScript file and source map
 	 * @param assetInfo - Information about the asset
 	 * @param jsContent - The JavaScript content
-	 * @param jsSourceMapFile - The source map file (if available)
+	 * @param jsSourceMap - The source map content (if available)
 	 */
 	async emitScriptAsset(
 		assetInfo: DiscoveredAssetInfo,
 		content: string,
-		sourceMap?: any
+		sourceMap?: string
 	): Promise<void> {
 		// Emit JavaScript file
 		await FileEmitter.safeEmitFile(this.context, {
@@ -146,7 +130,7 @@ export class AssetHandler {
 			await FileEmitter.safeEmitFile(this.context, {
 				type: 'asset',
 				fileName: `${assetInfo.outputPath}.js.map`,
-				source: sourceMap.text,
+				source: sourceMap,
 			});
 		}
 	}
@@ -177,50 +161,9 @@ export class AssetHandler {
 		assetInfo: DiscoveredAssetInfo,
 		content: string
 	): Promise<void> {
-		if (!content.trim()) return;
+		if (!this.isValidCssContent(content)) return;
 
-		try {
-			const styleFileName = `${assetInfo.outputPath}.css`;
-			const { code, map } = this.processCssContent(
-				content,
-				styleFileName
-			);
-
-			// Emit CSS file
-			await FileEmitter.safeEmitFile(this.context, {
-				type: 'asset',
-				fileName: styleFileName,
-				source: code.toString(),
-			});
-
-			// Emit CSS source map if available
-			if (map) {
-				await FileEmitter.safeEmitFile(this.context, {
-					type: 'asset',
-					fileName: `${styleFileName}.map`,
-					source: map.toString(),
-				});
-			}
-		} catch (error) {
-			console.warn(
-				`Failed to process CSS content for ${assetInfo.outputPath}:`,
-				error
-			);
-		}
-	}
-
-	/**
-	 * Process CSS content with LightningCSS
-	 * @param content - The CSS content to process
-	 * @param filename - The output filename for the CSS file
-	 * @returns Processed CSS code and source map
-	 */
-	private processCssContent(content: string, filename: string) {
-		return transform({
-			filename,
-			code: Buffer.from(content),
-			minify: true,
-			sourceMap: true,
-		});
+		const styleFileName = `${assetInfo.outputPath}.css`;
+		await this.processCssAndEmit(content, styleFileName);
 	}
 }

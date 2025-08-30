@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { transform } from 'lightningcss';
 import type { PluginContext } from 'rollup';
 
 /**
@@ -12,8 +11,8 @@ import {
 	determineOutputFilename,
 	readStylesheet,
 } from '../../../utils';
-import type { OutputConfig, EmittedAsset } from '../../../types';
-import { FileEmitter } from '../../../utils/vite/FileEmitter';
+import type { OutputConfig } from '../../../types';
+import { BaseCssHandler } from '../../../../abstracts/BaseCssHandler';
 
 /**
  * CSS Processor utility for handling CSS file processing with LightningCSS
@@ -22,63 +21,13 @@ import { FileEmitter } from '../../../utils/vite/FileEmitter';
  * providing methods for processing individual files, string content, and
  * handling CSS transformations with proper source maps.
  */
-export class CSS_Processor {
-	public context: PluginContext;
-
+export class CSS_Processor extends BaseCssHandler {
 	constructor({ context }: { context: PluginContext }) {
-		this.context = context;
-	}
-
-	/**
-	 * Process CSS content with LightningCSS
-	 * @param cssContent - The CSS content to process
-	 * @param outputFilename - The output filename for the CSS file
-	 * @returns Processed CSS code and source map
-	 */
-	private processCssContent(cssContent: string, outputFilename: string) {
-		return transform({
-			filename: outputFilename,
-			code: Buffer.from(cssContent),
-			minify: true,
-			sourceMap: true,
-		});
-	}
-
-	/**
-	 * Emit CSS and source map assets
-	 * @param code - The processed CSS code
-	 * @param map - The source map for the CSS code
-	 * @param outputFilename - The output filename for the CSS file
-	 */
-	private async emitAssets(
-		code: Uint8Array,
-		map: Uint8Array | undefined,
-		outputFilename: string
-	): Promise<void> {
-		// Emit the CSS file
-		const cssAsset: EmittedAsset = {
-			type: 'asset',
-			fileName: outputFilename,
-			source: code,
-		};
-
-		await FileEmitter.safeEmitFile(this.context, cssAsset);
-
-		// Emit the source map if available
-		if (map) {
-			const mapAsset: EmittedAsset = {
-				type: 'asset',
-				fileName: `${outputFilename}.map`,
-				source: map.toString(),
-			};
-
-			await FileEmitter.safeEmitFile(this.context, mapAsset);
-		}
+		super(context);
 	}
 
 	/**
 	 * Process CSS from a string content
-	 * @param pluginContext - The Rollup plugin context
 	 * @param cssContent - The CSS content to process
 	 * @param outputFilename - The output filename for the CSS file
 	 */
@@ -86,19 +35,7 @@ export class CSS_Processor {
 		cssContent: string,
 		outputFilename: string
 	): Promise<void> {
-		try {
-			const { code, map } = this.processCssContent(
-				cssContent,
-				outputFilename
-			);
-			await this.emitAssets(code, map || undefined, outputFilename);
-		} catch (error) {
-			// Skip styles that can't be processed
-			console.warn(
-				`Failed to process CSS content for ${outputFilename}:`,
-				error
-			);
-		}
+		await this.processCssAndEmit(cssContent, outputFilename);
 	}
 
 	/**
