@@ -48,9 +48,25 @@ export class CSS extends BaseCssHandler {
 				styleFile,
 				config
 			);
-			await this.processFileContent(cssContent, outputFilename, {
-				shouldMinify: true,
-			});
+
+			const processResult = await this.processFileContent(
+				cssContent,
+				outputFilename,
+				{
+					shouldMinify: true,
+				}
+			);
+
+			// Emit the processed CSS content
+			await this.emitAsset(outputFilename, processResult.content);
+
+			// Emit source map if available
+			if (processResult.sourceMap) {
+				await this.emitAsset(
+					`${outputFilename}.map`,
+					processResult.sourceMap
+				);
+			}
 		} catch (error) {
 			// Skip styles that can't be processed
 			console.warn(`Failed to process style file ${styleFile}:`, error);
