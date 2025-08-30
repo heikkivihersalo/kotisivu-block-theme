@@ -22,7 +22,8 @@ describe('Block Build Process', () => {
 	const REQUIRED_BLOCK_FILES = [
 		'block.json', // WordPress block configuration
 		'index.js', // Editor JavaScript bundle
-		'index.css', // Combined editor and frontend styles
+		'index.css', // Editor styles
+		'style-index.css', // Frontend styles
 		'index.asset.php', // WordPress asset dependencies
 	];
 
