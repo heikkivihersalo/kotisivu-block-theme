@@ -65,9 +65,9 @@ export class AssetHandler {
 	}) {
 		this.outputDirectory = outputDirectory;
 		this.dependencies = dependencies;
-		this.scriptHandler = new JS({ context });
-		this.styleHandler = new CSS({ context });
-		this.phpHandler = new PHP({ context });
+		this.scriptHandler = new JS({ context, config: { outputDirectory } });
+		this.styleHandler = new CSS({ context, config: { outputDirectory } });
+		this.phpHandler = new PHP({ context, config: { outputDirectory } });
 	}
 
 	/**

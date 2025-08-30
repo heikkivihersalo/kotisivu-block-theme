@@ -62,8 +62,8 @@ export class BlockHandler {
 
 		// Initialize processors
 		this.css = new CSS({ context, config: { outputDirectory } });
-		this.js = new JS({ context });
-		this.php = new PHP({ context });
+		this.js = new JS({ context, config: { outputDirectory } });
+		this.php = new PHP({ context, config: { outputDirectory } });
 		this.fileEmitter = new FileEmitter(outputDirectory);
 	}
 
