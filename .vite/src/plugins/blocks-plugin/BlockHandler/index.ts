@@ -229,10 +229,6 @@ export class BlockHandler {
 						this.context.addWatchFile(filePath);
 					}
 				});
-
-				console.log(
-					`👀 Watching block: ${block.name} at ${block.path}`
-				);
 			} catch (error) {
 				console.warn(
 					`⚠️  Could not add watch for block ${block.name}:`,
