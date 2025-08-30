@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { wrapArray } from '../../../../src/common/utils/array/wrapArray.ts';
+import { wrapArray } from '../../../../src/common/utils/wrapArray.ts';
 
 describe('wrapArray', () => {
 	it('should return the same array when input is already an array', () => {

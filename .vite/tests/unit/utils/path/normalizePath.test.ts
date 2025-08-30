@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { sep } from 'node:path';
-import { normalizePath } from '../../../../src/common/utils/path/normalizePath.ts';
+import { normalizePath } from '../../../../src/common/utils/normalizePath.ts';
 
 describe('normalizePath', () => {
 	it('should return null for null/undefined input', () => {

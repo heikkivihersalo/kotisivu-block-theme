@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateVersionFromFile } from '../../../../src/common/utils/version/generateVersionFromFile.ts';
+import { generateVersionFromFile } from '../../../../src/common/utils/generateVersionFromFile.ts';
 
 describe('generateVersionFromFile', () => {
 	it('should extract version hash from filenames with separators', () => {

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { readStylesheet } from '../../../../src/common/utils/file/readStylesheet.ts';
+import { readStylesheet } from '../../../../src/common/utils/readStylesheet.ts';
 
 describe('readStylesheet', () => {
 	let tempDir: string;

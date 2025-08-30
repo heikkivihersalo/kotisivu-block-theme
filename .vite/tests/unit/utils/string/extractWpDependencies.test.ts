@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractWpDependencies } from '../../../../src/common/utils/string/extractWpDependencies.ts';
+import { extractWpDependencies } from '../../../../src/common/utils/extractWpDependencies.ts';
 import type {
 	AssetInfo,
 	ChunkInfo,
