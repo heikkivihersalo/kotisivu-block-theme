@@ -33,10 +33,36 @@ export class CSS extends BaseCssHandler {
 	): Promise<void> {
 		if (!this.isValidFileContent(content)) return;
 
+		// Check if content is empty or just whitespace
+		if (!content || content.trim().length === 0) {
+			console.warn(
+				`Empty CSS content for ${assetInfo.outputPath}, skipping processing`
+			);
+			return;
+		}
+
+		// Process CSS content (minification, transformation, etc.)
+		const result = await this.processFileContent(
+			content,
+			`${assetInfo.outputPath}.css`,
+			{
+				shouldMinify: process.env.NODE_ENV === 'production',
+			}
+		);
+
 		await FileEmitter.safeEmitFile(this.context, {
 			type: 'asset',
 			fileName: `${assetInfo.outputPath}.css`,
-			source: content,
+			source: result.content,
 		});
+
+		// Emit source map if available
+		if (result.sourceMap) {
+			await FileEmitter.safeEmitFile(this.context, {
+				type: 'asset',
+				fileName: `${assetInfo.outputPath}.css.map`,
+				source: result.sourceMap,
+			});
+		}
 	}
 }

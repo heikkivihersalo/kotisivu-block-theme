@@ -55,6 +55,17 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 		filePath: string,
 		options: FileProcessingOptions
 	): Promise<FileProcessingResult> {
+		// Skip processing if content is empty or invalid
+		if (!this.isValidCssContent(content)) {
+			console.warn(
+				`Empty or invalid CSS content in file: ${filePath}, skipping processing`
+			);
+			return {
+				content: '',
+				sourceMap: undefined,
+			};
+		}
+
 		this.validateCssContent(content, filePath);
 
 		const filename = this.getFilenameWithoutExtension(filePath) + '.css';
@@ -131,7 +142,7 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	 * Check if CSS content is valid for processing
 	 */
 	protected isValidCssContent(cssContent: string): boolean {
-		return typeof cssContent === 'string' && cssContent.trim().length > 0;
+		return typeof cssContent === 'string' && cssContent.trim().length >= 0;
 	}
 
 	/**
