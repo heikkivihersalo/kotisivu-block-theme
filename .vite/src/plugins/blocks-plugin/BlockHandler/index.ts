@@ -1,12 +1,17 @@
 /**
  * External dependencies
  */
-import { statSync } from 'node:fs';
+import { statSync, readdirSync, readFileSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
 import { existsSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 import type { ResolvedConfig } from 'vite';
+
+/**
+ * Shared dependencies
+ */
+import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../common/constants.ts';
 
 /**
  * Internal dependencies
@@ -15,14 +20,13 @@ import { CSS, JS, PHP } from './processors';
 import {
 	normalizePath,
 	generateSourcePath,
-	findBlocksRecursively,
-	generateOutputConfig,
 	FileEmitter,
 } from '../../../common/utils';
 import type {
 	OutputConfig,
 	BlockInfo,
 	ViteBlocksPluginConfig,
+	WordPressBlockJSON,
 } from '../../../common/types';
 
 /**
@@ -99,7 +103,7 @@ export class BlockHandler {
 				const stat = statSync(fullSourcePath);
 				if (!stat.isDirectory()) continue;
 
-				const foundBlocks = findBlocksRecursively(
+				const foundBlocks = this.findBlocksRecursively(
 					fullSourcePath,
 					this.pwd,
 					0
@@ -328,7 +332,7 @@ export class BlockHandler {
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
 		// Generate output configuration
-		const config = generateOutputConfig(
+		const config = this.generateOutputConfig(
 			block.path,
 			block.name,
 			block.outputPath,
@@ -430,4 +434,130 @@ export class BlockHandler {
 			source: phpContent,
 		});
 	}
+
+	/**
+	 * Helper function to safely parse block.json content
+	 */
+	private parseBlockJson(filePath: string): WordPressBlockJSON | null {
+		try {
+			const content = readFileSync(filePath, 'utf-8');
+			return JSON.parse(content) as WordPressBlockJSON;
+		} catch {
+			return null;
+		}
+	}
+
+	/**
+	 * Process a single directory item during block discovery
+	 */
+	private processDirectoryItem(
+		itemPath: string,
+		item: string,
+		dirPath: string,
+		rootPath: string,
+		depth: number
+	): BlockInfo[] {
+		try {
+			const stat = statSync(itemPath);
+
+			if (stat.isDirectory() && !this.shouldSkipDirectory(item)) {
+				return this.findBlocksRecursively(
+					itemPath,
+					rootPath,
+					depth + 1
+				);
+			}
+
+			if (item === FILE_NAMES.BLOCK_CONFIG) {
+				const blockJson = this.parseBlockJson(itemPath);
+				return blockJson
+					? [
+							{
+								path: dirPath,
+								blockJson,
+								name: this.extractBlockName(dirPath),
+							},
+						]
+					: [];
+			}
+		} catch {
+			// Silently skip inaccessible items
+		}
+
+		return [];
+	}
+
+	/**
+	 * Recursively find block.json files in a directory with depth control
+	 */
+	private findBlocksRecursively(
+		dirPath: string,
+		rootPath: string,
+		depth: number = 0
+	): BlockInfo[] {
+		// Prevent infinite recursion
+		if (depth > DISCOVERY_CONFIG.MAX_RECURSION_DEPTH) {
+			return [];
+		}
+
+		try {
+			const items = readdirSync(dirPath);
+			return items.flatMap((item) =>
+				this.processDirectoryItem(
+					join(dirPath, item),
+					item,
+					dirPath,
+					rootPath,
+					depth
+				)
+			);
+		} catch {
+			return [];
+		}
+	}
+	/**
+	 * Check if a directory should be skipped during block discovery
+	 * @param dirPath - The directory path to check
+	 * @return true if the directory should be skipped
+	 */
+	private shouldSkipDirectory(dirPath: string): boolean {
+		const dirName = dirPath.split(/[/\\]/).pop() || '';
+		return (
+			DISCOVERY_CONFIG.SKIP_DIRECTORIES.includes(dirName) ||
+			dirName.startsWith('.')
+		);
+	}
+
+	private extractBlockName(dirPath: string): string {
+		const parts = dirPath.split(/[/\\]/);
+		return parts[parts.length - 1] || 'unknown';
+	}
+
+	/**
+	 * Generate output configuration for block assets
+	 * @param blockPath - Path to the block directory
+	 * @param blockName - Name of the block
+	 * @param customOutputPath - Optional custom output path for assets
+	 * @param outputDirectory - Output directory
+	 */
+	private generateOutputConfig = (
+		blockPath: string,
+		blockName: string,
+		customOutputPath?: string,
+		outputDirectory = 'dist'
+	): OutputConfig => {
+		if (!blockPath) throw new Error('blockPath is required');
+		if (!blockName) throw new Error('blockName is required');
+		if (!outputDirectory) throw new Error('outputDirectory is required');
+
+		// Use custom output path if provided, otherwise use block name
+		const outputPath = customOutputPath || blockName;
+		const blockOutputDir = resolve(outputDirectory, outputPath);
+
+		return {
+			basePath: blockPath,
+			blockOutputDir,
+			outputPath,
+		};
+	};
 }
