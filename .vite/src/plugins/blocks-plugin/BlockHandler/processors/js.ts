@@ -6,13 +6,6 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import {
-	findActualFilePath,
-	registerBundledDependencies,
-	extractFilenameWithoutExtension,
-	generateAssetFilename,
-} from '../../../../common/utils/index';
-
 import { BaseScriptHandler } from '../../../../common/abstracts/BaseScriptHandler';
 import type { OutputConfig } from '../../../../common/types/index';
 
@@ -64,7 +57,10 @@ export class JS extends BaseScriptHandler {
 		config: OutputConfig,
 		sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false
 	): Promise<void> {
-		const actualScriptPath = findActualFilePath(config.basePath, script);
+		const actualScriptPath = this.findActualFilePath(
+			config.basePath,
+			script
+		);
 		if (!actualScriptPath) return;
 
 		try {
@@ -80,7 +76,7 @@ export class JS extends BaseScriptHandler {
 
 			// Register bundled dependencies for file watching (block-specific functionality)
 			if (result.metafile) {
-				registerBundledDependencies(
+				this.registerBundledDependencies(
 					this.context,
 					result.metafile,
 					script
@@ -88,12 +84,12 @@ export class JS extends BaseScriptHandler {
 			}
 
 			// Generate output file names
-			const filename = extractFilenameWithoutExtension(script);
-			const scriptFileName = generateAssetFilename(
+			const filename = this.extractFilenameWithoutExtension(script);
+			const scriptFileName = this.generateAssetFilename(
 				script,
 				config.outputPath
 			);
-			const assetFileName = generateAssetFilename(
+			const assetFileName = this.generateAssetFilename(
 				`${filename}.asset.php`,
 				config.outputPath
 			);
@@ -107,7 +103,7 @@ export class JS extends BaseScriptHandler {
 
 			// Emit CSS assets if available
 			if (result.cssContent) {
-				const cssFileName = generateAssetFilename(
+				const cssFileName = this.generateAssetFilename(
 					`${filename}.css`,
 					config.outputPath
 				);

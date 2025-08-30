@@ -38,6 +38,11 @@ export const WORDPRESS_CONFIG = {
 	JSX_FRAGMENT: 'wp.element.Fragment',
 } as const;
 
+export const WORDPRESS_STYLE_MAPPING: Record<string, string> = {
+	'editor.css': 'index.css',
+	'style.css': 'style-index.css',
+};
+
 /**
  * ESBuild configuration for consistent builds
  */

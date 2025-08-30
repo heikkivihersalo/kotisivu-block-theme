@@ -6,11 +6,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import {
-	findActualStylePath,
-	determineOutputFilename,
-	readStylesheet,
-} from '../../../../common/utils';
+import { readStylesheet } from '../../../../common/utils';
 import type { OutputConfig } from '../../../../common/types';
 import { BaseCssHandler } from '../../../../common/abstracts/BaseCssHandler';
 
@@ -32,14 +28,20 @@ export class CSS extends BaseCssHandler {
 	 * @param config - The output configuration
 	 */
 	async processStyle(styleFile: string, config: OutputConfig): Promise<void> {
-		const actualStylePath = findActualStylePath(config.basePath, styleFile);
+		const actualStylePath = this.findActualStylePath(
+			config.basePath,
+			styleFile
+		);
 		if (!actualStylePath) return;
 
 		this.context.addWatchFile(actualStylePath);
 
 		try {
 			const cssContent = readStylesheet(actualStylePath);
-			const outputFilename = determineOutputFilename(styleFile, config);
+			const outputFilename = this.determineOutputFilename(
+				styleFile,
+				config
+			);
 			await this.processCssAndEmit(cssContent, outputFilename);
 		} catch (error) {
 			// Skip styles that can't be processed

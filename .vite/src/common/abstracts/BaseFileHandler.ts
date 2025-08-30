@@ -1,9 +1,10 @@
 /**
  * External dependencies
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 import { createHash } from 'node:crypto';
+import { join, parse, resolve } from 'node:path';
 
 /**
  * Shared dependencies
@@ -14,6 +15,7 @@ import type {
 	BundlerChunkInfo,
 	BundlerAssetInfo,
 } from '../types';
+import { FILE_EXTENSIONS } from '../constants';
 
 /**
  * File processing result interface
@@ -253,6 +255,60 @@ export abstract class BaseFileHandler {
 		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
 		return match ? match[1].substring(0, 8) : '1.0.0';
 	}
+
+	/**
+	 * Generate asset filename by joining output path and filename
+	 * @param filename - The base filename to use
+	 * @param outputPath - Optional output path to prefix the filename
+	 * @return The full asset filename with output path prefix if provided
+	 */
+	protected generateAssetFilename = (
+		filename: string,
+		outputPath?: string
+	): string => {
+		return outputPath && outputPath !== ''
+			? `${outputPath}/${filename}`
+			: filename;
+	};
+
+	/**
+	 * Extract the filename without its extension from a given path.
+	 *
+	 * @param {string} path - The file path to extract the filename from.
+	 * @return {string} The filename without its extension.
+	 */
+	protected extractFilenameWithoutExtension = (path: string): string => {
+		const parsed = parse(path);
+		return join(parsed.dir, parsed.name);
+	};
+
+	/**
+	 * Find the actual file path considering different extensions
+	 * Supports .js, .jsx, .ts, .tsx extensions
+	 */
+	protected findActualFilePath = (
+		basePath: string,
+		fileName: string
+	): string | null => {
+		// If the file exists as specified, return it
+		const originalPath = resolve(basePath, fileName);
+		if (existsSync(originalPath)) {
+			return originalPath;
+		}
+
+		// Try different extensions
+		const extensions = FILE_EXTENSIONS.SCRIPTS;
+		const nameWithoutExt = fileName.replace(/\.(js|jsx|ts|tsx)$/, '');
+
+		for (const ext of extensions) {
+			const testPath = resolve(basePath, nameWithoutExt + ext);
+			if (existsSync(testPath)) {
+				return testPath;
+			}
+		}
+
+		return null;
+	};
 
 	/**
 	 * Abstract method for processing file content
