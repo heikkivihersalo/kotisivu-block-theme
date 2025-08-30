@@ -13,15 +13,15 @@ class ViteServicesTest extends TestCase {
 
     protected function setUp(): void {
         parent::setUp();
-        
+
         // Create a test manifest
         $this->testManifestPath = sys_get_temp_dir() . '/test-block-manifest.php';
         $this->createTestManifest();
-        
+
         // Initialize services
         $this->manifestResolver = new ManifestResolver();
         $this->manifestResolver->setManifest($this->testManifestPath);
-        
+
         $this->devServer = new DevServer('http://localhost', $this->manifestResolver);
         $this->devServer->setPort(5173);
     }
@@ -131,7 +131,7 @@ return [
     public function test_dev_server_contains_base_check(): void {
         // Mock a config for testing
         $this->devServer->setConfig(['base' => '/wp-content/themes/test-theme']);
-        
+
         $this->assertTrue($this->devServer->containsBase('/wp-content/themes/test-theme/build/app.js'));
         $this->assertFalse($this->devServer->containsBase('/some/other/path/app.js'));
     }
@@ -139,21 +139,21 @@ return [
     public function test_dev_server_get_file_name(): void {
         // Mock a config for testing
         $this->devServer->setConfig([
-            'base' => '/wp-content/themes/test-theme',
+            'base'   => '/wp-content/themes/test-theme',
             'outDir' => 'build'
         ]);
-        
+
         $fileName = $this->devServer->getFileName('/wp-content/themes/test-theme/build/app.js?version=123');
         $this->assertEquals('app.js', $fileName);
-        
+
         $fileName = $this->devServer->getFileName('/some/other/path');
         $this->assertFalse($fileName);
     }
 
     public function test_dev_server_get_relative_local_path(): void {
         $from = '/absolute/path/to/blocks/test-block';
-        $to = '/absolute/path/to/build/test-block/render.php';
-        
+        $to   = '/absolute/path/to/build/test-block/render.php';
+
         $relativePath = $this->devServer->getRelativeLocalPath($from, $to);
         $this->assertEquals('file:./../../build/test-block/render.php', $relativePath);
     }
@@ -166,7 +166,7 @@ return [
         $blockInfo = $this->devServer->getBlockInfo('test-block');
         $this->assertIsArray($blockInfo);
         $this->assertEquals('Test Block', $blockInfo['title']);
-        
+
         // Test block existence check
         $this->assertTrue($this->devServer->hasBlock('test-block'));
         $this->assertFalse($this->devServer->hasBlock('nonexistent-block'));
@@ -176,12 +176,12 @@ return [
         // Mock filesystem and config for testing
         $this->devServer->setConfig([
             'srcDir' => 'resources',
-            'css' => 'scss'
+            'css'    => 'scss'
         ]);
-        
+
         // Test that getSourcePath method exists and can be called
         $sourcePath = $this->devServer->getSourcePath('index.js');
-        
+
         // Since we don't have actual files, this should return false
         // but the method should not throw an error
         $this->assertFalse($sourcePath);
@@ -191,17 +191,17 @@ return [
      * Test error conditions
      */
     public function test_manifest_resolver_throws_exception_for_invalid_file(): void {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Manifest file path does not exist');
-        
+
         $resolver = new ManifestResolver();
         $resolver->setManifest('/nonexistent/path/manifest.php');
     }
 
     public function test_manifest_resolver_throws_exception_when_accessing_unset_manifest(): void {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Manifest has not been set yet');
-        
+
         $resolver = new ManifestResolver();
         $resolver->get();
     }
@@ -212,7 +212,7 @@ return [
     public function test_dev_server_works_without_manifest(): void {
         $devServer = new DevServer('http://localhost');
         $this->assertInstanceOf(DevServer::class, $devServer);
-        
+
         // These should return false when no manifest is set
         $this->assertFalse($devServer->hasBlock('any-block'));
         $this->assertFalse($devServer->getBlockInfo('any-block'));
@@ -242,14 +242,14 @@ return [
         // Test config getter when no config is set
         $this->assertNull($this->devServer->getConfig());
         $this->assertNull($this->devServer->getConfig('nonexistent'));
-        
+
         // Test config setter and getter
         $config = [
-            'base' => '/wp-content/themes/test',
+            'base'   => '/wp-content/themes/test',
             'outDir' => 'build',
             'srcDir' => 'resources'
         ];
-        
+
         $this->devServer->setConfig($config);
         $this->assertEquals($config, $this->devServer->getConfig());
         $this->assertEquals('/wp-content/themes/test', $this->devServer->getConfig('base'));

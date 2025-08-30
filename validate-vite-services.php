@@ -28,8 +28,8 @@ use App\Services\Vite\ManifestResolver;
  * Simple test runner
  */
 class SimpleTestRunner {
-    private int $passed = 0;
-    private int $failed = 0;
+    private int $passed     = 0;
+    private int $failed     = 0;
     private array $failures = [];
 
     public function test(string $name, callable $test): void {
@@ -37,7 +37,7 @@ class SimpleTestRunner {
             $test();
             echo "✅ {$name}\n";
             $this->passed++;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             echo "❌ {$name}: {$e->getMessage()}\n";
             $this->failures[] = $name . ': ' . $e->getMessage();
             $this->failed++;
@@ -46,49 +46,49 @@ class SimpleTestRunner {
 
     public function assert(bool $condition, string $message = 'Assertion failed'): void {
         if (!$condition) {
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
     public function assertEquals($expected, $actual, string $message = 'Values are not equal'): void {
         if ($expected !== $actual) {
-            throw new Exception("{$message}. Expected: " . var_export($expected, true) . ", Actual: " . var_export($actual, true));
+            throw new \Exception("{$message}. Expected: " . var_export($expected, true) . ", Actual: " . var_export($actual, true));
         }
     }
 
     public function assertInstanceOf(string $expected, $actual, string $message = 'Instance type mismatch'): void {
         if (!($actual instanceof $expected)) {
-            throw new Exception("{$message}. Expected instance of {$expected}, got " . get_class($actual));
+            throw new \Exception("{$message}. Expected instance of {$expected}, got " . get_class($actual));
         }
     }
 
     public function assertTrue(bool $condition, string $message = 'Expected true'): void {
         if (!$condition) {
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
     public function assertFalse(bool $condition, string $message = 'Expected false'): void {
         if ($condition) {
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
     public function assertIsArray($value, string $message = 'Expected array'): void {
         if (!is_array($value)) {
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
     public function assertContains($needle, array $haystack, string $message = 'Array does not contain value'): void {
         if (!in_array($needle, $haystack, true)) {
-            throw new Exception($message);
+            throw new \Exception($message);
         }
     }
 
     public function assertCount(int $expected, array $array, string $message = 'Array count mismatch'): void {
         if (count($array) !== $expected) {
-            throw new Exception("{$message}. Expected {$expected}, got " . count($array));
+            throw new \Exception("{$message}. Expected {$expected}, got " . count($array));
         }
     }
 
@@ -98,7 +98,7 @@ class SimpleTestRunner {
         echo "Passed: {$this->passed}\n";
         echo "Failed: {$this->failed}\n";
         echo "Total: " . ($this->passed + $this->failed) . "\n";
-        
+
         if ($this->failed > 0) {
             echo "\nFailures:\n";
             foreach ($this->failures as $failure) {
@@ -113,11 +113,11 @@ class SimpleTestRunner {
 }
 
 // Create test instance
-$test = new SimpleTestRunner();
+$test = new \SimpleTestRunner();
 
 // Create test manifest
 $testManifestPath = sys_get_temp_dir() . '/test-block-manifest.php';
-$manifestContent = '<?php
+$manifestContent  = '<?php
 return [
     "test-block" => [
         "apiVersion" => 3,
@@ -142,19 +142,19 @@ echo "🧪 Running Vite Services Validation Tests\n";
 echo str_repeat('=', 50) . "\n";
 
 // Test ManifestResolver
-$test->test('ManifestResolver can be instantiated', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver can be instantiated', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $test->assertInstanceOf(ManifestResolver::class, $resolver);
 });
 
-$test->test('ManifestResolver detects block manifest', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver detects block manifest', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $test->assertTrue($resolver->isBlockManifest());
 });
 
-$test->test('ManifestResolver gets block names', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver gets block names', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $blockNames = $resolver->getBlockNames();
@@ -163,7 +163,7 @@ $test->test('ManifestResolver gets block names', function() use ($test, $testMan
     $test->assertCount(2, $blockNames);
 });
 
-$test->test('ManifestResolver gets block by name', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver gets block by name', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $block = $resolver->getByBlockName('test-block');
@@ -172,14 +172,14 @@ $test->test('ManifestResolver gets block by name', function() use ($test, $testM
     $test->assertEquals('Test Block', $block['title']);
 });
 
-$test->test('ManifestResolver returns false for nonexistent block', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver returns false for nonexistent block', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $block = $resolver->getByBlockName('nonexistent-block');
     $test->assertFalse($block);
 });
 
-$test->test('ManifestResolver gets block by file', function() use ($test, $testManifestPath) {
+$test->test('ManifestResolver gets block by file', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $block = $resolver->getByFile('index.js');
@@ -188,14 +188,14 @@ $test->test('ManifestResolver gets block by file', function() use ($test, $testM
 });
 
 // Test DevServer
-$test->test('DevServer can be instantiated', function() use ($test, $testManifestPath) {
+$test->test('DevServer can be instantiated', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
     $test->assertInstanceOf(DevServer::class, $devServer);
 });
 
-$test->test('DevServer has correct host and port', function() use ($test, $testManifestPath) {
+$test->test('DevServer has correct host and port', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
@@ -204,7 +204,7 @@ $test->test('DevServer has correct host and port', function() use ($test, $testM
     $test->assertEquals('5173', $devServer->getServerPort());
 });
 
-$test->test('DevServer can set host and port', function() use ($test, $testManifestPath) {
+$test->test('DevServer can set host and port', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
@@ -213,7 +213,7 @@ $test->test('DevServer can set host and port', function() use ($test, $testManif
     $test->assertEquals('3000', $devServer->getServerPort());
 });
 
-$test->test('DevServer generates correct URLs', function() use ($test, $testManifestPath) {
+$test->test('DevServer generates correct URLs', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
@@ -223,7 +223,7 @@ $test->test('DevServer generates correct URLs', function() use ($test, $testMani
     $test->assertEquals('http://localhost:5173/@vite/client', $devServer->getClientUrl());
 });
 
-$test->test('DevServer can get block info', function() use ($test, $testManifestPath) {
+$test->test('DevServer can get block info', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
@@ -232,7 +232,7 @@ $test->test('DevServer can get block info', function() use ($test, $testManifest
     $test->assertEquals('ksd/test-block', $blockInfo['name']);
 });
 
-$test->test('DevServer can check if block exists', function() use ($test, $testManifestPath) {
+$test->test('DevServer can check if block exists', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
@@ -241,69 +241,69 @@ $test->test('DevServer can check if block exists', function() use ($test, $testM
     $test->assertFalse($devServer->hasBlock('nonexistent-block'));
 });
 
-$test->test('DevServer contains base check works', function() use ($test, $testManifestPath) {
+$test->test('DevServer contains base check works', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
     $devServer->setConfig(['base' => '/wp-content/themes/test-theme']);
-    
+
     $test->assertTrue($devServer->containsBase('/wp-content/themes/test-theme/build/app.js'));
     $test->assertFalse($devServer->containsBase('/some/other/path/app.js'));
 });
 
-$test->test('DevServer getFileName works correctly', function() use ($test, $testManifestPath) {
+$test->test('DevServer getFileName works correctly', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
     $devServer->setConfig([
-        'base' => '/wp-content/themes/test-theme',
+        'base'   => '/wp-content/themes/test-theme',
         'outDir' => 'build'
     ]);
-    
+
     $fileName = $devServer->getFileName('/wp-content/themes/test-theme/build/app.js?version=123');
     $test->assertEquals('app.js', $fileName);
-    
+
     $fileName = $devServer->getFileName('/some/other/path');
     $test->assertFalse($fileName);
 });
 
-$test->test('DevServer getRelativeLocalPath works correctly', function() use ($test, $testManifestPath) {
+$test->test('DevServer getRelativeLocalPath works correctly', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
-    
+
     $from = '/absolute/path/to/blocks/test-block';
-    $to = '/absolute/path/to/build/test-block/render.php';
-    
+    $to   = '/absolute/path/to/build/test-block/render.php';
+
     $relativePath = $devServer->getRelativeLocalPath($from, $to);
     $test->assertEquals('file:./../../build/test-block/render.php', $relativePath);
 });
 
-$test->test('DevServer works without manifest', function() use ($test) {
+$test->test('DevServer works without manifest', function () use ($test) {
     $devServer = new DevServer('http://localhost');
     $test->assertInstanceOf(DevServer::class, $devServer);
-    
+
     // These should return false when no manifest is set
     $test->assertFalse($devServer->hasBlock('any-block'));
     $test->assertFalse($devServer->getBlockInfo('any-block'));
 });
 
-$test->test('DevServer configuration methods work', function() use ($test, $testManifestPath) {
+$test->test('DevServer configuration methods work', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
-    
+
     // Test config getter when no config is set
     $test->assertEquals(null, $devServer->getConfig());
     $test->assertEquals(null, $devServer->getConfig('nonexistent'));
-    
+
     // Test config setter and getter
     $config = [
-        'base' => '/wp-content/themes/test',
+        'base'   => '/wp-content/themes/test',
         'outDir' => 'build',
         'srcDir' => 'resources'
     ];
-    
+
     $devServer->setConfig($config);
     $test->assertEquals($config, $devServer->getConfig());
     $test->assertEquals('/wp-content/themes/test', $devServer->getConfig('base'));
@@ -311,33 +311,33 @@ $test->test('DevServer configuration methods work', function() use ($test, $test
 });
 
 // Test integration between DevServer and ManifestResolver
-$test->test('DevServer integrates correctly with ManifestResolver', function() use ($test, $testManifestPath) {
+$test->test('DevServer integrates correctly with ManifestResolver', function () use ($test, $testManifestPath) {
     $resolver = new ManifestResolver();
     $resolver->setManifest($testManifestPath);
     $devServer = new DevServer('http://localhost', $resolver);
-    
+
     // Test that DevServer can access manifest data
     $blockInfo = $devServer->getBlockInfo('test-block');
     $test->assertIsArray($blockInfo);
     $test->assertEquals('Test Block', $blockInfo['title']);
-    
+
     // Test block existence check
     $test->assertTrue($devServer->hasBlock('test-block'));
     $test->assertFalse($devServer->hasBlock('nonexistent-block'));
 });
 
 // Test with actual block manifest
-$test->test('DevServer works with actual block manifest', function() use ($test) {
+$test->test('DevServer works with actual block manifest', function () use ($test) {
     $actualManifestPath = __DIR__ . '/../../build/block-manifest.php';
     if (file_exists($actualManifestPath)) {
         $resolver = new ManifestResolver();
         $resolver->setManifest($actualManifestPath);
         $devServer = new DevServer('http://localhost', $resolver);
-        
+
         $test->assertTrue($resolver->isBlockManifest());
         $blockNames = $resolver->getBlockNames();
         $test->assertTrue(count($blockNames) > 0);
-        
+
         // Test with a known block from the actual manifest
         if (in_array('heading', $blockNames)) {
             $test->assertTrue($devServer->hasBlock('heading'));
@@ -350,12 +350,12 @@ $test->test('DevServer works with actual block manifest', function() use ($test)
 });
 
 // Test error conditions
-$test->test('ManifestResolver throws exception for invalid file', function() use ($test) {
+$test->test('ManifestResolver throws exception for invalid file', function () use ($test) {
     try {
         $resolver = new ManifestResolver();
         $resolver->setManifest('/nonexistent/path/manifest.php');
         $test->assert(false, 'Expected RuntimeException');
-    } catch (RuntimeException $e) {
+    } catch (\RuntimeException $e) {
         $test->assert(str_contains($e->getMessage(), 'Manifest file path does not exist'));
     }
 });
