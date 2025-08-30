@@ -11,7 +11,7 @@ import type { ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import { CSS_Processor, JS_Processor, PHP_Processor } from './processors';
+import { CSS, JS, PHP } from './processors';
 import {
 	normalizePath,
 	generateSourcePath,
@@ -35,9 +35,9 @@ import type {
 export class BlockHandler {
 	static manifestName = 'block-manifest.php';
 
-	private css: CSS_Processor;
-	private js: JS_Processor;
-	private php: PHP_Processor;
+	private css: CSS;
+	private js: JS;
+	private php: PHP;
 	private fileEmitter: FileEmitter;
 
 	private context: PluginContext;
@@ -61,9 +61,9 @@ export class BlockHandler {
 		this.pwd = process.env.PWD || process.cwd();
 
 		// Initialize processors
-		this.css = new CSS_Processor({ context });
-		this.js = new JS_Processor({ context });
-		this.php = new PHP_Processor({ context });
+		this.css = new CSS({ context });
+		this.js = new JS({ context });
+		this.php = new PHP({ context });
 		this.fileEmitter = new FileEmitter(outputDirectory);
 	}
 
@@ -444,8 +444,3 @@ export class BlockHandler {
 		return true;
 	}
 }
-
-/**
- * Export processors for direct use
- */
-export { CSS_Processor, JS_Processor, PHP_Processor } from './processors';

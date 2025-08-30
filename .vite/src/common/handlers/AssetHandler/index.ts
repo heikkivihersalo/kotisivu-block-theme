@@ -10,12 +10,12 @@ import {
 	generateFileHash,
 	generatePhpAssetFile,
 	FileEmitter,
-} from '../utils/index.ts';
+} from '../../utils/index.ts';
 
-import { BaseCssHandler } from '../../abstracts/BaseCssHandler.ts';
-import { BaseScriptHandler } from '../../abstracts/BaseScriptHandler.ts';
+import { BaseCssHandler } from '../../../abstracts/BaseCssHandler.ts';
+import { BaseScriptHandler } from '../../../abstracts/BaseScriptHandler.ts';
 
-import type { DiscoveredAssetInfo } from '../types/index.ts';
+import type { DiscoveredAssetInfo } from '../../types/index.ts';
 
 /**
  * Asset Handler class for handling asset file processing with ESBuild

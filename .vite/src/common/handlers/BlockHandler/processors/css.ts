@@ -21,7 +21,7 @@ import { BaseCssHandler } from '../../../../abstracts/BaseCssHandler';
  * providing methods for processing individual files, string content, and
  * handling CSS transformations with proper source maps.
  */
-export class CSS_Processor extends BaseCssHandler {
+export class CSS extends BaseCssHandler {
 	constructor({ context }: { context: PluginContext }) {
 		super(context);
 	}

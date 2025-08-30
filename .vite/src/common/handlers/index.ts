@@ -4,5 +4,5 @@
  * to avoid code duplication
  */
 
-export { AssetHandler } from './AssetHandler.ts';
+export { AssetHandler } from './AssetHandler/index.ts';
 export { BlockHandler } from './BlockHandler/index.ts';

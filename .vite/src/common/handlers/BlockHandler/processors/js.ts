@@ -23,7 +23,7 @@ import type { OutputConfig } from '../../../types/index';
  * providing methods for building, transforming, and emitting JavaScript files
  * along with their associated PHP asset files and source maps.
  */
-export class JS_Processor extends BaseScriptHandler {
+export class JS extends BaseScriptHandler {
 	constructor({ context }: { context: PluginContext }) {
 		super(context);
 	}

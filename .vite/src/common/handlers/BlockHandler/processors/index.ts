@@ -7,6 +7,6 @@
  * - PHP_Processor: Handles PHP file processing and minification
  */
 
-export { CSS_Processor } from './CSS_Processor';
-export { JS_Processor } from './JS_Processor';
-export { PHP_Processor } from './PHP_Processor';
+export { CSS } from './css';
+export { JS } from './js';
+export { PHP } from './php';
