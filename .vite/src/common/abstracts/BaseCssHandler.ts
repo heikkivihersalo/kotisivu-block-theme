@@ -186,7 +186,7 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	 * Find the actual style file path considering different extensions and filename patterns
 	 * Supports .css, .scss, .sass, .less extensions
 	 */
-	findActualStylePath = (
+	protected findActualStylePath = (
 		basePath: string,
 		fileName: string
 	): string | null => {
@@ -239,7 +239,7 @@ export abstract class BaseCssHandler extends BaseFileHandler {
 	 * @param config - The output configuration
 	 * @return The determined output file name
 	 */
-	determineOutputFilename = (
+	protected determineOutputFilename = (
 		styleFile: string,
 		config: OutputConfig
 	): string => {

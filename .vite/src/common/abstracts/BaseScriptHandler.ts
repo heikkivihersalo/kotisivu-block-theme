@@ -228,7 +228,7 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 	 * @param metafile - The esbuild metafile
 	 * @param script - The script file name
 	 */
-	registerBundledDependencies = (
+	protected registerBundledDependencies = (
 		pluginContext: PluginContext,
 		metafile: any,
 		script: string

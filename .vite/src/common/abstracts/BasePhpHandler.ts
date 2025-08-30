@@ -69,7 +69,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param outputPath - The output path for the processed file
 	 * @param shouldMinify - Whether to minify the PHP content
 	 */
-	async processPhpFile(
+	protected async processPhpFile(
 		sourcePath: string,
 		outputPath: string,
 		shouldMinify: boolean = true
@@ -85,7 +85,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param phpFiles - Array of PHP file configurations
 	 * @param shouldMinify - Whether to minify the PHP content
 	 */
-	async processPhpFiles(
+	protected async processPhpFiles(
 		phpFiles: Array<{ sourcePath: string; outputPath: string }>,
 		shouldMinify: boolean = true
 	): Promise<void> {
@@ -116,7 +116,11 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param minify - Whether to minify the output
 	 * @return A string representing the PHP array content
 	 */
-	convertToPhpArray(value: any, indent = 0, minify = false): string {
+	protected convertToPhpArray(
+		value: any,
+		indent = 0,
+		minify = false
+	): string {
 		const space = minify ? '' : ' ';
 		const newline = minify ? '' : '\n';
 		const tab = minify ? '' : '\t'.repeat(indent);
@@ -171,7 +175,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param blocks - The blocks object containing block.json configurations.
 	 * @return A string representing the PHP array content
 	 */
-	generatePhpArrayContent(blocks: Record<string, any>): string {
+	protected generatePhpArrayContent(blocks: Record<string, any>): string {
 		const timestamp = new Date().toISOString();
 
 		let phpContent = `<?php
@@ -198,7 +202,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param {string} [hash=''] - Version hash for the asset.
 	 * @return {string} PHP code as a string that returns an array with dependencies and version
 	 */
-	generatePhpAssetFile = (
+	protected generatePhpAssetFile = (
 		dependencies: Set<string> | string[] = [],
 		hash = ''
 	): string => {
@@ -216,7 +220,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	 * @param content - The PHP content to minify
 	 * @return The minified PHP content
 	 */
-	minifyPhp = (content: string): string => {
+	protected minifyPhp = (content: string): string => {
 		let result = content;
 
 		// Remove multi-line comments /* ... */
