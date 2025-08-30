@@ -61,7 +61,7 @@ export class BlockHandler {
 		this.pwd = process.env.PWD || process.cwd();
 
 		// Initialize processors
-		this.css = new CSS({ context });
+		this.css = new CSS({ context, config: { outputDirectory } });
 		this.js = new JS({ context });
 		this.php = new PHP({ context });
 		this.fileEmitter = new FileEmitter(outputDirectory);
@@ -164,6 +164,12 @@ export class BlockHandler {
 
 		// Re-initialize file emitter with new output directory
 		this.fileEmitter = new FileEmitter(this.outputDirectory);
+
+		// Re-initialize CSS processor with new output directory
+		this.css = new CSS({
+			context: this.context,
+			config: { outputDirectory: this.outputDirectory },
+		});
 	}
 
 	/**
