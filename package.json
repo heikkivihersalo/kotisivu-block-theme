@@ -7,7 +7,7 @@
 	"type": "module",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
-		"dev": "vite",
+		"dev": "NODE_ENV=development vite",
 		"build": "NODE_ENV=production vite build",
 		"start": "NODE_ENV=development vite build --watch --mode development",
 		"watch": "NODE_ENV=development vite build --watch --mode development",
