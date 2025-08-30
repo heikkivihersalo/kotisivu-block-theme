@@ -1,10 +1,8 @@
 /**
  * Shared dependencies
  */
-import {
-	extractWpDependencies,
-	generateVersionFromFile,
-} from '../../../common/utils/index.ts';
+import { extractWpDependencies } from '../../../common/utils/index.ts';
+import { FilePathResolver } from '../../../common/services/FilePathResolver';
 
 import type {
 	ViteManifest,
@@ -38,7 +36,7 @@ export function convertViteManifestToWordPress(
 				file: `${publicPath}${chunk.file}`,
 				css: (chunk.css || []).map((css) => `${publicPath}${css}`),
 				dependencies: extractWpDependencies(chunk.imports),
-				version: generateVersionFromFile(chunk.file),
+				version: FilePathResolver.generateVersionFromFile(chunk.file),
 				in_footer: shouldLoadInFooter(chunk.src),
 			};
 		}

@@ -7,7 +7,7 @@ import { relative } from 'node:path';
 /**
  * Internal dependencies
  */
-import { generateSourcePath } from '../../common/utils';
+import { FilePathResolver } from '../../common/services/FilePathResolver';
 import type { DiscoveredAssetInfo } from '../../common/types';
 
 /**
@@ -25,7 +25,10 @@ export function discoverAssetsWithMapping(
 
 	for (const [outputPath, sourcePath] of Object.entries(pathMappings)) {
 		try {
-			const fullSourcePath = generateSourcePath(sourcePath, pwd);
+			const fullSourcePath = FilePathResolver.generateSourcePath(
+				sourcePath,
+				pwd
+			);
 			if (!fullSourcePath) continue;
 
 			const stat = statSync(fullSourcePath);

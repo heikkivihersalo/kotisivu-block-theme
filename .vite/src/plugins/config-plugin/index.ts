@@ -6,7 +6,7 @@ import type { Plugin } from 'vite';
 /**
  * Shared dependencies
  */
-import { normalizePath } from '../../common/utils';
+import { FilePathResolver } from '../../common/services/FilePathResolver';
 import type { ViteWordPressConfig } from '../../common/types';
 
 /**
@@ -33,7 +33,7 @@ export function ConfigPlugin(pluginConfig: ViteWordPressConfig): Plugin {
 			return config({
 				build: {
 					outDir: outDir
-						? (normalizePath(outDir) ?? undefined)
+						? (FilePathResolver.normalizePath(outDir) ?? undefined)
 						: undefined,
 					minify,
 					sourcemap,

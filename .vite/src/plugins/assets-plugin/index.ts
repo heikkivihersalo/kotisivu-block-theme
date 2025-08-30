@@ -9,7 +9,7 @@ import { dirname, resolve } from 'node:path';
 /**
  * Shared dependencies
  */
-import { normalizePath } from '../../common/utils';
+import { FilePathResolver } from '../../common/services/FilePathResolver';
 import { FileEmitter } from '../../common/services/FileEmitter.ts';
 import type {
 	DiscoveredAsset,
@@ -55,7 +55,8 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 
 		configResolved(resolvedConfig: ResolvedConfig) {
 			if (typeof outDir === 'string') {
-				outputDirectory = normalizePath(outDir) || 'dist';
+				outputDirectory =
+					FilePathResolver.normalizePath(outDir) || 'dist';
 			} else {
 				outputDirectory = resolvedConfig.build.outDir || 'dist';
 			}

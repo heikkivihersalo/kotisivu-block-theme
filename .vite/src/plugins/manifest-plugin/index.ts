@@ -8,7 +8,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 /**
  * Shared dependencies
  */
-import { normalizePath } from '../../common/utils';
+import { FilePathResolver } from '../../common/services/FilePathResolver';
 import type { ViteManifestPluginConfig } from '../../common/types';
 
 /**
@@ -43,7 +43,8 @@ export function ManifestPlugin(config: ViteManifestPluginConfig = {}): Plugin {
 		name: 'vite-plugin-gutenberg-manifest',
 
 		configResolved(config: ResolvedConfig) {
-			outputDirectory = normalizePath(outDir) || config.build.outDir;
+			outputDirectory =
+				FilePathResolver.normalizePath(outDir) || config.build.outDir;
 		},
 
 		// Use writeBundle instead of generateBundle for post-processing

@@ -109,4 +109,43 @@ export class FilePathResolver {
 	static fileExists(filePath: string): boolean {
 		return existsSync(filePath);
 	}
+
+	/**
+	 * Generate a source path by resolving the given path against the base path.
+	 * @param path - The path to validate
+	 * @param basePath - The base path to resolve against
+	 * @return The resolved path if it exists, otherwise null.
+	 */
+	static generateSourcePath(path: string, basePath: string): string | null {
+		if (!path) return null;
+
+		const fullPath = resolve(basePath, path);
+		return existsSync(fullPath) ? fullPath : null;
+	}
+
+	/**
+	 * Normalize a path by ensuring it ends with a directory separator.
+	 *
+	 * @param {string | null | undefined} path - The path to normalize.
+	 * @returns {string | null} The normalized path or null if input is null/undefined.
+	 */
+	static normalizePath(path: string | null | undefined): string | null {
+		if (path === null || path === undefined) return null;
+		if (path === '') return '/';
+		return path.endsWith('/') ? path : path + '/';
+	}
+
+	/**
+	 * Generate version string from filename hash
+	 *
+	 * Extracts hash from file names like 'main.a1b2c3d4e5f6ab12.js'
+	 * and returns the first 8 characters as version identifier.
+	 *
+	 * @param filename - The filename to extract version from
+	 * @return A string representing the version, or '1.0.0' if no hash found
+	 */
+	static generateVersionFromFile(filename: string): string {
+		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
+		return match ? match[1].substring(0, 8) : '1.0.0';
+	}
 }

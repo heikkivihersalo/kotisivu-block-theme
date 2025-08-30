@@ -12,7 +12,7 @@ import type { ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../common/constants.ts';
-import { normalizePath, generateSourcePath } from '../../../common/utils';
+import { FilePathResolver } from '../../../common/services/FilePathResolver';
 import { FileEmitter } from '../../../common/services/FileEmitter.ts';
 
 import type {
@@ -94,7 +94,10 @@ export class BlockHandler {
 		const blocks: BlockInfo[] = [];
 
 		for (const [outputPath, sourcePath] of Object.entries(blocksDir)) {
-			const fullSourcePath = generateSourcePath(sourcePath, this.pwd);
+			const fullSourcePath = FilePathResolver.generateSourcePath(
+				sourcePath,
+				this.pwd
+			);
 			if (!fullSourcePath) continue;
 
 			try {
@@ -152,7 +155,8 @@ export class BlockHandler {
 		const { outDir } = this.config;
 
 		if (typeof outDir === 'string') {
-			this.outputDirectory = normalizePath(outDir) || 'dist';
+			this.outputDirectory =
+				FilePathResolver.normalizePath(outDir) || 'dist';
 		} else {
 			const defaultDir = resolvedConfig.build.outDir;
 			this.outputDirectory =

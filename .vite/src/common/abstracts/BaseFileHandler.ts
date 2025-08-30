@@ -336,7 +336,6 @@ export abstract class BaseFileHandler {
 	 * @return A string representing the version, or '1.0.0' if no
 	 */
 	protected generateVersionFromFile(filename: string): string {
-		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
-		return match ? match[1].substring(0, 8) : '1.0.0';
+		return FilePathResolver.generateVersionFromFile(filename);
 	}
 }
