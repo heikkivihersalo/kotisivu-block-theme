@@ -21,7 +21,7 @@ $app = Application::configure()
 // Register Vite DevServer for HMR support in development
 if (defined('WP_DEBUG') && WP_DEBUG) {
     $manifest = new ManifestResolver();
-    $manifest->setManifest('build/block-manifest.php');
+    $manifest->setManifest(__DIR__ . '/../build/block-manifest.php');
     $devServer = new DevServer($_ENV['VITE_DEV_SERVER_HOST'] ?? get_site_url(), $manifest);
     $devServer
         ->setPort((int) ($_ENV['VITE_DEV_SERVER_PORT'] ?? 5173))
