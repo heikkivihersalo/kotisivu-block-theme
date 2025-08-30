@@ -1,6 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import { wp } from './.vite/index.ts';
-import basicSsl from '@vitejs/plugin-basic-ssl';
+import fs from 'fs';
 
 export default defineConfig(({ mode }) => {
 	// Load environment variables
@@ -18,13 +18,49 @@ export default defineConfig(({ mode }) => {
 	// Build full dev server URL
 	const devServerUrl = `${devServerHost}:${devServerPort}`;
 
+	// SSL configuration
+	let httpsConfig = false;
+	if (isHttps) {
+		const sslKeyPath = env.VITE_SSL_KEY;
+		const sslCertPath = env.VITE_SSL_CERT;
+
+		if (sslKeyPath && sslCertPath) {
+			try {
+				// Check if SSL files exist
+				if (fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath)) {
+					httpsConfig = {
+						key: fs.readFileSync(sslKeyPath),
+						cert: fs.readFileSync(sslCertPath),
+					};
+					console.log(`🔒 Using custom SSL certificates`);
+					console.log(`   Key: ${sslKeyPath}`);
+					console.log(`   Cert: ${sslCertPath}`);
+				} else {
+					console.warn(
+						'⚠️  Custom SSL certificate files not found, falling back to basic SSL'
+					);
+					httpsConfig = true; // Fallback to basic SSL
+				}
+			} catch (error) {
+				console.warn(
+					'⚠️  Error reading SSL certificates, falling back to basic SSL:',
+					error.message
+				);
+				httpsConfig = true; // Fallback to basic SSL
+			}
+		} else {
+			console.warn(
+				'⚠️  SSL paths not configured in environment, falling back to basic SSL'
+			);
+			httpsConfig = true; // Fallback to basic SSL
+		}
+	}
+
 	console.log(`🚀 Dev server will run at: ${devServerUrl}`);
 	console.log(`🔒 SSL enabled: ${isHttps ? 'Yes' : 'No'}`);
 
 	return {
 		plugins: [
-			// Add SSL certificate generation for HTTPS development
-			...(isHttps ? [basicSsl()] : []),
 			wp({
 				build: {
 					outDir: 'build',
@@ -69,7 +105,7 @@ export default defineConfig(({ mode }) => {
 			port: devServerPort,
 			strictPort: true,
 			cors: true,
-			https: isHttps,
+			https: httpsConfig,
 			// Allow serving files from outside the workspace
 			fs: {
 				allow: ['..', '.'],
