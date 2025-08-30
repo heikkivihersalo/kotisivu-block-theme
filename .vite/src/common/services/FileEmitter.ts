@@ -162,8 +162,6 @@ export class FileEmitter {
 			} else {
 				await writeFile(fullPath, source);
 			}
-
-			FileEmitterLogger.success(`Wrote ${fileName}`);
 		} catch (error) {
 			FileEmitterLogger.error(
 				`Error writing file ${fileName}:`,
