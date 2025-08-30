@@ -42,8 +42,6 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 
 			// Add middleware to serve the vite-wordpress.json endpoint
 			server.middlewares.use('/vite-wordpress.json', (req, res) => {
-				console.log('📡 Request to /vite-wordpress.json');
-
 				if (req.method === 'GET') {
 					// Build the dev server URL from config or fall back to server config
 					const serverHost = devServerUrl || `http://${host}:${port}`;
@@ -61,8 +59,6 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 							url: serverHost,
 						},
 					};
-
-					console.log('📤 Sending config:', responseConfig);
 
 					res.setHeader('Content-Type', 'application/json');
 					res.setHeader('Access-Control-Allow-Origin', '*');
