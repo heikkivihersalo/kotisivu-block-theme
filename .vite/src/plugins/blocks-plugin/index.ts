@@ -55,6 +55,66 @@ export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
 			await blockHandler.copyStaticFilesForAllBlocks();
 		},
 
+		// Add HMR support for file changes
+		handleHotUpdate: async function (ctx) {
+			const { file } = ctx;
+
+			// Check if the changed file belongs to any of our blocks
+			const discoveredBlocks = blockHandler.getDiscoveredBlocks();
+			const changedBlock = discoveredBlocks.find((block) =>
+				file.startsWith(block.path)
+			);
+
+			if (changedBlock) {
+				console.log(`🔄 Block file changed: ${file}`);
+
+				// Determine what type of file changed
+				const fileName = file.split('/').pop() || '';
+				const isStaticFile =
+					fileName.endsWith('.php') || fileName === 'block.json';
+				const isAssetFile =
+					fileName.endsWith('.css') ||
+					fileName.endsWith('.scss') ||
+					fileName.endsWith('.js') ||
+					fileName.endsWith('.jsx') ||
+					fileName.endsWith('.ts') ||
+					fileName.endsWith('.tsx');
+
+				try {
+					if (isStaticFile) {
+						// Handle static files (PHP, block.json)
+						await blockHandler.processStaticFilesForBlock(
+							changedBlock
+						);
+					} else if (isAssetFile) {
+						// Handle assets (CSS, JS, etc.)
+						await blockHandler.processCompleteBlock(
+							changedBlock,
+							sourcemap
+						);
+					} else {
+						// Handle any other files
+						await blockHandler.processCompleteBlock(
+							changedBlock,
+							sourcemap
+						);
+					}
+
+					console.log(
+						`✅ Block ${changedBlock.name} updated successfully`
+					);
+				} catch (error) {
+					console.error(
+						`❌ Failed to update block ${changedBlock.name}:`,
+						error
+					);
+				}
+			}
+
+			// Return empty array to prevent default HMR handling for block files
+			return [];
+		},
+
 		// Expose discovered blocks for other plugins
 		api: {
 			getDiscoveredBlocks: () => blockHandler.getDiscoveredBlocks(),

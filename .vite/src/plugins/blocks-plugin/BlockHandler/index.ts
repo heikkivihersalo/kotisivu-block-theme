@@ -1,10 +1,9 @@
 /**
  * External dependencies
  */
-import { statSync, readdirSync, readFileSync } from 'node:fs';
+import { statSync, readdirSync, readFileSync, existsSync } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { existsSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 import type { ResolvedConfig } from 'vite';
 
@@ -180,6 +179,61 @@ export class BlockHandler {
 
 		// Discover blocks
 		await this.discoverBlocks();
+
+		// In development mode, add all block files to watch list
+		if (!this.isBuildMode()) {
+			this.addAllBlockFilesToWatchList();
+		}
+	}
+
+	/**
+	 * Add all block files to watch list for comprehensive HMR support
+	 */
+	private addAllBlockFilesToWatchList(): void {
+		this.discoveredBlocks.forEach((block) => {
+			try {
+				// Watch the entire block directory
+				this.context.addWatchFile(block.path);
+
+				// Watch specific important files
+				const filesToWatch = [
+					'block.json',
+					'index.tsx',
+					'index.js',
+					'index.ts',
+					'edit.tsx',
+					'edit.js',
+					'edit.ts',
+					'save.tsx',
+					'save.js',
+					'save.ts',
+					'view.tsx',
+					'view.js',
+					'view.ts',
+					'render.php',
+					'style.css',
+					'editor.css',
+					'style.scss',
+					'editor.scss',
+				];
+
+				filesToWatch.forEach((fileName) => {
+					const filePath = resolve(block.path, fileName);
+					if (existsSync(filePath)) {
+						this.context.addWatchFile(filePath);
+					}
+				});
+
+				console.log(
+					`👀 Watching block: ${block.name} at ${block.path}`
+				);
+			} catch (error) {
+				console.warn(
+					`⚠️  Could not add watch for block ${block.name}:`,
+					error
+				);
+			}
+		});
 	}
 
 	/**
@@ -383,12 +437,35 @@ export class BlockHandler {
 	}
 
 	/**
+	 * Process static files for a single block in development mode
+	 * This is called during HMR when files change
+	 */
+	async processStaticFilesForBlock(block: BlockInfo): Promise<void> {
+		console.log(`🔄 Processing static files for block: ${block.name}`);
+
+		try {
+			// Always process without minification in development
+			await this.copyStaticFiles(block, false);
+			console.log(`✅ Static files updated for block: ${block.name}`);
+		} catch (error) {
+			console.error(
+				`❌ Failed to process static files for ${block.name}:`,
+				error
+			);
+			throw error;
+		}
+	}
+
+	/**
 	 * Copy static files for all discovered blocks (build mode only)
 	 */
 	async copyStaticFilesForAllBlocks(): Promise<void> {
-		// Only copy static files in build mode
+		// Always copy static files in build mode
+		// In development mode, static files are handled by HMR
 		if (!this.isBuildMode()) {
-			console.log('Skipping static file copying in serve mode');
+			console.log(
+				'Static files will be handled by HMR in development mode'
+			);
 			return;
 		}
 
@@ -396,13 +473,18 @@ export class BlockHandler {
 		const shouldMinify = process.env.NODE_ENV === 'production';
 		const discoveredBlocks = this.getDiscoveredBlocks();
 
+		console.log(
+			`📦 Copying static files for ${discoveredBlocks.length} blocks...`
+		);
+
 		// Copy static files for each discovered block (only in build mode)
 		for (const block of discoveredBlocks) {
 			try {
 				await this.copyStaticFiles(block, shouldMinify);
+				console.log(`✅ Static files copied for block: ${block.name}`);
 			} catch (error) {
 				console.log(
-					`[copyStaticFilesForAllBlocks] Failed to copy static files for ${block.name}:`,
+					`❌ Failed to copy static files for ${block.name}:`,
 					error
 				);
 				// Skip blocks with missing or invalid files
