@@ -11,10 +11,10 @@ import {
 	registerBundledDependencies,
 	extractFilenameWithoutExtension,
 	generateAssetFilename,
-} from '../../../utils/index';
+} from '../../../../common/utils/index';
 
-import { BaseScriptHandler } from '../../../../abstracts/BaseScriptHandler';
-import type { OutputConfig } from '../../../types/index';
+import { BaseScriptHandler } from '../../../../common/abstracts/BaseScriptHandler';
+import type { OutputConfig } from '../../../../common/types/index';
 
 /**
  * JavaScript Processor utility for handling JavaScript file processing with ESBuild

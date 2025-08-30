@@ -10,7 +10,6 @@ import { dirname, resolve } from 'node:path';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
-import { AssetHandler } from '../../common/handlers/index.ts';
 import { FileEmitter } from '../../common/utils/vite/FileEmitter.ts';
 import type {
 	DiscoveredAsset,
@@ -20,6 +19,7 @@ import type {
 /**
  * Internal dependencies
  */
+import { AssetHandler } from './AssetHandler';
 import { discoverAssetsWithMapping } from './discovery';
 
 /**

@@ -6,9 +6,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BaseScriptHandler } from '../../../../abstracts/BaseScriptHandler';
-import { FileEmitter } from '../../../utils/vite/FileEmitter';
-import type { DiscoveredAssetInfo } from '../../../types/assets';
+import { BaseScriptHandler } from '../../../../common/abstracts/BaseScriptHandler';
+import { FileEmitter } from '../../../../common/utils/vite/FileEmitter';
+import type { DiscoveredAssetInfo } from '../../../../common/types/assets';
 
 /**
  * JavaScript Processor utility for handling JavaScript file processing with ESBuild

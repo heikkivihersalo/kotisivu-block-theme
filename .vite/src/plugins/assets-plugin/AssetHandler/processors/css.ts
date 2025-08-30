@@ -6,9 +6,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { FileEmitter } from '../../../utils';
-import type { DiscoveredAssetInfo } from '../../../types';
-import { BaseCssHandler } from '../../../../abstracts/BaseCssHandler';
+import { FileEmitter } from '../../../../common/utils';
+import type { DiscoveredAssetInfo } from '../../../../common/types';
+import { BaseCssHandler } from '../../../../common/abstracts/BaseCssHandler';
 
 /**
  * CSS Processor utility for handling CSS file processing with LightningCSS

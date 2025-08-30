@@ -7,9 +7,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../common/constants';
-import { scssPlugin } from '../common/plugins/scssPlugin';
-import { ReactShimPlugin } from '../common/plugins/reactShimPlugin';
+import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants';
+import { scssPlugin } from '../plugins/scssPlugin';
+import { ReactShimPlugin } from '../plugins/reactShimPlugin';
 import {
 	BaseFileHandler,
 	type FileProcessingOptions,

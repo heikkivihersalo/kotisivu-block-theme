@@ -18,12 +18,12 @@ import {
 	findBlocksRecursively,
 	generateOutputConfig,
 	FileEmitter,
-} from '../../utils';
+} from '../../../common/utils';
 import type {
 	OutputConfig,
 	BlockInfo,
 	ViteBlocksPluginConfig,
-} from '../../types';
+} from '../../../common/types';
 
 /**
  * Main Block Handler class for WordPress Gutenberg block processing

@@ -10,9 +10,9 @@ import {
 	findActualStylePath,
 	determineOutputFilename,
 	readStylesheet,
-} from '../../../utils';
-import type { OutputConfig } from '../../../types';
-import { BaseCssHandler } from '../../../../abstracts/BaseCssHandler';
+} from '../../../../common/utils';
+import type { OutputConfig } from '../../../../common/types';
+import { BaseCssHandler } from '../../../../common/abstracts/BaseCssHandler';
 
 /**
  * CSS Processor utility for handling CSS file processing with LightningCSS

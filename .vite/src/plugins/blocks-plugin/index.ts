@@ -4,7 +4,7 @@
 import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
-import { BlockHandler } from '../../common/handlers';
+import { BlockHandler } from './BlockHandler';
 import type { ViteBlocksPluginConfig } from '../../common/types';
 
 /**

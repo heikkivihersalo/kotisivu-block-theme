@@ -6,9 +6,9 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { PHP, JS, CSS } from './processors';
+import { PHP, JS, CSS } from './processors/index.ts';
 
-import type { DiscoveredAssetInfo } from '../../types/index.ts';
+import type { DiscoveredAssetInfo } from '../../../common/types/index.ts';
 
 /**
  * Asset Handler class for handling asset file processing with ESBuild

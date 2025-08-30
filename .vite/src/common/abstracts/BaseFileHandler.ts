@@ -8,12 +8,12 @@ import { createHash } from 'node:crypto';
 /**
  * Shared dependencies
  */
-import { FileEmitter } from '../common/utils/vite/FileEmitter';
+import { FileEmitter } from '../utils/vite/FileEmitter';
 import type {
 	EmittedAsset,
 	BundlerChunkInfo,
 	BundlerAssetInfo,
-} from '../common/types';
+} from '../types';
 
 /**
  * File processing result interface

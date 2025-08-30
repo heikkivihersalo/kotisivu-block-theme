@@ -6,8 +6,8 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BasePhpHandler } from '../../../../abstracts/BasePhpHandler';
-import type { DiscoveredAssetInfo } from '../../../types/assets';
+import { BasePhpHandler } from '../../../../common/abstracts/BasePhpHandler';
+import type { DiscoveredAssetInfo } from '../../../../common/types/assets';
 import { FileEmitter } from '../../../../common/utils/vite/FileEmitter';
 
 /**

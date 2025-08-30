@@ -6,7 +6,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BasePhpHandler } from '../../../../abstracts/BasePhpHandler';
+import { BasePhpHandler } from '../../../../common/abstracts/BasePhpHandler';
 
 /**
  * PHP Processor utility for handling PHP file processing and emission
