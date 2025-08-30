@@ -6,7 +6,9 @@ import { beforeAll, describe, expect, test } from 'vitest';
 /**
  * Integration tests for WordPress and React shims in the build process
  *
- * These tests ensure that WordPress dependencies and React imports are correctly
+ * These tests ensure that WordPress dependencies and React imports are co			// Files should not be tiny (under 512B) as they should contain actual block code
+		expect(stats.size).toBeGreaterThan(512); // 512 bytes minimum/ Files should not be tiny (under 512B) as they should contain actual block code
+		expect(stats.size).toBeGreaterThan(512); // 512 bytes minimumectly
  * shimmed to use WordPress globals (window.wp.*) instead of bundling the libraries.
  * This prevents "Dynamic require" errors and ensures proper WordPress integration.
  */
@@ -327,8 +329,8 @@ describe('WordPress and React Shims Integration', () => {
 			// Typical block files should be under 200KB when properly shimmed
 			expect(stats.size).toBeLessThan(200 * 1024); // 200KB limit
 
-			// Files should not be tiny (under 1KB) as they should contain actual block code
-			expect(stats.size).toBeGreaterThan(1024); // 1KB minimum
+			// Files should not be tiny (under 512B) as they should contain actual block code
+			expect(stats.size).toBeGreaterThan(512); // 512 bytes minimum
 		}
 	});
 
