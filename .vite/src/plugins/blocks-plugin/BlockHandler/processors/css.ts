@@ -27,18 +27,6 @@ export class CSS extends BaseCssHandler {
 	}
 
 	/**
-	 * Process CSS from a string content
-	 * @param cssContent - The CSS content to process
-	 * @param outputFilename - The output filename for the CSS file
-	 */
-	async processStringContent(
-		cssContent: string,
-		outputFilename: string
-	): Promise<void> {
-		await this.processCssAndEmit(cssContent, outputFilename);
-	}
-
-	/**
 	 * Process a single style file
 	 * @param styleFile - The original style file name
 	 * @param config - The output configuration
@@ -52,7 +40,7 @@ export class CSS extends BaseCssHandler {
 		try {
 			const cssContent = readStylesheet(actualStylePath);
 			const outputFilename = determineOutputFilename(styleFile, config);
-			await this.processStringContent(cssContent, outputFilename);
+			await this.processCssAndEmit(cssContent, outputFilename);
 		} catch (error) {
 			// Skip styles that can't be processed
 			console.warn(`Failed to process style file ${styleFile}:`, error);
