@@ -16,11 +16,14 @@ import type { DevServerConfig } from './types';
  */
 export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 	const {
+		host = 'localhost',
+		port = 5173,
 		base = '/',
 		srcDir = 'resources',
 		outDir = 'build',
 		css = 'css',
 		manifest = true,
+		devServerUrl,
 	} = config;
 
 	const buildMap: Record<string, any> = {};
@@ -42,6 +45,9 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 				console.log('📡 Request to /vite-wordpress.json');
 
 				if (req.method === 'GET') {
+					// Build the dev server URL from config or fall back to server config
+					const serverHost = devServerUrl || `http://${host}:${port}`;
+
 					const responseConfig = {
 						base,
 						srcDir,
@@ -49,6 +55,11 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 						css,
 						manifest,
 						buildMap,
+						devServer: {
+							host,
+							port,
+							url: serverHost,
+						},
 					};
 
 					console.log('📤 Sending config:', responseConfig);

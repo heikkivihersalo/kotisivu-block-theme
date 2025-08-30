@@ -3,7 +3,7 @@
  */
 export type DevServerConfig = {
 	/**
-	 * Development server host
+	 * Development server host (e.g., 'localhost', 'block-theme.local')
 	 */
 	host?: string;
 
@@ -36,4 +36,10 @@ export type DevServerConfig = {
 	 * Whether to generate manifest
 	 */
 	manifest?: boolean;
+
+	/**
+	 * Full development server URL (e.g., 'http://localhost:5173', 'https://block-theme.local:5173')
+	 * If provided, this takes precedence over host and port
+	 */
+	devServerUrl?: string;
 };
