@@ -22,8 +22,7 @@ describe('Block Build Process', () => {
 	const REQUIRED_BLOCK_FILES = [
 		'block.json', // WordPress block configuration
 		'index.js', // Editor JavaScript bundle
-		'index.css', // Editor styles
-		'style-index.css', // Frontend styles
+		'index.css', // Combined editor and frontend styles
 		'index.asset.php', // WordPress asset dependencies
 	];
 
@@ -294,7 +293,7 @@ describe('Block Build Process', () => {
 		expect(content).toContain('version');
 
 		// Version should be a hash pattern (can be 32 hex chars or other formats)
-		const versionMatch = content.match(/'version'=>'([a-f0-9]+)'/);
+		const versionMatch = content.match(/'version'\s*=>\s*'([a-f0-9]+)'/);
 		expect(versionMatch).toBeTruthy();
 		expect(versionMatch?.[1]).toMatch(/^[a-f0-9]+$/);
 	}

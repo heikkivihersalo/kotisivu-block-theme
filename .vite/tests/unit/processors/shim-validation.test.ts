@@ -21,21 +21,25 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test that all processors use ReactShimPlugin
 	 */
 	test('processors use ReactShimPlugin for WordPress and React shims', () => {
-		// Check JS_Processor which directly uses ReactShimPlugin
-		const jsProcessorPath = join(
+		// Check BaseScriptHandler which directly uses ReactShimPlugin
+		const baseScriptHandlerPath = join(
 			process.cwd(),
-			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
+			'.vite/src/common/abstracts/BaseScriptHandler.ts'
 		);
-		const jsContent = readFileSync(jsProcessorPath, 'utf-8');
+		const baseScriptContent = readFileSync(baseScriptHandlerPath, 'utf-8');
 
-		// Check that JS processor imports ReactShimPlugin
-		expect(jsContent).toContain('ReactShimPlugin');
-		expect(jsContent).toContain("from '../../../plugins/reactShimPlugin'");
+		// Check that BaseScriptHandler imports ReactShimPlugin
+		expect(baseScriptContent).toContain('ReactShimPlugin');
+		expect(baseScriptContent).toContain(
+			"from '../plugins/reactShimPlugin'"
+		);
 
 		// Check that ReactShimPlugin is used in esbuild plugins
-		expect(jsContent).toContain('ReactShimPlugin(wpImports)');
-		expect(jsContent).toContain(
-			'plugins: [scssPlugin, ReactShimPlugin(wpImports)]'
+		expect(baseScriptContent).toContain(
+			'ReactShimPlugin(this.wpDependencies)'
+		);
+		expect(baseScriptContent).toContain(
+			'plugins: [scssPlugin, ReactShimPlugin(this.wpDependencies)]'
 		);
 
 		// Check asset plugin which delegates to AssetHandler
@@ -48,16 +52,13 @@ describe('Processor Shim Implementation Validation', () => {
 		// Asset plugin uses AssetHandler which has ReactShimPlugin
 		expect(assetContent).toContain('AssetHandler');
 
-		// Verify AssetHandler also uses ReactShimPlugin
-		const assetHandlerPath = join(
+		// Verify blocks plugin also uses block handlers with ReactShimPlugin
+		const blocksPluginPath = join(
 			process.cwd(),
-			'.vite/src/common/handlers/AssetHandler.ts'
+			'.vite/src/plugins/blocks-plugin/index.ts'
 		);
-		const handlerContent = readFileSync(assetHandlerPath, 'utf-8');
-		expect(handlerContent).toContain('ReactShimPlugin');
-		expect(handlerContent).toContain(
-			'ReactShimPlugin(this.wpDependencies)'
-		);
+		const blocksContent = readFileSync(blocksPluginPath, 'utf-8');
+		expect(blocksContent).toContain('BlockHandler');
 	});
 
 	/**
@@ -123,17 +124,21 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test that processors properly pass wpImports array to ReactShimPlugin
 	 */
 	test('processors track WordPress dependencies correctly', () => {
-		// Check JS_Processor which directly handles wpImports
-		const jsProcessorPath = join(
+		// Check BaseScriptHandler which handles wpDependencies
+		const baseScriptHandlerPath = join(
 			process.cwd(),
-			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
+			'.vite/src/common/abstracts/BaseScriptHandler.ts'
 		);
-		const jsContent = readFileSync(jsProcessorPath, 'utf-8');
+		const baseScriptContent = readFileSync(baseScriptHandlerPath, 'utf-8');
 
-		// Check for wpImports array usage in JS processor
-		expect(jsContent).toContain('wpImports');
-		expect(jsContent).toContain('const wpImports: string[] = []');
-		expect(jsContent).toContain('ReactShimPlugin(wpImports)');
+		// Check for wpDependencies array usage in BaseScriptHandler
+		expect(baseScriptContent).toContain('wpDependencies');
+		expect(baseScriptContent).toContain(
+			'protected wpDependencies: string[]'
+		);
+		expect(baseScriptContent).toContain(
+			'ReactShimPlugin(this.wpDependencies)'
+		);
 
 		// Check asset plugin which delegates to AssetHandler
 		const assetPluginPath = join(
@@ -142,7 +147,7 @@ describe('Processor Shim Implementation Validation', () => {
 		);
 		const assetContent = readFileSync(assetPluginPath, 'utf-8');
 
-		// Asset plugin uses AssetHandler which handles wpImports
+		// Asset plugin uses AssetHandler which handles wpDependencies
 		expect(assetContent).toContain('AssetHandler');
 		expect(assetContent).toContain('processAsset');
 	});
@@ -284,11 +289,11 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test script processor specific requirements
 	 */
 	test('script processor contains specific implementation details', () => {
-		const scriptProcessorPath = join(
+		const baseScriptHandlerPath = join(
 			process.cwd(),
-			'.vite/src/common/handlers/BlockHandler/utils/JS_Processor.ts'
+			'.vite/src/common/abstracts/BaseScriptHandler.ts'
 		);
-		const content = readFileSync(scriptProcessorPath, 'utf-8');
+		const content = readFileSync(baseScriptHandlerPath, 'utf-8');
 
 		// Should be part of esbuild plugins array
 		expect(content).toContain('plugins: [');
@@ -306,6 +311,7 @@ describe('Processor Shim Implementation Validation', () => {
 	test('asset processors contain specific implementation details', () => {
 		const assetProcessorPaths = [
 			'.vite/src/plugins/assets-plugin/index.ts',
+			'.vite/src/plugins/assets-plugin/AssetHandler/index.ts',
 		];
 
 		for (const processorFile of assetProcessorPaths) {
@@ -315,15 +321,23 @@ describe('Processor Shim Implementation Validation', () => {
 			// Should use AssetHandler for processing
 			expect(content).toContain('AssetHandler');
 
-			// Should handle asset processing through handler
-			expect(content).toContain('processAsset');
+			if (processorFile.includes('AssetHandler/index.ts')) {
+				// Should handle asset processing through handler
+				expect(content).toContain('processAsset');
 
-			// Should have FileEmitter for handling file emission
-			const hasFileEmitterUsage = content.includes('FileEmitter');
-			const hasFileEmitterInit = content.includes('new FileEmitter');
+				// Should handle build scripts through script handler
+				expect(content).toContain('buildScript');
 
-			expect(hasFileEmitterUsage).toBe(true);
-			expect(hasFileEmitterInit).toBe(true);
+				// Should handle file emission through handlers
+				const hasEmitUsage =
+					content.includes('emitScriptAsset') ||
+					content.includes('emitCssAsset') ||
+					content.includes('emitPhpAssetWithDependencies');
+				expect(hasEmitUsage).toBe(true);
+			} else {
+				// Main plugin should delegate to AssetHandler
+				expect(content).toContain('processAsset');
+			}
 		}
 	});
 });
