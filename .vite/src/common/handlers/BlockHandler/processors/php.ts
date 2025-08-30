@@ -32,4 +32,20 @@ export class PHP extends BasePhpHandler {
 	): Promise<void> {
 		await this.processPhpFile(phpPath, outputFileName, shouldMinify);
 	}
+
+	/**
+	 * Generate and emit PHP asset file with dependencies and hash
+	 * @param jsContent - The JavaScript content (for hash generation)
+	 * @param dependencies - Array of dependencies
+	 * @param outputFileName - The output file name for the PHP asset
+	 */
+	async emitPhpAssets(
+		jsContent: string,
+		dependencies: string[],
+		outputFileName: string
+	): Promise<void> {
+		const hash = this.generateFileHash(jsContent);
+		const phpContent = this.generatePhpAssetFile(dependencies, hash);
+		await this.emitAsset(outputFileName, phpContent);
+	}
 }

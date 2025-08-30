@@ -3,12 +3,17 @@
  */
 import { readFileSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
+import { createHash } from 'node:crypto';
 
 /**
  * Shared dependencies
  */
 import { FileEmitter } from '../common/utils/vite/FileEmitter';
-import type { EmittedAsset } from '../common/types';
+import type {
+	EmittedAsset,
+	BundlerChunkInfo,
+	BundlerAssetInfo,
+} from '../common/types';
 
 /**
  * File processing result interface
@@ -199,6 +204,54 @@ export abstract class BaseFileHandler {
 		const filename = parts[parts.length - 1];
 		const dotIndex = filename.lastIndexOf('.');
 		return dotIndex > 0 ? filename.substring(0, dotIndex) : filename;
+	}
+
+	/**
+	 * Generate a version hash for the given bundle.
+	 * This hash can be used to identify changes in the bundle's content.
+	 *
+	 * @param bundle - The bundle to generate a hash for.
+	 * @return The generated version hash.
+	 */
+	protected generateVersionHash(bundle: {
+		[fileName: string]: BundlerChunkInfo | BundlerAssetInfo;
+	}): string {
+		const hash = createHash('md5');
+
+		const sortedFiles = Object.values(bundle).sort((a, b) =>
+			a.fileName.localeCompare(b.fileName)
+		);
+
+		for (const file of sortedFiles) {
+			const source = file.type === 'chunk' ? file.code : file.source;
+			if (source) {
+				hash.update(source);
+			}
+		}
+
+		return hash.digest('hex');
+	}
+
+	/**
+	 * Generate a hash for a file.
+	 * @param content - The content of the file to hash.
+	 * @returns The hash of the file.
+	 */
+	protected generateFileHash(content: Buffer | string): string {
+		return createHash('md5').update(content).digest('hex');
+	}
+
+	/**
+	 * Generate a version string from a filename
+	 * This function extracts a version hash from the filename,
+	 * typically used for cache busting in asset management.
+	 *
+	 * @param filename - The name of the file to extract the version from.
+	 * @return A string representing the version, or '1.0.0' if no
+	 */
+	protected generateVersionFromFile(filename: string): string {
+		const match = filename.match(/[.-]([a-f0-9]{8,})\./);
+		return match ? match[1].substring(0, 8) : '1.0.0';
 	}
 
 	/**

@@ -29,6 +29,30 @@ export class JS extends BaseScriptHandler {
 	}
 
 	/**
+	 * Generate PHP asset file content in proper format
+	 * @param dependencies - Array of dependencies
+	 * @param hash - Version hash for the asset
+	 * @returns PHP asset file content
+	 */
+	private generatePhpAssetContent(
+		dependencies: string[],
+		hash: string
+	): string {
+		const convertToPhp = (value: any): string => {
+			if (Array.isArray(value)) {
+				const items = value.map((item) => `'${item}'`).join(', ');
+				return `[${items}]`;
+			}
+			if (typeof value === 'string') {
+				return `'${value.replace(/'/g, "\\'")}'`;
+			}
+			return 'null';
+		};
+
+		return `<?php return ['dependencies' => ${convertToPhp(dependencies)}, 'version' => ${convertToPhp(hash)}];`;
+	}
+
+	/**
 	 * Process a single script file
 	 * @param script - The script file name
 	 * @param config - The output configuration
@@ -96,12 +120,13 @@ export class JS extends BaseScriptHandler {
 				}
 			}
 
-			// Emit PHP asset
-			await this.emitPhpAssets(
-				result.jsContent,
+			// Emit PHP asset (generate inline using proper PHP format)
+			const hash = this.generateFileHash(result.jsContent);
+			const phpAssetContent = this.generatePhpAssetContent(
 				result.wpDependencies,
-				assetFileName
+				hash
 			);
+			await this.emitAsset(assetFileName, phpAssetContent);
 		} catch (error) {
 			this.handleFileProcessingError(script, error);
 		}

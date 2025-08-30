@@ -7,7 +7,6 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { generateFileHash, generatePhpAssetFile } from '../common/utils/index';
 import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../common/constants';
 import { scssPlugin } from '../common/plugins/scssPlugin';
 import { ReactShimPlugin } from '../common/plugins/reactShimPlugin';
@@ -171,114 +170,6 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 		// Emit source map if available
 		if (jsSourceMap) {
 			await this.emitAsset(`${outputFileName}.map`, jsSourceMap);
-		}
-	}
-
-	/**
-	 * Emit PHP asset file with dependencies and hash
-	 * @param jsContent - The JavaScript content (for hash generation)
-	 * @param dependencies - Array of dependencies
-	 * @param outputFileName - The output file name for the PHP asset
-	 */
-	protected async emitPhpAssets(
-		jsContent: string,
-		dependencies: string[],
-		outputFileName: string
-	): Promise<void> {
-		const hash = generateFileHash(jsContent);
-		const phpContent = generatePhpAssetFile(dependencies, hash);
-		await this.emitAsset(outputFileName, phpContent);
-	}
-
-	/**
-	 * Process script and emit all related assets (JS, CSS, PHP, source maps)
-	 * @param scriptPath - The path to the script file
-	 * @param outputBaseName - The base name for output files (without extension)
-	 * @param dependencies - Additional dependencies to include in PHP asset
-	 * @param buildOptions - Optional build configuration
-	 */
-	protected async processScriptAndEmitAssets(
-		scriptPath: string,
-		outputBaseName: string,
-		dependencies: string[] = [],
-		buildOptions: Partial<BuildOptions> = {}
-	): Promise<void> {
-		try {
-			// Add to watch list
-			this.addToWatchList(scriptPath);
-
-			// Build the script
-			const result = await this.buildScript({
-				entryPoint: scriptPath,
-				sourcemap: true,
-				...buildOptions,
-			});
-
-			// Emit JavaScript assets
-			await this.emitScriptAssets(
-				result.jsContent,
-				result.jsSourceMap,
-				`${outputBaseName}.js`
-			);
-
-			// Emit CSS assets if available
-			if (result.cssContent) {
-				await this.emitAsset(
-					`${outputBaseName}.css`,
-					result.cssContent
-				);
-				if (result.cssSourceMap) {
-					await this.emitAsset(
-						`${outputBaseName}.css.map`,
-						result.cssSourceMap
-					);
-				}
-			}
-
-			// Combine dependencies
-			const allDependencies = [
-				...dependencies.filter((dep) => dep.trim() !== ''),
-				...result.wpDependencies,
-			];
-
-			// Emit PHP asset
-			await this.emitPhpAssets(
-				result.jsContent,
-				allDependencies,
-				`${outputBaseName}.asset.php`
-			);
-		} catch (error) {
-			this.handleFileProcessingError(scriptPath, error);
-		}
-	}
-
-	/**
-	 * Process multiple scripts with the same configuration
-	 * @param scripts - Array of script configurations
-	 * @param dependencies - Common dependencies for all scripts
-	 * @param buildOptions - Common build options for all scripts
-	 */
-	protected async processScriptsAndEmitAssets(
-		scripts: Array<{
-			scriptPath: string;
-			outputBaseName: string;
-			dependencies?: string[];
-		}>,
-		dependencies: string[] = [],
-		buildOptions: Partial<BuildOptions> = {}
-	): Promise<void> {
-		for (const script of scripts) {
-			const scriptDependencies = [
-				...dependencies,
-				...(script.dependencies || []),
-			];
-
-			await this.processScriptAndEmitAssets(
-				script.scriptPath,
-				script.outputBaseName,
-				scriptDependencies,
-				buildOptions
-			);
 		}
 	}
 

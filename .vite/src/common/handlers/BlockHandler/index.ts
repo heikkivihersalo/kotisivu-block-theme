@@ -18,7 +18,6 @@ import {
 	findBlocksRecursively,
 	generateOutputConfig,
 	FileEmitter,
-	generatePhpArrayContent,
 } from '../../utils';
 import type {
 	OutputConfig,
@@ -422,7 +421,7 @@ export class BlockHandler {
 		});
 
 		// Generate PHP content
-		const phpContent = generatePhpArrayContent(blocksRecord);
+		const phpContent = this.php.generatePhpArrayContent(blocksRecord);
 
 		// Always use FileEmitter.safeEmitFile which handles both build and dev modes properly
 		await FileEmitter.safeEmitFile(this.context, {
