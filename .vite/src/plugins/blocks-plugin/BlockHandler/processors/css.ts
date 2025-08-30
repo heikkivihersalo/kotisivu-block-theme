@@ -8,7 +8,10 @@ import type { PluginContext } from 'rollup';
  */
 import { readStylesheet } from '../../../../common/utils';
 import type { OutputConfig } from '../../../../common/types';
-import { BaseCssHandler } from '../../../../common/abstracts/BaseCssHandler';
+import {
+	BaseCssHandler,
+	type CssHandlerConfig,
+} from '../../../../common/abstracts/BaseCssHandler';
 
 /**
  * CSS Processor utility for handling CSS file processing with LightningCSS
@@ -18,8 +21,11 @@ import { BaseCssHandler } from '../../../../common/abstracts/BaseCssHandler';
  * handling CSS transformations with proper source maps.
  */
 export class CSS extends BaseCssHandler {
-	constructor({ context }: { context: PluginContext }) {
-		super(context);
+	constructor({
+		context,
+		config = {},
+	}: { context: PluginContext; config?: CssHandlerConfig }) {
+		super(context, config);
 	}
 
 	/**

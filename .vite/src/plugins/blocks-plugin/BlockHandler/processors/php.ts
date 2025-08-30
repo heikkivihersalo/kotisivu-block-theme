@@ -6,7 +6,10 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BasePhpHandler } from '../../../../common/abstracts/BasePhpHandler';
+import {
+	BasePhpHandler,
+	type PhpHandlerConfig,
+} from '../../../../common/abstracts/BasePhpHandler';
 
 /**
  * PHP Processor utility for handling PHP file processing and emission
@@ -15,7 +18,10 @@ import { BasePhpHandler } from '../../../../common/abstracts/BasePhpHandler';
  * providing methods for reading, minifying, and emitting PHP files.
  */
 export class PHP extends BasePhpHandler {
-	constructor({ context }: { context: PluginContext }) {
-		super(context);
+	constructor({
+		context,
+		config = {},
+	}: { context: PluginContext; config?: PhpHandlerConfig }) {
+		super(context, config);
 	}
 }

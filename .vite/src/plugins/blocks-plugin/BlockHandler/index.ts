@@ -12,22 +12,20 @@ import type { ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { DISCOVERY_CONFIG, FILE_NAMES } from '../../../common/constants.ts';
+import { normalizePath, generateSourcePath } from '../../../common/utils';
+import { FileEmitter } from '../../../common/services/FileEmitter.ts';
 
-/**
- * Internal dependencies
- */
-import { CSS, JS, PHP } from './processors';
-import {
-	normalizePath,
-	generateSourcePath,
-	FileEmitter,
-} from '../../../common/utils';
 import type {
 	OutputConfig,
 	BlockInfo,
 	ViteBlocksPluginConfig,
 	WordPressBlockJSON,
 } from '../../../common/types';
+
+/**
+ * Internal dependencies
+ */
+import { CSS, JS, PHP } from './processors';
 
 /**
  * Main Block Handler class for WordPress Gutenberg block processing

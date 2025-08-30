@@ -10,7 +10,7 @@ import { dirname, resolve } from 'node:path';
  * Shared dependencies
  */
 import { normalizePath } from '../../common/utils';
-import { FileEmitter } from '../../common/utils/vite/FileEmitter.ts';
+import { FileEmitter } from '../../common/services/FileEmitter.ts';
 import type {
 	DiscoveredAsset,
 	ViteAssetsPluginConfig,

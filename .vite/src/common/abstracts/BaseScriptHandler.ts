@@ -1,58 +1,45 @@
 /**
  * External dependencies
  */
-import { build as esBuild } from 'esbuild';
 import type { PluginContext } from 'rollup';
 
 /**
  * Shared dependencies
  */
-import { ESBUILD_CONFIG, WORDPRESS_CONFIG } from '../constants';
-import { scssPlugin } from '../plugins/scssPlugin';
-import { ReactShimPlugin } from '../plugins/reactShimPlugin';
 import {
 	BaseFileHandler,
+	type FileHandlerConfig,
 	type FileProcessingOptions,
 	type FileProcessingResult,
 } from './BaseFileHandler';
+import type {
+	ScriptProcessor,
+	ScriptBuildOptions,
+	ScriptProcessingResult,
+} from '../interfaces/ScriptProcessor';
+import { ESBuildProcessor } from '../processors/ESBuildProcessor';
 
 /**
- * ESBuild processing result interface
+ * Configuration for the Script Handler
  */
-export type ScriptProcessingResult = {
-	jsContent: string;
-	cssContent?: string;
-	jsSourceMap?: string;
-	cssSourceMap?: string;
-	wpDependencies: string[];
-	metafile?: any;
-};
-
-/**
- * ESBuild configuration options
- */
-export type BuildOptions = {
-	entryPoint: string;
-	outfile?: string;
-	outdir?: string;
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-	minify?: boolean;
-	platform?: string;
-	target?: string | string[];
-};
+export interface ScriptHandlerConfig extends FileHandlerConfig {
+	scriptProcessor?: ScriptProcessor;
+}
 
 /**
  * Base Script Handler class providing common JavaScript processing functionality
  *
  * This base class extends BaseFileHandler and adds JavaScript-specific processing
- * capabilities using ESBuild. It provides methods for building, transforming, and
- * emitting JavaScript files along with their associated PHP asset files and source maps.
+ * capabilities using dependency injection. It follows the same patterns as BaseCssHandler
+ * for consistency and improved testability.
  */
 export abstract class BaseScriptHandler extends BaseFileHandler {
+	protected scriptProcessor: ScriptProcessor;
 	protected wpDependencies: string[];
 
-	constructor(context: PluginContext) {
-		super(context);
+	constructor(context: PluginContext, config: ScriptHandlerConfig = {}) {
+		super(context, config);
+		this.scriptProcessor = config.scriptProcessor || new ESBuildProcessor();
 		this.wpDependencies = [];
 	}
 
@@ -62,7 +49,7 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 
 	/**
 	 * Implement the abstract method from BaseFileHandler
-	 * Process JavaScript file content (bundling, transformation, etc.)
+	 * Process JavaScript file content using the injected script processor
 	 * @param content - The JavaScript content to process (not used directly, file path is used instead)
 	 * @param filePath - The original file path
 	 * @param options - Processing options
@@ -76,22 +63,16 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 		const { shouldMinify = process.env.NODE_ENV === 'production' } =
 			options;
 
-		if (
-			!this.hasFileExtension(filePath, 'js') &&
-			!this.hasFileExtension(filePath, 'ts') &&
-			!this.hasFileExtension(filePath, 'jsx') &&
-			!this.hasFileExtension(filePath, 'tsx')
-		) {
-			throw new Error(`Invalid JavaScript file extension: ${filePath}`);
-		}
+		this.validateScriptFile(filePath);
 
-		const buildOptions: BuildOptions = {
+		const buildOptions = {
 			entryPoint: filePath,
 			sourcemap: true,
 			minify: shouldMinify,
+			wpDependencies: this.wpDependencies,
 		};
 
-		const result = await this.buildScript(buildOptions);
+		const result = await this.scriptProcessor.build(buildOptions);
 
 		return {
 			content: result.jsContent,
@@ -104,61 +85,20 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 	// ========================================
 
 	/**
-	 * Build script with ESBuild (public method for composition usage)
+	 * Build script with the injected script processor (public method for composition usage)
 	 * @param options - Build configuration options
-	 * @returns ESBuild processing result
+	 * @returns Script processing result
 	 */
 	public async buildScript(
-		options: BuildOptions
+		options: ScriptBuildOptions
 	): Promise<ScriptProcessingResult> {
-		const {
-			entryPoint,
-			outfile,
-			outdir,
-			sourcemap = true,
-			minify = process.env.NODE_ENV === 'production',
-		} = options;
-
-		const result = await esBuild({
-			entryPoints: [entryPoint],
-			...(outfile && { outfile }),
-			...(outdir && { outdir }),
-			platform: ESBUILD_CONFIG.PLATFORM,
-			bundle: true,
-			write: false,
-			metafile: true,
-			sourcemap,
-			loader: ESBUILD_CONFIG.LOADER_MAP,
-			target: ESBUILD_CONFIG.TARGET,
-			jsx: ESBUILD_CONFIG.JSX_TRANSFORM,
-			jsxFactory: WORDPRESS_CONFIG.JSX_FACTORY,
-			jsxFragment: WORDPRESS_CONFIG.JSX_FRAGMENT,
-			minify,
-			plugins: [scssPlugin, ReactShimPlugin(this.wpDependencies)],
-			outExtension: { '.js': '.js', '.css': '.css' },
-		});
-
-		// Extract content from output files
-		const jsContent =
-			result.outputFiles?.find((f) => f.path.endsWith('.js'))?.text || '';
-		const cssContent =
-			result.outputFiles?.find((f) => f.path.endsWith('.css'))?.text ||
-			'';
-		const jsSourceMap =
-			result.outputFiles?.find((f) => f.path.endsWith('.js.map'))?.text ||
-			undefined;
-		const cssSourceMap =
-			result.outputFiles?.find((f) => f.path.endsWith('.css.map'))
-				?.text || undefined;
-
-		return {
-			jsContent,
-			cssContent: cssContent || undefined,
-			jsSourceMap,
-			cssSourceMap,
-			wpDependencies: this.wpDependencies,
-			metafile: result.metafile,
+		// Ensure wpDependencies are included in the options
+		const buildOptions = {
+			...options,
+			wpDependencies: options.wpDependencies || this.wpDependencies,
 		};
+
+		return await this.scriptProcessor.build(buildOptions);
 	}
 
 	// ========================================
@@ -237,6 +177,18 @@ export abstract class BaseScriptHandler extends BaseFileHandler {
 			this.hasFileExtension(scriptPath, 'jsx') ||
 			this.hasFileExtension(scriptPath, 'tsx')
 		);
+	}
+
+	/**
+	 * Validate script file path and throw descriptive errors
+	 * @param filePath - The file path to validate
+	 */
+	protected validateScriptFile(filePath: string): void {
+		if (!this.isValidScriptFile(filePath)) {
+			throw new Error(
+				`Invalid JavaScript file extension: ${filePath}. Supported extensions: .js, .jsx, .ts, .tsx`
+			);
+		}
 	}
 
 	// ========================================

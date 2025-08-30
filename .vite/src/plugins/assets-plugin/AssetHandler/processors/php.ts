@@ -6,9 +6,12 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BasePhpHandler } from '../../../../common/abstracts/BasePhpHandler';
+import {
+	BasePhpHandler,
+	type PhpHandlerConfig,
+} from '../../../../common/abstracts/BasePhpHandler';
 import type { DiscoveredAssetInfo } from '../../../../common/types/assets';
-import { FileEmitter } from '../../../../common/utils/vite/FileEmitter';
+import { FileEmitter } from '../../../../common/services/FileEmitter';
 
 /**
  * PHP Processor utility for handling PHP file processing and emission
@@ -17,8 +20,11 @@ import { FileEmitter } from '../../../../common/utils/vite/FileEmitter';
  * providing methods for reading, minifying, and emitting PHP files.
  */
 export class PHP extends BasePhpHandler {
-	constructor({ context }: { context: PluginContext }) {
-		super(context);
+	constructor({
+		context,
+		config = {},
+	}: { context: PluginContext; config?: PhpHandlerConfig }) {
+		super(context, config);
 	}
 
 	/**

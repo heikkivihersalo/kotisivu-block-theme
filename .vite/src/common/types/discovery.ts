@@ -6,7 +6,7 @@
  * Internal dependencies
  */
 import type { FileIdentifier, DiscoveredFilePathInfo } from './paths.ts';
-import type { FileEmitter } from '../utils/vite/FileEmitter.ts';
+import type { FileEmitter } from '../services/FileEmitter.ts';
 
 /**
  * Information about a discovered asset during build process

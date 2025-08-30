@@ -9,7 +9,7 @@ import type { PluginContext } from 'rollup';
 /**
  * Internal dependencies
  */
-import type { EmittedAsset } from '../../types';
+import type { EmittedAsset } from '../types';
 
 /**
  * Execution mode detection

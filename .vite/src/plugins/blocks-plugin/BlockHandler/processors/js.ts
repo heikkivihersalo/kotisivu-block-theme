@@ -6,7 +6,10 @@ import type { PluginContext } from 'rollup';
 /**
  * Shared dependencies
  */
-import { BaseScriptHandler } from '../../../../common/abstracts/BaseScriptHandler';
+import {
+	BaseScriptHandler,
+	type ScriptHandlerConfig,
+} from '../../../../common/abstracts/BaseScriptHandler';
 import type { OutputConfig } from '../../../../common/types/index';
 
 /**
@@ -17,8 +20,11 @@ import type { OutputConfig } from '../../../../common/types/index';
  * along with their associated PHP asset files and source maps.
  */
 export class JS extends BaseScriptHandler {
-	constructor({ context }: { context: PluginContext }) {
-		super(context);
+	constructor({
+		context,
+		config = {},
+	}: { context: PluginContext; config?: ScriptHandlerConfig }) {
+		super(context, config);
 	}
 
 	/**

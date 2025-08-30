@@ -1,21 +1,21 @@
 /**
  * External dependencies
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import type { PluginContext } from 'rollup';
 import { createHash } from 'node:crypto';
-import { join, parse, resolve } from 'node:path';
+import { join, parse } from 'node:path';
 
 /**
  * Shared dependencies
  */
-import { FileEmitter } from '../utils/vite/FileEmitter';
+import { FileEmitter } from '../services/FileEmitter';
+import { FilePathResolver } from '../services/FilePathResolver';
 import type {
 	EmittedAsset,
 	BundlerChunkInfo,
 	BundlerAssetInfo,
 } from '../types';
-import { FILE_EXTENSIONS } from '../constants';
 
 /**
  * File processing result interface
@@ -35,17 +35,30 @@ export type FileProcessingOptions = {
 };
 
 /**
+ * Configuration for the File Handler
+ */
+export interface FileHandlerConfig {
+	filePathResolver?: typeof FilePathResolver;
+	fileEmitter?: typeof FileEmitter;
+}
+
+/**
  * Base File Handler class providing common file processing functionality
  *
  * This base class encapsulates common file operations such as reading files,
  * watching files for changes, emitting assets, and handling errors consistently.
- * It can be extended by specific handlers that need file processing capabilities.
+ * It uses dependency injection to improve testability and follows the same
+ * patterns as BaseCssHandler for consistency.
  */
 export abstract class BaseFileHandler {
 	protected context: PluginContext;
+	protected filePathResolver: typeof FilePathResolver;
+	protected fileEmitter: typeof FileEmitter;
 
-	constructor(context: PluginContext) {
+	constructor(context: PluginContext, config: FileHandlerConfig = {}) {
 		this.context = context;
+		this.filePathResolver = config.filePathResolver || FilePathResolver;
+		this.fileEmitter = config.fileEmitter || FileEmitter;
 	}
 
 	// ========================================
@@ -156,7 +169,7 @@ export abstract class BaseFileHandler {
 	}
 
 	/**
-	 * Emit a single asset file
+	 * Emit a single asset file using the injected file emitter
 	 * @param fileName - The output file name
 	 * @param content - The file content
 	 * @param source - Optional custom source (defaults to content)
@@ -172,7 +185,7 @@ export abstract class BaseFileHandler {
 			source: source || content,
 		};
 
-		await FileEmitter.safeEmitFile(this.context, asset);
+		await this.fileEmitter.safeEmitFile(this.context, asset);
 	}
 
 	/**
@@ -265,31 +278,14 @@ export abstract class BaseFileHandler {
 	};
 
 	/**
-	 * Find the actual file path considering different extensions
+	 * Find the actual file path considering different extensions using the injected resolver
 	 * Supports .js, .jsx, .ts, .tsx extensions
 	 */
 	protected findActualFilePath = (
 		basePath: string,
 		fileName: string
 	): string | null => {
-		// If the file exists as specified, return it
-		const originalPath = resolve(basePath, fileName);
-		if (existsSync(originalPath)) {
-			return originalPath;
-		}
-
-		// Try different extensions
-		const extensions = FILE_EXTENSIONS.SCRIPTS;
-		const nameWithoutExt = fileName.replace(/\.(js|jsx|ts|tsx)$/, '');
-
-		for (const ext of extensions) {
-			const testPath = resolve(basePath, nameWithoutExt + ext);
-			if (existsSync(testPath)) {
-				return testPath;
-			}
-		}
-
-		return null;
+		return this.filePathResolver.findActualFilePath(basePath, fileName);
 	};
 
 	// ========================================

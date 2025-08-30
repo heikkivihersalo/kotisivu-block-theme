@@ -21,26 +21,32 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test that all processors use ReactShimPlugin
 	 */
 	test('processors use ReactShimPlugin for WordPress and React shims', () => {
-		// Check BaseScriptHandler which directly uses ReactShimPlugin
+		// Check ESBuildProcessor which directly uses ReactShimPlugin
+		const esBuildProcessorPath = join(
+			process.cwd(),
+			'.vite/src/common/processors/ESBuildProcessor.ts'
+		);
+		const esBuildContent = readFileSync(esBuildProcessorPath, 'utf-8');
+
+		// Check that ESBuildProcessor imports ReactShimPlugin
+		expect(esBuildContent).toContain('ReactShimPlugin');
+		expect(esBuildContent).toContain("from '../plugins/reactShimPlugin'");
+
+		// Check that ReactShimPlugin is used in esbuild plugins
+		expect(esBuildContent).toContain('ReactShimPlugin(wpDependencies)');
+		expect(esBuildContent).toContain(
+			'plugins: [scssPlugin, ReactShimPlugin(wpDependencies)]'
+		);
+
+		// Check BaseScriptHandler uses ESBuildProcessor
 		const baseScriptHandlerPath = join(
 			process.cwd(),
 			'.vite/src/common/abstracts/BaseScriptHandler.ts'
 		);
 		const baseScriptContent = readFileSync(baseScriptHandlerPath, 'utf-8');
 
-		// Check that BaseScriptHandler imports ReactShimPlugin
-		expect(baseScriptContent).toContain('ReactShimPlugin');
-		expect(baseScriptContent).toContain(
-			"from '../plugins/reactShimPlugin'"
-		);
-
-		// Check that ReactShimPlugin is used in esbuild plugins
-		expect(baseScriptContent).toContain(
-			'ReactShimPlugin(this.wpDependencies)'
-		);
-		expect(baseScriptContent).toContain(
-			'plugins: [scssPlugin, ReactShimPlugin(this.wpDependencies)]'
-		);
+		expect(baseScriptContent).toContain('ESBuildProcessor');
+		expect(baseScriptContent).toContain('ScriptProcessor');
 
 		// Check asset plugin which delegates to AssetHandler
 		const assetPluginPath = join(
@@ -136,9 +142,16 @@ describe('Processor Shim Implementation Validation', () => {
 		expect(baseScriptContent).toContain(
 			'protected wpDependencies: string[]'
 		);
-		expect(baseScriptContent).toContain(
-			'ReactShimPlugin(this.wpDependencies)'
+
+		// Check ESBuildProcessor gets wpDependencies via options
+		const esBuildProcessorPath = join(
+			process.cwd(),
+			'.vite/src/common/processors/ESBuildProcessor.ts'
 		);
+		const esBuildContent = readFileSync(esBuildProcessorPath, 'utf-8');
+
+		expect(esBuildContent).toContain('ReactShimPlugin(wpDependencies)');
+		expect(esBuildContent).toContain('wpDependencies = []');
 
 		// Check asset plugin which delegates to AssetHandler
 		const assetPluginPath = join(
@@ -289,11 +302,12 @@ describe('Processor Shim Implementation Validation', () => {
 	 * Test script processor specific requirements
 	 */
 	test('script processor contains specific implementation details', () => {
-		const baseScriptHandlerPath = join(
+		// Check ESBuildProcessor which contains the actual implementation details
+		const esBuildProcessorPath = join(
 			process.cwd(),
-			'.vite/src/common/abstracts/BaseScriptHandler.ts'
+			'.vite/src/common/processors/ESBuildProcessor.ts'
 		);
-		const content = readFileSync(baseScriptHandlerPath, 'utf-8');
+		const content = readFileSync(esBuildProcessorPath, 'utf-8');
 
 		// Should be part of esbuild plugins array
 		expect(content).toContain('plugins: [');
@@ -303,6 +317,16 @@ describe('Processor Shim Implementation Validation', () => {
 
 		// Should use ESBUILD_CONFIG constants
 		expect(content).toContain('ESBUILD_CONFIG');
+
+		// Check BaseScriptHandler uses the processor pattern
+		const baseScriptHandlerPath = join(
+			process.cwd(),
+			'.vite/src/common/abstracts/BaseScriptHandler.ts'
+		);
+		const baseContent = readFileSync(baseScriptHandlerPath, 'utf-8');
+
+		expect(baseContent).toContain('scriptProcessor');
+		expect(baseContent).toContain('sourcemap');
 	});
 
 	/**

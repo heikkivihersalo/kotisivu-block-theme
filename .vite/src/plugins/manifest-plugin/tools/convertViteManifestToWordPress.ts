@@ -4,12 +4,8 @@
 import {
 	extractWpDependencies,
 	generateVersionFromFile,
-	shouldLoadInFooter,
 } from '../../../common/utils/index.ts';
 
-/**
- * Internal dependencies
- */
 import type {
 	ViteManifest,
 	WordPressAssetManifest,
@@ -28,6 +24,10 @@ export function convertViteManifestToWordPress(
 	publicPath: string = '/'
 ): WordPressAssetManifest {
 	const wpManifest: WordPressAssetManifest = {};
+
+	const shouldLoadInFooter = (src: string) => {
+		return !src.includes('admin');
+	};
 
 	for (const [_src, chunk] of Object.entries(viteManifest)) {
 		// Only process entry chunks for WordPress

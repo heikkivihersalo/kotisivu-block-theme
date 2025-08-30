@@ -8,20 +8,33 @@ import type { PluginContext } from 'rollup';
  */
 import {
 	BaseFileHandler,
+	type FileHandlerConfig,
 	type FileProcessingOptions,
 	type FileProcessingResult,
 } from './BaseFileHandler';
+import type { PhpProcessor } from '../interfaces/PhpProcessor';
+import { DefaultPhpProcessor } from '../processors/DefaultPhpProcessor';
+
+/**
+ * Configuration for the PHP Handler
+ */
+export interface PhpHandlerConfig extends FileHandlerConfig {
+	phpProcessor?: PhpProcessor;
+}
 
 /**
  * Base PHP Handler class providing common PHP processing functionality
  *
  * This base class extends BaseFileHandler and adds PHP-specific processing
- * capabilities such as minification. It can be extended by specific handlers
- * that need PHP processing capabilities.
+ * capabilities using dependency injection. It follows the same patterns as BaseCssHandler
+ * for consistency and improved testability.
  */
 export abstract class BasePhpHandler extends BaseFileHandler {
-	constructor(context: PluginContext) {
-		super(context);
+	protected phpProcessor: PhpProcessor;
+
+	constructor(context: PluginContext, config: PhpHandlerConfig = {}) {
+		super(context, config);
+		this.phpProcessor = config.phpProcessor || new DefaultPhpProcessor();
 	}
 
 	// ========================================
@@ -29,7 +42,7 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	// ========================================
 
 	/**
-	 * Process PHP file content (minification, validation, etc.)
+	 * Process PHP file content using the injected PHP processor
 	 * @param content - The PHP content to process
 	 * @param filePath - The original file path
 	 * @param options - Processing options
@@ -42,13 +55,11 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	): Promise<FileProcessingResult> {
 		const { shouldMinify = true } = options;
 
-		if (!this.isValidPhpContent(content)) {
-			throw new Error(`Invalid PHP content in file: ${filePath}`);
-		}
+		this.validatePhpContent(content, filePath);
 
-		const processedContent = shouldMinify
-			? this.minifyPhp(content)
-			: content;
+		const processedContent = this.phpProcessor.process(content, {
+			minify: shouldMinify,
+		});
 
 		return {
 			content: processedContent,
@@ -60,70 +71,41 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	// ========================================
 
 	/**
-	 * Generate a PHP asset file with dependencies and version hash.
-	 *
-	 * @param {Set<string> | string[]} dependencies - Set or array of dependencies.
-	 * @param {string} [hash=''] - Version hash for the asset.
-	 * @return {string} PHP code as a string that returns an array with dependencies and version
+	 * Generate a PHP asset file with dependencies and version hash using the injected processor
+	 * @param dependencies - Set or array of dependencies
+	 * @param hash - Version hash for the asset
+	 * @returns PHP code as a string that returns an array with dependencies and version
 	 */
 	public generatePhpAssetFile = (
 		dependencies: Set<string> | string[] = [],
 		hash = ''
 	): string => {
-		const data = {
-			dependencies: Array.from(dependencies),
-			version: hash,
-		};
-
-		return `<?php return ${this.convertToPhpArray(data, 0, true)};`;
+		return this.phpProcessor.generatePhpAssetFile(dependencies, hash);
 	};
 
 	/**
-	 * Generate PHP array content for block manifests
-	 * @param blocks - The blocks object containing block.json configurations.
-	 * @return A string representing the PHP array content
+	 * Generate PHP array content for block manifests using the injected processor
+	 * @param blocks - The blocks object containing block.json configurations
+	 * @returns A string representing the PHP array content
 	 */
 	public generatePhpArrayContent(blocks: Record<string, any>): string {
-		const timestamp = new Date().toISOString();
-
-		let phpContent = `<?php
-	/**
-	 * Block Manifest
-	 * 
-	 * Auto-generated block manifest containing all block.json configurations.
-	 * Generated on: ${timestamp}
-	 * 
-	 */
-	
-	return `;
-
-		phpContent += this.convertToPhpArray(blocks, 0);
-		phpContent += ';\n';
-
-		return phpContent;
+		return this.phpProcessor.generatePhpArrayContent(blocks);
 	}
 
 	// ========================================
-	// Protected Methods (for subclass usage)
+	// Validation and Error Handling
 	// ========================================
 
 	/**
-	 * Handle PHP processing errors with specific context
-	 * @param fileName - The file name that failed to process
-	 * @param error - The error that occurred
+	 * Validate PHP content and throw descriptive errors
+	 * @param content - The PHP content to validate
+	 * @param filePath - The file path for error context
 	 */
-	protected handleFileProcessingError(
-		fileName: string,
-		error: unknown
-	): void {
-		// For PHP files, we often want to silently skip files that can't be processed
-		// This maintains backward compatibility with the original PHP_Processor behavior
-		console.warn(`Failed to process PHP file ${fileName}:`, error);
+	protected validatePhpContent(content: string, filePath: string): void {
+		if (!this.isValidPhpContent(content)) {
+			throw new Error(`Invalid PHP content in file: ${filePath}`);
+		}
 	}
-
-	// ========================================
-	// Validation and Utility Methods
-	// ========================================
 
 	/**
 	 * Check if PHP content is valid for processing
@@ -138,105 +120,16 @@ export abstract class BasePhpHandler extends BaseFileHandler {
 	}
 
 	/**
-	 * Convert JavaScript object to PHP array format
-	 * @param value - The value to convert to PHP array format
-	 * @param indent - Current indentation level (for recursive calls)
-	 * @param minify - Whether to minify the output
-	 * @return A string representing the PHP array content
+	 * Handle PHP processing errors with specific context
+	 * @param fileName - The file name that failed to process
+	 * @param error - The error that occurred
 	 */
-	protected convertToPhpArray(
-		value: any,
-		indent = 0,
-		minify = false
-	): string {
-		const space = minify ? '' : ' ';
-		const newline = minify ? '' : '\n';
-		const tab = minify ? '' : '\t'.repeat(indent);
-		const nextTab = minify ? '' : '\t'.repeat(indent + 1);
-
-		// Handle primitives
-		if (value === null) return 'null';
-		if (typeof value === 'boolean') return value ? 'true' : 'false';
-		if (typeof value === 'number') return value.toString();
-		if (typeof value === 'string') {
-			const escaped = value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-			return `'${escaped}'`;
-		}
-
-		// Handle arrays
-		if (Array.isArray(value)) {
-			if (value.length === 0) return '[]';
-
-			const items = value.map((item) => {
-				const converted = this.convertToPhpArray(
-					item,
-					indent + 1,
-					minify
-				);
-				return `${nextTab}${converted}`;
-			});
-			return `[${newline}${items.join(`,${newline}`)}${newline}${tab}]`;
-		}
-
-		// Handle objects
-		if (typeof value === 'object') {
-			const keys = Object.keys(value);
-			if (keys.length === 0) return '[]';
-
-			const pairs = keys.map((key) => {
-				const phpKey = this.convertToPhpArray(key, 0, minify);
-				const phpValue = this.convertToPhpArray(
-					value[key],
-					indent + 1,
-					minify
-				);
-				return `${nextTab}${phpKey}${space}=>${space}${phpValue}`;
-			});
-			return `[${newline}${pairs.join(`,${newline}`)}${newline}${tab}]`;
-		}
-
-		return 'null';
+	protected handleFileProcessingError(
+		fileName: string,
+		error: unknown
+	): void {
+		// For PHP files, we often want to silently skip files that can't be processed
+		// This maintains backward compatibility with the original PHP_Processor behavior
+		console.warn(`Failed to process PHP file ${fileName}:`, error);
 	}
-
-	/**
-	 * Minify PHP content by removing comments, unnecessary whitespace, and formatting
-	 * This is a conservative minifier that maintains readability while reducing file size
-	 * @param content - The PHP content to minify
-	 * @return The minified PHP content
-	 */
-	protected minifyPhp = (content: string): string => {
-		let result = content;
-
-		// Remove multi-line comments /* ... */
-		result = result.replace(/\/\*[\s\S]*?\*\//g, '');
-
-		// Remove single-line comments // ... but preserve URLs like http://
-		result = result.replace(/(?<!:)\/\/(?!\/)[^\r\n]*/g, '');
-
-		// Remove single-line comments # ...
-		result = result.replace(/(?<!['"])#[^\r\n]*/g, '');
-
-		// Remove excessive whitespace while preserving structure
-		// Replace multiple spaces/tabs with single space
-		result = result.replace(/[ \t]+/g, ' ');
-
-		// Remove trailing whitespace from lines
-		result = result.replace(/[ \t]+$/gm, '');
-
-		// Remove leading whitespace but preserve indentation structure
-		result = result.replace(/^[ \t]+/gm, '');
-
-		// Remove multiple consecutive newlines, keep max 1 empty line
-		result = result.replace(/\n{3,}/g, '\n\n');
-
-		// Trim start and end
-		result = result.trim();
-
-		// Add back single newline at end of file if it doesn't exist
-		if (!result.endsWith('\n')) {
-			result += '\n';
-		}
-
-		return result;
-	};
 }

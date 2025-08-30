@@ -1,4 +1,3 @@
-export * from './vite';
 export * from './extractWpDependencies';
 export * from './generateSourcePath';
 export * from './generateVersionFromFile';
