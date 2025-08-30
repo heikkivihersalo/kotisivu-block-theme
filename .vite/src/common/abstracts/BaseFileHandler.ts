@@ -188,7 +188,11 @@ export abstract class BaseFileHandler {
 			source: source || content,
 		};
 
-		await this.fileEmitter.safeEmitFile(this.context, asset, this.outputDirectory);
+		await this.fileEmitter.safeEmitFile(
+			this.context,
+			asset,
+			this.outputDirectory
+		);
 	}
 
 	/**
