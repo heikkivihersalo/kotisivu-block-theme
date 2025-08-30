@@ -46,6 +46,7 @@
 		"@types/react": "^19.1.2",
 		"@types/react-dom": "^19.1.2",
 		"@types/wordpress__block-editor": "^11.5.16",
+		"@vitejs/plugin-basic-ssl": "^2.1.0",
 		"@vitejs/plugin-react": "^4.6.0",
 		"@vitest/ui": "^3.2.4",
 		"@wordpress/block-editor": "^14.17.0",
