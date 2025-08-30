@@ -1,4 +1,4 @@
-import type { AssetInfo, ChunkInfo } from '../../types';
+import type { AssetInfo, ChunkInfo } from '../types';
 
 /**
  * Extract WordPress dependencies from bundle files or import arrays
