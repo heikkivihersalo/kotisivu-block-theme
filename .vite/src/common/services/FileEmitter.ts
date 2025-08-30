@@ -85,16 +85,13 @@ export class FileEmitter {
 		const executionMode = FileEmitter.detectExecutionModeStatic();
 
 		if (executionMode === 'serve') {
-			if (outputDir) {
-				// Use FileEmitter in development serve mode with output directory
-				const emitter = new FileEmitter(outputDir, executionMode);
-				await emitter.emitFile(pluginContext, asset);
-			} else {
-				// In serve mode without output directory, skip file emission
-				FileEmitterLogger.warn(
-					`Skipping file emission in serve mode: ${asset.fileName} (no output directory provided)`
-				);
+			if (!outputDir) {
+				return;
 			}
+
+			// Use FileEmitter in development serve mode with output directory
+			const emitter = new FileEmitter(outputDir, executionMode);
+			await emitter.emitFile(pluginContext, asset);
 		} else {
 			// Use standard emitFile in build/production mode
 			pluginContext.emitFile(asset);
