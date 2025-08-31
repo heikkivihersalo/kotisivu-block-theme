@@ -18,13 +18,28 @@ export type BuildEnvironmentConfig = {
  */
 export type DependencyConfig = {
 	dependencies?: string[];
-	watch?: string[];
+};
+
+/**
+ * HMR configuration for builds
+ */
+export type HMRBuildConfig = {
+	enabled?: boolean;
+	watch?: {
+		php?: string[];
+		css?: string[];
+		scripts?: string[];
+		blocks?: string[];
+		inline?: string[];
+	};
 };
 
 /**
  * Complete build configuration
  */
-export type BuildConfig = BuildEnvironmentConfig & DependencyConfig;
+export type BuildConfig = BuildEnvironmentConfig &
+	DependencyConfig &
+	HMRBuildConfig;
 
 /**
  * Terser-specific optimization options

@@ -70,4 +70,4 @@ export type {
 /**
  * Unified plugin configuration system
  */
-export type { UnifiedPluginConfig } from './unified-config.ts';
+export type { PluginConfig } from './plugin-config.ts';

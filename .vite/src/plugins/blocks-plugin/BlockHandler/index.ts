@@ -179,9 +179,21 @@ export class BlockHandler {
 		// Validate configuration
 		this.validateConfig();
 
-		// Add watch files if specified
-		const { watch = [] } = this.config;
-		watch.forEach((file: string) => this.context.addWatchFile(file));
+		// Add HMR watch files if specified
+		const hmrWatch = this.config.watch;
+		if (hmrWatch) {
+			// Add all HMR watch patterns
+			const allPatterns = [
+				...(hmrWatch.php || []),
+				...(hmrWatch.css || []),
+				...(hmrWatch.scripts || []),
+				...(hmrWatch.blocks || []),
+				...(hmrWatch.inline || []),
+			];
+			allPatterns.forEach((pattern: string) =>
+				this.context.addWatchFile(pattern)
+			);
+		}
 
 		// Discover blocks
 		await this.discoverBlocks();

@@ -57,9 +57,16 @@ export default defineConfig(({ mode }) => {
 					dependencies: ['react', 'react-dom'],
 				},
 
-				// Environment configuration
-				environment: {
-					watch: ['./resources/widgets/**/*.php'],
+				// HMR configuration
+				hmr: {
+					enabled: true,
+					watch: {
+						php: ['./resources/widgets/**/*.php'],
+						inline: [
+							'src/app/styles/inline/**/*.css',
+							'resources/app/styles/inline/**/*.css',
+						],
+					},
 				},
 
 				// Inline assets HMR configuration
@@ -67,10 +74,6 @@ export default defineConfig(({ mode }) => {
 					inlineAssets: [
 						'build/assets/sanitize.css',
 						'build/assets/inline.css',
-					],
-					watchPatterns: [
-						'src/app/styles/inline/**/*.css',
-						'resources/app/styles/inline/**/*.css',
 					],
 					blocksConfig: {
 						blocksDir: {

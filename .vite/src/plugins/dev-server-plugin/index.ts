@@ -12,6 +12,10 @@ import path from 'path';
 import type { DevServerConfig, BlockAssetInfo } from './types';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
 import {
+	processHMRWatchConfig,
+	getInlineAssetWatchPatterns,
+} from '../../common/utils/watch-config.js';
+import {
 	processInlineConfig,
 	getScriptInjectionOptions,
 } from './utils/config.js';
@@ -94,18 +98,25 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 		},
 
 		/**
-		 * Build Start Hook - Set up file watching for inline assets
+		 * Build Start Hook - Set up file watching for inline assets using unified HMR config
 		 */
 		buildStart() {
 			if (!processedInlineConfig) return;
+
+			// Process HMR configuration if available
+			const hmrWatchConfig = processHMRWatchConfig({
+				hmr: { watch: {} },
+			}); // Use default if not provided
+			const inlineWatchPatterns =
+				getInlineAssetWatchPatterns(hmrWatchConfig);
 
 			// Discover block assets first
 			blockAssets = discoverBlockAssets(
 				processedInlineConfig.blocksConfig
 			);
 
-			// Add watch patterns for inline assets
-			processedInlineConfig.watchPatterns.forEach((pattern) => {
+			// Add unified HMR watch patterns for inline assets
+			inlineWatchPatterns.forEach((pattern) => {
 				this.addWatchFile(pattern);
 			});
 

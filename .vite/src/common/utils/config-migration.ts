@@ -4,7 +4,7 @@
  * This file provides utilities for working with the categorized configuration structure.
  */
 
-import type { UnifiedPluginConfig } from '../types/unified-config.ts';
+import type { PluginConfig } from '../types/plugin-config.ts';
 
 /**
  * Extract specific category from config
@@ -13,45 +13,45 @@ import type { UnifiedPluginConfig } from '../types/unified-config.ts';
  * @param category - The category to extract
  * @returns The category config
  */
-export function extractCategory<T extends keyof UnifiedPluginConfig>(
-	config: UnifiedPluginConfig,
+export function extractCategory<T extends keyof PluginConfig>(
+	config: PluginConfig,
 	category: T
-): NonNullable<UnifiedPluginConfig[T]> {
-	return (config[category] || {}) as NonNullable<UnifiedPluginConfig[T]>;
+): NonNullable<PluginConfig[T]> {
+	return (config[category] || {}) as NonNullable<PluginConfig[T]>;
 }
 
 /**
  * Get build configuration
  */
-export function getBuildConfig(config: UnifiedPluginConfig) {
+export function getBuildConfig(config: PluginConfig) {
 	return extractCategory(config, 'build');
 }
 
 /**
  * Get server configuration
  */
-export function getServerConfig(config: UnifiedPluginConfig) {
+export function getServerConfig(config: PluginConfig) {
 	return extractCategory(config, 'server');
 }
 
 /**
  * Get paths configuration
  */
-export function getPathsConfig(config: UnifiedPluginConfig) {
+export function getPathsConfig(config: PluginConfig) {
 	return extractCategory(config, 'paths');
 }
 
 /**
  * Get WordPress configuration
  */
-export function getWordPressConfig(config: UnifiedPluginConfig) {
+export function getWordPressConfig(config: PluginConfig) {
 	return extractCategory(config, 'wordpress');
 }
 
 /**
  * Get environment configuration
  */
-export function getEnvironmentConfig(config: UnifiedPluginConfig) {
+export function getEnvironmentConfig(config: PluginConfig) {
 	return extractCategory(config, 'environment');
 }
 
@@ -59,11 +59,8 @@ export function getEnvironmentConfig(config: UnifiedPluginConfig) {
  * Helper to get a specific build property
  */
 export function getBuildProperty<
-	K extends keyof NonNullable<UnifiedPluginConfig['build']>,
->(
-	config: UnifiedPluginConfig,
-	property: K
-): NonNullable<UnifiedPluginConfig['build']>[K] {
+	K extends keyof NonNullable<PluginConfig['build']>,
+>(config: PluginConfig, property: K): NonNullable<PluginConfig['build']>[K] {
 	const buildConfig = getBuildConfig(config);
 	return buildConfig[property];
 }
@@ -72,11 +69,8 @@ export function getBuildProperty<
  * Helper to get a specific server property
  */
 export function getServerProperty<
-	K extends keyof NonNullable<UnifiedPluginConfig['server']>,
->(
-	config: UnifiedPluginConfig,
-	property: K
-): NonNullable<UnifiedPluginConfig['server']>[K] {
+	K extends keyof NonNullable<PluginConfig['server']>,
+>(config: PluginConfig, property: K): NonNullable<PluginConfig['server']>[K] {
 	const serverConfig = getServerConfig(config);
 	return serverConfig[property];
 }
@@ -85,11 +79,8 @@ export function getServerProperty<
  * Helper to get a specific paths property
  */
 export function getPathsProperty<
-	K extends keyof NonNullable<UnifiedPluginConfig['paths']>,
->(
-	config: UnifiedPluginConfig,
-	property: K
-): NonNullable<UnifiedPluginConfig['paths']>[K] {
+	K extends keyof NonNullable<PluginConfig['paths']>,
+>(config: PluginConfig, property: K): NonNullable<PluginConfig['paths']>[K] {
 	const pathsConfig = getPathsConfig(config);
 	return pathsConfig[property];
 }

@@ -24,7 +24,7 @@ import type { BlockInfo } from './wordpress.ts';
  * - wordpress: WordPress-specific settings
  * - environment: Environment and runtime configuration
  */
-export interface UnifiedPluginConfig {
+export interface PluginConfig {
 	/** Build and compilation configuration */
 	build?: {
 		/** Output directory for built assets */
@@ -128,18 +128,39 @@ export interface UnifiedPluginConfig {
 
 		/** Environment variables */
 		env?: Record<string, string>;
+	};
 
-		/** File watching patterns */
-		watch?: string[];
+	/** Hot Module Replacement (HMR) configuration */
+	hmr?: {
+		/** Enable/disable HMR */
+		enabled?: boolean;
+
+		/** HMR server port (if different from dev server) */
+		port?: number;
+
+		/** Watch configuration for HMR */
+		watch?: {
+			/** PHP files (templates, blocks, functions) */
+			php?: string[];
+
+			/** CSS files (styles, assets) */
+			css?: string[];
+
+			/** JavaScript/TypeScript files */
+			scripts?: string[];
+
+			/** Block-specific files */
+			blocks?: string[];
+
+			/** Inline asset patterns */
+			inline?: string[];
+		};
 	};
 
 	/** Inline assets configuration for dev server */
 	inlineAssets?: {
 		/** List of inline asset paths */
 		inlineAssets: string[];
-
-		/** Watch patterns for inline assets */
-		watchPatterns: string[];
 
 		/** Blocks configuration for inline assets */
 		blocksConfig: {

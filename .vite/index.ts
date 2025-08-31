@@ -15,13 +15,14 @@ import {
 	generatePlugins,
 } from './src/plugins/index.js';
 
-import type { UnifiedPluginConfig } from './src/common/types/unified-config.ts';
+import type { PluginConfig } from './src/common/types/plugin-config.ts';
 import {
 	getBuildConfig,
 	getServerConfig,
 	getPathsConfig,
 	getWordPressConfig,
 	getEnvironmentConfig,
+	getHMRConfig,
 } from './src/common/utils/config-helpers.ts';
 
 /**
@@ -30,16 +31,17 @@ import {
  * This plugin uses a single unified configuration that all plugins share.
  * Each plugin extracts only the properties it needs from the shared config.
  *
- * @param {UnifiedPluginConfig} config - Unified configuration options for all plugins
+ * @param {PluginConfig} config - Unified configuration options for all plugins
  * @returns {Array} Array of Vite plugins
  */
-export const wp = (config: UnifiedPluginConfig): Plugin[] => {
+export const wp = (config: PluginConfig): Plugin[] => {
 	// Extract categorized configs
 	const buildConfig = getBuildConfig(config);
 	const serverConfig = getServerConfig(config);
 	const pathsConfig = getPathsConfig(config);
 	const wordpressConfig = getWordPressConfig(config);
 	const environmentConfig = getEnvironmentConfig(config);
+	const hmrConfig = getHMRConfig(config);
 
 	// Require block paths for multi-block builds
 	if (
@@ -63,6 +65,7 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 		},
 		resolve: buildConfig.resolve,
 		environment: environmentConfig,
+		hmr: hmrConfig,
 		build: {
 			outDir: buildConfig.outDir,
 			sourcemap: buildConfig.sourcemap,
@@ -70,7 +73,6 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 			target: buildConfig.target,
 			cssCodeSplit: buildConfig.cssCodeSplit,
 			dependencies: wordpressConfig.dependencies,
-			watch: environmentConfig.watch,
 			assetsDir: pathsConfig.assetsDir,
 			blocksDir: pathsConfig.blocksDir,
 		},
@@ -84,7 +86,7 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 		blocksDir: pathsConfig.blocksDir!,
 		outDir: buildConfig.outDir,
 		sourcemap: buildConfig.sourcemap,
-		watch: environmentConfig.watch,
+		hmr: hmrConfig,
 		dependencies: wordpressConfig.dependencies,
 		discoveredBlocks: wordpressConfig.discoveredBlocks,
 	};
