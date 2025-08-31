@@ -11,7 +11,7 @@ import { dirname, resolve } from 'node:path';
  */
 import { FilePathResolver } from '../../common/services/FilePathResolver';
 import type { DiscoveredAsset } from '../../common/types';
-import type { AssetsPluginConfig } from '../../common/types/plugins.ts';
+import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Internal dependencies
@@ -26,8 +26,16 @@ import { discoverAssetsWithMapping } from './discovery';
  * - Discovering assets from configured directories
  * - Sideloading asset entry points
  */
-export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
-	const { assetsDir, outDir, dependencies = [], sourcemap = false } = config;
+export function AssetsPlugin(config: PluginConfig): Plugin {
+	const assetsDir = config.paths?.assetsDir;
+	if (!assetsDir) {
+		throw new Error('paths.assetsDir is required for AssetsPlugin');
+	}
+
+	const {
+		build: { outDir, sourcemap = false } = {},
+		wordpress: { dependencies = [] } = {},
+	} = config;
 
 	let outputDirectory: string;
 	let discoveredAssets: DiscoveredAsset[] = [];

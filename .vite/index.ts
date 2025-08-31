@@ -17,12 +17,6 @@ import {
 
 import type { PluginConfig } from './src/common/types/plugin-config.ts';
 import {
-	extractManifestConfig,
-	extractBlocksConfig,
-	extractAssetsConfig,
-	extractDevServerConfig,
-} from './src/common/types/plugins.ts';
-import {
 	getBuildConfig,
 	getServerConfig,
 	getEnvironmentConfig,
@@ -48,12 +42,6 @@ export const wp = (config: PluginConfig): Plugin[] => {
 			'paths.blocksDir is required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
-
-	// Extract specific plugin configurations from unified config
-	const blocksConfig = extractBlocksConfig(config);
-	const assetsConfig = extractAssetsConfig(config);
-	const manifestConfig = extractManifestConfig(config);
-	const devServerConfig = extractDevServerConfig(config);
 
 	// Build ViteWordPressConfig for ConfigPlugin (keeping backward compatibility)
 	const buildConfig = getBuildConfig(config);
@@ -89,16 +77,20 @@ export const wp = (config: PluginConfig): Plugin[] => {
 	const configPlugin = ConfigPlugin(viteWordPressConfig);
 
 	// Create the blocks plugin
-	const blocksPlugin = BlocksPlugin(blocksConfig);
+	const blocksPlugin = BlocksPlugin(config);
 
 	// Create the assets plugin (optional, only if assets are configured)
-	const assetsPlugin = assetsConfig ? AssetsPlugin(assetsConfig) : null;
+	const assetsPlugin =
+		config.paths?.assetsDir &&
+		Object.keys(config.paths.assetsDir).length > 0
+			? AssetsPlugin(config)
+			: null;
 
 	// Create the manifest plugin
-	const manifestPlugin = ManifestPlugin(manifestConfig);
+	const manifestPlugin = ManifestPlugin(config);
 
 	// Create the dev server plugin
-	const devServerPlugin = DevServerPlugin(devServerConfig);
+	const devServerPlugin = DevServerPlugin(config);
 
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();

@@ -9,7 +9,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { FilePathResolver } from '../../common/services/FilePathResolver';
-import type { ManifestPluginConfig } from '../../common/types/plugins.ts';
+import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Internal dependencies
@@ -28,12 +28,14 @@ import {
  * @param config - Configuration options for the plugin.
  * @return A Vite plugin that processes the manifest and generates WordPress-compatible files.
  */
-export function ManifestPlugin(config: ManifestPluginConfig = {}): Plugin {
+export function ManifestPlugin(config: PluginConfig = {}): Plugin {
 	const {
-		outDir = 'build',
-		generatePhpManifest = true,
-		publicPath = '/',
-		textDomain = 'theme',
+		build: {
+			outDir = 'build',
+			generatePhpManifest = true,
+			publicPath = '/',
+		} = {},
+		wordpress: { textDomain = 'theme' } = {},
 	} = config;
 
 	// Store the output directory

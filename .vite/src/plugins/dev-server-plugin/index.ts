@@ -10,7 +10,7 @@ import path from 'path';
  * Internal dependencies
  */
 import type { BlockAssetInfo } from './types';
-import type { DevServerPluginConfig } from '../../common/types/plugins.ts';
+import type { PluginConfig } from '../../common/types/plugin-config.ts';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
 import {
 	processHMRWatchConfig,
@@ -40,13 +40,11 @@ const VITE_PLUGIN_NAME = 'vite-wordpress';
  * It creates a vite-wordpress.json endpoint for PHP DevServer integration and
  * monitors inline CSS files for browser updates during development.
  */
-export function DevServerPlugin(config: DevServerPluginConfig = {}): Plugin {
+export function DevServerPlugin(config: PluginConfig = {}): Plugin {
 	const {
-		base = '/',
-		srcDir = 'resources',
-		outDir = 'build',
-		css = 'css',
-		manifest = true,
+		server: { base = '/' } = {},
+		paths: { srcDir = 'resources' } = {},
+		build: { outDir = 'build', css = 'css', manifest = true } = {},
 		inlineAssets: inlineAssetsConfig,
 	} = config;
 

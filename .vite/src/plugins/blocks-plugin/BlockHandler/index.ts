@@ -19,7 +19,7 @@ import type {
 	BlockInfo,
 	WordPressBlockJSON,
 } from '../../../common/types';
-import type { BlocksPluginConfig } from '../../../common/types/plugins.ts';
+import type { PluginConfig } from '../../../common/types/plugin-config.ts';
 
 /**
  * Internal dependencies
@@ -42,7 +42,7 @@ export class BlockHandler {
 
 	private context: PluginContext;
 	private outputDirectory: string;
-	private config: BlocksPluginConfig;
+	private config: PluginConfig;
 	private pwd: string;
 	private discoveredBlocks: BlockInfo[] = [];
 
@@ -53,7 +53,7 @@ export class BlockHandler {
 	}: {
 		context: PluginContext;
 		outputDirectory: string;
-		config: BlocksPluginConfig;
+		config: PluginConfig;
 	}) {
 		this.context = context;
 		this.outputDirectory = outputDirectory;
@@ -71,10 +71,10 @@ export class BlockHandler {
 	 * Validate the configuration for the block handler
 	 */
 	private validateConfig(): void {
-		const { blocksDir } = this.config;
+		const blocksDir = this.config.paths?.blocksDir;
 
 		if (!blocksDir || Object.keys(blocksDir).length === 0) {
-			throw new Error('blocksDir is required for BlockHandler');
+			throw new Error('paths.blocksDir is required for BlockHandler');
 		}
 	}
 
@@ -89,7 +89,9 @@ export class BlockHandler {
 	 * Discover block.json files with custom path mappings
 	 */
 	private discoverBlocksWithMappings(): BlockInfo[] {
-		const { blocksDir } = this.config;
+		const blocksDir = this.config.paths?.blocksDir;
+		if (!blocksDir) return [];
+
 		const blocks: BlockInfo[] = [];
 
 		for (const [outputPath, sourcePath] of Object.entries(blocksDir)) {
@@ -151,7 +153,7 @@ export class BlockHandler {
 	 * Configure output directory from resolved Vite config
 	 */
 	configureOutputDirectory(resolvedConfig: ResolvedConfig): void {
-		const { outDir } = this.config;
+		const outDir = this.config.build?.outDir;
 
 		if (typeof outDir === 'string') {
 			this.outputDirectory =
