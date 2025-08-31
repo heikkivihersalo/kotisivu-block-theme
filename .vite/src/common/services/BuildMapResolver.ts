@@ -133,11 +133,24 @@ export class BuildMapResolver implements IBuildMapResolver {
 				}
 			};
 
+			// Handle .php files with imported assets
 			if (facadeModuleId.endsWith('.php') && importedAssets.size) {
 				addToMap(Array.from(importedAssets)[0]);
 				continue;
 			}
 
+			// Handle .js and .ts files
+			if (
+				facadeModuleId.endsWith('.js') ||
+				facadeModuleId.endsWith('.ts') ||
+				facadeModuleId.endsWith('.jsx') ||
+				facadeModuleId.endsWith('.tsx')
+			) {
+				addToMap(fileName);
+				continue;
+			}
+
+			// Handle CSS files
 			if (!facadeModuleId.endsWith(`.${this.css}`)) {
 				addToMap(fileName);
 			}
