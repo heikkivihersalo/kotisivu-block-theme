@@ -12,7 +12,7 @@ const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__ || {
 	blockAssets: [],
 	blockNamespace: 'wp',
 	pollingInterval: 500,
-	viteServerUrl: undefined
+	viteServerUrl: undefined,
 };
 
 /**

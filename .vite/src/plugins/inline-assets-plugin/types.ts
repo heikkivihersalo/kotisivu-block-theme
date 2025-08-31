@@ -59,7 +59,16 @@ export interface InlineAssetsConfig {
 declare global {
 	interface Window {
 		__VITE_INLINE_ASSETS_CONFIG__?: {
-			blockAssets: Array<[string, { blockSlug: string; sourcePath: string; buildPath?: string }]>;
+			blockAssets: Array<
+				[
+					string,
+					{
+						blockSlug: string;
+						sourcePath: string;
+						buildPath?: string;
+					},
+				]
+			>;
 			blockNamespace: string;
 			pollingInterval: number;
 			viteServerUrl?: string;
