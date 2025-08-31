@@ -195,96 +195,6 @@ export function setupPollingHMR(
 }
 
 /**
- * Setup WebSocket-based HMR (secondary option)
- */
-export function setupWebSocketHMR(
-	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string,
-	options: {
-		themePrefix?: string;
-		viteServerUrl?: string;
-		vitePort?: string;
-	} = {}
-): void {
-	try {
-		const { vitePort = '5173' } = options;
-		const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-		const port = location.port || vitePort;
-		const wsUrl = `${protocol}//${location.hostname}:${port}`;
-
-		const ws = new WebSocket(wsUrl, 'vite-hmr');
-
-		ws.addEventListener('open', () => {
-			console.log(
-				'[InlineAssets] WebSocket connected - will use for instant updates'
-			);
-		});
-
-		ws.addEventListener('message', (event) => {
-			try {
-				const data = JSON.parse(event.data);
-				if (
-					data.type === 'custom' &&
-					data.event === 'inline-asset-update'
-				) {
-					updateInlineAsset(
-						data.data.asset,
-						blockAssets,
-						blockNamespace,
-						options
-					);
-				}
-			} catch (e) {
-				// Ignore non-JSON messages
-			}
-		});
-
-		ws.addEventListener('error', () => {
-			// Expected in some setups - don't log as error
-		});
-
-		ws.addEventListener('close', () => {
-			// Expected in some setups - don't log
-		});
-	} catch (error) {
-		// Expected in some setups - don't log
-	}
-}
-
-/**
- * Setup Vite HMR context (third option)
- */
-export function setupViteContextHMR(
-	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string,
-	options: {
-		themePrefix?: string;
-		viteServerUrl?: string;
-		vitePort?: string;
-	} = {}
-): void {
-	// Check for Vite HMR by looking for window.__viteHotContext
-	if (typeof window !== 'undefined' && (window as any).__viteHotContext) {
-		console.log('[InlineAssets] Using Vite HMR context');
-		try {
-			(window as any).__viteHotContext.on(
-				'inline-asset-update',
-				({ asset }: { asset: string }) => {
-					updateInlineAsset(
-						asset,
-						blockAssets,
-						blockNamespace,
-						options
-					);
-				}
-			);
-		} catch (e) {
-			console.warn('[InlineAssets] Failed to connect via Vite context');
-		}
-	}
-}
-
-/**
  * Initialize HMR with multiple fallback methods
  */
 export function initializeHMR(config: HMRClientConfig): boolean {
@@ -301,17 +211,10 @@ export function initializeHMR(config: HMRClientConfig): boolean {
 
 	const options = { themePrefix, viteServerUrl, vitePort };
 
-	// Method 1: Polling (most reliable for WordPress + Vite)
 	setupPollingHMR(blockAssets, blockNamespace, {
 		pollingInterval,
 		...options,
 	});
-
-	// Method 2: WebSocket (secondary option)
-	setupWebSocketHMR(blockAssets, blockNamespace, options);
-
-	// Method 3: Vite context (third option)
-	setupViteContextHMR(blockAssets, blockNamespace, options);
 
 	console.log('[InlineAssets] HMR setup complete');
 	return true;

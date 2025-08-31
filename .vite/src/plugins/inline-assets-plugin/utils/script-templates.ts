@@ -168,40 +168,6 @@ function setupPollingHMR(themePrefix) {
 }
 
 /**
- * Setup WebSocket-based HMR
- */
-function setupWebSocketHMR(themePrefix) {
-	try {
-		const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-		const port = location.port || '5173';
-		const wsUrl = protocol + '//' + location.hostname + ':' + port;
-
-		const ws = new WebSocket(wsUrl, 'vite-hmr');
-
-		ws.addEventListener('open', () => {
-			console.log('[InlineAssets] WebSocket connected');
-		});
-
-		ws.addEventListener('message', (event) => {
-			try {
-				const data = JSON.parse(event.data);
-				if (data.type === 'custom' && data.event === 'inline-asset-update') {
-					updateInlineAsset(data.data.asset, themePrefix);
-				}
-			} catch (e) {
-				// Ignore non-JSON messages
-			}
-		});
-
-		ws.addEventListener('error', () => {
-			// Expected in some setups
-		});
-	} catch (error) {
-		// Expected in some setups
-	}
-}
-
-/**
  * Initialize HMR
  */
 function initializeHMR() {
@@ -209,7 +175,6 @@ function initializeHMR() {
 	const themePrefix = location.hostname.split('.')[0] || 'theme';
 	
 	setupPollingHMR(themePrefix);
-	setupWebSocketHMR(themePrefix);
 
 	console.log('[InlineAssets] HMR setup complete');
 }
