@@ -29,13 +29,45 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 	// Store the resolved config globally for other plugins to access
 	resolvedConfig = {
 		...pluginConfig,
-		// Normalize outDir if provided
+		// Provide default build configuration
 		build: {
-			...pluginConfig.build,
 			outDir: pluginConfig.build?.outDir
 				? (FilePathResolver.normalizePath(pluginConfig.build.outDir) ??
-					undefined)
-				: undefined,
+					'build')
+				: 'build',
+			minify: pluginConfig.build?.minify ?? 'esbuild',
+			sourcemap: pluginConfig.build?.sourcemap ?? false,
+			target: pluginConfig.build?.target ?? 'es2018',
+			cssCodeSplit: pluginConfig.build?.cssCodeSplit ?? true,
+			manifest: pluginConfig.build?.manifest ?? true,
+			generatePhpManifest:
+				pluginConfig.build?.generatePhpManifest ?? true,
+			css: pluginConfig.build?.css ?? 'css',
+			...pluginConfig.build,
+		},
+		// Provide default server configuration
+		server: {
+			host: pluginConfig.server?.host ?? 'localhost',
+			port: pluginConfig.server?.port ?? 5173,
+			strictPort: pluginConfig.server?.strictPort ?? true,
+			cors: pluginConfig.server?.cors ?? true,
+			base: pluginConfig.server?.base ?? '/',
+			...pluginConfig.server,
+		},
+		// Provide default paths configuration
+		paths: {
+			srcDir: pluginConfig.paths?.srcDir ?? 'resources',
+			assetsDir: pluginConfig.paths?.assetsDir ?? {},
+			blocksDir: pluginConfig.paths?.blocksDir ?? {},
+			...pluginConfig.paths,
+		},
+		// Provide default WordPress configuration
+		wordpress: {
+			dependencies: pluginConfig.wordpress?.dependencies ?? [],
+			textDomain: pluginConfig.wordpress?.textDomain ?? 'textdomain',
+			namespace: pluginConfig.wordpress?.namespace ?? 'wp',
+			discoveredBlocks: pluginConfig.wordpress?.discoveredBlocks ?? [],
+			...pluginConfig.wordpress,
 		},
 		// Provide default HMR configuration
 		hmr: {
@@ -43,16 +75,10 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 			port: pluginConfig.hmr?.port,
 			watch: {
 				php: pluginConfig.hmr?.watch?.php || [],
-				css: pluginConfig.hmr?.watch?.css || [
-					'src/app/styles/inline/**/*.css',
-					'resources/app/styles/inline/**/*.css',
-				],
+				css: pluginConfig.hmr?.watch?.css || [],
 				scripts: pluginConfig.hmr?.watch?.scripts || [],
 				blocks: pluginConfig.hmr?.watch?.blocks || [],
-				inline: pluginConfig.hmr?.watch?.inline || [
-					'assets/sanitize.css',
-					'assets/inline.css',
-				],
+				inline: pluginConfig.hmr?.watch?.inline || [],
 			},
 			scriptInjection: {
 				method: pluginConfig.hmr?.scriptInjection?.method || 'inline',
@@ -67,21 +93,7 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 
 		config: (_, { mode }) => {
 			// Generate the Vite config from our unified config
-			const generatedConfig = config(
-				{
-					build: {
-						outDir: resolvedConfig?.build?.outDir,
-						minify: resolvedConfig?.build?.minify ?? 'esbuild',
-						sourcemap: resolvedConfig?.build?.sourcemap ?? false,
-						target: resolvedConfig?.build?.target,
-						cssCodeSplit: resolvedConfig?.build?.cssCodeSplit,
-						terserOptions: resolvedConfig?.build?.terserOptions,
-						resolve: resolvedConfig?.build?.resolve,
-					},
-					server: resolvedConfig?.server ?? {},
-				},
-				mode
-			);
+			const generatedConfig = config(resolvedConfig!, mode);
 
 			// Store the generated Vite config for access by other plugins
 			viteConfig = generatedConfig;

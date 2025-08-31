@@ -288,44 +288,32 @@ export function DevServerPlugin(): Plugin {
 			}
 
 			const {
-				server: { base = '/' } = {},
-				paths: { srcDir = 'resources' } = {},
-				build: { outDir = 'build', css = 'css', manifest = true } = {},
+				server: { base } = {},
+				paths: { srcDir } = {},
+				build: { outDir, css, manifest } = {},
 				hmr: hmrConfig,
 			} = config;
 
 			// Initialize the BuildMapResolver
 			buildMapResolver = new BuildMapResolver(outDir, css);
 
-			// Process HMR configuration - use defaults if not provided
+			// Process HMR configuration - all defaults are now set by ConfigPlugin
 			processedInlineConfig =
 				hmrConfig?.enabled !== false
 					? {
-							inlineAssets: hmrConfig?.watch?.inline || [
-								'assets/sanitize.css',
-								'assets/inline.css',
-							],
-							watchPatterns: hmrConfig?.watch?.css || [
-								'src/app/styles/inline/**/*.css',
-								'resources/app/styles/inline/**/*.css',
-							],
+							inlineAssets: hmrConfig.watch.inline,
+							watchPatterns: hmrConfig.watch.css,
 							blocksConfig: {
-								blocksDir: config.paths?.blocksDir || {},
+								blocksDir: config.paths.blocksDir,
 								outDir: outDir,
-								blockNamespace:
-									config.wordpress?.namespace || 'wp',
+								blockNamespace: config.wordpress.namespace,
 							},
 							scriptInjection: {
-								method:
-									hmrConfig?.scriptInjection?.method ||
-									'inline',
+								method: hmrConfig.scriptInjection.method,
 								pollingInterval:
-									hmrConfig?.scriptInjection
-										?.pollingInterval || 500,
-								themePrefix: undefined,
+									hmrConfig.scriptInjection.pollingInterval,
 								viteServerUrl: undefined,
-								vitePort:
-									config.server?.port?.toString() || '5173',
+								vitePort: config.server.port.toString(),
 							},
 						}
 					: null;
@@ -456,28 +444,21 @@ export function DevServerPlugin(): Plugin {
 
 			if (!hmrConfig?.enabled || hmrConfig.enabled === false) return;
 
-			// Process HMR configuration - use the same logic as in configureServer
+			// Process HMR configuration - all defaults are now set by ConfigPlugin
 			processedInlineConfig = {
-				inlineAssets: hmrConfig?.watch?.inline || [
-					'assets/sanitize.css',
-					'assets/inline.css',
-				],
-				watchPatterns: hmrConfig?.watch?.css || [
-					'src/app/styles/inline/**/*.css',
-					'resources/app/styles/inline/**/*.css',
-				],
+				inlineAssets: hmrConfig.watch.inline,
+				watchPatterns: hmrConfig.watch.css,
 				blocksConfig: {
-					blocksDir: config.paths?.blocksDir || {},
-					outDir: config.build?.outDir || 'build',
-					blockNamespace: config.wordpress?.namespace || 'wp',
+					blocksDir: config.paths.blocksDir,
+					outDir: config.build.outDir,
+					blockNamespace: config.wordpress.namespace,
 				},
 				scriptInjection: {
-					method: hmrConfig?.scriptInjection?.method || 'inline',
-					pollingInterval:
-						hmrConfig?.scriptInjection?.pollingInterval || 500,
+					method: hmrConfig.scriptInjection.method,
+					pollingInterval: hmrConfig.scriptInjection.pollingInterval,
 					themePrefix: undefined,
 					viteServerUrl: undefined,
-					vitePort: config.server?.port?.toString() || '5173',
+					vitePort: config.server.port.toString(),
 				},
 			};
 
