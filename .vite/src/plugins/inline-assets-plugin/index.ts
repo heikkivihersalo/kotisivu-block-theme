@@ -47,37 +47,76 @@ export function InlineAssetsPlugin(config: InlineAssetsConfig = {}): Plugin {
 	function discoverBlockAssets(): void {
 		blockAssets.clear();
 
-		Object.entries(blocksDir).forEach(([dirName, sourcePath]) => {
+		Object.entries(blocksDir).forEach(([buildKey, sourcePath]) => {
 			try {
-				const blockJsonPattern = path.join(sourcePath, '**/block.json');
-				const blockJsonFiles = glob.sync(blockJsonPattern);
+				// Find all block.json files in the source directory
+				const blockJsonFiles = glob.sync('**/block.json', {
+					cwd: sourcePath as string,
+					absolute: false,
+				});
 
 				blockJsonFiles.forEach((blockJsonPath) => {
-					const blockDirPath = path.dirname(blockJsonPath);
-					const relativePath = path.relative(
-						sourcePath,
-						blockDirPath
+					const fullBlockJsonPath = path.join(
+						sourcePath as string,
+						blockJsonPath
 					);
-					const blockSlug =
-						relativePath.replace(/\//g, '-') ||
-						path.basename(blockDirPath);
 
-					// Look for style.css in the same directory
-					const stylePath = path.join(blockDirPath, 'style.css');
-					if (fs.existsSync(stylePath)) {
-						const buildPath = path.join(
-							outDir,
-							dirName,
-							relativePath,
-							'style.css'
-						);
-						const assetKey = `${blockSlug}-style`;
+					if (fs.existsSync(fullBlockJsonPath)) {
+						try {
+							const blockJson = JSON.parse(
+								fs.readFileSync(fullBlockJsonPath, 'utf-8')
+							);
+							const blockName = blockJson.name;
 
-						blockAssets.set(assetKey, {
-							buildPath: buildPath.replace(/\\/g, '/'),
-							sourcePath: stylePath.replace(/\\/g, '/'),
-							blockSlug,
-						});
+							if (blockName && blockName.includes('/')) {
+								// Extract block slug from name (e.g., 'ksd/part-logo' -> 'part-logo')
+								const blockSlug = blockName.split('/')[1];
+								const blockDir = path.dirname(blockJsonPath);
+
+								// Check for style.css or other CSS files in the block directory
+								const blockSourceDir = path.join(
+									sourcePath as string,
+									blockDir
+								);
+								const blockBuildDir = path.join(
+									outDir,
+									buildKey,
+									blockDir
+								);
+
+								// Look for CSS files that could be used as inline styles
+								const cssFiles = [
+									'style.css',
+									'index.css',
+									'style-index.css',
+								];
+
+								cssFiles.forEach((cssFile) => {
+									const sourceCssPath = path.join(
+										blockSourceDir,
+										cssFile
+									);
+									const buildCssPath = path.join(
+										blockBuildDir,
+										cssFile
+									).replace(/\\/g, '/');
+
+									if (fs.existsSync(sourceCssPath)) {
+										const assetKey = `${blockSlug}-${cssFile.replace('.css', '')}`;
+										blockAssets.set(assetKey, {
+											buildPath: buildCssPath,
+											sourcePath: sourceCssPath.replace(/\\/g, '/'),
+											blockSlug: blockSlug,
+										});
+									}
+								});
+							}
+						} catch (error) {
+							console.warn(
+								`[InlineAssets] Error parsing block.json at ${fullBlockJsonPath}:`,
+								error
+							);
+						}
 					}
 				});
 			} catch (error) {
@@ -115,79 +154,88 @@ export function InlineAssetsPlugin(config: InlineAssetsConfig = {}): Plugin {
 
 			// Add inline assets client script
 			server.middlewares.use('/__vite_inline_assets', (_req, res) => {
-				const allAssets = getAllMonitoredAssets();
 				res.setHeader('Content-Type', 'application/javascript');
 				res.setHeader('Cache-Control', 'no-cache');
 
-				// Build the client script as an ES module
-				const assetsArray = JSON.stringify(allAssets);
 				const clientScript = `
-console.log('[InlineAssets] Script loaded successfully!');
-console.log('[InlineAssets] Assets to monitor:', ${assetsArray});
+console.log('[InlineAssets] HMR client loaded');
 
-// Debug the environment
-console.log('[InlineAssets] Environment check:');
-console.log('- window object exists:', typeof window !== 'undefined');
-console.log('- document object exists:', typeof document !== 'undefined');
-
-// Check for Vite HMR availability without syntax errors
-var hasViteHMR = false;
-try {
-	// Check if we're in Vite's development environment
-	if (typeof window !== 'undefined' && (window.__viteHotContext || window.__HMR_PORT__)) {
-		console.log('- Vite development environment detected');
-		hasViteHMR = true;
+if (import.meta.hot) {
+	console.log('[InlineAssets] HMR available');
+	
+	// Function to generate WordPress style ID from asset path
+	function getStyleIdFromAsset(assetPath) {
+		const blockAssets = new Map(${JSON.stringify(Array.from(blockAssets.entries()))});
+		
+		// Check if it's a block asset
+		for (const [assetKey, assetInfo] of blockAssets) {
+			if (assetPath.includes(assetInfo.blockSlug)) {
+				// Determine CSS type from path
+				let cssType = 'style';
+				if (assetPath.includes('index.css')) {
+					cssType = 'index';
+				} else if (assetPath.includes('style-index.css')) {
+					cssType = 'style-index';
+				}
+				return '${blockNamespace}-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
+			}
+		}
+		
+		// Handle theme inline assets
+		if (assetPath.includes('sanitize.css')) {
+			return 'kotisivu-sanitize-css';
+		} else if (assetPath.includes('inline.css')) {
+			return 'kotisivu-inline-css';
+		} else if (assetPath.includes('tailwind-utilities.css')) {
+			return 'kotisivu-tailwind-utility-css-inline-css';
+		}
+		
+		// Fallback for other assets
+		const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
+		return assetId + '-inline-css';
 	}
-} catch (e) {
-	console.log('- Error checking Vite environment:', e.message);
-}
 
-// Alternative: Check for Vite's WebSocket connection
-if (!hasViteHMR && typeof window !== 'undefined') {
-	// Look for Vite's WebSocket or other indicators
-	var scripts = document.getElementsByTagName('script');
-	for (var i = 0; i < scripts.length; i++) {
-		if (scripts[i].src && scripts[i].src.includes('/@vite/client')) {
-			console.log('- Vite client script found');
-			hasViteHMR = true;
-			break;
+	// Function to update inline styles
+	async function updateInlineAsset(assetPath) {
+		try {
+			const response = await fetch('/__vite_inline_content/' + assetPath);
+			if (response.ok) {
+				const newContent = await response.text();
+				const styleId = getStyleIdFromAsset(assetPath);
+				
+				// Find the corresponding style tag by exact ID
+				let styleElement = document.getElementById(styleId);
+				
+				// If exact ID not found, try pattern matching
+				if (!styleElement) {
+					const styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
+					const assetName = assetPath.split('/').pop()?.replace('.css', '') || '';
+					
+					for (const style of styleElements) {
+						if (style.id.includes(assetName)) {
+							styleElement = style;
+							break;
+						}
+					}
+				}
+				
+				if (styleElement && styleElement.textContent !== newContent) {
+					styleElement.textContent = newContent;
+					console.log('[HMR] ✅ Updated inline asset:', assetPath);
+				}
+			}
+		} catch (error) {
+			console.warn('[HMR] Failed to update inline asset:', assetPath, error);
 		}
 	}
-}
 
-console.log('- HMR available:', hasViteHMR);
-
-if (hasViteHMR) {
-	console.log('[InlineAssets] HMR environment detected!');
-	
-	// Find all current style tags
-	var styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
-	console.log('[InlineAssets] Found style elements:', Array.from(styleElements).map(function(s) { return s.id; }));
-	
-	// Set up a custom event listener for HMR updates instead of using import.meta.hot
-	if (typeof window !== 'undefined') {
-		window.addEventListener('vite:beforeUpdate', function(event) {
-			console.log('[InlineAssets] Vite update detected:', event);
-		});
-		
-		// Also listen for custom WebSocket messages if available
-		var checkForUpdates = function() {
-			// This would be implemented when we have access to Vite's WebSocket
-			console.log('[InlineAssets] Checking for inline asset updates...');
-		};
-		
-		// Check for updates every 2 seconds as a fallback
-		setInterval(checkForUpdates, 2000);
-	}
+	// Listen for inline asset updates
+	import.meta.hot.on('inline-asset-update', ({ asset }) => {
+		updateInlineAsset(asset);
+	});
 } else {
-	console.warn('[InlineAssets] HMR not available - running in production mode or outside Vite');
+	console.warn('[InlineAssets] HMR not available');
 }
-
-// Always try to find style elements after a delay
-setTimeout(function() {
-	const styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
-	console.log('[InlineAssets] Style elements found:', Array.from(styleElements).map(function(s) { return s.id; }));
-}, 1000);
 `;
 
 				res.end(clientScript);
@@ -261,59 +309,95 @@ setTimeout(function() {
 		},
 
 		buildStart() {
-			// Add watch patterns to Vite's file watcher
+			// Discover block assets first
+			discoverBlockAssets();
+
+			// Add watch patterns for inline assets
 			watchPatterns.forEach((pattern) => {
 				this.addWatchFile(pattern);
 			});
 
-			// Add individual asset files to watch
+			// Add specific inline asset files to watch
 			inlineAssets.forEach((asset) => {
 				const fullPath = path.resolve(asset);
 				if (fs.existsSync(fullPath)) {
 					this.addWatchFile(fullPath);
+					watchedFiles.add(fullPath);
 				}
 			});
 
-			// Add block assets to watch
-			blockAssets.forEach((assetInfo) => {
+			// Add block source files to watch
+			for (const [, assetInfo] of blockAssets) {
 				this.addWatchFile(assetInfo.sourcePath);
-			});
+				watchedFiles.add(assetInfo.sourcePath);
+			}
 		},
 
 		handleHotUpdate({ file, server: hotServer }) {
-			// Check if the changed file is one of our monitored assets
-			const allAssets = getAllMonitoredAssets();
-			const isMonitoredAsset = allAssets.some((asset) => {
+			// Check if the changed file affects any inline assets
+			const isInlineAsset = inlineAssets.some((asset) => {
 				const fullPath = path.resolve(asset);
 				return file === fullPath || file.endsWith(asset);
 			});
 
-			// Check if it's a block source file
-			const affectedBlockAsset = Array.from(blockAssets.values()).find(
+			// Check if the changed file is a block CSS file
+			const isBlockAsset = Array.from(blockAssets.values()).some(
 				(assetInfo) =>
 					file === assetInfo.sourcePath ||
 					file === assetInfo.buildPath
 			);
 
-			if (isMonitoredAsset || affectedBlockAsset) {
-				const affectedAsset = affectedBlockAsset
-					? affectedBlockAsset.buildPath
-					: allAssets.find((asset) => {
+			// Check if it's a source file that affects inline assets
+			const isSourceFile = watchPatterns.some((pattern) => {
+				const regex = pattern
+					.replace(/\*\*/g, '.*')
+					.replace(/\*/g, '[^/]*');
+				return new RegExp(regex).test(file);
+			});
+
+			if (isInlineAsset || isBlockAsset || isSourceFile) {
+				// Determine which asset was affected
+				let affectedAsset = '';
+
+				if (isInlineAsset) {
+					affectedAsset =
+						inlineAssets.find((asset) => {
 							const fullPath = path.resolve(asset);
 							return file === fullPath || file.endsWith(asset);
-						});
+						}) || '';
+				} else if (isBlockAsset) {
+					// Find the block asset that was changed
+					for (const [, assetInfo] of blockAssets) {
+						if (
+							file === assetInfo.sourcePath ||
+							file === assetInfo.buildPath
+						) {
+							affectedAsset = assetInfo.buildPath;
+							break;
+						}
+					}
+				} else {
+					// For source files, determine which built asset they affect
+					if (file.includes('sanitize')) {
+						affectedAsset = 'build/assets/sanitize.css';
+					} else if (file.includes('tailwind')) {
+						affectedAsset = 'build/assets/tailwind-utilities.css';
+					} else {
+						affectedAsset = 'build/assets/inline.css';
+					}
+				}
 
 				if (affectedAsset) {
-					console.log('[HMR] Inline asset updated:', affectedAsset);
+					console.log(`[HMR] Inline asset updated: ${affectedAsset}`);
 
-					// Send custom HMR update
+					// Send HMR update for inline asset
 					hotServer.ws.send({
 						type: 'custom',
 						event: 'inline-asset-update',
 						data: { asset: affectedAsset },
 					});
 
-					// Return empty array to prevent default Vite HMR
+					// Return empty array to prevent default HMR behavior
 					return [];
 				}
 			}
