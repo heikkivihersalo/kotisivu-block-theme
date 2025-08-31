@@ -119,6 +119,9 @@ export interface PluginConfig {
 		/** WordPress text domain */
 		textDomain?: string;
 
+		/** Namespace for blocks */
+		namespace?: string;
+
 		/** Pre-discovered blocks (optional) */
 		discoveredBlocks?: BlockInfo[];
 	};
@@ -157,18 +160,11 @@ export interface PluginConfig {
 			/** Inline asset patterns */
 			inline?: string[];
 		};
-	};
 
-	/** Inline assets configuration for dev server */
-	inlineAssets?: {
-		/** List of inline asset paths */
-		inlineAssets: string[];
-
-		/** Blocks configuration for inline assets */
-		blocksConfig: {
-			blocksDir: DirectoryMapping;
-			outDir?: string;
-			blockNamespace: string;
+		/** Script injection configuration */
+		scriptInjection?: {
+			method?: 'inline';
+			pollingInterval?: number;
 		};
 	};
 }

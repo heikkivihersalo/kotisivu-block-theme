@@ -83,16 +83,17 @@ export default {
         },
       },
 
-      // Inline assets configuration (optional)
-      inlineAssets: {
-        inlineAssets: ['build/blocks/*/style.css'],
-        watchPatterns: ['resources/blocks/**/style.scss'],
-        blocksConfig: {
-          blocksDir: {
-            'resources/blocks': 'blocks',
-          },
-          outDir: 'build',
-          blockNamespace: 'my-theme',
+      // HMR configuration (replaces old inlineAssets config)
+      hmr: {
+        enabled: true,
+        watch: {
+          php: ['**/*.php'],
+          css: ['resources/blocks/**/style.scss'],
+          inline: ['assets/sanitize.css', 'assets/inline.css'],
+        },
+        scriptInjection: {
+          method: 'inline',
+          pollingInterval: 500,
         },
       },
     }),

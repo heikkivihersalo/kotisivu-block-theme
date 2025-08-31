@@ -55,34 +55,23 @@ export default defineConfig(({ mode }) => {
 				// WordPress configuration
 				wordpress: {
 					dependencies: ['react', 'react-dom'],
+					namespace: 'ksd', // Block namespace for this theme
 				},
 
-				// HMR configuration
+				// HMR configuration (replaces old inlineAssets config)
 				hmr: {
 					enabled: true,
 					watch: {
 						php: ['./resources/widgets/**/*.php'],
-						inline: [
+						css: [
 							'src/app/styles/inline/**/*.css',
 							'resources/app/styles/inline/**/*.css',
 						],
+						inline: ['assets/sanitize.css', 'assets/inline.css'],
 					},
-				},
-
-				// Inline assets HMR configuration
-				inlineAssets: {
-					inlineAssets: [
-						'build/assets/sanitize.css',
-						'build/assets/inline.css',
-					],
-					blocksConfig: {
-						blocksDir: {
-							'blocks/custom':
-								'resources/widgets/block-library/custom',
-							'blocks/parts':
-								'resources/widgets/block-library/parts',
-						},
-						blockNamespace: 'ksd',
+					scriptInjection: {
+						method: 'inline',
+						pollingInterval: 500,
 					},
 				},
 			}),

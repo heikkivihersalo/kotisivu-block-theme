@@ -9,7 +9,7 @@ import path from 'path';
 /**
  * Internal dependencies
  */
-import type { BlockAssetInfo, AssetInfo } from './types';
+import type { BlockAssetInfo, AssetInfo, ProcessedInlineConfig } from './types';
 import type {
 	BlockInfo,
 	DiscoveredAssetInfo,
@@ -19,10 +19,7 @@ import {
 	processHMRWatchConfig,
 	getInlineAssetWatchPatterns,
 } from '../../common/utils/watch-config.js';
-import {
-	processInlineConfig,
-	getScriptInjectionOptions,
-} from './utils/config.js';
+import { getScriptInjectionOptions } from './utils/config.js';
 import {
 	createClientScriptMiddleware,
 	createStatusMiddleware,
@@ -44,7 +41,7 @@ export function DevServerPlugin(): Plugin {
 	let blockAssets = new Map<string, BlockAssetInfo>();
 	let generalAssets = new Map<string, AssetInfo>();
 	let buildMapResolver: BuildMapResolver;
-	let processedInlineConfig: any = null;
+	let processedInlineConfig: ProcessedInlineConfig | null = null;
 	let scriptOptions: any = null;
 	let configPluginApi: any = null;
 	let blocksPluginApi: any = null;
@@ -294,16 +291,44 @@ export function DevServerPlugin(): Plugin {
 				server: { base = '/' } = {},
 				paths: { srcDir = 'resources' } = {},
 				build: { outDir = 'build', css = 'css', manifest = true } = {},
-				inlineAssets: inlineAssetsConfig,
+				hmr: hmrConfig,
 			} = config;
 
 			// Initialize the BuildMapResolver
 			buildMapResolver = new BuildMapResolver(outDir, css);
 
-			// Process inline assets configuration
-			processedInlineConfig = inlineAssetsConfig
-				? processInlineConfig(inlineAssetsConfig)
-				: null;
+			// Process HMR configuration - use defaults if not provided
+			processedInlineConfig =
+				hmrConfig?.enabled !== false
+					? {
+							inlineAssets: hmrConfig?.watch?.inline || [
+								'assets/sanitize.css',
+								'assets/inline.css',
+							],
+							watchPatterns: hmrConfig?.watch?.css || [
+								'src/app/styles/inline/**/*.css',
+								'resources/app/styles/inline/**/*.css',
+							],
+							blocksConfig: {
+								blocksDir: config.paths?.blocksDir || {},
+								outDir: outDir,
+								blockNamespace:
+									config.wordpress?.namespace || 'wp',
+							},
+							scriptInjection: {
+								method:
+									hmrConfig?.scriptInjection?.method ||
+									'inline',
+								pollingInterval:
+									hmrConfig?.scriptInjection
+										?.pollingInterval || 500,
+								themePrefix: undefined,
+								viteServerUrl: undefined,
+								vitePort:
+									config.server?.port?.toString() || '5173',
+							},
+						}
+					: null;
 
 			// Get script injection options if inline assets are configured
 			scriptOptions = processedInlineConfig
@@ -427,12 +452,34 @@ export function DevServerPlugin(): Plugin {
 				);
 			}
 
-			const { inlineAssets: inlineAssetsConfig } = config;
+			const { hmr: hmrConfig } = config;
 
-			if (!inlineAssetsConfig) return;
+			if (!hmrConfig?.enabled || hmrConfig.enabled === false) return;
 
-			// Process inline assets configuration
-			processedInlineConfig = processInlineConfig(inlineAssetsConfig);
+			// Process HMR configuration - use the same logic as in configureServer
+			processedInlineConfig = {
+				inlineAssets: hmrConfig?.watch?.inline || [
+					'assets/sanitize.css',
+					'assets/inline.css',
+				],
+				watchPatterns: hmrConfig?.watch?.css || [
+					'src/app/styles/inline/**/*.css',
+					'resources/app/styles/inline/**/*.css',
+				],
+				blocksConfig: {
+					blocksDir: config.paths?.blocksDir || {},
+					outDir: config.build?.outDir || 'build',
+					blockNamespace: config.wordpress?.namespace || 'wp',
+				},
+				scriptInjection: {
+					method: hmrConfig?.scriptInjection?.method || 'inline',
+					pollingInterval:
+						hmrConfig?.scriptInjection?.pollingInterval || 500,
+					themePrefix: undefined,
+					viteServerUrl: undefined,
+					vitePort: config.server?.port?.toString() || '5173',
+				},
+			};
 
 			// Process HMR configuration if available
 			const hmrWatchConfig = processHMRWatchConfig({

@@ -37,6 +37,29 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 					undefined)
 				: undefined,
 		},
+		// Provide default HMR configuration
+		hmr: {
+			enabled: pluginConfig.hmr?.enabled ?? true,
+			port: pluginConfig.hmr?.port,
+			watch: {
+				php: pluginConfig.hmr?.watch?.php || [],
+				css: pluginConfig.hmr?.watch?.css || [
+					'src/app/styles/inline/**/*.css',
+					'resources/app/styles/inline/**/*.css',
+				],
+				scripts: pluginConfig.hmr?.watch?.scripts || [],
+				blocks: pluginConfig.hmr?.watch?.blocks || [],
+				inline: pluginConfig.hmr?.watch?.inline || [
+					'assets/sanitize.css',
+					'assets/inline.css',
+				],
+			},
+			scriptInjection: {
+				method: pluginConfig.hmr?.scriptInjection?.method || 'inline',
+				pollingInterval:
+					pluginConfig.hmr?.scriptInjection?.pollingInterval || 500,
+			},
+		},
 	};
 
 	return {
