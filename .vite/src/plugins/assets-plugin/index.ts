@@ -10,7 +10,7 @@ import { dirname, resolve } from 'node:path';
  * Shared dependencies
  */
 import { FilePathResolver } from '../../common/services/FilePathResolver';
-import type { DiscoveredAsset } from '../../common/types';
+import type { DiscoveredAssetInfo } from '../../common/types';
 
 /**
  * Internal dependencies
@@ -27,12 +27,17 @@ import { discoverAssetsWithMapping } from './discovery';
  */
 export function AssetsPlugin(): Plugin {
 	let outputDirectory: string;
-	let discoveredAssets: DiscoveredAsset[] = [];
+	let discoveredAssets: DiscoveredAssetInfo[] = [];
 	let configPluginApi: any = null;
 	const pwd = process.env.PWD || process.cwd();
 
 	return {
 		name: 'vite-plugin-gutenberg-assets',
+
+		// Expose the plugin API
+		api: {
+			getDiscoveredAssets: () => discoveredAssets,
+		},
 
 		// Store reference to config plugin API
 		configResolved(resolvedConfig: ResolvedConfig) {

@@ -9,8 +9,11 @@ import path from 'path';
 /**
  * Internal dependencies
  */
-import type { BlockAssetInfo } from './types';
-import type { BlockInfo } from '../../common/types/wordpress.js';
+import type { BlockAssetInfo, AssetInfo } from './types';
+import type {
+	BlockInfo,
+	DiscoveredAssetInfo,
+} from '../../common/types/index.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
 import {
 	processHMRWatchConfig,
@@ -39,11 +42,13 @@ export function DevServerPlugin(): Plugin {
 	let server: ViteDevServer;
 	const watchedFiles = new Set<string>();
 	let blockAssets = new Map<string, BlockAssetInfo>();
+	let generalAssets = new Map<string, AssetInfo>();
 	let buildMapResolver: BuildMapResolver;
 	let processedInlineConfig: any = null;
 	let scriptOptions: any = null;
 	let configPluginApi: any = null;
 	let blocksPluginApi: any = null;
+	let assetsPluginApi: any = null;
 
 	/**
 	 * Convert BlockInfo from BlocksPlugin to BlockAssetInfo for DevServer
@@ -86,16 +91,47 @@ export function DevServerPlugin(): Plugin {
 	}
 
 	/**
-	 * Get all monitored assets (static + dynamic blocks)
+	 * Convert DiscoveredAssetInfo from AssetsPlugin to AssetInfo for DevServer
+	 */
+	function convertAssetsToAssetInfo(
+		discoveredAssets: DiscoveredAssetInfo[]
+	): Map<string, AssetInfo> {
+		const assetMap = new Map<string, AssetInfo>();
+
+		discoveredAssets.forEach((asset) => {
+			// Create build path based on the asset's output path
+			const buildPath = path.resolve(asset.outputPath);
+
+			assetMap.set(asset.name, {
+				buildPath: buildPath,
+				sourcePath: asset.sourcePath,
+				assetName: asset.name,
+				type: 'asset',
+			});
+		});
+
+		console.log(
+			`[DevServer] Converted ${assetMap.size} assets from AssetsPlugin`
+		);
+
+		return assetMap;
+	}
+
+	/**
+	 * Get all monitored assets (static + dynamic blocks + general assets)
 	 */
 	function getAllMonitoredAssets(
 		inlineAssets: string[],
-		blockAssets: Map<string, BlockAssetInfo>
+		blockAssets: Map<string, BlockAssetInfo>,
+		generalAssets: Map<string, AssetInfo>
 	): string[] {
 		const dynamicAssets = Array.from(blockAssets.values()).map(
 			(asset) => asset.buildPath
 		);
-		return [...inlineAssets, ...dynamicAssets];
+		const discoveredAssets = Array.from(generalAssets.values()).map(
+			(asset) => asset.buildPath
+		);
+		return [...inlineAssets, ...dynamicAssets, ...discoveredAssets];
 	}
 
 	/**
@@ -105,6 +141,7 @@ export function DevServerPlugin(): Plugin {
 		file: string,
 		inlineAssets: string[],
 		blockAssets: Map<string, BlockAssetInfo>,
+		generalAssets: Map<string, AssetInfo>,
 		watchPatterns: string[]
 	): string {
 		// Check if the changed file affects any inline assets
@@ -140,6 +177,24 @@ export function DevServerPlugin(): Plugin {
 			}
 		}
 
+		// Check if the changed file is a general asset
+		const isGeneralAsset = Array.from(generalAssets.values()).some(
+			(assetInfo) =>
+				file === assetInfo.sourcePath || file === assetInfo.buildPath
+		);
+
+		if (isGeneralAsset) {
+			// Find the general asset that was changed
+			for (const [, assetInfo] of generalAssets) {
+				if (
+					file === assetInfo.sourcePath ||
+					file === assetInfo.buildPath
+				) {
+					return assetInfo.buildPath;
+				}
+			}
+		}
+
 		// Check if it's a source file that affects inline assets
 		const isSourceFile = watchPatterns.some((pattern) => {
 			const regex = pattern
@@ -163,13 +218,14 @@ export function DevServerPlugin(): Plugin {
 	}
 
 	/**
-	 * Get all monitored assets (static + dynamic blocks)
+	 * Get all monitored assets (static + dynamic blocks + general assets)
 	 */
 	function getAllAssets(): string[] {
 		if (!processedInlineConfig) return [];
 		return getAllMonitoredAssets(
 			processedInlineConfig.inlineAssets,
-			blockAssets
+			blockAssets,
+			generalAssets
 		);
 	}
 
@@ -206,6 +262,15 @@ export function DevServerPlugin(): Plugin {
 			}
 
 			blocksPluginApi = blocksPlugin.api;
+
+			// Find the AssetsPlugin in the resolved plugins (optional)
+			const assetsPlugin = resolvedConfig.plugins.find(
+				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-assets'
+			);
+
+			if (assetsPlugin?.api) {
+				assetsPluginApi = assetsPlugin.api;
+			}
 		},
 
 		/**
@@ -279,12 +344,20 @@ export function DevServerPlugin(): Plugin {
 
 				// Add status endpoint middleware
 				server.middlewares.use(
-					createStatusMiddleware(getAllAssets, blockAssets)
+					createStatusMiddleware(
+						getAllAssets,
+						blockAssets,
+						generalAssets
+					)
 				);
 
 				// Add asset content middleware
 				server.middlewares.use(
-					createAssetContentMiddleware(getAllAssets, blockAssets)
+					createAssetContentMiddleware(
+						getAllAssets,
+						blockAssets,
+						generalAssets
+					)
 				);
 			}
 
@@ -374,6 +447,12 @@ export function DevServerPlugin(): Plugin {
 				blockAssets = convertBlocksToAssets(discoveredBlocks);
 			}
 
+			// Get discovered assets from AssetsPlugin
+			if (assetsPluginApi) {
+				const discoveredAssets = assetsPluginApi.getDiscoveredAssets();
+				generalAssets = convertAssetsToAssetInfo(discoveredAssets);
+			}
+
 			// Add unified HMR watch patterns for inline assets
 			inlineWatchPatterns.forEach((pattern) => {
 				this.addWatchFile(pattern);
@@ -390,6 +469,12 @@ export function DevServerPlugin(): Plugin {
 
 			// Add block source files to watch
 			for (const [, assetInfo] of blockAssets) {
+				this.addWatchFile(assetInfo.sourcePath);
+				watchedFiles.add(assetInfo.sourcePath);
+			}
+
+			// Add general asset source files to watch
+			for (const [, assetInfo] of generalAssets) {
 				this.addWatchFile(assetInfo.sourcePath);
 				watchedFiles.add(assetInfo.sourcePath);
 			}
@@ -416,6 +501,7 @@ export function DevServerPlugin(): Plugin {
 					file,
 					processedInlineConfig.inlineAssets,
 					blockAssets,
+					generalAssets,
 					processedInlineConfig.watchPatterns
 				);
 

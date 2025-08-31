@@ -134,6 +134,21 @@ export interface BlockAssetInfo {
 }
 
 /**
+ * General asset information for HMR (from AssetsPlugin)
+ */
+export interface AssetInfo {
+	buildPath: string;
+	sourcePath: string;
+	assetName: string;
+	type: 'asset';
+}
+
+/**
+ * Combined asset type for middleware functions
+ */
+export type CombinedAssetInfo = BlockAssetInfo | AssetInfo;
+
+/**
  * Processed inline assets configuration
  */
 export interface ProcessedInlineConfig {

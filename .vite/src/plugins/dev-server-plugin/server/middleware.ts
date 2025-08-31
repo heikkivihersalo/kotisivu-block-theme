@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { BlockAssetInfo } from '../types.js';
+import type { BlockAssetInfo, AssetInfo } from '../types.js';
 import {
 	generateScript,
 	generateModuleScript,
@@ -62,7 +62,8 @@ export function createClientScriptMiddleware(
  */
 export function createStatusMiddleware(
 	getAllMonitoredAssets: () => string[],
-	blockAssets: Map<string, BlockAssetInfo>
+	blockAssets: Map<string, BlockAssetInfo>,
+	generalAssets?: Map<string, AssetInfo>
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		if (req.url !== '/__vite_inline_content/status') {
@@ -79,6 +80,21 @@ export function createStatusMiddleware(
 				// Check block assets if direct path doesn't exist
 				if (!fs.existsSync(fullPath)) {
 					for (const [, assetInfo] of blockAssets) {
+						if (
+							assetInfo.buildPath.endsWith(asset) ||
+							assetInfo.buildPath === asset
+						) {
+							fullPath = fs.existsSync(assetInfo.buildPath)
+								? assetInfo.buildPath
+								: assetInfo.sourcePath;
+							break;
+						}
+					}
+				}
+
+				// Check general assets if still not found
+				if (!fs.existsSync(fullPath) && generalAssets) {
+					for (const [, assetInfo] of generalAssets) {
 						if (
 							assetInfo.buildPath.endsWith(asset) ||
 							assetInfo.buildPath === asset
@@ -110,7 +126,8 @@ export function createStatusMiddleware(
  */
 export function createAssetContentMiddleware(
 	getAllMonitoredAssets: () => string[],
-	blockAssets: Map<string, BlockAssetInfo>
+	blockAssets: Map<string, BlockAssetInfo>,
+	generalAssets?: Map<string, AssetInfo>
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		// Only handle our specific inline content endpoint
@@ -143,6 +160,22 @@ export function createAssetContentMiddleware(
 			// If the direct path doesn't exist, check block assets
 			if (!fs.existsSync(fullPath)) {
 				for (const [, assetInfo] of blockAssets) {
+					if (
+						assetInfo.buildPath.endsWith(assetPath) ||
+						assetInfo.buildPath === assetPath
+					) {
+						// In development, serve from source file if build doesn't exist
+						fullPath = fs.existsSync(assetInfo.buildPath)
+							? assetInfo.buildPath
+							: assetInfo.sourcePath;
+						break;
+					}
+				}
+			}
+
+			// Check general assets if still not found
+			if (!fs.existsSync(fullPath) && generalAssets) {
+				for (const [, assetInfo] of generalAssets) {
 					if (
 						assetInfo.buildPath.endsWith(assetPath) ||
 						assetInfo.buildPath === assetPath
