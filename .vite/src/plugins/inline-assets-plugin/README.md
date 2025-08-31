@@ -161,13 +161,13 @@ The plugin generates WordPress-compatible style IDs:
 ### Adding New Templates
 
 1. Create a new template file in `templates/`
-2. Use `{{CONFIG}}` as a placeholder for configuration injection
+2. Use `window.__VITE_INLINE_ASSETS_CONFIG__` to access configuration data
 3. Update the template loading logic in `script-templates.ts`
 
 ### Extending Script Generation
 
 The script generation system supports:
-- Template-based generation with configuration injection
+- Template-based generation with global configuration injection
 - External script file serving
 - ES module generation
 - Custom configuration per generation method
