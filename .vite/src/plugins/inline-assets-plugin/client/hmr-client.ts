@@ -26,8 +26,7 @@ export interface HMRClientConfig {
 export function getStyleIdFromAsset(
 	assetPath: string,
 	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string,
-	themePrefix = 'theme'
+	blockNamespace: string
 ): string {
 	// Check if it's a block asset
 	for (const [, assetInfo] of blockAssets) {
@@ -43,16 +42,7 @@ export function getStyleIdFromAsset(
 		}
 	}
 
-	// Handle theme inline assets with configurable prefix
-	if (assetPath.includes('sanitize.css')) {
-		return `${themePrefix}-sanitize-css`;
-	} else if (assetPath.includes('inline.css')) {
-		return `${themePrefix}-inline-css`;
-	} else if (assetPath.includes('tailwind-utilities.css')) {
-		return `${themePrefix}-tailwind-utility-css-inline-css`;
-	}
-
-	// Fallback for other assets
+	// Check for theme inline assets
 	const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
 	return `${assetId}-inline-css`;
 }
@@ -87,13 +77,12 @@ export async function updateInlineAsset(
 	blockAssets: Map<string, BlockAssetInfo>,
 	blockNamespace: string,
 	options: {
-		themePrefix?: string;
 		viteServerUrl?: string;
 		vitePort?: string;
 	} = {}
 ): Promise<void> {
 	try {
-		const { themePrefix = 'theme', viteServerUrl, vitePort } = options;
+		const { viteServerUrl, vitePort } = options;
 		const serverUrl = getViteServerUrl(viteServerUrl, vitePort);
 		const contentUrl = `${serverUrl}/__vite_inline_content/${assetPath}`;
 
@@ -103,8 +92,7 @@ export async function updateInlineAsset(
 			const styleId = getStyleIdFromAsset(
 				assetPath,
 				blockAssets,
-				blockNamespace,
-				themePrefix
+				blockNamespace
 			);
 
 			// Find the corresponding style tag by exact ID
@@ -144,17 +132,11 @@ export function setupPollingHMR(
 	blockNamespace: string,
 	options: {
 		pollingInterval?: number;
-		themePrefix?: string;
 		viteServerUrl?: string;
 		vitePort?: string;
 	} = {}
 ): void {
-	const {
-		pollingInterval = 500,
-		themePrefix = 'theme',
-		viteServerUrl,
-		vitePort,
-	} = options;
+	const { pollingInterval = 500, viteServerUrl, vitePort } = options;
 
 	console.log('[InlineAssets] Using polling for HMR');
 	const lastModified: Record<string, number> = {};
@@ -180,7 +162,7 @@ export function setupPollingHMR(
 							asset,
 							blockAssets,
 							blockNamespace,
-							{ themePrefix, viteServerUrl, vitePort }
+							{ viteServerUrl, vitePort }
 						);
 					}
 					lastModified[asset] = modified as number;
