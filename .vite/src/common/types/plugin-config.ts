@@ -163,7 +163,7 @@ export interface PluginConfig {
 
 		/** Script injection configuration */
 		scriptInjection?: {
-			method?: 'inline';
+			method?: 'inline' | 'external' | 'module';
 			pollingInterval?: number;
 		};
 	};
