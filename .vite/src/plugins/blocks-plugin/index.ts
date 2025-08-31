@@ -50,7 +50,7 @@ export function BlocksPlugin(): Plugin {
 				throw new Error('BlocksPlugin requires ConfigPlugin API');
 			}
 
-			const config = configPluginApi.getResolvedConfig();
+			const config = configPluginApi.getPluginConfig();
 			if (!config) {
 				throw new Error(
 					'ConfigPlugin has not resolved configuration yet'

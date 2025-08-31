@@ -136,8 +136,8 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 
 		// Expose the unified configuration through the plugin API
 		api: {
-			getResolvedConfig: () => resolvedConfig,
-			getViteConfig: () => viteConfig,
+			getPluginConfig: () => resolvedConfig, // Resolved plugin config
+			getViteConfig: () => viteConfig, // Vite user config
 		},
 	};
 }

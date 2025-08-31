@@ -47,7 +47,7 @@ export function ManifestPlugin(): Plugin {
 			}
 
 			configPluginApi = configPlugin.api;
-			const config = configPluginApi.getResolvedConfig();
+			const config = configPluginApi.getPluginConfig();
 			if (!config) {
 				throw new Error(
 					'ConfigPlugin has not resolved configuration yet'
@@ -68,7 +68,7 @@ export function ManifestPlugin(): Plugin {
 				throw new Error('ManifestPlugin requires ConfigPlugin API');
 			}
 
-			const config = configPluginApi.getResolvedConfig();
+			const config = configPluginApi.getPluginConfig();
 			if (!config) {
 				throw new Error(
 					'ConfigPlugin has not resolved configuration yet'
