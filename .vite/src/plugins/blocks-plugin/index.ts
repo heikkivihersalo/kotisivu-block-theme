@@ -5,7 +5,6 @@ import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 import { BlockHandler } from './BlockHandler';
-import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Vite plugin for WordPress Gutenberg blocks
@@ -20,21 +19,46 @@ import type { PluginConfig } from '../../common/types/plugin-config.ts';
  * All block processing logic is handled by the BlockHandler class, making
  * this plugin a thin coordinator that focuses purely on Vite integration.
  */
-export function BlocksPlugin(config: PluginConfig): Plugin {
-	const {
-		build: { sourcemap = false } = {},
-	} = config;
+export function BlocksPlugin(): Plugin {
 	let blockHandler: BlockHandler;
 	let resolvedViteConfig: ResolvedConfig;
+	let sourcemap: boolean | 'linked' | 'external' | 'inline' | 'both' = false;
+	let configPluginApi: any = null;
 
 	return {
 		name: 'vite-plugin-gutenberg-blocks',
 
 		configResolved(resolvedConfig: ResolvedConfig) {
 			resolvedViteConfig = resolvedConfig;
+
+			// Find the ConfigPlugin in the resolved plugins
+			const configPlugin = resolvedConfig.plugins.find(
+				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-config'
+			);
+
+			if (!configPlugin?.api) {
+				throw new Error(
+					'BlocksPlugin requires ConfigPlugin to be loaded first'
+				);
+			}
+
+			configPluginApi = configPlugin.api;
 		},
 
 		buildStart: async function (this: PluginContext) {
+			if (!configPluginApi) {
+				throw new Error('BlocksPlugin requires ConfigPlugin API');
+			}
+
+			const config = configPluginApi.getResolvedConfig();
+			if (!config) {
+				throw new Error(
+					'ConfigPlugin has not resolved configuration yet'
+				);
+			}
+
+			sourcemap = config.build?.sourcemap ?? false;
+
 			// Initialize block handler with configuration and context
 			blockHandler = new BlockHandler({
 				context: this,

@@ -9,7 +9,6 @@ import type { Plugin, ResolvedConfig } from 'vite';
  * Shared dependencies
  */
 import { FilePathResolver } from '../../common/services/FilePathResolver';
-import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Internal dependencies
@@ -25,32 +24,62 @@ import {
  * This plugin reads the Vite 6 manifest and generates a PHP file for WordPress
  * enqueueing assets, along with a JSON version for debugging.
  *
- * @param config - Configuration options for the plugin.
  * @return A Vite plugin that processes the manifest and generates WordPress-compatible files.
  */
-export function ManifestPlugin(config: PluginConfig = {}): Plugin {
-	const {
-		build: {
-			outDir = 'build',
-			generatePhpManifest = true,
-			publicPath = '/',
-		} = {},
-		wordpress: { textDomain = 'theme' } = {},
-	} = config;
-
+export function ManifestPlugin(): Plugin {
 	// Store the output directory
 	let outputDirectory: string;
+	let configPluginApi: any = null;
 
 	return {
 		name: 'vite-plugin-gutenberg-manifest',
 
-		configResolved(config: ResolvedConfig) {
+		configResolved(resolvedConfig: ResolvedConfig) {
+			// Find the ConfigPlugin in the resolved plugins
+			const configPlugin = resolvedConfig.plugins.find(
+				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-config'
+			);
+
+			if (!configPlugin?.api) {
+				throw new Error(
+					'ManifestPlugin requires ConfigPlugin to be loaded first'
+				);
+			}
+
+			configPluginApi = configPlugin.api;
+			const config = configPluginApi.getResolvedConfig();
+			if (!config) {
+				throw new Error(
+					'ConfigPlugin has not resolved configuration yet'
+				);
+			}
+
+			const {
+				build: { outDir = 'build' } = {},
+			} = config;
 			outputDirectory =
-				FilePathResolver.normalizePath(outDir) || config.build.outDir;
+				FilePathResolver.normalizePath(outDir) ||
+				resolvedConfig.build.outDir;
 		},
 
 		// Use writeBundle instead of generateBundle for post-processing
 		writeBundle() {
+			if (!configPluginApi) {
+				throw new Error('ManifestPlugin requires ConfigPlugin API');
+			}
+
+			const config = configPluginApi.getResolvedConfig();
+			if (!config) {
+				throw new Error(
+					'ConfigPlugin has not resolved configuration yet'
+				);
+			}
+
+			const {
+				build: { generatePhpManifest = true, publicPath = '/' } = {},
+				wordpress: { textDomain = 'theme' } = {},
+			} = config;
+
 			if (!generatePhpManifest) return;
 
 			try {

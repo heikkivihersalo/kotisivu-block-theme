@@ -11,15 +11,46 @@ import fs from 'fs';
 import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
 
 /**
- * Internal dependencies
+ * Configuration interface for the config function
  */
-import type { PluginConfig } from '../../common/types/plugin-config.ts';
+interface ConfigInput {
+	build?: {
+		outDir?: string;
+		minify?: boolean | 'esbuild' | 'terser';
+		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
+		target?: string;
+		cssCodeSplit?: boolean;
+		terserOptions?: {
+			compress?: Record<string, any>;
+			mangle?: Record<string, any>;
+			format?: Record<string, any>;
+		};
+		resolve?: {
+			extensions?: string[];
+			alias?: Record<string, string>;
+		};
+	};
+	server?: {
+		host?: string;
+		port?: number;
+		devServerUrl?: string;
+		strictPort?: boolean;
+		cors?: boolean;
+		https?:
+			| boolean
+			| {
+					key: Buffer;
+					cert: Buffer;
+			  };
+		base?: string;
+	};
+}
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
 export function config(
-	config: PluginConfig,
+	pluginConfig: ConfigInput,
 	mode: string = process.env.NODE_ENV || 'production'
 ): UserConfig {
 	// Load environment variables
@@ -89,7 +120,7 @@ export function config(
 			resolve: resolveConfig = {},
 		} = {},
 		server: serverConfig = {},
-	} = config;
+	} = pluginConfig;
 
 	const buildConfig: BuildOptions = {
 		outDir,
