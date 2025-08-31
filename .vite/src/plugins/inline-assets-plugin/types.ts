@@ -33,4 +33,22 @@ export interface InlineAssetsConfig {
 		 */
 		blockNamespace?: string;
 	};
+
+	/**
+	 * Script injection configuration
+	 */
+	scriptInjection?: {
+		/**
+		 * Method for injecting HMR client script
+		 * - 'inline': Inline the script directly in the response (default)
+		 * - 'external': Serve as a separate JavaScript file
+		 * - 'module': Serve as an ES module
+		 */
+		method?: 'inline' | 'external' | 'module';
+
+		/**
+		 * Polling interval in milliseconds for change detection
+		 */
+		pollingInterval?: number;
+	};
 }
