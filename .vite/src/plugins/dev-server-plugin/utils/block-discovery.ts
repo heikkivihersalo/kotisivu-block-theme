@@ -7,12 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import { glob } from 'glob';
-
-export interface BlockAssetInfo {
-	buildPath: string;
-	sourcePath: string;
-	blockSlug: string;
-}
+import type { BlockAssetInfo } from '../types.js';
 
 export interface BlocksConfig {
 	blocksDir: Record<string, string>;
@@ -94,7 +89,7 @@ export function discoverBlockAssets(
 						}
 					} catch (error) {
 						console.warn(
-							`[InlineAssets] Error parsing block.json at ${fullBlockJsonPath}:`,
+							`[DevServer] Error parsing block.json at ${fullBlockJsonPath}:`,
 							error
 						);
 					}
@@ -102,14 +97,14 @@ export function discoverBlockAssets(
 			});
 		} catch (error) {
 			console.warn(
-				`[InlineAssets] Error discovering blocks in ${sourcePath}:`,
+				`[DevServer] Error discovering blocks in ${sourcePath}:`,
 				error
 			);
 		}
 	});
 
 	console.log(
-		`[InlineAssets] Discovered ${blockAssets.size} block CSS assets for HMR`
+		`[DevServer] Discovered ${blockAssets.size} block CSS assets for HMR`
 	);
 
 	return blockAssets;
@@ -186,3 +181,5 @@ export function getAffectedAsset(
 
 	return '';
 }
+
+export type { BlockAssetInfo };

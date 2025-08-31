@@ -4,7 +4,7 @@
  * System for generating HMR client scripts.
  */
 
-import type { BlockAssetInfo } from '../utils/block-discovery.js';
+import type { BlockAssetInfo } from '../types.js';
 
 /**
  * Script generation configuration
@@ -36,7 +36,7 @@ export function generateScript(
 // Set global configuration for HMR client
 window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(configObject, null, 2)};
 
-console.log('[InlineAssets] HMR client loaded');
+console.log('[DevServer] HMR client loaded');
 
 // Configuration will be available in the global scope
 const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__ || {
@@ -142,7 +142,7 @@ async function updateInlineAsset(assetPath, themePrefix = 'theme') {
  * Setup polling-based HMR
  */
 function setupPollingHMR(themePrefix) {
-	console.log('[InlineAssets] Using polling for HMR');
+	console.log('[DevServer] Using polling for HMR');
 	const lastModified = {};
 	const viteServerUrl = getViteServerUrl();
 
@@ -176,7 +176,7 @@ function initializeHMR() {
 	
 	setupPollingHMR(themePrefix);
 
-	console.log('[InlineAssets] HMR setup complete');
+	console.log('[DevServer] HMR setup complete');
 }
 
 // Start HMR

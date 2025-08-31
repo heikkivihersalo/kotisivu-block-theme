@@ -4,29 +4,12 @@
  * Utilities for managing plugin configuration and script injection options.
  */
 
-import type { InlineAssetsConfig } from '../types.js';
-
-export interface ProcessedConfig {
-	inlineAssets: string[];
-	watchPatterns: string[];
-	blocksConfig: {
-		blocksDir: Record<string, string>;
-		outDir: string;
-		blockNamespace: string;
-	};
-	scriptInjection: {
-		method: 'inline' | 'external' | 'module';
-		pollingInterval: number;
-		themePrefix?: string;
-		viteServerUrl?: string;
-		vitePort?: string;
-	};
-}
+import type { InlineAssetsConfig, ProcessedInlineConfig } from '../types.js';
 
 /**
  * Default configuration values
  */
-export const DEFAULT_CONFIG = {
+export const DEFAULT_INLINE_CONFIG = {
 	inlineAssets: ['assets/sanitize.css', 'assets/inline.css'],
 	watchPatterns: [
 		'src/app/styles/inline/**/*.css',
@@ -47,42 +30,43 @@ export const DEFAULT_CONFIG = {
 };
 
 /**
- * Process and validate configuration
+ * Process and validate inline assets configuration
  */
-export function processConfig(
+export function processInlineConfig(
 	config: InlineAssetsConfig = {}
-): ProcessedConfig {
-	const processed: ProcessedConfig = {
-		inlineAssets: config.inlineAssets || DEFAULT_CONFIG.inlineAssets,
-		watchPatterns: config.watchPatterns || DEFAULT_CONFIG.watchPatterns,
+): ProcessedInlineConfig {
+	const processed: ProcessedInlineConfig = {
+		inlineAssets: config.inlineAssets || DEFAULT_INLINE_CONFIG.inlineAssets,
+		watchPatterns:
+			config.watchPatterns || DEFAULT_INLINE_CONFIG.watchPatterns,
 		blocksConfig: {
 			blocksDir:
 				config.blocksConfig?.blocksDir ||
-				DEFAULT_CONFIG.blocksConfig.blocksDir,
+				DEFAULT_INLINE_CONFIG.blocksConfig.blocksDir,
 			outDir:
 				config.blocksConfig?.outDir ||
-				DEFAULT_CONFIG.blocksConfig.outDir,
+				DEFAULT_INLINE_CONFIG.blocksConfig.outDir,
 			blockNamespace:
 				config.blocksConfig?.blockNamespace ||
-				DEFAULT_CONFIG.blocksConfig.blockNamespace,
+				DEFAULT_INLINE_CONFIG.blocksConfig.blockNamespace,
 		},
 		scriptInjection: {
 			method:
 				config.scriptInjection?.method ||
-				DEFAULT_CONFIG.scriptInjection.method,
+				DEFAULT_INLINE_CONFIG.scriptInjection.method,
 			pollingInterval:
 				config.scriptInjection?.pollingInterval ||
-				DEFAULT_CONFIG.scriptInjection.pollingInterval,
+				DEFAULT_INLINE_CONFIG.scriptInjection.pollingInterval,
 			themePrefix: config.scriptInjection?.themePrefix,
 			viteServerUrl: config.scriptInjection?.viteServerUrl,
 			vitePort:
 				config.scriptInjection?.vitePort ||
-				DEFAULT_CONFIG.scriptInjection.vitePort,
+				DEFAULT_INLINE_CONFIG.scriptInjection.vitePort,
 		},
 	};
 
 	// Validate configuration
-	validateConfig(processed);
+	validateInlineConfig(processed);
 
 	return processed;
 }
@@ -90,7 +74,7 @@ export function processConfig(
 /**
  * Validate configuration values
  */
-function validateConfig(config: ProcessedConfig): void {
+function validateInlineConfig(config: ProcessedInlineConfig): void {
 	// Validate script injection method
 	const validMethods = ['inline', 'external', 'module'];
 	if (!validMethods.includes(config.scriptInjection.method)) {
@@ -102,14 +86,14 @@ function validateConfig(config: ProcessedConfig): void {
 	// Validate polling interval
 	if (config.scriptInjection.pollingInterval < 100) {
 		console.warn(
-			`[InlineAssets] Polling interval of ${config.scriptInjection.pollingInterval}ms is very low and may impact performance.`
+			`[DevServer] Polling interval of ${config.scriptInjection.pollingInterval}ms is very low and may impact performance.`
 		);
 	}
 
 	// Validate block namespace
 	if (!/^[a-z][a-z0-9-]*$/.test(config.blocksConfig.blockNamespace)) {
 		console.warn(
-			`[InlineAssets] Block namespace '${config.blocksConfig.blockNamespace}' should be lowercase with hyphens.`
+			`[DevServer] Block namespace '${config.blocksConfig.blockNamespace}' should be lowercase with hyphens.`
 		);
 	}
 }

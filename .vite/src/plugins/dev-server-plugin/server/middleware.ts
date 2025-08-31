@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { BlockAssetInfo } from '../utils/block-discovery.js';
+import type { BlockAssetInfo } from '../types.js';
 import {
 	generateScript,
 	generateModuleScript,
@@ -130,7 +130,7 @@ export function createAssetContentMiddleware(
 		);
 
 		if (!isValidAsset) {
-			console.log('[InlineAssets] Invalid asset requested:', assetPath);
+			console.log('[DevServer] Invalid asset requested:', assetPath);
 			res.statusCode = 404;
 			res.end('Asset not found');
 			return;
@@ -165,7 +165,7 @@ export function createAssetContentMiddleware(
 				res.end('File not found');
 			}
 		} catch (error) {
-			console.error('[InlineAssets] Error serving asset:', error);
+			console.error('[DevServer] Error serving asset:', error);
 			res.statusCode = 500;
 			res.end('Internal server error');
 		}
