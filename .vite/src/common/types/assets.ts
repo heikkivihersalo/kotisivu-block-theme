@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import type { AssetIdentifier, PathInfo } from './base.ts';
+import type { AssetIdentifier, PathInfo } from './paths.ts';
 
 export type DiscoveredAssetInfo = AssetIdentifier &
 	PathInfo & {

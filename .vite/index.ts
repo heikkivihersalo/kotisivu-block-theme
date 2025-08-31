@@ -17,10 +17,14 @@ import {
 
 import type { PluginConfig } from './src/common/types/plugin-config.ts';
 import {
+	extractManifestConfig,
+	extractBlocksConfig,
+	extractAssetsConfig,
+	extractDevServerConfig,
+} from './src/common/types/plugins.ts';
+import {
 	getBuildConfig,
 	getServerConfig,
-	getPathsConfig,
-	getWordPressConfig,
 	getEnvironmentConfig,
 	getHMRConfig,
 } from './src/common/utils/config-helpers.ts';
@@ -35,25 +39,28 @@ import {
  * @returns {Array} Array of Vite plugins
  */
 export const wp = (config: PluginConfig): Plugin[] => {
-	// Extract categorized configs
-	const buildConfig = getBuildConfig(config);
-	const serverConfig = getServerConfig(config);
-	const pathsConfig = getPathsConfig(config);
-	const wordpressConfig = getWordPressConfig(config);
-	const environmentConfig = getEnvironmentConfig(config);
-	const hmrConfig = getHMRConfig(config);
-
-	// Require block paths for multi-block builds
+	// Validate required configuration
 	if (
-		!pathsConfig.blocksDir ||
-		Object.keys(pathsConfig.blocksDir).length === 0
+		!config.paths?.blocksDir ||
+		Object.keys(config.paths.blocksDir).length === 0
 	) {
 		throw new Error(
 			'paths.blocksDir is required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
 
-	// Build ViteWordPressConfig for ConfigPlugin
+	// Extract specific plugin configurations from unified config
+	const blocksConfig = extractBlocksConfig(config);
+	const assetsConfig = extractAssetsConfig(config);
+	const manifestConfig = extractManifestConfig(config);
+	const devServerConfig = extractDevServerConfig(config);
+
+	// Build ViteWordPressConfig for ConfigPlugin (keeping backward compatibility)
+	const buildConfig = getBuildConfig(config);
+	const serverConfig = getServerConfig(config);
+	const environmentConfig = getEnvironmentConfig(config);
+	const hmrConfig = getHMRConfig(config);
+
 	const viteWordPressConfig = {
 		terserOptions: buildConfig.terserOptions,
 		server: {
@@ -72,70 +79,31 @@ export const wp = (config: PluginConfig): Plugin[] => {
 			minify: buildConfig.minify,
 			target: buildConfig.target,
 			cssCodeSplit: buildConfig.cssCodeSplit,
-			dependencies: wordpressConfig.dependencies,
-			assetsDir: pathsConfig.assetsDir,
-			blocksDir: pathsConfig.blocksDir,
+			dependencies: config.wordpress?.dependencies,
+			assetsDir: config.paths?.assetsDir,
+			blocksDir: config.paths?.blocksDir,
 		},
 	};
 
 	// Create configuration plugin (must be first to set up build config)
 	const configPlugin = ConfigPlugin(viteWordPressConfig);
 
-	// Build ViteBlocksPluginConfig for BlocksPlugin
-	const blocksConfig = {
-		blocksDir: pathsConfig.blocksDir!,
-		outDir: buildConfig.outDir,
-		sourcemap: buildConfig.sourcemap,
-		hmr: hmrConfig,
-		dependencies: wordpressConfig.dependencies,
-		discoveredBlocks: wordpressConfig.discoveredBlocks,
-	};
-
 	// Create the blocks plugin
 	const blocksPlugin = BlocksPlugin(blocksConfig);
 
 	// Create the assets plugin (optional, only if assets are configured)
-	const assetsPlugin =
-		pathsConfig.assetsDir && Object.keys(pathsConfig.assetsDir).length > 0
-			? AssetsPlugin({
-					assetsDir: pathsConfig.assetsDir,
-					outDir: buildConfig.outDir,
-					dependencies: wordpressConfig.dependencies,
-					sourcemap: buildConfig.sourcemap,
-				})
-			: null;
+	const assetsPlugin = assetsConfig ? AssetsPlugin(assetsConfig) : null;
 
-	// Build ViteManifestPluginConfig for ManifestPlugin
-	const manifestConfig = {
-		outDir: buildConfig.outDir,
-		generatePhpManifest: buildConfig.generatePhpManifest ?? true,
-		publicPath: buildConfig.publicPath ?? '/',
-		textDomain: wordpressConfig.textDomain,
-	};
-
-	// Create enhanced manifest plugin
+	// Create the manifest plugin
 	const manifestPlugin = ManifestPlugin(manifestConfig);
 
-	// Build DevServerConfig for DevServerPlugin
-	const devServerConfig = {
-		host: serverConfig.host,
-		port: serverConfig.port,
-		base: serverConfig.base ?? '/',
-		srcDir: pathsConfig.srcDir ?? 'resources',
-		outDir: buildConfig.outDir,
-		css: buildConfig.css ?? 'css',
-		manifest: buildConfig.manifest ?? true,
-		devServerUrl: serverConfig.devServerUrl,
-		inlineAssets: config.inlineAssets,
-	};
-
-	// Create DevServer plugin with inline assets HMR support
+	// Create the dev server plugin
 	const devServerPlugin = DevServerPlugin(devServerConfig);
 
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
 
-	// All plugins now support FileEmitter and can run in both dev and production
+	// Return array of plugins, filtering out null values
 	const plugins = [
 		configPlugin,
 		blocksPlugin,
