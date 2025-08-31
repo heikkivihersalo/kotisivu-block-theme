@@ -178,6 +178,10 @@ class DevServer {
         $clientUrl = esc_url($this->getClientUrl());
         echo "<script type=\"module\" src=\"{$clientUrl}\"></script>\n";
         echo "<script type=\"module\">window.process = {env: {NODE_ENV: 'development'}};</script>\n";
+
+        // Inject inline assets HMR client
+        $inlineAssetsUrl = esc_url($this->getBaseUrl() . '/__vite_inline_assets');
+        echo "<script type=\"module\" src=\"{$inlineAssetsUrl}\"></script>\n";
     }
 
     /**
