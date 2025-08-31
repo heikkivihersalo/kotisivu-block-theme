@@ -22,6 +22,7 @@ export function ReactShimPlugin(wpImports: string[]) {
 		'wp-block-editor',
 		'wp-components',
 		'wp-data',
+		'wp-dom-ready',
 		'wp-i18n',
 		'wp-api-fetch',
 		'wp-compose',
