@@ -9,21 +9,26 @@ import fs from 'fs';
  * Shared dependencies
  */
 import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
-import type { PluginConfig } from '../../common/types/plugin-config.ts';
+
+/**
+ * Internal dependencies
+ */
+import type { ResolvedPluginConfig } from './index.ts';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
 export function config(
-	pluginConfig: PluginConfig,
+	pluginConfig: ResolvedPluginConfig,
 	mode: string = process.env.NODE_ENV || 'production'
 ): UserConfig {
 	// Load environment variables
 	const env = loadEnv(mode, process.cwd(), '');
 
 	// Parse dev server configuration from environment
-	const devServerHost = env.VITE_DEV_SERVER_HOST || 'http://localhost';
-	const devServerPort = parseInt(env.VITE_DEV_SERVER_PORT || '5173', 10);
+	const devServerHost = env.VITE_DEV_SERVER_HOST || pluginConfig.server.host;
+	const devServerPort =
+		parseInt(env.VITE_DEV_SERVER_PORT, 10) || pluginConfig.server.port;
 
 	// Extract protocol and hostname from the URL
 	const hostUrl = new URL(devServerHost);
@@ -178,6 +183,7 @@ export function config(
 
 		// HMR configuration for WordPress development with environment support
 		server: {
+			...serverConfig,
 			host: hostname,
 			port: devServerPort,
 			// Use resolved config values, override with env-specific values
@@ -194,8 +200,6 @@ export function config(
 				host: hostname,
 				port: devServerPort,
 			},
-			// Spread any additional server config
-			...serverConfig,
 		},
 
 		// Optimized for WordPress development

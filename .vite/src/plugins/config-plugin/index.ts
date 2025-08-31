@@ -22,7 +22,7 @@ let viteConfig: UserConfig | null = null;
  * Resolve plugin configuration with defaults
  * This is the single source of truth for all default values
  */
-export function resolvePluginConfig(pluginConfig: PluginConfig): PluginConfig {
+export function resolvePluginConfig(pluginConfig: PluginConfig) {
 	return {
 		...pluginConfig,
 		// Provide default build configuration
@@ -89,6 +89,8 @@ export function resolvePluginConfig(pluginConfig: PluginConfig): PluginConfig {
 	};
 }
 
+export type ResolvedPluginConfig = ReturnType<typeof resolvePluginConfig>;
+
 /**
  * Vite 6 Modern Configuration Plugin for WordPress
  *
@@ -105,7 +107,10 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 
 		config: (_, { mode }) => {
 			// Generate the Vite config from our unified config
-			const generatedConfig = config(resolvedConfig!, mode);
+			const generatedConfig = config(
+				resolvedConfig as ResolvedPluginConfig,
+				mode
+			);
 
 			// Store the generated Vite config for access by other plugins
 			viteConfig = generatedConfig;
