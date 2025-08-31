@@ -30,12 +30,3 @@ export type FileIdentifier = {
  * Directory mapping for source to output paths
  */
 export type DirectoryMapping = Record<string, string>;
-
-/**
- * Output directory configuration
- */
-export type OutputDirectoryConfig = {
-	basePath: string;
-	blockOutputDir: string;
-	outputPath?: string;
-};

@@ -8,6 +8,10 @@ export type DiscoveredAssetInfo = AssetIdentifier &
 		relativePath: string; // Required for asset discovery
 	};
 
+/**
+ * Internal output configuration for processing assets
+ * This is not a user configuration but an internal type for build processing
+ */
 export type OutputConfig = {
 	basePath: string;
 	blockOutputDir: string;

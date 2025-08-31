@@ -1,14 +1,4 @@
 /**
- * Build and compilation types
- */
-export type {
-	BuildEnvironmentConfig,
-	DependencyConfig,
-	BuildConfig,
-	TerserConfig,
-} from './build.ts';
-
-/**
  * Bundler system types (Rollup/Vite)
  */
 export type {
@@ -27,7 +17,7 @@ export type { BundlerChunkInfo as ChunkInfo } from './bundler.ts';
 /**
  * Asset and block discovery types
  */
-export type { DiscoveredAsset, AssetProcessorConfig } from './discovery.ts';
+export type { DiscoveredAsset } from './discovery.ts';
 
 /**
  * Asset processing and output types
@@ -42,19 +32,7 @@ export type {
 	DiscoveredFilePathInfo,
 	FileIdentifier,
 	DirectoryMapping,
-	OutputDirectoryConfig,
 } from './paths.ts';
-
-/**
- * Vite plugin configuration types
- */
-export type {
-	ViteWordPressConfig,
-	ViteManifestPluginConfig,
-	ViteCorePluginConfig,
-	ViteBlocksPluginConfig,
-	ViteAssetsPluginConfig,
-} from './vite.ts';
 
 /**
  * WordPress-specific types

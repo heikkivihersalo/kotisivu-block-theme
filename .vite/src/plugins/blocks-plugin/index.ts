@@ -5,7 +5,7 @@ import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig } from 'vite';
 
 import { BlockHandler } from './BlockHandler';
-import type { ViteBlocksPluginConfig } from '../../common/types';
+import type { BlocksPluginConfig } from '../../common/types/plugins.ts';
 
 /**
  * Vite plugin for WordPress Gutenberg blocks
@@ -20,7 +20,7 @@ import type { ViteBlocksPluginConfig } from '../../common/types';
  * All block processing logic is handled by the BlockHandler class, making
  * this plugin a thin coordinator that focuses purely on Vite integration.
  */
-export function BlocksPlugin(config: ViteBlocksPluginConfig): Plugin {
+export function BlocksPlugin(config: BlocksPluginConfig): Plugin {
 	const { sourcemap = false } = config;
 	let blockHandler: BlockHandler;
 	let resolvedViteConfig: ResolvedConfig;

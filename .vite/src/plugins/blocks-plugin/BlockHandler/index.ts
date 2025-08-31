@@ -17,9 +17,9 @@ import { FileEmitter } from '../../../common/services/FileEmitter.ts';
 import type {
 	OutputConfig,
 	BlockInfo,
-	ViteBlocksPluginConfig,
 	WordPressBlockJSON,
 } from '../../../common/types';
+import type { BlocksPluginConfig } from '../../../common/types/plugins.ts';
 
 /**
  * Internal dependencies
@@ -42,7 +42,7 @@ export class BlockHandler {
 
 	private context: PluginContext;
 	private outputDirectory: string;
-	private config: ViteBlocksPluginConfig;
+	private config: BlocksPluginConfig;
 	private pwd: string;
 	private discoveredBlocks: BlockInfo[] = [];
 
@@ -53,7 +53,7 @@ export class BlockHandler {
 	}: {
 		context: PluginContext;
 		outputDirectory: string;
-		config: ViteBlocksPluginConfig;
+		config: BlocksPluginConfig;
 	}) {
 		this.context = context;
 		this.outputDirectory = outputDirectory;
@@ -180,7 +180,7 @@ export class BlockHandler {
 		this.validateConfig();
 
 		// Add HMR watch files if specified
-		const hmrWatch = this.config.watch;
+		const hmrWatch = this.config.hmr?.watch;
 		if (hmrWatch) {
 			// Add all HMR watch patterns
 			const allPatterns = [

@@ -26,6 +26,18 @@ export type CorePluginConfig = {
  */
 export type BlocksPluginConfig = BasePluginConfig & {
 	blocksDir: DirectoryMapping;
+	hmr?: {
+		enabled?: boolean;
+		watch?: {
+			php?: string[];
+			css?: string[];
+			scripts?: string[];
+			blocks?: string[];
+			inline?: string[];
+		};
+	};
+	dependencies?: string[];
+	discoveredBlocks?: import('./wordpress.ts').BlockInfo[];
 };
 
 /**

@@ -10,11 +10,8 @@ import { dirname, resolve } from 'node:path';
  * Shared dependencies
  */
 import { FilePathResolver } from '../../common/services/FilePathResolver';
-import { FileEmitter } from '../../common/services/FileEmitter.ts';
-import type {
-	DiscoveredAsset,
-	ViteAssetsPluginConfig,
-} from '../../common/types';
+import type { DiscoveredAsset } from '../../common/types';
+import type { AssetsPluginConfig } from '../../common/types/plugins.ts';
 
 /**
  * Internal dependencies
@@ -29,12 +26,11 @@ import { discoverAssetsWithMapping } from './discovery';
  * - Discovering assets from configured directories
  * - Sideloading asset entry points
  */
-export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
+export function AssetsPlugin(config: AssetsPluginConfig): Plugin {
 	const { assetsDir, outDir, dependencies = [], sourcemap = false } = config;
 
 	let outputDirectory: string;
 	let discoveredAssets: DiscoveredAsset[] = [];
-	let fileEmitter: FileEmitter;
 	const pwd = process.env.PWD || process.cwd();
 
 	// Default WordPress dependencies that should always be externalized
@@ -60,9 +56,6 @@ export function AssetsPlugin(config: ViteAssetsPluginConfig): Plugin {
 			} else {
 				outputDirectory = resolvedConfig.build.outDir || 'dist';
 			}
-
-			// Initialize file emitter with output directory
-			fileEmitter = new FileEmitter(outputDirectory);
 		},
 
 		buildStart: async function (this: PluginContext) {

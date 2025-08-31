@@ -13,13 +13,13 @@ import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
 /**
  * Internal dependencies
  */
-import type { ViteWordPressConfig } from '../../common/types';
+import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
 export function config(
-	config: ViteWordPressConfig,
+	config: PluginConfig,
 	mode: string = process.env.NODE_ENV || 'production'
 ): UserConfig {
 	// Load environment variables
@@ -85,10 +85,10 @@ export function config(
 			sourcemap = false,
 			target = 'es2018',
 			cssCodeSplit = true,
-		},
-		terserOptions = {},
+			terserOptions = {},
+			resolve: resolveConfig = {},
+		} = {},
 		server: serverConfig = {},
-		resolve: resolveConfig = {},
 	} = config;
 
 	const buildConfig: BuildOptions = {
