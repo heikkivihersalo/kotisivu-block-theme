@@ -111,9 +111,10 @@ dev-server-plugin/
 │   └── middleware.ts       # Server middleware functions
 └── utils/
     ├── config.ts           # Configuration processing
-    ├── block-discovery.ts  # Block asset discovery
     └── script-templates.ts # HMR script generation
 ```
+
+**Note**: The `block-discovery.ts` file has been removed as block discovery is now handled directly by the BlocksPlugin API, eliminating duplication and ensuring consistency.
 
 ## Migration from Separate Plugins
 

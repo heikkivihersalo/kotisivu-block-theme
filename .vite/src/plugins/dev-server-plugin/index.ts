@@ -10,6 +10,7 @@ import path from 'path';
  * Internal dependencies
  */
 import type { BlockAssetInfo } from './types';
+import type { BlockInfo } from '../../common/types/wordpress.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
 import {
 	processHMRWatchConfig,
@@ -19,11 +20,6 @@ import {
 	processInlineConfig,
 	getScriptInjectionOptions,
 } from './utils/config.js';
-import {
-	discoverBlockAssets,
-	getAllMonitoredAssets,
-	getAffectedAsset,
-} from './utils/block-discovery.js';
 import {
 	createClientScriptMiddleware,
 	createStatusMiddleware,
@@ -47,6 +43,124 @@ export function DevServerPlugin(): Plugin {
 	let processedInlineConfig: any = null;
 	let scriptOptions: any = null;
 	let configPluginApi: any = null;
+	let blocksPluginApi: any = null;
+
+	/**
+	 * Convert BlockInfo from BlocksPlugin to BlockAssetInfo for DevServer
+	 */
+	function convertBlocksToAssets(
+		discoveredBlocks: BlockInfo[]
+	): Map<string, BlockAssetInfo> {
+		const blockAssets = new Map<string, BlockAssetInfo>();
+
+		discoveredBlocks.forEach((block) => {
+			// Check for CSS files that could be used as inline styles
+			const cssFiles = ['style.css', 'index.css', 'style-index.css'];
+
+			cssFiles.forEach((cssFile) => {
+				const sourceCssPath = path.join(block.path, cssFile);
+				const buildCssPath = path
+					.join(
+						processedInlineConfig?.blocksConfig?.outDir || 'build',
+						block.outputPath || block.name,
+						cssFile
+					)
+					.replace(/\\/g, '/');
+
+				if (fs.existsSync(sourceCssPath)) {
+					const assetKey = `${block.name}-${cssFile.replace('.css', '')}`;
+					blockAssets.set(assetKey, {
+						buildPath: buildCssPath,
+						sourcePath: sourceCssPath.replace(/\\/g, '/'),
+						blockSlug: block.name,
+					});
+				}
+			});
+		});
+
+		console.log(
+			`[DevServer] Converted ${blockAssets.size} block CSS assets from BlocksPlugin`
+		);
+
+		return blockAssets;
+	}
+
+	/**
+	 * Get all monitored assets (static + dynamic blocks)
+	 */
+	function getAllMonitoredAssets(
+		inlineAssets: string[],
+		blockAssets: Map<string, BlockAssetInfo>
+	): string[] {
+		const dynamicAssets = Array.from(blockAssets.values()).map(
+			(asset) => asset.buildPath
+		);
+		return [...inlineAssets, ...dynamicAssets];
+	}
+
+	/**
+	 * Check if a file change affects any inline assets
+	 */
+	function getAffectedAsset(
+		file: string,
+		inlineAssets: string[],
+		blockAssets: Map<string, BlockAssetInfo>,
+		watchPatterns: string[]
+	): string {
+		// Check if the changed file affects any inline assets
+		const isInlineAsset = inlineAssets.some((asset) => {
+			const fullPath = path.resolve(asset);
+			return file === fullPath || file.endsWith(asset);
+		});
+
+		if (isInlineAsset) {
+			return (
+				inlineAssets.find((asset) => {
+					const fullPath = path.resolve(asset);
+					return file === fullPath || file.endsWith(asset);
+				}) || ''
+			);
+		}
+
+		// Check if the changed file is a block CSS file
+		const isBlockAsset = Array.from(blockAssets.values()).some(
+			(assetInfo) =>
+				file === assetInfo.sourcePath || file === assetInfo.buildPath
+		);
+
+		if (isBlockAsset) {
+			// Find the block asset that was changed
+			for (const [, assetInfo] of blockAssets) {
+				if (
+					file === assetInfo.sourcePath ||
+					file === assetInfo.buildPath
+				) {
+					return assetInfo.buildPath;
+				}
+			}
+		}
+
+		// Check if it's a source file that affects inline assets
+		const isSourceFile = watchPatterns.some((pattern) => {
+			const regex = pattern
+				.replace(/\*\*/g, '.*')
+				.replace(/\*/g, '[^/]*');
+			return new RegExp(regex).test(file);
+		});
+
+		if (isSourceFile) {
+			// For source files, determine which built asset they affect based on file content
+			if (file.includes('sanitize')) {
+				return 'assets/sanitize.css';
+			} else if (file.includes('tailwind')) {
+				return 'assets/tailwind-utilities.css';
+			} else {
+				return 'assets/inline.css';
+			}
+		}
+
+		return '';
+	}
 
 	/**
 	 * Get all monitored assets (static + dynamic blocks)
@@ -64,7 +178,7 @@ export function DevServerPlugin(): Plugin {
 		enforce: 'post', // Run after other plugins to avoid conflicts
 
 		/**
-		 * Config resolved hook - Store reference to ConfigPlugin API
+		 * Config resolved hook - Store reference to ConfigPlugin and BlocksPlugin APIs
 		 */
 		configResolved(resolvedConfig: ResolvedConfig) {
 			// Find the ConfigPlugin in the resolved plugins
@@ -79,6 +193,19 @@ export function DevServerPlugin(): Plugin {
 			}
 
 			configPluginApi = configPlugin.api;
+
+			// Find the BlocksPlugin in the resolved plugins
+			const blocksPlugin = resolvedConfig.plugins.find(
+				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-blocks'
+			);
+
+			if (!blocksPlugin?.api) {
+				throw new Error(
+					'DevServerPlugin requires BlocksPlugin to be loaded first'
+				);
+			}
+
+			blocksPluginApi = blocksPlugin.api;
 		},
 
 		/**
@@ -122,9 +249,8 @@ export function DevServerPlugin(): Plugin {
 
 			// Discover block assets on server start if inline assets are configured
 			if (processedInlineConfig) {
-				blockAssets = discoverBlockAssets(
-					processedInlineConfig.blocksConfig
-				);
+				// Note: We'll get blocks from BlocksPlugin later when they're available
+				blockAssets = new Map(); // Initialize empty for now
 
 				// Add HMR client script endpoint
 				if (scriptOptions) {
@@ -242,10 +368,11 @@ export function DevServerPlugin(): Plugin {
 			const inlineWatchPatterns =
 				getInlineAssetWatchPatterns(hmrWatchConfig);
 
-			// Discover block assets first
-			blockAssets = discoverBlockAssets(
-				processedInlineConfig.blocksConfig
-			);
+			// Get discovered blocks from BlocksPlugin
+			if (blocksPluginApi) {
+				const discoveredBlocks = blocksPluginApi.getDiscoveredBlocks();
+				blockAssets = convertBlocksToAssets(discoveredBlocks);
+			}
 
 			// Add unified HMR watch patterns for inline assets
 			inlineWatchPatterns.forEach((pattern) => {
