@@ -96,16 +96,18 @@ export function InlineAssetsPlugin(config: InlineAssetsConfig = {}): Plugin {
 										blockSourceDir,
 										cssFile
 									);
-									const buildCssPath = path.join(
-										blockBuildDir,
-										cssFile
-									).replace(/\\/g, '/');
+									const buildCssPath = path
+										.join(blockBuildDir, cssFile)
+										.replace(/\\/g, '/');
 
 									if (fs.existsSync(sourceCssPath)) {
 										const assetKey = `${blockSlug}-${cssFile.replace('.css', '')}`;
 										blockAssets.set(assetKey, {
 											buildPath: buildCssPath,
-											sourcePath: sourceCssPath.replace(/\\/g, '/'),
+											sourcePath: sourceCssPath.replace(
+												/\\/g,
+												'/'
+											),
 											blockSlug: blockSlug,
 										});
 									}
@@ -160,82 +162,199 @@ export function InlineAssetsPlugin(config: InlineAssetsConfig = {}): Plugin {
 				const clientScript = `
 console.log('[InlineAssets] HMR client loaded');
 
-if (import.meta.hot) {
-	console.log('[InlineAssets] HMR available');
+// Function to generate WordPress style ID from asset path
+function getStyleIdFromAsset(assetPath) {
+	const blockAssets = new Map(${JSON.stringify(Array.from(blockAssets.entries()))});
 	
-	// Function to generate WordPress style ID from asset path
-	function getStyleIdFromAsset(assetPath) {
-		const blockAssets = new Map(${JSON.stringify(Array.from(blockAssets.entries()))});
-		
-		// Check if it's a block asset
-		for (const [assetKey, assetInfo] of blockAssets) {
-			if (assetPath.includes(assetInfo.blockSlug)) {
-				// Determine CSS type from path
-				let cssType = 'style';
-				if (assetPath.includes('index.css')) {
-					cssType = 'index';
-				} else if (assetPath.includes('style-index.css')) {
-					cssType = 'style-index';
-				}
-				return '${blockNamespace}-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
+	// Check if it's a block asset
+	for (const [assetKey, assetInfo] of blockAssets) {
+		if (assetPath.includes(assetInfo.blockSlug)) {
+			// Determine CSS type from path
+			let cssType = 'style';
+			if (assetPath.includes('index.css')) {
+				cssType = 'index';
+			} else if (assetPath.includes('style-index.css')) {
+				cssType = 'style-index';
 			}
+			return '${blockNamespace}-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
 		}
-		
-		// Handle theme inline assets
-		if (assetPath.includes('sanitize.css')) {
-			return 'kotisivu-sanitize-css';
-		} else if (assetPath.includes('inline.css')) {
-			return 'kotisivu-inline-css';
-		} else if (assetPath.includes('tailwind-utilities.css')) {
-			return 'kotisivu-tailwind-utility-css-inline-css';
-		}
-		
-		// Fallback for other assets
-		const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
-		return assetId + '-inline-css';
 	}
+	
+	// Handle theme inline assets
+	if (assetPath.includes('sanitize.css')) {
+		return 'kotisivu-sanitize-css';
+	} else if (assetPath.includes('inline.css')) {
+		return 'kotisivu-inline-css';
+	} else if (assetPath.includes('tailwind-utilities.css')) {
+		return 'kotisivu-tailwind-utility-css-inline-css';
+	}
+	
+	// Fallback for other assets
+	const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
+	return assetId + '-inline-css';
+}
 
-	// Function to update inline styles
-	async function updateInlineAsset(assetPath) {
-		try {
-			const response = await fetch('/__vite_inline_content/' + assetPath);
-			if (response.ok) {
-				const newContent = await response.text();
-				const styleId = getStyleIdFromAsset(assetPath);
+// Function to update inline styles
+async function updateInlineAsset(assetPath) {
+	try {
+		// Determine the correct Vite server URL
+		const viteServerUrl = (function() {
+			// If we're on block-theme.local (WordPress), connect to Vite on port 5173
+			if (location.hostname === 'block-theme.local') {
+				return 'https://block-theme.local:5173';
+			}
+			// If we're already on the Vite server, use relative URLs
+			if (location.port === '5173') {
+				return '';
+			}
+			// Fallback: assume Vite is on port 5173
+			const protocol = location.protocol;
+			return protocol + '//' + location.hostname + ':5173';
+		})();
+		
+		const contentUrl = viteServerUrl + '/__vite_inline_content/' + assetPath;
+		const response = await fetch(contentUrl);
+		if (response.ok) {
+			const newContent = await response.text();
+			const styleId = getStyleIdFromAsset(assetPath);
+			
+			// Find the corresponding style tag by exact ID
+			let styleElement = document.getElementById(styleId);
+			
+			// If exact ID not found, try pattern matching
+			if (!styleElement) {
+				const styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
+				const assetName = assetPath.split('/').pop()?.replace('.css', '') || '';
 				
-				// Find the corresponding style tag by exact ID
-				let styleElement = document.getElementById(styleId);
-				
-				// If exact ID not found, try pattern matching
-				if (!styleElement) {
-					const styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
-					const assetName = assetPath.split('/').pop()?.replace('.css', '') || '';
-					
-					for (const style of styleElements) {
-						if (style.id.includes(assetName)) {
-							styleElement = style;
-							break;
-						}
+				for (const style of styleElements) {
+					if (style.id.includes(assetName)) {
+						styleElement = style;
+						break;
 					}
 				}
-				
-				if (styleElement && styleElement.textContent !== newContent) {
-					styleElement.textContent = newContent;
-					console.log('[HMR] ✅ Updated inline asset:', assetPath);
+			}
+			
+			if (styleElement && styleElement.textContent !== newContent) {
+				styleElement.textContent = newContent;
+				console.log('[HMR] ✅ Updated inline asset:', assetPath);
+			}
+		}
+	} catch (error) {
+		console.warn('[HMR] Failed to update inline asset:', assetPath, error);
+	}
+}
+
+// Try to connect to Vite's HMR via multiple methods
+function setupHMR() {
+	// Method 1: Use polling for WordPress + Vite setup (most reliable)
+	console.log('[InlineAssets] Using polling fallback for WordPress integration');
+	let lastModified = {};
+	
+	// Determine the correct Vite server URL for polling
+	const viteServerUrl = (function() {
+		// If we're on block-theme.local (WordPress), connect to Vite on port 5173
+		if (location.hostname === 'block-theme.local') {
+			return 'https://block-theme.local:5173';
+		}
+		// If we're already on the Vite server, use relative URLs
+		if (location.port === '5173') {
+			return '';
+		}
+		// Fallback: assume Vite is on port 5173
+		const protocol = location.protocol;
+		return protocol + '//' + location.hostname + ':5173';
+	})();
+	
+	console.log('[InlineAssets] Polling Vite server at:', viteServerUrl || 'same origin');
+	
+	async function pollForChanges() {
+		try {
+			const statusUrl = viteServerUrl + '/__vite_inline_content/status';
+			const response = await fetch(statusUrl);
+			if (response.ok) {
+				const status = await response.json();
+				for (const [asset, modified] of Object.entries(status)) {
+					if (lastModified[asset] && lastModified[asset] !== modified) {
+						updateInlineAsset(asset);
+					}
+					lastModified[asset] = modified;
 				}
 			}
 		} catch (error) {
-			console.warn('[HMR] Failed to update inline asset:', assetPath, error);
+			// Silently fail for polling - this is expected when files don't exist yet
 		}
 	}
+	
+	// Poll every 500ms for responsive updates
+	setInterval(pollForChanges, 500);
+	
+	// Method 2: Try WebSocket connection as secondary option
+	// Note: This typically won't work in WordPress + Vite setups due to CORS/proxy issues
+	// but we'll try it quietly in case the setup supports it
+	try {
+		const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+		// For Vite dev server, we need to connect to the actual Vite port (5173)
+		// not the proxy port that might be serving the page
+		let wsUrl;
+		if (location.hostname === 'block-theme.local') {
+			// Connect directly to Vite's dev server port
+			wsUrl = protocol + '//block-theme.local:5173';
+		} else {
+			// Fallback to current host if not on the known domain
+			const port = location.port || '5173';
+			wsUrl = protocol + '//' + location.hostname + ':' + port;
+		}
+		
+		// Try WebSocket connection silently
+		const ws = new WebSocket(wsUrl, 'vite-hmr');
+		
+		ws.addEventListener('open', () => {
+			console.log('[InlineAssets] WebSocket connected - will use for instant updates');
+		});
+		
+		ws.addEventListener('message', (event) => {
+			try {
+				const data = JSON.parse(event.data);
+				if (data.type === 'custom' && data.event === 'inline-asset-update') {
+					updateInlineAsset(data.data.asset);
+				}
+			} catch (e) {
+				// Ignore non-JSON messages
+			}
+		});
+		
+		ws.addEventListener('error', (error) => {
+			// Expected in WordPress + Vite setups - don't log as error
+		});
+		
+		ws.addEventListener('close', () => {
+			// Expected in WordPress + Vite setups - don't log
+		});
+		
+	} catch (error) {
+		// Expected in WordPress + Vite setups - don't log
+	}
 
-	// Listen for inline asset updates
-	import.meta.hot.on('inline-asset-update', ({ asset }) => {
-		updateInlineAsset(asset);
-	});
-} else {
-	console.warn('[InlineAssets] HMR not available');
+	// Method 3: Check for Vite HMR by looking for window.__viteHotContext
+	// This is safer than checking import.meta directly
+	if (typeof window !== 'undefined' && window.__viteHotContext) {
+		console.log('[InlineAssets] Using Vite HMR context');
+		// Connect to Vite's HMR through the window context
+		try {
+			window.__viteHotContext.on('inline-asset-update', ({ asset }) => {
+				updateInlineAsset(asset);
+			});
+		} catch (e) {
+			console.warn('[InlineAssets] Failed to connect via Vite context');
+		}
+	}
+	
+	return true;
 }
+
+// Initialize HMR
+const hmrConnected = setupHMR();
+console.log('[InlineAssets] HMR setup complete');
 `;
 
 				res.end(clientScript);
@@ -243,6 +362,46 @@ if (import.meta.hot) {
 
 			// Serve inline asset content
 			server.middlewares.use(async (req, res, next) => {
+				// Handle status endpoint for polling fallback
+				if (req.url === '/__vite_inline_content/status') {
+					const allAssets = getAllMonitoredAssets();
+					const status: Record<string, number> = {};
+
+					for (const asset of allAssets) {
+						try {
+							let fullPath = path.resolve(asset);
+
+							// Check block assets if direct path doesn't exist
+							if (!fs.existsSync(fullPath)) {
+								for (const [, assetInfo] of blockAssets) {
+									if (
+										assetInfo.buildPath.endsWith(asset) ||
+										assetInfo.buildPath === asset
+									) {
+										fullPath = fs.existsSync(
+											assetInfo.buildPath
+										)
+											? assetInfo.buildPath
+											: assetInfo.sourcePath;
+										break;
+									}
+								}
+							}
+
+							if (fs.existsSync(fullPath)) {
+								const stats = fs.statSync(fullPath);
+								status[asset] = stats.mtime.getTime();
+							}
+						} catch (error) {
+							// Skip assets that can't be read
+						}
+					}
+
+					res.setHeader('Content-Type', 'application/json');
+					res.end(JSON.stringify(status));
+					return;
+				}
+
 				// Only handle our specific inline content endpoint
 				if (!req.url?.startsWith('/__vite_inline_content/')) {
 					return next();
