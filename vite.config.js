@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
 					namespace: 'ksd', // Block namespace for this theme
 				},
 
-				// HMR configuration (replaces old inlineAssets config)
+				// HMR configuration
 				hmr: {
 					enabled: true,
 					watch: {
