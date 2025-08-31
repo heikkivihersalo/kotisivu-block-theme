@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import type { ManifestChunk } from 'vite';
+
+/**
  * Configuration types for DevServer plugin
  */
 export type DevServerConfig = {
@@ -43,3 +48,15 @@ export type DevServerConfig = {
 	 */
 	devServerUrl?: string;
 };
+
+/**
+ * Interface for BuildMapResolver class
+ */
+export interface IBuildMapResolver {
+	getBuildMap(): Record<string, ManifestChunk>;
+	updateBuildMap(newBuildMap: Record<string, ManifestChunk>): void;
+	saveBuildMap(): void;
+	clearBuildMap(): void;
+	addToBuildMap(fileName: string, manifestChunk: ManifestChunk): void;
+	createHotUpdateEntry(file: string): void;
+}

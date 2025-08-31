@@ -3,13 +3,12 @@
  */
 import type { Plugin, ViteDevServer } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'http';
-import * as fs from 'fs';
-import * as path from 'path';
 
 /**
  * Internal dependencies
  */
 import type { DevServerConfig } from './types';
+import { BuildMapResolver } from '../../common/services/BuildMapResolver';
 
 const VITE_PLUGIN_NAME = 'vite-wordpress';
 
@@ -28,12 +27,26 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 		manifest = true,
 	} = config;
 
-	const buildMap: Record<string, any> = {};
-	const buildCache = path.join(process.cwd(), outDir, 'buildMap.json');
+	// Initialize the BuildMapResolver
+	const buildMapResolver = new BuildMapResolver(outDir, css);
 
 	return {
 		name: 'vite-wordpress-dev-server',
 		enforce: 'post', // Run after other plugins to avoid conflicts
+
+		/**
+		 * Generate Bundle Hook - Create file map during build.
+		 */
+		generateBundle(_options, bundle) {
+			buildMapResolver.processBundleAndUpdate(bundle);
+		},
+
+		/**
+		 * Write Bundle Hook - Save the final build map to cache.
+		 */
+		writeBundle() {
+			buildMapResolver.saveBuildMap();
+		},
 
 		/**
 		 * Configure Server Hook.
@@ -57,15 +70,9 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 							outDir,
 							css,
 							manifest,
-							buildMap: {},
+							buildMap: buildMapResolver.getBuildMap(),
 						};
-						if (fs.existsSync(buildCache)) {
-							const buildMapData = fs.readFileSync(
-								buildCache,
-								'utf8'
-							);
-							exposed.buildMap = JSON.parse(buildMapData);
-						}
+
 						res.setHeader('Content-Type', 'application/json');
 						res.statusCode = 200;
 						res.end(JSON.stringify(exposed, null, 2)); // Expose plugin config.
@@ -81,28 +88,8 @@ export function DevServerPlugin(config: DevServerConfig = {}): Plugin {
 		 * Handle hot update for PHP files.
 		 */
 		handleHotUpdate({ file, server }) {
-			// Update buildMap on hot updates
-			const fileName = file.split('/').pop();
-			if (fileName) {
-				buildMap[fileName] = {
-					src: file.replace(process.cwd(), '').substring(1),
-					file: fileName,
-				};
-
-				// Save buildMap to cache file
-				try {
-					const outDirPath = path.join(process.cwd(), outDir);
-					if (!fs.existsSync(outDirPath)) {
-						fs.mkdirSync(outDirPath, { recursive: true });
-					}
-					fs.writeFileSync(
-						buildCache,
-						JSON.stringify(buildMap, null, 2)
-					);
-				} catch (error) {
-					console.warn('Failed to write build cache:', error);
-				}
-			}
+			// Update buildMap with simplified entry for hot updates
+			buildMapResolver.createHotUpdateEntry(file);
 
 			if (file.endsWith('.php')) {
 				server.ws.send({ type: 'full-reload', path: '*' });
