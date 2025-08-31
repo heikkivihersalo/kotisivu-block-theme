@@ -15,93 +15,103 @@ import {
 	generatePlugins,
 } from './src/plugins/index.js';
 
-import type { PluginConfig } from './src/common/types/plugin.ts';
+import type { UnifiedPluginConfig } from './src/common/types/unified-config.ts';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
  *
- * This plugin is designed exclusively for building multiple WordPress blocks
- * from organized directory structures using path mappings. Path mappings are
- * mandatory and the plugin will throw an error if they are not configured.
- * Single block builds are not supported.
+ * This plugin uses a single unified configuration that all plugins share.
+ * Each plugin extracts only the properties it needs from the shared config.
  *
- * @param {PluginConfig} pluginConfig - Configuration options for the plugin (pathMappings required)
+ * @param {UnifiedPluginConfig} config - Unified configuration options for all plugins
  * @returns {Array} Array of Vite plugins
  */
-export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
-	const {
-		dependencies = [],
-		terserOptions = {},
-		devServer = {},
-		build: {
-			outDir,
-			assetsDir = {},
-			blocksDir = {},
-			watch = [],
-			minify = true,
-			sourcemap = false,
-		} = {},
-	} = pluginConfig;
-
+export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 	// Require block paths for multi-block builds
-	if (!blocksDir || Object.keys(blocksDir).length === 0) {
+	if (!config.blocksDir || Object.keys(config.blocksDir).length === 0) {
 		throw new Error(
-			'build.blocksDir are required for multi-block builds. This plugin does not support single block builds.'
+			'blocksDir is required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
 
+	// Build ViteWordPressConfig for ConfigPlugin
+	const viteWordPressConfig = {
+		terserOptions: config.terserOptions,
+		server: {
+			host: config.host,
+			port: config.port,
+			strictPort: config.strictPort,
+			cors: config.cors,
+			https: config.https,
+		},
+		resolve: config.resolve,
+		environment: config.environment,
+		build: {
+			outDir: config.outDir,
+			sourcemap: config.sourcemap,
+			minify: config.minify,
+			target: config.target,
+			cssCodeSplit: config.cssCodeSplit,
+			dependencies: config.dependencies,
+			watch: config.watch,
+			assetsDir: config.assetsDir,
+			blocksDir: config.blocksDir,
+		},
+	};
+
 	// Create configuration plugin (must be first to set up build config)
-	const configPlugin = ConfigPlugin(pluginConfig);
+	const configPlugin = ConfigPlugin(viteWordPressConfig);
+
+	// Build ViteBlocksPluginConfig for BlocksPlugin
+	const blocksConfig = {
+		blocksDir: config.blocksDir,
+		outDir: config.outDir,
+		sourcemap: config.sourcemap,
+		watch: config.watch,
+		dependencies: config.dependencies,
+		discoveredBlocks: config.discoveredBlocks,
+	};
 
 	// Create the blocks plugin
-	const blocksPlugin = BlocksPlugin({
-		blocksDir,
-		outDir,
-		sourcemap,
-		watch,
-	});
+	const blocksPlugin = BlocksPlugin(blocksConfig);
 
 	// Create the assets plugin (optional, only if assets are configured)
-	const assetsPlugin = AssetsPlugin({
-		assetsDir,
-		outDir,
-		dependencies,
-		sourcemap,
-	});
+	const assetsPlugin =
+		config.assetsDir && Object.keys(config.assetsDir).length > 0
+			? AssetsPlugin({
+					assetsDir: config.assetsDir,
+					outDir: config.outDir,
+					dependencies: config.dependencies,
+					sourcemap: config.sourcemap,
+				})
+			: null;
 
-	// Create enhanced manifest plugin (leverages Vite 6 manifest improvements)
-	const manifestPlugin = ManifestPlugin({
-		outDir,
-		generatePhpManifest: true,
-		publicPath: '/',
-	});
+	// Build ViteManifestPluginConfig for ManifestPlugin
+	const manifestConfig = {
+		outDir: config.outDir,
+		generatePhpManifest: config.generatePhpManifest ?? true,
+		publicPath: config.publicPath ?? '/',
+		textDomain: config.textDomain,
+	};
+
+	// Create enhanced manifest plugin
+	const manifestPlugin = ManifestPlugin(manifestConfig);
+
+	// Build DevServerConfig for DevServerPlugin
+	const devServerConfig = {
+		host: config.host,
+		port: config.port,
+		base: config.base ?? '/',
+		srcDir: config.srcDir ?? 'resources',
+		outDir: config.outDir,
+		css: config.css ?? 'css',
+		manifest: config.manifest ?? true,
+		devServerUrl: config.devServerUrl,
+		inlineAssets: config.inlineAssets,
+	};
 
 	// Create DevServer plugin with inline assets HMR support
-	const devServerPlugin = DevServerPlugin({
-		base: '/',
-		srcDir: 'resources',
-		outDir,
-		css: 'css',
-		manifest: true,
-		...devServer, // Spread devServer config (host, port, devServerUrl)
-
-		// Include inline assets configuration
-		inlineAssets: {
-			inlineAssets: [
-				'build/assets/sanitize.css', // Fixed path
-				'build/assets/inline.css', // Fixed path
-			],
-			watchPatterns: [
-				'src/app/styles/inline/**/*.css',
-				'resources/app/styles/inline/**/*.css',
-			],
-			blocksConfig: {
-				blocksDir,
-				outDir,
-				blockNamespace: 'ksd', // Your block namespace from block.json files
-			},
-		},
-	});
+	const devServerPlugin = DevServerPlugin(devServerConfig);
 
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
@@ -110,9 +120,9 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 	const plugins = [
 		configPlugin,
 		blocksPlugin,
-		assetsPlugin,
+		...(assetsPlugin ? [assetsPlugin] : []),
 		manifestPlugin,
-		devServerPlugin, // Now includes inline assets HMR support
+		devServerPlugin,
 		...additionalPlugins,
 	] as Plugin[];
 

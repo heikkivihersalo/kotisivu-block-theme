@@ -66,3 +66,8 @@ export type {
 	ViteManifest,
 	WordPressAssetManifest,
 } from './wordpress.ts';
+
+/**
+ * Unified plugin configuration system
+ */
+export type { UnifiedPluginConfig } from './unified-config.ts';
