@@ -107,6 +107,9 @@ export interface PluginConfig {
 		/** Directory mapping for assets */
 		assetsDir?: DirectoryMapping;
 
+		/** Directory mapping for inline assets */
+		inlineDir?: DirectoryMapping;
+
 		/** Directory mapping for blocks */
 		blocksDir?: DirectoryMapping;
 	};
@@ -143,7 +146,7 @@ export interface PluginConfig {
 		/** HMR server port (if different from dev server) */
 		port?: number;
 
-		/** Watch configuration for HMR */
+		/** Watch configuration for HMR. Supports wildcard as glob pattern */
 		watch?: {
 			/** PHP files (templates, blocks, functions) */
 			php?: string[];
