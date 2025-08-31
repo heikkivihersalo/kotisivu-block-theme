@@ -35,13 +35,15 @@ export default defineConfig(({ mode }) => {
 				// Path configuration
 				paths: {
 					srcDir: 'resources',
-					assetsDir: {
+					assetFiles: {
 						'assets/admin': 'resources/app/scripts/admin.ts',
 						'assets/dark-mode':
 							'resources/app/scripts/dark-mode.ts',
+						'assets/theme': 'resources/app/scripts/theme.ts',
+					},
+					inlineFiles: {
 						'assets/inline': 'resources/app/scripts/inline.ts',
 						'assets/sanitize': 'resources/app/scripts/sanitize.ts',
-						'assets/theme': 'resources/app/scripts/theme.ts',
 					},
 					blocksDir: {
 						'blocks/custom':

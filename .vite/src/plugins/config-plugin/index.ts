@@ -57,7 +57,8 @@ export function resolvePluginConfig(pluginConfig: PluginConfig) {
 		// Provide default paths configuration
 		paths: {
 			srcDir: pluginConfig.paths?.srcDir ?? 'resources',
-			assetsDir: pluginConfig.paths?.assetsDir ?? {},
+			assetFiles: pluginConfig.paths?.assetFiles ?? {},
+			inlineFiles: pluginConfig.paths?.inlineFiles ?? {},
 			blocksDir: pluginConfig.paths?.blocksDir ?? {},
 			...pluginConfig.paths,
 		},

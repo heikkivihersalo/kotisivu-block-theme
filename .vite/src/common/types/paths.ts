@@ -30,6 +30,7 @@ export type FileIdentifier = {
  * Directory mapping for source to output paths
  */
 export type DirectoryMapping = Record<string, string>;
+export type FileMapping = Record<string, string>;
 
 /**
  * Legacy aliases for backward compatibility

@@ -8,7 +8,7 @@
 /**
  * Internal dependencies
  */
-import type { DirectoryMapping } from './paths.ts';
+import type { DirectoryMapping, FileMapping } from './paths.ts';
 import type { BlockInfo } from './wordpress.ts';
 
 /**
@@ -105,10 +105,10 @@ export interface PluginConfig {
 		srcDir?: string;
 
 		/** Directory mapping for assets */
-		assetsDir?: DirectoryMapping;
+		assetFiles?: FileMapping;
 
 		/** Directory mapping for inline assets */
-		inlineDir?: DirectoryMapping;
+		inlineFiles?: FileMapping;
 
 		/** Directory mapping for blocks */
 		blocksDir?: DirectoryMapping;

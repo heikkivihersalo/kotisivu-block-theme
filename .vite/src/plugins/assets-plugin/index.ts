@@ -90,13 +90,17 @@ export function AssetsPlugin(): Plugin {
 				);
 			}
 
-			const assetsDir = config.paths?.assetsDir;
-			if (!assetsDir || Object.keys(assetsDir).length === 0) {
+			// Merge assetFiles and inlineFiles as they are handled the same way
+			const assetFiles = config.paths?.assetFiles || {};
+			const inlineFiles = config.paths?.inlineFiles || {};
+			const allAssetFiles = { ...assetFiles, ...inlineFiles };
+
+			if (Object.keys(allAssetFiles).length === 0) {
 				return; // Skip if no assets configured
 			}
 
 			// Discover assets from asset paths
-			discoveredAssets = discoverAssetsWithMapping(assetsDir, pwd);
+			discoveredAssets = discoverAssetsWithMapping(allAssetFiles, pwd);
 
 			if (discoveredAssets.length === 0) {
 				return; // Skip if no assets found
