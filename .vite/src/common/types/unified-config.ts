@@ -16,99 +16,121 @@ import type { BlockInfo } from './wordpress.ts';
  *
  * This single configuration object is used by all plugins. Each plugin
  * extracts only the properties it needs from this shared configuration.
+ *
+ * Configuration is organized into logical categories:
+ * - build: Build process and asset compilation settings
+ * - server: Development server configuration
+ * - paths: Directory and file path settings
+ * - wordpress: WordPress-specific settings
+ * - environment: Environment and runtime configuration
  */
 export interface UnifiedPluginConfig {
-	/** Output directory for built assets */
-	outDir?: string;
+	/** Build and compilation configuration */
+	build?: {
+		/** Output directory for built assets */
+		outDir?: string;
 
-	/** Source map generation configuration */
-	sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
+		/** Source map generation configuration */
+		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
 
-	/** Asset minification strategy */
-	minify?: boolean | 'esbuild' | 'terser';
+		/** Asset minification strategy */
+		minify?: boolean | 'esbuild' | 'terser';
 
-	/** Build target for transpilation */
-	target?: string;
+		/** Build target for transpilation */
+		target?: string;
 
-	/** CSS code splitting configuration */
-	cssCodeSplit?: boolean;
+		/** CSS code splitting configuration */
+		cssCodeSplit?: boolean;
 
-	/** File watching patterns */
-	watch?: string[];
+		/** Enable manifest generation */
+		manifest?: boolean;
 
-	/** WordPress dependencies to externalize */
-	dependencies?: string[];
+		/** Generate PHP manifest file */
+		generatePhpManifest?: boolean;
 
-	/** Directory mapping for assets */
-	assetsDir?: DirectoryMapping;
+		/** Public path for assets */
+		publicPath?: string;
 
-	/** Directory mapping for blocks */
-	blocksDir: DirectoryMapping; // Required for multi-block builds
+		/** CSS handling method */
+		css?: string;
 
-	/** Pre-discovered blocks (optional) */
-	discoveredBlocks?: BlockInfo[];
+		/** Terser minification options */
+		terserOptions?: {
+			compress?: Record<string, any>;
+			mangle?: Record<string, any>;
+			format?: Record<string, any>;
+		};
 
-	/** Development server host */
-	host?: string;
-
-	/** Development server port */
-	port?: number;
-
-	/** Full development server URL */
-	devServerUrl?: string;
-
-	/** Enable strict port (fail if port is already in use) */
-	strictPort?: boolean;
-
-	/** CORS configuration */
-	cors?: boolean;
-
-	/** HTTPS configuration */
-	https?:
-		| boolean
-		| {
-				key: Buffer;
-				cert: Buffer;
-		  };
-
-	/** Base path for the dev server */
-	base?: string;
-
-	/** Source directory */
-	srcDir?: string;
-
-	/** CSS handling method */
-	css?: string;
-
-	/** Enable manifest generation */
-	manifest?: boolean;
-
-	/** Generate PHP manifest file */
-	generatePhpManifest?: boolean;
-
-	/** Public path for assets */
-	publicPath?: string;
-
-	/** WordPress text domain */
-	textDomain?: string;
-
-	/** Terser minification options */
-	terserOptions?: {
-		compress?: Record<string, any>;
-		mangle?: Record<string, any>;
-		format?: Record<string, any>;
+		/** Module resolution configuration */
+		resolve?: {
+			extensions?: string[];
+			alias?: Record<string, string>;
+		};
 	};
 
-	/** Module resolution configuration */
-	resolve?: {
-		extensions?: string[];
-		alias?: Record<string, string>;
+	/** Development server configuration */
+	server?: {
+		/** Development server host */
+		host?: string;
+
+		/** Development server port */
+		port?: number;
+
+		/** Full development server URL */
+		devServerUrl?: string;
+
+		/** Enable strict port (fail if port is already in use) */
+		strictPort?: boolean;
+
+		/** CORS configuration */
+		cors?: boolean;
+
+		/** HTTPS configuration */
+		https?:
+			| boolean
+			| {
+					key: Buffer;
+					cert: Buffer;
+			  };
+
+		/** Base path for the dev server */
+		base?: string;
 	};
 
-	/** Environment configuration */
+	/** Path and directory configuration */
+	paths?: {
+		/** Source directory */
+		srcDir?: string;
+
+		/** Directory mapping for assets */
+		assetsDir?: DirectoryMapping;
+
+		/** Directory mapping for blocks */
+		blocksDir?: DirectoryMapping;
+	};
+
+	/** WordPress-specific configuration */
+	wordpress?: {
+		/** WordPress dependencies to externalize */
+		dependencies?: string[];
+
+		/** WordPress text domain */
+		textDomain?: string;
+
+		/** Pre-discovered blocks (optional) */
+		discoveredBlocks?: BlockInfo[];
+	};
+
+	/** Environment and runtime configuration */
 	environment?: {
+		/** Build mode (development, production, etc.) */
 		mode?: string;
+
+		/** Environment variables */
 		env?: Record<string, string>;
+
+		/** File watching patterns */
+		watch?: string[];
 	};
 
 	/** Inline assets configuration for dev server */

@@ -16,6 +16,13 @@ import {
 } from './src/plugins/index.js';
 
 import type { UnifiedPluginConfig } from './src/common/types/unified-config.ts';
+import {
+	getBuildConfig,
+	getServerConfig,
+	getPathsConfig,
+	getWordPressConfig,
+	getEnvironmentConfig,
+} from './src/common/utils/config-helpers.ts';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
@@ -27,35 +34,45 @@ import type { UnifiedPluginConfig } from './src/common/types/unified-config.ts';
  * @returns {Array} Array of Vite plugins
  */
 export const wp = (config: UnifiedPluginConfig): Plugin[] => {
+	// Extract categorized configs
+	const buildConfig = getBuildConfig(config);
+	const serverConfig = getServerConfig(config);
+	const pathsConfig = getPathsConfig(config);
+	const wordpressConfig = getWordPressConfig(config);
+	const environmentConfig = getEnvironmentConfig(config);
+
 	// Require block paths for multi-block builds
-	if (!config.blocksDir || Object.keys(config.blocksDir).length === 0) {
+	if (
+		!pathsConfig.blocksDir ||
+		Object.keys(pathsConfig.blocksDir).length === 0
+	) {
 		throw new Error(
-			'blocksDir is required for multi-block builds. This plugin does not support single block builds.'
+			'paths.blocksDir is required for multi-block builds. This plugin does not support single block builds.'
 		);
 	}
 
 	// Build ViteWordPressConfig for ConfigPlugin
 	const viteWordPressConfig = {
-		terserOptions: config.terserOptions,
+		terserOptions: buildConfig.terserOptions,
 		server: {
-			host: config.host,
-			port: config.port,
-			strictPort: config.strictPort,
-			cors: config.cors,
-			https: config.https,
+			host: serverConfig.host,
+			port: serverConfig.port,
+			strictPort: serverConfig.strictPort,
+			cors: serverConfig.cors,
+			https: serverConfig.https,
 		},
-		resolve: config.resolve,
-		environment: config.environment,
+		resolve: buildConfig.resolve,
+		environment: environmentConfig,
 		build: {
-			outDir: config.outDir,
-			sourcemap: config.sourcemap,
-			minify: config.minify,
-			target: config.target,
-			cssCodeSplit: config.cssCodeSplit,
-			dependencies: config.dependencies,
-			watch: config.watch,
-			assetsDir: config.assetsDir,
-			blocksDir: config.blocksDir,
+			outDir: buildConfig.outDir,
+			sourcemap: buildConfig.sourcemap,
+			minify: buildConfig.minify,
+			target: buildConfig.target,
+			cssCodeSplit: buildConfig.cssCodeSplit,
+			dependencies: wordpressConfig.dependencies,
+			watch: environmentConfig.watch,
+			assetsDir: pathsConfig.assetsDir,
+			blocksDir: pathsConfig.blocksDir,
 		},
 	};
 
@@ -64,12 +81,12 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 
 	// Build ViteBlocksPluginConfig for BlocksPlugin
 	const blocksConfig = {
-		blocksDir: config.blocksDir,
-		outDir: config.outDir,
-		sourcemap: config.sourcemap,
-		watch: config.watch,
-		dependencies: config.dependencies,
-		discoveredBlocks: config.discoveredBlocks,
+		blocksDir: pathsConfig.blocksDir!,
+		outDir: buildConfig.outDir,
+		sourcemap: buildConfig.sourcemap,
+		watch: environmentConfig.watch,
+		dependencies: wordpressConfig.dependencies,
+		discoveredBlocks: wordpressConfig.discoveredBlocks,
 	};
 
 	// Create the blocks plugin
@@ -77,21 +94,21 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 
 	// Create the assets plugin (optional, only if assets are configured)
 	const assetsPlugin =
-		config.assetsDir && Object.keys(config.assetsDir).length > 0
+		pathsConfig.assetsDir && Object.keys(pathsConfig.assetsDir).length > 0
 			? AssetsPlugin({
-					assetsDir: config.assetsDir,
-					outDir: config.outDir,
-					dependencies: config.dependencies,
-					sourcemap: config.sourcemap,
+					assetsDir: pathsConfig.assetsDir,
+					outDir: buildConfig.outDir,
+					dependencies: wordpressConfig.dependencies,
+					sourcemap: buildConfig.sourcemap,
 				})
 			: null;
 
 	// Build ViteManifestPluginConfig for ManifestPlugin
 	const manifestConfig = {
-		outDir: config.outDir,
-		generatePhpManifest: config.generatePhpManifest ?? true,
-		publicPath: config.publicPath ?? '/',
-		textDomain: config.textDomain,
+		outDir: buildConfig.outDir,
+		generatePhpManifest: buildConfig.generatePhpManifest ?? true,
+		publicPath: buildConfig.publicPath ?? '/',
+		textDomain: wordpressConfig.textDomain,
 	};
 
 	// Create enhanced manifest plugin
@@ -99,14 +116,14 @@ export const wp = (config: UnifiedPluginConfig): Plugin[] => {
 
 	// Build DevServerConfig for DevServerPlugin
 	const devServerConfig = {
-		host: config.host,
-		port: config.port,
-		base: config.base ?? '/',
-		srcDir: config.srcDir ?? 'resources',
-		outDir: config.outDir,
-		css: config.css ?? 'css',
-		manifest: config.manifest ?? true,
-		devServerUrl: config.devServerUrl,
+		host: serverConfig.host,
+		port: serverConfig.port,
+		base: serverConfig.base ?? '/',
+		srcDir: pathsConfig.srcDir ?? 'resources',
+		outDir: buildConfig.outDir,
+		css: buildConfig.css ?? 'css',
+		manifest: buildConfig.manifest ?? true,
+		devServerUrl: serverConfig.devServerUrl,
 		inlineAssets: config.inlineAssets,
 	};
 
