@@ -100,30 +100,27 @@ export default {
 };
 ```
 
-## Configuration Helpers
+## Configuration Access
 
-Use the provided helper functions to extract specific configuration categories:
+Access configuration properties directly from the unified config object:
 
 ```typescript
-import { 
-  getBuildConfig, 
-  getServerConfig, 
-  getPathsConfig,
-  getWordPressConfig,
-  getEnvironmentConfig
-} from '@kotisivu/vite-wordpress/config-helpers';
+import type { PluginConfig } from '@kotisivu/vite-wordpress';
 
-// Extract specific categories
-const buildConfig = getBuildConfig(config);
-const serverConfig = getServerConfig(config);
-const pathsConfig = getPathsConfig(config);
-const wordpressConfig = getWordPressConfig(config);
-const environmentConfig = getEnvironmentConfig(config);
+// Access specific categories directly
+const buildOptions = config.build;
+const serverOptions = config.server;
+const pathsOptions = config.paths;
+const wordpressOptions = config.wordpress;
+const environmentOptions = config.environment;
+const hmrOptions = config.hmr;
 
-// Extract specific properties
-const outDir = getBuildProperty(config, 'outDir');
-const host = getServerProperty(config, 'host');
-const srcDir = getPathsProperty(config, 'srcDir');
+// Access specific properties with optional chaining
+const outDir = config.build?.outDir;
+const host = config.server?.host;
+const srcDir = config.paths?.srcDir;
+const dependencies = config.wordpress?.dependencies;
+const hmrEnabled = config.hmr?.enabled;
 ```
 
 ## Required Configuration

@@ -16,12 +16,6 @@ import {
 } from './src/plugins/index.js';
 
 import type { PluginConfig } from './src/common/types/plugin-config.ts';
-import {
-	getBuildConfig,
-	getServerConfig,
-	getEnvironmentConfig,
-	getHMRConfig,
-} from './src/common/utils/config-helpers.ts';
 
 /**
  * Create a Vite plugin for multi-block Gutenberg builds
@@ -44,29 +38,24 @@ export const wp = (config: PluginConfig): Plugin[] => {
 	}
 
 	// Build ViteWordPressConfig for ConfigPlugin (keeping backward compatibility)
-	const buildConfig = getBuildConfig(config);
-	const serverConfig = getServerConfig(config);
-	const environmentConfig = getEnvironmentConfig(config);
-	const hmrConfig = getHMRConfig(config);
-
 	const viteWordPressConfig = {
-		terserOptions: buildConfig.terserOptions,
+		terserOptions: config.build?.terserOptions,
 		server: {
-			host: serverConfig.host,
-			port: serverConfig.port,
-			strictPort: serverConfig.strictPort,
-			cors: serverConfig.cors,
-			https: serverConfig.https,
+			host: config.server?.host,
+			port: config.server?.port,
+			strictPort: config.server?.strictPort,
+			cors: config.server?.cors,
+			https: config.server?.https,
 		},
-		resolve: buildConfig.resolve,
-		environment: environmentConfig,
-		hmr: hmrConfig,
+		resolve: config.build?.resolve,
+		environment: config.environment,
+		hmr: config.hmr,
 		build: {
-			outDir: buildConfig.outDir,
-			sourcemap: buildConfig.sourcemap,
-			minify: buildConfig.minify,
-			target: buildConfig.target,
-			cssCodeSplit: buildConfig.cssCodeSplit,
+			outDir: config.build?.outDir,
+			sourcemap: config.build?.sourcemap,
+			minify: config.build?.minify,
+			target: config.build?.target,
+			cssCodeSplit: config.build?.cssCodeSplit,
 			dependencies: config.wordpress?.dependencies,
 			assetsDir: config.paths?.assetsDir,
 			blocksDir: config.paths?.blocksDir,

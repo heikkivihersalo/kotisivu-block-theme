@@ -4,8 +4,8 @@
  * This file previously contained extract functions and derived types.
  * These have been removed in favor of using PluginConfig directly.
  *
- * If you need to access specific configuration sections, use the
- * config helpers from config-helpers.ts instead.
+ * Access configuration properties directly from the PluginConfig object
+ * using optional chaining (e.g., config.build?.outDir).
  */
 
 /**

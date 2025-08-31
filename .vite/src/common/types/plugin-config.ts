@@ -14,8 +14,9 @@ import type { BlockInfo } from './wordpress.ts';
 /**
  * Unified WordPress Vite Plugin Configuration
  *
- * This single configuration object is used by all plugins. Each plugin
- * extracts only the properties it needs from this shared configuration.
+ * This is the single source of truth for all plugin configuration.
+ * All plugins access this configuration directly using optional chaining
+ * (e.g., config.build?.outDir, config.server?.port).
  *
  * Configuration is organized into logical categories:
  * - build: Build process and asset compilation settings
@@ -23,6 +24,7 @@ import type { BlockInfo } from './wordpress.ts';
  * - paths: Directory and file path settings
  * - wordpress: WordPress-specific settings
  * - environment: Environment and runtime configuration
+ * - hmr: Hot Module Replacement configuration
  */
 export interface PluginConfig {
 	/** Build and compilation configuration */
