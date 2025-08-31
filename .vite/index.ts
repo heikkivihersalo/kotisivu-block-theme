@@ -11,6 +11,7 @@ import {
 	BlocksPlugin,
 	ConfigPlugin,
 	DevServerPlugin,
+	InlineAssetsPlugin,
 	ManifestPlugin,
 	generatePlugins,
 } from './src/plugins/index.js';
@@ -86,6 +87,23 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		...devServer, // Spread devServer config (host, port, devServerUrl)
 	});
 
+	// Create Inline Assets plugin for HMR support of WordPress inline styles
+	const inlineAssetsPlugin = InlineAssetsPlugin({
+		inlineAssets: [
+			'build/assets/sanitize.css', // Fixed path
+			'build/assets/inline.css', // Fixed path
+		],
+		watchPatterns: [
+			'src/app/styles/inline/**/*.css',
+			'resources/app/styles/inline/**/*.css',
+		],
+		blocksConfig: {
+			blocksDir,
+			outDir,
+			blockNamespace: 'ksd', // Your block namespace from block.json files
+		},
+	});
+
 	// Get additional plugins (React, static copy, etc.)
 	const additionalPlugins = generatePlugins();
 
@@ -96,6 +114,7 @@ export const wp = (pluginConfig = {} as PluginConfig): Plugin[] => {
 		assetsPlugin,
 		manifestPlugin,
 		devServerPlugin, // Always include for HMR
+		inlineAssetsPlugin, // Add inline assets HMR support
 		...additionalPlugins,
 	] as Plugin[];
 
