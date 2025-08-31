@@ -17,9 +17,9 @@ class AssetServiceProvider extends ServiceProvider {
      */
     public function register(): void {
         // Inline assets like sanitize and custom CSS variables
-        Asset::inline('kotisivu-sanitize-css', 'build/app/sanitize.css', 0);
-        Asset::inline('kotisivu-inline-css', 'build/app/inline.css', 11);
-        Asset::inline('kotisivu-tailwind-utility-css', 'build/app/tailwind-utilities.css', 11);
+        Asset::inline('kotisivu-sanitize-css', 'build/assets/sanitize.css', 0);
+        Asset::inline('kotisivu-inline-css', 'build/assets/inline.css', 11);
+        Asset::inline('kotisivu-tailwind-utility-css', 'build/assets/tailwind-utilities.css', 11);
 
         // Frontend assets
         Asset::script('kotisivu-theme', 'build/app/theme.js', 'build/app/theme.asset.php');
@@ -37,8 +37,8 @@ class AssetServiceProvider extends ServiceProvider {
         Asset::style('kotisivu-admin', 'build/app/admin.css', 'build/app/admin.asset.php', 10, true, true);
 
         // Some assets needs to also be loaded in the block editor, so we add them here
-        Asset::style('kotisivu-inline-css', 'build/app/inline.css', 'build/app/admin.asset.php', 11, true, true);
-        Asset::style('kotisivu-tailwind-utility-css', 'build/app/tailwind-utilities.css', 'build/app/admin.asset.php', 11, true, true);
+        Asset::style('kotisivu-inline-css', 'build/assets/inline.css', 'build/app/admin.asset.php', 11, true, true);
+        Asset::style('kotisivu-tailwind-utility-css', 'build/assets/tailwind-utilities.css', 'build/app/admin.asset.php', 11, true, true);
         Asset::script('kotisivu-core-admin', 'build/widgets/block-library/core/core.js', 'build/widgets/block-library/core/core.asset.php', 10, true);
     }
 
