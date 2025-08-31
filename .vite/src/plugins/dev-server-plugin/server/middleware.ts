@@ -17,7 +17,7 @@ import {
  * Serve the HMR client script
  */
 export function createClientScriptMiddleware(
-	blockAssets: Map<string, BlockAssetInfo>,
+	getBlockAssets: () => Map<string, BlockAssetInfo>,
 	blockNamespace: string,
 	method: 'inline' | 'external' | 'module' = 'inline',
 	pollingInterval = 500,
@@ -30,6 +30,9 @@ export function createClientScriptMiddleware(
 	return (_req, res) => {
 		res.setHeader('Content-Type', 'application/javascript');
 		res.setHeader('Cache-Control', 'no-cache');
+
+		// Get current block assets dynamically
+		const blockAssets = getBlockAssets();
 
 		const scriptConfig = {
 			blockAssets,

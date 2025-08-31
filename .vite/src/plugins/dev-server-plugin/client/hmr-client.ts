@@ -52,7 +52,18 @@ function setupPollingHMR(config: HMRConfig): void {
 		if (location.port === '5173') {
 			return '';
 		}
-		// Default fallback
+
+		// Check if we're on a Local by Flywheel or custom domain setup
+		if (
+			location.hostname.includes('.local') ||
+			location.hostname.includes('.test') ||
+			location.hostname.includes('.ddev.site')
+		) {
+			const protocol = location.protocol;
+			return `${protocol}//${location.hostname}:5173`;
+		}
+
+		// Default fallback for localhost
 		const protocol = location.protocol;
 		return `${protocol}//${location.hostname}:5173`;
 	}

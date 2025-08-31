@@ -54,29 +54,24 @@ function getStyleIdFromAsset(assetPath, themePrefix) {
 
 	// Check if it's a block asset
 	for (const [, assetInfo] of blockAssets) {
+		console.log('[HMR] Checking asset info:', assetInfo);
 		if (assetPath.includes(assetInfo.blockSlug)) {
 			// Determine CSS type from path
 			let cssType = 'style';
-			if (assetPath.includes('index.css')) {
+			if (assetPath.includes('index.css') && !assetPath.includes('style-index.css')) {
 				cssType = 'index';
 			} else if (assetPath.includes('style-index.css')) {
-				cssType = 'style-index';
+				cssType = 'style';
 			}
-			return CONFIG.blockNamespace + '-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
+			const generatedId = CONFIG.blockNamespace + '-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
+			console.log('[HMR] Generated block asset ID:', generatedId);
+			return generatedId;
 		}
-	}
-
-	// Handle theme inline assets with configurable prefix
-	if (assetPath.includes('sanitize.css')) {
-		return themePrefix + '-sanitize-css';
-	} else if (assetPath.includes('inline.css')) {
-		return themePrefix + '-inline-css';
-	} else if (assetPath.includes('tailwind-utilities.css')) {
-		return themePrefix + '-tailwind-utility-css-inline-css';
 	}
 
 	// Fallback for other assets
 	const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
+	console.log('[HMR] Using fallback ID:', assetId + '-inline-css');
 	return assetId + '-inline-css';
 }
 
@@ -92,7 +87,14 @@ function getViteServerUrl() {
 	if (location.port === '5173') {
 		return '';
 	}
-	// Default fallback
+	
+	// Check if we're on a Local by Flywheel or custom domain setup
+	if (location.hostname.includes('.local') || location.hostname.includes('.test') || location.hostname.includes('.ddev.site')) {
+		const protocol = location.protocol;
+		return protocol + '//' + location.hostname + ':5173';
+	}
+	
+	// Default fallback for localhost
 	const protocol = location.protocol;
 	return protocol + '//' + location.hostname + ':5173';
 }
@@ -109,7 +111,7 @@ async function updateInlineAsset(assetPath, themePrefix = 'theme') {
 		if (response.ok) {
 			const newContent = await response.text();
 			const styleId = getStyleIdFromAsset(assetPath, themePrefix);
-
+			
 			// Find the corresponding style tag by exact ID
 			let styleElement = document.getElementById(styleId);
 
@@ -123,6 +125,7 @@ async function updateInlineAsset(assetPath, themePrefix = 'theme') {
 				for (const style of styleElements) {
 					if (style.id.includes(assetName)) {
 						styleElement = style;
+						console.log('[HMR] Found matching style element:', style.id);
 						break;
 					}
 				}
@@ -131,6 +134,10 @@ async function updateInlineAsset(assetPath, themePrefix = 'theme') {
 			if (styleElement && styleElement.textContent !== newContent) {
 				styleElement.textContent = newContent;
 				console.log('[HMR] ✅ Updated inline asset:', assetPath);
+			} else if (!styleElement) {
+				console.warn('[HMR] No style element found for:', assetPath, 'with ID:', styleId);
+			} else {
+				console.log('[HMR] Content unchanged for:', assetPath);
 			}
 		}
 	} catch (error) {

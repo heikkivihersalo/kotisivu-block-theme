@@ -55,21 +55,25 @@ export function DevServerPlugin(): Plugin {
 		if (!pluginConfig) return blockAssets;
 
 		discoveredBlocks.forEach((block) => {
-			// Check for CSS files that could be used as inline styles
-			const cssFiles = ['style.css', 'index.css', 'style-index.css'];
+			// Map source files to their built counterparts
+			const cssFileMapping = [
+				{ source: 'editor.css', build: 'index.css' },
+				{ source: 'style.css', build: 'style-index.css' },
+			];
 
-			cssFiles.forEach((cssFile) => {
-				const sourceCssPath = path.join(block.path, cssFile);
+			cssFileMapping.forEach(({ source, build }) => {
+				const sourceCssPath = path.join(block.path, source);
 				const buildCssPath = path
 					.join(
 						pluginConfig.build?.outDir || 'build',
 						block.outputPath || block.name,
-						cssFile
+						build
 					)
 					.replace(/\\/g, '/');
 
+				// Include asset if source file exists
 				if (fs.existsSync(sourceCssPath)) {
-					const assetKey = `${block.name}-${cssFile.replace('.css', '')}`;
+					const assetKey = `${block.name}-${source.replace('.css', '')}`;
 					blockAssets.set(assetKey, {
 						buildPath: buildCssPath,
 						sourcePath: sourceCssPath.replace(/\\/g, '/'),
@@ -303,7 +307,7 @@ export function DevServerPlugin(): Plugin {
 
 			// Discover block assets on server start if HMR is enabled
 			if (pluginConfig.hmr?.enabled !== false) {
-				// Initialize empty block assets - will be populated when blocks are discovered
+				// Initialize empty block assets - will be populated in buildStart
 				blockAssets = new Map();
 
 				// Add HMR client script endpoint if script options are available
@@ -311,7 +315,7 @@ export function DevServerPlugin(): Plugin {
 					server.middlewares.use(
 						scriptOptions.endpoint,
 						createClientScriptMiddleware(
-							blockAssets,
+							() => blockAssets, // Pass function to get current block assets
 							pluginConfig.wordpress?.namespace || 'wp',
 							pluginConfig.hmr?.scriptInjection?.method ||
 								'inline',
