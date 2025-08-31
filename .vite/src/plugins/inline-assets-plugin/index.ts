@@ -66,7 +66,12 @@ export function InlineAssetsPlugin(config: InlineAssetsConfig = {}): Plugin {
 					blockAssets,
 					blocksConfig.blockNamespace,
 					scriptInjection.method,
-					scriptInjection.pollingInterval
+					scriptInjection.pollingInterval,
+					{
+						themePrefix: scriptInjection.themePrefix,
+						viteServerUrl: scriptInjection.viteServerUrl,
+						vitePort: scriptInjection.vitePort,
+					}
 				)
 			);
 

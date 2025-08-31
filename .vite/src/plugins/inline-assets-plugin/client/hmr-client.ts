@@ -15,6 +15,9 @@ export interface HMRClientConfig {
 	blockAssets: Map<string, BlockAssetInfo>;
 	blockNamespace: string;
 	pollingInterval?: number;
+	themePrefix?: string;
+	viteServerUrl?: string;
+	vitePort?: string;
 }
 
 /**
@@ -23,7 +26,8 @@ export interface HMRClientConfig {
 export function getStyleIdFromAsset(
 	assetPath: string,
 	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string
+	blockNamespace: string,
+	themePrefix = 'theme'
 ): string {
 	// Check if it's a block asset
 	for (const [, assetInfo] of blockAssets) {
@@ -39,13 +43,13 @@ export function getStyleIdFromAsset(
 		}
 	}
 
-	// Handle theme inline assets
+	// Handle theme inline assets with configurable prefix
 	if (assetPath.includes('sanitize.css')) {
-		return 'kotisivu-sanitize-css';
+		return `${themePrefix}-sanitize-css`;
 	} else if (assetPath.includes('inline.css')) {
-		return 'kotisivu-inline-css';
+		return `${themePrefix}-inline-css`;
 	} else if (assetPath.includes('tailwind-utilities.css')) {
-		return 'kotisivu-tailwind-utility-css-inline-css';
+		return `${themePrefix}-tailwind-utility-css-inline-css`;
 	}
 
 	// Fallback for other assets
@@ -56,18 +60,23 @@ export function getStyleIdFromAsset(
 /**
  * Get the Vite server URL for different environments
  */
-export function getViteServerUrl(): string {
-	// If we're on block-theme.local (WordPress), connect to Vite on port 5173
-	if (location.hostname === 'block-theme.local') {
-		return 'https://block-theme.local:5173';
+export function getViteServerUrl(
+	customUrl?: string,
+	customPort = '5173'
+): string {
+	// Use custom URL if provided
+	if (customUrl) {
+		return customUrl;
 	}
+
 	// If we're already on the Vite server, use relative URLs
-	if (location.port === '5173') {
+	if (location.port === customPort) {
 		return '';
 	}
-	// Fallback: assume Vite is on port 5173
+
+	// Auto-detect based on current environment
 	const protocol = location.protocol;
-	return `${protocol}//${location.hostname}:5173`;
+	return `${protocol}//${location.hostname}:${customPort}`;
 }
 
 /**
@@ -76,11 +85,17 @@ export function getViteServerUrl(): string {
 export async function updateInlineAsset(
 	assetPath: string,
 	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string
+	blockNamespace: string,
+	options: {
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
+	} = {}
 ): Promise<void> {
 	try {
-		const viteServerUrl = getViteServerUrl();
-		const contentUrl = `${viteServerUrl}/__vite_inline_content/${assetPath}`;
+		const { themePrefix = 'theme', viteServerUrl, vitePort } = options;
+		const serverUrl = getViteServerUrl(viteServerUrl, vitePort);
+		const contentUrl = `${serverUrl}/__vite_inline_content/${assetPath}`;
 
 		const response = await fetch(contentUrl);
 		if (response.ok) {
@@ -88,7 +103,8 @@ export async function updateInlineAsset(
 			const styleId = getStyleIdFromAsset(
 				assetPath,
 				blockAssets,
-				blockNamespace
+				blockNamespace,
+				themePrefix
 			);
 
 			// Find the corresponding style tag by exact ID
@@ -126,22 +142,32 @@ export async function updateInlineAsset(
 export function setupPollingHMR(
 	blockAssets: Map<string, BlockAssetInfo>,
 	blockNamespace: string,
-	pollingInterval = 500
+	options: {
+		pollingInterval?: number;
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
+	} = {}
 ): void {
-	console.log(
-		'[InlineAssets] Using polling fallback for WordPress integration'
-	);
+	const {
+		pollingInterval = 500,
+		themePrefix = 'theme',
+		viteServerUrl,
+		vitePort,
+	} = options;
+
+	console.log('[InlineAssets] Using polling for HMR');
 	const lastModified: Record<string, number> = {};
 
-	const viteServerUrl = getViteServerUrl();
+	const serverUrl = getViteServerUrl(viteServerUrl, vitePort);
 	console.log(
 		'[InlineAssets] Polling Vite server at:',
-		viteServerUrl || 'same origin'
+		serverUrl || 'same origin'
 	);
 
 	async function pollForChanges(): Promise<void> {
 		try {
-			const statusUrl = `${viteServerUrl}/__vite_inline_content/status`;
+			const statusUrl = `${serverUrl}/__vite_inline_content/status`;
 			const response = await fetch(statusUrl);
 			if (response.ok) {
 				const status = await response.json();
@@ -153,7 +179,8 @@ export function setupPollingHMR(
 						await updateInlineAsset(
 							asset,
 							blockAssets,
-							blockNamespace
+							blockNamespace,
+							{ themePrefix, viteServerUrl, vitePort }
 						);
 					}
 					lastModified[asset] = modified as number;
@@ -172,20 +199,18 @@ export function setupPollingHMR(
  */
 export function setupWebSocketHMR(
 	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string
+	blockNamespace: string,
+	options: {
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
+	} = {}
 ): void {
 	try {
+		const { vitePort = '5173' } = options;
 		const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-		let wsUrl: string;
-
-		if (location.hostname === 'block-theme.local') {
-			// Connect directly to Vite's dev server port
-			wsUrl = `${protocol}//block-theme.local:5173`;
-		} else {
-			// Fallback to current host if not on the known domain
-			const port = location.port || '5173';
-			wsUrl = `${protocol}//${location.hostname}:${port}`;
-		}
+		const port = location.port || vitePort;
+		const wsUrl = `${protocol}//${location.hostname}:${port}`;
 
 		const ws = new WebSocket(wsUrl, 'vite-hmr');
 
@@ -205,7 +230,8 @@ export function setupWebSocketHMR(
 					updateInlineAsset(
 						data.data.asset,
 						blockAssets,
-						blockNamespace
+						blockNamespace,
+						options
 					);
 				}
 			} catch (e) {
@@ -214,14 +240,14 @@ export function setupWebSocketHMR(
 		});
 
 		ws.addEventListener('error', () => {
-			// Expected in WordPress + Vite setups - don't log as error
+			// Expected in some setups - don't log as error
 		});
 
 		ws.addEventListener('close', () => {
-			// Expected in WordPress + Vite setups - don't log
+			// Expected in some setups - don't log
 		});
 	} catch (error) {
-		// Expected in WordPress + Vite setups - don't log
+		// Expected in some setups - don't log
 	}
 }
 
@@ -230,7 +256,12 @@ export function setupWebSocketHMR(
  */
 export function setupViteContextHMR(
 	blockAssets: Map<string, BlockAssetInfo>,
-	blockNamespace: string
+	blockNamespace: string,
+	options: {
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
+	} = {}
 ): void {
 	// Check for Vite HMR by looking for window.__viteHotContext
 	if (typeof window !== 'undefined' && (window as any).__viteHotContext) {
@@ -239,7 +270,12 @@ export function setupViteContextHMR(
 			(window as any).__viteHotContext.on(
 				'inline-asset-update',
 				({ asset }: { asset: string }) => {
-					updateInlineAsset(asset, blockAssets, blockNamespace);
+					updateInlineAsset(
+						asset,
+						blockAssets,
+						blockNamespace,
+						options
+					);
 				}
 			);
 		} catch (e) {
@@ -254,16 +290,28 @@ export function setupViteContextHMR(
 export function initializeHMR(config: HMRClientConfig): boolean {
 	console.log('[InlineAssets] HMR client loaded');
 
-	const { blockAssets, blockNamespace, pollingInterval } = config;
+	const {
+		blockAssets,
+		blockNamespace,
+		pollingInterval,
+		themePrefix,
+		viteServerUrl,
+		vitePort,
+	} = config;
+
+	const options = { themePrefix, viteServerUrl, vitePort };
 
 	// Method 1: Polling (most reliable for WordPress + Vite)
-	setupPollingHMR(blockAssets, blockNamespace, pollingInterval);
+	setupPollingHMR(blockAssets, blockNamespace, {
+		pollingInterval,
+		...options,
+	});
 
 	// Method 2: WebSocket (secondary option)
-	setupWebSocketHMR(blockAssets, blockNamespace);
+	setupWebSocketHMR(blockAssets, blockNamespace, options);
 
 	// Method 3: Vite context (third option)
-	setupViteContextHMR(blockAssets, blockNamespace);
+	setupViteContextHMR(blockAssets, blockNamespace, options);
 
 	console.log('[InlineAssets] HMR setup complete');
 	return true;

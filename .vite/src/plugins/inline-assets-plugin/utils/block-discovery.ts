@@ -174,13 +174,13 @@ export function getAffectedAsset(
 	});
 
 	if (isSourceFile) {
-		// For source files, determine which built asset they affect
+		// For source files, determine which built asset they affect based on file content
 		if (file.includes('sanitize')) {
-			return 'build/assets/sanitize.css';
+			return 'assets/sanitize.css';
 		} else if (file.includes('tailwind')) {
-			return 'build/assets/tailwind-utilities.css';
+			return 'assets/tailwind-utilities.css';
 		} else {
-			return 'build/assets/inline.css';
+			return 'assets/inline.css';
 		}
 	}
 

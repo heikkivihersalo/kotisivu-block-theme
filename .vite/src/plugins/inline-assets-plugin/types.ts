@@ -50,6 +50,21 @@ export interface InlineAssetsConfig {
 		 * Polling interval in milliseconds for change detection
 		 */
 		pollingInterval?: number;
+
+		/**
+		 * Theme prefix for generating style IDs (auto-detected from hostname if not provided)
+		 */
+		themePrefix?: string;
+
+		/**
+		 * Custom Vite server URL (auto-detected if not provided)
+		 */
+		viteServerUrl?: string;
+
+		/**
+		 * Custom Vite server port (defaults to '5173')
+		 */
+		vitePort?: string;
 	};
 }
 

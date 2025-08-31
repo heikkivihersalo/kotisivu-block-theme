@@ -20,7 +20,12 @@ export function createClientScriptMiddleware(
 	blockAssets: Map<string, BlockAssetInfo>,
 	blockNamespace: string,
 	method: 'inline' | 'external' | 'module' = 'inline',
-	pollingInterval = 500
+	pollingInterval = 500,
+	options: {
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
+	} = {}
 ): (req: any, res: any) => void {
 	return (_req, res) => {
 		res.setHeader('Content-Type', 'application/javascript');
@@ -30,6 +35,7 @@ export function createClientScriptMiddleware(
 			blockAssets,
 			blockNamespace,
 			pollingInterval,
+			...options,
 		};
 
 		let clientScript: string;

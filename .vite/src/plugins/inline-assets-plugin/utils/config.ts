@@ -17,6 +17,9 @@ export interface ProcessedConfig {
 	scriptInjection: {
 		method: 'inline' | 'external' | 'module';
 		pollingInterval: number;
+		themePrefix?: string;
+		viteServerUrl?: string;
+		vitePort?: string;
 	};
 }
 
@@ -24,7 +27,7 @@ export interface ProcessedConfig {
  * Default configuration values
  */
 export const DEFAULT_CONFIG = {
-	inlineAssets: ['build/assets/sanitize.css', 'build/assets/inline.css'],
+	inlineAssets: ['assets/sanitize.css', 'assets/inline.css'],
 	watchPatterns: [
 		'src/app/styles/inline/**/*.css',
 		'resources/app/styles/inline/**/*.css',
@@ -32,11 +35,14 @@ export const DEFAULT_CONFIG = {
 	blocksConfig: {
 		blocksDir: {} as Record<string, string>,
 		outDir: 'build',
-		blockNamespace: 'ksd',
+		blockNamespace: 'wp',
 	},
 	scriptInjection: {
 		method: 'inline' as const,
 		pollingInterval: 500,
+		themePrefix: undefined,
+		viteServerUrl: undefined,
+		vitePort: '5173',
 	},
 };
 
@@ -67,6 +73,11 @@ export function processConfig(
 			pollingInterval:
 				config.scriptInjection?.pollingInterval ||
 				DEFAULT_CONFIG.scriptInjection.pollingInterval,
+			themePrefix: config.scriptInjection?.themePrefix,
+			viteServerUrl: config.scriptInjection?.viteServerUrl,
+			vitePort:
+				config.scriptInjection?.vitePort ||
+				DEFAULT_CONFIG.scriptInjection.vitePort,
 		},
 	};
 
