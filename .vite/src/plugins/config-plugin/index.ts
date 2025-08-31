@@ -19,18 +19,17 @@ let resolvedConfig: PluginConfig | null = null;
 let viteConfig: UserConfig | null = null;
 
 /**
- * Vite 6 Modern Configuration Plugin for WordPress
- *
- * This plugin provides optimized Vite 6 configuration for WordPress development
- * with a fully modern approach. It serves as the single source of truth for all
- * plugin configuration.
+ * Resolve plugin configuration with defaults
+ * This is the single source of truth for all default values
  */
-export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
-	// Store the resolved config globally for other plugins to access
-	resolvedConfig = {
+export function resolvePluginConfig(pluginConfig: PluginConfig): PluginConfig {
+	return {
 		...pluginConfig,
 		// Provide default build configuration
 		build: {
+			// First spread the original config
+			...pluginConfig.build,
+			// Then apply defaults for any undefined values
 			outDir: pluginConfig.build?.outDir
 				? (FilePathResolver.normalizePath(pluginConfig.build.outDir) ??
 					'build')
@@ -43,7 +42,8 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 			generatePhpManifest:
 				pluginConfig.build?.generatePhpManifest ?? true,
 			css: pluginConfig.build?.css ?? 'css',
-			...pluginConfig.build,
+			terserOptions: pluginConfig.build?.terserOptions ?? {},
+			resolve: pluginConfig.build?.resolve ?? {},
 		},
 		// Provide default server configuration
 		server: {
@@ -87,6 +87,18 @@ export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
 			},
 		},
 	};
+}
+
+/**
+ * Vite 6 Modern Configuration Plugin for WordPress
+ *
+ * This plugin provides optimized Vite 6 configuration for WordPress development
+ * with a fully modern approach. It serves as the single source of truth for all
+ * plugin configuration.
+ */
+export function ConfigPlugin(pluginConfig: PluginConfig): Plugin {
+	// Resolve configuration once with all defaults applied
+	resolvedConfig = resolvePluginConfig(pluginConfig);
 
 	return {
 		name: 'vite-plugin-gutenberg-config',

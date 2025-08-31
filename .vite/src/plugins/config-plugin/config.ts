@@ -74,18 +74,20 @@ export function config(
 	console.log(`🚀 Dev server will run at: ${devServerUrl}`);
 	console.log(`🔒 SSL enabled: ${isHttps ? 'Yes' : 'No'}`);
 
+	// Use pre-resolved configuration (defaults already applied in index.ts)
+	const buildSettings = pluginConfig.build!;
+	const serverConfig = pluginConfig.server!;
+
+	// These properties are guaranteed by index.ts default resolution
 	const {
-		build: {
-			outDir = 'build',
-			minify = 'esbuild',
-			sourcemap = false,
-			target = 'es2018',
-			cssCodeSplit = true,
-			terserOptions = {},
-			resolve: resolveConfig = {},
-		} = {},
-		server: serverConfig = {},
-	} = pluginConfig;
+		outDir,
+		minify,
+		sourcemap,
+		target,
+		cssCodeSplit,
+		terserOptions,
+		resolve: resolveConfig,
+	} = buildSettings;
 
 	const buildConfig: BuildOptions = {
 		outDir,
@@ -95,12 +97,14 @@ export function config(
 			sourcemap === 'external' ||
 			sourcemap === 'both'
 				? true
-				: sourcemap,
+				: sourcemap === 'inline'
+					? 'inline'
+					: sourcemap,
 		target,
 		cssCodeSplit,
 
-		// Vite 6 enhanced manifest generation
-		manifest: true,
+		// Use resolved manifest configuration
+		manifest: buildSettings.manifest,
 
 		// Rollup configuration optimized for WordPress
 		rollupOptions: {
@@ -134,23 +138,24 @@ export function config(
 		},
 
 		// Terser options if specified
-		...(minify === 'terser' && {
-			terserOptions: {
-				compress: {
-					drop_console: true,
-					drop_debugger: true,
-					...terserOptions.compress,
+		...(minify === 'terser' &&
+			terserOptions && {
+				terserOptions: {
+					compress: {
+						drop_console: true,
+						drop_debugger: true,
+						...terserOptions.compress,
+					},
+					mangle: {
+						properties: false,
+						...terserOptions.mangle,
+					},
+					format: {
+						comments: false,
+						...terserOptions.format,
+					},
 				},
-				mangle: {
-					properties: false,
-					...terserOptions.mangle,
-				},
-				format: {
-					comments: false,
-					...terserOptions.format,
-				},
-			},
-		}),
+			}),
 	};
 
 	const viteConfig: UserConfig = {
@@ -159,7 +164,7 @@ export function config(
 		// Disable public directory copying for WordPress themes
 		publicDir: false,
 
-		// Resolve configuration with defaults from vite.config.js
+		// Resolve configuration with defaults from resolved config
 		resolve: {
 			extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
 			alias: {
@@ -167,6 +172,7 @@ export function config(
 				'@/shared': '/resources/shared',
 				'@/widgets': '/resources/widgets',
 			},
+			// Spread resolved config values
 			...resolveConfig,
 		},
 
@@ -174,8 +180,9 @@ export function config(
 		server: {
 			host: hostname,
 			port: devServerPort,
-			strictPort: true,
-			cors: true,
+			// Use resolved config values, override with env-specific values
+			strictPort: serverConfig.strictPort,
+			cors: serverConfig.cors,
 			...(isHttps && httpsConfig && { https: httpsConfig as any }),
 			// Allow serving files from outside the workspace
 			fs: {
@@ -187,6 +194,7 @@ export function config(
 				host: hostname,
 				port: devServerPort,
 			},
+			// Spread any additional server config
 			...serverConfig,
 		},
 
