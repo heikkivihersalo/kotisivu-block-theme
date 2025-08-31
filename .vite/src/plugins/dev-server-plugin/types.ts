@@ -5,6 +5,8 @@ import type { ManifestChunk } from 'vite';
 
 /**
  * Configuration types for DevServer plugin
+ *
+ * @deprecated This type is deprecated. Use the unified PluginConfig instead.
  */
 export type DevServerConfig = {
 	/**
@@ -56,6 +58,8 @@ export type DevServerConfig = {
 
 /**
  * Configuration options for inline assets HMR
+ *
+ * @deprecated This type is deprecated. Use the unified PluginConfig.hmr configuration instead.
  */
 export interface InlineAssetsConfig {
 	/**
@@ -147,26 +151,6 @@ export interface AssetInfo {
  * Combined asset type for middleware functions
  */
 export type CombinedAssetInfo = BlockAssetInfo | AssetInfo;
-
-/**
- * Processed inline assets configuration
- */
-export interface ProcessedInlineConfig {
-	inlineAssets: string[];
-	watchPatterns: string[];
-	blocksConfig: {
-		blocksDir: Record<string, string>;
-		outDir: string;
-		blockNamespace: string;
-	};
-	scriptInjection: {
-		method: 'inline' | 'external' | 'module';
-		pollingInterval: number;
-		themePrefix?: string;
-		viteServerUrl?: string;
-		vitePort?: string;
-	};
-}
 
 /**
  * Interface for BuildMapResolver class

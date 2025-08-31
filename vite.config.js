@@ -65,11 +65,10 @@ export default defineConfig(({ mode }) => {
 					enabled: true,
 					watch: {
 						php: ['./resources/widgets/**/*.php'],
-						css: [
-							'src/app/styles/inline/**/*.css',
-							'resources/app/styles/inline/**/*.css',
-						],
-						inline: ['assets/sanitize.css', 'assets/inline.css'],
+						css: ['./resources/app/styles/**/*.css'],
+						scripts: ['./resources/app/scripts/**/*.{js,ts}'],
+						blocks: ['./resources/widgets/**/*'],
+						inline: ['./resources/app/styles/inline/**/*.css'],
 					},
 					scriptInjection: {
 						method: 'inline',

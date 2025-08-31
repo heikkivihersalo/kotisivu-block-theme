@@ -9,16 +9,13 @@ import path from 'path';
 /**
  * Internal dependencies
  */
-import type { BlockAssetInfo, AssetInfo, ProcessedInlineConfig } from './types';
+import type { BlockAssetInfo, AssetInfo } from './types';
 import type {
 	BlockInfo,
 	DiscoveredAssetInfo,
 } from '../../common/types/index.js';
+import type { ResolvedPluginConfig } from '../config-plugin/index.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
-import {
-	processHMRWatchConfig,
-	getInlineAssetWatchPatterns,
-} from '../../common/utils/watch-config.js';
 import { getScriptInjectionOptions } from './utils/config.js';
 import {
 	createClientScriptMiddleware,
@@ -41,7 +38,7 @@ export function DevServerPlugin(): Plugin {
 	let blockAssets = new Map<string, BlockAssetInfo>();
 	let generalAssets = new Map<string, AssetInfo>();
 	let buildMapResolver: BuildMapResolver;
-	let processedInlineConfig: ProcessedInlineConfig | null = null;
+	let pluginConfig: ResolvedPluginConfig;
 	let scriptOptions: any = null;
 	let configPluginApi: any = null;
 	let blocksPluginApi: any = null;
@@ -55,6 +52,8 @@ export function DevServerPlugin(): Plugin {
 	): Map<string, BlockAssetInfo> {
 		const blockAssets = new Map<string, BlockAssetInfo>();
 
+		if (!pluginConfig) return blockAssets;
+
 		discoveredBlocks.forEach((block) => {
 			// Check for CSS files that could be used as inline styles
 			const cssFiles = ['style.css', 'index.css', 'style-index.css'];
@@ -63,7 +62,7 @@ export function DevServerPlugin(): Plugin {
 				const sourceCssPath = path.join(block.path, cssFile);
 				const buildCssPath = path
 					.join(
-						processedInlineConfig?.blocksConfig?.outDir || 'build',
+						pluginConfig.build?.outDir || 'build',
 						block.outputPath || block.name,
 						cssFile
 					)
@@ -218,9 +217,9 @@ export function DevServerPlugin(): Plugin {
 	 * Get all monitored assets (static + dynamic blocks + general assets)
 	 */
 	function getAllAssets(): string[] {
-		if (!processedInlineConfig) return [];
+		if (!pluginConfig?.hmr?.enabled) return [];
 		return getAllMonitoredAssets(
-			processedInlineConfig.inlineAssets,
+			pluginConfig.hmr?.watch?.inline || [],
 			blockAssets,
 			generalAssets
 		);
@@ -231,11 +230,11 @@ export function DevServerPlugin(): Plugin {
 		enforce: 'post', // Run after other plugins to avoid conflicts
 
 		/**
-		 * Config resolved hook - Store reference to ConfigPlugin and BlocksPlugin APIs
+		 * Config resolved hook - Store reference to resolved Vite config and plugin APIs
 		 */
-		configResolved(resolvedConfig: ResolvedConfig) {
+		configResolved(config: ResolvedConfig) {
 			// Find the ConfigPlugin in the resolved plugins
-			const configPlugin = resolvedConfig.plugins.find(
+			const configPlugin = config.plugins.find(
 				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-config'
 			);
 
@@ -246,9 +245,16 @@ export function DevServerPlugin(): Plugin {
 			}
 
 			configPluginApi = configPlugin.api;
+			pluginConfig = configPluginApi.getPluginConfig();
+
+			if (!pluginConfig) {
+				throw new Error(
+					'ConfigPlugin has not resolved configuration yet'
+				);
+			}
 
 			// Find the BlocksPlugin in the resolved plugins
-			const blocksPlugin = resolvedConfig.plugins.find(
+			const blocksPlugin = config.plugins.find(
 				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-blocks'
 			);
 
@@ -261,12 +267,25 @@ export function DevServerPlugin(): Plugin {
 			blocksPluginApi = blocksPlugin.api;
 
 			// Find the AssetsPlugin in the resolved plugins (optional)
-			const assetsPlugin = resolvedConfig.plugins.find(
+			const assetsPlugin = config.plugins.find(
 				(plugin: any) => plugin.name === 'vite-plugin-gutenberg-assets'
 			);
 
 			if (assetsPlugin?.api) {
 				assetsPluginApi = assetsPlugin.api;
+			}
+
+			// Initialize the BuildMapResolver using config
+			buildMapResolver = new BuildMapResolver(
+				pluginConfig.build?.outDir || 'build',
+				pluginConfig.build?.css || 'css'
+			);
+
+			// Get script injection options if HMR is enabled
+			if (pluginConfig.hmr?.enabled !== false) {
+				scriptOptions = getScriptInjectionOptions(
+					pluginConfig.hmr?.scriptInjection?.method || 'inline'
+				);
 			}
 		},
 
@@ -276,80 +295,35 @@ export function DevServerPlugin(): Plugin {
 		configureServer(viteServer: ViteDevServer) {
 			server = viteServer;
 
-			if (!configPluginApi) {
-				throw new Error('DevServerPlugin requires ConfigPlugin API');
-			}
-
-			const config = configPluginApi.getPluginConfig();
-			if (!config) {
+			if (!pluginConfig) {
 				throw new Error(
-					'ConfigPlugin has not resolved configuration yet'
+					'DevServerPlugin requires resolved plugin configuration'
 				);
 			}
 
-			const {
-				server: { base } = {},
-				paths: { srcDir } = {},
-				build: { outDir, css, manifest } = {},
-				hmr: hmrConfig,
-			} = config;
+			// Discover block assets on server start if HMR is enabled
+			if (pluginConfig.hmr?.enabled !== false) {
+				// Initialize empty block assets - will be populated when blocks are discovered
+				blockAssets = new Map();
 
-			// Initialize the BuildMapResolver
-			buildMapResolver = new BuildMapResolver(outDir, css);
-
-			// Process HMR configuration - all defaults are now set by ConfigPlugin
-			processedInlineConfig =
-				hmrConfig?.enabled !== false
-					? {
-							inlineAssets: hmrConfig.watch.inline,
-							watchPatterns: hmrConfig.watch.css,
-							blocksConfig: {
-								blocksDir: config.paths.blocksDir,
-								outDir: outDir,
-								blockNamespace: config.wordpress.namespace,
-							},
-							scriptInjection: {
-								method: hmrConfig.scriptInjection.method,
-								pollingInterval:
-									hmrConfig.scriptInjection.pollingInterval,
-								viteServerUrl: undefined,
-								vitePort: config.server.port.toString(),
-							},
-						}
-					: null;
-
-			// Get script injection options if inline assets are configured
-			scriptOptions = processedInlineConfig
-				? getScriptInjectionOptions(
-						processedInlineConfig.scriptInjection.method
-					)
-				: null;
-
-			// Discover block assets on server start if inline assets are configured
-			if (processedInlineConfig) {
-				// Note: We'll get blocks from BlocksPlugin later when they're available
-				blockAssets = new Map(); // Initialize empty for now
-
-				// Add HMR client script endpoint
+				// Add HMR client script endpoint if script options are available
 				if (scriptOptions) {
 					server.middlewares.use(
 						scriptOptions.endpoint,
 						createClientScriptMiddleware(
 							blockAssets,
-							processedInlineConfig.blocksConfig.blockNamespace,
-							processedInlineConfig.scriptInjection.method,
-							processedInlineConfig.scriptInjection
-								.pollingInterval,
+							pluginConfig.wordpress?.namespace || 'wp',
+							pluginConfig.hmr?.scriptInjection?.method ||
+								'inline',
+							pluginConfig.hmr?.scriptInjection
+								?.pollingInterval || 500,
 							{
-								themePrefix:
-									processedInlineConfig.scriptInjection
-										.themePrefix,
+								themePrefix: undefined, // Will be auto-detected
 								viteServerUrl:
-									processedInlineConfig.scriptInjection
-										.viteServerUrl,
+									pluginConfig.server?.devServerUrl,
 								vitePort:
-									processedInlineConfig.scriptInjection
-										.vitePort,
+									pluginConfig.server?.port?.toString() ||
+									'5173',
 							}
 						)
 					);
@@ -388,11 +362,11 @@ export function DevServerPlugin(): Plugin {
 
 					if (req.url && req.url === `/${VITE_PLUGIN_NAME}.json`) {
 						const exposed = {
-							base,
-							srcDir,
-							outDir,
-							css,
-							manifest,
+							base: pluginConfig.server?.base || '/',
+							srcDir: pluginConfig.paths?.srcDir || 'resources',
+							outDir: pluginConfig.build?.outDir || 'build',
+							css: pluginConfig.build?.css || 'css',
+							manifest: pluginConfig.build?.manifest || true,
 							buildMap: buildMapResolver.getBuildMap(),
 						};
 
@@ -426,48 +400,10 @@ export function DevServerPlugin(): Plugin {
 		},
 
 		/**
-		 * Build Start Hook - Set up file watching for inline assets using unified HMR config
+		 * Build Start Hook - Set up file watching for inline assets using unified config
 		 */
 		buildStart() {
-			if (!configPluginApi) {
-				throw new Error('DevServerPlugin requires ConfigPlugin API');
-			}
-
-			const config = configPluginApi.getPluginConfig();
-			if (!config) {
-				throw new Error(
-					'ConfigPlugin has not resolved configuration yet'
-				);
-			}
-
-			const { hmr: hmrConfig } = config;
-
-			if (!hmrConfig?.enabled || hmrConfig.enabled === false) return;
-
-			// Process HMR configuration - all defaults are now set by ConfigPlugin
-			processedInlineConfig = {
-				inlineAssets: hmrConfig.watch.inline,
-				watchPatterns: hmrConfig.watch.css,
-				blocksConfig: {
-					blocksDir: config.paths.blocksDir,
-					outDir: config.build.outDir,
-					blockNamespace: config.wordpress.namespace,
-				},
-				scriptInjection: {
-					method: hmrConfig.scriptInjection.method,
-					pollingInterval: hmrConfig.scriptInjection.pollingInterval,
-					themePrefix: undefined,
-					viteServerUrl: undefined,
-					vitePort: config.server.port.toString(),
-				},
-			};
-
-			// Process HMR configuration if available
-			const hmrWatchConfig = processHMRWatchConfig({
-				hmr: { watch: {} },
-			}); // Use default if not provided
-			const inlineWatchPatterns =
-				getInlineAssetWatchPatterns(hmrWatchConfig);
+			if (!pluginConfig?.hmr?.enabled) return;
 
 			// Get discovered blocks from BlocksPlugin
 			if (blocksPluginApi) {
@@ -481,19 +417,23 @@ export function DevServerPlugin(): Plugin {
 				generalAssets = convertAssetsToAssetInfo(discoveredAssets);
 			}
 
-			// Add unified HMR watch patterns for inline assets
-			inlineWatchPatterns.forEach((pattern) => {
-				this.addWatchFile(pattern);
-			});
+			// Add watch patterns for CSS files
+			if (pluginConfig.hmr.watch?.css) {
+				pluginConfig.hmr.watch.css.forEach((pattern: string) => {
+					this.addWatchFile(pattern);
+				});
+			}
 
 			// Add specific inline asset files to watch
-			processedInlineConfig.inlineAssets.forEach((asset: string) => {
-				const fullPath = path.resolve(asset);
-				if (fs.existsSync(fullPath)) {
-					this.addWatchFile(fullPath);
-					watchedFiles.add(fullPath);
-				}
-			});
+			if (pluginConfig.hmr.watch?.inline) {
+				pluginConfig.hmr.watch.inline.forEach((asset: string) => {
+					const fullPath = path.resolve(asset);
+					if (fs.existsSync(fullPath)) {
+						this.addWatchFile(fullPath);
+						watchedFiles.add(fullPath);
+					}
+				});
+			}
 
 			// Add block source files to watch
 			for (const [, assetInfo] of blockAssets) {
@@ -523,14 +463,14 @@ export function DevServerPlugin(): Plugin {
 				return [];
 			}
 
-			// Handle inline assets if configured
-			if (processedInlineConfig) {
+			// Handle inline assets if HMR is configured
+			if (pluginConfig?.hmr?.enabled) {
 				const affectedAsset = getAffectedAsset(
 					file,
-					processedInlineConfig.inlineAssets,
+					pluginConfig.hmr?.watch?.inline || [],
 					blockAssets,
 					generalAssets,
-					processedInlineConfig.watchPatterns
+					pluginConfig.hmr?.watch?.css || []
 				);
 
 				if (affectedAsset) {
