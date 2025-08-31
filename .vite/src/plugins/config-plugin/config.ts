@@ -9,48 +9,13 @@ import fs from 'fs';
  * Shared dependencies
  */
 import { WORDPRESS_EXTERNALS } from '../../common/constants.js';
-
-/**
- * Configuration interface for the config function
- */
-interface ConfigInput {
-	build?: {
-		outDir?: string;
-		minify?: boolean | 'esbuild' | 'terser';
-		sourcemap?: boolean | 'linked' | 'external' | 'inline' | 'both';
-		target?: string;
-		cssCodeSplit?: boolean;
-		terserOptions?: {
-			compress?: Record<string, any>;
-			mangle?: Record<string, any>;
-			format?: Record<string, any>;
-		};
-		resolve?: {
-			extensions?: string[];
-			alias?: Record<string, string>;
-		};
-	};
-	server?: {
-		host?: string;
-		port?: number;
-		devServerUrl?: string;
-		strictPort?: boolean;
-		cors?: boolean;
-		https?:
-			| boolean
-			| {
-					key: Buffer;
-					cert: Buffer;
-			  };
-		base?: string;
-	};
-}
+import type { PluginConfig } from '../../common/types/plugin-config.ts';
 
 /**
  * Generate optimized Vite 6 configuration for WordPress
  */
 export function config(
-	pluginConfig: ConfigInput,
+	pluginConfig: PluginConfig,
 	mode: string = process.env.NODE_ENV || 'production'
 ): UserConfig {
 	// Load environment variables
