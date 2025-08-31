@@ -2,13 +2,18 @@
  * HMR Client Template
  *
  * This template is used to generate the client-side HMR script.
- * Configuration will be injected where {{CONFIG}} appears.
+ * Configuration will be injected via __VITE_INLINE_ASSETS_CONFIG__.
  */
 
 console.log('[InlineAssets] HMR client loaded');
 
-// Configuration will be injected here
-const CONFIG = {{CONFIG}};
+// Configuration will be available in the global scope
+const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__ || {
+	blockAssets: [],
+	blockNamespace: 'wp',
+	pollingInterval: 500,
+	viteServerUrl: undefined
+};
 
 /**
  * Generate WordPress style ID from asset path

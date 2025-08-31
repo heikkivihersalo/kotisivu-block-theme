@@ -56,8 +56,13 @@ export function generateScript(
 		viteServerUrl: config.viteServerUrl,
 	};
 
-	// Replace configuration placeholder
-	return template.replace('{{CONFIG}}', JSON.stringify(configObject));
+	// Create a script that sets the global config and then includes the template
+	return `
+// Set global configuration for HMR client
+window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(configObject, null, 2)};
+
+${template}
+`;
 }
 
 /**
