@@ -30,11 +30,8 @@ export function initializeHMR(config: HMRConfig): void {
 		viteServerUrl: config.viteServerUrl,
 	};
 
-	// Extract theme prefix from current domain or use default
-	const themePrefix = location.hostname.split('.')[0] || 'theme';
-
 	// Setup polling-based HMR
-	setupPollingHMR(themePrefix, config);
+	setupPollingHMR(config);
 
 	console.log('[DevServer] HMR client initialized');
 }
@@ -42,7 +39,7 @@ export function initializeHMR(config: HMRConfig): void {
 /**
  * Setup polling-based HMR
  */
-function setupPollingHMR(themePrefix: string, config: HMRConfig): void {
+function setupPollingHMR(config: HMRConfig): void {
 	console.log('[DevServer] Using polling for HMR');
 	const lastModified: Record<string, number> = {};
 
@@ -73,7 +70,7 @@ function setupPollingHMR(themePrefix: string, config: HMRConfig): void {
 						lastModified[asset] &&
 						lastModified[asset] !== modified
 					) {
-						await updateInlineAsset(asset, themePrefix, config);
+						await updateInlineAsset(asset, config);
 					}
 					lastModified[asset] = modified;
 				}
@@ -91,7 +88,6 @@ function setupPollingHMR(themePrefix: string, config: HMRConfig): void {
  */
 async function updateInlineAsset(
 	assetPath: string,
-	themePrefix: string,
 	config: HMRConfig
 ): Promise<void> {
 	try {
@@ -101,7 +97,7 @@ async function updateInlineAsset(
 
 		if (response.ok) {
 			const newContent = await response.text();
-			const styleId = getStyleIdFromAsset(assetPath, themePrefix, config);
+			const styleId = getStyleIdFromAsset(assetPath, config);
 
 			// Find the corresponding style tag by exact ID
 			let styleElement = document.getElementById(styleId);
@@ -135,11 +131,7 @@ async function updateInlineAsset(
 /**
  * Generate WordPress style ID from asset path
  */
-function getStyleIdFromAsset(
-	assetPath: string,
-	themePrefix: string,
-	config: HMRConfig
-): string {
+function getStyleIdFromAsset(assetPath: string, config: HMRConfig): string {
 	const blockAssets = new Map(
 		(window as any).__VITE_INLINE_ASSETS_CONFIG__?.blockAssets || []
 	);
@@ -163,16 +155,7 @@ function getStyleIdFromAsset(
 		}
 	}
 
-	// Handle theme inline assets with configurable prefix
-	if (assetPath.includes('sanitize.css')) {
-		return `${themePrefix}-sanitize-css`;
-	} else if (assetPath.includes('inline.css')) {
-		return `${themePrefix}-inline-css`;
-	} else if (assetPath.includes('tailwind-utilities.css')) {
-		return `${themePrefix}-tailwind-utility-css-inline-css`;
-	}
-
-	// Fallback for other assets
+	// Handle theme inline assets
 	const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
 	return `${assetId}-inline-css`;
 }
