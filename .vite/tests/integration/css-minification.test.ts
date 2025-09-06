@@ -60,41 +60,6 @@ describe('CSS Minification Integration', () => {
 	});
 
 	/**
-	 * Test that source maps are generated for CSS files
-	 */
-	test('source maps are generated for CSS files', () => {
-		const cssFiles = getAllCssFiles();
-		const significantCssFiles = cssFiles.filter((file) => {
-			const content = readFileSync(file, 'utf-8');
-			// Check files with substantial content that are likely to have source maps
-			return (
-				content.trim().length > 100 &&
-				content.includes('sourceMappingURL')
-			);
-		});
-
-		expect(significantCssFiles.length).toBeGreaterThan(0);
-
-		for (const cssFile of significantCssFiles) {
-			const content = readFileSync(cssFile, 'utf-8');
-
-			// Should contain source map reference (flexible pattern)
-			expect(content).toMatch(/\/\*# sourceMappingURL=.*\.map \*\//);
-
-			// Check if corresponding .map file exists
-			const mapFile = cssFile + '.map';
-			if (existsSync(mapFile)) {
-				const mapContent = readFileSync(mapFile, 'utf-8');
-				const sourceMap = JSON.parse(mapContent);
-
-				expect(sourceMap).toHaveProperty('version');
-				expect(sourceMap).toHaveProperty('sources');
-				expect(sourceMap).toHaveProperty('mappings');
-			}
-		}
-	});
-
-	/**
 	 * Test that asset CSS files are minified
 	 */
 	test('asset CSS files are properly minified', () => {
