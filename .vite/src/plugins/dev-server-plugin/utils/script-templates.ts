@@ -55,7 +55,7 @@ function getStyleIdFromAsset(assetPath, themePrefix) {
 	// Check if it's a block asset
 	for (const [, assetInfo] of blockAssets) {
 		console.log('[HMR] Checking asset info:', assetInfo);
-		if (assetPath.includes(assetInfo.blockSlug)) {
+		if (assetPath.includes(assetInfo.slug)) {
 			// Determine CSS type from path
 			let cssType = 'style';
 			if (assetPath.includes('index.css') && !assetPath.includes('style-index.css')) {
@@ -63,7 +63,7 @@ function getStyleIdFromAsset(assetPath, themePrefix) {
 			} else if (assetPath.includes('style-index.css')) {
 				cssType = 'style';
 			}
-			const generatedId = CONFIG.blockNamespace + '-' + assetInfo.blockSlug + '-' + cssType + '-inline-css';
+			const generatedId = CONFIG.blockNamespace + '-' + assetInfo.slug + '-' + cssType + '-inline-css';
 			console.log('[HMR] Generated block asset ID:', generatedId);
 			return generatedId;
 		}

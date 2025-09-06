@@ -132,9 +132,9 @@ export interface InlineAssetsConfig {
  * Block asset information for HMR
  */
 export interface BlockAssetInfo {
-	buildPath: string;
-	sourcePath: string;
-	blockSlug: string;
+	build: Record<string, string>;
+	src: Record<string, string>;
+	slug: string;
 }
 
 /**
@@ -174,7 +174,7 @@ declare global {
 				[
 					string,
 					{
-						blockSlug: string;
+						slug: string;
 						sourcePath: string;
 						buildPath?: string;
 					},

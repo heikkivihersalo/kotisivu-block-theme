@@ -139,7 +139,7 @@ export class BuildMapResolver implements IBuildMapResolver {
 				continue;
 			}
 
-			// Handle .js and .ts files
+			// Handle JavaScript/TypeScript files
 			if (
 				facadeModuleId.endsWith('.js') ||
 				facadeModuleId.endsWith('.ts') ||
@@ -147,16 +147,21 @@ export class BuildMapResolver implements IBuildMapResolver {
 				facadeModuleId.endsWith('.tsx')
 			) {
 				addToMap(fileName);
-				continue;
 			}
 
 			// Handle CSS files
-			if (!facadeModuleId.endsWith(`.${this.css}`)) {
+			if (
+				facadeModuleId.endsWith(`.${this.css}`) ||
+				facadeModuleId.endsWith('.css')
+			) {
 				addToMap(fileName);
 			}
 
+			// Handle imported CSS assets
 			if (importedCss.size) {
-				addToMap(Array.from(importedCss)[0]);
+				for (const cssFile of importedCss) {
+					addToMap(cssFile);
+				}
 			}
 		}
 

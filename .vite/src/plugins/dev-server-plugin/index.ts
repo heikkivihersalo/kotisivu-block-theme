@@ -46,24 +46,35 @@ export function DevServerPlugin(): Plugin {
 
 	/**
 	 * Convert BlockInfo from BlocksPlugin to BlockAssetInfo for DevServer
+	 * Updated to handle all asset types (CSS, JS, TS) through BuildMapResolver
 	 */
 	function convertBlocksToAssets(
 		discoveredBlocks: BlockInfo[]
 	): Map<string, BlockAssetInfo> {
 		const blockAssets = new Map<string, BlockAssetInfo>();
 
-		if (!pluginConfig) return blockAssets;
+		if (!pluginConfig || !buildMapResolver) return blockAssets;
+
+		const buildMap = buildMapResolver.getBuildMap();
 
 		discoveredBlocks.forEach((block) => {
 			// Map source files to their built counterparts
-			const cssFileMapping = [
+			const fileMapping = [
 				{ source: 'editor.css', build: 'index.css' },
 				{ source: 'style.css', build: 'style-index.css' },
+				{ source: 'view.js', build: 'view.js' },
+				{ source: 'view.jsx', build: 'view.js' },
+				{ source: 'view.ts', build: 'view.js' },
+				{ source: 'view.tsx', build: 'view.js' },
+				{ source: 'editor.js', build: 'index.js' },
+				{ source: 'editor.jsx', build: 'index.js' },
+				{ source: 'editor.ts', build: 'index.js' },
+				{ source: 'editor.tsx', build: 'index.js' },
 			];
 
-			cssFileMapping.forEach(({ source, build }) => {
-				const sourceCssPath = path.join(block.path, source);
-				const buildCssPath = path
+			fileMapping.forEach(({ source, build }) => {
+				const sourcePath = path.join(block.path, source);
+				let buildPath = path
 					.join(
 						pluginConfig.build?.outDir || 'build',
 						block.outputPath || block.name,
@@ -71,20 +82,45 @@ export function DevServerPlugin(): Plugin {
 					)
 					.replace(/\\/g, '/');
 
+				// Check if BuildMapResolver has updated build path information
+				const buildMapEntry = Object.values(buildMap).find(
+					(entry) =>
+						entry.src ===
+						sourcePath.replace(process.cwd() + '/', '')
+				);
+
+				if (buildMapEntry) {
+					buildPath = path
+						.join(
+							pluginConfig.build?.outDir || 'build',
+							buildMapEntry.file
+						)
+						.replace(/\\/g, '/');
+				}
+
 				// Include asset if source file exists
-				if (fs.existsSync(sourceCssPath)) {
-					const assetKey = `${block.name}-${source.replace('.css', '')}`;
+				if (fs.existsSync(sourcePath)) {
+					const parsed = source.replace(/\.(css|js|jsx|ts|tsx)$/, '');
+
+					const assetKey = `${block.name}-${parsed}`;
+
 					blockAssets.set(assetKey, {
-						buildPath: buildCssPath,
-						sourcePath: sourceCssPath.replace(/\\/g, '/'),
-						blockSlug: block.name,
+						build: {
+							...blockAssets.get(assetKey)?.build,
+							[build]: buildPath,
+						},
+						src: {
+							...blockAssets.get(assetKey)?.src,
+							[source]: sourcePath.replace(/\\/g, '/'),
+						},
+						slug: block.name,
 					});
 				}
 			});
 		});
 
 		console.log(
-			`[DevServer] Converted ${blockAssets.size} block CSS assets from BlocksPlugin`
+			`[DevServer] Converted ${blockAssets.size} block assets from BlocksPlugin using BuildMapResolver`
 		);
 
 		return blockAssets;
@@ -92,15 +128,34 @@ export function DevServerPlugin(): Plugin {
 
 	/**
 	 * Convert DiscoveredAssetInfo from AssetsPlugin to AssetInfo for DevServer
+	 * Updated to use BuildMapResolver for accurate build paths
 	 */
 	function convertAssetsToAssetInfo(
 		discoveredAssets: DiscoveredAssetInfo[]
 	): Map<string, AssetInfo> {
 		const assetMap = new Map<string, AssetInfo>();
 
+		if (!buildMapResolver) return assetMap;
+
+		const buildMap = buildMapResolver.getBuildMap();
+
 		discoveredAssets.forEach((asset) => {
-			// Create build path based on the asset's output path
-			const buildPath = path.resolve(asset.outputPath);
+			// Check if BuildMapResolver has updated build path information
+			const buildMapEntry = Object.values(buildMap).find(
+				(entry) =>
+					entry.src ===
+					asset.sourcePath.replace(process.cwd() + '/', '')
+			);
+
+			// Use BuildMapResolver data if available, otherwise fallback to asset.outputPath
+			let buildPath = path.resolve(asset.outputPath);
+
+			if (buildMapEntry) {
+				buildPath = path.resolve(
+					pluginConfig.build?.outDir || 'build',
+					buildMapEntry.file
+				);
+			}
 
 			assetMap.set(asset.name, {
 				buildPath: buildPath,
@@ -111,7 +166,7 @@ export function DevServerPlugin(): Plugin {
 		});
 
 		console.log(
-			`[DevServer] Converted ${assetMap.size} assets from AssetsPlugin`
+			`[DevServer] Converted ${assetMap.size} assets from AssetsPlugin using BuildMapResolver`
 		);
 
 		return assetMap;
@@ -119,23 +174,80 @@ export function DevServerPlugin(): Plugin {
 
 	/**
 	 * Get all monitored assets (static + dynamic blocks + general assets)
+	 * Updated to work with new BuildMapResolver structure
 	 */
 	function getAllMonitoredAssets(
 		inlineAssets: string[],
 		blockAssets: Map<string, BlockAssetInfo>,
 		generalAssets: Map<string, AssetInfo>
 	): string[] {
-		const dynamicAssets = Array.from(blockAssets.values()).map(
-			(asset) => asset.buildPath
-		);
+		// Get dynamic block assets - extract from build paths
+		const dynamicAssets: string[] = [];
+		for (const [, asset] of blockAssets) {
+			Object.values(asset.build).forEach((buildPath) => {
+				dynamicAssets.push(buildPath);
+			});
+		}
+
+		// Get discovered general assets (includes built inline assets)
 		const discoveredAssets = Array.from(generalAssets.values()).map(
 			(asset) => asset.buildPath
 		);
-		return [...inlineAssets, ...dynamicAssets, ...discoveredAssets];
+
+		// Add inline CSS assets from the asset configuration
+		// These are the built CSS files that need to be served via HMR
+		const inlineAssetPaths: string[] = [];
+		if (pluginConfig?.paths?.inlineFiles) {
+			Object.keys(pluginConfig.paths.inlineFiles).forEach((key) => {
+				// Convert asset key to build path (e.g., 'assets/inline' -> 'build/assets/inline.css')
+				const cssPath = `build/${key}.css`;
+				inlineAssetPaths.push(cssPath);
+			});
+		}
+
+		// Add missing block assets that exist in build but aren't tracked
+		// This handles cases where source files exist but weren't properly added to blockAssets
+		const allBlockBuildAssets: string[] = [];
+		if (blocksPluginApi) {
+			const discoveredBlocks =
+				blocksPluginApi.getDiscoveredBlocks() as BlockInfo[];
+			discoveredBlocks.forEach((block: BlockInfo) => {
+				const fileTypes = [
+					'index.css',
+					'style-index.css',
+					'view.js',
+					'index.js',
+				];
+				fileTypes.forEach((fileType) => {
+					const buildPath = path
+						.join(
+							pluginConfig.build?.outDir || 'build',
+							block.outputPath || block.name,
+							fileType
+						)
+						.replace(/\\/g, '/');
+
+					// Only add if the file actually exists
+					if (fs.existsSync(buildPath)) {
+						allBlockBuildAssets.push(buildPath);
+					}
+				});
+			});
+		}
+
+		// Combine all assets and remove duplicates
+		const allAssets = [
+			...inlineAssetPaths,
+			...dynamicAssets,
+			...discoveredAssets,
+			...allBlockBuildAssets,
+		];
+		return [...new Set(allAssets)];
 	}
 
 	/**
 	 * Check if a file change affects any inline assets
+	 * Updated to work with new BuildMapResolver and asset structures
 	 */
 	function getAffectedAsset(
 		file: string,
@@ -144,58 +256,34 @@ export function DevServerPlugin(): Plugin {
 		generalAssets: Map<string, AssetInfo>,
 		watchPatterns: string[]
 	): string {
-		// Check if the changed file affects any inline assets
+		// Check if the changed file affects any inline assets (direct match)
 		const isInlineAsset = inlineAssets.some((asset) => {
 			const fullPath = path.resolve(asset);
-			return file === fullPath || file.endsWith(asset);
+			return (
+				file === fullPath ||
+				file.endsWith(asset) ||
+				fullPath.endsWith(file)
+			);
 		});
 
 		if (isInlineAsset) {
-			return (
-				inlineAssets.find((asset) => {
-					const fullPath = path.resolve(asset);
-					return file === fullPath || file.endsWith(asset);
-				}) || ''
-			);
-		}
-
-		// Check if the changed file is a block CSS file
-		const isBlockAsset = Array.from(blockAssets.values()).some(
-			(assetInfo) =>
-				file === assetInfo.sourcePath || file === assetInfo.buildPath
-		);
-
-		if (isBlockAsset) {
-			// Find the block asset that was changed
-			for (const [, assetInfo] of blockAssets) {
-				if (
-					file === assetInfo.sourcePath ||
-					file === assetInfo.buildPath
-				) {
-					return assetInfo.buildPath;
-				}
+			const matchedAsset = inlineAssets.find((asset) => {
+				const fullPath = path.resolve(asset);
+				return (
+					file === fullPath ||
+					file.endsWith(asset) ||
+					fullPath.endsWith(file)
+				);
+			});
+			if (matchedAsset) {
+				console.log(
+					`[HMR] Inline asset matched: ${file} -> ${matchedAsset}`
+				);
+				return matchedAsset;
 			}
 		}
 
-		// Check if the changed file is a general asset
-		const isGeneralAsset = Array.from(generalAssets.values()).some(
-			(assetInfo) =>
-				file === assetInfo.sourcePath || file === assetInfo.buildPath
-		);
-
-		if (isGeneralAsset) {
-			// Find the general asset that was changed
-			for (const [, assetInfo] of generalAssets) {
-				if (
-					file === assetInfo.sourcePath ||
-					file === assetInfo.buildPath
-				) {
-					return assetInfo.buildPath;
-				}
-			}
-		}
-
-		// Check if it's a source file that affects inline assets
+		// Check if the changed file is a source file that produces inline assets
 		const isSourceFile = watchPatterns.some((pattern) => {
 			const regex = pattern
 				.replace(/\*\*/g, '.*')
@@ -204,13 +292,67 @@ export function DevServerPlugin(): Plugin {
 		});
 
 		if (isSourceFile) {
-			// For source files, determine which built asset they affect based on file content
-			if (file.includes('sanitize')) {
+			// For source files, determine which built asset they affect based on file content/path
+			if (file.includes('sanitize') || file.includes('normalize')) {
+				console.log(`[HMR] Source file affects sanitize: ${file}`);
 				return 'assets/sanitize.css';
-			} else if (file.includes('tailwind')) {
+			} else if (
+				file.includes('tailwind') ||
+				file.includes('utilities')
+			) {
+				console.log(`[HMR] Source file affects tailwind: ${file}`);
 				return 'assets/tailwind-utilities.css';
-			} else {
+			} else if (file.includes('inline') || file.includes('critical')) {
+				console.log(`[HMR] Source file affects inline: ${file}`);
 				return 'assets/inline.css';
+			}
+		}
+
+		// Check if the changed file is a block asset (source or build)
+		for (const [, assetInfo] of blockAssets) {
+			// Check source files
+			for (const sourcePath of Object.values(assetInfo.src)) {
+				if (file === sourcePath || file === path.resolve(sourcePath)) {
+					// Return corresponding build path
+					const sourceKey = Object.keys(assetInfo.src).find(
+						(key) => assetInfo.src[key] === sourcePath
+					);
+					if (sourceKey) {
+						const buildKey = sourceKey
+							.replace(/\.(js|jsx|ts|tsx)$/, '.js')
+							.replace('.css', '.css');
+						const buildPath =
+							assetInfo.build[buildKey] ||
+							Object.values(assetInfo.build)[0];
+						console.log(
+							`[HMR] Block source file changed: ${file} -> ${buildPath}`
+						);
+						return buildPath;
+					}
+				}
+			}
+
+			// Check build files
+			for (const buildPath of Object.values(assetInfo.build)) {
+				if (file === buildPath || file === path.resolve(buildPath)) {
+					console.log(`[HMR] Block build file changed: ${file}`);
+					return buildPath;
+				}
+			}
+		}
+
+		// Check if the changed file is a general asset
+		for (const [, assetInfo] of generalAssets) {
+			if (
+				file === assetInfo.sourcePath ||
+				file === assetInfo.buildPath ||
+				file === path.resolve(assetInfo.sourcePath) ||
+				file === path.resolve(assetInfo.buildPath)
+			) {
+				console.log(
+					`[HMR] General asset changed: ${file} -> ${assetInfo.buildPath}`
+				);
+				return assetInfo.buildPath;
 			}
 		}
 
@@ -413,18 +555,64 @@ export function DevServerPlugin(): Plugin {
 			if (blocksPluginApi) {
 				const discoveredBlocks = blocksPluginApi.getDiscoveredBlocks();
 				blockAssets = convertBlocksToAssets(discoveredBlocks);
+
+				console.log('[DevServer] Block assets:', blockAssets);
 			}
 
 			// Get discovered assets from AssetsPlugin
 			if (assetsPluginApi) {
 				const discoveredAssets = assetsPluginApi.getDiscoveredAssets();
 				generalAssets = convertAssetsToAssetInfo(discoveredAssets);
+				console.log('[DevServer] General assets:', generalAssets);
+
+				// Add discovered assets' build paths to inline watch list if they don't exist
+				const buildDir = pluginConfig.build?.outDir || 'build';
+				for (const [, assetInfo] of generalAssets) {
+					const buildPath = assetInfo.buildPath;
+					if (buildPath.includes(buildDir)) {
+						const relativeBuildPath = buildPath.replace(
+							process.cwd() + '/',
+							''
+						);
+						if (
+							!pluginConfig.hmr?.watch?.inline?.includes(
+								relativeBuildPath
+							)
+						) {
+							pluginConfig.hmr.watch = pluginConfig.hmr.watch || {
+								inline: [],
+								css: [],
+								php: [],
+								scripts: [],
+								blocks: [],
+							};
+							pluginConfig.hmr.watch.inline =
+								pluginConfig.hmr.watch.inline || [];
+							pluginConfig.hmr.watch.inline.push(
+								relativeBuildPath
+							);
+							console.log(
+								'[DevServer] Added discovered asset to inline watch:',
+								relativeBuildPath
+							);
+						}
+					}
+				}
+			}
+
+			// Debug: Log all inline assets being watched
+			if (pluginConfig.hmr.watch?.inline?.length) {
+				console.log(
+					'[DevServer] Inline assets to watch:',
+					pluginConfig.hmr.watch.inline
+				);
 			}
 
 			// Add watch patterns for CSS files
 			if (pluginConfig.hmr.watch?.css) {
 				pluginConfig.hmr.watch.css.forEach((pattern: string) => {
 					this.addWatchFile(pattern);
+					console.log('[DevServer] Watching CSS pattern:', pattern);
 				});
 			}
 
@@ -435,14 +623,26 @@ export function DevServerPlugin(): Plugin {
 					if (fs.existsSync(fullPath)) {
 						this.addWatchFile(fullPath);
 						watchedFiles.add(fullPath);
+						console.log(
+							'[DevServer] Watching inline asset:',
+							fullPath
+						);
+					} else {
+						console.warn(
+							'[DevServer] Inline asset not found:',
+							fullPath
+						);
 					}
 				});
 			}
 
 			// Add block source files to watch
 			for (const [, assetInfo] of blockAssets) {
-				this.addWatchFile(assetInfo.sourcePath);
-				watchedFiles.add(assetInfo.sourcePath);
+				// Add all source files from the block asset
+				Object.values(assetInfo.src).forEach((sourcePath) => {
+					this.addWatchFile(sourcePath);
+					watchedFiles.add(sourcePath);
+				});
 			}
 
 			// Add general asset source files to watch
@@ -456,6 +656,8 @@ export function DevServerPlugin(): Plugin {
 		 * Handle hot update for PHP files and inline assets.
 		 */
 		handleHotUpdate({ file, server }) {
+			console.log(`[HMR] File changed: ${file}`);
+
 			// Update buildMap with simplified entry for hot updates
 			if (buildMapResolver) {
 				buildMapResolver.createHotUpdateEntry(file);
@@ -463,6 +665,9 @@ export function DevServerPlugin(): Plugin {
 
 			// Handle PHP file changes
 			if (file.endsWith('.php')) {
+				console.log(
+					`[HMR] PHP file changed, triggering full reload: ${file}`
+				);
 				server.ws.send({ type: 'full-reload', path: '*' });
 				return [];
 			}
@@ -489,6 +694,8 @@ export function DevServerPlugin(): Plugin {
 
 					// Return empty array to prevent default HMR behavior
 					return [];
+				} else {
+					console.log(`[HMR] No affected asset found for: ${file}`);
 				}
 			}
 
