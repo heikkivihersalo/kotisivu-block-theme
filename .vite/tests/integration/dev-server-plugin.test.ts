@@ -1,10 +1,4 @@
-import {
-	existsSync,
-	readFileSync,
-	writeFileSync,
-	mkdirSync,
-	rmSync,
-} from 'node:fs';
+import { existsSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, afterAll, describe, expect, test } from 'vitest';
 
@@ -187,12 +181,11 @@ describe('Dev Server Plugin - Core Functionality', () => {
 
 		middleware(mockReq, mockRes, () => {});
 
-		// The middleware should either serve the file or return a 404
-		// This is acceptable for high-level testing
+		// Test that middleware responds appropriately
 		expect([200, 404]).toContain(statusCode);
 
-		// If content was served, verify it's correct
-		if (responseContent && statusCode === 200) {
+		// If content was served, verify it's the CSS we created
+		if (statusCode === 200) {
 			expect(responseContent).toContain('.wp-block-test');
 			expect(responseHeaders['Content-Type']).toContain('text/css');
 		}
@@ -292,52 +285,44 @@ describe('Dev Server Plugin - Core Functionality', () => {
 	});
 
 	/**
-	 * Test file watching patterns - simplified
+	 * Test file extension matching for HMR
 	 */
-	test('file watching patterns concept validation', () => {
-		// Simple test to verify pattern matching logic concept
-		const simplePattern = (filePath: string, pattern: string) => {
-			// For high-level testing, just check if basic concepts work
-			if (pattern.includes('**/*.css')) {
-				return filePath.endsWith('.css');
-			}
-			if (pattern.includes('widgets/**/*')) {
-				return filePath.includes('widgets');
-			}
-			if (pattern.includes('build/**/*.css')) {
-				return filePath.includes('build') && filePath.endsWith('.css');
-			}
-			return false;
+	test('file extension matching works for HMR', () => {
+		// Test the basic logic that determines if a file should trigger HMR
+		const shouldTriggerHMR = (
+			filePath: string,
+			watchedExtensions: string[]
+		) => {
+			return watchedExtensions.some((ext) => filePath.endsWith(ext));
 		};
 
-		// Test basic pattern matching concepts
-		expect(simplePattern('test.css', '**/*.css')).toBe(true);
-		expect(simplePattern('widgets/test.js', 'widgets/**/*')).toBe(true);
-		expect(simplePattern('build/test.css', 'build/**/*.css')).toBe(true);
-		expect(simplePattern('other/test.js', '**/*.css')).toBe(false);
+		const cssExtensions = ['.css'];
+		const jsExtensions = ['.js', '.jsx', '.ts', '.tsx'];
+
+		// Test CSS file matching
+		expect(shouldTriggerHMR('src/style.css', cssExtensions)).toBe(true);
+		expect(shouldTriggerHMR('widgets/block.css', cssExtensions)).toBe(true);
+		expect(shouldTriggerHMR('build/assets/main.css', cssExtensions)).toBe(
+			true
+		);
+		expect(shouldTriggerHMR('src/script.js', cssExtensions)).toBe(false);
+
+		// Test JS file matching
+		expect(shouldTriggerHMR('src/script.js', jsExtensions)).toBe(true);
+		expect(shouldTriggerHMR('src/component.tsx', jsExtensions)).toBe(true);
+		expect(shouldTriggerHMR('src/style.css', jsExtensions)).toBe(false);
 	});
 
 	/**
-	 * Test error handling scenarios - simplified
+	 * Test error handling scenarios
 	 */
 	test('handles common error scenarios gracefully', () => {
 		// Test file not found scenarios
 		const nonExistentFile = join(BUILD_DIR, 'non-existent.css');
 		expect(existsSync(nonExistentFile)).toBe(false);
 
-		// Error handling should not throw
-		expect(() => {
-			try {
-				readFileSync(nonExistentFile, 'utf-8');
-			} catch (error) {
-				// This is expected - error should be caught and handled gracefully
-				expect(error).toBeDefined();
-			}
-		}).not.toThrow();
-
-		// Test basic configuration validation concept
+		// Test configuration validation
 		const validateConfig = (config: any) => {
-			// Simple validation that should never throw
 			try {
 				return Boolean(config && typeof config === 'object');
 			} catch {
