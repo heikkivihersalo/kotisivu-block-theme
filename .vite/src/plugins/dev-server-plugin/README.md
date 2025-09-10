@@ -112,14 +112,16 @@ The plugin automatically discovers CSS assets from WordPress blocks by:
 dev-server-plugin/
 ├── index.ts                 # Main plugin entry point
 ├── types.ts                 # TypeScript type definitions
+├── client/
+│   └── hmr-client.js       # Browser-side HMR client (JavaScript)
 ├── server/
-│   └── middleware.ts       # Server middleware functions (includes HMR client)
+│   └── middleware.ts       # Server middleware functions
 └── utils/
     ├── config.ts           # Configuration processing
     └── script-templates.ts # HMR script generation
 ```
 
-**Note**: The HMR client is now served directly as JavaScript from the middleware, eliminating the need for a separate TypeScript client file and complex runtime conversion.
+**Note**: The HMR client is now a separate JavaScript file for better developer experience (syntax highlighting, IntelliSense, etc.) and is served directly from the middleware without runtime conversion.
 
 **Note**: The deprecated `DevServerConfig` and `InlineAssetsConfig` types have been removed. All configuration is now handled through the unified `PluginConfig` from the ConfigPlugin, eliminating duplication and ensuring consistency.
 
