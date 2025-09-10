@@ -19,6 +19,55 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
+ * Find the actual file path for an asset
+ */
+function findAssetPath(
+	assetPath: string,
+	blockAssets: Map<string, BlockAssetInfo>,
+	generalAssets?: Map<string, AssetInfo>
+): string {
+	// Try direct resolution first
+	const directPath = path.resolve(assetPath);
+	if (fs.existsSync(directPath)) {
+		return directPath;
+	}
+
+	// Check block assets
+	for (const [, assetInfo] of blockAssets) {
+		for (const buildPath of Object.values(assetInfo.build)) {
+			if (
+				buildPath === assetPath ||
+				buildPath.endsWith(assetPath) ||
+				assetPath.endsWith(buildPath)
+			) {
+				const fullPath = path.resolve(buildPath);
+				if (fs.existsSync(fullPath)) {
+					return fullPath;
+				}
+			}
+		}
+	}
+
+	// Check general assets
+	if (generalAssets) {
+		for (const [, assetInfo] of generalAssets) {
+			if (
+				assetInfo.buildPath === assetPath ||
+				assetInfo.buildPath.endsWith(assetPath) ||
+				assetPath.endsWith(assetInfo.buildPath)
+			) {
+				const fullPath = path.resolve(assetInfo.buildPath);
+				if (fs.existsSync(fullPath)) {
+					return fullPath;
+				}
+			}
+		}
+	}
+
+	return '';
+}
+
+/**
  * Create HMR client middleware
  */
 export function createHMRClientMiddleware(): (
@@ -128,7 +177,7 @@ export function createClientScriptMiddleware(
 
 /**
  * Create status endpoint middleware
- * Updated to work with new BuildMapResolver and asset structures
+ * Returns modification timestamps for monitored assets
  */
 export function createStatusMiddleware(
 	getAllMonitoredAssets: () => string[],
@@ -145,45 +194,13 @@ export function createStatusMiddleware(
 
 		for (const asset of allAssets) {
 			try {
-				let fullPath = path.resolve(asset);
+				const fullPath = findAssetPath(
+					asset,
+					blockAssets,
+					generalAssets
+				);
 
-				// Check block assets if direct path doesn't exist
-				if (!fs.existsSync(fullPath)) {
-					for (const [, assetInfo] of blockAssets) {
-						// Check all build paths in the block asset
-						for (const buildPath of Object.values(
-							assetInfo.build
-						)) {
-							if (
-								buildPath.endsWith(asset) ||
-								buildPath === asset
-							) {
-								fullPath = fs.existsSync(buildPath)
-									? buildPath
-									: Object.values(assetInfo.src)[0] || ''; // Fallback to first source
-								break;
-							}
-						}
-						if (fs.existsSync(fullPath)) break;
-					}
-				}
-
-				// Check general assets if still not found
-				if (!fs.existsSync(fullPath) && generalAssets) {
-					for (const [, assetInfo] of generalAssets) {
-						if (
-							assetInfo.buildPath.endsWith(asset) ||
-							assetInfo.buildPath === asset
-						) {
-							fullPath = fs.existsSync(assetInfo.buildPath)
-								? assetInfo.buildPath
-								: assetInfo.sourcePath;
-							break;
-						}
-					}
-				}
-
-				if (fs.existsSync(fullPath)) {
+				if (fullPath && fs.existsSync(fullPath)) {
 					const stats = fs.statSync(fullPath);
 					status[asset] = stats.mtime.getTime();
 				}
@@ -199,7 +216,7 @@ export function createStatusMiddleware(
 
 /**
  * Create asset content middleware
- * Updated to work with new BuildMapResolver and asset structures
+ * Serves asset content for HMR updates
  */
 export function createAssetContentMiddleware(
 	getAllMonitoredAssets: () => string[],
@@ -207,17 +224,16 @@ export function createAssetContentMiddleware(
 	generalAssets?: Map<string, AssetInfo>
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
-		// Only handle our specific inline content endpoint
 		if (!req.url?.startsWith('/__vite_inline_content/')) {
 			return next();
 		}
 
 		const assetPath = req.url.replace('/__vite_inline_content/', '');
-
 		if (!assetPath) {
 			return next();
 		}
 
+		// Validate asset is monitored
 		const allAssets = getAllMonitoredAssets();
 		const isValidAsset = allAssets.some(
 			(asset) => assetPath === asset || asset.endsWith(assetPath)
@@ -231,85 +247,23 @@ export function createAssetContentMiddleware(
 		}
 
 		try {
-			// Try to find the actual file path
-			let fullPath = '';
-
-			// First, try direct resolution
-			const directPath = path.resolve(assetPath);
-			if (fs.existsSync(directPath)) {
-				fullPath = directPath;
-			}
-
-			// If not found directly, check block assets
-			if (!fullPath) {
-				for (const [, assetInfo] of blockAssets) {
-					// Check all build paths in the block asset
-					for (const buildPath of Object.values(assetInfo.build)) {
-						// Try exact match first
-						if (buildPath === assetPath) {
-							fullPath = path.resolve(buildPath);
-							break;
-						}
-						// Try relative path match
-						if (buildPath.endsWith(assetPath)) {
-							fullPath = path.resolve(buildPath);
-							break;
-						}
-						// Try if assetPath ends with buildPath
-						if (assetPath.endsWith(buildPath)) {
-							fullPath = path.resolve(buildPath);
-							break;
-						}
-					}
-					if (fullPath && fs.existsSync(fullPath)) break;
-				}
-			}
-
-			// Check general assets if still not found
-			if (!fullPath && generalAssets) {
-				for (const [, assetInfo] of generalAssets) {
-					// Try exact match first
-					if (assetInfo.buildPath === assetPath) {
-						fullPath = path.resolve(assetInfo.buildPath);
-						break;
-					}
-					// Try relative path match
-					if (assetInfo.buildPath.endsWith(assetPath)) {
-						fullPath = path.resolve(assetInfo.buildPath);
-						break;
-					}
-					// Try if assetPath ends with buildPath
-					if (assetPath.endsWith(assetInfo.buildPath)) {
-						fullPath = path.resolve(assetInfo.buildPath);
-						break;
-					}
-				}
-			}
+			const fullPath = findAssetPath(
+				assetPath,
+				blockAssets,
+				generalAssets
+			);
 
 			if (fullPath && fs.existsSync(fullPath)) {
 				const content = fs.readFileSync(fullPath, 'utf-8');
-
-				// Set appropriate content type based on file extension
 				const ext = path.extname(fullPath).toLowerCase();
-				const contentType =
-					ext === '.js' ||
-					ext === '.ts' ||
-					ext === '.jsx' ||
-					ext === '.tsx'
-						? 'application/javascript'
-						: 'text/css';
+				const contentType = ['.js', '.ts', '.jsx', '.tsx'].includes(ext)
+					? 'application/javascript'
+					: 'text/css';
 
 				res.setHeader('Content-Type', contentType);
 				res.end(content);
 			} else {
 				console.log('[DevServer] Asset not found:', assetPath);
-				console.log('[DevServer] Tried path:', fullPath);
-				console.log(
-					'[DevServer] Available block assets:',
-					Array.from(blockAssets.values()).map((a) =>
-						Object.values(a.build)
-					)
-				);
 				res.statusCode = 404;
 				res.end('Asset not found');
 			}

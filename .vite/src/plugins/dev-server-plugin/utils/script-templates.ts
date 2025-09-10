@@ -23,7 +23,6 @@ export function generateScript(
 	_templateName: string,
 	config: ScriptConfig
 ): string {
-	// Prepare configuration object
 	const configObject = {
 		blockAssets: Array.from(config.blockAssets.entries()),
 		blockNamespace: config.blockNamespace,
@@ -31,37 +30,25 @@ export function generateScript(
 		viteServerUrl: config.viteServerUrl,
 	};
 
-	// Simple inline script that loads the actual HMR client
 	return `
 // Set global configuration for HMR client
 window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(configObject, null, 2)};
 
 console.log('[DevServer] Loading HMR client...');
 
-// Load the actual HMR client module dynamically
+// Load the actual HMR client module
 (async function() {
 	try {
-		// Try to load as ES module first
 		const { HMRClient } = await import('/__vite_hmr_client.js');
+		const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__;
 		
-		// Get configuration from global variable
-		const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__ || {
-			blockAssets: [],
-			blockNamespace: 'wp',
-			pollingInterval: 500,
-			viteServerUrl: undefined,
-		};
-
-		// Initialize HMR with the real client
-		const blockAssetsMap = new Map(CONFIG.blockAssets);
-		const hmrConfig = {
-			blockAssets: blockAssetsMap,
+		HMRClient.initialize({
+			blockAssets: new Map(CONFIG.blockAssets),
 			blockNamespace: CONFIG.blockNamespace,
 			pollingInterval: CONFIG.pollingInterval,
 			viteServerUrl: CONFIG.viteServerUrl
-		};
-
-		HMRClient.initialize(hmrConfig);
+		});
+		
 		console.log('[DevServer] HMR client loaded and initialized');
 	} catch (error) {
 		console.warn('[DevServer] Failed to load HMR client:', error);
@@ -69,24 +56,19 @@ console.log('[DevServer] Loading HMR client...');
 		// Fallback: load via script tag
 		const script = document.createElement('script');
 		script.src = '/__vite_hmr_client.js';
-		script.onload = function() {
-			// After script loads, the HMRClient should be available globally
+		script.onload = () => {
 			if (window.HMRClient) {
 				const CONFIG = window.__VITE_INLINE_ASSETS_CONFIG__;
-				const blockAssetsMap = new Map(CONFIG.blockAssets);
-				const hmrConfig = {
-					blockAssets: blockAssetsMap,
+				window.HMRClient.initialize({
+					blockAssets: new Map(CONFIG.blockAssets),
 					blockNamespace: CONFIG.blockNamespace,
 					pollingInterval: CONFIG.pollingInterval,
 					viteServerUrl: CONFIG.viteServerUrl
-				};
-				window.HMRClient.initialize(hmrConfig);
-				console.log('[DevServer] HMR client loaded via fallback and initialized');
+				});
+				console.log('[DevServer] HMR client loaded via fallback');
 			}
 		};
-		script.onerror = function() {
-			console.error('[DevServer] Failed to load HMR client even with fallback');
-		};
+		script.onerror = () => console.error('[DevServer] Failed to load HMR client');
 		document.head.appendChild(script);
 	}
 })();
