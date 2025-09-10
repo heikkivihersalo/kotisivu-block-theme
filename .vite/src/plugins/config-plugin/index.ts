@@ -49,7 +49,7 @@ export function resolvePluginConfig(pluginConfig: PluginConfig) {
 		server: {
 			host: pluginConfig.server?.host ?? '0.0.0.0',
 			port: pluginConfig.server?.port ?? 5173,
-			devServerUrl: pluginConfig.server?.devServerUrl,
+			protocol: pluginConfig.server?.protocol ?? 'https',
 			strictPort: pluginConfig.server?.strictPort ?? true,
 			cors: pluginConfig.server?.cors ?? true,
 			base: pluginConfig.server?.base ?? '/',

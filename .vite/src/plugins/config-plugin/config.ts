@@ -29,14 +29,25 @@ export function config(
 	const devServerHost = env.VITE_DEV_SERVER_HOST || pluginConfig.server.host;
 	const devServerPort =
 		parseInt(env.VITE_DEV_SERVER_PORT, 10) || pluginConfig.server.port;
+	const devServerProtocol = pluginConfig.server.protocol;
 
-	// Extract protocol and hostname from the URL
-	const hostUrl = new URL(devServerHost);
-	const hostname = hostUrl.hostname;
-	const isHttps = hostUrl.protocol === 'https:';
+	// Handle hostname and protocol properly
+	let hostname: string;
+	let isHttps: boolean;
+
+	if (devServerHost?.includes('://')) {
+		// If devServerHost includes protocol, parse it as a URL
+		const hostUrl = new URL(devServerHost);
+		hostname = hostUrl.hostname;
+		isHttps = hostUrl.protocol === 'https:';
+	} else {
+		// If devServerHost is just a hostname, use the configured protocol
+		hostname = devServerHost || 'localhost';
+		isHttps = devServerProtocol === 'https';
+	}
 
 	// Build full dev server URL
-	const devServerUrl = `${devServerHost}:${devServerPort}`;
+	const devServerUrl = `${devServerProtocol}://${hostname}:${devServerPort}`;
 
 	// SSL configuration
 	let httpsConfig: boolean | { key: Buffer; cert: Buffer } | undefined;

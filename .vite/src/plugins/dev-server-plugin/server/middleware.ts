@@ -165,7 +165,7 @@ export function createStatusMiddleware(
 	getAllMonitoredAssets: () => string[],
 	blockAssets: Map<string, BlockAssetInfo>,
 	generalAssets?: Map<string, AssetInfo>,
-	serverConfig?: { devServerUrl?: string; host?: string; port?: number }
+	serverConfig?: { host?: string; port?: number; protocol?: 'http' | 'https' }
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		if (req.url !== '/__dev-server/status') {
@@ -205,7 +205,7 @@ export function createAssetContentMiddleware(
 	getAllMonitoredAssets: () => string[],
 	blockAssets: Map<string, BlockAssetInfo>,
 	generalAssets?: Map<string, AssetInfo>,
-	serverConfig?: { devServerUrl?: string; host?: string; port?: number }
+	serverConfig?: { host?: string; port?: number; protocol?: 'http' | 'https' }
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		if (!req.url?.startsWith('/__dev-server/asset-content')) {
@@ -220,17 +220,17 @@ export function createAssetContentMiddleware(
 			(req.connection?.encrypted ? 'https' : 'http');
 
 		let baseUrl: string;
-		if (serverConfig?.devServerUrl) {
-			// Use the configured dev server URL
-			baseUrl = serverConfig.devServerUrl;
-		} else if (host) {
+		if (host) {
 			// Construct from request headers
 			baseUrl = `${protocol}://${host}`;
+		} else if (serverConfig?.host) {
+			// Construct from server config
+			const configProtocol = serverConfig.protocol || 'https';
+			const configPort = serverConfig.port || 5173;
+			baseUrl = `${configProtocol}://${serverConfig.host}:${configPort}`;
 		} else {
-			// Final fallback - construct from server config
-			const configHost = serverConfig?.host || '127.0.0.1';
-			const configPort = serverConfig?.port || 5173;
-			baseUrl = `http://${configHost}:${configPort}`;
+			// Final fallback
+			baseUrl = 'http://127.0.0.1:5173';
 		}
 
 		const url = new URL(req.url, baseUrl);

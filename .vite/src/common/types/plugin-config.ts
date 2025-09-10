@@ -78,6 +78,9 @@ export interface PluginConfig {
 		/** Development server port */
 		port?: number;
 
+		/** Protocol to use (defaults to https) */
+		protocol?: 'http' | 'https';
+
 		/** Enable strict port (fail if port is already in use) */
 		strictPort?: boolean;
 

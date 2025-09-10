@@ -17,7 +17,10 @@ import type {
 } from '../../common/types/index.js';
 import type { ResolvedPluginConfig } from '../config-plugin/index.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver';
-import { getScriptInjectionOptions } from './utils/config.js';
+import {
+	getScriptInjectionOptions,
+	buildDevServerUrl,
+} from './utils/config.js';
 import {
 	createClientScriptMiddleware,
 	createStatusMiddleware,
@@ -482,8 +485,11 @@ export function DevServerPlugin(): Plugin {
 								?.pollingInterval || 500,
 							{
 								themePrefix: undefined, // Will be auto-detected
-								viteServerUrl:
-									pluginConfig.server?.devServerUrl,
+								viteServerUrl: buildDevServerUrl({
+									host: pluginConfig.server?.host,
+									port: pluginConfig.server?.port,
+									protocol: pluginConfig.server?.protocol,
+								}),
 								vitePort:
 									pluginConfig.server?.port?.toString() ||
 									'5173',
@@ -498,7 +504,11 @@ export function DevServerPlugin(): Plugin {
 						getAllAssets,
 						blockAssets,
 						generalAssets,
-						pluginConfig.server
+						{
+							host: pluginConfig.server?.host,
+							port: pluginConfig.server?.port,
+							protocol: pluginConfig.server?.protocol,
+						}
 					)
 				);
 
@@ -508,7 +518,11 @@ export function DevServerPlugin(): Plugin {
 						getAllAssets,
 						blockAssets,
 						generalAssets,
-						pluginConfig.server
+						{
+							host: pluginConfig.server?.host,
+							port: pluginConfig.server?.port,
+							protocol: pluginConfig.server?.protocol,
+						}
 					)
 				);
 			}
