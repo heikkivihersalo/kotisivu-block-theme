@@ -80,46 +80,302 @@ export function createHMRClientMiddleware(): (
 			return next();
 		}
 
-		// Get the path to the HMR client file
-		const __filename = fileURLToPath(import.meta.url);
-		const __dirname = path.dirname(__filename);
-		const hmrClientPath = path.resolve(
-			__dirname,
-			'../client/hmr-client.ts'
-		);
-
 		try {
-			if (fs.existsSync(hmrClientPath)) {
-				// Read the TypeScript file and convert it to JavaScript
-				let content = fs.readFileSync(hmrClientPath, 'utf-8');
+			// Serve a simplified JavaScript version of the HMR client
+			const content = `
+/**
+ * Simplified HMR Client for WordPress Block Theme
+ */
 
-				// Simple TypeScript to JavaScript conversion
-				// Remove type annotations and interfaces/enums
-				content = content
-					.replace(/^import type .+$/gm, '') // Remove type imports
-					.replace(/interface\s+\w+\s*{[^}]*}/gm, '') // Remove interfaces
-					.replace(/enum\s+\w+\s*{[^}]*}/gm, '') // Remove enums
-					.replace(/:\s*[A-Za-z\[\]<>|,\s]+(?=\s*[=;,)])/g, '') // Remove type annotations
-					.replace(/private\s+/g, '') // Remove private keyword
-					.replace(/export\s+/g, '') // Remove export keywords (make everything global)
-					.replace(/^\/\*\*[\s\S]*?\*\//gm, '') // Remove JSDoc comments
-					.trim();
+class HMRClient {
+	constructor(config) {
+		this.lastModified = {};
+		this.pollingInterval = null;
+		this.isRunning = false;
+		this.config = config;
+		this.handlers = [
+			new InlineCSSHandler(config),
+			new CSSFileHandler(),
+			new JSFileHandler()
+		];
+		this.storeGlobalConfig();
+	}
 
-				// Add global assignment to make HMRClient available
-				content +=
-					'\n\n// Make HMRClient available globally\nwindow.HMRClient = HMRClient;\n';
+	static initialize(config) {
+		console.log('[DevServer] Initializing HMR client');
+		const client = new HMRClient(config);
+		client.start();
+		console.log('[DevServer] HMR client initialized');
+		return client;
+	}
 
-				res.setHeader('Content-Type', 'application/javascript');
-				res.setHeader('Cache-Control', 'no-cache');
-				res.end(content);
-			} else {
-				console.warn(
-					'[DevServer] HMR client file not found:',
-					hmrClientPath
-				);
-				res.statusCode = 404;
-				res.end('HMR client not found');
+	start() {
+		if (this.isRunning) {
+			console.warn('[HMR] Client is already running');
+			return;
+		}
+
+		console.log('[DevServer] Starting HMR with polling');
+		this.isRunning = true;
+		this.setupPolling();
+	}
+
+	stop() {
+		if (!this.isRunning) return;
+
+		console.log('[DevServer] Stopping HMR');
+		this.isRunning = false;
+
+		if (this.pollingInterval) {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = null;
+		}
+	}
+
+	pause() {
+		if (this.pollingInterval) {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = null;
+		}
+		console.log('[DevServer] HMR polling paused');
+	}
+
+	resume() {
+		if (this.isRunning && !this.pollingInterval) {
+			this.setupPolling();
+			console.log('[DevServer] HMR polling resumed');
+		}
+	}
+
+	getConfig() {
+		return { ...this.config };
+	}
+
+	updateConfig(newConfig) {
+		this.config = { ...this.config, ...newConfig };
+		this.storeGlobalConfig();
+
+		if (newConfig.pollingInterval && this.isRunning) {
+			this.pause();
+			this.resume();
+		}
+	}
+
+	storeGlobalConfig() {
+		window.__VITE_INLINE_ASSETS_CONFIG__ = {
+			blockAssets: Array.from(this.config.blockAssets.entries()),
+			blockNamespace: this.config.blockNamespace,
+			pollingInterval: this.config.pollingInterval,
+			viteServerUrl: this.config.viteServerUrl,
+		};
+	}
+
+	setupPolling() {
+		const pollForChanges = async () => {
+			if (!this.isRunning) return;
+
+			try {
+				const viteServerUrl = this.getViteServerUrl();
+				const statusUrl = viteServerUrl + '/__vite_inline_content/status';
+				const response = await fetch(statusUrl);
+
+				if (response.ok) {
+					const status = await response.json();
+					const changes = [];
+
+					for (const [asset, modified] of Object.entries(status)) {
+						if (this.lastModified[asset] && this.lastModified[asset] !== modified) {
+							const content = await this.fetchAssetContent(asset);
+							if (content !== null) {
+								changes.push({
+									path: asset,
+									content: content,
+									type: this.determineAssetType(asset)
+								});
+							}
+						}
+						this.lastModified[asset] = modified;
+					}
+
+					await this.processChanges(changes);
+				}
+			} catch (error) {
+				// Silently fail for polling to avoid console spam
 			}
+		};
+
+		this.pollingInterval = window.setInterval(
+			pollForChanges,
+			this.config.pollingInterval || 500
+		);
+	}
+
+	async fetchAssetContent(assetPath) {
+		try {
+			const viteServerUrl = this.getViteServerUrl();
+			const contentUrl = viteServerUrl + '/__vite_inline_content/' + assetPath;
+			const response = await fetch(contentUrl);
+
+			return response.ok ? await response.text() : null;
+		} catch (error) {
+			console.warn('[HMR] Failed to fetch content for:', assetPath, error);
+			return null;
+		}
+	}
+
+	async processChanges(changes) {
+		for (const change of changes) {
+			const handler = this.handlers.find(h => h.canHandle(change.path));
+
+			if (handler) {
+				try {
+					await handler.update(change.path, change.content);
+				} catch (error) {
+					console.warn('[HMR] Failed to update asset:', change.path, error);
+				}
+			} else {
+				console.warn('[HMR] No handler found for asset:', change.path);
+			}
+		}
+	}
+
+	determineAssetType(assetPath) {
+		if (assetPath.endsWith('.css')) {
+			return 'inline-css';
+		}
+		if (assetPath.endsWith('.js') || assetPath.endsWith('.ts')) {
+			return 'js-file';
+		}
+		return 'other';
+	}
+
+	getViteServerUrl() {
+		if (this.config.viteServerUrl) {
+			return this.config.viteServerUrl;
+		}
+
+		if (location.port === '5173') {
+			return '';
+		}
+
+		if (location.hostname.includes('.local') || 
+			location.hostname.includes('.test') || 
+			location.hostname.includes('.ddev.site')) {
+			return location.protocol + '//' + location.hostname + ':5173';
+		}
+
+		return location.protocol + '//' + location.hostname + ':5173';
+	}
+}
+
+class InlineCSSHandler {
+	constructor(config) {
+		this.config = config;
+	}
+
+	canHandle(assetPath) {
+		return assetPath.endsWith('.css');
+	}
+
+	async update(assetPath, content) {
+		const styleId = this.getStyleIdFromAsset(assetPath);
+		let styleElement = document.getElementById(styleId);
+
+		if (!styleElement) {
+			const foundElement = this.findStyleElementByPattern(assetPath);
+			if (foundElement) {
+				styleElement = foundElement;
+			}
+		}
+
+		if (styleElement && styleElement.textContent !== content) {
+			styleElement.textContent = content;
+			console.log('[HMR] ✅ Updated inline CSS:', assetPath);
+			return true;
+		}
+
+		if (!styleElement) {
+			console.warn('[HMR] No style element found for:', assetPath, 'with ID:', styleId);
+		}
+
+		return false;
+	}
+
+	getStyleIdFromAsset(assetPath) {
+		const blockAssets = this.config.blockAssets;
+
+		for (const [, assetInfo] of blockAssets) {
+			if (assetPath.includes(assetInfo.blockSlug || assetInfo.slug)) {
+				let cssType = 'style';
+				if (assetPath.includes('index.css')) {
+					cssType = 'index';
+				} else if (assetPath.includes('style-index.css')) {
+					cssType = 'style-index';
+				}
+				return this.config.blockNamespace + '-' + (assetInfo.blockSlug || assetInfo.slug) + '-' + cssType + '-inline-css';
+			}
+		}
+
+		const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
+		return assetId + '-inline-css';
+	}
+
+	findStyleElementByPattern(assetPath) {
+		const styleElements = document.querySelectorAll('style[id*="-inline-css"], style[id*="-css"]');
+		const assetName = assetPath.split('/').pop()?.replace('.css', '') || '';
+
+		for (const style of styleElements) {
+			if (style.id.includes(assetName)) {
+				return style;
+			}
+		}
+
+		return null;
+	}
+}
+
+class CSSFileHandler {
+	canHandle(assetPath) {
+		return assetPath.endsWith('.css');
+	}
+
+	async update(assetPath, _content) {
+		const linkElements = document.querySelectorAll('link[rel="stylesheet"]');
+
+		for (const link of linkElements) {
+			if (link.href.includes(assetPath.replace(/^\/+/, ''))) {
+				const url = new URL(link.href);
+				url.searchParams.set('t', Date.now().toString());
+				link.href = url.toString();
+				console.log('[HMR] ✅ Reloaded CSS file:', assetPath);
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
+class JSFileHandler {
+	canHandle(assetPath) {
+		return assetPath.endsWith('.js') || assetPath.endsWith('.ts');
+	}
+
+	async update(assetPath, _content) {
+		console.log('[HMR] 🔄 JS file changed, consider page reload:', assetPath);
+		return true;
+	}
+}
+
+// Make HMRClient available globally
+if (typeof window !== "undefined") {
+	window.HMRClient = HMRClient;
+}
+`;
+
+			res.setHeader('Content-Type', 'application/javascript');
+			res.setHeader('Cache-Control', 'no-cache');
+			res.end(content);
 		} catch (error) {
 			console.error('[DevServer] Error serving HMR client:', error);
 			res.statusCode = 500;
