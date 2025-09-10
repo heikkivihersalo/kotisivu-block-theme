@@ -483,8 +483,7 @@ export function DevServerPlugin(): Plugin {
 							{
 								themePrefix: undefined, // Will be auto-detected
 								viteServerUrl:
-									pluginConfig.server?.devServerUrl ||
-									'https://block-theme.local:5173',
+									pluginConfig.server?.devServerUrl,
 								vitePort:
 									pluginConfig.server?.port?.toString() ||
 									'5173',
@@ -498,7 +497,8 @@ export function DevServerPlugin(): Plugin {
 					createStatusMiddleware(
 						getAllAssets,
 						blockAssets,
-						generalAssets
+						generalAssets,
+						pluginConfig.server
 					)
 				);
 
@@ -507,7 +507,8 @@ export function DevServerPlugin(): Plugin {
 					createAssetContentMiddleware(
 						getAllAssets,
 						blockAssets,
-						generalAssets
+						generalAssets,
+						pluginConfig.server
 					)
 				);
 			}

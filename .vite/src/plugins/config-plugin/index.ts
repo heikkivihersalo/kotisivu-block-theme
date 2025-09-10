@@ -47,11 +47,13 @@ export function resolvePluginConfig(pluginConfig: PluginConfig) {
 		},
 		// Provide default server configuration
 		server: {
-			host: pluginConfig.server?.host ?? 'localhost',
+			host: pluginConfig.server?.host ?? '0.0.0.0',
 			port: pluginConfig.server?.port ?? 5173,
+			devServerUrl: pluginConfig.server?.devServerUrl,
 			strictPort: pluginConfig.server?.strictPort ?? true,
 			cors: pluginConfig.server?.cors ?? true,
 			base: pluginConfig.server?.base ?? '/',
+			https: pluginConfig.server?.https,
 			...pluginConfig.server,
 		},
 		// Provide default paths configuration

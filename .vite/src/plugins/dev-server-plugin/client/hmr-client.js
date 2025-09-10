@@ -224,22 +224,18 @@ class HMRClient {
 		if (location) {
 			const { hostname, port, protocol } = location;
 
-			// If already on the Vite server port, return empty string
-			if (hostname === 'localhost' && port === '5173') {
+			// If we're already on a Vite dev server port, return empty string for relative URLs
+			if (port === '5173' || port === '3000' || port === '8080') {
 				return '';
 			}
 
-			// If we're on block-theme.local, use HTTPS and port 5173
-			if (hostname === 'block-theme.local') {
-				return 'https://block-theme.local:5173';
-			}
-
-			// Build Vite server URL
+			// Build Vite server URL based on current location
+			// Use same protocol as current page, but always use port 5173 for Vite
 			return `${protocol}//${hostname}:5173`;
 		}
 
-		// Fallback
-		return 'http://localhost:5173';
+		// Fallback to relative URLs if no location available
+		return '';
 	}
 }
 
@@ -412,7 +408,7 @@ if (typeof document !== 'undefined') {
 				blockAssets: new Map(),
 				blockNamespace: 'kotisivu',
 				pollingInterval: 1000,
-				viteServerUrl: 'https://block-theme.local:5173',
+				viteServerUrl: undefined, // Will be auto-detected
 			};
 
 		// Start HMR client

@@ -164,7 +164,8 @@ export function createClientScriptMiddleware(
 export function createStatusMiddleware(
 	getAllMonitoredAssets: () => string[],
 	blockAssets: Map<string, BlockAssetInfo>,
-	generalAssets?: Map<string, AssetInfo>
+	generalAssets?: Map<string, AssetInfo>,
+	serverConfig?: { devServerUrl?: string; host?: string; port?: number }
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		if (req.url !== '/__dev-server/status') {
@@ -203,7 +204,8 @@ export function createStatusMiddleware(
 export function createAssetContentMiddleware(
 	getAllMonitoredAssets: () => string[],
 	blockAssets: Map<string, BlockAssetInfo>,
-	generalAssets?: Map<string, AssetInfo>
+	generalAssets?: Map<string, AssetInfo>,
+	serverConfig?: { devServerUrl?: string; host?: string; port?: number }
 ): (req: any, res: any, next: any) => void {
 	return async (req, res, next) => {
 		if (!req.url?.startsWith('/__dev-server/asset-content')) {
@@ -211,7 +213,27 @@ export function createAssetContentMiddleware(
 		}
 
 		// Parse the asset path from query parameter
-		const url = new URL(req.url, 'http://localhost');
+		// Use the request host from headers for URL construction
+		const host = req.headers.host;
+		const protocol =
+			req.headers['x-forwarded-proto'] ||
+			(req.connection?.encrypted ? 'https' : 'http');
+
+		let baseUrl: string;
+		if (serverConfig?.devServerUrl) {
+			// Use the configured dev server URL
+			baseUrl = serverConfig.devServerUrl;
+		} else if (host) {
+			// Construct from request headers
+			baseUrl = `${protocol}://${host}`;
+		} else {
+			// Final fallback - construct from server config
+			const configHost = serverConfig?.host || '127.0.0.1';
+			const configPort = serverConfig?.port || 5173;
+			baseUrl = `http://${configHost}:${configPort}`;
+		}
+
+		const url = new URL(req.url, baseUrl);
 		const assetPath = url.searchParams.get('path');
 
 		if (!assetPath) {
