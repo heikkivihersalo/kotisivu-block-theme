@@ -20,8 +20,6 @@ export default defineConfig(({ mode }) => {
 				server: {
 					host: 'block-theme.local', // Development hostname
 					port: 5173, // Development port
-					protocol: 'https', // Protocol (defaults to https)
-					base: '/',
 				},
 
 				// Path configuration
