@@ -1,9 +1,8 @@
 /**
- * HMR Client for Inline Assets
+ * HMR Client for Various Asset Types
  *
- * Client-side script for handling Hot Module Replacement of inline CSS assets.
- * This script runs in the browser and polls for changes to inline assets,
- * automatically updating styles when changes are detected.
+ * Class-based client-side script for handling Hot Module Replacement of different asset types.
+ * Supports inline CSS, CSS files, JS files, and other assets with a unified polling mechanism.
  */
 
 /**
@@ -17,35 +16,401 @@ interface HMRConfig {
 }
 
 /**
- * Initialize HMR client with given configuration
+ * Asset change information
  */
-export function initializeHMR(config: HMRConfig): void {
-	console.log('[DevServer] Initializing HMR client');
-
-	// Store config globally for access by other functions
-	(window as any).__VITE_INLINE_ASSETS_CONFIG__ = {
-		blockAssets: Array.from(config.blockAssets.entries()),
-		blockNamespace: config.blockNamespace,
-		pollingInterval: config.pollingInterval,
-		viteServerUrl: config.viteServerUrl,
-	};
-
-	// Setup polling-based HMR
-	setupPollingHMR(config);
-
-	console.log('[DevServer] HMR client initialized');
+interface AssetChange {
+	path: string;
+	content: string;
+	type: AssetType;
 }
 
 /**
- * Setup polling-based HMR
+ * Asset type enumeration
  */
-function setupPollingHMR(config: HMRConfig): void {
-	console.log('[DevServer] Using polling for HMR');
-	const lastModified: Record<string, number> = {};
+enum AssetType {
+	INLINE_CSS = 'inline-css',
+	CSS_FILE = 'css-file',
+	JS_FILE = 'js-file',
+	OTHER = 'other',
+}
 
-	function getViteServerUrl(): string {
-		if (config.viteServerUrl) {
-			return config.viteServerUrl;
+/**
+ * Base asset handler interface
+ */
+interface AssetHandler {
+	canHandle(assetPath: string): boolean;
+	update(assetPath: string, content: string): Promise<boolean>;
+	getAssetType(): AssetType;
+}
+
+/**
+ * Inline CSS Asset Handler
+ */
+class InlineCSSHandler implements AssetHandler {
+	constructor(private config: HMRConfig) {}
+
+	canHandle(assetPath: string): boolean {
+		return assetPath.endsWith('.css');
+	}
+
+	getAssetType(): AssetType {
+		return AssetType.INLINE_CSS;
+	}
+
+	async update(assetPath: string, content: string): Promise<boolean> {
+		const styleId = this.getStyleIdFromAsset(assetPath);
+		let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+
+		// If exact ID not found, try pattern matching
+		if (!styleElement) {
+			const foundElement = this.findStyleElementByPattern(assetPath);
+			if (foundElement) {
+				styleElement = foundElement;
+			}
+		}
+
+		if (styleElement && styleElement.textContent !== content) {
+			styleElement.textContent = content;
+			console.log('[HMR] ✅ Updated inline CSS:', assetPath);
+			return true;
+		}
+
+		if (!styleElement) {
+			console.warn(
+				'[HMR] No style element found for:',
+				assetPath,
+				'with ID:',
+				styleId
+			);
+		}
+
+		return false;
+	}
+
+	private getStyleIdFromAsset(assetPath: string): string {
+		const blockAssets = this.config.blockAssets;
+
+		// Check if it's a block asset
+		for (const [, assetInfo] of blockAssets) {
+			const typedAssetInfo = assetInfo as {
+				blockSlug: string;
+				sourcePath: string;
+				buildPath?: string;
+			};
+			if (assetPath.includes(typedAssetInfo.blockSlug)) {
+				// Determine CSS type from path
+				let cssType = 'style';
+				if (assetPath.includes('index.css')) {
+					cssType = 'index';
+				} else if (assetPath.includes('style-index.css')) {
+					cssType = 'style-index';
+				}
+				return `${this.config.blockNamespace}-${typedAssetInfo.blockSlug}-${cssType}-inline-css`;
+			}
+		}
+
+		// Handle theme inline assets
+		const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
+		return `${assetId}-inline-css`;
+	}
+
+	private findStyleElementByPattern(
+		assetPath: string
+	): HTMLStyleElement | null {
+		const styleElements = document.querySelectorAll(
+			'style[id*="-inline-css"], style[id*="-css"]'
+		);
+		const assetName = assetPath.split('/').pop()?.replace('.css', '') || '';
+
+		for (const style of styleElements) {
+			if (style.id.includes(assetName)) {
+				return style as HTMLStyleElement;
+			}
+		}
+
+		return null;
+	}
+}
+
+/**
+ * CSS File Handler (for linked stylesheets)
+ */
+class CSSFileHandler implements AssetHandler {
+	canHandle(assetPath: string): boolean {
+		return assetPath.endsWith('.css');
+	}
+
+	getAssetType(): AssetType {
+		return AssetType.CSS_FILE;
+	}
+
+	async update(assetPath: string, _content: string): Promise<boolean> {
+		// Find linked CSS files that match the asset path
+		const linkElements = document.querySelectorAll(
+			'link[rel="stylesheet"]'
+		) as NodeListOf<HTMLLinkElement>;
+
+		for (const link of linkElements) {
+			if (link.href.includes(assetPath.replace(/^\/+/, ''))) {
+				// Force reload by updating href with cache-busting parameter
+				const url = new URL(link.href);
+				url.searchParams.set('t', Date.now().toString());
+				link.href = url.toString();
+				console.log('[HMR] ✅ Reloaded CSS file:', assetPath);
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
+/**
+ * JavaScript File Handler
+ */
+class JSFileHandler implements AssetHandler {
+	canHandle(assetPath: string): boolean {
+		return assetPath.endsWith('.js') || assetPath.endsWith('.ts');
+	}
+
+	getAssetType(): AssetType {
+		return AssetType.JS_FILE;
+	}
+
+	async update(assetPath: string, _content: string): Promise<boolean> {
+		// For JS files, we typically need to reload the page or use module replacement
+		// This is a basic implementation - could be enhanced with module replacement
+		console.log(
+			'[HMR] 🔄 JS file changed, consider page reload:',
+			assetPath
+		);
+
+		// For now, just log - in a full implementation, you might:
+		// 1. Try to replace ES modules
+		// 2. Reload specific scripts
+		// 3. Trigger a page reload as fallback
+
+		return true;
+	}
+}
+
+/**
+ * Main HMR Client Class
+ */
+export class HMRClient {
+	private lastModified: Record<string, number> = {};
+	private pollingInterval?: number;
+	private isRunning = false;
+	private handlers: AssetHandler[] = [];
+
+	constructor(private config: HMRConfig) {
+		this.setupHandlers();
+		this.storeGlobalConfig();
+	}
+
+	/**
+	 * Initialize and start the HMR client
+	 */
+	static initialize(config: HMRConfig): HMRClient {
+		console.log('[DevServer] Initializing HMR client');
+		const client = new HMRClient(config);
+		client.start();
+		console.log('[DevServer] HMR client initialized');
+		return client;
+	}
+
+	/**
+	 * Start HMR polling
+	 */
+	start(): void {
+		if (this.isRunning) {
+			console.warn('[HMR] Client is already running');
+			return;
+		}
+
+		console.log('[DevServer] Starting HMR with polling');
+		this.isRunning = true;
+		this.setupPolling();
+	}
+
+	/**
+	 * Stop HMR polling
+	 */
+	stop(): void {
+		if (!this.isRunning) {
+			return;
+		}
+
+		console.log('[DevServer] Stopping HMR');
+		this.isRunning = false;
+
+		if (this.pollingInterval) {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = undefined;
+		}
+	}
+
+	/**
+	 * Pause HMR polling
+	 */
+	pause(): void {
+		if (this.pollingInterval) {
+			clearInterval(this.pollingInterval);
+			this.pollingInterval = undefined;
+		}
+		console.log('[DevServer] HMR polling paused');
+	}
+
+	/**
+	 * Resume HMR polling
+	 */
+	resume(): void {
+		if (this.isRunning && !this.pollingInterval) {
+			this.setupPolling();
+			console.log('[DevServer] HMR polling resumed');
+		}
+	}
+
+	/**
+	 * Get the current configuration
+	 */
+	getConfig(): HMRConfig {
+		return { ...this.config };
+	}
+
+	/**
+	 * Update configuration
+	 */
+	updateConfig(newConfig: Partial<HMRConfig>): void {
+		this.config = { ...this.config, ...newConfig };
+		this.storeGlobalConfig();
+
+		// Restart polling with new interval if changed
+		if (newConfig.pollingInterval && this.isRunning) {
+			this.pause();
+			this.resume();
+		}
+	}
+
+	private setupHandlers(): void {
+		this.handlers = [
+			new InlineCSSHandler(this.config),
+			new CSSFileHandler(),
+			new JSFileHandler(),
+		];
+	}
+
+	private storeGlobalConfig(): void {
+		(window as any).__VITE_INLINE_ASSETS_CONFIG__ = {
+			blockAssets: Array.from(this.config.blockAssets.entries()),
+			blockNamespace: this.config.blockNamespace,
+			pollingInterval: this.config.pollingInterval,
+			viteServerUrl: this.config.viteServerUrl,
+		};
+	}
+
+	private setupPolling(): void {
+		const pollForChanges = async (): Promise<void> => {
+			if (!this.isRunning) return;
+
+			try {
+				const viteServerUrl = this.getViteServerUrl();
+				const statusUrl = `${viteServerUrl}/__vite_inline_content/status`;
+				const response = await fetch(statusUrl);
+
+				if (response.ok) {
+					const status: Record<string, number> =
+						await response.json();
+					const changes: AssetChange[] = [];
+
+					// Collect all changes first
+					for (const [asset, modified] of Object.entries(status)) {
+						if (
+							this.lastModified[asset] &&
+							this.lastModified[asset] !== modified
+						) {
+							const content = await this.fetchAssetContent(asset);
+							if (content !== null) {
+								const assetType =
+									this.determineAssetType(asset);
+								changes.push({
+									path: asset,
+									content,
+									type: assetType,
+								});
+							}
+						}
+						this.lastModified[asset] = modified;
+					}
+
+					// Process all changes
+					await this.processChanges(changes);
+				}
+			} catch (error) {
+				// Silently fail for polling to avoid console spam
+			}
+		};
+
+		this.pollingInterval = window.setInterval(
+			pollForChanges,
+			this.config.pollingInterval || 500
+		);
+	}
+
+	private async fetchAssetContent(assetPath: string): Promise<string | null> {
+		try {
+			const viteServerUrl = this.getViteServerUrl();
+			const contentUrl = `${viteServerUrl}/__vite_inline_content/${assetPath}`;
+			const response = await fetch(contentUrl);
+
+			return response.ok ? await response.text() : null;
+		} catch (error) {
+			console.warn(
+				'[HMR] Failed to fetch content for:',
+				assetPath,
+				error
+			);
+			return null;
+		}
+	}
+
+	private async processChanges(changes: AssetChange[]): Promise<void> {
+		for (const change of changes) {
+			const handler = this.handlers.find((h) => h.canHandle(change.path));
+
+			if (handler) {
+				try {
+					await handler.update(change.path, change.content);
+				} catch (error) {
+					console.warn(
+						'[HMR] Failed to update asset:',
+						change.path,
+						error
+					);
+				}
+			} else {
+				console.warn('[HMR] No handler found for asset:', change.path);
+			}
+		}
+	}
+
+	private determineAssetType(assetPath: string): AssetType {
+		if (assetPath.endsWith('.css')) {
+			// Determine if it's inline CSS or file CSS based on context
+			// For now, default to inline CSS
+			return AssetType.INLINE_CSS;
+		}
+
+		if (assetPath.endsWith('.js') || assetPath.endsWith('.ts')) {
+			return AssetType.JS_FILE;
+		}
+
+		return AssetType.OTHER;
+	}
+
+	private getViteServerUrl(): string {
+		if (this.config.viteServerUrl) {
+			return this.config.viteServerUrl;
 		}
 
 		// Auto-detect based on current location
@@ -67,106 +432,4 @@ function setupPollingHMR(config: HMRConfig): void {
 		const protocol = location.protocol;
 		return `${protocol}//${location.hostname}:5173`;
 	}
-
-	async function pollForChanges(): Promise<void> {
-		try {
-			const viteServerUrl = getViteServerUrl();
-			const statusUrl = `${viteServerUrl}/__vite_inline_content/status`;
-			const response = await fetch(statusUrl);
-
-			if (response.ok) {
-				const status: Record<string, number> = await response.json();
-				for (const [asset, modified] of Object.entries(status)) {
-					if (
-						lastModified[asset] &&
-						lastModified[asset] !== modified
-					) {
-						await updateInlineAsset(asset, config);
-					}
-					lastModified[asset] = modified;
-				}
-			}
-		} catch (error) {
-			// Silently fail for polling
-		}
-	}
-
-	setInterval(pollForChanges, config.pollingInterval || 500);
-}
-
-/**
- * Update inline styles with new content
- */
-async function updateInlineAsset(
-	assetPath: string,
-	config: HMRConfig
-): Promise<void> {
-	try {
-		const viteServerUrl = config.viteServerUrl || '';
-		const contentUrl = `${viteServerUrl}/__vite_inline_content/${assetPath}`;
-		const response = await fetch(contentUrl);
-
-		if (response.ok) {
-			const newContent = await response.text();
-			const styleId = getStyleIdFromAsset(assetPath, config);
-
-			// Find the corresponding style tag by exact ID
-			let styleElement = document.getElementById(styleId);
-
-			// If exact ID not found, try pattern matching
-			if (!styleElement) {
-				const styleElements = document.querySelectorAll(
-					'style[id*="-inline-css"], style[id*="-css"]'
-				);
-				const assetName =
-					assetPath.split('/').pop()?.replace('.css', '') || '';
-
-				for (const style of styleElements) {
-					if (style.id.includes(assetName)) {
-						styleElement = style as HTMLElement;
-						break;
-					}
-				}
-			}
-
-			if (styleElement && styleElement.textContent !== newContent) {
-				styleElement.textContent = newContent;
-				console.log('[HMR] ✅ Updated inline asset:', assetPath);
-			}
-		}
-	} catch (error) {
-		console.warn('[HMR] Failed to update inline asset:', assetPath, error);
-	}
-}
-
-/**
- * Generate WordPress style ID from asset path
- */
-function getStyleIdFromAsset(assetPath: string, config: HMRConfig): string {
-	const blockAssets = new Map(
-		(window as any).__VITE_INLINE_ASSETS_CONFIG__?.blockAssets || []
-	);
-
-	// Check if it's a block asset
-	for (const [, assetInfo] of blockAssets) {
-		const typedAssetInfo = assetInfo as {
-			blockSlug: string;
-			sourcePath: string;
-			buildPath?: string;
-		};
-		if (assetPath.includes(typedAssetInfo.blockSlug)) {
-			// Determine CSS type from path
-			let cssType = 'style';
-			if (assetPath.includes('index.css')) {
-				cssType = 'index';
-			} else if (assetPath.includes('style-index.css')) {
-				cssType = 'style-index';
-			}
-			return `${config.blockNamespace}-${typedAssetInfo.blockSlug}-${cssType}-inline-css`;
-		}
-	}
-
-	// Handle theme inline assets
-	const assetId = assetPath.replace(/[^a-zA-Z0-9]/g, '-');
-	return `${assetId}-inline-css`;
 }

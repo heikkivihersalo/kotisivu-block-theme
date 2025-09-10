@@ -6,12 +6,78 @@
 
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import type { BlockAssetInfo, AssetInfo } from '../types.js';
 import {
 	generateScript,
 	generateModuleScript,
 	generateExternalScript,
 } from '../utils/script-templates.js';
+
+// Get the current file's directory path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+/**
+ * Create HMR client middleware
+ */
+export function createHMRClientMiddleware(): (
+	req: any,
+	res: any,
+	next: any
+) => void {
+	return (req, res, next) => {
+		if (req.url !== '/__vite_hmr_client.js') {
+			return next();
+		}
+
+		// Get the path to the HMR client file
+		const __filename = fileURLToPath(import.meta.url);
+		const __dirname = path.dirname(__filename);
+		const hmrClientPath = path.resolve(
+			__dirname,
+			'../client/hmr-client.ts'
+		);
+
+		try {
+			if (fs.existsSync(hmrClientPath)) {
+				// Read the TypeScript file and convert it to JavaScript
+				let content = fs.readFileSync(hmrClientPath, 'utf-8');
+
+				// Simple TypeScript to JavaScript conversion
+				// Remove type annotations and interfaces/enums
+				content = content
+					.replace(/^import type .+$/gm, '') // Remove type imports
+					.replace(/interface\s+\w+\s*{[^}]*}/gm, '') // Remove interfaces
+					.replace(/enum\s+\w+\s*{[^}]*}/gm, '') // Remove enums
+					.replace(/:\s*[A-Za-z\[\]<>|,\s]+(?=\s*[=;,)])/g, '') // Remove type annotations
+					.replace(/private\s+/g, '') // Remove private keyword
+					.replace(/export\s+/g, '') // Remove export keywords (make everything global)
+					.replace(/^\/\*\*[\s\S]*?\*\//gm, '') // Remove JSDoc comments
+					.trim();
+
+				// Add global assignment to make HMRClient available
+				content +=
+					'\n\n// Make HMRClient available globally\nwindow.HMRClient = HMRClient;\n';
+
+				res.setHeader('Content-Type', 'application/javascript');
+				res.setHeader('Cache-Control', 'no-cache');
+				res.end(content);
+			} else {
+				console.warn(
+					'[DevServer] HMR client file not found:',
+					hmrClientPath
+				);
+				res.statusCode = 404;
+				res.end('HMR client not found');
+			}
+		} catch (error) {
+			console.error('[DevServer] Error serving HMR client:', error);
+			res.statusCode = 500;
+			res.end('Internal server error');
+		}
+	};
+}
 
 /**
  * Serve the HMR client script

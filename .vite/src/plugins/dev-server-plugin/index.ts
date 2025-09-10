@@ -21,6 +21,7 @@ import {
 	createClientScriptMiddleware,
 	createStatusMiddleware,
 	createAssetContentMiddleware,
+	createHMRClientMiddleware,
 } from './server/middleware.js';
 
 const VITE_PLUGIN_NAME = 'vite-wordpress';
@@ -451,6 +452,9 @@ export function DevServerPlugin(): Plugin {
 			if (pluginConfig.hmr?.enabled !== false) {
 				// Initialize empty block assets - will be populated in buildStart
 				blockAssets = new Map();
+
+				// Add HMR client module endpoint
+				server.middlewares.use(createHMRClientMiddleware());
 
 				// Add HMR client script endpoint if script options are available
 				if (scriptOptions) {
