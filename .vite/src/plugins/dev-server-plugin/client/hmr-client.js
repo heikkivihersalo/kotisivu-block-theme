@@ -115,7 +115,7 @@ class HMRClient {
 
 		try {
 			const response = await fetch(
-				`${this.config.viteServerUrl}/__dev-server/status`
+				`${this.getViteServerUrl()}/__dev-server/status`
 			);
 			const status = await response.json();
 			this.handleStatusUpdate(status);
@@ -165,7 +165,7 @@ class HMRClient {
 	 */
 	async fetchAssetContent(assetPath) {
 		try {
-			const contentUrl = `${this.config.viteServerUrl}/__dev-server/asset-content?path=${encodeURIComponent(assetPath)}`;
+			const contentUrl = `${this.getViteServerUrl()}/__dev-server/asset-content?path=${encodeURIComponent(assetPath)}`;
 			const response = await fetch(contentUrl);
 			return response.ok ? await response.text() : null;
 		} catch (error) {
@@ -227,6 +227,11 @@ class HMRClient {
 			// If already on the Vite server port, return empty string
 			if (hostname === 'localhost' && port === '5173') {
 				return '';
+			}
+
+			// If we're on block-theme.local, use HTTPS and port 5173
+			if (hostname === 'block-theme.local') {
+				return 'https://block-theme.local:5173';
 			}
 
 			// Build Vite server URL

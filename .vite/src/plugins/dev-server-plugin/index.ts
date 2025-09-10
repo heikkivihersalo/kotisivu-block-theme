@@ -5,6 +5,7 @@ import type { Plugin, ViteDevServer, ResolvedConfig } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'http';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 /**
  * Internal dependencies
@@ -428,6 +429,46 @@ export function DevServerPlugin(): Plugin {
 				// Add HMR client module endpoint
 				server.middlewares.use(createHMRClientMiddleware());
 
+				// Add HMR client at the expected endpoint for script imports
+				server.middlewares.use(
+					'/__vite_hmr_client.js',
+					(_req, res, next) => {
+						try {
+							const hmrClientPath = path.resolve(
+								path.dirname(fileURLToPath(import.meta.url)),
+								'client/hmr-client.js'
+							);
+
+							if (fs.existsSync(hmrClientPath)) {
+								const content = fs.readFileSync(
+									hmrClientPath,
+									'utf-8'
+								);
+								res.setHeader(
+									'Content-Type',
+									'application/javascript'
+								);
+								res.setHeader('Cache-Control', 'no-cache');
+								res.end(content);
+							} else {
+								console.warn(
+									'[DevServer] HMR client file not found:',
+									hmrClientPath
+								);
+								res.statusCode = 404;
+								res.end('HMR client not found');
+							}
+						} catch (error) {
+							console.error(
+								'[DevServer] Error serving HMR client:',
+								error
+							);
+							res.statusCode = 500;
+							res.end('Internal server error');
+						}
+					}
+				);
+
 				// Add HMR client script endpoint if script options are available
 				if (scriptOptions) {
 					server.middlewares.use(
@@ -442,7 +483,8 @@ export function DevServerPlugin(): Plugin {
 							{
 								themePrefix: undefined, // Will be auto-detected
 								viteServerUrl:
-									pluginConfig.server?.devServerUrl,
+									pluginConfig.server?.devServerUrl ||
+									'https://block-theme.local:5173',
 								vitePort:
 									pluginConfig.server?.port?.toString() ||
 									'5173',
