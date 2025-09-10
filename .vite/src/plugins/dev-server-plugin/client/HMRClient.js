@@ -1,17 +1,11 @@
-/**
- * Simplified HMR Client for WordPress Block Theme
- *
- * This client handles Hot Module Replacement for WordPress themes by:
- * - Polling for asset changes
- * - Updating inline CSS styles in real-time
- * - Reloading linked stylesheets
- * - Providing hooks for JavaScript updates
- */
+import { InlineCSSHandler } from './handlers/InlineCSSHandler.js';
+import { CSSFileHandler } from './handlers/CSSFileHandler.js';
+import { JSFileHandler } from './handlers/JSFileHandler.js';
 
 /**
  * Main HMR Client class
  */
-class HMRClient {
+export class HMRClient {
 	/**
 	 * @param {Object} config - HMR configuration
 	 * @param {Map} config.blockAssets - Map of block assets
@@ -224,8 +218,8 @@ class HMRClient {
 		if (location) {
 			const { hostname, port, protocol } = location;
 
-			// If we're already on a Vite dev server port, return empty string for relative URLs
-			if (port === '5173' || port === '3000' || port === '8080') {
+			// If we're already on the Vite dev server port, return empty string for relative URLs
+			if (port === '5173') {
 				return '';
 			}
 
@@ -237,183 +231,4 @@ class HMRClient {
 		// Fallback to relative URLs if no location available
 		return '';
 	}
-}
-
-/**
- * Handler for inline CSS styles
- */
-class InlineCSSHandler {
-	/**
-	 * @param {Object} config - HMR configuration
-	 */
-	constructor(config) {
-		this.config = config;
-	}
-
-	/**
-	 * Check if this handler can process the asset type
-	 * @param {string} type - Asset type
-	 * @param {string} path - Asset path
-	 * @returns {boolean} Whether this handler can process the asset
-	 */
-	canHandle(type, path) {
-		return type === 'inline-css' && path.includes('inline');
-	}
-
-	/**
-	 * Update inline CSS content
-	 * @param {string} assetPath - Asset path
-	 * @param {string} content - New CSS content
-	 */
-	async update(assetPath, content) {
-		if (!content) return;
-
-		const inlineStyles = document.querySelectorAll(
-			'style[data-vite-dev-id]'
-		);
-		inlineStyles.forEach((style) => {
-			if (
-				style.dataset.viteDevId &&
-				assetPath.includes(style.dataset.viteDevId)
-			) {
-				style.textContent = content;
-				console.log('[DevServer] Updated inline CSS:', assetPath);
-			}
-		});
-	}
-}
-
-/**
- * Handler for CSS files
- */
-class CSSFileHandler {
-	/**
-	 * Check if this handler can process the asset type
-	 * @param {string} type - Asset type
-	 * @param {string} path - Asset path
-	 * @returns {boolean} Whether this handler can process the asset
-	 */
-	canHandle(type, path) {
-		return type === 'inline-css' && !path.includes('inline');
-	}
-
-	/**
-	 * Update CSS file by reloading link elements
-	 * @param {string} assetPath - Asset path
-	 * @param {string} content - New CSS content (unused for file reloading)
-	 */
-	async update(assetPath, content) {
-		const links = document.querySelectorAll('link[rel="stylesheet"]');
-		links.forEach((link) => {
-			if (
-				link.href &&
-				assetPath.includes(this.extractFilename(link.href))
-			) {
-				const newHref = this.addTimestamp(link.href);
-				link.href = newHref;
-				console.log('[DevServer] Reloaded CSS file:', assetPath);
-			}
-		});
-	}
-
-	/**
-	 * Extract filename from URL
-	 * @param {string} url - Full URL
-	 * @returns {string} Filename
-	 */
-	extractFilename(url) {
-		return url.split('/').pop().split('?')[0];
-	}
-
-	/**
-	 * Add timestamp to URL for cache busting
-	 * @param {string} url - Original URL
-	 * @returns {string} URL with timestamp
-	 */
-	addTimestamp(url) {
-		const separator = url.includes('?') ? '&' : '?';
-		return `${url}${separator}t=${Date.now()}`;
-	}
-}
-
-/**
- * Handler for JavaScript files
- */
-class JSFileHandler {
-	/**
-	 * Check if this handler can process the asset type
-	 * @param {string} type - Asset type
-	 * @param {string} path - Asset path
-	 * @returns {boolean} Whether this handler can process the asset
-	 */
-	canHandle(type, path) {
-		return type === 'js-file';
-	}
-
-	/**
-	 * Handle JavaScript file updates (currently logs only)
-	 * @param {string} assetPath - Asset path
-	 * @param {string} content - New JavaScript content
-	 */
-	async update(assetPath, content) {
-		console.log('[DevServer] JavaScript file changed:', assetPath);
-		// Note: Full JS HMR would require more complex module replacement
-		// For now, just log the change
-	}
-}
-
-// Export classes for testing and module usage
-if (typeof module !== 'undefined' && module.exports) {
-	// Node.js/CommonJS environment
-	module.exports = {
-		HMRClient,
-		InlineCSSHandler,
-		CSSFileHandler,
-		JSFileHandler,
-	};
-} else if (
-	typeof window !== 'undefined' &&
-	window.define &&
-	window.define.amd
-) {
-	// AMD environment
-	window.define(() => ({
-		HMRClient,
-		InlineCSSHandler,
-		CSSFileHandler,
-		JSFileHandler,
-	}));
-} else if (typeof window !== 'undefined') {
-	// Browser environment - also expose for global access
-	window.HMRClient = HMRClient;
-	window.InlineCSSHandler = InlineCSSHandler;
-	window.CSSFileHandler = CSSFileHandler;
-	window.JSFileHandler = JSFileHandler;
-}
-
-// ES6 exports for modern environments
-export { HMRClient, InlineCSSHandler, CSSFileHandler, JSFileHandler };
-
-// Initialize HMR client when DOM is ready (only in browser)
-if (typeof document !== 'undefined') {
-	const initializeWhenReady = () => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', initializeWhenReady);
-			return;
-		}
-
-		// Get configuration from global scope
-		const config = window.__KOTISIVU_DEV_CONFIG__ ||
-			window.__VITE_INLINE_ASSETS_CONFIG__ || {
-				blockAssets: new Map(),
-				blockNamespace: 'kotisivu',
-				pollingInterval: 1000,
-				viteServerUrl: undefined, // Will be auto-detected
-			};
-
-		// Start HMR client
-		window.__KOTISIVU_HMR_CLIENT__ = HMRClient.initialize(config);
-	};
-
-	initializeWhenReady();
 }
