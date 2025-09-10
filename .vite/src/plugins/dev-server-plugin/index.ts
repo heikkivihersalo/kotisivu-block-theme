@@ -27,7 +27,7 @@ import {
 	createAssetContentMiddleware,
 	createHMRClientMiddleware,
 	createHMRModuleMiddleware,
-} from './server/middleware.js';
+} from './middleware/index.js';
 
 const VITE_PLUGIN_NAME = 'vite-wordpress';
 
