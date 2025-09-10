@@ -407,12 +407,13 @@ if (typeof document !== 'undefined') {
 		}
 
 		// Get configuration from global scope
-		const config = window.__KOTISIVU_DEV_CONFIG__ || {
-			blockAssets: new Map(),
-			blockNamespace: 'kotisivu',
-			pollingInterval: 1000,
-			viteServerUrl: 'http://localhost:5173',
-		};
+		const config = window.__KOTISIVU_DEV_CONFIG__ ||
+			window.__VITE_INLINE_ASSETS_CONFIG__ || {
+				blockAssets: new Map(),
+				blockNamespace: 'kotisivu',
+				pollingInterval: 1000,
+				viteServerUrl: 'https://block-theme.local:5173',
+			};
 
 		// Start HMR client
 		window.__KOTISIVU_HMR_CLIENT__ = HMRClient.initialize(config);
