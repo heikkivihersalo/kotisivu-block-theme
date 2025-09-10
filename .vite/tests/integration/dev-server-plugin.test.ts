@@ -90,10 +90,10 @@ describe('Dev Server Plugin - Core Functionality', () => {
 
 		// Verify script contains essential HMR functionality
 		expect(script).toContain('__VITE_INLINE_ASSETS_CONFIG__');
-		expect(script).toContain('HMR client loaded');
-		expect(script).toContain('pollForChanges');
-		expect(script).toContain('updateInlineAsset');
-		expect(script).toContain('getStyleIdFromAsset');
+		expect(script).toContain('Loading HMR client');
+		expect(script).toContain("import('/__vite_hmr_client.js')");
+		expect(script).toContain('HMRClient.initialize');
+		expect(script).toContain('window.HMRClient');
 
 		// Verify configuration is embedded (look for the formatted JSON)
 		expect(script).toContain('"blockNamespace": "ksd"');
