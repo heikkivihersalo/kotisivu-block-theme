@@ -88,9 +88,16 @@ export default {
 
 ### Inline Assets HMR
 1. **Asset Discovery**: Automatically discovers inline CSS assets from configured directories and blocks
-2. **Client Injection**: Injects an HMR client script into the browser that polls for changes
+2. **Client Injection**: Serves a pre-compiled JavaScript HMR client directly from middleware
 3. **Change Detection**: Monitors file modification times and detects when assets change
 4. **Smart Updates**: Matches changed assets to their corresponding style elements in the DOM and updates them
+
+### HMR Client Architecture
+The HMR client is served as pre-compiled JavaScript directly from the middleware instead of being converted from TypeScript at runtime. This approach:
+- **Eliminates Conversion Errors**: Avoids complex regex-based TypeScript-to-JavaScript conversion
+- **Improves Reliability**: Provides a stable, tested JavaScript implementation
+- **Reduces Complexity**: Simplifies the serving mechanism and reduces potential failure points
+- **Better Performance**: No runtime conversion overhead
 
 ### Block Asset Auto-Discovery
 The plugin automatically discovers CSS assets from WordPress blocks by:
@@ -105,14 +112,14 @@ The plugin automatically discovers CSS assets from WordPress blocks by:
 dev-server-plugin/
 ├── index.ts                 # Main plugin entry point
 ├── types.ts                 # TypeScript type definitions
-├── client/
-│   └── hmr-client.ts       # Browser-side HMR client
 ├── server/
-│   └── middleware.ts       # Server middleware functions
+│   └── middleware.ts       # Server middleware functions (includes HMR client)
 └── utils/
     ├── config.ts           # Configuration processing
     └── script-templates.ts # HMR script generation
 ```
+
+**Note**: The HMR client is now served directly as JavaScript from the middleware, eliminating the need for a separate TypeScript client file and complex runtime conversion.
 
 **Note**: The deprecated `DevServerConfig` and `InlineAssetsConfig` types have been removed. All configuration is now handled through the unified `PluginConfig` from the ConfigPlugin, eliminating duplication and ensuring consistency.
 
