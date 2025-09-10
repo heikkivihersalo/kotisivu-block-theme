@@ -78,9 +78,6 @@ export interface PluginConfig {
 		/** Development server port */
 		port?: number;
 
-		/** Full development server URL */
-		devServerUrl?: string;
-
 		/** Enable strict port (fail if port is already in use) */
 		strictPort?: boolean;
 
