@@ -26,6 +26,7 @@ import {
 	createStatusMiddleware,
 	createAssetContentMiddleware,
 	createHMRClientMiddleware,
+	createHMRModuleMiddleware,
 } from './server/middleware.js';
 
 const VITE_PLUGIN_NAME = 'vite-wordpress';
@@ -432,45 +433,45 @@ export function DevServerPlugin(): Plugin {
 				// Add HMR client module endpoint
 				server.middlewares.use(createHMRClientMiddleware());
 
-				// Add HMR client at the expected endpoint for script imports
-				server.middlewares.use(
-					'/__vite_hmr_client.js',
-					(_req, res, next) => {
-						try {
-							const hmrClientPath = path.resolve(
-								path.dirname(fileURLToPath(import.meta.url)),
-								'client/hmr-client.js'
-							);
+				// Add HMR module middleware for individual client files
+				server.middlewares.use(createHMRModuleMiddleware());
 
-							if (fs.existsSync(hmrClientPath)) {
-								const content = fs.readFileSync(
-									hmrClientPath,
-									'utf-8'
-								);
-								res.setHeader(
-									'Content-Type',
-									'application/javascript'
-								);
-								res.setHeader('Cache-Control', 'no-cache');
-								res.end(content);
-							} else {
-								console.warn(
-									'[DevServer] HMR client file not found:',
-									hmrClientPath
-								);
-								res.statusCode = 404;
-								res.end('HMR client not found');
-							}
-						} catch (error) {
-							console.error(
-								'[DevServer] Error serving HMR client:',
-								error
+				// Add HMR client at the expected endpoint for script imports
+				server.middlewares.use('/__vite_hmr_client.js', (_req, res) => {
+					try {
+						const hmrClientPath = path.resolve(
+							path.dirname(fileURLToPath(import.meta.url)),
+							'client/client-entry.js'
+						);
+
+						if (fs.existsSync(hmrClientPath)) {
+							const content = fs.readFileSync(
+								hmrClientPath,
+								'utf-8'
 							);
-							res.statusCode = 500;
-							res.end('Internal server error');
+							res.setHeader(
+								'Content-Type',
+								'application/javascript'
+							);
+							res.setHeader('Cache-Control', 'no-cache');
+							res.end(content);
+						} else {
+							console.warn(
+								'[DevServer] HMR client file not found:',
+								hmrClientPath
+							);
+							res.statusCode = 404;
+							res.end('HMR client not found');
 						}
+					} catch (error) {
+						console.error(
+							'[DevServer] Error serving HMR client:',
+							error
+						);
+						res.statusCode = 500;
+						res.end('Internal server error');
 					}
-				);
+				});
 
 				// Add HMR client script endpoint if script options are available
 				if (scriptOptions) {
@@ -503,12 +504,7 @@ export function DevServerPlugin(): Plugin {
 					createStatusMiddleware(
 						getAllAssets,
 						blockAssets,
-						generalAssets,
-						{
-							host: pluginConfig.server?.host,
-							port: pluginConfig.server?.port,
-							protocol: pluginConfig.server?.protocol,
-						}
+						generalAssets
 					)
 				);
 

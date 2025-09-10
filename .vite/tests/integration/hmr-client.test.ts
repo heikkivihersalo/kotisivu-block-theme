@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { HMRClient } from '../../src/plugins/dev-server-plugin/client/hmr-client.js';
+import { HMRClient } from '../../src/plugins/dev-server-plugin/client/HMRClient.js';
 
 /**
  * Integration tests for HMR client-side functionality
