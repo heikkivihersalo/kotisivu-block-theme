@@ -4,8 +4,6 @@
  * Main export file for all server middlewares.
  */
 
-export { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
-
 // Export middleware classes for direct usage
 export { HMRClientMiddleware } from './HMRClientMiddleware.js';
 export { HMRModuleMiddleware } from './HMRModuleMiddleware.js';
