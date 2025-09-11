@@ -16,7 +16,7 @@ import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
  * Client Script Middleware Class
  */
 export class ClientScriptMiddleware extends BaseMiddleware {
-	protected routePattern = '/__dev-server/client-script';
+	protected routePattern: RegExp;
 
 	constructor(
 		private getBlockAssets: () => Map<string, BlockAssetInfo>,
@@ -27,9 +27,13 @@ export class ClientScriptMiddleware extends BaseMiddleware {
 			themePrefix?: string;
 			viteServerUrl?: string;
 			vitePort?: string;
-		} = {}
+		} = {},
+		endpoint: string = '/__dev-server/client-script'
 	) {
 		super();
+		// Convert endpoint to regex pattern, escaping special regex characters
+		const escapedEndpoint = endpoint.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		this.routePattern = new RegExp(`^${escapedEndpoint}$`);
 	}
 
 	handle(_req: any, res: any): void {
@@ -61,6 +65,38 @@ export class ClientScriptMiddleware extends BaseMiddleware {
 		}
 
 		res.end(clientScript);
+	}
+
+	/**
+	 * Create middleware function
+	 */
+	create() {
+		return async (req: any, res: any, next: any) => {
+			if (!this.matches(req.url)) {
+				return next();
+			}
+
+			try {
+				await this.handle(req, res);
+			} catch (error) {
+				this.logError(`Error in ${this.constructor.name}:`, error);
+				this.sendInternalError(res);
+			}
+		};
+	}
+
+	/**
+	 * Create middleware function for use with a specific path (skips route matching)
+	 */
+	createForPath() {
+		return async (req: any, res: any) => {
+			try {
+				await this.handle(req, res);
+			} catch (error) {
+				this.logError(`Error in ${this.constructor.name}:`, error);
+				this.sendInternalError(res);
+			}
+		};
 	}
 
 	/**

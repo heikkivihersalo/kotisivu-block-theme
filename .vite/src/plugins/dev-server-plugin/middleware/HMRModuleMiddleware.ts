@@ -5,6 +5,7 @@
  */
 
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
@@ -16,14 +17,18 @@ const __dirname = path.dirname(__filename);
  * HMR Module Middleware Class
  */
 export class HMRModuleMiddleware extends BaseMiddleware {
-	protected routePattern = /^\/(?:HMRClient\.js|handlers\/\w+\.js)$/;
+	protected routePattern =
+		/^\/(?:HMRClient\.js|handlers\/\w+\.js|utils\/\w+\.js)$/;
 
 	private readonly moduleRoutes = {
 		'/HMRClient.js': '../client/HMRClient.js',
+		'/handlers/BaseHandler.js': '../client/handlers/BaseHandler.js',
 		'/handlers/InlineCSSHandler.js':
 			'../client/handlers/InlineCSSHandler.js',
 		'/handlers/CSSFileHandler.js': '../client/handlers/CSSFileHandler.js',
 		'/handlers/JSFileHandler.js': '../client/handlers/JSFileHandler.js',
+		'/utils/dom-utils.js': '../client/utils/dom-utils.js',
+		'/utils/logger.js': '../client/utils/logger.js',
 	};
 
 	protected matches(url: string): boolean {
@@ -43,9 +48,62 @@ export class HMRModuleMiddleware extends BaseMiddleware {
 		// Get the path to the requested module file
 		const modulePath = path.resolve(__dirname, relativePath);
 
-		// Set CORS header for modules
-		res.setHeader('Access-Control-Allow-Origin', '*');
+		try {
+			// Read and transform the module content
+			if (!fs.existsSync(modulePath)) {
+				this.sendNotFound(res, 'Module file not found');
+				return;
+			}
 
-		this.sendFileContent(res, modulePath, 'application/javascript');
+			let content = fs.readFileSync(modulePath, 'utf-8');
+
+			// Transform relative imports to absolute paths for all modules
+			content = content
+				.replace(
+					/from '\.\/handlers\/BaseHandler\.js'/g,
+					"from '/handlers/BaseHandler.js'"
+				)
+				.replace(
+					/from '\.\/handlers\/InlineCSSHandler\.js'/g,
+					"from '/handlers/InlineCSSHandler.js'"
+				)
+				.replace(
+					/from '\.\/handlers\/CSSFileHandler\.js'/g,
+					"from '/handlers/CSSFileHandler.js'"
+				)
+				.replace(
+					/from '\.\/handlers\/JSFileHandler\.js'/g,
+					"from '/handlers/JSFileHandler.js'"
+				)
+				.replace(
+					/from '\.\/utils\/dom-utils\.js'/g,
+					"from '/utils/dom-utils.js'"
+				)
+				.replace(
+					/from '\.\/utils\/logger\.js'/g,
+					"from '/utils/logger.js'"
+				)
+				.replace(
+					/from '\.\/BaseHandler\.js'/g,
+					"from '/handlers/BaseHandler.js'"
+				)
+				.replace(
+					/from '\.\.\/utils\/dom-utils\.js'/g,
+					"from '/utils/dom-utils.js'"
+				)
+				.replace(
+					/from '\.\.\/utils\/logger\.js'/g,
+					"from '/utils/logger.js'"
+				);
+
+			// Set headers
+			res.setHeader('Content-Type', 'application/javascript');
+			res.setHeader('Cache-Control', 'no-cache');
+			res.setHeader('Access-Control-Allow-Origin', '*');
+			res.end(content);
+		} catch (error) {
+			this.logError('Error serving module:', error);
+			this.sendInternalError(res);
+		}
 	}
 }

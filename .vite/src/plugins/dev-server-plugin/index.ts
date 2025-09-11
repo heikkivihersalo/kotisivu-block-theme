@@ -445,15 +445,48 @@ export function DevServerPlugin(): Plugin {
 						);
 
 						if (fs.existsSync(hmrClientPath)) {
-							const content = fs.readFileSync(
+							let content = fs.readFileSync(
 								hmrClientPath,
 								'utf-8'
 							);
+
+							// Transform relative imports to absolute paths that work with our middleware
+							content = content
+								.replace(
+									/from '\.\/HMRClient\.js'/g,
+									"from '/HMRClient.js'"
+								)
+								.replace(
+									/from '\.\/handlers\/BaseHandler\.js'/g,
+									"from '/handlers/BaseHandler.js'"
+								)
+								.replace(
+									/from '\.\/handlers\/InlineCSSHandler\.js'/g,
+									"from '/handlers/InlineCSSHandler.js'"
+								)
+								.replace(
+									/from '\.\/handlers\/CSSFileHandler\.js'/g,
+									"from '/handlers/CSSFileHandler.js'"
+								)
+								.replace(
+									/from '\.\/handlers\/JSFileHandler\.js'/g,
+									"from '/handlers/JSFileHandler.js'"
+								)
+								.replace(
+									/from '\.\/utils\/dom-utils\.js'/g,
+									"from '/utils/dom-utils.js'"
+								)
+								.replace(
+									/from '\.\/utils\/logger\.js'/g,
+									"from '/utils/logger.js'"
+								);
+
 							res.setHeader(
 								'Content-Type',
 								'application/javascript'
 							);
 							res.setHeader('Cache-Control', 'no-cache');
+							res.setHeader('Access-Control-Allow-Origin', '*');
 							res.end(content);
 						} else {
 							console.warn(
@@ -490,11 +523,12 @@ export function DevServerPlugin(): Plugin {
 							}),
 							vitePort:
 								pluginConfig.server?.port?.toString() || '5173',
-						}
+						},
+						scriptOptions.endpoint // Pass the dynamic endpoint
 					);
 					server.middlewares.use(
 						scriptOptions.endpoint,
-						clientMiddleware.create()
+						clientMiddleware.createForPath()
 					);
 				}
 
