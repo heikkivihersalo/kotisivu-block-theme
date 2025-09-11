@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { BlockAssetInfo, AssetInfo } from '../types.js';
+import type { BlockAssetInfo, AssetInfo } from '../../types.js';
 
 /**
  * Find the actual file path for an asset

@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import type { BlockAssetInfo, AssetInfo } from '../types.js';
-import { findAssetPath } from '../utils/asset-utils.js';
+import { findAssetPath } from './utils/asset-utils.js';
 import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
 /**
