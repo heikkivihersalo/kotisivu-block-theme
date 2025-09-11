@@ -1,7 +1,9 @@
+import { BaseHandler } from './BaseHandler.js';
+
 /**
  * Handler for JavaScript files
  */
-export class JSFileHandler {
+export class JSFileHandler extends BaseHandler {
 	/**
 	 * Check if this handler can process the asset type
 	 * @param {string} type - Asset type
@@ -18,7 +20,7 @@ export class JSFileHandler {
 	 * @param {string} content - New JavaScript content
 	 */
 	async update(assetPath, content) {
-		console.log('[DevServer] JavaScript file changed:', assetPath);
+		this.log('JavaScript file changed', assetPath);
 		// Note: Full JS HMR would require more complex module replacement
 		// For now, just log the change
 	}

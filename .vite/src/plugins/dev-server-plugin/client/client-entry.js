@@ -9,6 +9,7 @@
  */
 
 import { HMRClient } from './HMRClient.js';
+import { BaseHandler } from './handlers/BaseHandler.js';
 import { InlineCSSHandler } from './handlers/InlineCSSHandler.js';
 import { CSSFileHandler } from './handlers/CSSFileHandler.js';
 import { JSFileHandler } from './handlers/JSFileHandler.js';
@@ -22,6 +23,7 @@ import { JSFileHandler } from './handlers/JSFileHandler.js';
  */
 const HMRModules = {
 	HMRClient,
+	BaseHandler,
 	InlineCSSHandler,
 	CSSFileHandler,
 	JSFileHandler,
@@ -50,7 +52,13 @@ function setupModuleExports() {
 }
 
 // ES6 exports for modern environments
-export { HMRClient, InlineCSSHandler, CSSFileHandler, JSFileHandler };
+export {
+	HMRClient,
+	BaseHandler,
+	InlineCSSHandler,
+	CSSFileHandler,
+	JSFileHandler,
+};
 
 // =============================================================================
 // CONFIGURATION

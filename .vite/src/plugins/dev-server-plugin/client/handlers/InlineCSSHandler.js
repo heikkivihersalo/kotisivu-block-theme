@@ -1,14 +1,13 @@
+import { BaseHandler } from './BaseHandler.js';
+import {
+	findElementsByDataAttribute,
+	replaceElementContent,
+} from '../utils/dom-utils.js';
+
 /**
  * Handler for inline CSS styles
  */
-export class InlineCSSHandler {
-	/**
-	 * @param {Object} config - HMR configuration
-	 */
-	constructor(config) {
-		this.config = config;
-	}
-
+export class InlineCSSHandler extends BaseHandler {
 	/**
 	 * Check if this handler can process the asset type
 	 * @param {string} type - Asset type
@@ -27,16 +26,13 @@ export class InlineCSSHandler {
 	async update(assetPath, content) {
 		if (!content) return;
 
-		const inlineStyles = document.querySelectorAll(
-			'style[data-vite-dev-id]'
-		);
+		const inlineStyles = findElementsByDataAttribute('vite-dev-id');
+
 		inlineStyles.forEach((style) => {
-			if (
-				style.dataset.viteDevId &&
-				assetPath.includes(style.dataset.viteDevId)
-			) {
-				style.textContent = content;
-				console.log('[DevServer] Updated inline CSS:', assetPath);
+			const viteDevId = style.dataset.viteDevId;
+			if (viteDevId && assetPath.includes(viteDevId)) {
+				replaceElementContent(style, content);
+				this.log('Updated inline CSS', assetPath);
 			}
 		});
 	}

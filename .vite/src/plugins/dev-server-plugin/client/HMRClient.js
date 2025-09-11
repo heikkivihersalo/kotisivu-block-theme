@@ -20,8 +20,8 @@ export class HMRClient {
 		this.config = config;
 		this.handlers = [
 			new InlineCSSHandler(config),
-			new CSSFileHandler(),
-			new JSFileHandler(),
+			new CSSFileHandler(config),
+			new JSFileHandler(config),
 		];
 		this.storeGlobalConfig();
 	}

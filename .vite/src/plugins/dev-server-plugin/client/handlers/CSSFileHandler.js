@@ -1,7 +1,9 @@
+import { BaseHandler } from './BaseHandler.js';
+
 /**
  * Handler for CSS files
  */
-export class CSSFileHandler {
+export class CSSFileHandler extends BaseHandler {
 	/**
 	 * Check if this handler can process the asset type
 	 * @param {string} type - Asset type
@@ -18,35 +20,17 @@ export class CSSFileHandler {
 	 * @param {string} content - New CSS content (unused for file reloading)
 	 */
 	async update(assetPath, content) {
-		const links = document.querySelectorAll('link[rel="stylesheet"]');
+		const links = this.queryElements('link[rel="stylesheet"]');
+
 		links.forEach((link) => {
 			if (
 				link.href &&
-				assetPath.includes(this.extractFilename(link.href))
+				this.elementMatchesAsset(link, assetPath, 'href')
 			) {
 				const newHref = this.addTimestamp(link.href);
 				link.href = newHref;
-				console.log('[DevServer] Reloaded CSS file:', assetPath);
+				this.log('Reloaded CSS file', assetPath);
 			}
 		});
-	}
-
-	/**
-	 * Extract filename from URL
-	 * @param {string} url - Full URL
-	 * @returns {string} Filename
-	 */
-	extractFilename(url) {
-		return url.split('/').pop().split('?')[0];
-	}
-
-	/**
-	 * Add timestamp to URL for cache busting
-	 * @param {string} url - Original URL
-	 * @returns {string} URL with timestamp
-	 */
-	addTimestamp(url) {
-		const separator = url.includes('?') ? '&' : '?';
-		return `${url}${separator}t=${Date.now()}`;
 	}
 }
