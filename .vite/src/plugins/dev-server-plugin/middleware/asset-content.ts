@@ -5,25 +5,30 @@
  */
 
 import fs from 'fs';
-import path from 'path';
 import type { BlockAssetInfo, AssetInfo } from '../types.js';
 import { findAssetPath } from '../utils/asset-utils.js';
+import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
 /**
- * Create asset content middleware
- * Serves asset content for HMR updates
+ * Asset Content Middleware Class
  */
-export function createAssetContentMiddleware(
-	getAllMonitoredAssets: () => string[],
-	blockAssets: Map<string, BlockAssetInfo>,
-	generalAssets?: Map<string, AssetInfo>,
-	serverConfig?: { host?: string; port?: number; protocol?: 'http' | 'https' }
-): (req: any, res: any, next: any) => void {
-	return async (req, res, next) => {
-		if (!req.url?.startsWith('/__dev-server/asset-content')) {
-			return next();
-		}
+export class AssetContentMiddleware extends BaseMiddleware {
+	protected routePattern = /^\/__dev-server\/asset-content/;
 
+	constructor(
+		private getAllMonitoredAssets: () => string[],
+		private blockAssets: Map<string, BlockAssetInfo>,
+		private generalAssets?: Map<string, AssetInfo>,
+		private serverConfig?: {
+			host?: string;
+			port?: number;
+			protocol?: 'http' | 'https';
+		}
+	) {
+		super();
+	}
+
+	async handle(req: any, res: any): Promise<void> {
 		// Parse the asset path from query parameter
 		// Use the request host from headers for URL construction
 		const host = req.headers.host;
@@ -35,11 +40,11 @@ export function createAssetContentMiddleware(
 		if (host) {
 			// Construct from request headers
 			baseUrl = `${protocol}://${host}`;
-		} else if (serverConfig?.host) {
+		} else if (this.serverConfig?.host) {
 			// Construct from server config
-			const configProtocol = serverConfig.protocol || 'https';
-			const configPort = serverConfig.port || 5173;
-			baseUrl = `${configProtocol}://${serverConfig.host}:${configPort}`;
+			const configProtocol = this.serverConfig.protocol || 'https';
+			const configPort = this.serverConfig.port || 5173;
+			baseUrl = `${configProtocol}://${this.serverConfig.host}:${configPort}`;
 		} else {
 			// Final fallback
 			baseUrl = 'http://127.0.0.1:5173';
@@ -49,49 +54,37 @@ export function createAssetContentMiddleware(
 		const assetPath = url.searchParams.get('path');
 
 		if (!assetPath) {
-			res.statusCode = 400;
-			res.end('Missing path parameter');
+			this.sendBadRequest(res, 'Missing path parameter');
 			return;
 		}
 
 		// Validate asset is monitored
-		const allAssets = getAllMonitoredAssets();
+		const allAssets = this.getAllMonitoredAssets();
 		const isValidAsset = allAssets.some(
 			(asset) => assetPath === asset || asset.endsWith(assetPath)
 		);
 
 		if (!isValidAsset) {
-			console.log('[DevServer] Invalid asset requested:', assetPath);
-			res.statusCode = 404;
-			res.end('Asset not found');
+			this.logInfo('Invalid asset requested:', assetPath);
+			this.sendNotFound(res, 'Asset not found');
 			return;
 		}
 
-		try {
-			const fullPath = findAssetPath(
-				assetPath,
-				blockAssets,
-				generalAssets
-			);
+		const fullPath = findAssetPath(
+			assetPath,
+			this.blockAssets,
+			this.generalAssets
+		);
 
-			if (fullPath && fs.existsSync(fullPath)) {
-				const content = fs.readFileSync(fullPath, 'utf-8');
-				const ext = path.extname(fullPath).toLowerCase();
-				const contentType = ['.js', '.ts', '.jsx', '.tsx'].includes(ext)
-					? 'application/javascript'
-					: 'text/css';
+		if (fullPath && fs.existsSync(fullPath)) {
+			const content = fs.readFileSync(fullPath, 'utf-8');
+			const contentType = this.getContentTypeFromExtension(fullPath);
 
-				res.setHeader('Content-Type', contentType);
-				res.end(content);
-			} else {
-				console.log('[DevServer] Asset not found:', assetPath);
-				res.statusCode = 404;
-				res.end('Asset not found');
-			}
-		} catch (error) {
-			console.error('[DevServer] Error serving asset:', error);
-			res.statusCode = 500;
-			res.end('Internal server error');
+			this.setCommonHeaders(res, contentType);
+			res.end(content);
+		} else {
+			this.logInfo('Asset not found:', assetPath);
+			this.sendNotFound(res, 'Asset not found');
 		}
-	};
+	}
 }

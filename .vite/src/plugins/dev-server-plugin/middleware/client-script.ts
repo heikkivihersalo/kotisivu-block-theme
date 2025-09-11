@@ -10,38 +10,44 @@ import {
 	generateModuleScript,
 	generateExternalScript,
 } from '../utils/script-templates.js';
+import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
 /**
- * Serve the HMR client script
+ * Client Script Middleware Class
  */
-export function createClientScriptMiddleware(
-	getBlockAssets: () => Map<string, BlockAssetInfo>,
-	blockNamespace: string,
-	method: 'inline' | 'external' | 'module' = 'inline',
-	pollingInterval = 500,
-	options: {
-		themePrefix?: string;
-		viteServerUrl?: string;
-		vitePort?: string;
-	} = {}
-): (req: any, res: any) => void {
-	return (_req, res) => {
-		res.setHeader('Content-Type', 'application/javascript');
-		res.setHeader('Cache-Control', 'no-cache');
+export class ClientScriptMiddleware extends BaseMiddleware {
+	protected routePattern = '/__dev-server/client-script';
+
+	constructor(
+		private getBlockAssets: () => Map<string, BlockAssetInfo>,
+		private blockNamespace: string,
+		private method: 'inline' | 'external' | 'module' = 'inline',
+		private pollingInterval = 500,
+		private options: {
+			themePrefix?: string;
+			viteServerUrl?: string;
+			vitePort?: string;
+		} = {}
+	) {
+		super();
+	}
+
+	handle(_req: any, res: any): void {
+		this.setJavaScriptHeaders(res);
 
 		// Get current block assets dynamically
-		const blockAssets = getBlockAssets();
+		const blockAssets = this.getBlockAssets();
 
 		const scriptConfig = {
 			blockAssets,
-			blockNamespace,
-			pollingInterval,
-			...options,
+			blockNamespace: this.blockNamespace,
+			pollingInterval: this.pollingInterval,
+			...this.options,
 		};
 
 		let clientScript: string;
 
-		switch (method) {
+		switch (this.method) {
 			case 'external':
 				clientScript = generateExternalScript(scriptConfig);
 				break;
@@ -55,5 +61,19 @@ export function createClientScriptMiddleware(
 		}
 
 		res.end(clientScript);
-	};
+	}
+
+	/**
+	 * Middleware function for client script (no next handler needed)
+	 */
+	clientMiddleware() {
+		return (_req: any, res: any) => {
+			try {
+				this.handle(_req, res);
+			} catch (error) {
+				this.logError(`Error in ${this.constructor.name}:`, error);
+				this.sendInternalError(res);
+			}
+		};
+	}
 }

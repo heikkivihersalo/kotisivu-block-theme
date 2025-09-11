@@ -22,11 +22,11 @@ import {
 	buildDevServerUrl,
 } from './utils/config.js';
 import {
-	createClientScriptMiddleware,
-	createStatusMiddleware,
-	createAssetContentMiddleware,
-	createHMRClientMiddleware,
-	createHMRModuleMiddleware,
+	ClientScriptMiddleware,
+	StatusMiddleware,
+	AssetContentMiddleware,
+	HMRClientMiddleware,
+	HMRModuleMiddleware,
 } from './middleware/index.js';
 
 const VITE_PLUGIN_NAME = 'vite-wordpress';
@@ -431,10 +431,10 @@ export function DevServerPlugin(): Plugin {
 				blockAssets = new Map();
 
 				// Add HMR client module endpoint
-				server.middlewares.use(createHMRClientMiddleware());
+				server.middlewares.use(new HMRClientMiddleware().create());
 
 				// Add HMR module middleware for individual client files
-				server.middlewares.use(createHMRModuleMiddleware());
+				server.middlewares.use(new HMRModuleMiddleware().create());
 
 				// Add HMR client at the expected endpoint for script imports
 				server.middlewares.use('/__vite_hmr_client.js', (_req, res) => {
@@ -475,52 +475,49 @@ export function DevServerPlugin(): Plugin {
 
 				// Add HMR client script endpoint if script options are available
 				if (scriptOptions) {
+					const clientMiddleware = new ClientScriptMiddleware(
+						() => blockAssets, // Pass function to get current block assets
+						pluginConfig.wordpress?.namespace || 'wp',
+						pluginConfig.hmr?.scriptInjection?.method || 'inline',
+						pluginConfig.hmr?.scriptInjection?.pollingInterval ||
+							500,
+						{
+							themePrefix: undefined, // Will be auto-detected
+							viteServerUrl: buildDevServerUrl({
+								host: pluginConfig.server?.host,
+								port: pluginConfig.server?.port,
+								protocol: pluginConfig.server?.protocol,
+							}),
+							vitePort:
+								pluginConfig.server?.port?.toString() || '5173',
+						}
+					);
 					server.middlewares.use(
 						scriptOptions.endpoint,
-						createClientScriptMiddleware(
-							() => blockAssets, // Pass function to get current block assets
-							pluginConfig.wordpress?.namespace || 'wp',
-							pluginConfig.hmr?.scriptInjection?.method ||
-								'inline',
-							pluginConfig.hmr?.scriptInjection
-								?.pollingInterval || 500,
-							{
-								themePrefix: undefined, // Will be auto-detected
-								viteServerUrl: buildDevServerUrl({
-									host: pluginConfig.server?.host,
-									port: pluginConfig.server?.port,
-									protocol: pluginConfig.server?.protocol,
-								}),
-								vitePort:
-									pluginConfig.server?.port?.toString() ||
-									'5173',
-							}
-						)
+						clientMiddleware.create()
 					);
 				}
 
 				// Add status endpoint middleware
-				server.middlewares.use(
-					createStatusMiddleware(
-						getAllAssets,
-						blockAssets,
-						generalAssets
-					)
+				const statusMiddleware = new StatusMiddleware(
+					getAllAssets,
+					blockAssets,
+					generalAssets
 				);
+				server.middlewares.use(statusMiddleware.create());
 
 				// Add asset content middleware
-				server.middlewares.use(
-					createAssetContentMiddleware(
-						getAllAssets,
-						blockAssets,
-						generalAssets,
-						{
-							host: pluginConfig.server?.host,
-							port: pluginConfig.server?.port,
-							protocol: pluginConfig.server?.protocol,
-						}
-					)
+				const assetContentMiddleware = new AssetContentMiddleware(
+					getAllAssets,
+					blockAssets,
+					generalAssets,
+					{
+						host: pluginConfig.server?.host,
+						port: pluginConfig.server?.port,
+						protocol: pluginConfig.server?.protocol,
+					}
 				);
+				server.middlewares.use(assetContentMiddleware.create());
 			}
 
 			// Main dev server middleware

@@ -7,30 +7,32 @@
 import fs from 'fs';
 import type { BlockAssetInfo, AssetInfo } from '../types.js';
 import { findAssetPath } from '../utils/asset-utils.ts';
+import { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
 /**
- * Create status endpoint middleware
- * Returns modification timestamps for monitored assets
+ * Status Middleware Class
  */
-export function createStatusMiddleware(
-	getAllMonitoredAssets: () => string[],
-	blockAssets: Map<string, BlockAssetInfo>,
-	generalAssets?: Map<string, AssetInfo>
-): (req: any, res: any, next: any) => void {
-	return async (req, res, next) => {
-		if (req.url !== '/__dev-server/status') {
-			return next();
-		}
+export class StatusMiddleware extends BaseMiddleware {
+	protected routePattern = '/__dev-server/status';
 
-		const allAssets = getAllMonitoredAssets();
+	constructor(
+		private getAllMonitoredAssets: () => string[],
+		private blockAssets: Map<string, BlockAssetInfo>,
+		private generalAssets?: Map<string, AssetInfo>
+	) {
+		super();
+	}
+
+	async handle(_req: any, res: any): Promise<void> {
+		const allAssets = this.getAllMonitoredAssets();
 		const status: Record<string, number> = {};
 
 		for (const asset of allAssets) {
 			try {
 				const fullPath = findAssetPath(
 					asset,
-					blockAssets,
-					generalAssets
+					this.blockAssets,
+					this.generalAssets
 				);
 
 				if (fullPath && fs.existsSync(fullPath)) {
@@ -42,7 +44,7 @@ export function createStatusMiddleware(
 			}
 		}
 
-		res.setHeader('Content-Type', 'application/json');
+		this.setJsonHeaders(res);
 		res.end(JSON.stringify(status));
-	};
+	}
 }
