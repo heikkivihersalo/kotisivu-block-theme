@@ -144,14 +144,3 @@ export function getHMRServerConfig(config: PluginConfig) {
 		port: config.hmr?.port || config.server?.port || 5173,
 	};
 }
-
-/**
- * Legacy compatibility: convert to old watchPatterns format
- * @deprecated Use the new HMR-focused approach instead
- */
-export function toLegacyWatchPatterns(watchConfig: HMRWatchConfig): string[] {
-	console.warn(
-		'[HMRWatchConfig] toLegacyWatchPatterns is deprecated. Use the new HMR-focused approach.'
-	);
-	return getAllHMRWatchPatterns(watchConfig);
-}

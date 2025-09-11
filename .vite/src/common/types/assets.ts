@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-import type { AssetIdentifier, PathInfo } from './paths.ts';
+import type { FileIdentifier, FilePathInfo } from './paths.ts';
 
-export type DiscoveredAssetInfo = AssetIdentifier &
-	PathInfo & {
+export type DiscoveredAssetInfo = FileIdentifier &
+	FilePathInfo & {
 		relativePath: string; // Required for asset discovery
 	};
 

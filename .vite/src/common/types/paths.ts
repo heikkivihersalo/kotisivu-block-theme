@@ -31,18 +31,3 @@ export type FileIdentifier = {
  */
 export type DirectoryMapping = Record<string, string>;
 export type FileMapping = Record<string, string>;
-
-/**
- * Legacy aliases for backward compatibility
- * These should be gradually phased out in favor of the more descriptive names above
- */
-
-/**
- * @deprecated Use FilePathInfo instead
- */
-export type PathInfo = FilePathInfo;
-
-/**
- * @deprecated Use FileIdentifier instead
- */
-export type AssetIdentifier = FileIdentifier;
