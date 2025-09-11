@@ -1,5 +1,5 @@
 /**
- * Simplified HMR Client for WordPress Block Theme
+ * HMR Client Entry Point for WordPress Block Theme
  *
  * This client handles Hot Module Replacement for WordPress themes by:
  * - Polling for asset changes
@@ -8,64 +8,106 @@
  * - Providing hooks for JavaScript updates
  */
 
-// Import the modular classes
 import { HMRClient } from './HMRClient.js';
 import { InlineCSSHandler } from './handlers/InlineCSSHandler.js';
 import { CSSFileHandler } from './handlers/CSSFileHandler.js';
 import { JSFileHandler } from './handlers/JSFileHandler.js';
 
-// Export classes for testing and module usage
-if (typeof module !== 'undefined' && module.exports) {
+// =============================================================================
+// MODULE EXPORTS
+// =============================================================================
+
+/**
+ * All HMR-related classes for external use
+ */
+const HMRModules = {
+	HMRClient,
+	InlineCSSHandler,
+	CSSFileHandler,
+	JSFileHandler,
+};
+
+/**
+ * Configure module exports for different environments
+ */
+function setupModuleExports() {
 	// Node.js/CommonJS environment
-	module.exports = {
-		HMRClient,
-		InlineCSSHandler,
-		CSSFileHandler,
-		JSFileHandler,
-	};
-} else if (
-	typeof window !== 'undefined' &&
-	window.define &&
-	window.define.amd
-) {
-	// AMD environment
-	window.define(() => ({
-		HMRClient,
-		InlineCSSHandler,
-		CSSFileHandler,
-		JSFileHandler,
-	}));
-} else if (typeof window !== 'undefined') {
-	// Browser environment - also expose for global access
-	window.HMRClient = HMRClient;
-	window.InlineCSSHandler = InlineCSSHandler;
-	window.CSSFileHandler = CSSFileHandler;
-	window.JSFileHandler = JSFileHandler;
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = HMRModules;
+		return;
+	}
+
+	// AMD environment (RequireJS)
+	if (typeof window !== 'undefined' && window.define?.amd) {
+		window.define(() => HMRModules);
+		return;
+	}
+
+	// Browser environment - expose globally
+	if (typeof window !== 'undefined') {
+		Object.assign(window, HMRModules);
+	}
 }
 
 // ES6 exports for modern environments
 export { HMRClient, InlineCSSHandler, CSSFileHandler, JSFileHandler };
 
-// Initialize HMR client when DOM is ready (only in browser)
+// =============================================================================
+// CONFIGURATION
+// =============================================================================
+
+/**
+ * Default configuration for HMR client
+ */
+const DEFAULT_CONFIG = {
+	blockAssets: new Map(),
+	blockNamespace: 'kotisivu',
+	pollingInterval: 1000,
+	viteServerUrl: undefined, // Auto-detected
+};
+
+/**
+ * Get HMR configuration from global scope with fallbacks
+ */
+function getHMRConfig() {
+	return (
+		window.__KOTISIVU_DEV_CONFIG__ ||
+		window.__VITE_INLINE_ASSETS_CONFIG__ ||
+		DEFAULT_CONFIG
+	);
+}
+
+// =============================================================================
+// INITIALIZATION
+// =============================================================================
+
+/**
+ * Initialize HMR client when DOM is ready
+ */
+function initializeHMRClient() {
+	const config = getHMRConfig();
+	window.__KOTISIVU_HMR_CLIENT__ = HMRClient.initialize(config);
+}
+
+/**
+ * Setup DOM ready handler
+ */
+function setupDOMReadyHandler() {
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initializeHMRClient);
+	} else {
+		initializeHMRClient();
+	}
+}
+
+// =============================================================================
+// BOOTSTRAP
+// =============================================================================
+
+// Setup module exports for different environments
+setupModuleExports();
+
+// Initialize HMR client in browser environment
 if (typeof document !== 'undefined') {
-	const initializeWhenReady = () => {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', initializeWhenReady);
-			return;
-		}
-
-		// Get configuration from global scope
-		const config = window.__KOTISIVU_DEV_CONFIG__ ||
-			window.__VITE_INLINE_ASSETS_CONFIG__ || {
-				blockAssets: new Map(),
-				blockNamespace: 'kotisivu',
-				pollingInterval: 1000,
-				viteServerUrl: undefined, // Will be auto-detected
-			};
-
-		// Start HMR client
-		window.__KOTISIVU_HMR_CLIENT__ = HMRClient.initialize(config);
-	};
-
-	initializeWhenReady();
+	setupDOMReadyHandler();
 }
