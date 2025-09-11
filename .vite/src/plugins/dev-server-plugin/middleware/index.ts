@@ -7,8 +7,8 @@
 export { BaseMiddleware } from '../../../common/abstracts/BaseMiddleware.js';
 
 // Export middleware classes for direct usage
-export { HMRClientMiddleware } from './hmr-client.js';
-export { HMRModuleMiddleware } from './hmr-module.js';
-export { ClientScriptMiddleware } from './client-script.js';
-export { StatusMiddleware } from './status.js';
-export { AssetContentMiddleware } from './asset-content.js';
+export { HMRClientMiddleware } from './HMRClientMiddleware.js';
+export { HMRModuleMiddleware } from './HMRModuleMiddleware.js';
+export { ClientScriptMiddleware } from './ClientScriptMiddleware.js';
+export { StatusMiddleware } from './StatusMiddleware.js';
+export { AssetContentMiddleware } from './AssetContentMiddleware.js';
