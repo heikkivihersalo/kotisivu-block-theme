@@ -12,6 +12,16 @@ namespace App\Services\Vite;
  */
 class DevServer {
     /**
+     * Default Vite dev server port
+     */
+    private const DEFAULT_PORT = '5173';
+
+    /**
+     * Block metadata file-like properties
+     */
+    private const BLOCK_FILE_PROPERTIES = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
+
+    /**
      * Vite server host
      */
     protected string $host;
@@ -19,7 +29,7 @@ class DevServer {
     /**
      * Vite server port
      */
-    protected string $port = '5173';
+    protected string $port = self::DEFAULT_PORT;
 
     /**
      * Vite plugin configuration
@@ -46,18 +56,30 @@ class DevServer {
      */
     protected ?ManifestResolver $manifest = null;
 
+    /**
+     * Cache: whether config was checked and active
+     */
+    private ?bool $configActive = null;
+
+    /**
+     * Cache: whether client was checked and active
+     */
+    private ?bool $clientActive = null;
+
+
     public function __construct(string $host = '', ?ManifestResolver $manifest = null) {
         $this->host = $host ?: get_site_url();
-
         if (null !== $manifest) {
             $this->manifest = $manifest;
         }
+        // PathResolver is used statically
     }
 
     /**
      * Register hooks and filters for the dev server
      */
     public function register(): self {
+        // Only hook when both config and client are reachable
         if ($this->isConfigActive() && $this->isClientActive()) {
             add_action('wp_head', [$this, 'injectViteClient'], $this->clientHookPriority);
             add_action('elementor/editor/before_enqueue_scripts', [$this, 'injectIntoElementorEditor']);
@@ -78,6 +100,9 @@ class DevServer {
      */
     public function setHost(string $host): self {
         $this->host = $host;
+        // Invalidate caches when connection target changes
+        $this->clientActive = null;
+        $this->configActive = null;
         return $this;
     }
 
@@ -86,6 +111,9 @@ class DevServer {
      */
     public function setPort(int $port): self {
         $this->port = (string) $port;
+        // Invalidate caches when connection target changes
+        $this->clientActive = null;
+        $this->configActive = null;
         return $this;
     }
 
@@ -102,6 +130,9 @@ class DevServer {
      */
     public function setConfig(array $config): self {
         $this->config = $config;
+        // Invalidate caches when config changes
+        $this->clientActive = null;
+        $this->configActive = null;
         return $this;
     }
 
@@ -149,24 +180,39 @@ class DevServer {
      * Check if the Vite client is active
      */
     public function isClientActive(): bool {
-        $request = $this->viteServerRequest($this->getClientUrl());
-        return empty($request['errors']) && ($request['response'] ?? 0) === 200;
+        if ($this->clientActive !== null) {
+            return $this->clientActive;
+        }
+
+        $serverUrl = PathResolver::serverUrl($this->host, $this->port);
+        $baseUrl   = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
+        $clientUrl = PathResolver::clientUrl($baseUrl);
+
+        $request            = $this->viteServerRequest($clientUrl);
+        $this->clientActive = empty($request['errors']) && ($request['response'] ?? 0) === 200;
+        return $this->clientActive;
     }
 
     /**
      * Check if the Vite plugin config is active
      */
     public function isConfigActive(): bool {
-        $request = $this->viteServerRequest($this->getConfigUrl());
+        if ($this->configActive !== null) {
+            return $this->configActive;
+        }
+
+        $serverUrl = PathResolver::serverUrl($this->host, $this->port);
+        $configUrl = PathResolver::configUrl($serverUrl);
+        $request   = $this->viteServerRequest($configUrl);
 
         if (!empty($request['errors']) || ($request['response'] ?? 0) !== 200) {
+            $this->configActive = false;
             return false;
         }
 
-        $this->config   = $request['data'];
-        $this->buildMap = !empty($request['data']['buildMap'])
-            ? $request['data']['buildMap']
-            : null;
+        $this->config       = $request['data'];
+        $this->buildMap     = !empty($request['data']['buildMap']) ? $request['data']['buildMap'] : null;
+        $this->configActive = true;
 
         return true;
     }
@@ -175,12 +221,14 @@ class DevServer {
      * Inject the Vite client script into WordPress head
      */
     public function injectViteClient(): void {
-        $clientUrl = esc_url($this->getClientUrl());
+        $serverUrl = PathResolver::serverUrl($this->host, $this->port);
+        $baseUrl   = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
+        $clientUrl = esc_url(PathResolver::clientUrl($baseUrl));
         echo "<script type=\"module\" src=\"{$clientUrl}\"></script>\n";
         echo "<script type=\"module\">window.process = {env: {NODE_ENV: 'development'}};</script>\n";
 
         // Inject inline assets HMR client
-        $inlineAssetsUrl = esc_url($this->getBaseUrl() . '/__vite_inline_assets');
+        $inlineAssetsUrl = esc_url($baseUrl . '/__vite_inline_assets');
         echo "<script type=\"module\" src=\"{$inlineAssetsUrl}\"></script>\n";
     }
 
@@ -209,7 +257,8 @@ class DevServer {
      * Filter asset loader src to point to dev server
      */
     public function filterAssetLoaderSrc(string $src, string $handle): string {
-        if (!$this->containsBase($src)) {
+        $base = (string) ($this->getConfig('base') ?? '');
+        if (!PathResolver::containsBase($src, $base)) {
             return $src;
         }
 
@@ -220,7 +269,9 @@ class DevServer {
         $resolvedPath = $this->getSourcePath($src);
 
         if ($resolvedPath) {
-            $resolvedUrl                   = "{$this->getBaseUrl()}/{$resolvedPath}";
+            $serverUrl                     = PathResolver::serverUrl($this->host, $this->port);
+            $baseUrl                       = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
+            $resolvedUrl                   = "{$baseUrl}/{$resolvedPath}";
             $this->resolvedAssets[$handle] = $resolvedUrl;
             return $resolvedUrl;
         }
@@ -232,7 +283,9 @@ class DevServer {
      * Filter script tags to use module type for dev server assets
      */
     public function filterAssetLoaderTags(string $tag, string $handle, string $src): string {
-        if ($this->containsServerUrl($src) && isset($this->resolvedAssets[$handle])) {
+        $serverUrl = PathResolver::serverUrl($this->host, $this->port);
+        $baseUrl   = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
+        if (PathResolver::containsServerUrl($src, $baseUrl) && isset($this->resolvedAssets[$handle])) {
             return '<script type="module" src="' . esc_url($src) . '"></script>';
         }
 
@@ -250,14 +303,16 @@ class DevServer {
         $blockDirPath   = dirname($metadata['file']);
         $renderFilePath = path_join($blockDirPath, basename($metadata['render']));
 
-        if (!$this->containsBase($renderFilePath) || !is_file($renderFilePath)) {
+        $base = (string) ($this->getConfig('base') ?? '');
+        if (!PathResolver::containsBase($renderFilePath, $base) || !is_file($renderFilePath)) {
             return $metadata;
         }
 
         $resolvedPath = $this->getSourcePath($renderFilePath);
 
         if ($resolvedPath) {
-            $resolvedPath       = "{$this->getServerPath()}/{$resolvedPath}";
+            $serverPath         = PathResolver::serverPath(ABSPATH, (string) ($this->getConfig('base') ?? '/'));
+            $resolvedPath       = "{$serverPath}/{$resolvedPath}";
             $metadata['render'] = $this->getRelativeLocalPath($blockDirPath, $resolvedPath);
         }
 
@@ -290,43 +345,81 @@ class DevServer {
      * Get source path for an asset
      */
     public function getSourcePath(string $filePath): string|false {
-        $fileName = $this->getFileName($filePath);
-
-        if (false === $fileName) {
+        $fileName = PathResolver::fileName(
+            $filePath,
+            (string) ($this->getConfig('base') ?? '/'),
+            (string) ($this->getConfig('outDir') ?? '')
+        );
+        if ($fileName === false) {
             return false;
         }
 
-        // Check if manifest exists and resolve from the manifest
-        if (isset($this->manifest)) {
-            $manifestEntry = $this->manifest->getByFile($fileName);
+        // 1) Try manifest (if available)
+        $resolved = $this->tryResolveViaManifest($fileName);
+        if ($resolved !== false) {
+            return $resolved;
+        }
 
-            if ($manifestEntry && isset($manifestEntry['src'])) {
-                return $manifestEntry['src'];
-            }
+        // 2) Try dev server build map (if available)
+        $resolved = $this->tryResolveViaBuildMap($fileName);
+        if ($resolved !== false) {
+            return $resolved;
+        }
 
-            // If it's a block manifest, try resolving block assets
-            if ($this->manifest->isBlockManifest()) {
-                $blockAssetPath = $this->resolveBlockAsset($fileName);
-                if ($blockAssetPath) {
-                    return $blockAssetPath;
-                }
+        // 3) Try local filesystem based on configured srcDir and css ext
+        return $this->tryResolveViaFilesystem($fileName);
+    }
+
+    /**
+     * Attempt to resolve from manifest if present
+     */
+    protected function tryResolveViaManifest(string $fileName): string|false {
+        if (!isset($this->manifest)) {
+            return false;
+        }
+
+        $manifestEntry = $this->manifest->getByFile($fileName);
+
+        if ($manifestEntry && isset($manifestEntry['src'])) {
+            return $manifestEntry['src'];
+        }
+
+        if ($this->manifest->isBlockManifest()) {
+            $blockAssetPath = $this->resolveBlockAsset($fileName);
+            if ($blockAssetPath) {
+                return $blockAssetPath;
             }
         }
 
-        // If not resolved from the manifest, try resolving via server's build map
-        if (isset($this->buildMap[$fileName])) {
-            $buildEntry = $this->buildMap[$fileName];
-            if (isset($buildEntry['src'])) {
-                return $buildEntry['src'];
-            }
+        return false;
+    }
+
+    /**
+     * Attempt to resolve using dev server build map if available
+     */
+    protected function tryResolveViaBuildMap(string $fileName): string|false {
+        if (!isset($this->buildMap) || !isset($this->buildMap[$fileName])) {
+            return false;
         }
 
-        // If not resolved from the build map, try resolving from the file system
-        $fileName       = str_replace('.css', ".{$this->getConfig('css')}", $fileName);
-        $fileSystemPath = "{$this->getServerPath()}/{$this->getConfig('srcDir')}/{$fileName}";
+        $buildEntry = $this->buildMap[$fileName];
+        return $buildEntry['src'] ?? false;
+    }
+
+    /**
+     * Attempt to resolve by looking at the filesystem based on configured paths
+     */
+    protected function tryResolveViaFilesystem(string $fileName): string|false {
+        $cssExt = (string) ($this->getConfig('css') ?? 'css');
+        $srcDir = trim((string) ($this->getConfig('srcDir') ?? 'resources'), '/');
+        $base   = (string) ($this->getConfig('base') ?? '/');
+        $server = rtrim(PathResolver::serverPath(ABSPATH, $base), '/');
+
+        $candidateName  = str_replace('.css', ".{$cssExt}", $fileName);
+        $fileSystemPath = $server . '/' . $srcDir . '/' . $candidateName;
 
         if (file_exists($fileSystemPath)) {
-            return "{$this->getConfig('srcDir')}/{$fileName}";
+            return $srcDir . '/' . $candidateName;
         }
 
         return false;
@@ -348,9 +441,7 @@ class DevServer {
                 continue;
             }
 
-            $fileProperties = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
-
-            foreach ($fileProperties as $property) {
+            foreach (self::BLOCK_FILE_PROPERTIES as $property) {
                 if (isset($blockData[$property])) {
                     $blockFile = $blockData[$property];
 
@@ -404,44 +495,6 @@ class DevServer {
     }
 
     /**
-     * Removes query parameters, base and outDir from path to get the file name
-     *
-     * @param string $path Path to get the file name from
-     * @return string|false The file name or false if no valid file name
-     */
-    public function getFileName(string $path): string|false {
-        $fileName = preg_replace('/\?.*$/', '', $path);
-        $fileName = explode("{$this->getConfig('base')}/{$this->getConfig('outDir')}/", $fileName);
-
-        return !isset($fileName[1]) ? false : $fileName[1];
-    }
-
-    /**
-     * Get URLs and paths
-     */
-    public function getConfigUrl(): string {
-        return "{$this->getServerUrl()}/vite-wordpress.json";
-    }
-
-    public function getClientUrl(): string {
-        return "{$this->getBaseUrl()}/@vite/client";
-    }
-
-    public function getBaseUrl(): string {
-        $base = $this->getConfig('base') ?? '/';
-        return untrailingslashit("{$this->getServerUrl()}{$base}");
-    }
-
-    public function getServerUrl(): string {
-        return "{$this->host}:{$this->port}";
-    }
-
-    public function getServerPath(): string {
-        $base = $this->getConfig('base') ?? '/';
-        return untrailingslashit(ABSPATH) . $base;
-    }
-
-    /**
      * Get the server port
      */
     public function getServerPort(): string {
@@ -466,22 +519,6 @@ class DevServer {
             return null;
         }
 
-        return isset($key) ? $this->config[$key] : $this->config;
-    }
-
-    /**
-     * Check if the path contains the base path
-     */
-    public function containsBase(string $path): bool {
-        $base = $this->getConfig('base');
-        return !empty($base) && $base !== '/' && strpos($path, $base) !== false;
-    }
-
-    /**
-     * Check if the URL contains the server base URL
-     */
-    public function containsServerUrl(string $url): bool {
-        $baseUrl = $this->getBaseUrl();
-        return $baseUrl !== '' && strpos($url, $baseUrl) !== false;
+        return isset($key) ? ($this->config[$key] ?? null) : $this->config;
     }
 }

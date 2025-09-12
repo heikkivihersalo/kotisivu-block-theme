@@ -14,6 +14,11 @@ use RuntimeException;
  */
 class ManifestResolver {
     /**
+     * Block metadata file-like properties
+     */
+    private const BLOCK_FILE_PROPERTIES = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
+
+    /**
      * The parsed manifest data
      */
     private array $manifest;
@@ -58,7 +63,7 @@ class ManifestResolver {
      * Retrieves a manifest entry or the entire manifest
      */
     public function get(?string $id = null): ?array {
-        return isset($id) ? $this->getManifest()["{$this->srcDir}/{$id}"] : $this->getManifest();
+        return isset($id) ? ($this->getManifest()["{$this->srcDir}/{$id}"] ?? null) : $this->getManifest();
     }
 
     /**
@@ -73,9 +78,7 @@ class ManifestResolver {
 
             // Block manifest structure - check various file properties
             if (is_array($item)) {
-                $fileProperties = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
-
-                foreach ($fileProperties as $property) {
+                foreach (self::BLOCK_FILE_PROPERTIES as $property) {
                     if (isset($item[$property])) {
                         $itemFile = $item[$property];
 
@@ -115,7 +118,6 @@ class ManifestResolver {
         $blockKey = str_replace('ksd/', '', $blockName);
 
         $manifest = $this->getManifest();
-
         return $manifest[$blockKey] ?? false;
     }
 
@@ -127,8 +129,12 @@ class ManifestResolver {
 
         // Check if the first item has block-like properties
         $firstItem = reset($manifest);
-
-        return is_array($firstItem) && (isset($firstItem['apiVersion']) || isset($firstItem['name']) || isset($firstItem['title']));
+        return is_array($firstItem)
+            && (
+                isset($firstItem['apiVersion'])
+                || isset($firstItem['name'])
+                || isset($firstItem['title'])
+            );
     }
 
     /**
@@ -173,13 +179,19 @@ class ManifestResolver {
 
         if ('json' === $manifestExtension) {
             // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-            $this->manifest = json_decode(file_get_contents($this->path), true);
+            $content        = file_get_contents($this->path);
+            $decoded        = json_decode($content ?: '[]', true);
+            $this->manifest = is_array($decoded) ? $decoded : [];
 
             if (json_last_error()) {
                 throw new RuntimeException(esc_html('ViteWordpress: Error decoding manifest JSON: ' . json_last_error_msg()));
             }
         } elseif ('php' === $manifestExtension) {
-            $this->manifest = require $this->path;
+            $data = require $this->path;
+            if (!is_array($data)) {
+                throw new RuntimeException('ViteWordpress: Manifest PHP must return an array.');
+            }
+            $this->manifest = $data;
         } else {
             throw new RuntimeException('ViteWordpress: Unknown manifest file type.');
         }
