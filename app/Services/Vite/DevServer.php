@@ -428,7 +428,8 @@ class DevServer {
     }
 
     public function getBaseUrl(): string {
-        return untrailingslashit("{$this->getServerUrl()}{$this->getConfig('base')}");
+        $base = $this->getConfig('base') ?? '/';
+        return untrailingslashit("{$this->getServerUrl()}{$base}");
     }
 
     public function getServerUrl(): string {
@@ -436,7 +437,8 @@ class DevServer {
     }
 
     public function getServerPath(): string {
-        return untrailingslashit(ABSPATH) . $this->getConfig('base');
+        $base = $this->getConfig('base') ?? '/';
+        return untrailingslashit(ABSPATH) . $base;
     }
 
     /**
@@ -472,7 +474,7 @@ class DevServer {
      */
     public function containsBase(string $path): bool {
         $base = $this->getConfig('base');
-        return $base !== '' && strpos($path, $base) !== false;
+        return !empty($base) && $base !== '/' && strpos($path, $base) !== false;
     }
 
     /**
