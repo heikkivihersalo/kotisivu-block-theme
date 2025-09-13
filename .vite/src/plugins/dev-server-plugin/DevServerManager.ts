@@ -10,7 +10,11 @@ import type { ViteDevServer, ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import type { ResolvedPluginConfig } from '../config-plugin/index.js';
+import type {
+	PluginConfig,
+	BlockInfo,
+	DiscoveredAsset,
+} from '../../common/types/index.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver.js';
 
 // Get current directory for client files
@@ -22,13 +26,27 @@ const __dirname = path.dirname(__filename);
  *
  * Consolidates all dev server functionality into a single lightweight class.
  */
+// API surface from the Gutenberg Blocks plugin
+interface BlocksApi {
+	getDiscoveredBlocks(): Record<string, BlockInfo>;
+}
+
+// API surface from the Gutenberg Assets plugin
+interface AssetsApi {
+	getDiscoveredAssets(): Record<string, GeneralAsset>;
+}
+
+// General asset information consumed by the DevServer
+// Compatible with DiscoveredAsset from common types (sourcePath/outputPath)
+type GeneralAsset = Partial<DiscoveredAsset>;
+
 export class DevServerManager {
-	private config: ResolvedPluginConfig;
+	private config: PluginConfig;
 	private buildMapResolver: BuildMapResolver;
-	private blocksApi: any;
-	private assetsApi: any;
-	private blockAssets = new Map<string, any>();
-	private generalAssets = new Map<string, any>();
+	private blocksApi: BlocksApi | undefined;
+	private assetsApi: AssetsApi | undefined;
+	private blockAssets = new Map<string, BlockInfo>();
+	private generalAssets = new Map<string, GeneralAsset>();
 	private watchedFiles = new Set<string>();
 
 	constructor(config: ResolvedConfig) {
@@ -176,7 +194,7 @@ export class DevServerManager {
 			}
 		});
 
-		// Legacy inline assets endpoint (for WordPress PHP integration)
+		// Inline assets endpoint (for WordPress PHP integration)
 		server.middlewares.use('/__vite_inline_assets', (_req, res) => {
 			// Compute Vite server URL (protocol + host + port)
 			const protocol = server.config.server.https ? 'https' : 'http';
@@ -338,13 +356,9 @@ export class DevServerManager {
 			}
 		}
 
-		// Check in general assets with flexible property access
+		// Check in general assets using current common type fields
 		for (const [, assetInfo] of this.generalAssets) {
-			const possiblePaths = [
-				assetInfo.path,
-				assetInfo.sourcePath,
-				assetInfo.buildPath,
-			];
+			const possiblePaths = [assetInfo.sourcePath, assetInfo.outputPath];
 			for (const assetPath of possiblePaths) {
 				if (
 					assetPath &&
@@ -364,7 +378,7 @@ export class DevServerManager {
 	 * - Reads block.blockJson style fields (style, editorStyle, viewStyle)
 	 * - Includes conventional WordPress CSS files (editor.css, style.css)
 	 */
-	private getStyleFilesForBlock(block: any): string[] {
+	private getStyleFilesForBlock(block: BlockInfo): string[] {
 		const results: string[] = [];
 		const baseDir: string | undefined = block?.path;
 
