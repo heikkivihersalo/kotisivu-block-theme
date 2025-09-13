@@ -182,17 +182,17 @@ export class DevServerManager {
 
 			// Emit a tiny bootstrap that sets the config and then loads the client
 			const bootstrap = `
-// Dev Server Inline Config
-window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(inlineConfig, null, 2)};
+                // Dev Server Inline Config
+                window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(inlineConfig, null, 2)};
 
-// Load the HMR client after config is available
-(function(){
-	var s = document.createElement('script');
-	s.src = '${viteServerUrl}/__dev-server/hmr-client';
-	s.async = true;
-	document.head.appendChild(s);
-})();
-`;
+                // Load the HMR client after config is available
+                (function(){
+                    var s = document.createElement('script');
+                    s.src = '${viteServerUrl}/__dev-server/hmr-client';
+                    s.async = true;
+                    document.head.appendChild(s);
+                })();
+                `;
 
 			res.setHeader('Content-Type', 'application/javascript');
 			res.setHeader('Cache-Control', 'no-cache');
@@ -240,24 +240,6 @@ window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(inlineConfig, null, 2)};
 					assets: this.getAllMonitoredAssets(),
 				},
 				buildMap: this.buildMapResolver.getBuildMap() || {},
-			};
-
-			res.setHeader('Content-Type', 'application/json');
-			res.setHeader('Access-Control-Allow-Origin', '*');
-			res.end(JSON.stringify(config));
-		});
-
-		// Legacy endpoint for backward compatibility
-		server.middlewares.use('/__dev-server', (_req, res) => {
-			const config = {
-				server: {
-					origin: `${server.config.server.https ? 'https' : 'http'}://localhost:${server.config.server.port}`,
-					port: server.config.server.port,
-				},
-				hmr: {
-					enabled: this.isHMREnabled(),
-					assets: this.getAllMonitoredAssets(),
-				},
 			};
 
 			res.setHeader('Content-Type', 'application/json');
