@@ -162,6 +162,20 @@ export class DevServerManager {
 			}
 		});
 
+		// Shared helpers endpoint
+		server.middlewares.use('/__dev-server/hmr-helpers', (_req, res) => {
+			const helpersPath = path.resolve(__dirname, 'shared/helpers.js');
+			res.setHeader('Content-Type', 'application/javascript');
+			res.setHeader('Access-Control-Allow-Origin', '*');
+
+			if (fs.existsSync(helpersPath)) {
+				res.end(fs.readFileSync(helpersPath, 'utf-8'));
+			} else {
+				res.statusCode = 404;
+				res.end('HMR helpers not found');
+			}
+		});
+
 		// Legacy inline assets endpoint (for WordPress PHP integration)
 		server.middlewares.use('/__vite_inline_assets', (_req, res) => {
 			// Compute Vite server URL (protocol + host + port)
@@ -185,13 +199,19 @@ export class DevServerManager {
                 // Dev Server Inline Config
                 window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(inlineConfig, null, 2)};
 
-                // Load the HMR client after config is available
-                (function(){
-                    var s = document.createElement('script');
-                    s.src = '${viteServerUrl}/__dev-server/hmr-client';
-                    s.async = true;
-                    document.head.appendChild(s);
-                })();
+				// Load helpers first, then client
+				(function(){
+					function load(src, cb){
+						var s = document.createElement('script');
+						s.src = src;
+						s.async = true;
+						s.onload = cb;
+						document.head.appendChild(s);
+					}
+					load('${viteServerUrl}/__dev-server/hmr-helpers', function(){
+						load('${viteServerUrl}/__dev-server/hmr-client');
+					});
+				})();
                 `;
 
 			res.setHeader('Content-Type', 'application/javascript');

@@ -4,6 +4,10 @@
  * A lightweight, consolidated client that handles Hot Module Replacement for WordPress themes.
  */
 
+// Try to use shared helpers if available (loaded by dev server), else fall back
+const Helpers =
+	(typeof window !== 'undefined' && window.__VITE_HMR_HELPERS__) || null;
+
 class Client {
 	constructor(config = {}) {
 		// Auto-detect server URL from current page
@@ -142,14 +146,22 @@ class Client {
 	 */
 	updateInlineStyles(file, newContent) {
 		let updated = false;
-		const id = this.relativePathToInlineStyleId(file);
+		const id = (
+			Helpers?.relativePathToInlineStyleId ||
+			Client.relativePathToInlineStyleId
+		)(this.config.blockNamespace, file);
 
 		if (!id) return updated;
 
 		const styleEl = document.getElementById(id);
 		if (styleEl) {
 			const currentContent = styleEl.textContent || '';
-			if (this.contentDiffers(currentContent, newContent)) {
+			if (
+				(Helpers?.contentDiffers || Client.contentDiffers)(
+					currentContent,
+					newContent
+				)
+			) {
 				styleEl.textContent = newContent;
 				updated = true;
 				this.log(`Updated inline style for ${file}`);
@@ -182,23 +194,21 @@ class Client {
 	/**
 	 * Convert relative file path to inline style ID for a given file (<path>/<block_name>/style.css)
 	 * ID is always in a form of <namespace>-<block_name>-style-inline-css
+	 * Made static so it can be used from non-browser environments (e.g., dev server).
 	 */
-	relativePathToInlineStyleId(file) {
+	static relativePathToInlineStyleId(namespace, file) {
 		const match = file.match(/^(.*\/)?([^/]+)\/style\.css$/);
 		if (!match) return null;
-
-		const namespace = this.config.blockNamespace;
 		if (!namespace) return null;
-
 		const blockName = match[2];
-
 		return `${namespace}-${blockName}-style-inline-css`;
 	}
 
 	/**
 	 * Check if content differs significantly
+	 * Made static so it can be used from non-browser environments.
 	 */
-	contentDiffers(content1, content2) {
+	static contentDiffers(content1, content2) {
 		// Remove whitespace and comments for comparison
 		const normalize = (str) =>
 			str
