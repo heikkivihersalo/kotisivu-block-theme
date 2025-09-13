@@ -13,56 +13,72 @@ namespace App\Services\Vite;
 class DevServer {
     /**
      * Default Vite dev server port
+     * @var string
      */
     private const DEFAULT_PORT = '5173';
 
     /**
      * Vite server host
+     * @var string
      */
     protected string $host;
 
     /**
      * Vite server port
+     * @var string
      */
     protected string $port = self::DEFAULT_PORT;
 
     /**
      * Vite plugin configuration
+     * @var array<string, mixed>|null
      */
     protected ?array $config = null;
 
     /**
      * Vite build map from server
+     * @var array<string, array<string, mixed>>|null
      */
     protected ?array $buildMap = null;
 
     /**
      * Vite client hook priority
+     * @var int
      */
     protected int $clientHookPriority = 5;
 
     /**
      * Manifest resolver
+     * @var ManifestResolver|null
      */
     protected ?ManifestResolver $manifest = null;
 
     /**
      * Asset resolver
+     * @var AssetResolver|null
      */
     protected ?AssetResolver $assetResolver = null;
 
 
     /**
      * Cache: whether config was checked and active
+     * @var bool|null
      */
     private ?bool $configActive = null;
 
     /**
      * Cache: whether client was checked and active
+     * @var bool|null
      */
     private ?bool $clientActive = null;
 
 
+    /**
+     * Constructor
+     *
+     * @param string $host Base site host used to compose dev server URL
+     * @param ManifestResolver|null $manifest Manifest resolver instance
+     */
     public function __construct(string $host = '', ?ManifestResolver $manifest = null) {
         $this->host = $host ?: get_site_url();
 
@@ -76,11 +92,13 @@ class DevServer {
     /**
      * Register hooks and filters for the dev server
      */
+    /**
+     * Register WordPress hooks when the dev server is reachable.
+     */
     public function register(): self {
         // Only hook when both config and client are reachable
         if ($this->isConfigActive() && $this->isClientActive()) {
             add_action('wp_head', [$this, 'injectViteClient'], $this->clientHookPriority);
-            add_action('elementor/editor/before_enqueue_scripts', [$this, 'injectIntoElementorEditor']);
             add_action('init', [$this, 'prioritizeImportMapHook']);
             add_filter('body_class', [$this, 'filterBodyClass'], 999);
             add_filter('script_module_loader_src', [$this, 'filterAssetLoaderSrc'], 999, 2);
@@ -95,6 +113,9 @@ class DevServer {
 
     /**
      * Set the server host
+     *
+     * @param string $host
+     * @return $this
      */
     public function setHost(string $host): self {
         $this->host = $host;
@@ -106,6 +127,9 @@ class DevServer {
 
     /**
      * Set the server port
+     *
+     * @param int $port
+     * @return $this
      */
     public function setPort(int $port): self {
         $this->port = (string) $port;
@@ -116,7 +140,10 @@ class DevServer {
     }
 
     /**
-     * Set the client hook priority
+     * Set hook priority for injecting Vite client and import map.
+     *
+     * @param int $level
+     * @return $this
      */
     public function setClientHook(int $level): self {
         $this->clientHookPriority = $level;
@@ -125,23 +152,27 @@ class DevServer {
 
     /**
      * Set the config (mainly used for tests)
+     *
+     * @param array<string, mixed> $config
+     * @return $this
      */
     public function setConfig(array $config): self {
         $this->config = $config;
         // Invalidate caches when config changes
         $this->clientActive = null;
         $this->configActive = null;
+        // Keep resolver in sync if already instantiated
+        if ($this->assetResolver) {
+            $this->assetResolver = new AssetResolver($this->manifest, $this->config, $this->buildMap);
+        }
         return $this;
     }
 
     /**
-     * Make a request to the Vite dev server
+     * Perform a GET request to the Vite dev server and decode JSON.
      *
-     * @return array{
-     *     errors: string|null,
-     *     response: int,
-     *     data: array<string, mixed>
-     * }
+     * @param string $url Full URL to request
+     * @return array{errors: string|null, response: int, data: array<string, mixed>}
      */
     protected function viteServerRequest(string $url): array {
         // phpcs:disable WordPress.WP.AlternativeFunctions
@@ -175,7 +206,9 @@ class DevServer {
     }
 
     /**
-     * Check if the Vite client is active
+     * Check if the Vite HMR client endpoint is reachable.
+     *
+     * @return bool True if client is active
      */
     public function isClientActive(): bool {
         if ($this->clientActive !== null) {
@@ -192,7 +225,9 @@ class DevServer {
     }
 
     /**
-     * Check if the Vite plugin config is active
+     * Check and fetch Vite plugin config from the dev server.
+     *
+     * @return bool True if config is active and fetched
      */
     public function isConfigActive(): bool {
         if ($this->configActive !== null) {
@@ -212,11 +247,16 @@ class DevServer {
         $this->buildMap     = !empty($request['data']['buildMap']) ? $request['data']['buildMap'] : null;
         $this->configActive = true;
 
+        // Re-create asset resolver with the fresh config/build map
+        $this->assetResolver = new AssetResolver($this->manifest, $this->config, $this->buildMap);
+
         return true;
     }
 
     /**
-     * Inject the Vite client script into WordPress head
+     * Inject the Vite HMR client and inline assets loader in the head.
+     *
+     * @return void
      */
     public function injectViteClient(): void {
         $serverUrl = PathResolver::serverUrl($this->host, $this->port);
@@ -231,7 +271,9 @@ class DevServer {
     }
 
     /**
-     * Prioritize import map hook for module support
+     * Adjust import map printing priority so modules resolve correctly.
+     *
+     * @return void
      */
     public function prioritizeImportMapHook(): void {
         global $wp_script_modules;
@@ -244,7 +286,10 @@ class DevServer {
     }
 
     /**
-     * Add body class when dev server is active
+     * Add a flag class to body when dev server is active.
+     *
+     * @param array<int, string> $classes
+     * @return array<int, string>
      */
     public function filterBodyClass(array $classes): array {
         $classes[] = 'vite-dev-server-is-active';
@@ -252,7 +297,11 @@ class DevServer {
     }
 
     /**
-     * Filter asset loader src to point to dev server
+     * Rewrite enqueued asset URLs to point to the dev server when applicable.
+     *
+     * @param string $src Asset URL
+     * @param string $handle Asset handle
+     * @return string Modified asset URL
      */
     public function filterAssetLoaderSrc(string $src, string $handle): string {
         $base = (string) ($this->getConfig('base') ?? '');
@@ -279,7 +328,12 @@ class DevServer {
     }
 
     /**
-     * Filter script tags to use module type for dev server assets
+     * Emit <script type="module"> for dev server JS so HMR works.
+     *
+     * @param string $tag The original script tag
+     * @param string $handle The script handle
+     * @param string $src The script src URL
+     * @return string Modified script tag
      */
     public function filterAssetLoaderTags(string $tag, string $handle, string $src): string {
         $serverUrl = PathResolver::serverUrl($this->host, $this->port);
@@ -296,7 +350,10 @@ class DevServer {
     }
 
     /**
-     * Filter block type metadata to resolve render paths
+     * When a block's render file points to a built path, swap it to the source for dev.
+     *
+     * @param array<string, mixed> $metadata
+     * @return array<string, mixed>
      */
     public function filterBlockTypeMetadata(array $metadata): array {
         if (!isset($metadata['render'])) {
@@ -323,7 +380,10 @@ class DevServer {
     }
 
     /**
-     * Get block information from manifest
+     * Get raw block entry from manifest when using a block manifest.
+     *
+     * @param string $blockName The block name
+     * @return array<string, mixed>|false
      */
     public function getBlockInfo(string $blockName): array|false {
         if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
@@ -335,6 +395,8 @@ class DevServer {
 
     /**
      * Get the server port
+     *
+     * @return string The server port
      */
     public function getServerPort(): string {
         return $this->port;
@@ -342,16 +404,18 @@ class DevServer {
 
     /**
      * Get the server host
+     *
+     * @return string The server host
      */
     public function getServerHost(): string {
         return $this->host;
     }
 
     /**
-     * Get the vite plugin config
+     * Get the vite plugin config or a specific key.
      *
-     * @param string|null $key Config key to get
-     * @return array<string, mixed>|string|bool|null The plugin config
+     * @param string|null $key
+     * @return array<string, mixed>|string|bool|null
      */
     public function getConfig(?string $key = null): mixed {
         if (!isset($this->config)) {

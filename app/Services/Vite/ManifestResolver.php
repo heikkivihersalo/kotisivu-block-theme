@@ -15,21 +15,26 @@ use RuntimeException;
 class ManifestResolver {
     /**
      * The parsed manifest data
+     * @var array<string, array<string, mixed>>
      */
     private array $manifest;
 
     /**
      * Path to the manifest file
+     * @var string
      */
     private string $path;
 
     /**
      * Directory where the source files are located
+     * @var string
      */
     private string $srcDir = 'src';
 
     /**
      * Sets the manifest file path and resolves it
+     * @param string $manifestPath Path to the manifest file
+     * @return $this Fluent interface
      */
     public function setManifest(string $manifestPath): self {
         $this->path = $manifestPath;
@@ -39,7 +44,9 @@ class ManifestResolver {
     }
 
     /**
-     * Sets the source directory
+     * Sets the source directory used when accessing entries by id
+     * @param string $srcDir Source directory (default: 'src')
+     * @return $this Fluent interface
      */
     public function setSrc(string $srcDir): self {
         $this->srcDir = $srcDir;
@@ -47,22 +54,24 @@ class ManifestResolver {
         return $this;
     }
 
-    /**
-     * Checks if a specific entry exists in the manifest
-     */
+    /** Checks if a specific entry exists in the manifest */
     public function has(string $id): bool {
         return isset($this->getManifest()["{$this->srcDir}/{$id}"]);
     }
 
     /**
      * Retrieves a manifest entry or the entire manifest
+     * @param string|null $id Entry ID relative to srcDir (e.g. 'main.js'), or null for full manifest
+     * @return array<string, mixed>|null
      */
     public function get(?string $id = null): ?array {
         return isset($id) ? ($this->getManifest()["{$this->srcDir}/{$id}"] ?? null) : $this->getManifest();
     }
 
     /**
-     * Retrieves a manifest entry by file key
+     * Retrieves a manifest entry by built file path
+     * @param string $file Built file path (e.g. 'assets/app.abc123.js')
+     * @return array<string, mixed>|false False if not found
      */
     public function getByFile(string $file): array|false {
         foreach ($this->getManifest() as $item) {
@@ -76,7 +85,9 @@ class ManifestResolver {
     }
 
     /**
-     * Retrieves a manifest entry by name key
+     * Retrieves a manifest entry by its "name" field
+     * @param string $name Name field in the manifest entry
+     * @return array<string, mixed>|false False if not found
      */
     public function getByName(string $name): array|false {
         foreach ($this->getManifest() as $item) {
@@ -90,6 +101,8 @@ class ManifestResolver {
 
     /**
      * Retrieves a block manifest entry by block name
+     * @param string $blockName Block name (e.g. 'ksd/heading' or 'heading')
+     * @return array<string, mixed>|false False if not found
      */
     public function getByBlockName(string $blockName): array|false {
         // Remove the namespace prefix if it exists (e.g., 'ksd/heading' -> 'heading')
@@ -101,6 +114,8 @@ class ManifestResolver {
 
     /**
      * Check if this is a block manifest (contains block.json-like data)
+     *
+     * @return bool True if the manifest appears to be for blocks
      */
     public function isBlockManifest(): bool {
         $manifest = $this->getManifest();
@@ -117,6 +132,8 @@ class ManifestResolver {
 
     /**
      * Get all block names from the manifest
+     *
+     * @return array<string> List of block names
      */
     public function getBlockNames(): array {
         if (!$this->isBlockManifest()) {
@@ -129,6 +146,7 @@ class ManifestResolver {
     /**
      * Retrieves the parsed manifest data
      *
+     * @return array<string, array<string, mixed>>
      * @throws RuntimeException If the manifest has not been set
      */
     protected function getManifest(): array {
@@ -144,6 +162,7 @@ class ManifestResolver {
     /**
      * Resolves the manifest file and loads its content
      *
+     * @return void
      * @throws RuntimeException If the manifest file does not exist or cannot be parsed
      */
     protected function resolveManifest(): void {

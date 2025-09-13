@@ -12,23 +12,44 @@ namespace App\Services\Vite;
  */
 class AssetResolver {
     /**
-     * Block metadata file-like properties
+     * Block metadata properties that reference files we may need to resolve.
+     *
+     * @var array<int, string>
      */
     private const BLOCK_FILE_PROPERTIES = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
 
     /**
-     * Manifest resolver
+     * Manifest resolver instance
      */
     protected ?ManifestResolver $manifest = null;
-    protected ?array $config              = null;
-    protected ?array $buildMap            = null;
+
+    /**
+     * Vite plugin configuration returned by the dev server (when active).
+     * Expected keys: base, outDir, srcDir, css, ...
+     *
+     * @var array<string, mixed>|null
+     */
+    protected ?array $config = null;
+
+    /**
+     * Dev server build map for inline assets resolution.
+     *
+     * @var array<string, array<string, mixed>>|null
+     */
+    protected ?array $buildMap = null;
     /**
      * Resolved handles map (handle => resolved url or path)
+     *
+     * @var array<string, string>
      */
     protected array $resolvedHandles = [];
 
     /**
-     * Sets the manifest resolver
+     * Constructor
+     *
+     * @param ManifestResolver|null $manifest Manifest resolver to use
+     * @param array<string, mixed>|null $config Vite plugin configuration
+     * @param array<string, array<string, mixed>>|null $buildMap Build map from dev server
      */
     public function __construct(?ManifestResolver $manifest = null, ?array $config = null, ?array $buildMap = null) {
         $this->manifest = $manifest;
@@ -38,6 +59,9 @@ class AssetResolver {
 
     /**
      * Track a resolved handle and its final URL/path
+     *
+     * @param string $handle  WordPress asset handle
+     * @param string $resolved Fully qualified URL or relative path resolved for dev server
      */
     public function trackResolvedHandle(string $handle, string $resolved): void {
         $this->resolvedHandles[$handle] = $resolved;
@@ -45,20 +69,22 @@ class AssetResolver {
 
     /**
      * Check if a handle has been resolved
+     *
+     * @param string $handle WordPress asset handle
+     * @return bool True when we have a dev-server resolution for this handle
      */
     public function hasResolvedHandle(string $handle): bool {
         return isset($this->resolvedHandles[$handle]);
     }
 
     /**
-     * Get the resolved URL/path for a handle
-     */
-    public function getResolvedHandle(string $handle): string|false {
-        return $this->resolvedHandles[$handle] ?? false;
-    }
-
-    /**
-     * Get the source path for a given asset, trying various resolving methods
+     * Resolve the original source path for a given built asset URL/path, trying manifest,
+     * dev-server buildMap and finally local filesystem fallbacks.
+     *
+     * Input can be a full URL including query string; base/outDir will be stripped.
+     *
+     * @param string $asset The enqueued asset src (URL or path)
+     * @return string|false Relative source path (e.g. resources/js/app.ts) or false if not resolvable
      */
     public function getSourcePath(string $asset): string|false {
         $fileName = PathResolver::fileName(
@@ -90,6 +116,9 @@ class AssetResolver {
 
     /**
      * Try to resolve an asset path using the manifest
+     *
+     * @param string $fileName File name relative to outDir
+     * @return string|false Source path or false when not found
      */
     protected function tryResolveViaManifest(string $fileName): string|false {
         if (!$this->manifest) {
@@ -114,6 +143,9 @@ class AssetResolver {
 
     /**
      * Try to resolve an asset path using the build map from the dev server
+     *
+     * @param string $fileName File name relative to outDir
+     * @return string|false Source path or false when not found
      */
     protected function tryResolveViaBuildMap(string $fileName): string|false {
         if (empty($this->buildMap) || !isset($this->buildMap[$fileName])) {
@@ -126,6 +158,12 @@ class AssetResolver {
 
     /**
      * Try to resolve an asset path by checking the filesystem directly
+     *
+     * This is a best-effort fallback for CSS preprocessor extensions and typical
+     * theme structures when the dev server is active but an explicit mapping is missing.
+     *
+     * @param string $fileName File name relative to outDir
+     * @return string|false Relative source path or false when not found
      */
     protected function tryResolveViaFilesystem(string $fileName): string|false {
         $cssExt = (string) ($this->config['css'] ?? 'css');
@@ -145,6 +183,11 @@ class AssetResolver {
 
     /**
      * Resolve a block asset path, considering block.json properties
+     *
+     * Handles string values and arrays for properties like "style".
+     *
+     * @param string $fileName File name relative to outDir
+     * @return string|false Relative source path or false when not found
      */
     public function resolveBlockAsset(string $fileName): string|false {
         if (!$this->manifest || !$this->manifest->isBlockManifest()) {
@@ -160,11 +203,18 @@ class AssetResolver {
             }
 
             foreach (self::BLOCK_FILE_PROPERTIES as $property) {
-                if (isset($blockData[$property])) {
-                    $blockFile = $blockData[$property];
+                if (!isset($blockData[$property])) {
+                    continue;
+                }
 
-                    // Remove 'file:./' prefix if present
-                    $blockFile = str_replace('file:./', '', $blockFile);
+                $values = is_array($blockData[$property]) ? $blockData[$property] : [$blockData[$property]];
+
+                foreach ($values as $value) {
+                    if (!is_string($value)) {
+                        continue;
+                    }
+
+                    $blockFile = str_replace('file:./', '', $value);
 
                     // Check if this matches our target file
                     if (basename($blockFile) === basename($fileName) || $blockFile === $fileName) {
