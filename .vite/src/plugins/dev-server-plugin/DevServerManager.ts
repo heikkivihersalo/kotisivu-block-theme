@@ -116,10 +116,17 @@ export class DevServerManager {
 		// Add block CSS assets to watch (derive from block.json and conventional files)
 		for (const [, block] of this.blockAssets) {
 			const styleFiles = this.getStyleFilesForBlock(block);
+			const scriptFiles = this.getScriptFilesForBlock(block);
 			for (const stylePath of styleFiles) {
 				if (!this.watchedFiles.has(stylePath)) {
 					this.watchedFiles.add(stylePath);
 					addWatchFile(stylePath);
+				}
+			}
+			for (const scriptPath of scriptFiles) {
+				if (!this.watchedFiles.has(scriptPath)) {
+					this.watchedFiles.add(scriptPath);
+					addWatchFile(scriptPath);
 				}
 			}
 		}
@@ -322,12 +329,33 @@ export class DevServerManager {
 		// Add block CSS assets (from block.json and conventional files)
 		for (const [, block] of this.blockAssets) {
 			const styleFiles = this.getStyleFilesForBlock(block);
+			const scriptFiles = this.getScriptFilesForBlock(block);
 			for (const stylePath of styleFiles) {
 				assets.add(path.relative(process.cwd(), stylePath));
+			}
+			for (const scriptPath of scriptFiles) {
+				assets.add(path.relative(process.cwd(), scriptPath));
 			}
 		}
 
 		return Array.from(assets);
+	}
+
+	/**
+	 * Determine if a discovered candidate path matches the requested asset identifier.
+	 * Matches when either:
+	 * - the absolute candidate path ends with the provided asset string, or
+	 * - the candidate path, made relative to cwd, equals the provided asset string.
+	 */
+	private matchesAsset(
+		candidatePath: string | undefined | null,
+		asset: string
+	): boolean {
+		if (!candidatePath) return false;
+		return (
+			candidatePath.endsWith(asset) ||
+			path.relative(process.cwd(), candidatePath) === asset
+		);
 	}
 
 	private findAssetPath(asset: string): string | null {
@@ -342,16 +370,16 @@ export class DevServerManager {
 			return relativePath;
 		}
 
-		// Check in block assets: derive CSS files from block.json and conventional files
+		// Check in block assets: derive CSS and JS files from block.json and conventional files
 		for (const [, block] of this.blockAssets) {
-			const styleFiles = this.getStyleFilesForBlock(block);
-			for (const stylePath of styleFiles) {
-				if (
-					stylePath &&
-					(stylePath.endsWith(asset) ||
-						path.relative(process.cwd(), stylePath) === asset)
-				) {
-					return stylePath;
+			const candidateFiles = [
+				...this.getStyleFilesForBlock(block),
+				...this.getScriptFilesForBlock(block),
+			];
+
+			for (const candidatePath of candidateFiles) {
+				if (this.matchesAsset(candidatePath, asset)) {
+					return candidatePath;
 				}
 			}
 		}
@@ -360,12 +388,8 @@ export class DevServerManager {
 		for (const [, assetInfo] of this.generalAssets) {
 			const possiblePaths = [assetInfo.sourcePath, assetInfo.outputPath];
 			for (const assetPath of possiblePaths) {
-				if (
-					assetPath &&
-					(assetPath.endsWith(asset) ||
-						path.relative(process.cwd(), assetPath) === asset)
-				) {
-					return assetPath;
+				if (this.matchesAsset(assetPath || null, asset)) {
+					return assetPath as string;
 				}
 			}
 		}
@@ -412,6 +436,63 @@ export class DevServerManager {
 		['editor.css', 'style.css'].forEach((fname) => {
 			this.pushIfExists(results, path.resolve(baseDir, fname));
 		});
+
+		return results;
+	}
+
+	/**
+	 * Derive block script source files from block info
+	 * - Reads block.blockJson script fields (script, editorScript, viewScript)
+	 * - Includes conventional files if present (index.js/ts/tsx/jsx, editor.*, view.*)
+	 */
+	private getScriptFilesForBlock(block: BlockInfo): string[] {
+		const results: string[] = [];
+		const baseDir: string | undefined = block?.path;
+
+		if (!baseDir) return results;
+
+		// From block.json script fields (file:./...)
+		const scriptProps = ['script', 'editorScript', 'viewScript'] as const;
+		const blockJson = block?.blockJson || ({} as any);
+
+		for (const prop of scriptProps) {
+			const val = blockJson[prop];
+			if (typeof val === 'string') {
+				const file = this.extractFileFromBlockJsonValue(val);
+				if (file)
+					this.pushIfExists(results, path.resolve(baseDir, file));
+			} else if (Array.isArray(val)) {
+				for (const item of val) {
+					if (typeof item === 'string') {
+						const file = this.extractFileFromBlockJsonValue(item);
+						if (file)
+							this.pushIfExists(
+								results,
+								path.resolve(baseDir, file)
+							);
+					}
+				}
+			}
+		}
+
+		// Conventional JS/TS entry files (if present)
+		const conventionalFiles = [
+			'index.js',
+			'index.ts',
+			'index.tsx',
+			'index.jsx',
+			'editor.js',
+			'editor.ts',
+			'editor.tsx',
+			'editor.jsx',
+			'view.js',
+			'view.ts',
+			'view.tsx',
+			'view.jsx',
+		];
+		for (const fname of conventionalFiles) {
+			this.pushIfExists(results, path.resolve(baseDir, fname));
+		}
 
 		return results;
 	}
