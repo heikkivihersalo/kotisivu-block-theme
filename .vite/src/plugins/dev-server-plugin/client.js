@@ -291,21 +291,17 @@ class Client {
  * Get configuration from global scope
  */
 function getHMRConfig() {
-	return (
-		window.__KOTISIVU_DEV_CONFIG__ ||
-		window.__VITE_INLINE_ASSETS_CONFIG__ ||
-		{}
-	);
+	return window.__VITE_INLINE_ASSETS_CONFIG__ || {};
 }
 
 /**
  * Initialize HMR client when DOM is ready
  */
 function initializeHMR() {
-	if (window.__KOTISIVU_HMR_CLIENT__) return;
+	if (window.__VITE_HMR_CLIENT__) return;
 
 	const config = getHMRConfig();
-	window.__KOTISIVU_HMR_CLIENT__ = Client.initialize(config);
+	window.__VITE_HMR_CLIENT__ = Client.initialize(config);
 }
 
 // Auto-initialize in browser environment
