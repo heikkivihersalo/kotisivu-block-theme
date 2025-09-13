@@ -86,7 +86,7 @@ const possiblePaths = [block.stylePath, block.src?.style, block.src?.css];
 
 ### New Files
 - `DevServerManager.ts` - Unified dev server management
-- `client/simple-hmr-client.js` - Consolidated HMR client
+- `client/client.js` - Consolidated HMR client
 
 ### Modified Files  
 - `index.ts` - Simplified plugin entry point
@@ -107,7 +107,7 @@ dev-server-plugin/
 ├── index.ts                  # Plugin entry point
 ├── types.ts                  # Type definitions
 ├── client/
-│   └── simple-hmr-client.js  # Lightweight HMR client
+│   └── client.js  # Lightweight HMR client
 └── OPTIMIZATION_SUMMARY.md   # This document
 ```
 
