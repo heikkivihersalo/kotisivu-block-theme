@@ -1,7 +1,9 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Vite Integration Validation Script
- * 
+ *
  * This script validates that DevServer and ManifestResolver are properly
  * configured and working with a running Vite development server.
  */
@@ -30,30 +32,30 @@ echo "================================\n\n";
 // Test 1: ManifestResolver validation
 echo "📋 Testing ManifestResolver...\n";
 try {
-    $manifest = new ManifestResolver();
+    $manifest     = new ManifestResolver();
     $manifestPath = __DIR__ . '/build/block-manifest.php';
-    
+
     if (!file_exists($manifestPath)) {
-        echo "❌ Block manifest file not found at: $manifestPath\n";
+        echo "❌ Block manifest file not found at: {$manifestPath}\n";
         exit(1);
     }
-    
+
     $manifest->setManifest($manifestPath);
-    
+
     echo "✅ ManifestResolver initialized successfully\n";
-    echo "✅ Block manifest loaded from: $manifestPath\n";
-    
+    echo "✅ Block manifest loaded from: {$manifestPath}\n";
+
     // Test block manifest detection
     if ($manifest->isBlockManifest()) {
         echo "✅ Correctly detected as block manifest\n";
     } else {
         echo "❌ Failed to detect as block manifest\n";
     }
-    
+
     // Test block names
     $blockNames = $manifest->getBlockNames();
     echo "✅ Found " . count($blockNames) . " blocks in manifest\n";
-    
+
     // Test specific block
     $testBlock = $manifest->getByBlockName('heading');
     if ($testBlock) {
@@ -63,8 +65,8 @@ try {
     } else {
         echo "❌ Failed to retrieve 'heading' block data\n";
     }
-    
-} catch (Exception $e) {
+
+} catch (\Exception $e) {
     echo "❌ ManifestResolver error: " . $e->getMessage() . "\n";
     exit(1);
 }
@@ -77,20 +79,20 @@ try {
     // Get configuration from environment
     $host = $_ENV['VITE_DEV_SERVER_HOST'] ?? 'https://block-theme.local';
     $port = (int) ($_ENV['VITE_DEV_SERVER_PORT'] ?? 5173);
-    
+
     $devServer = new DevServer($host, $manifest);
     $devServer->setPort($port);
-    
+
     echo "✅ DevServer initialized successfully\n";
     echo "✅ Host: " . $devServer->getServerHost() . "\n";
     echo "✅ Port: " . $devServer->getServerPort() . "\n";
     echo "✅ Server URL: " . $devServer->getServerUrl() . "\n";
-    
+
     // Test URL generation
     echo "✅ Client URL: " . $devServer->getClientUrl() . "\n";
     echo "✅ Config URL: " . $devServer->getConfigUrl() . "\n";
-    
-} catch (Exception $e) {
+
+} catch (\Exception $e) {
     echo "❌ DevServer error: " . $e->getMessage() . "\n";
     exit(1);
 }
@@ -108,12 +110,12 @@ try {
         echo "❌ Vite client is not responding\n";
         echo "   Make sure Vite dev server is running: npm run dev\n";
     }
-    
+
     // Test if Vite config is active
     $isConfigActive = $devServer->isConfigActive();
     if ($isConfigActive) {
         echo "✅ Vite configuration endpoint is active\n";
-        
+
         // Get and display config
         $config = $devServer->getConfig();
         if ($config) {
@@ -127,8 +129,8 @@ try {
         echo "❌ Vite configuration endpoint is not responding\n";
         echo "   Make sure your Vite config includes the WordPress plugin\n";
     }
-    
-} catch (Exception $e) {
+
+} catch (\Exception $e) {
     echo "❌ Vite server connection error: " . $e->getMessage() . "\n";
 }
 
@@ -145,22 +147,22 @@ try {
     } else {
         echo "❌ DevServer cannot retrieve block info\n";
     }
-    
+
     // Test block existence check
     if ($devServer->hasBlock('heading')) {
         echo "✅ DevServer can check block existence\n";
     } else {
         echo "❌ DevServer block existence check failed\n";
     }
-    
+
     // Test non-existent block
     if (!$devServer->hasBlock('non-existent-block')) {
         echo "✅ DevServer correctly identifies non-existent blocks\n";
     } else {
         echo "❌ DevServer incorrectly identifies non-existent blocks\n";
     }
-    
-} catch (Exception $e) {
+
+} catch (\Exception $e) {
     echo "❌ Integration test error: " . $e->getMessage() . "\n";
 }
 
@@ -173,26 +175,26 @@ echo "⚙️  Testing WordPress Integration Setup...\n";
 $bootstrapPath = __DIR__ . '/bootstrap/theme.php';
 if (file_exists($bootstrapPath)) {
     $bootstrapContent = file_get_contents($bootstrapPath);
-    
+
     if (strpos($bootstrapContent, 'DevServer') !== false) {
         echo "✅ DevServer is configured in bootstrap/theme.php\n";
     } else {
         echo "❌ DevServer not found in bootstrap configuration\n";
     }
-    
+
     if (strpos($bootstrapContent, 'ManifestResolver') !== false) {
         echo "✅ ManifestResolver is configured in bootstrap/theme.php\n";
     } else {
         echo "❌ ManifestResolver not found in bootstrap configuration\n";
     }
-    
+
     if (strpos($bootstrapContent, 'WP_DEBUG') !== false) {
         echo "✅ Development mode check is in place\n";
     } else {
         echo "⚠️  No development mode check found\n";
     }
 } else {
-    echo "❌ Bootstrap file not found: $bootstrapPath\n";
+    echo "❌ Bootstrap file not found: {$bootstrapPath}\n";
 }
 
 echo "\n";
@@ -203,33 +205,33 @@ echo "🔧 Testing Environment Configuration...\n";
 $envPath = __DIR__ . '/.env';
 if (file_exists($envPath)) {
     echo "✅ Environment file exists\n";
-    
+
     // Load environment variables if not already loaded
     if (!isset($_ENV['VITE_DEV_SERVER_HOST'])) {
         $envContent = file_get_contents($envPath);
-        $lines = explode("\n", $envContent);
+        $lines      = explode("\n", $envContent);
         foreach ($lines as $line) {
             if (preg_match('/^([^#=]+)=(.*)$/', trim($line), $matches)) {
-                $key = trim($matches[1]);
-                $value = trim($matches[2], '"\'');
+                $key        = trim($matches[1]);
+                $value      = trim($matches[2], '"\'');
                 $_ENV[$key] = $value;
             }
         }
     }
-    
+
     if (isset($_ENV['VITE_DEV_SERVER_HOST'])) {
         echo "✅ VITE_DEV_SERVER_HOST configured: " . $_ENV['VITE_DEV_SERVER_HOST'] . "\n";
     } else {
         echo "❌ VITE_DEV_SERVER_HOST not configured\n";
     }
-    
+
     if (isset($_ENV['VITE_DEV_SERVER_PORT'])) {
         echo "✅ VITE_DEV_SERVER_PORT configured: " . $_ENV['VITE_DEV_SERVER_PORT'] . "\n";
     } else {
         echo "❌ VITE_DEV_SERVER_PORT not configured\n";
     }
 } else {
-    echo "❌ Environment file not found: $envPath\n";
+    echo "❌ Environment file not found: {$envPath}\n";
 }
 
 echo "\n";

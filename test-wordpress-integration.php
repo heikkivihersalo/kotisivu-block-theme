@@ -1,7 +1,9 @@
 <?php
+
+declare(strict_types=1);
 /**
  * WordPress Integration Test
- * 
+ *
  * Tests DevServer WordPress hooks and filters
  */
 
@@ -52,17 +54,17 @@ $devServer->setPort(5173);
 
 // Mock config for testing
 $devServer->setConfig([
-    'base' => '/wp-content/themes/kotisivu-block-theme',
+    'base'   => '/wp-content/themes/kotisivu-block-theme',
     'outDir' => 'build',
     'srcDir' => 'resources',
-    'css' => 'scss'
+    'css'    => 'scss'
 ]);
 
 echo "🎣 Testing WordPress Hooks and Filters...\n";
 
 // Test 1: Body class filter
 echo "Testing filterBodyClass...\n";
-$classes = ['page', 'page-id-123'];
+$classes         = ['page', 'page-id-123'];
 $filteredClasses = $devServer->filterBodyClass($classes);
 if (in_array('vite-dev-server-is-active', $filteredClasses)) {
     echo "✅ Body class filter adds dev server class\n";
@@ -72,8 +74,8 @@ if (in_array('vite-dev-server-is-active', $filteredClasses)) {
 
 // Test 2: Asset loader src filter
 echo "Testing filterAssetLoaderSrc...\n";
-$testSrc = '/wp-content/themes/kotisivu-block-theme/build/app.js';
-$handle = 'test-handle';
+$testSrc     = '/wp-content/themes/kotisivu-block-theme/build/app.js';
+$handle      = 'test-handle';
 $filteredSrc = $devServer->filterAssetLoaderSrc($testSrc, $handle);
 if ($filteredSrc !== $testSrc) {
     echo "✅ Asset loader src filter processes matching URLs\n";
@@ -83,7 +85,7 @@ if ($filteredSrc !== $testSrc) {
 
 // Test 3: Script tag filter
 echo "Testing filterAssetLoaderTags...\n";
-$testTag = '<script src="https://block-theme.local:5173/resources/app.js"></script>';
+$testTag     = '<script src="https://block-theme.local:5173/resources/app.js"></script>';
 $filteredTag = $devServer->filterAssetLoaderTags($testTag, 'test-handle', 'https://block-theme.local:5173/resources/app.js');
 if (strpos($filteredTag, 'type="module"') !== false) {
     echo "✅ Script tag filter adds module type for dev server assets\n";
@@ -94,7 +96,7 @@ if (strpos($filteredTag, 'type="module"') !== false) {
 // Test 4: Block metadata filter
 echo "Testing filterBlockTypeMetadata...\n";
 $metadata = [
-    'file' => '/path/to/blocks/test-block/block.json',
+    'file'   => '/path/to/blocks/test-block/block.json',
     'render' => 'render.php'
 ];
 $filteredMetadata = $devServer->filterBlockTypeMetadata($metadata);
@@ -110,7 +112,7 @@ echo "\n";
 echo "🌐 Testing URL and Path Methods...\n";
 
 $serverUrl = $devServer->getServerUrl();
-echo "Server URL: $serverUrl\n";
+echo "Server URL: {$serverUrl}\n";
 if ($serverUrl === 'https://block-theme.local:5173') {
     echo "✅ Server URL generation is correct\n";
 } else {
@@ -118,7 +120,7 @@ if ($serverUrl === 'https://block-theme.local:5173') {
 }
 
 $baseUrl = $devServer->getBaseUrl();
-echo "Base URL: $baseUrl\n";
+echo "Base URL: {$baseUrl}\n";
 if (strpos($baseUrl, 'https://block-theme.local:5173') === 0) {
     echo "✅ Base URL generation is correct\n";
 } else {
@@ -126,7 +128,7 @@ if (strpos($baseUrl, 'https://block-theme.local:5173') === 0) {
 }
 
 $clientUrl = $devServer->getClientUrl();
-echo "Client URL: $clientUrl\n";
+echo "Client URL: {$clientUrl}\n";
 if (strpos($clientUrl, '@vite/client') !== false) {
     echo "✅ Client URL generation is correct\n";
 } else {
@@ -134,7 +136,7 @@ if (strpos($clientUrl, '@vite/client') !== false) {
 }
 
 $configUrl = $devServer->getConfigUrl();
-echo "Config URL: $configUrl\n";
+echo "Config URL: {$configUrl}\n";
 if (strpos($configUrl, 'vite-wordpress.json') !== false) {
     echo "✅ Config URL generation is correct\n";
 } else {
@@ -151,15 +153,15 @@ $fileName = $devServer->getFileName($testPath);
 if ($fileName === 'app.js') {
     echo "✅ File name extraction works correctly\n";
 } else {
-    echo "❌ File name extraction failed: got '$fileName'\n";
+    echo "❌ File name extraction failed: got '{$fileName}'\n";
 }
 
 // Test 7: Relative path generation
 echo "Testing getRelativeLocalPath...\n";
-$from = '/absolute/path/to/blocks/test-block';
-$to = '/absolute/path/to/resources/blocks/test-block/render.php';
+$from         = '/absolute/path/to/blocks/test-block';
+$to           = '/absolute/path/to/resources/blocks/test-block/render.php';
 $relativePath = $devServer->getRelativeLocalPath($from, $to);
-echo "Relative path: $relativePath\n";
+echo "Relative path: {$relativePath}\n";
 if (strpos($relativePath, 'file:./') === 0) {
     echo "✅ Relative path generation works correctly\n";
 } else {
@@ -194,7 +196,7 @@ echo "\n";
 // Test 9: Path checking methods
 echo "🔍 Testing Path Checking Methods...\n";
 
-$testPath = '/wp-content/themes/kotisivu-block-theme/build/app.js';
+$testPath     = '/wp-content/themes/kotisivu-block-theme/build/app.js';
 $containsBase = $devServer->containsBase($testPath);
 if ($containsBase) {
     echo "✅ containsBase method works correctly\n";
@@ -202,7 +204,7 @@ if ($containsBase) {
     echo "❌ containsBase method failed\n";
 }
 
-$testUrl = 'https://block-theme.local:5173/wp-content/themes/kotisivu-block-theme/resources/app.js';
+$testUrl           = 'https://block-theme.local:5173/wp-content/themes/kotisivu-block-theme/resources/app.js';
 $containsServerUrl = $devServer->containsServerUrl($testUrl);
 if ($containsServerUrl) {
     echo "✅ containsServerUrl method works correctly\n";
