@@ -4,7 +4,7 @@
  * A lightweight, consolidated client that handles Hot Module Replacement for WordPress themes.
  */
 
-class SimpleHMRClient {
+class Client {
 	constructor(config = {}) {
 		// Auto-detect server URL from current page
 		const currentProtocol =
@@ -27,7 +27,7 @@ class SimpleHMRClient {
 	 * Initialize and start the HMR client
 	 */
 	static initialize(config) {
-		const client = new SimpleHMRClient(config);
+		const client = new Client(config);
 		client.start();
 		return client;
 	}
@@ -305,7 +305,7 @@ function initializeHMR() {
 	if (window.__KOTISIVU_HMR_CLIENT__) return;
 
 	const config = getHMRConfig();
-	window.__KOTISIVU_HMR_CLIENT__ = SimpleHMRClient.initialize(config);
+	window.__KOTISIVU_HMR_CLIENT__ = Client.initialize(config);
 }
 
 // Auto-initialize in browser environment
@@ -319,10 +319,10 @@ if (typeof document !== 'undefined') {
 
 // Export for module environments
 if (typeof module !== 'undefined' && module.exports) {
-	module.exports = { SimpleHMRClient };
+	module.exports = { Client };
 }
 
 // Export for ES modules
 if (typeof window !== 'undefined') {
-	window.SimpleHMRClient = SimpleHMRClient;
+	window.Client = Client;
 }

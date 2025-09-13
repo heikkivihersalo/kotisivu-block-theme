@@ -150,7 +150,7 @@ export class DevServerManager {
 
 		// HMR client endpoint
 		server.middlewares.use('/__dev-server/hmr-client', (_req, res) => {
-			const clientPath = path.resolve(__dirname, 'client/client.js');
+			const clientPath = path.resolve(__dirname, 'client.js');
 			res.setHeader('Content-Type', 'application/javascript');
 			res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -164,7 +164,7 @@ export class DevServerManager {
 
 		// Legacy inline assets endpoint (for WordPress PHP integration)
 		server.middlewares.use('/__vite_inline_assets', (_req, res) => {
-			const clientPath = path.resolve(__dirname, 'client/client.js');
+			const clientPath = path.resolve(__dirname, 'client.js');
 			res.setHeader('Content-Type', 'application/javascript');
 			res.setHeader('Access-Control-Allow-Origin', '*');
 

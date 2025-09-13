@@ -13,7 +13,7 @@ The dev-server-plugin has been significantly lightened while preserving all core
 ### After (Lightweight Setup)
 - **1 unified manager class**: DevServerManager (consolidates all functionality)
 - **0 separate middleware classes**: All middleware logic inlined into DevServerManager
-- **1 simple HMR client**: SimpleHMRClient (consolidates all client functionality)
+- **1 simple HMR client**: Client (consolidates all client functionality)
 - **Total files**: 4 main files with clear responsibilities
 
 ## Key Optimizations Made
@@ -38,7 +38,7 @@ Instead of separate middleware classes, all endpoints are now defined directly i
 - `/__dev-server` - Main dev server configuration endpoint
 
 ### 3. **Simplified HMR Client**
-The complex client-side system with multiple handlers has been replaced with a single `SimpleHMRClient` class that:
+The complex client-side system with multiple handlers has been replaced with a single `Client` class that:
 - Handles both WebSocket and polling-based updates
 - Automatically detects and updates CSS changes
 - Falls back gracefully when WebSocket is unavailable
@@ -86,7 +86,7 @@ const possiblePaths = [block.stylePath, block.src?.style, block.src?.css];
 
 ### New Files
 - `DevServerManager.ts` - Unified dev server management
-- `client/client.js` - Consolidated HMR client
+- `client.js` - Consolidated HMR client
 
 ### Modified Files  
 - `index.ts` - Simplified plugin entry point
