@@ -35,7 +35,7 @@ Instead of separate middleware classes, all endpoints are now defined directly i
 - `/__dev-server/status` - File modification timestamps
 - `/__dev-server/hmr-client` - Serves simplified HMR client
 - `/__dev-server/asset-content` - Serves asset content for HMR
-- `/__dev-server` - Main dev server configuration endpoint
+- `/vite-wordpress.json` - Main dev server configuration endpoint (used by PHP)
 
 ### 3. **Simplified HMR Client**
 The complex client-side system with multiple handlers has been replaced with a single `Client` class that:
