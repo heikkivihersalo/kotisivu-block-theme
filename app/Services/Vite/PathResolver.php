@@ -81,23 +81,6 @@ class PathResolver {
     }
 
     /**
-     * Return a block.json local file path relative reference
-     * like: file:./../relative/path.php
-     */
-    public static function relativeLocalPath(string $from, string $to): string {
-        $fromParts = explode(DIRECTORY_SEPARATOR, rtrim($from, DIRECTORY_SEPARATOR));
-        $toParts   = explode(DIRECTORY_SEPARATOR, rtrim($to, DIRECTORY_SEPARATOR));
-
-        // Remove common prefix
-        while ($fromParts && $toParts && $fromParts[0] === $toParts[0]) {
-            array_shift($fromParts);
-            array_shift($toParts);
-        }
-
-        return 'file:./' . str_repeat('..' . DIRECTORY_SEPARATOR, count($fromParts)) . implode(DIRECTORY_SEPARATOR, $toParts);
-    }
-
-    /**
      * Vite client URL from a base URL
      */
     public static function clientUrl(string $baseUrl): string {
@@ -109,5 +92,47 @@ class PathResolver {
      */
     public static function configUrl(string $serverUrl): string {
         return $serverUrl . '/vite-wordpress.json';
+    }
+
+    /**
+     * Build a relative filesystem path from one directory to a target path.
+     * Falls back to absolute target when no reasonable relation is found.
+     */
+    public static function relativeLocalPath(string $fromDir, string $toPath): string {
+        if ($fromDir === '' || $toPath === '') {
+            return $toPath;
+        }
+
+        // Normalize separators to forward slashes for consistency
+        $from = wp_normalize_path(untrailingslashit($fromDir));
+        $to   = wp_normalize_path($toPath);
+
+        // Early return if already relative
+        if (!str_starts_with($to, '/') && !preg_match('/^[A-Za-z]:\//', $to)) {
+            return $to;
+        }
+
+        $fromParts = array_values(array_filter(explode('/', $from), 'strlen'));
+        $toParts   = array_values(array_filter(explode('/', $to), 'strlen'));
+
+        // If roots differ (e.g., Windows drive letters), return absolute target
+        if (!empty($fromParts) && !empty($toParts) && $fromParts[0] !== $toParts[0] && preg_match('/^[A-Za-z]:$/', $fromParts[0])) {
+            return $to;
+        }
+
+        // Find common prefix length
+        $i   = 0;
+        $len = min(count($fromParts), count($toParts));
+        while ($i < $len && $fromParts[$i] === $toParts[$i]) {
+            $i++;
+        }
+
+        $upCount   = count($fromParts) - $i;
+        $upParts   = $upCount > 0 ? array_fill(0, $upCount, '..') : [];
+        $downParts = array_slice($toParts, $i);
+        $relParts  = array_merge($upParts, $downParts);
+
+        $rel = implode('/', $relParts);
+        return $rel !== '' ? $rel : './';
     }
 }

@@ -14,11 +14,6 @@ use RuntimeException;
  */
 class ManifestResolver {
     /**
-     * Block metadata file-like properties
-     */
-    private const BLOCK_FILE_PROPERTIES = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
-
-    /**
      * The parsed manifest data
      */
     private array $manifest;
@@ -74,23 +69,6 @@ class ManifestResolver {
             // Standard Vite manifest structure
             if (isset($item['file']) && $item['file'] === $file) {
                 return $item;
-            }
-
-            // Block manifest structure - check various file properties
-            if (is_array($item)) {
-                foreach (self::BLOCK_FILE_PROPERTIES as $property) {
-                    if (isset($item[$property])) {
-                        $itemFile = $item[$property];
-
-                        // Remove 'file:./' prefix if present
-                        $itemFile = str_replace('file:./', '', $itemFile);
-
-                        // Check if the file matches
-                        if (basename($itemFile) === basename($file) || $itemFile === $file) {
-                            return $item;
-                        }
-                    }
-                }
             }
         }
 

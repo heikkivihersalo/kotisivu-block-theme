@@ -17,11 +17,6 @@ class DevServer {
     private const DEFAULT_PORT = '5173';
 
     /**
-     * Block metadata file-like properties
-     */
-    private const BLOCK_FILE_PROPERTIES = ['editorScript', 'editorStyle', 'style', 'viewScript', 'render'];
-
-    /**
      * Vite server host
      */
     protected string $host;
@@ -47,14 +42,15 @@ class DevServer {
     protected int $clientHookPriority = 5;
 
     /**
-     * Resolved assets cache
-     */
-    protected array $resolvedAssets = [];
-
-    /**
      * Manifest resolver
      */
     protected ?ManifestResolver $manifest = null;
+
+    /**
+     * Asset resolver
+     */
+    protected ?AssetResolver $assetResolver = null;
+
 
     /**
      * Cache: whether config was checked and active
@@ -69,10 +65,12 @@ class DevServer {
 
     public function __construct(string $host = '', ?ManifestResolver $manifest = null) {
         $this->host = $host ?: get_site_url();
+
         if (null !== $manifest) {
             $this->manifest = $manifest;
+
         }
-        // PathResolver is used statically
+        $this->assetResolver = new AssetResolver($this->manifest, $this->config, $this->buildMap);
     }
 
     /**
@@ -262,17 +260,18 @@ class DevServer {
             return $src;
         }
 
-        if (isset($this->resolvedAssets[$handle])) {
-            return $this->resolvedAssets[$handle];
-        }
-
-        $resolvedPath = $this->getSourcePath($src);
+        $resolvedPath = $this->assetResolver->getSourcePath($src);
 
         if ($resolvedPath) {
-            $serverUrl                     = PathResolver::serverUrl($this->host, $this->port);
-            $baseUrl                       = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
-            $resolvedUrl                   = "{$baseUrl}/{$resolvedPath}";
-            $this->resolvedAssets[$handle] = $resolvedUrl;
+            $serverUrl   = PathResolver::serverUrl($this->host, $this->port);
+            $baseUrl     = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
+            $resolvedUrl = "{$baseUrl}/{$resolvedPath}";
+
+            // Track that this handle was resolved via the dev server so we can adjust tag attributes
+            if ($this->assetResolver) {
+                $this->assetResolver->trackResolvedHandle($handle, $resolvedUrl);
+            }
+
             return $resolvedUrl;
         }
 
@@ -285,7 +284,11 @@ class DevServer {
     public function filterAssetLoaderTags(string $tag, string $handle, string $src): string {
         $serverUrl = PathResolver::serverUrl($this->host, $this->port);
         $baseUrl   = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
-        if (PathResolver::containsServerUrl($src, $baseUrl) && isset($this->resolvedAssets[$handle])) {
+        if (
+            PathResolver::containsServerUrl($src, $baseUrl)
+            && $this->assetResolver
+            && $this->assetResolver->hasResolvedHandle($handle)
+        ) {
             return '<script type="module" src="' . esc_url($src) . '"></script>';
         }
 
@@ -308,12 +311,12 @@ class DevServer {
             return $metadata;
         }
 
-        $resolvedPath = $this->getSourcePath($renderFilePath);
+        $resolvedPath = $this->assetResolver->getSourcePath($renderFilePath);
 
         if ($resolvedPath) {
             $serverPath         = PathResolver::serverPath(ABSPATH, (string) ($this->getConfig('base') ?? '/'));
             $resolvedPath       = "{$serverPath}/{$resolvedPath}";
-            $metadata['render'] = $this->getRelativeLocalPath($blockDirPath, $resolvedPath);
+            $metadata['render'] = PathResolver::relativeLocalPath($blockDirPath, $resolvedPath);
         }
 
         return $metadata;
@@ -328,170 +331,6 @@ class DevServer {
         }
 
         return $this->manifest->getByBlockName($blockName);
-    }
-
-    /**
-     * Check if a block exists in the manifest
-     */
-    public function hasBlock(string $blockName): bool {
-        if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
-            return false;
-        }
-
-        return $this->manifest->getByBlockName($blockName) !== false;
-    }
-
-    /**
-     * Get source path for an asset
-     */
-    public function getSourcePath(string $filePath): string|false {
-        $fileName = PathResolver::fileName(
-            $filePath,
-            (string) ($this->getConfig('base') ?? '/'),
-            (string) ($this->getConfig('outDir') ?? '')
-        );
-        if ($fileName === false) {
-            return false;
-        }
-
-        // 1) Try manifest (if available)
-        $resolved = $this->tryResolveViaManifest($fileName);
-        if ($resolved !== false) {
-            return $resolved;
-        }
-
-        // 2) Try dev server build map (if available)
-        $resolved = $this->tryResolveViaBuildMap($fileName);
-        if ($resolved !== false) {
-            return $resolved;
-        }
-
-        // 3) Try local filesystem based on configured srcDir and css ext
-        return $this->tryResolveViaFilesystem($fileName);
-    }
-
-    /**
-     * Attempt to resolve from manifest if present
-     */
-    protected function tryResolveViaManifest(string $fileName): string|false {
-        if (!isset($this->manifest)) {
-            return false;
-        }
-
-        $manifestEntry = $this->manifest->getByFile($fileName);
-
-        if ($manifestEntry && isset($manifestEntry['src'])) {
-            return $manifestEntry['src'];
-        }
-
-        if ($this->manifest->isBlockManifest()) {
-            $blockAssetPath = $this->resolveBlockAsset($fileName);
-            if ($blockAssetPath) {
-                return $blockAssetPath;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Attempt to resolve using dev server build map if available
-     */
-    protected function tryResolveViaBuildMap(string $fileName): string|false {
-        if (!isset($this->buildMap) || !isset($this->buildMap[$fileName])) {
-            return false;
-        }
-
-        $buildEntry = $this->buildMap[$fileName];
-        return $buildEntry['src'] ?? false;
-    }
-
-    /**
-     * Attempt to resolve by looking at the filesystem based on configured paths
-     */
-    protected function tryResolveViaFilesystem(string $fileName): string|false {
-        $cssExt = (string) ($this->getConfig('css') ?? 'css');
-        $srcDir = trim((string) ($this->getConfig('srcDir') ?? 'resources'), '/');
-        $base   = (string) ($this->getConfig('base') ?? '/');
-        $server = rtrim(PathResolver::serverPath(ABSPATH, $base), '/');
-
-        $candidateName  = str_replace('.css', ".{$cssExt}", $fileName);
-        $fileSystemPath = $server . '/' . $srcDir . '/' . $candidateName;
-
-        if (file_exists($fileSystemPath)) {
-            return $srcDir . '/' . $candidateName;
-        }
-
-        return false;
-    }
-
-    /**
-     * Resolve block asset from block manifest
-     */
-    protected function resolveBlockAsset(string $fileName): string|false {
-        if (!isset($this->manifest) || !$this->manifest->isBlockManifest()) {
-            return false;
-        }
-
-        // Try to find the block that contains this file
-        foreach ($this->manifest->getBlockNames() as $blockName) {
-            $blockData = $this->manifest->getByBlockName($blockName);
-
-            if (!$blockData) {
-                continue;
-            }
-
-            foreach (self::BLOCK_FILE_PROPERTIES as $property) {
-                if (isset($blockData[$property])) {
-                    $blockFile = $blockData[$property];
-
-                    // Remove 'file:./' prefix if present
-                    $blockFile = str_replace('file:./', '', $blockFile);
-
-                    // Check if this matches our target file
-                    if (basename($blockFile) === basename($fileName) || $blockFile === $fileName) {
-                        // Construct source path for development
-                        $srcDir = $this->getConfig('srcDir') ?: 'resources';
-                        return "{$srcDir}/blocks/{$blockName}/{$blockFile}";
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Gets the relative local path for block.json. This approach is based
-     * on how npm handles local paths for packages.
-     *
-     * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#wpdefinedpath
-     *
-     * @example
-     * ```
-     * $from = '/absolute/path/to/my/folder/';
-     * $to = '/absolute/path/to/my/local/render.php';
-     *
-     * echo $this->getRelativeLocalPath($from, $to);
-     * // Output: "file:./../local/render.php"
-     * ```
-     *
-     * @param string $from The path from which it needs to be relative from
-     * @param string $to The path to construct the relative path
-     * @return string
-     */
-    public function getRelativeLocalPath(string $from, string $to): string {
-        $fromParts = explode(DIRECTORY_SEPARATOR, rtrim($from, DIRECTORY_SEPARATOR));
-        $toParts   = explode(DIRECTORY_SEPARATOR, rtrim($to, DIRECTORY_SEPARATOR));
-
-        // Remove common prefix
-        while ($fromParts && $toParts && $fromParts[0] === $toParts[0]) {
-            array_shift($fromParts);
-            array_shift($toParts);
-        }
-
-        // Construct relative path
-        return 'file:./' . str_repeat('..' . DIRECTORY_SEPARATOR, count($fromParts)) . implode(DIRECTORY_SEPARATOR, $toParts);
     }
 
     /**
