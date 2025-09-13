@@ -10,11 +10,7 @@ import type { ViteDevServer, ResolvedConfig } from 'vite';
 /**
  * Internal dependencies
  */
-import type {
-	PluginConfig,
-	BlockInfo,
-	DiscoveredAsset,
-} from '../../common/types/index.js';
+import type { PluginConfig, BlockInfo } from '../../common/types/index.js';
 import { BuildMapResolver } from '../../common/services/BuildMapResolver.js';
 
 // Get current directory for client files
@@ -31,22 +27,13 @@ interface BlocksApi {
 	getDiscoveredBlocks(): Record<string, BlockInfo>;
 }
 
-// API surface from the Gutenberg Assets plugin
-interface AssetsApi {
-	getDiscoveredAssets(): Record<string, GeneralAsset>;
-}
-
-// General asset information consumed by the DevServer
-// Compatible with DiscoveredAsset from common types (sourcePath/outputPath)
-type GeneralAsset = Partial<DiscoveredAsset>;
+// (Removed assets API – keep the server lean)
 
 export class DevServerManager {
 	private config: PluginConfig;
 	private buildMapResolver: BuildMapResolver;
 	private blocksApi: BlocksApi | undefined;
-	private assetsApi: AssetsApi | undefined;
 	private blockAssets = new Map<string, BlockInfo>();
-	private generalAssets = new Map<string, GeneralAsset>();
 	private watchedFiles = new Set<string>();
 
 	constructor(config: ResolvedConfig) {
@@ -57,9 +44,6 @@ export class DevServerManager {
 		const blocksPlugin = config.plugins.find(
 			(p: any) => p.name === 'vite-plugin-gutenberg-blocks'
 		);
-		const assetsPlugin = config.plugins.find(
-			(p: any) => p.name === 'vite-plugin-gutenberg-assets'
-		);
 
 		if (!configPlugin?.api) {
 			throw new Error(
@@ -69,7 +53,6 @@ export class DevServerManager {
 
 		this.config = configPlugin.api.getPluginConfig();
 		this.blocksApi = blocksPlugin?.api;
-		this.assetsApi = assetsPlugin?.api;
 
 		this.buildMapResolver = new BuildMapResolver(
 			this.config.build?.outDir || 'build',
@@ -88,12 +71,6 @@ export class DevServerManager {
 			const blocks = this.blocksApi.getDiscoveredBlocks();
 			this.blockAssets = new Map(Object.entries(blocks));
 		}
-
-		// Get general assets
-		if (this.assetsApi) {
-			const assets = this.assetsApi.getDiscoveredAssets();
-			this.generalAssets = new Map(Object.entries(assets));
-		}
 	}
 
 	/**
@@ -106,10 +83,27 @@ export class DevServerManager {
 
 		// Add inline assets to watch
 		for (const pattern of watchPatterns) {
-			const fullPath = this.findAssetPath(pattern);
-			if (fullPath && fs.existsSync(fullPath)) {
-				this.watchedFiles.add(fullPath);
-				addWatchFile(fullPath);
+			if (
+				pattern.includes('*') ||
+				pattern.includes('?') ||
+				pattern.includes('[')
+			) {
+				const files = globSync(pattern, {
+					cwd: process.cwd(),
+					absolute: true,
+				});
+				for (const file of files) {
+					if (!this.watchedFiles.has(file) && fs.existsSync(file)) {
+						this.watchedFiles.add(file);
+						addWatchFile(file);
+					}
+				}
+			} else {
+				const fullPath = this.findAssetPath(pattern);
+				if (fullPath && fs.existsSync(fullPath)) {
+					this.watchedFiles.add(fullPath);
+					addWatchFile(fullPath);
+				}
 			}
 		}
 
@@ -117,12 +111,14 @@ export class DevServerManager {
 		for (const [, block] of this.blockAssets) {
 			const styleFiles = this.getStyleFilesForBlock(block);
 			const scriptFiles = this.getScriptFilesForBlock(block);
+
 			for (const stylePath of styleFiles) {
 				if (!this.watchedFiles.has(stylePath)) {
 					this.watchedFiles.add(stylePath);
 					addWatchFile(stylePath);
 				}
 			}
+
 			for (const scriptPath of scriptFiles) {
 				if (!this.watchedFiles.has(scriptPath)) {
 					this.watchedFiles.add(scriptPath);
@@ -330,9 +326,11 @@ export class DevServerManager {
 		for (const [, block] of this.blockAssets) {
 			const styleFiles = this.getStyleFilesForBlock(block);
 			const scriptFiles = this.getScriptFilesForBlock(block);
+
 			for (const stylePath of styleFiles) {
 				assets.add(path.relative(process.cwd(), stylePath));
 			}
+
 			for (const scriptPath of scriptFiles) {
 				assets.add(path.relative(process.cwd(), scriptPath));
 			}
@@ -342,59 +340,24 @@ export class DevServerManager {
 	}
 
 	/**
-	 * Determine if a discovered candidate path matches the requested asset identifier.
-	 * Matches when either:
-	 * - the absolute candidate path ends with the provided asset string, or
-	 * - the candidate path, made relative to cwd, equals the provided asset string.
+	 * Normalize a path-like string into an absolute, normalized path.
+	 * Returns the absolute path (whether or not it exists).
 	 */
-	private matchesAsset(
-		candidatePath: string | undefined | null,
-		asset: string
-	): boolean {
-		if (!candidatePath) return false;
-		return (
-			candidatePath.endsWith(asset) ||
-			path.relative(process.cwd(), candidatePath) === asset
-		);
+	private normalizePath(p: string): string {
+		const absolute = path.isAbsolute(p)
+			? p
+			: path.resolve(process.cwd(), p);
+		return path.normalize(absolute);
 	}
 
 	private findAssetPath(asset: string): string | null {
-		// Try as absolute path first
-		if (path.isAbsolute(asset) && fs.existsSync(asset)) {
-			return asset;
+		// Skip globs here; caller should expand globs separately
+		if (asset.includes('*') || asset.includes('?') || asset.includes('[')) {
+			return null;
 		}
 
-		// Try relative to cwd
-		const relativePath = path.resolve(process.cwd(), asset);
-		if (fs.existsSync(relativePath)) {
-			return relativePath;
-		}
-
-		// Check in block assets: derive CSS and JS files from block.json and conventional files
-		for (const [, block] of this.blockAssets) {
-			const candidateFiles = [
-				...this.getStyleFilesForBlock(block),
-				...this.getScriptFilesForBlock(block),
-			];
-
-			for (const candidatePath of candidateFiles) {
-				if (this.matchesAsset(candidatePath, asset)) {
-					return candidatePath;
-				}
-			}
-		}
-
-		// Check in general assets using current common type fields
-		for (const [, assetInfo] of this.generalAssets) {
-			const possiblePaths = [assetInfo.sourcePath, assetInfo.outputPath];
-			for (const assetPath of possiblePaths) {
-				if (this.matchesAsset(assetPath || null, asset)) {
-					return assetPath as string;
-				}
-			}
-		}
-
-		return null;
+		const abs = this.normalizePath(asset);
+		return fs.existsSync(abs) ? abs : null;
 	}
 
 	/**
@@ -490,6 +453,7 @@ export class DevServerManager {
 			'view.tsx',
 			'view.jsx',
 		];
+
 		for (const fname of conventionalFiles) {
 			this.pushIfExists(results, path.resolve(baseDir, fname));
 		}
@@ -499,20 +463,18 @@ export class DevServerManager {
 
 	private extractFileFromBlockJsonValue(val: string): string | null {
 		if (!val) return null;
+
 		// Expect values like "file:./index.css"; ignore non-file entries
 		if (val.startsWith('file:')) {
 			return val.replace(/^file:\.\//, '');
 		}
+
 		return null;
 	}
 
 	private pushIfExists(arr: string[], fullPath: string) {
-		try {
-			if (fullPath && fs.existsSync(fullPath)) {
-				arr.push(fullPath);
-			}
-		} catch {
-			// ignore
+		if (fullPath && fs.existsSync(fullPath)) {
+			arr.push(fullPath);
 		}
 	}
 }
