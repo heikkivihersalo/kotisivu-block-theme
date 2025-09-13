@@ -9,10 +9,10 @@ import type { Plugin, ViteDevServer, ResolvedConfig } from 'vite';
 import { DevServerManager } from './DevServerManager.js';
 
 /**
- * DevServer Plugin for HMR support in WordPress
+ * DevServer Plugin for live updates (polling-only) in WordPress
  *
- * This plugin provides dev server functionality with inline assets HMR support.
- * It creates endpoints for PHP DevServer integration and monitors files for browser updates.
+ * Provides dev server functionality where the browser polls the server for file changes.
+ * Creates endpoints for PHP integration and monitors files to support CSS reloads and page refreshes.
  */
 export function DevServerPlugin(): Plugin {
 	let server: ViteDevServer;

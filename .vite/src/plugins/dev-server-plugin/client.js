@@ -39,10 +39,7 @@ class Client {
 		if (this.isActive) return;
 
 		this.isActive = true;
-		this.log('Starting HMR client');
-
-		// Connect to Vite HMR WebSocket
-		this.connectWebSocket();
+		this.log('Starting dev client (polling only)');
 
 		// Start polling for changes
 		this.startPolling();
@@ -55,68 +52,11 @@ class Client {
 		if (!this.isActive) return;
 
 		this.isActive = false;
-		this.log('Stopping HMR client');
+		this.log('Stopping dev client');
 
 		if (this.pollingTimer) {
 			clearInterval(this.pollingTimer);
 			this.pollingTimer = null;
-		}
-
-		if (this.ws) {
-			this.ws.close();
-			this.ws = null;
-		}
-	}
-
-	/**
-	 * Connect to Vite's WebSocket for real-time updates
-	 */
-	connectWebSocket() {
-		try {
-			// Connect to Vite's built-in HMR WebSocket
-			const wsProtocol = this.config.viteServerUrl.startsWith('https')
-				? 'wss:'
-				: 'ws:';
-			const serverUrl = this.config.viteServerUrl.replace(/^https?:/, '');
-			const wsUrl = `${wsProtocol}${serverUrl}`;
-
-			this.ws = new WebSocket(wsUrl);
-
-			this.ws.addEventListener('message', (event) => {
-				try {
-					const data = JSON.parse(event.data);
-					// Listen for Vite's HMR updates
-					if (data.type === 'update' || data.type === 'full-reload') {
-						// Handle CSS updates
-						if (data.updates) {
-							for (const update of data.updates) {
-								if (update.type === 'css-update') {
-									this.handleFileChange({
-										file: update.path,
-									});
-								}
-							}
-						}
-					}
-					// Also handle our custom file-changed events
-					if (
-						data.type === 'custom' &&
-						data.event === 'file-changed'
-					) {
-						this.handleFileChange(data.data);
-					}
-				} catch (e) {
-					// Ignore invalid messages
-				}
-			});
-
-			this.ws.addEventListener('error', () => {
-				// Fallback to polling if WebSocket fails
-				this.log('WebSocket connection failed, using polling fallback');
-			});
-		} catch (e) {
-			// WebSocket not available, rely on polling
-			this.log('WebSocket not available, using polling only');
 		}
 	}
 
@@ -249,7 +189,7 @@ class Client {
 
 		const namespace = this.config.blockNamespace;
 		if (!namespace) return null;
-		
+
 		const blockName = match[2];
 
 		return `${namespace}-${blockName}-style-inline-css`;

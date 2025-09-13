@@ -148,7 +148,7 @@ export class DevServerManager {
 			res.end(JSON.stringify(status));
 		});
 
-		// HMR client endpoint
+		// Client script endpoint
 		server.middlewares.use('/__dev-server/hmr-client', (_req, res) => {
 			const clientPath = path.resolve(__dirname, 'client.js');
 			res.setHeader('Content-Type', 'application/javascript');
@@ -172,7 +172,7 @@ export class DevServerManager {
 					: 'localhost';
 			const port = server.config.server.port;
 			const viteServerUrl = `${protocol}://${host}:${port}`;
-			// Build minimal inline config for the client
+			// Build minimal inline config for the client (polling only)
 			const inlineConfig = {
 				blockNamespace: this.config.wordpress?.namespace,
 				pollingInterval:
@@ -235,10 +235,7 @@ export class DevServerManager {
 					port: server.config.server.port,
 				},
 				base: server.config.base || '/',
-				hmr: {
-					enabled: this.isHMREnabled(),
-					assets: this.getAllMonitoredAssets(),
-				},
+				hmr: { enabled: false, assets: this.getAllMonitoredAssets() },
 				buildMap: this.buildMapResolver.getBuildMap() || {},
 			};
 
@@ -248,26 +245,9 @@ export class DevServerManager {
 		});
 	}
 
-	/**
-	 * Handle hot updates
-	 */
-	handleHotUpdate(file: string, server: ViteDevServer): any[] | void {
+	// Polling mode: no-op for hot updates; polling endpoint exposes mtimes
+	handleHotUpdate(_file: string, _server: ViteDevServer): any[] | void {
 		if (!this.isHMREnabled()) return;
-
-		// Check if file is one of our watched assets
-		if (!this.watchedFiles.has(file)) return;
-
-		// Send custom HMR update
-		server.ws.send({
-			type: 'custom',
-			event: 'file-changed',
-			data: {
-				file: path.relative(process.cwd(), file),
-				timestamp: Date.now(),
-			},
-		});
-
-		// Return empty array to prevent default HMR
 		return [];
 	}
 
