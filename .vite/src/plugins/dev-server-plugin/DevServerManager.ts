@@ -164,16 +164,40 @@ export class DevServerManager {
 
 		// Legacy inline assets endpoint (for WordPress PHP integration)
 		server.middlewares.use('/__vite_inline_assets', (_req, res) => {
-			const clientPath = path.resolve(__dirname, 'client.js');
-			res.setHeader('Content-Type', 'application/javascript');
-			res.setHeader('Access-Control-Allow-Origin', '*');
+			// Compute Vite server URL (protocol + host + port)
+			const protocol = server.config.server.https ? 'https' : 'http';
+			const host =
+				typeof server.config.server.host === 'string'
+					? server.config.server.host
+					: 'localhost';
+			const port = server.config.server.port;
+			const viteServerUrl = `${protocol}://${host}:${port}`;
+			// Build minimal inline config for the client
+			const inlineConfig = {
+				blockNamespace: this.config.wordpress?.namespace,
+				pollingInterval:
+					this.config.hmr?.scriptInjection?.pollingInterval || 500,
+				viteServerUrl,
+			};
 
-			if (fs.existsSync(clientPath)) {
-				res.end(fs.readFileSync(clientPath, 'utf-8'));
-			} else {
-				res.statusCode = 404;
-				res.end('HMR client not found');
-			}
+			// Emit a tiny bootstrap that sets the config and then loads the client
+			const bootstrap = `
+// Dev Server Inline Config
+window.__VITE_INLINE_ASSETS_CONFIG__ = ${JSON.stringify(inlineConfig, null, 2)};
+
+// Load the HMR client after config is available
+(function(){
+	var s = document.createElement('script');
+	s.src = '${viteServerUrl}/__dev-server/hmr-client';
+	s.async = true;
+	document.head.appendChild(s);
+})();
+`;
+
+			res.setHeader('Content-Type', 'application/javascript');
+			res.setHeader('Cache-Control', 'no-cache');
+			res.setHeader('Access-Control-Allow-Origin', '*');
+			res.end(bootstrap);
 		});
 
 		// Asset content endpoint

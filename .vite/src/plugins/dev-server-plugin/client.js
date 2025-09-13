@@ -247,7 +247,9 @@ class Client {
 		const match = file.match(/^(.*\/)?([^/]+)\/style\.css$/);
 		if (!match) return null;
 
-		const namespace = 'ksd';
+		const namespace = this.config.blockNamespace;
+		if (!namespace) return null;
+		
 		const blockName = match[2];
 
 		return `${namespace}-${blockName}-style-inline-css`;
