@@ -93,6 +93,7 @@ class PathResolver {
         $base   = rtrim((string) ($base ?? '/'), '/');
         $outDir = trim((string) ($outDir ?? ''), '/');
 
+        // Default prefix is <base>/<outDir>/ when base is meaningful
         $prefix = $base;
         if ($outDir !== '') {
             $prefix .= '/' . $outDir;
@@ -101,6 +102,16 @@ class PathResolver {
 
         $pos = strpos($clean, $prefix);
         if ($pos === false) {
+            // When base is root ('/' or empty), allow matching with just /<outDir>/
+            if (($base === '' || $base === '/') && $outDir !== '') {
+                $altPrefix = '/' . $outDir . '/';
+                $posAlt    = strpos($clean, $altPrefix);
+                if ($posAlt === false) {
+                    return false;
+                }
+                $result = substr($clean, $posAlt + strlen($altPrefix));
+                return $result !== '' ? $result : false;
+            }
             return false;
         }
 

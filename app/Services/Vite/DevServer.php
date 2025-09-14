@@ -304,8 +304,13 @@ class DevServer {
      * @return string Modified asset URL
      */
     public function filterAssetLoaderSrc(string $src, string $handle): string {
-        $base = (string) ($this->getConfig('base') ?? '');
-        if (!PathResolver::containsBase($src, $base)) {
+        $base   = (string) ($this->getConfig('base') ?? '');
+        $outDir = (string) ($this->getConfig('outDir') ?? '');
+
+        // Accept when URL contains base or (when base is root) the outDir segment (e.g., /build/)
+        $hasBase   = PathResolver::containsBase($src, $base);
+        $hasOutDir = $outDir !== '' && strpos($src, '/' . trim($outDir, '/') . '/') !== false;
+        if (!$hasBase && !$hasOutDir) {
             return $src;
         }
 
