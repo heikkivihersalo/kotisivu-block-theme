@@ -31,11 +31,10 @@ describe('Dev Server Plugin - Core Functionality', () => {
 
 	/**
 	 * Test that the plugin exposes the correct API structure
-	 * This is essential for WordPress DevServer class integration
 	 */
-	test('plugin exports required functions and types', async () => {
+	test('plugin exports required hooks', async () => {
 		const { DevServerPlugin } = await import(
-			'../../src/plugins/dev-server-plugin/index.js'
+			'../../src/plugins/dev-server-plugin/index.ts'
 		);
 
 		expect(typeof DevServerPlugin).toBe('function');
@@ -45,158 +44,162 @@ describe('Dev Server Plugin - Core Functionality', () => {
 		expect(plugin.name).toBe('vite-wordpress-dev-server');
 		expect(plugin).toHaveProperty('configResolved');
 		expect(plugin).toHaveProperty('configureServer');
+		expect(plugin).toHaveProperty('generateBundle');
+		expect(plugin).toHaveProperty('writeBundle');
+		expect(plugin).toHaveProperty('buildStart');
 		expect(plugin).toHaveProperty('handleHotUpdate');
 	});
 
 	/**
-	 * Test middleware functions are properly exported
+	 * Test that configureServer registers expected endpoints and they respond
 	 */
-	test('middleware functions are available', async () => {
-		const middleware = await import(
-			'../../src/plugins/dev-server-plugin/server/middleware.js'
+	test('configureServer registers endpoints that respond', async () => {
+		const { DevServerPlugin } = await import(
+			'../../src/plugins/dev-server-plugin/index.ts'
 		);
 
-		expect(typeof middleware.createClientScriptMiddleware).toBe('function');
-		expect(typeof middleware.createStatusMiddleware).toBe('function');
-		expect(typeof middleware.createAssetContentMiddleware).toBe('function');
-	});
+		// Minimal connect-like middleware collector
+		type Handler = (req: any, res: any) => void;
+		const routes: { route: string; handler: Handler }[] = [];
+		const middlewares = {
+			use: (route: string, handler: Handler) => {
+				routes.push({ route, handler });
+			},
+		} as any;
 
-	/**
-	 * Test script template generation
-	 */
-	test('HMR client script templates work correctly', async () => {
-		const { generateScript } = await import(
-			'../../src/plugins/dev-server-plugin/utils/script-templates.js'
-		);
+		const serverConfig = {
+			server: { https: false, host: 'localhost', port: 5173 },
+			base: '/',
+		} as any;
+		const mockServer = {
+			middlewares,
+			config: serverConfig,
+		} as any;
 
-		const mockConfig = {
-			blockAssets: new Map([
-				[
-					'test-block',
-					{
-						name: 'ksd/test-block',
-						slug: 'test-block',
-						src: { css: '/src/style.css' },
-						build: { css: '/build/style.css' },
-					},
-				],
-			]),
-			blockNamespace: 'ksd',
-			pollingInterval: 500,
-			viteServerUrl: 'http://localhost:5173',
+		// Mock dependent plugin APIs expected by DevServerManager
+		const plugin = DevServerPlugin();
+		const configPluginApi = {
+			getPluginConfig: () => ({
+				wordpress: { namespace: 'ksd' },
+				build: { outDir: BUILD_DIR, css: 'css' },
+				paths: { srcDir: 'resources', blocksDir: {} },
+				hmr: {
+					enabled: true,
+					watch: { inline: [join(BUILD_DIR, 'test-asset.css')] },
+					scriptInjection: { pollingInterval: 500 },
+				},
+			}),
+		};
+		const resolvedConfig = {
+			plugins: [
+				{ name: 'vite-plugin-gutenberg-config', api: configPluginApi },
+				{ name: 'vite-plugin-gutenberg-blocks', api: undefined },
+			],
+		} as any;
+
+		// Prepare a test file that will be watched/served
+		const testCssPath = join(BUILD_DIR, 'test-asset.css');
+		writeFileSync(testCssPath, '.x{color:red;}');
+
+		// Drive plugin lifecycle (handle Vite ObjectHook wrapper shape)
+		const pluginCtx = {
+			addWatchFile: (_file: string) => {},
+		} as any;
+
+		const callHook = (hook: any, ...args: any[]) => {
+			if (!hook) return;
+			if (typeof hook === 'function') return hook.apply(pluginCtx, args);
+			if (typeof hook.handler === 'function')
+				return hook.handler.apply(pluginCtx, args);
 		};
 
-		const script = generateScript('hmr-client', mockConfig);
+		callHook(plugin.configResolved, resolvedConfig);
+		callHook(plugin.buildStart, {} as any);
+		callHook(plugin.configureServer, mockServer);
 
-		// Verify script contains essential HMR functionality
-		expect(script).toContain('__VITE_INLINE_ASSETS_CONFIG__');
-		expect(script).toContain('Loading HMR client');
-		expect(script).toContain("import('/__vite_hmr_client.js')");
-		expect(script).toContain('HMRClient.initialize');
-		expect(script).toContain('window.HMRClient');
+		// Helper to run a route and capture response
+		const run = async (reqUrl: string) => {
+			const route = routes.find((r) => reqUrl.startsWith(r.route));
+			if (!route) throw new Error(`Route not found for ${reqUrl}`);
+			const headers: Record<string, string> = {};
+			let statusCode = 200;
+			let body = '';
+			const res = {
+				setHeader: (k: string, v: string) => {
+					headers[k] = v;
+				},
+				end: (c: string) => {
+					body = c;
+				},
+				set statusCode(code: number) {
+					statusCode = code;
+				},
+				get statusCode() {
+					return statusCode;
+				},
+			} as any;
+			const req = {
+				url: reqUrl,
+				headers: { host: 'localhost:5173' },
+			} as any;
+			await route.handler(req, res);
+			return { headers, statusCode, body };
+		};
 
-		// Verify configuration is embedded (look for the formatted JSON)
-		expect(script).toContain('"blockNamespace": "ksd"');
-		expect(script).toContain('"pollingInterval": 500');
+		// Status endpoint should include our asset
+		const statusResp = await run('/__dev-server/status');
+		expect(statusResp.statusCode).toBe(200);
+		const statusJson = JSON.parse(statusResp.body);
+		// Absolute path key expected when provided as absolute
+		expect(Object.keys(statusJson)).toContain(testCssPath);
+		expect(typeof statusJson[testCssPath]).toBe('number');
+
+		// Asset content endpoint should return CSS with correct content type
+		const assetResp = await run(
+			`/__dev-server/asset-content?path=${encodeURIComponent(testCssPath)}`
+		);
+		expect(assetResp.statusCode).toBe(200);
+		expect(assetResp.headers['Content-Type']).toContain('text/css');
+		expect(assetResp.body).toContain('.x{color:red;}');
+
+		// HMR client endpoint should serve the client script
+		const clientResp = await run('/__dev-server/hmr-client');
+		expect(clientResp.statusCode).toBe(200);
+		expect(clientResp.headers['Content-Type']).toContain(
+			'application/javascript'
+		);
+		expect(clientResp.body).toContain('class Client');
+
+		// WordPress integration endpoint should return JSON with expected fields
+		const wpResp = await run('/vite-wordpress.json');
+		expect(wpResp.statusCode).toBe(200);
+		const wpJson = JSON.parse(wpResp.body);
+		expect(wpJson).toHaveProperty('server');
+		expect(wpJson).toHaveProperty('outDir');
+		expect(wpJson).toHaveProperty('srcDir');
+		expect(wpJson).toHaveProperty('css');
+		expect(wpJson).toHaveProperty('hmr');
+		expect(wpJson.hmr.assets).toBeInstanceOf(Array);
 	});
+
+	// Removed script template generation tests - functionality replaced by inline endpoint
 
 	/**
 	 * Test status middleware functionality
 	 */
-	test('status middleware returns proper format', async () => {
-		const { createStatusMiddleware } = await import(
-			'../../src/plugins/dev-server-plugin/server/middleware.js'
-		);
-
-		// Create test files
-		const testAssets = [join(BUILD_DIR, 'test-asset.css')];
-
-		mkdirSync(BUILD_DIR, { recursive: true });
-		writeFileSync(testAssets[0], '.test { color: red; }');
-
-		const mockBlockAssets = new Map();
-		const getAllMonitoredAssets = () => testAssets;
-
-		const middleware = createStatusMiddleware(
-			getAllMonitoredAssets,
-			mockBlockAssets
-		);
-
-		// Mock request/response
-		const mockReq = { url: '/__vite_inline_content/status' };
-		const mockRes = {
-			setHeader: () => {},
-			end: (data: string) => {
-				const status = JSON.parse(data);
-				expect(typeof status).toBe('object');
-				expect(Object.keys(status)).toContain(testAssets[0]);
-				expect(typeof status[testAssets[0]]).toBe('number');
-			},
-		};
-
-		middleware(mockReq, mockRes, () => {});
-	});
+	// Status endpoint covered in configureServer test
 
 	/**
 	 * Test asset content middleware functionality
 	 */
-	test('asset content middleware handles requests properly', async () => {
-		const { createAssetContentMiddleware } = await import(
-			'../../src/plugins/dev-server-plugin/server/middleware.js'
-		);
-
-		// Create test CSS file
-		const testCssPath = join(BUILD_DIR, 'test-block.css');
-		const testCssContent = '.wp-block-test { background: blue; }';
-		writeFileSync(testCssPath, testCssContent);
-
-		const getAllMonitoredAssets = () => [testCssPath];
-		const mockBlockAssets = new Map();
-
-		const middleware = createAssetContentMiddleware(
-			getAllMonitoredAssets,
-			mockBlockAssets
-		);
-
-		// Test valid asset request
-		const mockReq = { url: '/__vite_inline_content/test-block.css' };
-		let responseContent = '';
-		const responseHeaders: Record<string, string> = {};
-		let statusCode = 200;
-
-		const mockRes = {
-			setHeader: (key: string, value: string) => {
-				responseHeaders[key] = value;
-			},
-			end: (content: string) => {
-				responseContent = content;
-			},
-			set statusCode(code: number) {
-				statusCode = code;
-			},
-			get statusCode() {
-				return statusCode;
-			},
-		};
-
-		middleware(mockReq, mockRes, () => {});
-
-		// Test that middleware responds appropriately
-		expect([200, 404]).toContain(statusCode);
-
-		// If content was served, verify it's the CSS we created
-		if (statusCode === 200) {
-			expect(responseContent).toContain('.wp-block-test');
-			expect(responseHeaders['Content-Type']).toContain('text/css');
-		}
-	});
+	// Asset content endpoint covered in configureServer test
 
 	/**
 	 * Test BuildMapResolver integration
 	 */
 	test('BuildMapResolver works with dev server', async () => {
 		const { BuildMapResolver } = await import(
-			'../../src/common/services/BuildMapResolver.js'
+			'../../src/common/services/BuildMapResolver.ts'
 		);
 
 		const resolver = new BuildMapResolver(BUILD_DIR, 'css');
@@ -223,10 +226,7 @@ describe('Dev Server Plugin - Core Functionality', () => {
 					css: ['src/**/*.css'],
 					blocks: ['src/blocks/**/*'],
 				},
-				scriptInjection: {
-					method: 'inline',
-					pollingInterval: 500,
-				},
+				scriptInjection: { pollingInterval: 500 },
 			},
 			{
 				enabled: false,
@@ -234,10 +234,7 @@ describe('Dev Server Plugin - Core Functionality', () => {
 			{
 				enabled: true,
 				watch: {},
-				scriptInjection: {
-					method: 'external',
-					pollingInterval: 1000,
-				},
+				scriptInjection: { pollingInterval: 1000 },
 			},
 		];
 
@@ -249,12 +246,6 @@ describe('Dev Server Plugin - Core Functionality', () => {
 				enabled: true,
 				watch: 'not-object', // should be object
 			},
-			{
-				enabled: true,
-				scriptInjection: {
-					method: 'invalid-method', // should be 'inline' | 'external' | 'module'
-				},
-			},
 		];
 
 		// Validation logic (simplified)
@@ -263,14 +254,8 @@ describe('Dev Server Plugin - Core Functionality', () => {
 			if (config.enabled === false) return true; // No further validation needed
 
 			if (config.watch && typeof config.watch !== 'object') return false;
-			if (
-				config.scriptInjection?.method &&
-				!['inline', 'external', 'module'].includes(
-					config.scriptInjection.method
-				)
-			) {
-				return false;
-			}
+			// require boolean enabled
+			if (typeof config.enabled !== 'boolean') return false;
 
 			return true;
 		};
