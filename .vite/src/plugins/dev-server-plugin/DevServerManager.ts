@@ -461,6 +461,13 @@ export class DevServerManager {
 		return results;
 	}
 
+	/**
+	 * Extract a file path from a block.json field value
+	 * - Expects values like "file:./index.css"
+	 * - Ignores non-file entries (e.g. "wp-blocks")
+	 * @param val The block.json field value
+	 * @return string|null The extracted file path or null if not applicable
+	 */
 	private extractFileFromBlockJsonValue(val: string): string | null {
 		if (!val) return null;
 
@@ -472,6 +479,12 @@ export class DevServerManager {
 		return null;
 	}
 
+	/**
+	 * Push a file path to the array if it exists
+	 * @param arr The array to push the path into
+	 * @param fullPath The full path to check and push
+	 * @return void
+	 */
 	private pushIfExists(arr: string[], fullPath: string) {
 		if (fullPath && fs.existsSync(fullPath)) {
 			arr.push(fullPath);
