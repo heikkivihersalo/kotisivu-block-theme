@@ -167,8 +167,18 @@ export class BlockHandler {
 		// Re-initialize file emitter with new output directory
 		this.fileEmitter = new FileEmitter(this.outputDirectory);
 
-		// Re-initialize CSS processor with new output directory
+		// Re-initialize processors with the new output directory so dev writes hit disk
 		this.css = new CSS({
+			context: this.context,
+			config: { outputDirectory: this.outputDirectory },
+		});
+
+		this.js = new JS({
+			context: this.context,
+			config: { outputDirectory: this.outputDirectory },
+		});
+
+		this.php = new PHP({
 			context: this.context,
 			config: { outputDirectory: this.outputDirectory },
 		});
