@@ -276,6 +276,10 @@ export class DevServerManager {
 					port: server.config.server.port,
 				},
 				base: server.config.base || '/',
+				// Expose additional fields used by the PHP integration to resolve assets
+				outDir: this.config.build?.outDir || 'build',
+				srcDir: this.config.paths?.srcDir || 'resources',
+				css: this.config.build?.css || 'css',
 				hmr: { enabled: false, assets: this.getAllMonitoredAssets() },
 				buildMap: this.buildMapResolver.getBuildMap() || {},
 			};
