@@ -166,13 +166,12 @@ class AssetResolver {
      * @return string|false Relative source path or false when not found
      */
     protected function tryResolveViaFilesystem(string $fileName): string|false {
-        $cssExt = (string) ($this->config['css'] ?? 'css');
-        $srcDir = trim((string) ($this->config['srcDir'] ?? 'resources'), '/');
-        $base   = (string) ($this->config['base'] ?? '/');
-        $server = rtrim(PathResolver::serverPath(ABSPATH, $base), '/');
+        $cssExt   = (string) ($this->config['css'] ?? 'css');
+        $srcDir   = trim((string) ($this->config['srcDir'] ?? 'resources'), '/');
+        $themeDir = rtrim((string) get_stylesheet_directory(), '/');
 
         $candidateName  = str_replace('.css', ".{$cssExt}", $fileName);
-        $fileSystemPath = $server . '/' . $srcDir . '/' . $candidateName;
+        $fileSystemPath = $themeDir . '/' . $srcDir . '/' . $candidateName;
 
         if (file_exists($fileSystemPath)) {
             return $srcDir . '/' . $candidateName;
@@ -194,38 +193,133 @@ class AssetResolver {
             return false;
         }
 
-        // Try to find the block that contains this file
         foreach ($this->manifest->getBlockNames() as $blockName) {
             $blockData = $this->manifest->getByBlockName($blockName);
-
             if (!$blockData) {
                 continue;
             }
 
-            foreach (self::BLOCK_FILE_PROPERTIES as $property) {
-                if (!isset($blockData[$property])) {
-                    continue;
-                }
-
-                $values = is_array($blockData[$property]) ? $blockData[$property] : [$blockData[$property]];
-
-                foreach ($values as $value) {
-                    if (!is_string($value)) {
-                        continue;
-                    }
-
-                    $blockFile = str_replace('file:./', '', $value);
-
-                    // Check if this matches our target file
-                    if (basename($blockFile) === basename($fileName) || $blockFile === $fileName) {
-                        // Construct source path for development
-                        $srcDir = $this->config['srcDir'] ?? 'resources';
-                        return "{$srcDir}/blocks/{$blockName}/{$blockFile}";
-                    }
-                }
+            $matchedFile = $this->findMatchingBlockFile($blockData, $fileName);
+            if ($matchedFile !== null) {
+                return $this->resolveBlockSourcePath($blockName, $matchedFile);
             }
         }
 
         return false;
+    }
+
+    /**
+     * Find a matching block.json file reference for the given output filename.
+     *
+     * @param array<string,mixed> $blockData
+     * @param string $fileName
+     * @return string|null Matching block file reference, or null if not found
+     */
+    private function findMatchingBlockFile(array $blockData, string $fileName): ?string {
+        foreach (self::BLOCK_FILE_PROPERTIES as $property) {
+            if (!array_key_exists($property, $blockData)) {
+                continue;
+            }
+
+            foreach ($this->normalizePropertyValues($blockData[$property]) as $value) {
+                $blockFile = $this->stripFileProtocol($value);
+                if ($this->fileMatches($blockFile, $fileName)) {
+                    return $blockFile;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Normalize a block.json property value to iterable strings.
+     * Accepts strings or arrays of strings; ignores non-string values.
+     *
+     * @param mixed $value
+     * @return array<int,string>
+     */
+    private function normalizePropertyValues(mixed $value): array {
+        $values = is_array($value) ? $value : [$value];
+        return array_values(array_filter($values, static fn ($v) => is_string($v)));
+    }
+
+    /**
+     * Remove the file:./ prefix from file references used by block.json.
+     *
+     * @param string $value
+     * @return string Matching block file reference, or null if not found
+     */
+    private function stripFileProtocol(string $value): string {
+        return str_replace('file:./', '', $value);
+    }
+
+    /**
+     * Determine if a block file reference matches the built filename.
+     *
+     * @param string $blockFile
+     * @param string $fileName
+     * @return bool True if the block file matches the built filename
+     */
+    private function fileMatches(string $blockFile, string $fileName): bool {
+        return $blockFile === $fileName || basename($blockFile) === basename($fileName);
+    }
+
+    /**
+     * Resolve the source path for a matched block asset, honoring blocksDir mappings and
+     * falling back to the default srcDir/blocks/<block>/<file> when necessary.
+     *
+     * @param string $blockName Block name (e.g. 'heading')
+     * @param string $blockFile Block file reference (e.g. 'index.js')
+     * @return string Relative source path (e.g. 'resources/blocks/heading/index.js')
+     */
+    private function resolveBlockSourcePath(string $blockName, string $blockFile): string {
+        $srcDir    = (string) ($this->config['srcDir'] ?? 'resources');
+        $blocksDir = is_array($this->config['blocksDir'] ?? null) ? $this->config['blocksDir'] : [];
+
+        // Default fallback (legacy dev pattern)
+        $defaultPath = rtrim($srcDir, '/') . "/blocks/{$blockName}/{$blockFile}";
+
+        if (empty($blocksDir)) {
+            return $defaultPath;
+        }
+
+        $themeRoot = rtrim((string) get_stylesheet_directory(), '/');
+
+        foreach ($blocksDir as $outputPath => $sourcePath) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+            // Compute candidate directory where this block would live in source
+            $candidateDir  = trailingslashit((string) $sourcePath) . $blockName;
+            $candidateFile = trailingslashit($candidateDir) . $blockFile;
+            $absCandidate  = $themeRoot . '/' . ltrim($candidateFile, '/');
+
+            if (file_exists($absCandidate)) {
+                return ltrim($candidateFile, '/');
+            }
+
+            if ($alt = $this->tryAlternativeScriptExtensions($candidateFile, $themeRoot)) {
+                return $alt;
+            }
+        }
+
+        return $defaultPath;
+    }
+
+    /**
+     * If the candidate script file isn't found, try common alternative extensions.
+     * Returns the first matching relative path, or null.
+     *
+     * @param string $candidateFile
+     * @param string $themeRoot
+     * @return string|null Matching relative path, or null if none found
+     */
+    private function tryAlternativeScriptExtensions(string $candidateFile, string $themeRoot): ?string {
+        $base = (string) preg_replace('/\.(js|jsx|ts|tsx)$/', '', $candidateFile);
+        foreach (['.ts', '.tsx', '.jsx', '.js'] as $ext) {
+            $try = ltrim($base . $ext, '/');
+            if (file_exists($themeRoot . '/' . $try)) {
+                return $try;
+            }
+        }
+        return null;
     }
 }
