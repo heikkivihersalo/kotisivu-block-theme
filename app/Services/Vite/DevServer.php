@@ -321,6 +321,16 @@ class DevServer {
             $baseUrl     = PathResolver::baseUrl($serverUrl, (string) ($this->getConfig('base') ?? '/'));
             $resolvedUrl = "{$baseUrl}/{$resolvedPath}";
 
+            // Add cache-busting timestamp based on source file mtime
+            $themeRoot = rtrim((string) get_stylesheet_directory(), '/');
+            $absSource = $themeRoot . '/' . ltrim($resolvedPath, '/');
+            $timestamp = is_file($absSource) ? (string) filemtime($absSource) : '';
+
+            if ($timestamp !== '') {
+                $glue        = (str_contains($resolvedUrl, '?')) ? '&' : '?';
+                $resolvedUrl = $resolvedUrl . $glue . 't=' . rawurlencode($timestamp);
+            }
+
             // Track that this handle was resolved via the dev server so we can adjust tag attributes
             if ($this->assetResolver) {
                 $this->assetResolver->trackResolvedHandle($handle, $resolvedUrl);
