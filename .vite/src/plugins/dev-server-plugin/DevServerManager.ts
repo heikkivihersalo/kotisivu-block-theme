@@ -280,6 +280,8 @@ export class DevServerManager {
 				outDir: this.config.build?.outDir || 'build',
 				srcDir: this.config.paths?.srcDir || 'resources',
 				css: this.config.build?.css || 'css',
+				// Expose blocksDir mapping so PHP can reverse-map block assets to sources in dev
+				blocksDir: this.config.paths?.blocksDir || {},
 				hmr: { enabled: false, assets: this.getAllMonitoredAssets() },
 				buildMap: this.buildMapResolver.getBuildMap() || {},
 			};
