@@ -105,7 +105,7 @@ class Client {
 	async handleFileChange({ file }) {
 		if (file.endsWith('.css')) {
 			await this.updateCSS(file);
-		} else if (file.endsWith('.js')) {
+		} else if (/(\.m?js|\.jsx|\.ts|\.tsx)$/.test(file)) {
 			this.reloadPage();
 		}
 	}
